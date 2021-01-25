@@ -33,7 +33,7 @@ namespace Cauldron.Malichae
             {
                 var discarded = results.First().CardToDiscard;
                 //cases:
-                //1: Card is DjinnOnging, get GrantedPower, execute
+                //1: Card is DjinnOnging, get GrantedPower, add associated source, execute
                 //2: Card has powers and I'm the owner, UsePowerOnOtherCard
                 //3: Card has no powers, proceed
 
@@ -41,7 +41,9 @@ namespace Cauldron.Malichae
                 if (cc is DjinnOngoingController djinn)
                 {
                     var pwr = djinn.GetGrantedPower(this);
-                    coroutine = GameController.UsePower(pwr, true, DecisionMaker, GetCardSource());
+                    var cs = GetCardSource();
+                    cc.AddAssociatedCardSource(cs);
+                    coroutine = GameController.UsePower(pwr, true, DecisionMaker, cs);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -50,6 +52,7 @@ namespace Cauldron.Malichae
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
+                    cc.RemoveAssociatedCardSource(cs);
                 }
                 else if (discarded.HasPowers && discarded.Owner == TurnTaker)
                 {

@@ -1440,6 +1440,38 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestCauterizeAskOnlyOncePerDamageAccept()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "Legacy", "RuinsOfAtlantis");
+            StartGame();
+
+            PlayCard("InspiringPresence");
+            SetHitPoints(legacy, 10);
+            PlayCard("Cauterize");
+            DecisionYesNo = true;
+
+            QuickHPStorage(legacy);
+            AssertMaxNumberOfDecisions(1);
+            DealDamage(doc, legacy, 4, DamageType.Melee);
+            QuickHPCheck(5);
+        }
+        [Test]
+        public void TestCauterizeAskOnlyOncePerDamageDecline()
+        {
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Bunker", "Legacy", "RuinsOfAtlantis");
+            StartGame();
+
+            PlayCard("InspiringPresence");
+            SetHitPoints(legacy, 10);
+            PlayCard("Cauterize");
+            DecisionYesNo = false;
+
+            QuickHPStorage(legacy);
+            AssertMaxNumberOfDecisions(1);
+            DealDamage(doc, legacy, 4, DamageType.Melee);
+            QuickHPCheck(-5);
+        }
 
         [Test()]
         [Sequential]

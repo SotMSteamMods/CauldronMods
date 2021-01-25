@@ -41,7 +41,8 @@
             ],
             "openingLines": {
                 "default": "It's about time we took care of you!",
-                "OutlanderCharacter": "Bad news; I can already see the future where we defeat you!"
+                "OutlanderCharacter": "Bad news; I can already see the future where we defeat you!",
+				"FutureTiamatCharacter": "Who thought it was a good idea to build a cyborg dragon?"
             },
             "complexity": 3
         },
@@ -544,7 +545,8 @@
             "openingLines": {
                 "default": "What year is this again?",
                 "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
-                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger."
+                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
+				"FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
             },
             "complexity": 3
         },
@@ -585,10 +587,6 @@
                 "Manipulate",
                 "GainHP"
             ],
-            "openingLines": {
-                "default": "default placeholder",
-                "OutlanderCharacter": "Outlander placeholder"
-            },
             "complexity": 3
         },
         {

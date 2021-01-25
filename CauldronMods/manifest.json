@@ -7,7 +7,7 @@
 		"Consider supporting Tosx by purchasing physical cards from DriveThruRpg or checking out MeromorphGames.com.",
 	],
 	"version": "v0.3.0",
-	"credits": "Art: Tosx. Software Development: DragonZ, MSpekkio, QuagmaBlast, smJake123, wrhyme29. Art Direction: catwhowalksbyhimself, smJake123. Music: Shane Ivers. Music Direction: TopherGerkey. Playtesters: DireAvenger20, TheRealTails, TopherGerkey, jetto, qoalabear and many more. Additional Music Credits can be found here: https://bit.ly/38mwFJo",
+	"credits": "Art: Tosx. Software Development: DragonZ, MSpekkio, NinjaMonkey, QuagmaBlast, smJake123, wrhyme29. Art Direction: catwhowalksbyhimself, smJake123. Music: Shane Ivers. Music Direction: TopherGerkey. Playtesters: DireAvenger20, TheRealTails, TopherGerkey, jetto, qoalabear and many more. Additional Music Credits can be found here: https://bit.ly/38mwFJo",
 	"namespace": "Cauldron",
 	"dll": "CauldronMods.dll",
 	"decks": {
@@ -17,6 +17,7 @@
 			"Cypher",
 			"DocHavoc",
 			"Echelon",
+			"Gargoyle",
 			"Impact",
 			"LadyOfTheWood",
 			"MagnificentMara",
@@ -40,18 +41,21 @@
 			"PhaseVillain",
 			"ScreaMachine",
 			"SwarmEater",
+			"TheMistressOfFate",
 			"TheRam",
 			"Tiamat",
 			"Vector"
 		],
 		"environments": [
 			"BlackwoodForest",
+			"CatchwaterHarbor",
 			"TheCybersphere",
 			"FSCContinuanceWanderer",
 			"HalberdExperimentalResearchCenter",
 			"Northspar",
 			"StSimeonsCatacombs",
 			"SuperstormAkela",
+			"TheChasmOfAThousandNights",
 			"TheWanderingIsle",
 			"VaultFive"
 		]

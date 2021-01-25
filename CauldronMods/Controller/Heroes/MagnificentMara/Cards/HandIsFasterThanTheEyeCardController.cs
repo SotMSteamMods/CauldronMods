@@ -46,7 +46,11 @@ namespace Cauldron.MagnificentMara
             //cleans up JustActivatedTrigger to reduce execution overhead
             AddPhaseChangeTrigger((TurnTaker tt) => true, (Phase p) => true, (PhaseChangeAction pc) => true, ClearJustActed, new TriggerType[] { TriggerType.HiddenLast }, TriggerTiming.Before);
         }
-
+        private bool LogAndReturnTrue(GameAction ga)
+        {
+            //Log.Debug($"Checking action {ga}...");
+            return true;
+        }
         private IEnumerator ClearJustActed(PhaseChangeAction pca)
         {
             _justActivatedTrigger = null;
@@ -56,9 +60,19 @@ namespace Cauldron.MagnificentMara
 
         private bool IsBookkeepingAction(GameAction ga)
         {
+
             if(ga is MessageAction || ga is ExpireStatusEffectAction || ga is DoneRoundOfDamageAction)
             {
                 return true;
+            }
+
+            //There is a null reference error somewhere in TargetInfo.GetTargets if we 
+            //cancel the SelectTurnTakerDecision in DetermineTurnTakersWithMostOrFewest
+            //for an ambiguous who-to-damage decision as on Voss's Gene Bound Banshee
+            //I have tried to keep this exception limited - it's possibly worth keeping an eye on.
+            if (ga is MakeDecisionAction md && (md.Decision is SelectTurnTakerDecision || md.Decision is SelectTurnTakersDecision))
+            {
+                return _justActivatedTrigger != null && _justActivatedTrigger.Types.Contains(TriggerType.DealDamage);
             }
             return false;
         }
@@ -66,6 +80,7 @@ namespace Cauldron.MagnificentMara
         {
             //May end up with false positives from "fake" actions like messages -
             //we'll have to see what crops up
+            //Log.Debug("InterruptAction fires");
             if(IsRealAction(ga) && !IsBookkeepingAction(ga))
             {
                 

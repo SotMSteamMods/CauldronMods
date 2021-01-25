@@ -59,8 +59,3 @@ You will also want one or more .Net Decompilers
 1. Push your branch, and open a Pull Request for review.
 1. Success!
 
-## How to contribute art
-
-## How to contribute music
-
-We are still working this out.

@@ -15,7 +15,7 @@ namespace Cauldron.Menagerie
         {
             get
             {
-                if(!CharacterCard.IsFlipped)
+                if(!CharacterCard.IsFlipped || IsEnclosure(this.Card))
                 {
                     return false;
                 }

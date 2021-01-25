@@ -21,19 +21,18 @@ namespace Cauldron.Malichae
 
         public override Power GetGrantedPower(CardController cardController)
         {
-            return new Power(cardController.HeroTurnTakerController, this, "Reduce damage dealt to hero targets by 2 until the start of your next turn.", UseGrantedPower(), 0, null, cardController.GetCardSource());
+            return new Power(cardController.HeroTurnTakerController, cardController, "Reduce damage dealt to hero targets by 2 until the start of your next turn.", UseGrantedPower(), 0, null, GetCardSource());
         }
 
         private IEnumerator UseGrantedPower()
         {
             int reduces = GetPowerNumeral(0, 2);
 
-            var usePowerAction = ActionSources.OfType<UsePowerAction>().First();
-            var cs = usePowerAction.CardSource ?? usePowerAction.Power.CardSource;
+            CardSource cs = GetCardSourceForGrantedPower();
+            var card = cs.Card;
 
-            var card = GetCardThisCardIsNextTo();
             ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(reduces);
-            effect.CardSource = cs.Card;
+            effect.CardSource = card;
             effect.UntilStartOfNextTurn(this.DecisionMaker.TurnTaker);
             effect.TargetCriteria.IsInPlayAndNotUnderCard = true;
             effect.TargetCriteria.IsHero = true;

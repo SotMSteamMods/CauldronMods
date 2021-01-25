@@ -6,18 +6,13 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TheStranger
 {
-    public class UnweaveCardController : CardController
+    public class UnweaveCardController : TheStrangerBaseCardController
     {
-        #region Constructors
-
         public UnweaveCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => IsRune(c), "rune", false, false, null, "runes"));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, IsRuneCriteria());
         }
 
-        #endregion Constructors
-
-        #region Methods
         public override IEnumerator Play()
         {
             //You may shuffle up to 4 Runes from your trash into your deck, or discard up to 4 cards.
@@ -26,12 +21,12 @@ namespace Cauldron.TheStranger
             List<MoveCardDestination> deck = new List<MoveCardDestination>();
             deck.Add(new MoveCardDestination(base.HeroTurnTaker.Deck, false, false, false));
             List<MoveCardAction> storedShuffle = new List<MoveCardAction>();
-            Func<IEnumerator> shuffleFunc = new Func<IEnumerator>( () => base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, new int?(0), 4, new LinqCardCriteria((Card c) => this.IsRune(c), "rune", true, false, null, null, false), deck,storedResultsMove: storedShuffle,cardSource: base.GetCardSource()));
+            Func<IEnumerator> shuffleFunc = new Func<IEnumerator>( () => base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, new int?(0), 4, IsRuneCriteria(), deck,storedResultsMove: storedShuffle,cardSource: base.GetCardSource()));
             string shuffleCardsMessage = "You may shuffle up to 4 Runes from your trash into your deck";
             Function shuffle = new Function(this.DecisionMaker, shuffleCardsMessage, SelectionType.ShuffleCardFromTrashIntoDeck, shuffleFunc, null, null, shuffleCardsMessage);
             //discard card function details
             List<DiscardCardAction> storedDiscard = new List<DiscardCardAction>();
-            Func<IEnumerator> discardFunc = new Func<IEnumerator>(() => base.SelectAndDiscardCards(this.DecisionMaker, new int?(4), false, new int?(0), storedDiscard, false, null, null, null, SelectionType.DiscardCard, base.TurnTaker));
+            Func<IEnumerator> discardFunc = new Func<IEnumerator>(() => base.SelectAndDiscardCards(this.DecisionMaker, 4, false, 0, storedDiscard, false, null, null, null, SelectionType.DiscardCard, base.TurnTaker));
             string discardCardsMessage = "You may discard up to 4 cards";
             Function discard = new Function(this.DecisionMaker, discardCardsMessage, SelectionType.DiscardCard, discardFunc, null, null, discardCardsMessage);
            
@@ -91,7 +86,7 @@ namespace Cauldron.TheStranger
             //ask the player repeatedly if they want to take their actions
             for (int i = 0; i < maxActions; i++)
             {
-                SelectFunctionDecision selectFunction2 = new SelectFunctionDecision(base.GameController, this.DecisionMaker, list2, false, null, null, null, base.GetCardSource(null));
+                SelectFunctionDecision selectFunction2 = new SelectFunctionDecision(base.GameController, this.DecisionMaker, list2, false, null, null, null, base.GetCardSource());
                 IEnumerator coroutine2 = base.GameController.SelectAndPerformFunction(selectFunction2, null, null);
                 if (base.UseUnityCoroutines)
                 {
@@ -105,13 +100,5 @@ namespace Cauldron.TheStranger
 
             yield break;
         }
-
-        
-
-        private bool IsRune(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "rune", false, false);
-        }
-        #endregion Methods
     }
 }
