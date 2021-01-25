@@ -415,5 +415,44 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestMagicBlade()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(haka, 20);
+            //Play this card next to a hero.
+            DecisionSelectCard = legacy.CharacterCard;
+            Card magic = PlayCard("MagicBlade");
+            AssertNextToCard(magic, legacy.CharacterCard);
+
+            ////The first time they use a power each turn, discard and check the top card of the environment deck.",
+            //If it is a fate card, that hero deals 1 target 2 energy damage. If it is not a fate card, that hero deals themselves 2 infernal damage."
+
+            Card fate = PutOnDeck("HighGround");
+            QuickHPStorage(baron, ra, legacy, haka);
+            DecisionSelectTarget = baron.CharacterCard;
+            UsePower(legacy.CharacterCard);
+            QuickHPCheck(-4, 0, 0, 0); //1 galvanize + nemesis bonus
+            AssertInTrash(fate);
+
+            Card notFate = PutOnDeck("StoneWarden");
+            Card charge = PlayCard("MotivationalCharge");
+            QuickHPUpdate();
+            UsePower(charge);
+            QuickHPCheck(-4, 1, 1, 1);
+            AssertOnTopOfDeck(notFate);
+
+            GoToNextTurn();
+            QuickHPUpdate();
+            UsePower(legacy.CharacterCard);
+            QuickHPCheck(0, 0, -4, 0); //2 galvanized have been used
+            AssertInTrash(notFate);
+
+        }
     }
 }
