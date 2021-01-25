@@ -14,7 +14,7 @@ namespace Cauldron.Titan
 
         public override IEnumerator StartGame()
         {
-            var cards = FindCardsWhere(c => c.IsCharacter && c.SharedIdentifier != null && c.SharedIdentifier != CharacterCard.SharedIdentifier).ToList();
+            var cards = TurnTaker.GetCardsWhere(c => c.IsCharacter && c.SharedIdentifier != null && c.SharedIdentifier != CharacterCard.SharedIdentifier).ToList();
             var coroutine = GameController.BulkMoveCards(this, cards, TurnTaker.InTheBox, performBeforeDestroyActions: false); //send the other promo's to the shadowrealm
             if (UseUnityCoroutines)
             {
