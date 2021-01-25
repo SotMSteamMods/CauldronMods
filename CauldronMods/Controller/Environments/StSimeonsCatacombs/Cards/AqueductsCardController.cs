@@ -18,7 +18,7 @@ namespace Cauldron.StSimeonsCatacombs
         public override void AddTriggers()
         {
             //At the start of the villain turn, each target regains 1 HP
-            AddStartOfTurnTrigger((TurnTaker tt) => FindVillainTurnTakerControllers(true).Contains(FindTurnTakerController(tt)), AllTargetsGainHP, TriggerType.GainHP);
+            AddStartOfTurnTrigger((TurnTaker tt) => tt.IsVillain, AllTargetsGainHP, TriggerType.GainHP);
             base.AddTriggers();
         }
 
