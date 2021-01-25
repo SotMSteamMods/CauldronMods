@@ -337,5 +337,57 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestHighGround()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //While the top card of the environment trash is a fate card, reduce damage dealt by hero targets by 1. 
+            //While it is not a fate card, reduce damage dealt by villain targets by 1.
+
+            Card ground = PlayCard("HighGround");
+
+            //when nothing, everything should be normal
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //put fate in trash
+            PutInTrash("EnormousPack");
+
+            //heroes reduced
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-2);
+
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //put not fate in trash
+            PutInTrash("StoneWarden");
+
+            //villains reduced
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Fire);
+            QuickHPCheck(-2);
+
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(dungeon);
+            AssertInTrash(ground);
+
+
+        }
+
     }
 }

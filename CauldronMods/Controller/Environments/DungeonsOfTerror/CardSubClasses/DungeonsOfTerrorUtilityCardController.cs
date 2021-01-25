@@ -40,5 +40,37 @@ namespace Cauldron.DungeonsOfTerror
             storedResults.Add(numFates);
             yield break;
         }
+
+        protected bool? IsTopCardOfLocationFate(Location location)
+        {
+            Card card = location.TopCard;
+            if (card == null)
+            {
+                return null;
+            }
+
+            return IsFate(card);
+        }
+
+        protected string BuildTopCardOfLocationSpecialString(Location location)
+        {
+            bool? fate = IsTopCardOfLocationFate(location);
+            string special = "";
+            if(fate == null)
+            {
+                special = $"There are no cards in {location.GetFriendlyName()}.";
+            } else
+
+            {
+                special = $"The top card of {location.GetFriendlyName()} is ";
+                if(fate.Value == false)
+                {
+                    special += "not ";
+                }
+                special += "a fate card.";
+            }
+
+            return special;
+        }
     }
 }
