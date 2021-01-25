@@ -70,11 +70,11 @@ namespace Cauldron.DungeonsOfTerror
             yield break;
         }
 
-        private IEnumerator CheckForFateAndDealDamage(Card card, GameAction triggeringAction)
+        private IEnumerator CheckForFateAndDealDamage(Card cardToCheck, GameAction triggeringAction)
         {
             //check that card.
             List<int> storedResults = new List<int>();
-            IEnumerator coroutine = CheckForNumberOfFates(card.ToEnumerable(), storedResults);
+            IEnumerator coroutine = CheckForNumberOfFates(cardToCheck.ToEnumerable(), storedResults);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -88,13 +88,13 @@ namespace Cauldron.DungeonsOfTerror
             if(storedResults.Any() && storedResults.First() == 1)
             {
                 //If it is a fate card, this card deal the hero next to it {H} melee damage.
-                message = GameController.SendMessageAction($"{Card.Title} was a fate card!", Priority.High, GetCardSource(), showCardSource: true);
+                message = GameController.SendMessageAction($"{cardToCheck.Title} is a fate card!", Priority.High, GetCardSource(), associatedCards: cardToCheck.ToEnumerable(), showCardSource: true);
                 effect = DealDamage(Card, GetCardThisCardIsNextTo(), Game.H, DamageType.Melee, cardSource: GetCardSource());
             }
             else if(storedResults.Any() && storedResults.First() == 0)
             {
                 //If it is not a fate card, this card deals each other hero target {H-2} melee damage. 
-                message = GameController.SendMessageAction($"{Card.Title} was not a fate card!", Priority.High, GetCardSource(), showCardSource: true);
+                message = GameController.SendMessageAction($"{cardToCheck.Title} is not a fate card!", Priority.High, GetCardSource(), associatedCards: cardToCheck.ToEnumerable(), showCardSource: true);
                 effect = DealDamage(Card, (Card c) => c.IsHero && c.IsTarget && c != GetCardThisCardIsNextTo(), Game.H - 2, DamageType.Melee);
             }
 

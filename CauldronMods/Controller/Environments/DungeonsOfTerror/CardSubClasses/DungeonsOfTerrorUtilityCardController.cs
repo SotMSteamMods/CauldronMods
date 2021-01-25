@@ -22,21 +22,21 @@ namespace Cauldron.DungeonsOfTerror
         }
 
         protected IEnumerator CheckForNumberOfFates(IEnumerable<Card> cardsToCheck, List<int> storedResults)
-        {
-            //eventually, maybe add in reveal logic of some kind?
+        { 
             int numFates = 0;
             if(!cardsToCheck.Any() || cardsToCheck.FirstOrDefault() == null)
             {
                 yield break;
             }
-            foreach(Card card in cardsToCheck)
+
+            
+            foreach (Card card in cardsToCheck)
             {
                 if(IsFate(card))
                 {
                     numFates++;
                 }
             }
-
             storedResults.Add(numFates);
             yield break;
         }
