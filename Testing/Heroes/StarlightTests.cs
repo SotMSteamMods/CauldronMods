@@ -1119,7 +1119,7 @@ namespace CauldronTests
             PutIntoPlay("PillarsOfCreation");
 
             //needed to avoid skipping play phase
-            //PutInHand("WarpHalo");
+            PutInHand("WarpHalo");
 
             //given that it should trigger even with play phase skipped...
 
@@ -1187,6 +1187,124 @@ namespace CauldronTests
             GoToUsePowerPhase(starlight);
             AssertNumberOfCardsInPlay(starlight, 2);
         }
+
+
+        [Test()]
+        public void TestPillarsOfCreation_Timing_NoCardToPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            var card = PutInTrash("AncientConstellationA");
+            PutIntoPlay("PillarsOfCreation");
+            PutOnDeck(starlight, starlight.HeroTurnTaker.Hand.Cards);
+            GoToEndOfTurn(baron);
+
+            GoToUsePowerPhase(starlight);
+            AssertIsInPlay(card);
+        }
+
+        [Test()]
+        public void TestPillarsOfCreation_Timing_CardsCannotBePlayed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "Megalopolis");
+            StartGame();
+            var card = PutInHand("AncientConstellationA");
+            PutInHand("AncientConstellationB");
+            PutIntoPlay("PillarsOfCreation");
+            PlayCard("HostageSituation");
+            GoToEndOfTurn(baron);
+
+            DecisionSelectCards = new[] { card, baron.CharacterCard };
+
+            GoToUsePowerPhase(starlight);
+            AssertIsInPlay(card);
+        }
+
+        [Test()]
+        public void TestPillarsOfCreation_Timing_TimeCrawls()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+            var card = PutInHand("AncientConstellationA");
+            PutInHand("AncientConstellationB");
+            PutIntoPlay("PillarsOfCreation");
+            PlayCard("TimeCrawls");
+            GoToEndOfTurn(baron);
+            
+            GoToStartOfTurn(starlight);
+            DecisionSelectCards = new[] { card, baron.CharacterCard };
+
+            GoToPlayCardPhase(starlight);
+            //To late, a card was played in Play Phase
+
+            QuickHandStorage(starlight);
+            GoToUsePowerPhase(starlight);
+            RunActiveTurnPhase();
+            QuickHandCheck(0);
+            
+            AssertIsInPlay(card);
+        }
+
+
+        [Test()]
+        public void TestPillarsOfCreation_Timing_NeedAWayOutSkipPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight", "Cauldron.Echelon", "Ra", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+            var card = PutInHand("AncientConstellationA");
+            PutInHand("AncientConstellationB");
+            PutIntoPlay("PillarsOfCreation");
+            PlayCard("NeedAWayOut");
+            GoToEndOfTurn(baron);
+
+            DecisionYesNo = true;
+            GoToStartOfTurn(starlight);
+
+            DecisionSelectCards = new[] { card, baron.CharacterCard };
+
+            GoToUsePowerPhase(starlight);
+            AssertNotInPlay(card);
+        }
+
+
+        [Test()]
+        public void TestPillarsOfCreation_Timing_BreakingTheRules()
+        {
+            SetupGameController("WagerMaster", "Cauldron.Starlight", "Haka", "Ra", "RealmOfDiscord");
+            StartGame();
+            DecisionAutoDecideIfAble = true;
+            DestroyNonCharacterVillainCards();
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds", "LosingToTheOdds", "LosingToTheOdds");
+
+            var card = PutInHand("AncientConstellationA");
+            PutInHand("AncientConstellationB");
+            PutIntoPlay("PillarsOfCreation");
+
+            PlayCard("BreakingTheRules");
+
+            GoToEndOfTurn(wager);
+
+            DecisionSelectCards = new[] { card, wager.CharacterCard };
+
+            GoToEndOfTurn(starlight);
+            AssertNotInPlay(card);
+
+            GoToDrawCardPhase(starlight);
+            AssertNotInPlay(card);
+
+            GoToUsePowerPhase(starlight);
+            AssertNotInPlay(card);
+
+            GoToPlayCardPhase(starlight);
+            AssertIsInPlay(card);
+
+            GoToStartOfTurn(starlight);
+            AssertIsInPlay(card);
+
+        }
+
+
         [Test()]
         public void TestRedshiftDrawsCardAndCanSkipPlays()
         {

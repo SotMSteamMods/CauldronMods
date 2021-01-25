@@ -124,7 +124,8 @@ namespace Cauldron.BlackwoodForest
                 base.GameController.ExhaustCoroutine(discardCardsRoutine);
             }
 
-            if (discardedCards.Count != (this.Game.H * NumberOfCardsToDiscard))
+            int numActiveHeroes = GameController.AllHeroes.Count((HeroTurnTaker htt) => !htt.IsIncapacitatedOrOutOfGame);
+            if (GetNumberOfCardsDiscarded(discardedCards) != (numActiveHeroes * NumberOfCardsToDiscard))
             {
                 yield break;
             }

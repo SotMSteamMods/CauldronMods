@@ -21,12 +21,14 @@ namespace Cauldron.TheCybersphere
         }
         private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
         {
-            //this card deals the non-environment target with the second highest HP 3 melee damage and 1 lightning damage.
-            IEnumerator coroutine = base.DealMultipleInstancesOfDamage(new List<DealDamageAction>
+            var damageList = new List<DealDamageAction>
             {
-                new DealDamageAction(GetCardSource(), new DamageSource(base.GameController, base.Card), null, 3, DamageType.Melee),
-                new DealDamageAction(GetCardSource(), new DamageSource(base.GameController, base.Card), null, 1, DamageType.Lightning)
-            }, (Card target) => CanCardBeConsideredHighestHitPoints(target, (Card c) => c.IsNonEnvironmentTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), ranking: 2), numberOfTargets: new int?(1));
+                new DealDamageAction(GetCardSource(), new DamageSource(GameController, Card), null, 3, DamageType.Melee),
+                new DealDamageAction(GetCardSource(), new DamageSource(GameController, Card), null, 1, DamageType.Lightning)
+            };
+
+            //this card deals the non-environment target with the second highest HP 3 melee damage and 1 lightning damage.
+            var coroutine = base.DealMultipleInstancesOfDamageToHighestLowestHP(damageList, (Card c) => c.IsNonEnvironmentTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), HighestLowestHP.HighestHP, ranking: 2, numberOfTargets: 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

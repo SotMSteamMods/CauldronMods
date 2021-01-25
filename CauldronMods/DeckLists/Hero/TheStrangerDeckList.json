@@ -40,9 +40,8 @@
             "openingLines": {
                 "default": "Rain and shadow will unmake you.",
                 "DendronCharacter": "You know nothing of destruction. I will show you.",
-                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
-                "PastTheRamCharacter": "1929 Ram placeholder",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+                "WindcolorDendronCharacter": "Always seeking a new source of power; it will not avail you!",
+                "HydraWinterTiamatCharacter": "This serpent has been scarred by magic, as I have been."
             },
             "complexity": 2
         },
@@ -486,9 +485,8 @@
             "openingLines": {
                 "default": "I have come a long way, to witness your defeat.",
                 "DendronCharacter": "I still have time enough to do what is necessary.",
-                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
-                "PastTheRamCharacter": "1929 Ram placeholder",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+                "WindcolorDendronCharacter": "Some things are more important than survival.",
+                "HydraWinterTiamatCharacter": "Hmmm."
             },
             "complexity": 2
         },
@@ -528,9 +526,9 @@
             "openingLines": {
                 "default": "Your essence will only fuel my runes!",
                 "DendronCharacter": "You know who I am?",
-                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
-                "PastTheRamCharacter": "1929 Ram placeholder",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
+                "WindcolorDendronCharacter": "Today my purpose is stopping you.",
+                "PastTheRamCharacter": "I have seen you before, stranger. What kind of creature are you?",
+                "HydraWinterTiamatCharacter": "I thought dragons were a myth!",
                 "TheMistressOfFateCharacter": "I do not care for her insinuations, but I care less for the idea of staying trapped here. Let us prevail!"
             },
             "complexity": 2
@@ -573,9 +571,8 @@
             "openingLines": {
                 "default": "Your nightmare is just beginning.",
                 "DendronCharacter": "The Wasteland is an insidious teacher.",
-                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
-                "PastTheRamCharacter": "1929 Ram placeholder",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+                "WindcolorDendronCharacter": "We shall see.",
+                "HydraWinterTiamatCharacter": "Seems Tiamat has some new tricks. So do I."
             },
             "complexity": 2
         },
@@ -615,8 +612,8 @@
             "openingLines": {
                 "default": "Flee in terror at my visage!",
                 "DendronCharacter": "Wooo...spoooky. Do you like my new face?",
-                "WindcolorDendronCharacter": "Dendron Outside the Lines placeholder",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+                "WindcolorDendronCharacter": "Are you insulting my new face?",
+                "HydraWinterTiamatCharacter": "Quiet, or you'll scare away the crows!"
             },
             "complexity": 2
         }

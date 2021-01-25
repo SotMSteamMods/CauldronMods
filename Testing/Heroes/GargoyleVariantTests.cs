@@ -277,6 +277,16 @@ namespace CauldronTests
             QuickHandCheck(1, 0, 0, 0);
             AssertIsInPlay(leechField);
         }
+        [Test]
+        public void TestFutureGargoyleInnatePowerOnlyHeroOngoing()
+        {
+            StartTestGame(FutureGargoyle);
+
+            Card field = PlayCard("LivingForceField");
+            AssertNoDecision();
+            UsePower(gargoyle);
+            AssertIsInPlay(field);
+        }
 
         #endregion Test Innate Power
 

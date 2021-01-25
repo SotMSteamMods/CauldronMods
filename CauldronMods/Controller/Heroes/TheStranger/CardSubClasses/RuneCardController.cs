@@ -7,23 +7,17 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron
 {
-    public abstract class RuneCardController : CardController
+    public abstract class RuneCardController : TheStrangerBaseCardController
     {
-        #region Constructors
-
         protected RuneCardController(Card card, TurnTakerController turnTakerController, LinqCardCriteria nextToCardCriteria) : base(card, turnTakerController)
         {
             this.NextToCardCriteria = nextToCardCriteria;
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         public override void AddTriggers()
         {
             //At the start of your turn you may destroy this card. If you do not, The Stranger deals himself 1 irreducible toxic damage.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.DestroyCardResponse), TriggerType.DestroySelf, null, false);
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyCardResponse, TriggerType.DestroySelf, null, false);
            
             //if the card this is next to leaves, have this card fall off
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
@@ -74,7 +68,7 @@ namespace Cauldron
             }
             yield break;
         }
-        public LinqCardCriteria NextToCardCriteria { get; private set; }
-        #endregion Methods
+
+        public LinqCardCriteria NextToCardCriteria { get; }
     }
 }

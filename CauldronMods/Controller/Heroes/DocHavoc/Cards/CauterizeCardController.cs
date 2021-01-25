@@ -19,6 +19,13 @@ namespace Cauldron.DocHavoc
 
         public static readonly string Identifier = "Cauterize";
 
+        private bool? DecisionShouldHeal = null;
+        private Card RememberedTarget
+        {
+            get;
+            set;
+        }
+
         public CauterizeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             this.AllowFastCoroutinesDuringPretend = false;
@@ -83,38 +90,53 @@ namespace Cauldron.DocHavoc
 
         private IEnumerator AskAndMaybeCancelAction(DealDamageAction ga, bool showOutput = true, bool cancelFutureRelatedDecisions = true, List<CancelAction> storedResults = null, bool isPreventEffect= false)
         {
-            List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
-
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                SelectionType.GainHP, ga.Target, action: ga, storedResults: storedYesNo,
-                associatedCards: new[] { ga.Target, ga.Target },
-                cardSource: base.GetCardSource());
-
-            if (base.UseUnityCoroutines)
+            //ask and set 
+            if(GameController.PretendMode || ga.Target != RememberedTarget)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
+                IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
+                    SelectionType.GainHP, ga.Target, action: ga, storedResults: storedYesNo,
+                    associatedCards: new[] { ga.Target, ga.Target },
+                    cardSource: base.GetCardSource());
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                
+                RememberedTarget = ga.Target;
+                if(DidPlayerAnswerYes(storedYesNo))
+                {
+                    DecisionShouldHeal = true;
+                }
+                else
+                {
+                    DecisionShouldHeal = false;
+                }
             }
-            else
+            if (DecisionShouldHeal == true)
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                IEnumerator coroutine = base.CancelAction(ga, showOutput: showOutput, cancelFutureRelatedDecisions: cancelFutureRelatedDecisions, storedResults: storedResults, isPreventEffect: isPreventEffect);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
-            // If not true, just return and let the original damage happen
-            if (!base.DidPlayerAnswerYes(storedYesNo))
+            if(IsRealAction(ga))
             {
-                yield break;
+                RememberedTarget = null;
+                DecisionShouldHeal = null;
             }
-
-            coroutine = base.CancelAction(ga, showOutput: showOutput, cancelFutureRelatedDecisions: cancelFutureRelatedDecisions, storedResults: storedResults, isPreventEffect: isPreventEffect);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
+            yield break;
         }
     }
 }

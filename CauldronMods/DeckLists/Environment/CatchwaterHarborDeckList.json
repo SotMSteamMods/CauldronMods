@@ -30,7 +30,7 @@
             ],
             "body": [
                 "This card is indestructible.",
-                "At the end of the environment turn, the players may activate the Travel text of a Transport card. If they do, destroy that card at the start of the next environment turn."
+                "At the end of the environment turn, the players may activate the [u]Travel[/u] text of a Transport card. If they do, destroy that card at the start of the next environment turn."
             ],
             "flavorText": "“That train has something to do with{BR}the loop. Today, we're going to be on{BR}it,” Julia told the Knight. He nodded.{BR}“Remind me, which one is a train?”"
         },
@@ -179,15 +179,23 @@
                 "DrawCardNow"
             ],
             "body": [
-                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and each target regains 2HP.",
-                "Travel: Each player draws a card. Each villain target regains 3HP."
+                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and each target regains 2HP."
             ],
+            "activatableAbilities":[
+                {
+                   "name":"[u]travel[/u]:",
+                   "text":"Each player draws a card. Each villain target regains 3HP."
+                }
+             ],
             "flavorText": "Catchwater Harbor was an international{BR}melting pot. It was full of those{BR}looking to start a new life of{BR}opportunity, or in some cases, villainy."
         },
         {
             "identifier": "TheCervantesClub",
             "count": 1,
             "title": "The Cervantes Club",
+            "keywords": [
+                "speakeasy"
+            ],
             "icons": [
                 "EndOfTurnAction",
                 "GainHP",
@@ -228,9 +236,14 @@
                 "PlayCardNow"
             ],
             "body": [
-                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and play its top card.",
-                "Travel: Play the top card of each other deck in turn order, starting with the villain deck."
+                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and play its top card."
             ],
+            "activatableAbilities":[
+                {
+                   "name":"[u]travel[/u]:",
+                   "text":"Play the top card of each other deck in turn order, starting with the villain deck."
+                }
+             ],
             "flavorText": "Julia looked at the clock tower as the{BR}train pulled in. “3:08,” she muttered,{BR}“always the same. This whole cursed day{BR}is the same. What is going on?”"
         },
         {
@@ -246,9 +259,14 @@
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and this card deals each target 2 projectile damage.",
-                "Travel: Increase all damage dealt by 1 until the start of the next environment turn."
+                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and this card deals each target 2 projectile damage."
             ],
+            "activatableAbilities":[
+                {
+                   "name":"[u]travel[/u]:",
+                   "text":"Increase all damage dealt by 1 until the start of the next environment turn."
+                }
+             ],
             "flavorText": "Li-Feng Airships had revolutionized the{BR}transportation industry, transforming{BR}the small harbor town into a bustling{BR}city, despite their lax safety practices."
         }
     ]
