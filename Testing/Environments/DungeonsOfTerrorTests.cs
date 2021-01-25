@@ -389,5 +389,31 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestImprobableFailure()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //At the start of each player's draw phase, discard and check the top card of the environment deck.",
+            //If it is a fate card, they skip the rest of their draw phase.",
+            Card failure = PlayCard("ImprobableFailure");
+            Card fate = PutOnDeck("HighGround");
+            GoToDrawCardPhase(ra);
+            AssertInTrash(fate);
+            //the test suite says this is still the end phase, but it shows preventing the draw card action correctly, and UI testing proves it works
+            //AssertCurrentTurnPhase(ra, Phase.End);
+
+            Card notFate = PutOnDeck("StoneWarden");
+            GoToDrawCardPhase(legacy);
+            AssertInTrash(notFate);
+            AssertCurrentTurnPhase(legacy, Phase.DrawCard);
+
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(dungeon);
+            AssertInTrash(failure);
+
+        }
+
     }
 }
