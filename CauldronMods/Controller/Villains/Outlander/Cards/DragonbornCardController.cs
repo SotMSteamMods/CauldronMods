@@ -12,7 +12,7 @@ namespace Cauldron.Outlander
     {
         public DragonbornCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(OncePerTurn), () => "Outlander has been dealt 4 or more damage from a single source this turn.", () => "Outlander has not been dealt 4 or more damage from a single source this turn.");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(OncePerTurn), () => "Outlander has been dealt damage this turn.", () => "Outlander has not been dealt this turn.");
         }
 
         protected const string OncePerTurn = "OncePerTurn";
