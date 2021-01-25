@@ -1,0 +1,83 @@
+{
+    "name": "DungeonsOfTerror",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronUnexpected",
+    "backgroundColor": "87B555",
+    "difficulty": 2,
+    "cards": [
+        {
+            "identifier": "DelayedRockTrap",
+            "count": 1,
+            "title": "Delayed Rock Trap",
+            "icons": [
+                "DealDamageMelee",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play this card next to a hero. When a card enters the environment trash, check that card.",
+                "If it is a fate card, this card deal the hero next to it {H} melee damage. If it is not a fate card, this card deals each other hero target {H-2} melee damage. Then, destroy this card."
+            ],
+            "flavorText": "The flagstone sank into the floor,{BR}generating a series of faint,{BR}mechanical noises that echoed{BR}through the stones of the ceiling."
+        },
+        {
+            "identifier": "DubiousEdibles",
+            "count": 1,
+            "title": "Dubious Edibles",
+            "icons": [
+                "DealDamageToxic",
+                "GainHP",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, check the top card of the environment trash.",
+                "If it is a fate card, this card deals each hero 1 toxic damage. If it is not a fate card, 1 hero target regains 4HP. Then, destroy this card."
+            ],
+            "flavorText": "“I try not to make a habit of eating{BR}things I find while crawling around the{BR}sewers,” said Malichae. Gyrosaur{BR}blinked, then slowly took another bite."
+        },
+        {
+            "identifier": "EnormousPack",
+            "count": 1,
+            "title": "Enormous Pack",
+            "icons": [
+                "PlayCardNow",
+                "DrawCardNow",
+                "UsePowerNow",
+                "Discard"
+            ],
+            "body": [
+                "When this card enters play, check the top card of the environment trash.",
+                "If it is a fate card, 1 hero may play card, draw a card, or use a power. If it is not a fate card, the player with the most cards in hand discards 2 cards. Then, destroy this card."
+            ],
+            "flavorText": "“Alain, give it up,” said Cricket. “No{BR}way,” panted the young knight.{BR}“We're stuck in a cursed book. No{BR}telling what might come in handy.”"
+        },
+        {
+            "identifier": "HighGround",
+            "count": 1,
+            "title": "High Ground",
+            "icons": [
+                "ReduceDamageDealt",
+                "DestroySelf"
+            ],
+            "body": [
+                "While the top card of the environment trash is a fate card, reduce damage dealt by hero targets by 1. While it is not a fate card, reduce damage dealt by villain targets by 1.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "As Gyrosaur scrambled to find cover{BR}from the demonic tattoos, she reflected{BR}on what a surprising combat advantage{BR}a few feet of elevation seemed to offer."
+        },
+        {
+            "identifier": "ImprobableFailure",
+            "count": 1,
+            "title": "Improbable Failure",
+            "icons": [
+                "ReduceDamageDealt",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the start of each player's draw phase, discard and check the top card of the environment deck.",
+                "If it is a fate card, they skip the rest of their draw phase.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "As Gyrosaur scrambled to find cover{BR}from the demonic tattoos, she reflected{BR}on what a surprising combat advantage{BR}a few feet of elevation seemed to offer."
+        }
+    ]
+}
