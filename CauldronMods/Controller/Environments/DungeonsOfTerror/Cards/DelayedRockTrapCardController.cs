@@ -83,58 +83,34 @@ namespace Cauldron.DungeonsOfTerror
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            IEnumerator message = DoNothing();
+            IEnumerator effect = DoNothing();
             if(storedResults.Any() && storedResults.First() == 1)
             {
                 //If it is a fate card, this card deal the hero next to it {H} melee damage.
-                coroutine = GameController.SendMessageAction($"{Card.Title} was a fate card!", Priority.High, GetCardSource(), showCardSource: true);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                coroutine = DealDamage(Card, GetCardThisCardIsNextTo(), Game.H, DamageType.Melee, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            } else
+                message = GameController.SendMessageAction($"{Card.Title} was a fate card!", Priority.High, GetCardSource(), showCardSource: true);
+                effect = DealDamage(Card, GetCardThisCardIsNextTo(), Game.H, DamageType.Melee, cardSource: GetCardSource());
+            }
+            else if(storedResults.Any() && storedResults.First() == 0)
             {
                 //If it is not a fate card, this card deals each other hero target {H-2} melee damage. 
-                coroutine = GameController.SendMessageAction($"{Card.Title} was not a fate card!", Priority.High, GetCardSource(), showCardSource: true);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                coroutine = DealDamage(Card, (Card c) => c.IsHero && c.IsTarget && c != GetCardThisCardIsNextTo(), Game.H - 2, DamageType.Melee);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                message = GameController.SendMessageAction($"{Card.Title} was not a fate card!", Priority.High, GetCardSource(), showCardSource: true);
+                effect = DealDamage(Card, (Card c) => c.IsHero && c.IsTarget && c != GetCardThisCardIsNextTo(), Game.H - 2, DamageType.Melee);
             }
 
             //Then, destroy this card.
             coroutine = DestroyThisCardResponse(triggeringAction);
             if (base.UseUnityCoroutines)
             {
+                yield return base.GameController.StartCoroutine(message);
+                yield return base.GameController.StartCoroutine(effect);
                 yield return base.GameController.StartCoroutine(coroutine);
+
             }
             else
             {
+                base.GameController.ExhaustCoroutine(message);
+                base.GameController.ExhaustCoroutine(effect);
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
