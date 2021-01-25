@@ -58,7 +58,7 @@ namespace Cauldron.Echelon
                 
                 //...{Echelon} may...
                 var storedYesNo = new List<YesNoCardDecision>();
-                IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.DealDamage, this.Card, storedResults: storedYesNo, associatedCards: new Card[] { target }, cardSource: GetCardSource(effect));
+                IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.DealDamage, this.Card, dd, storedResults: storedYesNo, associatedCards: new Card[] { target }, cardSource: GetCardSource(effect));
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
