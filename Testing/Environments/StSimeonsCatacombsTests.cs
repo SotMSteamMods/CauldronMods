@@ -2421,8 +2421,8 @@ namespace CauldronTests
 
         [Test()]
         [Sequential]
-        public void TestMultipleInstancesOfDamageWithGhosts([Values("BreathStealer", "Possessor")] string ghostId,
-                                            [Values("Aqueducts", "TortureChamber")] string locationId)
+        public void TestCustomMultipleInstancesOfDamageWithGhosts([Values("BreathStealer", "Possessor")] string ghostId,
+                                                                  [Values("Aqueducts", "TortureChamber")] string locationId)
         {
 
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy/FreedomFiveLegacy", "Cauldron.DocHavoc", "OmnitronX", "Cauldron.StSimeonsCatacombs" });
@@ -2449,6 +2449,37 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        [Sequential]
+        public void TestMultipleInstancesOfDamageWithGhosts([Values("BreathStealer", "Possessor")] string ghostId,
+                                            [Values("Aqueducts", "TortureChamber")] string locationId)
+        {
 
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy/FreedomFiveLegacy", "Cauldron.DocHavoc", "OmnitronX", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            GoToEndOfTurn(catacombs);
+            Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            Card ghost = PlayCard(ghostId);
+
+            //make sure it's not the ghosts special room
+            if (playedRoom.Identifier == locationId)
+            {
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            var card = PlayCard("DefensiveBlast");
+            var plate = PlayCard("AblativeCoating");
+            var discard = PutInHand("TemporalShielding");
+
+            UsePower(card);
+            
+            AssertNotGameOver();
+
+        }
     }
 }
