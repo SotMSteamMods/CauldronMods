@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cauldron.StSimeonsCatacombs;
@@ -137,7 +138,7 @@ namespace CauldronTests
 
             Card playedRoom = catacombs.TurnTaker.PlayArea.Cards.Where(c => c != catacomb && c.IsRealCard).FirstOrDefault();
             AssertHasGameText(playedRoom);
-            AssertNumberOfCardsInPlay((Card c) => catacombs.TurnTaker.PlayArea.Cards.Contains(c),2);
+            AssertNumberOfCardsInPlay((Card c) => catacombs.TurnTaker.PlayArea.Cards.Contains(c), 2);
             AssertNumberOfCardsUnderCard(catacomb, 4);
             AssertCardHasKeyword(playedRoom, "room", false);
 
@@ -185,7 +186,7 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs");
             StartGame();
-            Card instructions = GetCard("StSimeonsCatacombsInstructions"); 
+            Card instructions = GetCard("StSimeonsCatacombsInstructions");
             FlipCard(instructions);
             AssertFlipped(instructions);
             AssertCanPlayCards(catacombs);
@@ -276,7 +277,7 @@ namespace CauldronTests
         [Test()]
         public void TestCatacombsBackEndOfTurnFreeRoom()
         {
-            SetupGameController(new string[] {"BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs"});
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
             Card catacomb = GetCardInPlay("StSimeonsCatacombs");
 
@@ -286,7 +287,7 @@ namespace CauldronTests
             PrintSeparator("Go to next end of turn");
             //specifically selecting cursed vault/torture chamber as it doesn't introduce any additonal selectcard effects
             string identifier = "CursedVault";
-            if(initialRoom.Identifier == "CursedVault")
+            if (initialRoom.Identifier == "CursedVault")
             {
                 identifier = "TortureChamber";
             }
@@ -294,7 +295,7 @@ namespace CauldronTests
 
 
             GoToEndOfTurn(catacombs);
-            
+
             Card newRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             AssertUnderCard(catacomb, initialRoom);
@@ -354,8 +355,8 @@ namespace CauldronTests
         [Test()]
         public void TestAqueducts()
         {
-          
-            SetupGameController(new string[] {"BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs"});
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
 
             //set all hp so there is room to gain
@@ -371,7 +372,7 @@ namespace CauldronTests
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
 
             //make sure it is aqueducts in play
-            if(playedRoom.Identifier != "Aqueducts")
+            if (playedRoom.Identifier != "Aqueducts")
             {
                 DecisionSelectCard = GetCard("Aqueducts");
                 DestroyCard(playedRoom, ra.CharacterCard);
@@ -420,7 +421,7 @@ namespace CauldronTests
 
             //Reduce damage dealt to villain targets by 1.
             PrintSeparator("check damage dealt to villains is reduced by 1");
-            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard );
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
             //only the damage to villains should have been reduced
             QuickHPCheck(-2, -2, -3, -3, -3);
@@ -499,7 +500,7 @@ namespace CauldronTests
             {
                 QuickHPStorage(ra);
 
-                if(source.IsVillainTarget)
+                if (source.IsVillainTarget)
                 {
                     expectedDamage = -3;
                 }
@@ -507,10 +508,10 @@ namespace CauldronTests
                 {
                     expectedDamage = -2;
                 }
-                
+
                 DealDamage(source, ra.CharacterCard, 2, DamageType.Melee);
                 QuickHPCheck(expectedDamage);
-                
+
             }
 
         }
@@ -790,7 +791,7 @@ namespace CauldronTests
             QuickHPCheckZero();
 
             Card[] targets = new Card[] { baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, breath };
-            
+
             QuickHPStorage(targets);
             DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
             QuickHPCheck(-3, -3, -3, -3, 0);
@@ -841,7 +842,7 @@ namespace CauldronTests
             QuickHPStorage(targets);
             DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
             QuickHPCheck(-4, -4, -4, -4, 0);
-           
+
 
 
         }
@@ -1342,7 +1343,7 @@ namespace CauldronTests
             GoToPlayCardPhase(catacombs);
 
             Card topCard = PutOnDeck("LabyrinthGuide");
-            
+
             Card geometry = PlayCard("LivingGeometry");
             //At the end of the environment turn, play the top card of the environment deck and destroy this card.
             GoToEndOfTurn(catacombs);
@@ -1407,10 +1408,11 @@ namespace CauldronTests
 
             DealDamage(haka, ra, 2, DamageType.Melee);
             //galvanize should have been used twice
-            if(currentRoom.Identifier == "TwistingPassages")
+            if (currentRoom.Identifier == "TwistingPassages")
             {
                 QuickHPCheck(-5);
-            } else
+            }
+            else
             {
                 QuickHPCheck(-4);
 
@@ -1439,11 +1441,12 @@ namespace CauldronTests
             //make sure it is Torture Chamber in play to avoid shenanigans
             if (playedRoom.Identifier != "TortureChamber")
             {
-                DecisionSelectCards = new Card[] { GetCard("TortureChamber"), null, null,  ra.CharacterCard, ra.CharacterCard };
+                DecisionSelectCards = new Card[] { GetCard("TortureChamber"), null, null, ra.CharacterCard, ra.CharacterCard };
                 DestroyCard(playedRoom, ra.CharacterCard);
-            } else
+            }
+            else
             {
-                DecisionSelectCards = new Card[] {  null, null,  ra.CharacterCard, ra.CharacterCard };
+                DecisionSelectCards = new Card[] { null, null, ra.CharacterCard, ra.CharacterCard };
             }
 
             GoToPlayCardPhase(catacombs);
@@ -1459,7 +1462,7 @@ namespace CauldronTests
         }
 
         [Test()]
-            public void TestPanic_HeroStartOfTurn_DestroyInMiddle()
+        public void TestPanic_HeroStartOfTurn_DestroyInMiddle()
         {
 
             SetupGameController(new string[] { "BaronBlade", "Ra", "SkyScraper/ExtremistSkyScraperNormal", "Haka", "Cauldron.StSimeonsCatacombs" });
@@ -1641,9 +1644,10 @@ namespace CauldronTests
             //putting torture chamber in play to simplify
             if (playedRoom.Identifier != "TortureChamber")
             {
-                DecisionSelectCards =  new Card[] { GetCard("TortureChamber"), targetting };
+                DecisionSelectCards = new Card[] { GetCard("TortureChamber"), targetting };
                 DestroyCard(playedRoom, haka.CharacterCard);
-            } else
+            }
+            else
             {
                 DecisionSelectCards = new Card[] { targetting };
             }
@@ -1673,7 +1677,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "TheWraith", "Stuntman", "Haka", "Cauldron.StSimeonsCatacombs" });
             StartGame();
 
-           
+
 
             //change villain targets in play to make baron blade vulnerable
             Card mdp = GetCardInPlay("MobileDefensePlatform");
@@ -1686,7 +1690,7 @@ namespace CauldronTests
             GoToEndOfTurn(catacombs);
             playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             //account for if Sacrificial Shrine was the initial room
-            if(playedRoom.Identifier != "SacrificialShrine")
+            if (playedRoom.Identifier != "SacrificialShrine")
             {
                 SetHitPoints(wraith, 1);
             }
@@ -1824,8 +1828,8 @@ namespace CauldronTests
             StartGame();
 
             //Draw an extra card for Haka
-             DrawCard(haka);
-            
+            DrawCard(haka);
+
 
             GoToEndOfTurn(catacombs);
 
@@ -2114,7 +2118,7 @@ namespace CauldronTests
             SetAllTargetsToMaxHP();
             QuickHPStorage(scurrying);
             DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
-            if(oldRoom.Identifier == "TwistingPassages")
+            if (oldRoom.Identifier == "TwistingPassages")
             {
                 QuickHPCheck(-2);
             }
@@ -2128,20 +2132,22 @@ namespace CauldronTests
             Card currentRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
             //destroy all environment targets to ensure if twisting passages is in play the buff is there
             DestroyCards((Card c) => c.IsEnvironmentTarget);
-            if(oldRoom != currentRoom)
+            if (oldRoom != currentRoom)
             {
                 //living geometry destroyed a room at the end of the turn so should be non-immune
                 QuickHPStorage(scurrying);
                 DealDamage(ra.CharacterCard, scurrying, 1, DamageType.Fire);
-                if(currentRoom.Identifier == "TwistingPassages")
+                if (currentRoom.Identifier == "TwistingPassages")
                 {
                     //damage has been increased by 1
                     QuickHPCheck(-2);
-                } else if(currentRoom.Identifier == "SacrificialShrine")
+                }
+                else if (currentRoom.Identifier == "SacrificialShrine")
                 {
                     //extra damage has been dealt, so will be immune to damage
                     QuickHPCheck(0);
-                } else
+                }
+                else
                 {
                     QuickHPCheck(-1);
                 }
@@ -2151,7 +2157,8 @@ namespace CauldronTests
                 QuickHPStorage(scurrying);
                 DealDamage(haka.CharacterCard, scurrying, 1, DamageType.Melee);
                 QuickHPCheck(0);
-            } else
+            }
+            else
             {
                 //living geometry played the same room so should be immune
                 QuickHPStorage(scurrying);
@@ -2321,8 +2328,8 @@ namespace CauldronTests
             QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, terrible);
             GoToEndOfTurn(catacombs);
             QuickHPCheck(0, -2, 0, 0, -2, 0);
-            
-           
+
+
 
         }
 
@@ -2354,7 +2361,7 @@ namespace CauldronTests
 
             DecisionSelectCard = twisting;
 
-            Assert.Throws(typeof(AssertionException), () => PlayCard("BlindingSpeed"), "Was able to target a room under Catacombs", null) ;
+            Assert.Throws(typeof(AssertionException), () => PlayCard("BlindingSpeed"), "Was able to target a room under Catacombs", null);
         }
 
         [Test()]
@@ -2384,7 +2391,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy/FreedomFiveLegacy", "Cauldron.DocHavoc", "Cauldron.StSimeonsCatacombs" });
             StartGame();
 
-             HeroTurnTakerController docHavoc = FindHero("DocHavoc");
+            HeroTurnTakerController docHavoc = FindHero("DocHavoc");
             SetHitPoints(docHavoc, 10);
 
             Card catacomb = GetCardInPlay("StSimeonsCatacombs");
@@ -2411,5 +2418,37 @@ namespace CauldronTests
             AssertNotGameOver();
 
         }
+
+        [Test()]
+        [Sequential]
+        public void TestMultipleInstancesOfDamageWithGhosts([Values("BreathStealer", "Possessor")] string ghostId,
+                                            [Values("Aqueducts", "TortureChamber")] string locationId)
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy/FreedomFiveLegacy", "Cauldron.DocHavoc", "OmnitronX", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            GoToEndOfTurn(catacombs);
+            Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            Card ghost = PlayCard(ghostId);
+
+            //make sure it's not the ghosts special room
+            if (playedRoom.Identifier == locationId)
+            {
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            var testDoc = doc.CharacterCardController as Cauldron.DocHavoc.DocHavocCharacterCardController;
+            RunCoroutine(testDoc.FauxDefensiveBlast());
+
+            AssertNotGameOver();
+
+        }
+
+
     }
 }
