@@ -8,24 +8,167 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Outlander
 {
-    public class OutlanderCharacterCardController : CardController
+    public class OutlanderCharacterCardController : VillainCharacterCardController
     {
         public OutlanderCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.CharacterCard.UnderLocation.OverrideIsInPlay = false;
         }
 
-        //Front:
-        //Cards beneath this one are not considered in play. Trace cards are indestructible.
-        //When {Outlander} would be destroyed instead flip his villain character cards.
-        //Advanced:
-        //Whenever {Outlander} flips to this side, he becomes immune to damage until the start of the next villain turn.
+        public override void AddSideTriggers()
+        {
+            if (base.CharacterCard.IsFlipped)
+            { //Back:
+                //Reduce the first damage dealt to {Outlander} each turn by {H}.
+                if (base.Game.IsAdvanced)
+                { //Advanced:
+                    //At the end of the villain turn, destroy {H - 2} hero ongoing and/or equipment cards.
+                    base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyCardsResponse, TriggerType.DestroyCard));
+                }
+            }
+        }
 
-        //Back:
-        //When {Outlander} flips to this side, restore him to 20 HP, destroy all copies of Anchored Fragment, and put a random Trace into play. Then, if there are fewer than {H} Trace cards in play, flip {Outlander}'s villain character cards.
-        //Cards beneath this one are not considered in play. Trace cards are indestructible.
-        //Reduce the first damage dealt to {Outlander} each turn by {H}.
-        //Advanced:
-        //At the end of the villain turn, destroy {H - 2} hero ongoing and/or equipment cards.
+        public override IEnumerator AfterFlipCardImmediateResponse()
+        {
+            IEnumerator coroutine;
+            if (!base.CharacterCard.IsFlipped && base.Game.IsAdvanced)
+            { //Front - Advanced:
+                //Whenever {Outlander} flips to this side, he becomes immune to damage until the start of the next villain turn.
+                ImmuneToDamageStatusEffect statusEffect = new ImmuneToDamageStatusEffect();
+                statusEffect.TargetCriteria.IsSpecificCard = base.CharacterCard;
+                statusEffect.UntilStartOfNextTurn(base.TurnTaker);
+
+                coroutine = base.GameController.AddStatusEffect(statusEffect, true, new CardSource(this));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                //When {Outlander} flips to this side, restore him to 20 HP...
+                coroutine = base.GameController.SetHP(base.CharacterCard, 20);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //...destroy all copies of Anchored Fragment...
+                coroutine = base.GameController.DestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => c.Identifier == "AnchoredFragment" && c.IsInPlayAndHasGameText));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //...and put a random Trace into play.
+                coroutine = base.GameController.ShuffleLocation(base.CharacterCard.UnderLocation);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = base.GameController.PlayCard(base.TurnTakerController, base.CharacterCard.UnderLocation.Cards.FirstOrDefault(), true);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //Then, if there are fewer than {H} Trace cards in play, flip {Outlander}'s villain character cards.
+                if (base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsTrace(c) && c.IsInPlayAndHasGameText)).Count() < base.Game.H)
+                {
+                    coroutine = base.GameController.FlipCard(this);
+                }
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            coroutine = base.AfterFlipCardImmediateResponse();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            //Cards beneath this one are not considered in play. Trace cards are indestructible.
+            return this.IsTrace(card);
+        }
+
+        public override bool CanBeDestroyed
+        {
+            get
+            {
+                return base.CharacterCard.IsFlipped;
+            }
+        }
+
+        public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
+        {
+            if (!base.Card.IsFlipped)
+            {
+                //Front:
+                //When {Outlander} would be destroyed instead flip his villain character cards.
+                IEnumerator coroutine = base.GameController.FlipCard(this, false, false, destroyCard.ActionSource, null, base.GetCardSource(null), true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
+        private IEnumerator DestroyCardsResponse(PhaseChangeAction action)
+        {
+            //...destroy {H - 2} hero ongoing and/or equipment cards.
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), base.Game.H - 2);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private bool IsTrace(Card c)
+        {
+            return c.DoKeywordsContain("trace");
+        }
     }
 }
