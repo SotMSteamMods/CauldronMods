@@ -12,20 +12,23 @@ namespace Cauldron.Outlander
     {
         public MagekillerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(OncePerTurn), () => "A hero one shot has entered play yet this turn.", () => "A hero one shot has not entered play yet this turn.");
         }
+
+        protected const string OncePerTurn = "OncePerTurn";
 
         public override void AddTriggers()
         {
             //The first time a hero one-shot enters play each turn, {Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => action.CardEnteringPlay.IsHero && action.CardEnteringPlay.IsOneShot, this.HeroOneShotResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.CardEnteringPlay.IsHero && action.CardEnteringPlay.IsOneShot, this.OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             //At the end of the villain turn, {Outlander} deals the hero target with the highest HP 3 melee damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
         }
 
-        private IEnumerator HeroOneShotResponse(CardEntersPlayAction action)
+        private IEnumerator OncePerTurnResponse(CardEntersPlayAction action)
         {
+            base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
             //...{Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
             IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 1, DamageType.Lightning, true);
             if (UseUnityCoroutines)
