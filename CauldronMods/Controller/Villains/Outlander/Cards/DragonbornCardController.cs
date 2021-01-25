@@ -28,6 +28,7 @@ namespace Cauldron.Outlander
 
         private IEnumerator OncePerTurnResponse(DealDamageAction action)
         {
+            base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
             //...he deals the source of that damage 2 fire damage.
             IEnumerator coroutine = base.DealDamage(base.CharacterCard, action.DamageSource.Card, 2, DamageType.Fire, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
