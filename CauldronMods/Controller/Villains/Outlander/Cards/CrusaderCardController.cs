@@ -12,10 +12,31 @@ namespace Cauldron.Outlander
     {
         public CrusaderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP(numberOfTargets: 2);
         }
 
-        //Increase damage dealt by {Outlander} by 1.
-        //At the end of the villain turn, {Outlander} deals the 2 non-villain targets with the highest HP 2 irreducible melee damage each.
+        public override void AddTriggers()
+        {
+            //Increase damage dealt by {Outlander} by 1.
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, 1);
+
+            //At the end of the villain turn, {Outlander} deals the 2 non-villain targets with the highest HP 2 irreducible melee damage each.
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+        }
+
+        private IEnumerator DealDamageResponse(PhaseChangeAction action)
+        {
+            //...{Outlander} deals the 2 non-villain targets with the highest HP 2 irreducible melee damage each.
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 2, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => 2, DamageType.Melee, true, numberOfTargets: () => 2);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }
