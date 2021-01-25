@@ -40,7 +40,7 @@ namespace Cauldron.Menagerie
         private IEnumerator DestroyCardResponse(DestroyCardAction action)
         {
             //...destroy 1 hero ongoing or equipment card.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment"), false);
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment"), false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.TheStranger
 {
-    public class RunecarvedTheStrangerCharacterCardController : HeroCharacterCardController
+    public class RunecarvedTheStrangerCharacterCardController : TheStrangerBaseCharacterCardController
     {
         public RunecarvedTheStrangerCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

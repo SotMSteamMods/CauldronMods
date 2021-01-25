@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Titan
 {
-    public class MinistryOfStrategicScienceTitanCharacterCardController : HeroCharacterCardController
+    public class MinistryOfStrategicScienceTitanCharacterCardController : TitanBaseCharacterCardController
     {
         public MinistryOfStrategicScienceTitanCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

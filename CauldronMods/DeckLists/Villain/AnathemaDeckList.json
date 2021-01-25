@@ -479,10 +479,10 @@
             "challengeIcons": [],
             "openingLines": {
                 "default": "I've picked up a few new tricks - and limbs. Care to see?",
-                "TangoOneCharacter": "Tango One placeholder",
-                "GhostOpsTangoOneCharacter": "Ghost Ops Tango One placeholder",
-                "PastTangoOneCharacter": "1929 Tango One placeholder",
-                "CreedOfTheSniperTangoOneCharacter": "Creed of the Sniper Tango One placeholder"
+                "TangoOneCharacter": "I should thank you for destroying our masters; now I'm free to eat whoever I want!",
+                "GhostOpsTangoOneCharacter": "Still trying to hide? My senses how only gotten sharper!",
+                "PastTangoOneCharacter": "I keep evolving, but you're stuck in the past!",
+                "CreedOfTheSniperTangoOneCharacter": "Time to die!"
             }
         }
     ]

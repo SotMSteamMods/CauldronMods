@@ -5,22 +5,17 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TheStranger
 {
-    public class FlickeringWebCardController : CardController
+    public class FlickeringWebCardController : TheStrangerBaseCardController
     {
-        #region Constructors
-
         public FlickeringWebCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria(c => IsRune(c), "rune", false, false, null, "runes"));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, IsRuneCriteria());
         }
 
-        #endregion Constructors
-
-        #region Methods
         public override IEnumerator Play()
         {
             //You may play up to 3 Runes now
-            IEnumerator coroutine = base.GameController.SelectAndPlayCardsFromHand(this.DecisionMaker, 3, false, new int?(0), new LinqCardCriteria((Card c) => this.IsRune(c), "rune"));
+            IEnumerator coroutine = base.GameController.SelectAndPlayCardsFromHand(this.DecisionMaker, 3, false, 0, IsRuneCriteria());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -29,22 +24,7 @@ namespace Cauldron.TheStranger
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
             yield break;
         }
-
-        private bool IsRune(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "rune", false, false);
-        }
-        #endregion Methods
     }
 }
