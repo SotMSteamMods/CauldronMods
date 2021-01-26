@@ -250,5 +250,70 @@ namespace CauldronTests
             AssertIsInPlay(swift, truth);
             AssertInTrash(moko, flak, fort);
         }
+
+        [Test]
+        public void TestAnchoredFragment_NoDamage()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
+            QuickHPStorage(haka);
+            PlayCard(AnchoredFragment);
+            QuickHPCheck(-1);
+
+            //At the start of the villain turn, if {Outlander} was not dealt at least {H} times 2 damage in the last round, destroy {H} hero ongoing and/or equipment cards.
+            Card moko = PlayCard("TaMoko");
+            Card flak = PlayCard("FlakCannon");
+            Card mere = PlayCard("Mere");
+
+            GoToStartOfTurn(outlander);
+            AssertInTrash(moko, mere, flak);
+        }
+
+        [Test]
+        public void TestAnchoredFragment_NotEnoughDamage()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
+            QuickHPStorage(haka);
+            PlayCard(AnchoredFragment);
+            QuickHPCheck(-1);
+
+            DealDamage(haka, outlander, 5, DamageType.Melee);
+
+            //At the start of the villain turn, if {Outlander} was not dealt at least {H} times 2 damage in the last round, destroy {H} hero ongoing and/or equipment cards.
+            Card moko = PlayCard("TaMoko");
+            Card flak = PlayCard("FlakCannon");
+            Card mere = PlayCard("Mere");
+
+            GoToStartOfTurn(outlander);
+            AssertInTrash(moko, mere, flak);
+        }
+
+        [Test]
+        public void TestAnchoredFragment_EnoughDamage()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
+            QuickHPStorage(haka);
+            PlayCard(AnchoredFragment);
+            QuickHPCheck(-1);
+
+            DealDamage(haka, outlander, 6, DamageType.Melee);
+
+            //At the start of the villain turn, if {Outlander} was not dealt at least {H} times 2 damage in the last round, destroy {H} hero ongoing and/or equipment cards.
+            Card moko = PlayCard("TaMoko");
+            Card flak = PlayCard("FlakCannon");
+            Card truth = PlayCard("TruthSeeker");
+            Card mere = PlayCard("Mere");
+
+            GoToStartOfTurn(outlander);
+            AssertIsInPlay(mere, moko, flak, truth);
+        }
     }
 }

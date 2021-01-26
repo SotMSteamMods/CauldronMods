@@ -39,7 +39,7 @@ namespace Cauldron.Outlander
         private IEnumerator MaybeDestroyCardsResponse(PhaseChangeAction action)
         {
             //...if {Outlander} was not dealt at least {H} times 2 damage in the last round, 
-            if (base.Journal.DealDamageEntriesThisTurn().Where((DealDamageJournalEntry entry) => entry.TargetCard == base.CharacterCard && entry.Amount > 0).Sum((DealDamageJournalEntry entry) => entry.Amount) < base.Game.H * 2)
+            if (base.Journal.DealDamageEntries().Where((DealDamageJournalEntry entry) => entry.Round == base.Game.Round - 1 && entry.TargetCard == base.CharacterCard).Sum((DealDamageJournalEntry entry) => entry.Amount) < base.Game.H * 2)
             {
                 //...destroy {H} hero ongoing and/or equipment cards.
                 IEnumerator coroutine = base.GameController.SelectAndDestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), base.Game.H, cardSource: base.GetCardSource());
