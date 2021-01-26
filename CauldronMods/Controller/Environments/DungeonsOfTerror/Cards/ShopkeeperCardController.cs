@@ -58,11 +58,11 @@ namespace Cauldron.DungeonsOfTerror
                     Card selectedCard = GetSelectedCard(storedChoice);
                     //op1: play that card
                     var response1 = GameController.PlayCard(httc, selectedCard, cardSource: GetCardSource());
-                    var op1 = new Function(this.DecisionMaker, $"Play {selectedCard.Title}", SelectionType.PlayCard, () => response1);
+                    var op1 = new Function(httc, $"Play {selectedCard.Title}", SelectionType.PlayCard, () => response1);
 
                     //op2: draw that card
                     var response2 = GameController.MoveCard(httc, selectedCard, httc.HeroTurnTaker.Hand, cardSource: GetCardSource());
-                    var op2 = new Function(this.DecisionMaker, $"Draw {selectedCard.Title}", SelectionType.MoveCard, () => response2);
+                    var op2 = new Function(httc, $"Draw {selectedCard.Title}", SelectionType.MoveCard, () => response2);
 
                     //Execute
                     var options = new Function[] { op1, op2, };
