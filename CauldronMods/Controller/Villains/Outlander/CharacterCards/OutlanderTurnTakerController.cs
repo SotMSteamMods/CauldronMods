@@ -25,6 +25,15 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+            coroutine = base.GameController.ShuffleLocation(base.CharacterCard.UnderLocation);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
 
             //Put 1 random Trace card from beneath this one into play.
             coroutine = base.GameController.PlayCard(this, base.CharacterCard.UnderLocation.Cards.FirstOrDefault(), true);
