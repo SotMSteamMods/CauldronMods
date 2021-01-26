@@ -46,6 +46,7 @@ namespace Cauldron.Pyre
             base.AddSideTriggers();
             AddTrigger((MoveCardAction mc) => IsByIrradiationMarker(mc.CardToMove) && (mc.Origin.IsHand || mc.Origin.IsRevealed) && !(mc.Destination.IsHand || mc.Destination.IsRevealed), mc => ClearIrradiation(mc.CardToMove), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
             AddTrigger((PlayCardAction pc) => IsByIrradiationMarker(pc.CardToPlay), pc => ClearIrradiation(pc.CardToPlay), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
+            AddTrigger((BulkMoveCardsAction bmc) => !(bmc.Destination.IsHand || bmc.Destination.IsRevealed) && bmc.CardsToMove.Any(c => IsByIrradiationMarker(c)), CleanUpBulkIrradiated, TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
         }
 
         protected bool IsIrradiated(Card c)
@@ -121,6 +122,25 @@ namespace Cauldron.Pyre
                 else
                 {
                     GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+        protected IEnumerator CleanUpBulkIrradiated(BulkMoveCardsAction bmc)
+        {
+            foreach(Card c in bmc.CardsToMove)
+            {
+                if(IsByIrradiationMarker(c))
+                {
+                    IEnumerator coroutine = ClearIrradiation(c);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;

@@ -121,7 +121,7 @@ namespace CauldronTests
             AssertNotIrradiated(ring);
         }
         [Test]
-        public void TestIrradiationRemainsAfterIncap()
+        public void TestIrradiationRemainsAfterPyreIncap()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -136,6 +136,24 @@ namespace CauldronTests
             AssertIrradiated(ring);
             PlayCard(ring);
             AssertNotIrradiated(ring);
+        }
+        [Test]
+        public void TestIrradiationClearedWhenOwnerIncaps()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 40);
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutOnDeck("TheLegacyRing");
+            UsePower(pyre);
+            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 39);
+
+            AssertIrradiated(ring);
+            DealDamage(baron, legacy, 50, DTM);
+            AssertNotIrradiated(ring);
+            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 40);
+
         }
     }
 }
