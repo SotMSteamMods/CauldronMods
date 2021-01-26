@@ -227,8 +227,28 @@ namespace CauldronTests
         [Test]
         public void TestOutlander_Back_Advanced()
         {
-            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" });
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" }, true);
             StartGame();
+
+            Card swift = PlayCard("SwiftBot");
+            Card moko = PlayCard("TaMoko");
+            Card flak = PlayCard("FlakCannon");
+            Card fort = PlayCard("Fortitude");
+            Card truth = PlayCard("TruthSeeker");
+
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            GoToStartOfTurn(outlander);
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            GoToStartOfTurn(outlander);
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            GoToStartOfTurn(outlander);
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            AssertFlipped(outlander);
+
+            //At the end of the villain turn, destroy {H - 2} hero ongoing and/or equipment cards.
+            GoToEndOfTurn(outlander);
+            AssertIsInPlay(swift, truth);
+            AssertInTrash(moko, flak, fort);
         }
     }
 }
