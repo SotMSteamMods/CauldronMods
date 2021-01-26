@@ -26,6 +26,7 @@ namespace Cauldron.Outlander
                     base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyCardsResponse, TriggerType.DestroyCard));
                 }
             }
+            base.AddDefeatedIfMovedOutOfGameTriggers();
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
