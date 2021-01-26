@@ -26,7 +26,12 @@ namespace CauldronTests
 
         protected bool IsIrradiated(Card card)
         {
-            return card != null && card.NextToLocation.Cards.Any((Card c) => c.Identifier == "IrradiatedMarker");
+            var result = card != null && card.NextToLocation.Cards.Any((Card c) => c.Identifier == "IrradiatedMarker");
+            if(result && !card.Location.IsHand)
+            {
+                Assert.Fail($"{card.Title} is irradiated, but is not in a hand!");
+            }
+            return result;
         }
         protected void AssertIrradiated(Card card)
         {
@@ -66,11 +71,12 @@ namespace CauldronTests
             PutInTrash(punch);
             AssertNotIrradiated(punch);
 
-            Card drive = PutOnDeck("CherenkovDrive");
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutOnDeck("TheLegacyRing");
             UsePower(pyre);
-            AssertIrradiated(drive);
-            PlayCard(drive);
-            AssertNotIrradiated(drive);
+            AssertIrradiated(ring);
+            PlayCard(ring);
+            AssertNotIrradiated(ring);
         }
         [Test]
         public void TestPyreInnatePowerShuffleCascadeIntoDeck()
@@ -153,7 +159,52 @@ namespace CauldronTests
             DealDamage(baron, legacy, 50, DTM);
             AssertNotIrradiated(ring);
             AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 40);
+        }
+        [Test]
+        public void TestAtmosphereScrubbersPlayGrantsPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
 
+            Card ring = PutOnDeck("TheLegacyRing");
+
+            DecisionSelectPower = pyre.CharacterCard;
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+
+            PlayCard("AtmosphereScrubbers");
+            AssertInHand(ring);
+            AssertIrradiated(ring);
+
+            AssertNumberOfUsablePowers(pyre.CharacterCard, 0);
+        }
+        [Test]
+        public void TestAtmosphereScrubbersPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card ring = PutOnDeck("TheLegacyRing");
+
+            DecisionSelectPower = pyre.CharacterCard;
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker , legacy.TurnTaker, bunker.TurnTaker};
+
+            Card atmo = PlayCard("AtmosphereScrubbers");
+            Card plating = PutInHand("HeavyPlating");
+            Card surge = PutOnDeck("SurgeOfStrength");
+
+            DecisionSelectCards = new Card[] { ring, plating };
+
+            SetHitPoints(legacy, 20);
+            SetHitPoints(pyre, 20);
+            SetHitPoints(bunker, 20);
+            QuickHPStorage(pyre, legacy, bunker);
+            QuickHandStorage(pyre, legacy, bunker);
+
+            UsePower(atmo);
+            QuickHPCheck(0, 2, 2);
+            QuickHandCheck(0, 0, -1);
+            AssertInTrash(ring, plating);
+            AssertInHand(surge);
         }
     }
 }
