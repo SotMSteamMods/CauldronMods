@@ -112,7 +112,7 @@
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "At the end of the environment turn, this{BR}card deals the hero target with the{BR}second lowest HP {H} energey damage.",
+                "At the end of the environment turn, this{BR}card deals the hero target with the{BR}second lowest HP {H} energy damage.",
                 "If no other predator cards are in{BR}play, increase damage dealt by this{BR}card by 1."
             ],
             "flavorText": "The first teams to enter Oblask Crater{BR}after the biomachine activation event{BR}were picked off by what the survivors{BR}described as a giant living shadow.",
@@ -262,7 +262,7 @@
                 "GainHP"
             ],
             "body": [
-                "At the end of the environment turn, if{BR}there are 0 or 1 predator cards in{BR}play, 1 hero may use a power that does{BR}not deal damage.",
+                "At the end of the environment turn, if{BR}there are 0 or 1 predator cards in{BR}play, 1 hero may use a power. If that{BR}power would deal damage, prevent it.",
                 "When this card is destroyed, each{BR}predator and villain target regains {H} HP."
             ],
             "flavorText": "Gyrosaur moved slowly, something she{BR}was not good at. The herd spooked{BR}easily, and were constantly scanning{BR}for signs of other biomachines.",

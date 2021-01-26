@@ -100,7 +100,7 @@ namespace CauldronTests
 
             QuickHPStorage(baron, ra, legacy, haka);
             DealDamage(shadowOfOblask, bladeBattalion, 6, DamageType.Melee);
-            QuickHPCheck(0, -1, -1, -1);
+            QuickHPCheck(0, -2, -2, -2);
 
         }
         #endregion Test Fresh Tracks
@@ -132,7 +132,7 @@ namespace CauldronTests
 
             QuickHPStorage(unity.CharacterCard, gentleTransport, swiftBot, turretBot, shadowOfOblask, legacy.CharacterCard, haka.CharacterCard);
             GoToEndOfTurn(base.env);
-            QuickHPCheck(-2, -2, -2, -2, 0, 0, 0);
+            QuickHPCheck(-3, -3, -3, -7, 0, 0, 0);
         }
 
         /* 
@@ -552,10 +552,10 @@ namespace CauldronTests
 
             QuickHPStorage(baron.CharacterCard, shadowOfOblask, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             DealDamage(shadowOfOblask, ra, 2, DamageType.Melee);
-            QuickHPCheck(-2, 0, 0, 0, 0);
+            QuickHPCheck(-3, 0, 0, 0, 0);
 
             DealDamage(shadowOfOblask, ra, 2, DamageType.Melee);
-            QuickHPCheck(0, -2, 0, 0, 0);
+            QuickHPCheck(0, -3, 0, 0, 0);
         }
 
         // test non environment damage to make sure no redirect happens
@@ -590,5 +590,299 @@ namespace CauldronTests
         }
 
         #endregion Test Open Ground
+
+        #region Test Plated Giant
+        /* 
+         * Play this card next to a hero. The hero next to this card is immune to damage from enviroment targets 
+         * other than this one. 
+         * At the end of the environment turn, this card deals the hero next to it {H - 1} melee damage.
+         */
+        [Test]
+        public void TestPlatedGiant()
+        {
+            Card platedGiant;
+            Card swarmOfFangs;
+
+            // Arrange & Act
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            base.DestroyNonCharacterVillainCards();
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard };
+            platedGiant = base.PutIntoPlay("PlatedGiant");
+            swarmOfFangs = base.PutIntoPlay("SwarmOfFangs");
+
+            base.GameController.SkipToTurnTakerTurn(base.env);
+
+            QuickHPStorage(baron.CharacterCard, platedGiant, swarmOfFangs, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+
+            DealDamage(swarmOfFangs, ra, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, 0);
+
+            DealDamage(platedGiant, ra, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, -1, 0, 0);
+
+            DealDamage(baron, ra, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, -1, 0, 0);
+
+            GoToEndOfTurn(base.env);
+            QuickHPCheck(0, -2, 0, -2, 0, 0);
+        }
+        #endregion Test Plated Giant
+
+        #region Test Shadow of Oblask
+        /*
+         * At the end of the environment turn, this card deals the hero target with the second lowest HP {H} energy damage.
+         * If no other predator cards are in play, increase damage dealt by this card by 1.
+         */
+        [Test]
+        public void TestShadowOfOblask()
+        {
+            Card shadowOfOblask;
+            Card swarmOfFangs;
+
+            // Ra: 30
+            // Legacy: 32
+            // Haka: 34
+            // Arrange & Act
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            base.DestroyNonCharacterVillainCards();
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard };
+            shadowOfOblask = base.PutIntoPlay("ShadowOfOblask");
+
+            base.GameController.SkipToTurnTakerTurn(base.env);
+
+            QuickHPStorage(baron.CharacterCard, shadowOfOblask, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            GoToEndOfTurn(base.env);
+            QuickHPCheck(0, 0, 0, -4, 0);
+
+            swarmOfFangs = base.PutIntoPlay("SwarmOfFangs"); 
+            base.GameController.SkipToTurnTakerTurn(base.env);
+            QuickHPStorage(baron.CharacterCard, shadowOfOblask, swarmOfFangs, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            GoToEndOfTurn(base.env);
+            QuickHPCheck(0, -2, 0, -3, 0, 0);
+        }
+        #endregion Test Shadow of Oblask
+
+        #region Test Swarm of Fangs
+        /*
+         * At the end of the environment turn, this card deals the target other than itself
+         * with the lowest HP 2 melee damage 
+         * If this damage destroys a target, repeat the text of this card.
+         */
+        [Test]
+        public void TestSwarmOfFangsDamage()
+        {
+            Card swarmOfFangs;
+
+            // Ra: 30
+            // Legacy: 32
+            // Haka: 34
+            // Arrange & Act
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            base.DestroyNonCharacterVillainCards();
+
+            swarmOfFangs = base.PutIntoPlay("SwarmOfFangs");
+            base.GameController.SkipToTurnTakerTurn(base.env);
+            QuickHPStorage(baron.CharacterCard, swarmOfFangs, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            GoToEndOfTurn(base.env);
+            QuickHPCheck(0, 0, -2, 0, 0);
+        }
+
+        [Test]
+        public void TestSwarmOfFangsRepeatCardText()
+        {
+            Card huginn;
+            Card buildingOfRooks1;
+            Card buildingOfRooks2;
+            Card buildingOfRooks3;
+            Card clatteringOfJackdaws1;
+            Card clatteringOfJackdaws2;
+            Card clatteringOfJackdaws3;
+            Card kettleOfVultures1;
+            Card kettleOfVultures2;
+            Card kettleOfVultures3;
+            Card murderOfCrows1;
+            Card murderOfCrows2;
+            Card murderOfCrows3;
+            Card unkindnessOfRavens1;
+            Card unkindnessOfRavens2;
+            Card unkindnessOfRavens3;
+            Card swarmOfFangs;
+
+            SetupGameController("TheMatriarch", "Ra", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+            base.DestroyNonCharacterVillainCards();
+
+            huginn = PutOnDeck(matriarch, GetCard("Huginn", 0));
+            buildingOfRooks1 = PutOnDeck(matriarch, GetCard("BuildingOfRooks", 0));
+            buildingOfRooks2 = PutOnDeck(matriarch, GetCard("BuildingOfRooks", 1));
+            buildingOfRooks3 = PutOnDeck(matriarch, GetCard("BuildingOfRooks", 2));
+            clatteringOfJackdaws1 = PutOnDeck(matriarch, GetCard("ClatteringOfJackdaws", 0));
+            clatteringOfJackdaws2 = PutOnDeck(matriarch, GetCard("ClatteringOfJackdaws", 1));
+            clatteringOfJackdaws3 = PutOnDeck(matriarch, GetCard("ClatteringOfJackdaws", 2));
+            kettleOfVultures1 = PutOnDeck(matriarch, GetCard("KettleOfVultures", 0));
+            kettleOfVultures2 = PutOnDeck(matriarch, GetCard("KettleOfVultures", 1));
+            kettleOfVultures3 = PutOnDeck(matriarch, GetCard("KettleOfVultures", 2));
+            murderOfCrows1 = PutOnDeck(matriarch, GetCard("MurderOfCrows", 0));
+            murderOfCrows2 = PutOnDeck(matriarch, GetCard("MurderOfCrows", 1));
+            murderOfCrows3 = PutOnDeck(matriarch, GetCard("MurderOfCrows", 2));
+            unkindnessOfRavens1 = PutOnDeck(matriarch, GetCard("UnkindnessOfRavens", 0));
+            unkindnessOfRavens2 = PutOnDeck(matriarch, GetCard("UnkindnessOfRavens", 1));
+            unkindnessOfRavens3 = PutOnDeck(matriarch, GetCard("UnkindnessOfRavens", 2));
+
+            base.PlayCard(unkindnessOfRavens3);
+            swarmOfFangs = base.PutIntoPlay("SwarmOfFangs");
+            base.GameController.SkipToTurnTakerTurn(base.env);
+            base.GoToEndOfTurn(base.env);
+
+            base.AssertNotInPlay(buildingOfRooks1);
+            base.AssertNotInPlay(buildingOfRooks2);
+            base.AssertNotInPlay(buildingOfRooks3);
+            base.AssertNotInPlay(clatteringOfJackdaws1);
+            base.AssertNotInPlay(clatteringOfJackdaws2);
+            base.AssertNotInPlay(clatteringOfJackdaws3);
+            base.AssertNotInPlay(kettleOfVultures1);
+            base.AssertNotInPlay(kettleOfVultures2);
+            base.AssertNotInPlay(kettleOfVultures3);
+            base.AssertNotInPlay(murderOfCrows1);
+            base.AssertNotInPlay(murderOfCrows2);
+            base.AssertNotInPlay(murderOfCrows3);
+            base.AssertNotInPlay(unkindnessOfRavens1);
+            base.AssertNotInPlay(unkindnessOfRavens2);
+            base.AssertNotInPlay(unkindnessOfRavens3);
+        }
+        #endregion
+
+        #region Test Unknown Herds
+        /* 
+         * [ORIGNIAL TEXT - The current engine does not provide a way to determine if a power will or will not damage]
+         * At the end of the environment turn, if there are 0 or 1 predator cards in play, 1 hero may use a power that 
+         * does not deal damage. 
+         * When this card is destroyed, each predator and villain target regains {H} HP. 
+         */
+        /* [ALTERNATE TEXT - Use until the engine supports additional metadata for powers]
+         * At the end of the environment turn, if there are 0 or 1 predator cards in play, 1 hero may use a power. If that 
+         * power would deal damage, prevent it. 
+         * When this card is destroyed, each predator and villain target regains {H} HP. 
+         */
+        [Test]
+        public void TestUnknownHerdsUsePowerPreventDamage()
+        {
+            Card motivationalCharge;
+            Card unknownHerds;
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", DeckNamespace);
+            StartGame();
+
+            base.DestroyNonCharacterVillainCards();
+            motivationalCharge = PutIntoPlay("MotivationalCharge");
+            PutIntoPlay("NextEvolution");
+            unknownHerds = PutIntoPlay("UnknownHerds");
+            SetHitPoints(legacy, legacy.CharacterCard.MaximumHitPoints.Value - 1);
+            SetHitPoints(ra, ra.CharacterCard.MaximumHitPoints.Value - 1);
+            SetHitPoints(haka, haka.CharacterCard.MaximumHitPoints.Value - 1);
+            DecisionSelectPowers = new Card[] { motivationalCharge };
+            base.GameController.SkipToTurnTakerTurn(base.env);
+            QuickHPStorage(baron.CharacterCard, unknownHerds, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
+            base.GoToEndOfTurn(base.env);
+            QuickHPCheck(0, 0, 1, 1, 1);
+        }
+
+        [Test]
+        public void TestUnknownHerdsDestroyed()
+        {
+            Card unknownHerds;
+            Card shadowOfOblask;
+            Card bladeBattalion;
+            Card moonWatcher;
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", DeckNamespace);
+            StartGame();
+
+            base.DestroyNonCharacterVillainCards();
+
+            unknownHerds = PutIntoPlay("UnknownHerds");
+            shadowOfOblask = PutIntoPlay("ShadowOfOblask");
+            moonWatcher = PutIntoPlay("MoonWatcher");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+
+            SetHitPoints(shadowOfOblask, shadowOfOblask.MaximumHitPoints.Value - 3);
+            SetHitPoints(moonWatcher, moonWatcher.MaximumHitPoints.Value - 3);
+            SetHitPoints(bladeBattalion, bladeBattalion.MaximumHitPoints.Value - 3);
+            SetHitPoints(baron, baron.CharacterCard.MaximumHitPoints.Value - 3);
+
+            QuickHPStorage(baron.CharacterCard, shadowOfOblask, moonWatcher, bladeBattalion, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
+            DestroyCard(unknownHerds);
+            QuickHPCheck(3, 3, 0, 3, 0, 0, 0);
+        }
+        #endregion Test Unknown Herds
+
+        #region Test Unseen Terror
+
+        /*
+         * At the end of the environment turn, this card deals the 3 other targets with the highest hp {H - 2} cold damage each.
+         * Until the end of the next environment turn, this card becomes immune to damage from targets that were not damaged this way.
+         */
+        [Test]
+        public void TestUnseenTerror()
+        {
+            Card unseenTerror;
+
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", DeckNamespace);
+            //StartGame();
+
+            base.DestroyNonCharacterVillainCards();
+
+            unseenTerror = PutIntoPlay("UnseenTerror");
+
+            SetHitPoints(baron, 27);
+            SetHitPoints(legacy, 26);
+            SetHitPoints(ra, 25);
+            SetHitPoints(haka, 24);
+
+            QuickHPStorage(baron.CharacterCard, unseenTerror, legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard);
+
+            base.GameController.SkipToTurnTakerTurn(base.env);
+            base.GoToEndOfTurn(base.env);
+            QuickHPCheck(-1, 0, -1, -1, 0);
+            // baron: 26
+            // legacy: 25
+            // ra: 24
+            // haka: 24
+
+
+            DealDamage(haka, unseenTerror, 1, DamageType.Fire);
+            QuickHPCheckZero();
+            DealDamage(baron, unseenTerror, 1, DamageType.Melee);
+            DealDamage(legacy, unseenTerror, 1, DamageType.Melee);
+            DealDamage(ra, unseenTerror, 1, DamageType.Melee);
+            QuickHPCheck(0, -3, 0, 0, 0);
+
+
+            SetHitPoints(haka, 28);
+            SetHitPoints(baron, 27);
+            SetHitPoints(legacy, 26);
+            SetHitPoints(ra, 25);
+            SetHitPoints(unseenTerror, 4);
+            QuickHPUpdate();
+
+            base.GameController.SkipToTurnTakerTurn(base.env);
+            DealDamage(haka, unseenTerror, 3, DamageType.Fire);
+            QuickHPCheckZero();
+            base.GoToEndOfTurn(base.env);
+            QuickHPCheck(-1, 0, -1, 0, -1);
+
+            DealDamage(haka, unseenTerror, 3, DamageType.Melee);
+            QuickHPCheck(0, -3, 0, 0, 0);
+            DealDamage(ra, unseenTerror, 4, DamageType.Fire);
+            QuickHPCheckZero();
+        }
+
+        #endregion Test Unseen Terror
     }
 }
