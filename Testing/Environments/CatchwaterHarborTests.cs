@@ -804,11 +804,13 @@ namespace CauldronTests
         [Test()]
         public void TestSmoothCriminal()
         {
-            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor" });
             StartGame();
             DestroyNonCharacterVillainCards();
             PlayCard("SSEscape");
             PlayCard("ToOverbrook");
+
+            int num = GetNumberOfCardsInPlay((Card c) => IsTransport(c));
             //Reduce damage dealt to Gangsters by 1.
             Card smooth = PlayCard("SmoothCriminal");
             Card harkin = PlayCard("HarkinParishJr");
@@ -823,7 +825,7 @@ namespace CauldronTests
             AddCantGainHPDamageTrigger(catchwater, true, false);
             AddCantGainHPDamageTrigger(catchwater, false, true);
             GoToEndOfTurn(catchwater);
-            QuickHPCheck(0, -3, -3, -6, 0, 0);
+            QuickHPCheck(0, -1 - num, -1 - num, -4 - num, 0, 0);
 
         }
 
