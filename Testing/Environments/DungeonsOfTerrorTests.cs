@@ -609,5 +609,41 @@ namespace CauldronTests
             AssertInTrash(ring);
 
         }
+
+        [Test()]
+        public void TestRovingSlime_Fate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If if is not a fate card, this card deals each non-environment target 1 toxic damage.
+            Card slime = PlayCard("RovingSlime");
+            GoToPlayCardPhase(dungeon);
+            PutInTrash("HighGround");
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHPCheck(0, 0, 0, -2);
+        }
+
+        [Test()]
+        public void TestRovingSlime_NotFate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If if is not a fate card, this card deals each non-environment target 1 toxic damage.
+            Card slime = PlayCard("RovingSlime");
+            GoToPlayCardPhase(dungeon);
+            PutInTrash("StoneWarden");
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHPCheck(-1, -1, -1, -1);
+        }
     }
 }
