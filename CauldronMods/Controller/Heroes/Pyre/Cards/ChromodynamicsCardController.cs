@@ -10,6 +10,18 @@ namespace Cauldron.Pyre
 {
     public class ChromodynamicsCardController : PyreUtilityCardController
     {
+        private List<Guid> _recentIrradiatedPlays;
+        private List<Guid> RecentIrradiatedCardPlays
+        {
+            get
+            {
+                if(_recentIrradiatedPlays == null)
+                {
+                    _recentIrradiatedPlays = new List<Guid>();
+                }
+                return _recentIrradiatedPlays;
+            }
+        }
         public ChromodynamicsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -17,6 +29,31 @@ namespace Cauldron.Pyre
         public override void AddTriggers()
         {
             //"Whenever a player plays a {PyreIrradiate} card, {Pyre} deals 1 target 1 energy damage."
+            AddTrigger((PlayCardAction pc) => IsIrradiated(pc.CardToPlay), NoteIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before);
+            AddTrigger((PlayCardAction pc) => RecentIrradiatedCardPlays.Contains(pc.InstanceIdentifier), IrradiatedPlayResponse, TriggerType.DealDamage, TriggerTiming.After, requireActionSuccess: false);
+        }
+        private IEnumerator NoteIrradiatedPlay(PlayCardAction pc)
+        {
+            RecentIrradiatedCardPlays.Add(pc.InstanceIdentifier);
+            yield return null;
+            yield break;
+        }
+        private IEnumerator IrradiatedPlayResponse(PlayCardAction pc)
+        {
+            RecentIrradiatedCardPlays.Remove(pc.InstanceIdentifier);
+            if(pc.IsSuccessful)
+            {
+                IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 1, DamageType.Energy, 1, false, 1, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
         }
         public override IEnumerator UsePower(int index = 0)
         {

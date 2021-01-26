@@ -23,6 +23,19 @@ namespace CauldronTests
         protected DamageType DTM => DamageType.Melee;
 
         protected Card MDP { get { return FindCardInPlay("MobileDefensePlatform"); } }
+
+        protected bool IsIrradiated(Card card)
+        {
+            return card != null && card.NextToLocation.Cards.Any((Card c) => c.Identifier == "IrradiatedMarker");
+        }
+        protected void AssertIrradiated(Card card)
+        {
+            Assert.IsTrue(IsIrradiated(card), $"{card.Title} should have been irradiated, but it was not.");
+        }
+        protected void AssertNotIrradiated(Card card)
+        {
+            Assert.IsFalse(IsIrradiated(card), $"{card.Title} was irradiated, but it should not be.");
+        }
         #endregion PyreHelperFunctions
         [Test]
         public void TestPyreLoads()
@@ -35,6 +48,94 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(PyreCharacterCardController), pyre.CharacterCardController);
 
             Assert.AreEqual(29, pyre.CharacterCard.HitPoints);
+        }
+
+        [Test]
+        public void TestPyreInnatePowerDrawCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            QuickShuffleStorage(pyre);
+            Card punch = PutOnDeck("AtomicPunch");
+            UsePower(pyre);
+            AssertInHand(punch);
+            AssertIrradiated(punch);
+            QuickShuffleCheck(0);
+
+            PutInTrash(punch);
+            AssertNotIrradiated(punch);
+
+            Card drive = PutOnDeck("CherenkovDrive");
+            UsePower(pyre);
+            AssertIrradiated(drive);
+            PlayCard(drive);
+            AssertNotIrradiated(drive);
+        }
+        [Test]
+        public void TestPyreInnatePowerShuffleCascadeIntoDeck()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card cascade = PutInTrash("RogueFissionCascade");
+            Card punch = PutOnDeck("AtomicPunch");
+            QuickShuffleStorage(pyre);
+            UsePower(pyre);
+            AssertInHand(punch);
+            AssertIrradiated(punch);
+            AssertInDeck(cascade);
+            QuickShuffleCheck(1);
+        }
+        [Test]
+        public void TestChromodynamicsDamageTrigger()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            QuickHPStorage(baron, pyre, legacy, bunker, scholar);
+            PlayCard("Chromodynamics");
+            Card drive = PutOnDeck("CherenkovDrive");
+            UsePower(pyre);
+            AssertIrradiated(drive);
+            Card rod = PutInHand("FracturedControlRod");
+
+            PlayCard(rod);
+            QuickHPCheckZero();
+            PlayCard(drive);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+        }
+        [Test]
+        public void TestIrradiationOtherPlayer()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutOnDeck("TheLegacyRing");
+            UsePower(pyre);
+
+            AssertIrradiated(ring);
+            PlayCard(ring);
+            AssertNotIrradiated(ring);
+        }
+        [Test]
+        public void TestIrradiationRemainsAfterIncap()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutOnDeck("TheLegacyRing");
+            UsePower(pyre);
+
+            AssertIrradiated(ring);
+            DealDamage(baron, pyre, 50, DTM);
+
+            AssertIrradiated(ring);
+            PlayCard(ring);
+            AssertNotIrradiated(ring);
         }
     }
 }

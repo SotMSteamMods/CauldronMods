@@ -30,7 +30,40 @@ namespace Cauldron.Pyre
             }
 
             //Shuffle a cascade card from your trash into your deck."
+            if(TurnTaker.Trash.Cards.Any((Card c) => IsCascade(c)))
+            {
+                var cardToMove = TurnTaker.Trash.Cards.Where((Card c) => IsCascade(c)).FirstOrDefault();
+                coroutine = GameController.SendMessageAction($"{Card.Title} shuffles {cardToMove.Title} into {TurnTaker.Deck.GetFriendlyName()}.", Priority.Medium, GetCardSource(), new Card[] { cardToMove });
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
 
+                coroutine = GameController.MoveCard(DecisionMaker, cardToMove, TurnTaker.Deck, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = ShuffleDeck(DecisionMaker, TurnTaker.Deck);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
             yield break;
         }
 

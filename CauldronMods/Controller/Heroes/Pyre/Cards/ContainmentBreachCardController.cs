@@ -21,6 +21,7 @@ namespace Cauldron.Pyre
         public override IEnumerator UsePower(int index = 0)
         {
             //"{Pyre} deals himself and each non-hero target 1 energy damage."
+            yield break;
         }
     }
 }

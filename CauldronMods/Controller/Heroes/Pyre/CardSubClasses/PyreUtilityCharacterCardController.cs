@@ -6,6 +6,8 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.Pyre
 {
     public abstract class PyreUtilityCharacterCardController : HeroCharacterCardController
@@ -32,14 +34,41 @@ namespace Cauldron.Pyre
                 ttc.MoveMarkersToSide();
             }
         }
+        /*
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+            AddTrigger((MoveCardAction mc) => IsByIrradiationMarker(mc.CardToMove) && (mc.Origin.IsHand || mc.Origin.IsRevealed) && !(mc.Destination.IsHand || mc.Destination.IsRevealed), mc => ClearIrradiation(mc.CardToMove), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
+        }
+        */
+        public override void AddSideTriggers()
+        {
+            base.AddSideTriggers();
+            AddTrigger((MoveCardAction mc) => IsByIrradiationMarker(mc.CardToMove) && (mc.Origin.IsHand || mc.Origin.IsRevealed) && !(mc.Destination.IsHand || mc.Destination.IsRevealed), mc => ClearIrradiation(mc.CardToMove), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
+            AddTrigger((PlayCardAction pc) => IsByIrradiationMarker(pc.CardToPlay), pc => ClearIrradiation(pc.CardToPlay), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
+        }
 
         protected bool IsIrradiated(Card c)
         {
             if(c != null && c.IsInHand)
             {
+                return IsByIrradiationMarker(c);
+            }
+            return false;
+        }
+
+        protected bool IsByIrradiationMarker(Card c)
+        {
+            if (c != null)
+            {
                 return c.NextToLocation.Cards.Any((Card nextTo) => nextTo.Identifier == "IrradiatedMarker");
             }
             return false;
+        }
+
+        protected bool IsCascade(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "cascade");
         }
 
         protected IEnumerator IrradiateCard(Card cardToIrradiate)
@@ -57,10 +86,10 @@ namespace Cauldron.Pyre
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
-                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), $"{cardToIrradiate.Title} is irradiated.", new TriggerType[] { TriggerType.Hidden }, Card);
+                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), $"{cardToIrradiate.Title} is irradiated until it leaves {cardToIrradiate.Location.GetFriendlyName()}.", new TriggerType[] { TriggerType.Hidden }, cardToIrradiate);
                 irradiateEffect.CardMovedExpiryCriteria.Card = cardToIrradiate;
 
-                coroutine = AddStatusEffect(irradiateEffect, false);
+                coroutine = AddStatusEffect(irradiateEffect, true);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -69,16 +98,31 @@ namespace Cauldron.Pyre
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
-
+                /*
                 if(PyreTTC != null)
                 {
                     PyreTTC.AddIrradiatedSpecialString(cardToIrradiate);
                 }
+                */
             }
             yield break;
         }
-        protected IEnumerator ClearIrradiation(Card c)
+        protected IEnumerator ClearIrradiation(Card card)
         {
+            //Log.Debug($"ClearIrradiation called on {card.Title}");
+            var marks = card?.NextToLocation.Cards.Where((Card c) => !c.IsRealCard && c.Identifier == "IrradiatedMarker");
+            if(marks != null && marks.Any())
+            {
+                IEnumerator coroutine = BulkMoveCard(DecisionMaker, marks, TurnTaker.OffToTheSide, false, false, DecisionMaker, false);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
         }
     }
