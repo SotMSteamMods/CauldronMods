@@ -16,38 +16,62 @@ namespace Cauldron.Outlander
             base.CharacterCard.UnderLocation.OverrideIsInPlay = false;
         }
 
+        protected const string OncePerTurn = "OncePerTurn";
+        private ITrigger ReduceDamageTrigger;
+
         public override void AddSideTriggers()
         {
             if (base.CharacterCard.IsFlipped)
             { //Back:
-                //Reduce the first damage dealt to {Outlander} each turn by {H}.
+              //Reduce the first damage dealt to {Outlander} each turn by {H}.
+                this.ReduceDamageTrigger = base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.Target == this.Card, this.ReduceDamageResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.Before);
+                base.AddSideTrigger(this.ReduceDamageTrigger);
                 if (base.Game.IsAdvanced)
                 { //Advanced:
                     //At the end of the villain turn, destroy {H - 2} hero ongoing and/or equipment cards.
                     base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyCardsResponse, TriggerType.DestroyCard));
                 }
             }
-            base.AddDefeatedIfMovedOutOfGameTriggers();
+            base.AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator ReduceDamageResponse(DealDamageAction action)
+        {
+            //Reduce the first damage dealt to {Outlander} each turn by {H}.
+            base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
+            IEnumerator coroutine = base.GameController.ReduceDamage(action, base.Game.H, this.ReduceDamageTrigger, base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
             IEnumerator coroutine;
-            if (!base.CharacterCard.IsFlipped && base.Game.IsAdvanced)
-            { //Front - Advanced:
-                //Whenever {Outlander} flips to this side, he becomes immune to damage until the start of the next villain turn.
-                ImmuneToDamageStatusEffect statusEffect = new ImmuneToDamageStatusEffect();
-                statusEffect.TargetCriteria.IsSpecificCard = base.CharacterCard;
-                statusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            if (!base.CharacterCard.IsFlipped)
+            {
+                if (base.Game.IsAdvanced)
+                { //Front - Advanced:
+                    //Whenever {Outlander} flips to this side, he becomes immune to damage until the start of the next villain turn.
+                    ImmuneToDamageStatusEffect statusEffect = new ImmuneToDamageStatusEffect();
+                    statusEffect.TargetCriteria.IsSpecificCard = base.CharacterCard;
+                    statusEffect.UntilStartOfNextTurn(base.TurnTaker);
 
-                coroutine = base.GameController.AddStatusEffect(statusEffect, true, new CardSource(this));
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    coroutine = base.GameController.AddStatusEffect(statusEffect, true, new CardSource(this));
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             else
@@ -140,7 +164,7 @@ namespace Cauldron.Outlander
             {
                 //Front:
                 //When {Outlander} would be destroyed instead flip his villain character cards.
-                IEnumerator coroutine = base.GameController.FlipCard(this, false, false, destroyCard.ActionSource, null, base.GetCardSource(null), true);
+                IEnumerator coroutine = base.GameController.FlipCard(this, actionSource: destroyCard.ActionSource, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

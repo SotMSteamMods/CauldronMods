@@ -11,8 +11,21 @@ namespace CauldronTests
     [TestFixture()]
     class OutlanderTests : CauldronBaseTest
     {
+        protected const string Archangel = "Archangel";
+        protected const string AnchoredFragment = "AnchoredFragment";
+        protected const string Crusader = "Crusader";
+        protected const string DimensionalInsinuation = "DimensionalInsinuation";
+        protected const string DisarmingBlow = "DisarmingBlow";
+        protected const string Dragonborn = "Dragonborn";
+        protected const string KnightsHatred = "KnightsHatred";
+        protected const string Magekiller = "Magekiller";
+        protected const string OutOfTouch = "OutOfTouch";
+        protected const string RiftbladeStrikes = "RiftbladeStrikes";
+        protected const string TransdimensionalOnslaught = "TransdimensionalOnslaught";
+        protected const string Warbrand = "Warbrand";
+
         [Test()]
-        public void TestOutlanderLoad()
+        public void TestOutlander_Load()
         {
             SetupGameController("Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis");
 
@@ -31,7 +44,7 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestOutlanderDecklist()
+        public void TestOutlander_Decklist()
         {
             SetupGameController("Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis");
 
@@ -97,6 +110,125 @@ namespace CauldronTests
             QuickHPStorage(outlander);
             DealDamage(haka, outlander, 3, DamageType.Melee);
             QuickHPCheck(-3);
+        }
+
+        [Test]
+        public void TestOutlander_Back()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" });
+            StartGame();
+
+            Card anchor = PlayCard(AnchoredFragment);
+
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            //When {Outlander} flips to this side, restore him to 20 HP...
+            AssertHitPoints(outlander.CharacterCard, 20);
+
+            //...destroy all copies of Anchored Fragment...
+            AssertInTrash(anchor);
+
+            //...and put a random Trace into play. 
+            Assert.AreEqual(2, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+
+            //Then, if there are fewer than {H} Trace cards in play, flip {Outlander}'s villain character cards.
+            AssertNotFlipped(outlander);
+            DestroyNonCharacterVillainCards();
+
+            //Need 5 traces
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            Assert.AreEqual(3, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+            AssertNotFlipped(outlander);
+            DestroyNonCharacterVillainCards();
+
+            //Need 5 traces
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            Assert.AreEqual(4, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+            AssertNotFlipped(outlander);
+            DestroyNonCharacterVillainCards();
+
+            //5 traces in play
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            Assert.AreEqual(5, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+            AssertFlipped(outlander);
+            DestroyNonCharacterVillainCards();
+
+            //Cards beneath this one are not considered in play. Trace cards are indestructible.
+            Card arch = DestroyCard(Archangel);
+            AssertIsInPlay(arch);
+
+            //Reduce the first damage dealt to {Outlander} each turn by {H}.
+            QuickHPStorage(outlander);
+            DealDamage(haka, outlander, 6, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //Second Damage
+            QuickHPStorage(outlander);
+            DealDamage(bunker, outlander, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //New turn
+            GoToStartOfTurn(haka);
+            QuickHPStorage(outlander);
+            DealDamage(unity, outlander, 6, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //Second Damage
+            QuickHPStorage(outlander);
+            DealDamage(legacy, outlander, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Win Game if flipped and destroyed!
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            AssertGameOver(EndingResult.VillainDestroyedVictory);
+        }
+
+        [Test]
+        public void TestOutlander_Flip_3H()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            //Then, if there are fewer than {H} Trace cards in play, flip {Outlander}'s villain character cards.
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            Assert.AreEqual(2, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+            AssertNotFlipped(outlander);
+            DestroyNonCharacterVillainCards();
+
+            //3 traces in play
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            Assert.AreEqual(3, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+            AssertFlipped(outlander);
+        }
+
+        [Test]
+        public void TestOutlander_Flip_4H()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Megalopolis" });
+            StartGame();
+
+            //Then, if there are fewer than {H} Trace cards in play, flip {Outlander}'s villain character cards.
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            Assert.AreEqual(2, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+            AssertNotFlipped(outlander);
+            DestroyNonCharacterVillainCards();
+
+            //Need 4 traces
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            Assert.AreEqual(3, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+            AssertNotFlipped(outlander);
+            DestroyNonCharacterVillainCards();
+
+            //4 traces in play
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            Assert.AreEqual(4, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+            AssertFlipped(outlander);
+        }
+
+        [Test]
+        public void TestOutlander_Back_Advanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" });
+            StartGame();
         }
     }
 }
