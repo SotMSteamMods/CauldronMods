@@ -52,7 +52,7 @@ namespace CauldronTests
 
             GoToPlayCardPhase(dungeon);
 
-            Card card = PlayCard(fate);
+            Card card = GetCard(fate);
             AssertCardHasKeyword(card, "fate", false);
         }
 
@@ -453,6 +453,69 @@ namespace CauldronTests
             QuickHPCheck(0, 0, -4, 0); //2 galvanized have been used
             AssertInTrash(notFate);
 
+        }
+
+        [Test()]
+        public void TestOneInAMillion_TwoMatches()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToNextTurn();
+            //When this card enters play, discard and check the top 2 cards of the environment deck.
+            Card fate1 = PutOnDeck("HighGround");
+            Card fate2 = PutOnDeck("EnormousPack");
+
+            QuickHandStorage(ra, legacy, haka);
+            Card million = PlayCard("OneInAMillion");
+            //If at least 1 is a fate card, each player draws a card.
+            //If both are fate cards, skip the next villain turn.
+            QuickHandCheck(1, 1, 1);
+            GoToStartOfTurn(baron);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(ra, Phase.Start);
+        }
+
+        [Test()]
+        public void TestOneInAMillion_OneMatch()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToNextTurn();
+            //When this card enters play, discard and check the top 2 cards of the environment deck.
+            Card fate1 = PutOnDeck("HighGround");
+            Card notfate2 = PutOnDeck("StoneWarden");
+
+            QuickHandStorage(ra, legacy, haka);
+            Card million = PlayCard("OneInAMillion");
+            //If at least 1 is a fate card, each player draws a card.
+            //If both are fate cards, skip the next villain turn.
+            QuickHandCheck(1, 1, 1);
+            GoToStartOfTurn(baron);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(baron, Phase.PlayCard);
+        }
+
+        [Test()]
+        public void TestOneInAMillion_NoMatches()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToNextTurn();
+            //When this card enters play, discard and check the top 2 cards of the environment deck.
+            Card nofate1 = PutOnDeck("Underleveled");
+            Card notfate2 = PutOnDeck("StoneWarden");
+
+            QuickHandStorage(ra, legacy, haka);
+            Card million = PlayCard("OneInAMillion");
+            //If at least 1 is a fate card, each player draws a card.
+            //If both are fate cards, skip the next villain turn.
+            QuickHandCheck(0, 0, 0);
+            GoToStartOfTurn(baron);
+            EnterNextTurnPhase();
+            AssertCurrentTurnPhase(baron, Phase.PlayCard);
         }
     }
 }

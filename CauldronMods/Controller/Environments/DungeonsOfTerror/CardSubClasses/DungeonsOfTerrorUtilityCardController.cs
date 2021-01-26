@@ -24,7 +24,7 @@ namespace Cauldron.DungeonsOfTerror
         protected IEnumerator CheckForNumberOfFates(IEnumerable<Card> cardsToCheck, List<int> storedResults)
         { 
             int numFates = 0;
-            if(!cardsToCheck.Any() || cardsToCheck.FirstOrDefault() == null)
+            if(!cardsToCheck.Any())
             {
                 yield break;
             }
@@ -32,7 +32,7 @@ namespace Cauldron.DungeonsOfTerror
             
             foreach (Card card in cardsToCheck)
             {
-                if(IsFate(card))
+                if(card != null && IsFate(card))
                 {
                     numFates++;
                 }
