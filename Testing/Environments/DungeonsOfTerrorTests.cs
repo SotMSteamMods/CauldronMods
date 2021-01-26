@@ -819,5 +819,82 @@ namespace CauldronTests
             QuickHPCheckZero();
             QuickHandCheckZero();
         }
+
+        [Test()]
+        public void TestTheresAlwaysABard_UsePower()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Play this card next to a hero.
+            DecisionSelectCard = legacy.CharacterCard;
+            Card bard = PlayCard("TheresAlwaysABard");
+            AssertNextToCard(bard, legacy.CharacterCard);
+
+            //Damage dealt to the hero next to this card is irreducible and increased by 1.
+            AddReduceDamageTrigger(legacy, true, false, 2);
+            QuickHPStorage(ra, legacy, haka);
+            DealDamage(baron, (Card c) => c.IsHero, 3, DamageType.Melee);
+            QuickHPCheck(-1, -5, -1);
+
+            //At the start of their turn, they may use a power, play a card, or destroy this card.
+            DecisionSelectFunction = 0;
+            GoToStartOfTurn(legacy);
+
+            QuickHPStorage(baron);
+            DealDamage(haka, baron, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestTheresAlwaysABard_Play()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Play this card next to a hero.
+            DecisionSelectCard = legacy.CharacterCard;
+            Card bard = PlayCard("TheresAlwaysABard");
+            AssertNextToCard(bard, legacy.CharacterCard);
+
+            //Damage dealt to the hero next to this card is irreducible and increased by 1.
+            AddReduceDamageTrigger(legacy, true, false, 2);
+            QuickHPStorage(ra, legacy, haka);
+            DealDamage(baron, (Card c) => c.IsHero, 3, DamageType.Melee);
+            QuickHPCheck(-1, -5, -1);
+
+            //At the start of their turn, they may use a power, play a card, or destroy this card.
+            DecisionSelectFunction = 1;
+            Card ring = PutInHand("TheLegacyRing");
+            DecisionSelectCard = ring;
+            GoToStartOfTurn(legacy);
+            AssertInPlayArea(legacy, ring);
+        }
+
+        [Test()]
+        public void TestTheresAlwaysABard_Destroy()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Play this card next to a hero.
+            DecisionSelectCard = legacy.CharacterCard;
+            Card bard = PlayCard("TheresAlwaysABard");
+            AssertNextToCard(bard, legacy.CharacterCard);
+
+            //Damage dealt to the hero next to this card is irreducible and increased by 1.
+            AddReduceDamageTrigger(legacy, true, false, 2);
+            QuickHPStorage(ra, legacy, haka);
+            DealDamage(baron, (Card c) => c.IsHero, 3, DamageType.Melee);
+            QuickHPCheck(-1, -5, -1);
+
+            //At the start of their turn, they may use a power, play a card, or destroy this card.
+            DecisionSelectFunction = 2;
+            GoToStartOfTurn(legacy);
+            AssertInTrash(bard);
+        }
     }
 }
