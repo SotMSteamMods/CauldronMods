@@ -517,5 +517,70 @@ namespace CauldronTests
             EnterNextTurnPhase();
             AssertCurrentTurnPhase(baron, Phase.PlayCard);
         }
+
+        [Test()]
+        public void TestRestfulInn()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(ra, 20);
+            //The first time a hero draws a card during their turn, they may discard it. If they do, that hero regains 2HP. Increase HP regained this way by 1 if the top card of the environment trash is a fate card.
+            Card inn = PlayCard("RestfulInn");
+
+            //put fate in trash
+            PutInTrash("HighGround");
+
+            GoToPlayCardPhase(ra);
+            DecisionsYesNo = new bool[] { true, true, false };
+            QuickHandStorage(ra, legacy, haka);
+            QuickHPStorage(baron, ra, legacy, haka);
+            Card top = ra.TurnTaker.Deck.TopCard;
+            DrawCard(ra);
+            AssertInTrash(top);
+            QuickHandCheck(0, 0, 0);
+            QuickHPCheck(0, 3, 0, 0);
+
+            //only first one
+            QuickHandUpdate();
+            QuickHPUpdate();
+            DrawCard(ra);
+            QuickHandCheck(1, 0, 0);
+            QuickHPCheckZero();
+
+            //only during their turn
+            GoToNextTurn();
+            QuickHandUpdate();
+            QuickHPUpdate();
+            DrawCard(ra);
+            QuickHandCheck(1, 0, 0);
+            QuickHPCheckZero();
+
+            //check non-fate no increase
+            PutInTrash("StoneWarden");
+            QuickHandUpdate();
+            QuickHPUpdate();
+            top = legacy.TurnTaker.Deck.TopCard;
+            DrawCard(legacy);
+            AssertInTrash(top);
+            QuickHandCheck(0, 0, 0);
+            QuickHPCheck(0, 0, 2, 0);
+
+            //optional
+            GoToNextTurn();
+            QuickHandUpdate();
+            QuickHPUpdate();
+            top = haka.TurnTaker.Deck.TopCard;
+            DrawCard(haka);
+            AssertInHand(top);
+            QuickHandCheck(0, 0, 1);
+            QuickHPCheck(0, 0, 0, 0);
+
+            GoToStartOfTurn(dungeon);
+            AssertInTrash(inn);
+
+        }
     }
 }
