@@ -763,5 +763,61 @@ namespace CauldronTests
             GoToEndOfTurn(dungeon);
             QuickHPCheckZero();
         }
+
+        [Test()]
+        public void TestSuspiciousChest_Fate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If it is not a fate card, 1 player draws a card.
+            Card chest = PlayCard("SuspiciousChest");
+            GoToPlayCardPhase(dungeon);
+            PutInTrash("HighGround");
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHPCheck(0, 0, 0, -2);
+        }
+
+        [Test()]
+        public void TestSuspiciousChest_NotFate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If it is not a fate card, 1 player draws a card.
+            Card chest = PlayCard("SuspiciousChest");
+            GoToPlayCardPhase(dungeon);
+            PutInTrash("StoneWarden");
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            QuickHandStorage(ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHandCheck(0, 1, 0);
+        }
+
+        [Test()]
+        public void TestSuspiciousChest_Empty()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If it is not a fate card, 1 player draws a card.
+            Card chest = PlayCard("SuspiciousChest");
+            GoToPlayCardPhase(dungeon);
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            QuickHandStorage(ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHPCheckZero();
+            QuickHandCheckZero();
+        }
     }
 }
