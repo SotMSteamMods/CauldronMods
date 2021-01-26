@@ -12,6 +12,7 @@ namespace Cauldron.Outlander
     {
         public OutlanderCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             base.CharacterCard.UnderLocation.OverrideIsInPlay = false;
         }
 
