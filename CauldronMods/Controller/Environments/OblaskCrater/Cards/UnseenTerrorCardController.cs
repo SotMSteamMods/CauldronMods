@@ -41,7 +41,7 @@ namespace Cauldron.OblaskCrater
             }
             if (storedDealDamageActions != null && storedDealDamageActions.Count() > 0)
             {
-                base.AddToTemporaryTriggerList(base.AddPreventDamageTrigger((dda) => !storedDealDamageActions.Select((item) => item.Target).Contains(dda.DamageSource.Card)));
+                base.AddToTemporaryTriggerList(base.AddPreventDamageTrigger((dda) => dda.Target == base.Card && !storedDealDamageActions.Select((item) => item.Target).Contains(dda.DamageSource.Card)));
             }
 
             yield break;
