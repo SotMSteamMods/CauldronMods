@@ -647,6 +647,23 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRovingSlime_Empty()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If if is not a fate card, this card deals each non-environment target 1 toxic damage.
+            Card slime = PlayCard("RovingSlime");
+            GoToPlayCardPhase(dungeon);
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHPCheckZero();
+        }
+
+        [Test()]
         public void TestShopkeeper()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
@@ -692,6 +709,59 @@ namespace CauldronTests
             DestroyCard(shop, baron.CharacterCard);
             AssertInTrash(hakaTop);
 
+        }
+
+        [Test()]
+        public void TestStoneWarden_Fate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H} melee damage. If it is not a fate card, this card deals the non-environment target with the lowest HP 2 melee damage.
+            Card stone = PlayCard("StoneWarden");
+            GoToPlayCardPhase(dungeon);
+            PutInTrash("HighGround");
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHPCheck(0, 0, 0, -3);
+        }
+
+        [Test()]
+        public void TestStoneWarden_NotFate()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H} melee damage. If it is not a fate card, this card deals the non-environment target with the lowest HP 2 melee damage.
+            Card stone = PlayCard("StoneWarden");
+            GoToPlayCardPhase(dungeon);
+            PutInTrash("Shopkeeper");
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHPCheck(0, -2, 0, 0);
+        }
+
+        [Test()]
+        public void TestStoneWarden_Empty()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //At the end of the environment turn, check the top card of the environment trash.
+            //If it is a fate card, this card deals the hero target with the highest HP {H} melee damage. If it is not a fate card, this card deals the non-environment target with the lowest HP 2 melee damage.
+            Card stone = PlayCard("StoneWarden");
+            GoToPlayCardPhase(dungeon);
+
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToEndOfTurn(dungeon);
+            QuickHPCheckZero();
         }
     }
 }
