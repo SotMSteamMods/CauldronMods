@@ -26,7 +26,7 @@ namespace Cauldron.CatchwaterHarbor
         {
             //When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.
             List<Card> storeHighest = new List<Card>();
-            IEnumerator coroutine = GameController.FindTargetsWithHighestHitPoints(1, 1, (Card c) => c.IsHeroCharacterCard && GameController.IsCardVisibleToCardSource(c, GetCardSource()), storeHighest, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.FindTargetsWithHighestHitPoints(1, 1, (Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), storeHighest, cardSource: GetCardSource());
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);
@@ -36,10 +36,10 @@ namespace Cauldron.CatchwaterHarbor
                 this.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(storeHighest != null && storeHighest.Count > 0)
+            if (storeHighest != null && storeHighest.Count > 0)
             {
                 Card highestHero = storeHighest.First();
-                if(storeHighest.Count > 1)
+                if (storeHighest.Count > 1)
                 {
 
                     List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
@@ -53,7 +53,7 @@ namespace Cauldron.CatchwaterHarbor
                         this.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    if(DidSelectCard(storedResults))
+                    if (DidSelectCard(storedResults))
                     {
                         highestHero = GetSelectedCard(storedResults);
                     }
@@ -73,14 +73,15 @@ namespace Cauldron.CatchwaterHarbor
                 }
 
                 //Each other player must discard a card that shares a keyword with that card.
-                if(DidDiscardCards(storedDiscard))
+                if (DidDiscardCards(storedDiscard))
                 {
                     Card discardedCard = storedDiscard.First().CardToDiscard;
                     List<Card> list = new List<Card>();
                     list.Add(discardedCard);
                     IEnumerable<string> keywords = GameController.GetAllKeywords(discardedCard);
                     Func<Card, bool> cardCriteria = (Card c) => GameController.GetAllKeywords(c).Intersect(keywords).Any();
-                    coroutine = base.GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt != httc.TurnTaker), SelectionType.DiscardCard, (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), additionalCriteria: cardCriteria, cardSource: GetCardSource()), associatedCards: list, cardSource: GetCardSource());
+                    var ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt != httc.TurnTaker && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
+                    coroutine = base.GameController.SelectTurnTakersAndDoAction(DecisionMaker, ttCriteria, SelectionType.DiscardCard, (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), additionalCriteria: cardCriteria, cardSource: GetCardSource()), associatedCards: list, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

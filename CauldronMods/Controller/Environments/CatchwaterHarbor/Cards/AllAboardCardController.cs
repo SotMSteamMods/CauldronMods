@@ -12,6 +12,7 @@ namespace Cauldron.CatchwaterHarbor
     {
         public AllAboardCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
             AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
