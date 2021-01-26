@@ -41,5 +41,62 @@ namespace CauldronTests
 
             AssertHasKeyword("ongoing", new string[] { "AnchoredFragment", "DimensionalInsinuation", "KnightsHatred", "OutOfTouch" });
         }
+
+        [Test]
+        public void TestOutlander_Start()
+        {
+            SetupGameController("Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Search the villain deck for all Trace cards and put them beneath this card. Put 1 random Trace card from beneath this one into play. Shuffle the villain deck.
+            AssertNumberOfCardsUnderCard(outlander.CharacterCard, 4);
+
+            Assert.AreEqual(1, FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).Count());
+        }
+
+        [Test]
+        public void TestOutlander_Front()
+        {
+            SetupGameController("Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //Cards beneath this one are not considered in play. 
+            AssertNumberOfCardsInPlay(outlander, 2);
+
+            //Trace cards are indestructible.
+            Card trace = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.DoKeywordsContain("trace")).FirstOrDefault();
+            DestroyCard(trace);
+            AssertIsInPlay(trace);
+
+            //When {Outlander} would be destroyed instead flip his villain character cards.
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+            AssertNotGameOver();
+
+            //Can't test flip because Outlander flips right back
+        }
+
+        [Test]
+        public void TestOutlander_Front_Advanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" }, true);
+            StartGame();
+
+            //Whenever {Outlander} flips to this side, he becomes immune to damage until the start of the next villain turn.
+            DealDamage(haka, outlander, 100, DamageType.Melee);
+
+            QuickHPStorage(outlander);
+            DealDamage(haka, outlander, 3, DamageType.Melee);
+            QuickHPCheck(0);
+
+            GoToStartOfTurn(env);
+            QuickHPStorage(outlander);
+            DealDamage(haka, outlander, 3, DamageType.Melee);
+            QuickHPCheck(0);
+
+            GoToStartOfTurn(outlander);
+            QuickHPStorage(outlander);
+            DealDamage(haka, outlander, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+        }
     }
 }
