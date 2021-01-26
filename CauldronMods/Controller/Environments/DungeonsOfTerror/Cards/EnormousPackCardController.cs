@@ -12,7 +12,8 @@ namespace Cauldron.DungeonsOfTerror
     {
         public EnormousPackCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowHeroWithMostCards(true);
+            SpecialStringMaker.ShowSpecialString(() => BuildTopCardOfLocationSpecialString(TurnTaker.Trash));
+            SpecialStringMaker.ShowHeroWithMostCards(true).Condition = () => (IsTopCardOfLocationFate(TurnTaker.Trash) != null && !IsTopCardOfLocationFate(TurnTaker.Trash).Value) || IsRingOfForesightInPlay();
         }
 
         public override IEnumerator Play()
