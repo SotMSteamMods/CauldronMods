@@ -645,5 +645,53 @@ namespace CauldronTests
             GoToEndOfTurn(dungeon);
             QuickHPCheck(-1, -1, -1, -1);
         }
+
+        [Test()]
+        public void TestShopkeeper()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //When this card enters play, reveal the top card of each hero deck, and move it beneath this card. Cards beneath this one are not considered in play.
+            Card baronTop = GetTopCardOfDeck(baron);
+            Card raTop = PutOnDeck("FlameBarrier");
+            Card legacyTop = GetTopCardOfDeck(legacy);
+            Card hakaTop = GetTopCardOfDeck(haka);
+
+            Card shop = PlayCard("Shopkeeper");
+            AssertNumberOfCardsUnderCard(shop, 3);
+            AssertUnderCard(shop, raTop);
+            AssertUnderCard(shop, legacyTop);
+            AssertUnderCard(shop, hakaTop);
+            AssertOnTopOfDeck(baronTop);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(legacy, 0);
+            AssertNumberOfCardsInRevealed(haka, 0);
+
+            //At the start of their turn, a player may discard a card to play or draw one of their cards from beneath this.
+            Card toDiscard1 = GetRandomCardFromHand(ra);
+            Card toDiscard2 = GetRandomCardFromHand(legacy);
+
+            DecisionSelectFunctions = new int?[] { 0, 1 };
+            DecisionSelectCards = new Card[] { toDiscard1, toDiscard2,  null };
+            
+            GoToStartOfTurn(ra);
+            AssertInTrash(toDiscard1);
+            AssertInPlayArea(ra, raTop);
+
+            GoToStartOfTurn(legacy);
+            AssertInTrash(toDiscard2);
+            AssertInHand(legacyTop);
+
+            QuickHandStorage(haka);
+            GoToStartOfTurn(haka);
+            QuickHandCheck(0);
+            AssertNumberOfCardsUnderCard(shop, 1);
+
+            DestroyCard(shop, baron.CharacterCard);
+            AssertInTrash(hakaTop);
+
+        }
     }
 }
