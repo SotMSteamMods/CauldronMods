@@ -12,6 +12,7 @@ namespace Cauldron.DungeonsOfTerror
     {
         public DubiousEdiblesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => BuildTopCardOfLocationSpecialString(TurnTaker.Trash));
         }
 
         public override IEnumerator Play()
