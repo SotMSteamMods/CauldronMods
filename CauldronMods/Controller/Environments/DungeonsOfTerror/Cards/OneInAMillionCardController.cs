@@ -37,7 +37,7 @@ namespace Cauldron.DungeonsOfTerror
                 cardsToCheck = TurnTaker.Deck.GetTopCards(2);
             }
             List<int> storedResults = new List<int>();
-            coroutine = CheckForNumberOfFates(cardsToCheck, storedResults);
+            coroutine = CheckForNumberOfFates(cardsToCheck, storedResults, TurnTaker.Deck);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

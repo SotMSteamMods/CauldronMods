@@ -582,5 +582,32 @@ namespace CauldronTests
             AssertInTrash(inn);
 
         }
+
+        [Test()]
+        public void TestRingOfForesight()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Play this card next to a hero. At the start of their turn, they regain 1HP.
+            DecisionSelectCard = ra.CharacterCard;
+            SetHitPoints(ra, 20);
+            Card ring = PlayCard("RingOfForesight");
+            AssertNextToCard(ring, ra.CharacterCard);
+            GoToEndOfTurn(baron);
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToStartOfTurn(ra);
+            QuickHPCheck(0, 1, 0, 0);
+
+            //When checking a card in the environment trash, the players may first destroy this card, and then check it instead of the original card.
+            PutInTrash("HighGround");
+            DecisionYesNo = true;
+            QuickHPUpdate();
+            PlayCard("DubiousEdibles");
+            QuickHPCheck(0, 4, 0, 0);
+            AssertInTrash(ring);
+
+        }
     }
 }

@@ -20,7 +20,8 @@ namespace Cauldron.DungeonsOfTerror
             //When this card enters play, check the top card of the environment trash.
             List<int> storedResults = new List<int>();
             Card cardToCheck = TurnTaker.Trash.TopCard;
-            IEnumerator coroutine = CheckForNumberOfFates(cardToCheck.ToEnumerable(), storedResults);
+            List<bool> suppressMessage = new List<bool>();
+            IEnumerator coroutine = CheckForNumberOfFates(cardToCheck.ToEnumerable(), storedResults, TurnTaker.Trash, suppressMessage);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -40,7 +41,10 @@ namespace Cauldron.DungeonsOfTerror
             else if (storedResults.Any() && storedResults.First() == 0)
             {
                 //If it is not a fate card, the player with the most cards in hand discards 2 cards
-                message = GameController.SendMessageAction($"The top card of the environment trash is not a fate card!", Priority.High, GetCardSource(), associatedCards: cardToCheck.ToEnumerable(), showCardSource: true);
+                if (suppressMessage.Any() && suppressMessage.First() != true)
+                {
+                    message = GameController.SendMessageAction($"The top card of the environment trash is not a fate card!", Priority.High, GetCardSource(), associatedCards: cardToCheck.ToEnumerable(), showCardSource: true);
+                }
                 effect = MostCardsInHandDiscards2();
             }
             else
