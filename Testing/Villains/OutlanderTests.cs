@@ -375,5 +375,60 @@ namespace CauldronTests
             GoToEndOfTurn(outlander);
             QuickHPCheck(-3, 0, -3);
         }
+
+        [Test]
+        public void TestDimensionalInsinuation()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Parse", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            StackAfterShuffle(outlander.TurnTaker.Deck, new string[] { DisarmingBlow });
+            //When this card enters play, Search the villain deck for a copy of Anchored Fragment and put it into play. Shuffle the villain deck and play its top card.
+            QuickShuffleStorage(outlander);
+            Card dim = PlayCard(DimensionalInsinuation);
+            AssertIsInPlay(AnchoredFragment);
+            AssertInTrash(DisarmingBlow);
+            QuickShuffleCheck(1);
+
+            PlayCard("TaMoko");
+            PlayCard("FleshToIron");
+            //Damage dealt by {Outlander} is irreducible. 
+            QuickHPStorage(haka, parse, scholar);
+            DealDamage(outlander, haka, 2, DamageType.Melee);
+            DealDamage(outlander, parse, 2, DamageType.Melee);
+            DealDamage(outlander, scholar, 2, DamageType.Melee);
+            QuickHPCheck(-2, -2, -2);
+
+            //At the start of the villain turn, destroy this card.
+            GoToStartOfTurn(outlander);
+            AssertInTrash(dim);
+        }
+
+        [Test]
+        public void TestDisarmingBlow()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Parse", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            PlayCard("FleshToIron");
+
+            //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
+            //Any hero damaged this way discards 1 card.
+            QuickHPStorage(haka, parse, scholar);
+            QuickHandStorage(haka, parse, scholar);
+            PlayCard(DisarmingBlow);
+            QuickHPCheck(-3, 0, -1);
+            QuickHandCheck(-1, 0, -1);
+
+            PlayCard("FleshToIron");
+
+            QuickHPStorage(haka, parse, scholar);
+            QuickHandStorage(haka, parse, scholar);
+            PlayCard(DisarmingBlow);
+            QuickHPCheck(-3, 0, 0);
+            QuickHandCheck(-1, 0, 0);
+        }
     }
 }
