@@ -15,7 +15,40 @@ namespace Cauldron.Dynamo
 
         }
 
-        //{Dynamo} deals the hero target with the second highest HP {H} energy damage.
-        //Increase damage dealt to that target by environment cards by 1 until the start of the next villain turn.
+        public override IEnumerator Play()
+        {
+            //{Dynamo} deals the hero target with the second highest HP {H} energy damage.
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 2, (Card c) => c.IsHero && c.IsTarget, (Card c) => base.Game.H, DamageType.Energy, addStatusEffect: (DealDamageAction action) => this.IncreaseDamageTakenResponse(action));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private IEnumerator IncreaseDamageTakenResponse(DealDamageAction action)
+        {
+            //Increase damage dealt to that target by environment cards by 1 until the start of the next villain turn.
+            IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(1);
+            statusEffect.TargetCriteria.IsSpecificCard = action.Target;
+            statusEffect.SourceCriteria.IsEnvironment = true;
+            statusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            statusEffect.UntilCardLeavesPlay(action.Target);
+
+            IEnumerator coroutine = base.AddStatusEffect(statusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }
