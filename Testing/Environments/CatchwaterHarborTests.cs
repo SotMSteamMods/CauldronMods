@@ -907,6 +907,35 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestTheCervantesClub_ExcludesOffToSideSky()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "SkyScraper", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 10);
+            GoToPlayCardPhase(catchwater);
+            //At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.
+            //If any One-shots were discarded this way, that player discards 2 cards, then draws a card.
+            PlayCard("TheCervantesClub");
+
+
+            Card raTop = PutOnDeck("FireBlast");
+            Card raTop2 = ra.TurnTaker.Deck.GetTopCards(2).ElementAt(1);
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            AssertNextDecisionChoices(notIncluded: offToSideSky);
+            DecisionSelectCards = new Card[] { ra.CharacterCard, ra.HeroTurnTaker.Hand.TopCard, ra.HeroTurnTaker.Hand.GetTopCards(2).ElementAt(1) };
+            DecisionSelectFunction = 1;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(2);
+            AssertInTrash(raTop);
+            AssertInTrash(raTop2);
+            QuickHandCheck(-1);
+
+        }
+
+        [Test()]
         public void TestTheCervantesClub_Xis2_NoOneShot()
         {
             SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
