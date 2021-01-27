@@ -166,6 +166,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestByrgsNail_Skyscraper()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "SkyScraper", "Cauldron.VaultFive");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            SetHitPoints(legacy, 6);
+            SetHitPoints(ra, 7);
+            //a hero from its deck deals the 3 targets with the lowest HP 3 melee damage each
+            DecisionSelectTurnTaker = sky.TurnTaker;
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            IEnumerable<Card> inPlaySky = sky.TurnTaker.PlayArea.Cards.Where(c => c.IsCharacter);
+            AssertNextDecisionChoices(notIncluded: offToSideSky);
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, sky.CharacterCard);
+            Card artifact = PlayCard("ByrgsNail");
+            //lowest target is battalion, ra, legacy
+            QuickHPCheck(0, -3, -3, -3, 0, 0);
+        }
+
+        [Test()]
         public void TestDeeperIntoTheVault_Reveal()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.VaultFive");
