@@ -19,6 +19,7 @@ namespace Cauldron.Dynamo
         {
             //At the start of the villain turn, destroy all Plot cards and this card.
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyCardsResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.DestroyCard });
+
             //When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
             base.AddWhenDestroyedTrigger(this.DealDamageResponse, TriggerType.DealDamage);
         }
