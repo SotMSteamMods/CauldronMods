@@ -268,5 +268,83 @@ namespace CauldronTests
             AssertMaxNumberOfDecisions(2);
             PlayCard("AtomicPunch");
         }
+        [Test]
+        public void TestCellularIrradiationWithIrradiatedCards([Values(0, 1, 2, 3, 4)] int numIrradiated)
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card thokk = PutOnDeck("Thokk");
+            Card surge = PutOnDeck("SurgeOfStrength");
+            Card ring = PutOnDeck("TheLegacyRing");
+            Card charge = PutOnDeck("MotivationalCharge");
+            Card fort = PutOnDeck("Fortitude");
+            var drawOrder = new Card[] { charge, fort, ring, surge, thokk };
+
+            for(int i = 0; i < numIrradiated; i++)
+            {
+                UsePower(pyre);
+            }
+
+            DecisionSelectCard = fort;
+
+            Card cell = PutOnDeck("CellularIrradiation");
+            QuickHandStorage(pyre, legacy, bunker, scholar);
+            QuickHPStorage(baron, pyre, legacy, bunker, scholar);
+            PlayCard(cell);
+
+            int numCardsDrawn = 0;
+            int numPowersLeft = 1;
+            int numHPLoss = 0;
+            Location fortLoc = legacy.HeroTurnTaker.Deck;
+
+            if(numIrradiated >= 1)
+            {
+                fortLoc = legacy.HeroTurnTaker.Hand;
+                numPowersLeft = 0;
+            }
+            if (numIrradiated >= 2)
+            {
+                numCardsDrawn = 1;
+            }
+            if(numIrradiated >= 3)
+            {
+                numHPLoss = -3;
+            }
+            if(numIrradiated >= 4)
+            {
+                numCardsDrawn--;
+                fortLoc = legacy.TurnTaker.PlayArea;
+            }
+
+            AssertNumberOfUsablePowers(legacy, numPowersLeft);
+            QuickHandCheck(0, numCardsDrawn, 0, 0);
+            QuickHPCheck(0, 0, numHPLoss, 0, 0);
+            Assert.AreEqual(fortLoc, fort.Location, $"Fortitude should have been in {fortLoc.GetFriendlyName()}, but it was in {fort.Location.GetFriendlyName()}");
+        }
+        [Test]
+        public void TestCellularIrradiationOnlyCountSamePlayerCards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card chromo = PutOnDeck("Chromodynamics");
+            DecisionSelectTurnTaker = pyre.TurnTaker;
+            UsePower(pyre);
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card fort = PutOnDeck("Fortitude");
+            UsePower(pyre);
+
+            QuickHandStorage(legacy);
+            QuickHPStorage(legacy);
+            PlayCard("CellularIrradiation");
+            AssertNumberOfUsablePowers(legacy, 0);
+            QuickHandCheckZero();
+            QuickHPCheckZero();
+        }
     }
 }
