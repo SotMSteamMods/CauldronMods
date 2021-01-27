@@ -577,16 +577,18 @@ namespace CauldronTests
         [Test()]
         public void TestHarkinParishJr_EntersPlay_TiedForHighest()
         {
-            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "SkyScraper", "Cauldron.CatchwaterHarbor");
             StartGame();
             DestroyNonCharacterVillainCards();
-            SetHitPoints(haka, ra.CharacterCard.HitPoints.Value);
+            SetHitPoints(haka, sky.CharacterCard.HitPoints.Value);
             SetHitPoints(bunker, 10);
             Card hakaOngoing = PutInHand("Dominion");
             Card raOngoing = PutInHand("FlameBarrier");
             Card bunkerOngoing1 = PutInHand("AmmoDrop");
             Card bunkerOngoing2 = PutInHand("TurretMode");
 
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            AssertNextDecisionChoices(notIncluded: offToSideSky);
             DecisionSelectCards = new Card[] { haka.CharacterCard, hakaOngoing, raOngoing, bunkerOngoing1 };
             QuickHandStorage(ra, bunker, haka);
             //When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.
