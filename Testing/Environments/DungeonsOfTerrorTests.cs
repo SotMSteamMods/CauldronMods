@@ -896,5 +896,57 @@ namespace CauldronTests
             GoToStartOfTurn(legacy);
             AssertInTrash(bard);
         }
+
+        [Test()]
+        public void TestUnderleveled()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //While the top card of the environment trash is a fate card, increase damage dealt by villain targets by 1. 
+            //While it is not a fate card, increase damage dealt by hero targets by 1.
+
+            Card underleveled = PlayCard("Underleveled");
+
+            //when nothing, everything should be normal
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //put fate in trash
+            PutInTrash("EnormousPack");
+
+            //villains increased
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Fire);
+            QuickHPCheck(-4);
+
+            //put not fate in trash
+            PutInTrash("StoneWarden");
+
+            //heroes increased
+            QuickHPStorage(baron);
+            DealDamage(ra, baron, 3, DamageType.Fire);
+            QuickHPCheck(-4);
+
+            QuickHPStorage(ra);
+            DealDamage(baron, ra, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            //At the start of the environment turn, destroy this card.
+            GoToStartOfTurn(dungeon);
+            AssertInTrash(underleveled);
+
+
+        }
     }
 }
