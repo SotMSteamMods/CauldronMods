@@ -24,7 +24,7 @@ namespace Cauldron.NightloreCitadel
             get
             {
                 bool? firing = GetCardPropertyJournalEntryBoolean(Firing);
-                if(firing != null && firing.Value == true)
+                if (firing != null && firing.Value == true)
                 {
                     return false;
                 }
@@ -37,7 +37,7 @@ namespace Cauldron.NightloreCitadel
             AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, MoveCardsResponse, TriggerType.MoveCard);
             AddBeforeLeavesPlayActions(MoveCardsUnderThisCardToTrash);
             // If there are ever {H} times 3 cards beneath this one, this card deals 1 target 15 radiant damage and those cards are discarded.
-            AddTrigger((GameAction action) => CanConnonFire && Card.UnderLocation.NumberOfCards == Game.H * 3, FireCannonResponse, new TriggerType[]
+            AddTrigger((GameAction action) => CanConnonFire && Card.UnderLocation.NumberOfCards >= Game.H * 3, FireCannonResponse, new TriggerType[]
                 {
                     TriggerType.DealDamage,
                     TriggerType.MoveCard
@@ -107,8 +107,8 @@ namespace Cauldron.NightloreCitadel
         private IEnumerator MoveCardsResponse(PhaseChangeAction phaseChange)
         {
             //each player may put 1 card from their hand beneath this one.
-            IEnumerator coroutine = EachPlayerMovesCards(0, 1, SelectionType.MoveCardToUnderCard, new LinqCardCriteria((Card c) => true), 
-                (HeroTurnTaker htt) => htt.Hand, (HeroTurnTaker htt) => new List<MoveCardDestination>(){ new MoveCardDestination(Card.UnderLocation) }, 
+            IEnumerator coroutine = EachPlayerMovesCards(0, 1, SelectionType.MoveCardToUnderCard, new LinqCardCriteria((Card c) => true),
+                (HeroTurnTaker htt) => htt.Hand, (HeroTurnTaker htt) => new List<MoveCardDestination>() { new MoveCardDestination(Card.UnderLocation) },
                 playIfMovingToPlayArea: false, associatedCards: Card.ToEnumerable());
 
             if (base.UseUnityCoroutines)
