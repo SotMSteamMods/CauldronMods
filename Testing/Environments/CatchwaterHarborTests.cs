@@ -8,7 +8,7 @@ using System.Linq;
 namespace CauldronTests
 {
     [TestFixture()]
-    public class CatchwaterHarborTests : BaseTest
+    public class CatchwaterHarborTests : CauldronBaseTest
     {
 
         #region CatchwaterHarborHelperFunctions
@@ -828,6 +828,32 @@ namespace CauldronTests
             AddCantGainHPDamageTrigger(catchwater, false, true);
             GoToEndOfTurn(catchwater);
             QuickHPCheck(0, -1 - num, -1 - num, -4 - num, 0, 0);
+
+        }
+
+        [Test()]
+        public void TestSmoothCriminal_Issue808()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card ss = PlayCard("SSEscape");
+            Card overbrook = PlayCard("ToOverbrook");
+            Card allAboard = GetCardInPlay("AllAboard");
+            Card smooth = PlayCard("SmoothCriminal");
+
+            List<Card> envCards = new List<Card>() { ss, overbrook, allAboard, smooth };
+            DestroyCards(c => c.IsEnvironment && !envCards.Contains(c));
+
+
+            //At the end of the environment turn, this card deals each hero target X projectile damage, where X is 1 plus the number of Transports in play.
+            GoToPlayCardPhase(catchwater);
+            PreventEndOfTurnEffects(ra, allAboard);
+            AddDestroyEnvironmentCardCounterAttackTrigger(ra, ra.CharacterCard, ra.CharacterCard);
+            DecisionSelectCard = ss;
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, bunker.CharacterCard, haka.CharacterCard, smooth);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(0, -3, -2, -2, 0);
 
         }
 

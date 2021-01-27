@@ -21,7 +21,21 @@ namespace Cauldron.CatchwaterHarbor
             AddReduceDamageTrigger((Card c) => IsGangster(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 1);
 
             //At the end of the environment turn, this card deals each hero target X projectile damage, where X is 1 plus the number of Transports in play.
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.All, 1 + GetNumberOfTransportsInPlay(), DamageType.Projectile, dynamicAmount: (Card c) => 1 + GetNumberOfTransportsInPlay());
+            AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DealDamageResponse, TriggerType.DealDamage);
+        }
+
+        private IEnumerator DealDamageResponse(PhaseChangeAction pca)
+        {
+            IEnumerator coroutine = DealDamage(Card, (Card c) => c.IsHero, (Card c) => 1 + GetNumberOfTransportsInPlay(), DamageType.Projectile);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }

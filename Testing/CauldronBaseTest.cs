@@ -3,6 +3,8 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -135,6 +137,20 @@ namespace CauldronTests
             preventPhaseEffectStatusEffect.UntilEndOfNextTurn(ttc.TurnTaker);
             preventPhaseEffectStatusEffect.CardCriteria.IsSpecificCard = cardToPrevent;
             RunCoroutine(base.GameController.AddStatusEffect(preventPhaseEffectStatusEffect, showMessage: true, ttc.CharacterCardController.GetCardSource()));
+        }
+
+        protected void AddShuffleTrashCounterAttackTrigger(TurnTakerController ttc, TurnTaker turnTakerToReshuffleTrash, Card cardSource)
+        {
+            Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.Target == ttc.CharacterCard;
+            Func<DealDamageAction, IEnumerator> response = (DealDamageAction dd) => this.GameController.ShuffleTrashIntoDeck(this.GameController.FindTurnTakerController(turnTakerToReshuffleTrash));
+            this.GameController.AddTrigger<DealDamageAction>(new Trigger<DealDamageAction>(this.GameController, criteria, response, new TriggerType[] { TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After, this.GameController.FindCardController(cardSource).GetCardSource()));
+        }
+
+        protected void AddDestroyEnvironmentCardCounterAttackTrigger(HeroTurnTakerController httc, Card target, Card cardSource)
+        {
+            Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.Target == target;
+            Func<DealDamageAction, IEnumerator> response = (DealDamageAction dd) => this.GameController.SelectAndDestroyCard(httc, new LinqCardCriteria(c => c.IsEnvironment), false, cardSource: this.GameController.FindCardController(cardSource).GetCardSource());
+            this.GameController.AddTrigger<DealDamageAction>(new Trigger<DealDamageAction>(this.GameController, criteria, response, new TriggerType[] { TriggerType.DestroyCard }, TriggerTiming.After, this.GameController.FindCardController(cardSource).GetCardSource()));
         }
 
         protected void AssertCardConfiguration(string identifier, string[] keywords = null, int hitpoints = 0)
