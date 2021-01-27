@@ -455,20 +455,31 @@ namespace CauldronTests
         public void TestDragonborn()
         {
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
-            outlander.DebugTraceToPlay = GetCard(Archangel);
+            outlander.DebugTraceToPlay = GetCard(Dragonborn);
             StartGame();
 
-            SetHitPoints(new TurnTakerController[] { haka, scholar }, 5);
-            SetHitPoints(unity, 4);
-            Card swift = PlayCard("SwiftBot");
+            Card traffic = PlayCard("TrafficPileup");
 
-            //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
-            //Any hero damaged this way discards 1 card.
-            QuickHPStorage(swift);
-            QuickHandStorage(unity);
-            PlayCard(DisarmingBlow);
-            QuickHPCheck(-3);
-            QuickHandCheck(0);
+            //The first time {Outlander} is dealt damage each turn, he deals the source of that damage 2 fire damage.
+            QuickHPStorage(haka, unity, scholar);
+            DealDamage(haka, outlander, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0);
+
+            //Once per turn
+            QuickHPStorage(haka, unity, scholar);
+            DealDamage(unity, outlander, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, 0);
+
+            //At the end of the villain turn, {Outlander} deals each non-villain target 1 fire damage.
+            QuickHPStorage(haka.CharacterCard, unity.CharacterCard, scholar.CharacterCard, traffic);
+            GoToEndOfTurn(outlander);
+            QuickHPCheck(-1, -1, -1, -1);
+
+            //New turn
+            GoToStartOfTurn(haka);
+            QuickHPStorage(haka, unity, scholar);
+            DealDamage(unity, outlander, 2, DamageType.Melee);
+            QuickHPCheck(0, -2, 0);
         }
     }
 }
