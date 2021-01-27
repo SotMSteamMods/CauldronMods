@@ -15,6 +15,10 @@ namespace Cauldron.Dynamo
 
         }
 
-        //Reduce damage dealt to villain targets by 1.
+        public override void AddTriggers()
+        {
+            //Reduce damage dealt to villain targets by 1.
+            base.AddReduceDamageTrigger((Card c) => base.IsVillainTarget(c), 1);
+        }
     }
 }
