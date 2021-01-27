@@ -206,5 +206,67 @@ namespace CauldronTests
             AssertInTrash(ring, plating);
             AssertInHand(surge);
         }
+        [Test]
+        public void TestAtomicPunchIrradiateOtherCards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card ring = PutInHand("TheLegacyRing");
+            Card surge = PutInHand("SurgeOfStrength");
+            Card fort = PutInHand("Fortitude");
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectCards = new Card[] { ring, surge, baron.CharacterCard };
+            QuickHPStorage(baron, pyre, legacy, bunker, scholar);
+            PlayCard("AtomicPunch");
+            QuickHPCheck(-2, 0, 0, 0, 0);
+            AssertIrradiated(ring);
+            AssertIrradiated(surge);
+            AssertNotIrradiated(fort);
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
+        [Test]
+        public void TestAtomicPunchIrradiateOwnCards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card chromo = PutInHand("Chromodynamics");
+            Card drive = PutInHand("CherenkovDrive");
+            Card ion = PutInHand("IonTrace");
+
+            DecisionSelectTurnTaker = pyre.TurnTaker;
+            DecisionSelectCards = new Card[] { chromo, drive, baron.CharacterCard };
+            QuickHPStorage(baron, pyre, legacy, bunker, scholar);
+            PlayCard("AtomicPunch");
+            QuickHPCheck(-3, 0, 0, 0, 0);
+            AssertIrradiated(chromo);
+            AssertIrradiated(drive);
+            AssertNotIrradiated(ion);
+            AssertNumberOfStatusEffectsInPlay(3);
+        }
+        [Test]
+        public void TestAtomicPunchNotIrradiateAlreadyIrradiated()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectTurnTaker = pyre.TurnTaker;
+            MoveAllCardsFromHandToDeck(pyre);
+            Card ion = PutOnDeck("IonTrace");
+            Card drive = PutOnDeck("CherenkovDrive");
+            UsePower(pyre);
+            UsePower(pyre);
+            AssertIrradiated(ion);
+            AssertIrradiated(drive);
+
+            //which TurnTaker, and who to damage - no cards are possible to select
+            AssertMaxNumberOfDecisions(2);
+            PlayCard("AtomicPunch");
+        }
     }
 }
