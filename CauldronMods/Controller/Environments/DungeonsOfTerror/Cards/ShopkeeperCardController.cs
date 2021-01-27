@@ -30,8 +30,9 @@ namespace Cauldron.DungeonsOfTerror
         private IEnumerator DiscardToPlayOrDrawResponse(PhaseChangeAction pca)
         {
             HeroTurnTakerController httc = FindHeroTurnTakerController(pca.ToPhase.TurnTaker.ToHero());
+            IEnumerable<Card> ownedCards = Card.UnderLocation.Cards.Where(c => c.Owner == httc.TurnTaker);
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>() ;
-            IEnumerator coroutine = GameController.SelectAndDiscardCard(httc, optional: true, storedResults: storedResults, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDiscardCard(httc, optional: true, storedResults: storedResults, associatedCards: ownedCards, cardSource: GetCardSource());
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);
@@ -42,7 +43,6 @@ namespace Cauldron.DungeonsOfTerror
             }
             if(DidDiscardCards(storedResults))
             {
-                IEnumerable<Card> ownedCards = Card.UnderLocation.Cards.Where(c => c.Owner == httc.TurnTaker);
                 List<SelectCardDecision> storedChoice = new List<SelectCardDecision>() ;
                 coroutine = GameController.SelectCardAndStoreResults(httc, SelectionType.PlayCard, ownedCards, storedChoice, cardSource: GetCardSource());
                 if (this.UseUnityCoroutines)

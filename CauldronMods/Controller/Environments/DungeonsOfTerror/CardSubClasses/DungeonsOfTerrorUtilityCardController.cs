@@ -40,14 +40,9 @@ namespace Cauldron.DungeonsOfTerror
             {
                 yield break;
             }
-
-            if(checkingLocation != null && checkingLocation == TurnTaker.Trash && IsRingOfForesightInPlay())
+            if(checkingLocation != null && checkingLocation == TurnTaker.Trash)
             {
-                //When checking a card in the environment trash, the players may first destroy ring of foresight, and then check it instead of the original card.
-                Card ring = FindRingOfForesight().First();
-                CardSource ringSource = FindCardController(ring).GetCardSource();
-                List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
-                IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, ring, storedResults: storedYesNo, cardSource: ringSource);
+                IEnumerator coroutine = GameController.SendMessageAction("Checking if the top card of the environment trash is a fate card!", Priority.Medium, GetCardSource(), showCardSource: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -56,9 +51,14 @@ namespace Cauldron.DungeonsOfTerror
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                if(DidPlayerAnswerYes(storedYesNo))
+
+                if (IsRingOfForesightInPlay())
                 {
-                    coroutine = GameController.DestroyCard(DecisionMaker, ring, cardSource: ringSource);
+                    //When checking a card in the environment trash, the players may first destroy ring of foresight, and then check it instead of the original card.
+                    Card ring = FindRingOfForesight().First();
+                    CardSource ringSource = FindCardController(ring).GetCardSource();
+                    List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
+                    coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, ring, storedResults: storedYesNo, cardSource: ringSource);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -66,25 +66,40 @@ namespace Cauldron.DungeonsOfTerror
                     else
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                    if (DidPlayerAnswerYes(storedYesNo))
+                    {
+                        coroutine = GameController.DestroyCard(DecisionMaker, ring, cardSource: ringSource);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        coroutine = GameController.SendMessageAction($"Checking if {ring.Title} is a fate card instead of the top card of {TurnTaker.Trash.GetFriendlyName()}", Priority.High, GetCardSource(), associatedCards: ring.ToEnumerable());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        cardsToCheck = ring.ToEnumerable();
+                        suppressMessage?.Add(true);
+                    }
+                    else
+                    {
+                        suppressMessage?.Add(false);
                     }
 
-                    coroutine = GameController.SendMessageAction($"Checking if {ring.Title} is a fate card instead of the top card of {TurnTaker.Trash.GetFriendlyName()}", Priority.High, GetCardSource(), associatedCards: ring.ToEnumerable());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                    cardsToCheck = ring.ToEnumerable();
-                    suppressMessage?.Add(true);
-                } else
-                {
-                    suppressMessage?.Add(false);
                 }
-               
             }
+
+            
 
             
             foreach (Card card in cardsToCheck)
