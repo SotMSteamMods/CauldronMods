@@ -481,5 +481,66 @@ namespace CauldronTests
             DealDamage(unity, outlander, 2, DamageType.Melee);
             QuickHPCheck(0, -2, 0);
         }
+
+        [Test]
+        public void TestKnightsHatred()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            Card hate = PlayCard(KnightsHatred);
+
+            QuickHPStorage(haka, outlander);
+            DealDamage(outlander, haka, 2, DamageType.Melee);
+            DealDamage(haka, outlander, 2, DamageType.Melee);
+            //Increase damage dealt by {Outlander} by 1.
+            //Reduce damage dealt to {Outlander} by 1.
+            QuickHPCheck(-3, -1);
+
+            //At the start of the villain turn, destroy this card.
+            GoToStartOfTurn(outlander);
+            AssertInTrash(hate);
+        }
+
+        [Test]
+        public void TestMagekiller()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Magekiller);
+            StartGame();
+
+            //The first time a hero one-shot enters play each turn, {Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
+
+            //Not a one-shot
+            QuickHPStorage(haka, scholar, unity);
+            PlayCard("TaMoko");
+            QuickHPCheck(0, 0, 0);
+
+            //First time
+            QuickHPStorage(haka, scholar, unity);
+            Card smash = PlayCard("ElbowSmash");
+            QuickHPCheck(-1, 0, 0);
+
+            //Only first time each turn
+            QuickHPStorage(scholar, haka, unity);
+            PutInHand(haka, smash);
+            PlayCard(smash);
+            QuickHPCheck(0, 0, 0);
+
+            SetHitPoints(haka, 17);
+            SetHitPoints(unity, 17);
+            //At the end of the villain turn, {Outlander} deals the hero target with the highest HP 3 melee damage.
+            QuickHPStorage(scholar, haka, unity);
+            GoToEndOfTurn(outlander);
+            QuickHPCheck(-3, 0, 0);
+
+            GoToStartOfTurn(haka);
+            //New turn
+            QuickHPStorage(haka, unity, scholar);
+            PutInHand(haka, smash);
+            PlayCard(smash);
+            QuickHPCheck(0, 0, -1);
+        }
     }
 }

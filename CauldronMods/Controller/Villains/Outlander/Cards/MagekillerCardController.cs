@@ -29,6 +29,7 @@ namespace Cauldron.Outlander
         private IEnumerator OncePerTurnResponse(CardEntersPlayAction action)
         {
             base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
+            var a = FindCardsWhere((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
             //...{Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
             IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 1, DamageType.Lightning, true);
             if (UseUnityCoroutines)
@@ -45,7 +46,7 @@ namespace Cauldron.Outlander
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals the hero target with the highest HP 3 melee damage.
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !c.IsHero && c.IsTarget, 3, DamageType.Melee);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 3, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
