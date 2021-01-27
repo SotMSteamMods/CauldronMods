@@ -12,6 +12,9 @@ namespace Cauldron.Dynamo
     {
         public HardenedCriminalsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //Reduce damage dealt to villain targets by 1.
     }
 }

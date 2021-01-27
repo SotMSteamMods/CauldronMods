@@ -12,6 +12,9 @@ namespace Cauldron.Dynamo
     {
         public CrimeSpreeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //At the end of the villain turn, the players may choose to play the top card of the environment deck. If they do not, discard the top card of the villain deck and {Dynamo} deals each hero target 1 energy damage.
     }
 }

@@ -12,6 +12,10 @@ namespace Cauldron.Dynamo
     {
         public HeresThePlanCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //Reveal cards from the top of the villain deck until a Plot is revealed. Put it into play and shuffle the other revealed cards back into the villain deck.
+        //The villain target with the highest HP deals each hero target {H - 1} melee damage.
     }
 }

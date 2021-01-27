@@ -12,6 +12,9 @@ namespace Cauldron.Dynamo
     {
         public WantonDestructionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 1} cards were destroyed this way, discard the top card of the villain deck.
     }
 }

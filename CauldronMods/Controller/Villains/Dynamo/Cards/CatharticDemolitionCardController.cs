@@ -12,6 +12,10 @@ namespace Cauldron.Dynamo
     {
         public CatharticDemolitionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //At the start of the villain turn, destroy all Plot cards and this card.
+        //When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
     }
 }

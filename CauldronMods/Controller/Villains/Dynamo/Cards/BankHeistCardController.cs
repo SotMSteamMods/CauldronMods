@@ -12,6 +12,9 @@ namespace Cauldron.Dynamo
     {
         public BankHeistCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
         }
+
+        //At the end of the villain turn, each player may discard 1 card. If fewer than {H - 1} cards were discarded this way, discard the top card of the villain deck.
     }
 }
