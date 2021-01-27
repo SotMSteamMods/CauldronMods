@@ -430,5 +430,45 @@ namespace CauldronTests
             QuickHPCheck(-3, 0, 0);
             QuickHandCheck(-1, 0, 0);
         }
+
+        [Test]
+        public void TestDisarmingBlow_NotHeroTakesDamage()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            SetHitPoints(new TurnTakerController[] { haka, scholar }, 5);
+            SetHitPoints(unity, 4);
+            Card swift = PlayCard("SwiftBot");
+
+            //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
+            //Any hero damaged this way discards 1 card.
+            QuickHPStorage(swift);
+            QuickHandStorage(unity);
+            PlayCard(DisarmingBlow);
+            QuickHPCheck(-3);
+            QuickHandCheck(0);
+        }
+
+        [Test]
+        public void TestDragonborn()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            SetHitPoints(new TurnTakerController[] { haka, scholar }, 5);
+            SetHitPoints(unity, 4);
+            Card swift = PlayCard("SwiftBot");
+
+            //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
+            //Any hero damaged this way discards 1 card.
+            QuickHPStorage(swift);
+            QuickHandStorage(unity);
+            PlayCard(DisarmingBlow);
+            QuickHPCheck(-3);
+            QuickHandCheck(0);
+        }
     }
 }
