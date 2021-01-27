@@ -36,7 +36,7 @@ namespace Cauldron.DungeonsOfTerror
             HeroTurnTakerController httc = FindHeroTurnTakerController(dca.HeroTurnTaker);
             DiscardCardAction fakeAction = new DiscardCardAction(GetCardSource(), httc, drawnCard, TurnTaker);
             List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(httc, SelectionType.DiscardCard, Card, fakeAction, storedResults: storedYesNo, associatedCards: drawnCard.ToEnumerable(), cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(httc, SelectionType.DiscardCard, drawnCard, fakeAction, storedResults: storedYesNo, associatedCards: drawnCard.ToEnumerable(), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

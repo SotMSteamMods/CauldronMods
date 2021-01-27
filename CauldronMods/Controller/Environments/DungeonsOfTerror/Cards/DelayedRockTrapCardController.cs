@@ -39,8 +39,16 @@ namespace Cauldron.DungeonsOfTerror
 
         private IEnumerator CardEntersTrashResponse(BulkMoveCardsAction bmca)
         {
-            IEnumerator coroutine;
-            foreach(Card card in bmca.CardsToMove)
+            IEnumerator coroutine = GameController.SendMessageAction("A card has entered the environment trash!", Priority.Medium, GetCardSource(), showCardSource: true);
+            if(base.UseUnityCoroutines)
+                {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+                else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            foreach (Card card in bmca.CardsToMove)
             {
                 coroutine = CheckForFateAndDealDamage(card, bmca);
                 if (base.UseUnityCoroutines)
@@ -57,8 +65,17 @@ namespace Cauldron.DungeonsOfTerror
 
         private IEnumerator CardEntersTrashResponse(MoveCardAction mca)
         {
+            IEnumerator coroutine = GameController.SendMessageAction("A card has entered the environment trash!", Priority.Medium, GetCardSource(), showCardSource: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             Card card = mca.CardToMove;
-            IEnumerator coroutine = CheckForFateAndDealDamage(card, mca);
+            coroutine = CheckForFateAndDealDamage(card, mca);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
