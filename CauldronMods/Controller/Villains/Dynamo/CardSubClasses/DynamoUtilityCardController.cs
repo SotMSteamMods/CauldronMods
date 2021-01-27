@@ -12,6 +12,12 @@ namespace Cauldron.Dynamo
     {
         protected DynamoUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public bool IsPlot(Card c)
+        {
+            return c.DoKeywordsContain("plot");
         }
     }
 }

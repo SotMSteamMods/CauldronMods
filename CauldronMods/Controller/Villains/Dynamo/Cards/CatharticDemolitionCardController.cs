@@ -15,7 +15,42 @@ namespace Cauldron.Dynamo
 
         }
 
-        //At the start of the villain turn, destroy all Plot cards and this card.
-        //When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
+        public override void AddTriggers()
+        {
+            //At the start of the villain turn, destroy all Plot cards and this card.
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyCardsResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.DestroyCard });
+            //When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
+            base.AddWhenDestroyedTrigger(this.DealDamageResponse, TriggerType.DealDamage);
+        }
+
+        private IEnumerator DestroyCardsResponse(PhaseChangeAction action)
+        {
+            //...destroy all Plot cards and this card.
+            IEnumerator coroutine = base.GameController.DestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => base.IsPlot(c) || c == this.Card));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private IEnumerator DealDamageResponse(DestroyCardAction action)
+        {
+            //...{Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => new int?(base.Journal.DestroyCardEntriesThisTurn().Where((DestroyCardJournalEntry entry) => base.IsVillain(entry.Card)).Count() * 2) ?? default, DamageType.Energy);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
     }
 }
