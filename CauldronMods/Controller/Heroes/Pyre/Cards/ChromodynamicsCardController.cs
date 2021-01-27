@@ -29,7 +29,7 @@ namespace Cauldron.Pyre
         public override void AddTriggers()
         {
             //"Whenever a player plays a {PyreIrradiate} card, {Pyre} deals 1 target 1 energy damage."
-            AddTrigger((PlayCardAction pc) => IsIrradiated(pc.CardToPlay), NoteIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before);
+            AddTrigger((PlayCardAction pc) => IsIrradiated(pc.CardToPlay) && !pc.IsPutIntoPlay, NoteIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before);
             AddTrigger((PlayCardAction pc) => RecentIrradiatedCardPlays.Contains(pc.InstanceIdentifier), IrradiatedPlayResponse, TriggerType.DealDamage, TriggerTiming.After, requireActionSuccess: false);
         }
         private IEnumerator NoteIrradiatedPlay(PlayCardAction pc)
@@ -57,7 +57,29 @@ namespace Cauldron.Pyre
         }
         public override IEnumerator UsePower(int index = 0)
         {
-            //"Discard a card. {Pyre} deals 2 targets 2 lightning damage each."
+            int numTargets = GetPowerNumeral(0, 2);
+            int numDamage = GetPowerNumeral(1, 2);
+            //"Discard a card.
+            IEnumerator coroutine = GameController.SelectAndDiscardCard(DecisionMaker, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //{Pyre} deals 2 targets 2 lightning damage each.
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), numDamage, DamageType.Lightning, numTargets, false, numTargets, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }

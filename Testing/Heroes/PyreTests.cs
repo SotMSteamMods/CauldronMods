@@ -442,5 +442,23 @@ namespace CauldronTests
             AssertIrradiated(hurricane);
             QuickHPCheck(-3);
         }
+        [Test]
+        public void TestChromodynamicsPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card chromo = PlayCard("Chromodynamics");
+            Card punch = PutInHand("AtomicPunch");
+            DecisionSelectCards = new Card[] { punch, baron.CharacterCard, pyre.CharacterCard, legacy.CharacterCard };
+
+            QuickHPStorage(baron, pyre, legacy, tempest, scholar);
+            QuickHandStorage(pyre, legacy, tempest, scholar);
+            UsePower(chromo);
+            QuickHPCheck(-2, -2, 0, 0, 0);
+            QuickHandCheck(-1, 0, 0, 0);
+            AssertInTrash(punch);
+        }
     }
 }
