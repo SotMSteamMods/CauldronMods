@@ -12,7 +12,8 @@ namespace Cauldron.Outlander
     {
         public RiftbladeStrikesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP(2);
+            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP();
         }
 
         public override IEnumerator Play()

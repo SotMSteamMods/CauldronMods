@@ -12,7 +12,7 @@ namespace Cauldron.Outlander
     {
         public OutOfTouchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP();
         }
 
         public override IEnumerator Play()

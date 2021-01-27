@@ -14,6 +14,10 @@ namespace Cauldron.Outlander
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             base.CharacterCard.UnderLocation.OverrideIsInPlay = false;
+            if (base.CharacterCard.IsFlipped)
+            {
+                base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(OncePerTurn), () => "Outlander has been dealt damage this turn.", () => "Outlander has not been dealt damage this turn.");
+            }
         }
 
         protected const string OncePerTurn = "OncePerTurn";

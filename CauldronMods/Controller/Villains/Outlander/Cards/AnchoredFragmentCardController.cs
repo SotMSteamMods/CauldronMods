@@ -12,7 +12,8 @@ namespace Cauldron.Outlander
     {
         public AnchoredFragmentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            base.SpecialStringMaker.ShowSpecialString(() => "Outlander has taken " + base.Journal.DealDamageEntries().Where((DealDamageJournalEntry entry) => entry.Round == base.Game.Round && entry.TargetCard == base.CharacterCard).Sum((DealDamageJournalEntry entry) => entry.Amount) + " this round");
         }
 
         public override IEnumerator Play()

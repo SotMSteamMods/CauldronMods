@@ -13,6 +13,7 @@ namespace Cauldron.Outlander
         public MagekillerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(OncePerTurn), () => "A hero one shot has entered play yet this turn.", () => "A hero one shot has not entered play yet this turn.");
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
         protected const string OncePerTurn = "OncePerTurn";

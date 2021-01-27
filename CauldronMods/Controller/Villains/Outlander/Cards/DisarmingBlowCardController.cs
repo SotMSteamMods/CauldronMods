@@ -12,7 +12,7 @@ namespace Cauldron.Outlander
     {
         public DisarmingBlowCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP(numberOfTargets: 2);
         }
 
         public override IEnumerator Play()
