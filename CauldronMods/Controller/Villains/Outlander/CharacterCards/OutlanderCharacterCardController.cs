@@ -113,14 +113,14 @@ namespace Cauldron.Outlander
                 if (base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsTrace(c) && c.IsInPlayAndHasGameText)).Count() < base.Game.H)
                 {
                     coroutine = base.GameController.FlipCard(this);
-                }
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             coroutine = base.AfterFlipCardImmediateResponse();
@@ -171,7 +171,7 @@ namespace Cauldron.Outlander
         private IEnumerator DestroyCardsResponse(PhaseChangeAction action)
         {
             //...destroy {H - 2} hero ongoing and/or equipment cards.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), base.Game.H - 2);
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), base.Game.H - 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
