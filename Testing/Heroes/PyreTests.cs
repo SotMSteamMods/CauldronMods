@@ -346,5 +346,101 @@ namespace CauldronTests
             QuickHandCheckZero();
             QuickHPCheckZero();
         }
+        [Test]
+        public void TestCherenkovDriveIrradiateCard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card fort = PutInHand("Fortitude");
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectCard = fort;
+
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(fort);
+        }
+        [Test]
+        public void TestCherenkovDrivePowerOnCardInHand()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card flak = PutInHand("FlakCannon");
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            DecisionSelectCard = flak;
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(flak);
+            QuickHPCheck(-3);
+        }
+        [Test]
+        public void TestCherenkovDrivePowerSelfDestruct()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card aux = PutInHand("AuxiliaryPowerSource");
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            DecisionSelectCard = aux;
+            DecisionYesNo = true;
+
+            QuickHandStorage(bunker);
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+
+            Assert.Ignore("Issue with GameController.DrawCards prevents this from working right");
+            //bad interaction with GameController.DrawCards - it is hardcoded to stop drawing after any draw
+            //that ends with the card source out-of-play
+            QuickHandCheck(2);
+            AssertInTrash(aux);
+        }
+        [Test]
+        public void TestCherenkovDrivePowerSelfDestructAccountForBug()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card aux = PutInHand("AuxiliaryPowerSource");
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            DecisionSelectCard = aux;
+            DecisionYesNo = true;
+
+            QuickHandStorage(bunker);
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+
+            //bad interaction with GameController.DrawCards - it is hardcoded to stop drawing after any draw
+            //that ends with the card source out-of-play
+            QuickHandCheck(0);
+            AssertInTrash(aux);
+        }
+        [Test]
+        public void TestCherenkovDriveMultiplePowers()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card hurricane = PutInHand("LocalizedHurricane");
+            DecisionSelectTurnTaker = tempest.TurnTaker;
+            DecisionSelectCard = hurricane;
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(hurricane);
+            QuickHPCheck(-3);
+        }
     }
 }
