@@ -568,6 +568,22 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestOutOfTouch_3X()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            PlayCard(Dragonborn);
+            PlayCard(Magekiller);
+
+            //When this card enters play, {Outlander} deals the non-villain target with the highest HP X+3 melee damage, where X is the number of Trace cards in play.
+            QuickHPStorage(haka, unity, scholar);
+            Card touch = PlayCard(OutOfTouch);
+            QuickHPCheck(-6, 0, 0);
+        }
+
+        [Test]
         public void TestRiftbladeStrikes()
         {
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
