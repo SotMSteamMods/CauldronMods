@@ -592,7 +592,7 @@ namespace CauldronTests
         [Test]
         public void TestTransdimensionalOnslaught()
         {
-
+            //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
         }
     }
 }
