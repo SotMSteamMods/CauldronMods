@@ -346,6 +346,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestIssue813_MomentOfSanityGivesNonRealCardsPowers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "SkyScraper", "TheSentinels", "Cauldron.VaultFive");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Discard 1 Artifact card. If you do, play a card or destroy 1 environment card. Then destroy this card.
+            Card moment = PlayCard("MomentOfSanity");
+            Card instructions = sentinels.HeroTurnTaker.GetAllCards(realCardsOnly: false).Where(c => !c.IsRealCard).FirstOrDefault();
+            Assert.That(FindCardController(moment).AskIfContributesPowersToCardController(FindCardController(instructions)) == null, "Moment of Sanity granted a power to a non-real card!");
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            foreach(Card notSky in offToSideSky)
+            {
+                Assert.That(FindCardController(moment).AskIfContributesPowersToCardController(FindCardController(notSky)) == null, "Moment of Sanity granted a power to an off to the side card!");
+
+            }
+        }
+
+        [Test()]
         public void TestMomentOfSanity_Power_DestroyEnvironmentCard()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Bunker", "Cauldron.VaultFive");
