@@ -15,7 +15,7 @@ namespace Cauldron.Dynamo
 
         }
 
-        public override void Play()
+        public override IEnumerator Play()
         {
             //Reveal cards from the top of the villain deck until a Plot is revealed. Put it into play and shuffle the other revealed cards back into the villain deck.
             IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, true, false, new LinqCardCriteria((Card c) => base.IsPlot(c)), 1);
