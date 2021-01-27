@@ -29,7 +29,7 @@ namespace Cauldron.Outlander
         private IEnumerator OncePerTurnResponse(DealDamageAction action)
         {
             base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
-            //...he deals the source of that damage 2 fire damage.
+            //...play the top card of the villain deck.
             IEnumerator coroutine = base.PlayTheTopCardOfTheVillainDeckResponse(action);
             if (UseUnityCoroutines)
             {
@@ -45,7 +45,7 @@ namespace Cauldron.Outlander
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals each non-villain target irreducible 1 projectile damage.
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c) && c.IsTarget, 1, DamageType.Projectile);
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c) && c.IsTarget, 1, DamageType.Projectile, true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

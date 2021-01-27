@@ -43,7 +43,7 @@ namespace CauldronTests
         protected TurnTakerController menagerie { get { return FindVillain("Menagerie"); } }
         protected TurnTakerController mythos { get { return FindVillain("Mythos"); } }
         protected TurnTakerController oriphel { get { return FindVillain("Oriphel"); } }
-        protected TurnTakerController outlander { get { return FindVillain("Outlander"); } }
+        protected Cauldron.Outlander.OutlanderTurnTakerController outlander { get { return (Cauldron.Outlander.OutlanderTurnTakerController)FindVillain("Outlander"); } }
         protected TurnTakerController phase { get { return FindVillain("PhaseVillain"); } }
         protected TurnTakerController scream { get { return FindVillain("ScreaMachine"); } }
         protected TurnTakerController swarm { get { return FindVillain("SwarmEater"); } }

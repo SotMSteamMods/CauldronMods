@@ -5,6 +5,7 @@ using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.Engine.Controller;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 
 namespace CauldronTests
 {
@@ -23,6 +24,7 @@ namespace CauldronTests
         protected const string RiftbladeStrikes = "RiftbladeStrikes";
         protected const string TransdimensionalOnslaught = "TransdimensionalOnslaught";
         protected const string Warbrand = "Warbrand";
+
 
         [Test()]
         public void TestOutlander_Load()
@@ -314,6 +316,64 @@ namespace CauldronTests
 
             GoToStartOfTurn(outlander);
             AssertIsInPlay(mere, moko, flak, truth);
+        }
+
+        [Test]
+        public void TestArchangel()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            Card blow = PutOnDeck(DisarmingBlow);
+
+            //The first time {Outlander} is dealt 4 or more damage from a single source each turn, play the top card of the villain deck.
+
+            //Not Enough damage
+            DealDamage(haka, outlander, 3, DamageType.Melee);
+            AssertOnTopOfDeck(blow);
+
+            //Enough Damage
+            DealDamage(haka, outlander, 4, DamageType.Melee);
+            AssertInTrash(blow);
+
+            //Only once per turn
+            Card top = outlander.TurnTaker.Deck.TopCard;
+            DealDamage(bunker, outlander, 4, DamageType.Melee);
+            AssertOnTopOfDeck(top);
+
+            Card traffic = PlayCard("TrafficPileup");
+            //To assert irreducible
+            PlayCard("TaMoko");
+            //At the end of the villain turn, {Outlander} deals each non-villain target irreducible 1 projectile damage.
+            QuickHPStorage(haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, traffic);
+            GoToEndOfTurn(outlander);
+            QuickHPCheck(-1, -1, -1, -1);
+
+            GoToStartOfTurn(haka);
+            DealDamage(bunker, outlander, 4, DamageType.Melee);
+            AssertNotOnTopOfDeck(outlander, top);
+        }
+
+        [Test]
+        public void TestCrusader()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Parse", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Crusader);
+            StartGame();
+
+            //Increase damage dealt by {Outlander} by 1.
+            QuickHPStorage(haka, parse, scholar);
+            DealDamage(outlander, haka, 2, DamageType.Melee);
+            DealDamage(outlander, parse, 2, DamageType.Melee);
+            DealDamage(outlander, scholar, 2, DamageType.Melee);
+            QuickHPCheck(-3, -3, -3);
+
+            PlayCard("TaMoko");
+            //At the end of the villain turn, {Outlander} deals the 2 non-villain targets with the highest HP 2 irreducible melee damage each.
+            QuickHPStorage(haka, parse, scholar);
+            GoToEndOfTurn(outlander);
+            QuickHPCheck(-3, 0, -3);
         }
     }
 }

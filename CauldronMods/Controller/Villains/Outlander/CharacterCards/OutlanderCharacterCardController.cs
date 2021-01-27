@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -99,16 +99,7 @@ namespace Cauldron.Outlander
                 }
 
                 //...and put a random Trace into play.
-                coroutine = base.GameController.ShuffleLocation(base.CharacterCard.UnderLocation);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                coroutine = base.GameController.PlayCard(base.TurnTakerController, base.CharacterCard.UnderLocation.Cards.FirstOrDefault(), true);
+                coroutine = base.GameController.PlayCard(base.TurnTakerController, base.CharacterCard.UnderLocation.Cards.TakeRandomFirstOrDefault(base.GameController.Game.RNG), true);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
