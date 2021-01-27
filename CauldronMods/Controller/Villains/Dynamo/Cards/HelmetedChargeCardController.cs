@@ -15,7 +15,52 @@ namespace Cauldron.Dynamo
 
         }
 
-        //If Copperhead is in play, he deals each hero target 2 melee damage.
-        //Otherwise, seach the villain deck and trash for Copperhead and put him into play. If you searched the villain deck, shuffle it.
+        public override IEnumerator Play()
+        {
+            IEnumerator coroutine;
+            //If Copperhead is in play...
+            if (base.FindCopperhead().IsInPlayAndHasGameText)
+            {
+                //...he deals each hero target 2 melee damage.
+                coroutine = base.DealDamage(base.FindCopperhead(), (Card c) => c.IsHero && c.IsTarget, 2, DamageType.Melee);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                //Otherwise, seach the villain deck and trash for Copperhead and put him into play.
+                Location copperheadLoc = base.FindCopperhead().Location;
+                coroutine = base.GameController.PlayCard(base.TurnTakerController, base.FindCopperhead(), true, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //If you searched the villain deck, shuffle it.
+                if (copperheadLoc.IsDeck && copperheadLoc.IsVillain)
+                {
+                    coroutine = base.ShuffleDeck(base.DecisionMaker, base.TurnTaker.Deck);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+            yield break;
+        }
     }
 }

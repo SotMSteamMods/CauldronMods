@@ -19,5 +19,15 @@ namespace Cauldron.Dynamo
         {
             return c.DoKeywordsContain("plot");
         }
+
+        public Card FindCopperhead()
+        {
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "Copperhead")).FirstOrDefault();
+        }
+
+        public Card FindPython()
+        {
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "Python")).FirstOrDefault();
+        }
     }
 }
