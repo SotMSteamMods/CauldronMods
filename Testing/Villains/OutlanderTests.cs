@@ -542,5 +542,29 @@ namespace CauldronTests
             PlayCard(smash);
             QuickHPCheck(0, 0, -1);
         }
+
+        [Test]
+        public void TestOutOfTouch()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            //When this card enters play, {Outlander} deals the non-villain target with the highest HP X+3 melee damage, where X is the number of Trace cards in play.
+            QuickHPStorage(haka, unity, scholar);
+            Card touch = PlayCard(OutOfTouch);
+            QuickHPCheck(-4, 0, 0);
+
+            SetHitPoints(scholar, 17);
+            //Reduce all HP recovery by 1. 
+            QuickHPStorage(haka, scholar);
+            PlayCard("VitalitySurge");
+            UsePower(scholar);
+            QuickHPCheck(1, 0);
+
+            //At the start of the villain turn, destroy this card.
+            GoToStartOfTurn(outlander);
+            AssertInTrash(touch);
+        }
     }
 }

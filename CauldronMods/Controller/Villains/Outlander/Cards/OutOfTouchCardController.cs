@@ -33,7 +33,7 @@ namespace Cauldron.Outlander
         public override void AddTriggers()
         {
             //Reduce all HP recovery by 1.
-            base.AddTrigger<GainHPAction>((GainHPAction action) => action.CardSource != null, (GainHPAction action) => base.GameController.IncreaseHPGain(action, 1, cardSource: base.GetCardSource()), TriggerType.IncreaseHPGain, TriggerTiming.Before);
+            base.AddTrigger<GainHPAction>((GainHPAction action) => action.CardSource != null, (GainHPAction action) => base.GameController.ReduceHPGain(action, 1, cardSource: base.GetCardSource()), TriggerType.IncreaseHPGain, TriggerTiming.Before);
 
             //At the start of the villain turn, destroy this card.
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
