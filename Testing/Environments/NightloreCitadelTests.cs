@@ -220,7 +220,7 @@ namespace CauldronTests
             DestroyNonCharacterVillainCards();
             GoToPlayCardPhase(nightlore);
             Card cannon = PlayCard("AethiumCannon");
-   
+
             IEnumerable<Card> cardsToMove = FindCardsWhere(c => legacy.TurnTaker.Deck.HasCard(c)).Take(7);
             MoveCards(nightlore, cardsToMove, cannon.UnderLocation);
             AssertNumberOfCardsUnderCard(cannon, 7);
@@ -328,7 +328,7 @@ namespace CauldronTests
             //When this card enters play, reveal cards from the top of the environment deck until a target is revealed, put it into play, and discard the other revealed cards. 
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, necro.CharacterCard, ghoul, target);
             PlayCard(assemble);
-            QuickHPCheck(-1,-1,-1,-1,-1,0);
+            QuickHPCheck(-1, -1, -1, -1, -1, 0);
             AssertInPlayArea(nightlore, target);
             AssertInTrash(nonTargets);
             AssertInTrash(assemble);
@@ -403,6 +403,32 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestCitadelGarrison_CannonAndOros_1Under()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card garrison = PlayCard("CitadelGarrison");
+            Card cannon = PlayCard("AethiumCannon");
+            Card raRandom = GetRandomCardFromHand(ra);
+            Card hakaRandom = GetRandomCardFromHand(haka);
+
+            MoveCard(nightlore, raRandom, cannon.UnderLocation, cardSource: FindCardController(cannon).GetCardSource());
+            Card oros = PlayCard("StarlightOfOros");
+
+            //At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.
+            QuickHPStorage(ra, legacy, haka);
+            DecisionSelectCards = new Card[] { raRandom, hakaRandom };
+            GoToStartOfTurn(nightlore);
+            QuickHPCheck(0, -4, 0);
+
+            //Then, if Starlight of Oros and Aethium Cannon are in play, discard 2 cards from beneath Aethium Cannon.
+            AssertNumberOfCardsUnderCard(cannon, 0);
+            AssertInTrash(ra, raRandom);
+        }
+
+        [Test()]
         public void TestCitadelGarrison_CannonAndOros_2Under()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
@@ -439,7 +465,7 @@ namespace CauldronTests
 
             Card garrison = PlayCard("CitadelGarrison");
             Card cannon = PlayCard("AethiumCannon");
-           
+
             Card oros = PlayCard("StarlightOfOros");
 
             //At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.
@@ -478,7 +504,7 @@ namespace CauldronTests
             DestroyNonCharacterVillainCards();
 
             //Destroy this card at the start of the environment turn
-           
+
             Card gravity = PlayCard("GravityFluctuation");
             AssertInPlayArea(nightlore, gravity);
             GoToStartOfTurn(nightlore);
@@ -518,7 +544,7 @@ namespace CauldronTests
             GoToPlayCardPhase(nightlore);
             PlayCard("StarlightOfNoome");
             //At the end of the environment turn, select the 2 non - environment targets with the lowest HP.This card deals 1 of those targets 2 melee damage, and the other target regains 2HP.
-            DecisionSelectCards =  new Card[] { baron.CharacterCard, legacy.CharacterCard };
+            DecisionSelectCards = new Card[] { baron.CharacterCard, legacy.CharacterCard };
             QuickHPStorage(baron, ra, legacy, haka);
             GoToEndOfTurn(nightlore);
             QuickHPCheck(2, 0, -2, 0);
