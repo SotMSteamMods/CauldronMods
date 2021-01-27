@@ -512,6 +512,11 @@ namespace CauldronTests
 
             //The first time a hero one-shot enters play each turn, {Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
 
+            //Hero Only
+            QuickHPStorage(haka, scholar, unity);
+            PlayCard("RiftbladeStrikes");
+            QuickHPCheck(-4, -2, 0);
+
             //Not a one-shot
             QuickHPStorage(haka, scholar, unity);
             PlayCard("TaMoko");
@@ -608,7 +613,63 @@ namespace CauldronTests
         [Test]
         public void TestTransdimensionalOnslaught()
         {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            PlayCard("TaMoko");
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card rail = PlayCard("PlummetingMonorail");
             //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
+            QuickHPStorage(traffic, rail, haka.CharacterCard, unity.CharacterCard, scholar.CharacterCard);
+            PlayCard("TransdimensionalOnslaught");
+            QuickHPCheck(-1, -1, 0, -1, -1);
+        }
+
+        [Test]
+        public void TestTransdimensionalOnslaught_3X()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+
+            PlayCard(Dragonborn);
+            PlayCard(Magekiller);
+            PlayCard("TaMoko");
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card rail = PlayCard("PlummetingMonorail");
+            //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
+            QuickHPStorage(traffic, rail, haka.CharacterCard, unity.CharacterCard, scholar.CharacterCard);
+            PlayCard("TransdimensionalOnslaught");
+            QuickHPCheck(-3, -3, -2, -3, -3);
+        }
+
+        [Test]
+        public void TestWarbrand()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Warbrand);
+            StartGame();
+
+            //The first time {Outlander} deals damage each turn, he then deals the hero target with the highest HP 2 projectile damage.
+            QuickHPStorage(haka, unity, scholar);
+            DealDamage(outlander, unity, 2, DamageType.Melee);
+            QuickHPCheck(-2, -2, 0);
+
+            //At the end of the villain turn, {Outlander} deals the 2 hero targets with the lowest HP 1 projectile damage each.
+            //Extra damage from once per turn does not trigger, because it's the same turn
+            QuickHPStorage(haka, unity, scholar);
+            GoToEndOfTurn(outlander);
+            QuickHPCheck(0, -1, -1);
+
+            //New turn
+            GoToStartOfTurn(haka);
+            QuickHPStorage(haka, unity, scholar);
+            DealDamage(outlander, unity, 2, DamageType.Melee);
+            QuickHPCheck(-2, -2, 0);
         }
     }
 }
