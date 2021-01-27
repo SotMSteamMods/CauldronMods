@@ -566,5 +566,33 @@ namespace CauldronTests
             GoToStartOfTurn(outlander);
             AssertInTrash(touch);
         }
+
+        [Test]
+        public void TestRiftbladeStrikes()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            //{Outlander} deals the non-villain target with the second highest HP 2 fire damage.
+            //{Outlander} deals the non-villain target with the highest HP 4 melee damage.
+            QuickHPStorage(haka, unity, scholar);
+            PlayCard("RiftbladeStrikes");
+            QuickHPCheck(-4, 0, -2);
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card rail = PlayCard("PlummetingMonorail");
+            SetHitPoints(new TurnTakerController[] { haka, unity, scholar }, 4);
+            //Check environment valid targets
+            QuickHPStorage(traffic, rail, haka.CharacterCard, unity.CharacterCard, scholar.CharacterCard);
+            PlayCard("RiftbladeStrikes");
+            QuickHPCheck(-4, -2, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestTransdimensionalOnslaught()
+        {
+
+        }
     }
 }
