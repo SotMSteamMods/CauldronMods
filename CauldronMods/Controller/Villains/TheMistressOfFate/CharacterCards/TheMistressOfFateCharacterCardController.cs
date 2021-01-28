@@ -353,22 +353,19 @@ namespace Cauldron.TheMistressOfFate
             string trash = "trash";
             foreach(Card card in cardsInHand)
             {
-                Game.Journal.RecordCardProperties(card, IncapLocation, hand.ToEnumerable());
-                Game.Journal.RecordCardProperties(card, LocationIndex, cardsInHand.IndexOf(card));
+
+                Game.Journal.RecordCardProperties(card, IncapLocation, new List<string>() { hand, cardsInHand.IndexOf(card).ToString() });
             }
 
             foreach (Card card in cardsInDeck)
             {
-                Game.Journal.RecordCardProperties(card, IncapLocation, deck.ToEnumerable());
-                Game.Journal.RecordCardProperties(card, LocationIndex, cardsInDeck.IndexOf(card));
+                Game.Journal.RecordCardProperties(card, IncapLocation, new List<string>() { deck, cardsInDeck.IndexOf(card).ToString() });
 
             }
 
             foreach (Card card in cardsInTrash)
             {
-                Game.Journal.RecordCardProperties(card, IncapLocation, trash.ToEnumerable());
-                Game.Journal.RecordCardProperties(card, LocationIndex, cardsInTrash.IndexOf(card));
-
+                Game.Journal.RecordCardProperties(card, IncapLocation, new List<string>() { trash, cardsInTrash.IndexOf(card).ToString() });
             }
 
 
@@ -376,10 +373,8 @@ namespace Cauldron.TheMistressOfFate
             int index = cardsInTrash.Count();
             foreach (Card card in cardsRemaining)
             {
-                Game.Journal.RecordCardProperties(card, IncapLocation, trash.ToEnumerable());
-                Game.Journal.RecordCardProperties(card, LocationIndex, index);
+                Game.Journal.RecordCardProperties(card, IncapLocation, new List<string>() { trash, index.ToString() });
                 index++;
-
             }
 
             yield break;
@@ -388,9 +383,9 @@ namespace Cauldron.TheMistressOfFate
         private IEnumerator RestoreHeroCards(BulkMoveCardsAction bmc)
         {
             var hero = bmc.Destination.OwnerTurnTaker;
-            var toHand = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "hand").OrderBy(c => Game.Journal.GetCardPropertiesInteger(c, LocationIndex));
-            var toDeck = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "deck").OrderBy(c => Game.Journal.GetCardPropertiesInteger(c, LocationIndex));
-            var toTrash = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "trash").OrderBy(c => Game.Journal.GetCardPropertiesInteger(c, LocationIndex));
+            var toHand = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "hand").OrderBy(c => Convert.ToInt32(Game.Journal.GetCardPropertiesStringList(c, IncapLocation).Last()));
+            var toDeck = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "deck").OrderBy(c => Convert.ToInt32(Game.Journal.GetCardPropertiesStringList(c, IncapLocation).Last()));
+            var toTrash = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "trash").OrderBy(c => Convert.ToInt32(Game.Journal.GetCardPropertiesStringList(c, IncapLocation).Last()));
 
 
             IEnumerator coroutine = GameController.BulkMoveCards(TurnTakerController, toDeck, hero.Deck, cardSource: GetCardSource());
