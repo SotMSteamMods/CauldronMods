@@ -21,10 +21,10 @@ namespace Cauldron.Drift
 
             //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Drift Left Twice", SelectionType.RemoveTokens, () => base.ShiftLL()),
-                    new Function(base.HeroTurnTakerController, "Drift Left", SelectionType.RemoveTokens, () => base.ShiftL()),
-                    new Function(base.HeroTurnTakerController, "Drift Right", SelectionType.AddTokens, () => base.ShiftR()),
-                    new Function(base.HeroTurnTakerController, "Drift Right Twice", SelectionType.AddTokens, () => base.ShiftRR())
+                    new Function(base.HeroTurnTakerController, "Shift Left Twice", SelectionType.RemoveTokens, () => base.ShiftLL()),
+                    new Function(base.HeroTurnTakerController, "Shift Left", SelectionType.RemoveTokens, () => base.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Shift Right", SelectionType.AddTokens, () => base.ShiftR()),
+                    new Function(base.HeroTurnTakerController, "Shift Right Twice", SelectionType.AddTokens, () => base.ShiftRR())
             });
             if (base.UseUnityCoroutines)
             {
