@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using Handelabra;
+
 namespace Cauldron.VaultFive
 {
     public class ArtifactCardController : VaultFiveUtilityCardController
@@ -100,6 +102,7 @@ namespace Cauldron.VaultFive
                 }
                 if(DidSelectTurnTaker(storedResults))
                 {
+                    GameController.AddCardPropertyJournalEntry(Card, "OverrideTurnTaker", new string[] { "Cauldron.VaultFive", Card.Identifier });
                     TurnTaker hero = GetSelectedTurnTaker(storedResults);
                     GameController.ChangeCardOwnership(Card, hero);
                     coroutine = GameController.SendMessageAction($"{Card.Title} is now a part of { hero.ShortName}'s deck!", Priority.High, GetCardSource());
