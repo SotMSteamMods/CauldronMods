@@ -48,7 +48,7 @@ namespace Cauldron.Dynamo
                 }
 
                 //{Dynamo} deals each other hero target 1 sonic damage.
-                coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget && c != damageAction.Target, (Card c) => 1, DamageType.Sonic);
+                coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget && c != damageAction.OriginalTarget, (Card c) => 1, DamageType.Sonic);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
