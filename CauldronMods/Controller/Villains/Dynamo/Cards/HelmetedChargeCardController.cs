@@ -36,20 +36,9 @@ namespace Cauldron.Dynamo
             {
                 //Otherwise, seach the villain deck and trash for Copperhead and put him into play.
                 Location copperheadLoc = base.FindCopperhead().Location;
-                coroutine = base.GameController.PlayCard(base.TurnTakerController, base.FindCopperhead(), true, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
+                if (copperheadLoc.IsVillain && (copperheadLoc.IsDeck || copperheadLoc.IsTrash))
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                //If you searched the villain deck, shuffle it.
-                if (copperheadLoc.IsDeck && copperheadLoc.IsVillain)
-                {
-                    coroutine = base.ShuffleDeck(base.DecisionMaker, base.TurnTaker.Deck);
+                    coroutine = base.GameController.PlayCard(base.TurnTakerController, base.FindCopperhead(), true, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -57,6 +46,20 @@ namespace Cauldron.Dynamo
                     else
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    //If you searched the villain deck, shuffle it.
+                    if (copperheadLoc.IsDeck && copperheadLoc.IsVillain)
+                    {
+                        coroutine = base.ShuffleDeck(base.DecisionMaker, base.TurnTaker.Deck);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                     }
                 }
             }
