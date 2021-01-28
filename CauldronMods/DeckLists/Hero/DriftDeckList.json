@@ -73,8 +73,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects."
             ],
             "tokenPools": [
 		 	    {
@@ -101,8 +101,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects."
             ],
             "tokenPools": [
 		 	    {
@@ -129,8 +129,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects."
             ],
             "tokenPools": [
 		 	    {
@@ -157,8 +157,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects."
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects."
             ],
             "tokenPools": [
 		 	    {
@@ -186,8 +186,8 @@
             ],
             "body": [
                 "Draw a card.",
-                "{DriftPast} Destroy 1 environment card.",
-                "{DriftFuture} Destroy 1 ongoing card."
+                "{Past} Destroy 1 environment card.",
+                "{Future} Destroy 1 ongoing card."
             ],
             "flavorQuotes": [
                 {
@@ -235,8 +235,8 @@
                 "GainHP"
             ],
             "body": [
-                "{DriftFuture} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {L}.",
-                "{DriftPast} Draw a card. {Drift} regains 1 HP. Shift {RR}"
+                "{Future} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {L}.",
+                "{Past} Draw a card. {Drift} regains 1 HP. Shift {RR}"
             ],
             "flavorQuotes": [
                 {
@@ -263,8 +263,8 @@
                 "DealDamageRadiant"
             ],
             "body": [
-                "{DriftPast} You may play an onoing card from your trash, or one player may play a card now. Shift {R}",
-                "{DriftFuture} {Drift} deals 1 target 2 radiant damage. Shift {LL}"
+                "{Past} You may play an onoing card from your trash, or one player may play a card now. Shift {R}",
+                "{Future} {Drift} deals 1 target 2 radiant damage. Shift {LL}"
             ],
             "flavorQuotes": [
                 {
@@ -338,8 +338,8 @@
             ],
             "body": [
                 "Draw a card.",
-                "{DriftFuture} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {L}.",
-                "{DriftPast} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {R}."
+                "{Future} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {L}.",
+                "{Past} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {R}."
             ],
             "flavorQuotes": [
                 {
@@ -386,8 +386,8 @@
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "{DriftPast} Whenever you shift {L}, select a hero target. Reduce the next damage dealt to that target by 2.",
-                "{DriftFuture} Whenever you shift {R}, select a hero target. Increase the next damage dealt by that target by 2."
+                "{Past} Whenever you shift {L}, select a hero target. Reduce the next damage dealt to that target by 2.",
+                "{Future} Whenever you shift {R}, select a hero target. Increase the next damage dealt by that target by 2."
             ],
             "flavorQuotes": [
                 {
@@ -410,8 +410,8 @@
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "{DriftPast} Reduce damage dealt to {Drift} by 1.",
-                "{DriftFuture} Increase damage dealt by {Drift} to other targets by 1."
+                "{Past} Reduce damage dealt to {Drift} by 1.",
+                "{Future} Increase damage dealt by {Drift} to other targets by 1."
             ],
             "flavorQuotes": [
                 {
@@ -465,8 +465,8 @@
             ],
             "body": [
                 "Draw 2 cards. Discard a card.",
-                "{DriftPast} You may play a card.",
-                "{DriftFuture} You may use a power."
+                "{Past} You may play a card.",
+                "{Future} You may use a power."
             ],
             "flavorQuotes": [
                 {
@@ -494,8 +494,8 @@
                 "DealDamageRadiant"
             ],
             "powers": [
-                "{DriftPast} Draw a card. Shift {R}.",
-                "{DriftFuture} {Drift} 1 target 2 radiant damage. Shift {L}."
+                "{Past} Draw a card. Shift {R}.",
+                "{Future} {Drift} 1 target 2 radiant damage. Shift {L}."
             ],
             "flavorQuotes": [
                 {
@@ -519,8 +519,8 @@
                 "DealDamageRadiant"
             ],
             "powers": [
-                "{DriftPast} 1 target regains 2 HP. Shift {RR}.",
-                "{DriftFuture} {Drift} deals each non-hero target 1 radiant damage. Shift {LL}."
+                "{Past} 1 target regains 2 HP. Shift {RR}.",
+                "{Future} {Drift} deals each non-hero target 1 radiant damage. Shift {LL}."
             ],
             "flavorQuotes": [
                 {
@@ -541,7 +541,7 @@
             "icons": [
                 "DealDamagePsychic"
             ],
-            "body": "Whenever you shift from {DriftPast} to {DriftFuture} or from {DriftFuture} to {DrifitFuture}, {Drift} may deal 1 other target and herself 1 psychic damage.",
+            "body": "Whenever you shift from {Past} to {Future} or from {Future} to {DrifitFuture}, {Drift} may deal 1 other target and herself 1 psychic damage.",
             "flavorQuotes": [
                 {
                     "identifier": "Drift",
@@ -646,8 +646,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects.",
                 "Once per turn you may do the following in order:",
                 "1. Place your active character on your current shift track space.",
                 "2. Place the shift token on your inactive character's shift track space.",
@@ -680,8 +680,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects.",
                 "Once per turn you may do the following in order:",
                 "1. Place your active character on your current shift track space.",
                 "2. Place the shift token on your inactive character's shift track space.",
@@ -714,8 +714,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects.",
                 "Once per turn you may do the following in order:",
                 "1. Place your active character on your current shift track space.",
                 "2. Place the shift token on your inactive character's shift track space.",
@@ -748,8 +748,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects.",
                 "Once per turn you may do the following in order:",
                 "1. Place your active character on your current shift track space.",
                 "2. Place the shift token on your inactive character's shift track space.",
@@ -780,8 +780,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
                 "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
             ],
@@ -808,8 +808,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
                 "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
             ],
@@ -836,8 +836,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
                 "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
             ],
@@ -864,8 +864,8 @@
             ],
             "gameplay": [
                 "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
-                "While the token is on a {DriftPast} space, activate {DriftPast} effects.",
-                "While the token is on a {DriftFuture} space, activate {DriftFuture} effects.",
+                "While the token is on a {Past} space, activate {Past} effects.",
+                "While the token is on a {Future} space, activate {Future} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
                 "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
             ],
