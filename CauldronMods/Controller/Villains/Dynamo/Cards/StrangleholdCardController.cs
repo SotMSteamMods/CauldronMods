@@ -63,6 +63,7 @@ namespace Cauldron.Dynamo
                     }
                 }
             }
+            yield break;
         }
     }
 }
