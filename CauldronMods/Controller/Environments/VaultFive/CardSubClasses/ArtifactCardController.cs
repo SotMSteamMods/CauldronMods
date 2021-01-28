@@ -73,10 +73,18 @@ namespace Cauldron.VaultFive
         private const string  FirstTimeEnteredPlay = "FirstTimeEnteredPlay";
 
         public virtual IEnumerator UniqueOnPlayEffect() { return null; }
+
+        private bool HasOwner
+        {
+            get
+            {
+                return GetCardPropertyJournalEntryBoolean(FirstTimeEnteredPlay) != null && HasBeenSetToTrueThisGame(FirstTimeEnteredPlay);
+            }
+        }
         public override IEnumerator Play()
         {
             //The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.
-            if(!HasBeenSetToTrueThisGame(FirstTimeEnteredPlay))
+            if(!HasOwner)
             {
                 SetCardPropertyToTrueIfRealAction(FirstTimeEnteredPlay);
 

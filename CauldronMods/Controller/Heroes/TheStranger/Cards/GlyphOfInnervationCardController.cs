@@ -14,23 +14,23 @@ namespace Cauldron.TheStranger
 
         }
 
-		#endregion Constructors
+        #endregion Constructors
 
-		#region Methods
-		public override IEnumerator UsePower(int index = 0)
-		{
-			//Draw a card.
-			IEnumerator coroutine = base.DrawCard(null, false, null, true);
-			if (base.UseUnityCoroutines)
-			{
-				yield return base.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				base.GameController.ExhaustCoroutine(coroutine);
-			}
-			yield break;
-		}
-		#endregion Methods
-	}
+        #region Methods
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //Draw a card.
+            IEnumerator coroutine = base.DrawCard(null, false, null, true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+        #endregion Methods
+    }
 }

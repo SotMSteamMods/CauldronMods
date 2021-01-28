@@ -27,15 +27,40 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(coroutine);
             }
 
+            //UI considerations - The UI combines the cards with the same identifier into a single stack making it impossible to choose to play
+            // from specifically the trash or deck if there's a card in each.
+            //we also know that there's only 2 copies of Pillars Of Creation in Starlight's deck total.
             var choices = FindCardsWhere(new LinqCardCriteria(c => c.Identifier == "PillarsOfCreation" && (TurnTaker.Deck.HasCard(c) || TurnTaker.Trash.HasCard(c)), "pillars of creation"));
-            coroutine = GameController.SelectAndPlayCard(DecisionMaker, choices, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
+
+            if (choices.Any())
             {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
+                var location = choices.First().Location;
+                if (choices.All(c => c.Location == location))
+                {
+                    //if they are all in the same location, just do the thing
+                    coroutine = GameController.SelectAndPlayCard(DecisionMaker, choices, cardSource: GetCardSource());
+                }
+                else
+                {
+                    //if not give the player the choose (we know that here's a card in both)
+                    var funcs = new[]
+                    {
+                        new Function(DecisionMaker, "Play card in deck", SelectionType.PlayCard, () => GameController.SelectAndPlayCard(DecisionMaker, choices.Where(c => c.IsInDeck), cardSource: GetCardSource())),
+                        new Function(DecisionMaker, "Play card in trash", SelectionType.PlayCard, () => GameController.SelectAndPlayCard(DecisionMaker, choices.Where(c => c.IsInTrash), cardSource: GetCardSource()))
+                    };
+                    var selectFunc = new SelectFunctionDecision(GameController, DecisionMaker, funcs, false, associatedCards: choices, cardSource: GetCardSource());
+                    coroutine = GameController.SelectAndPerformFunction(selectFunc, associatedCards: new[] { Card });
+                }
+
+                //execute the choosen coroutine
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             coroutine = ShuffleDeck(DecisionMaker, TurnTaker.Deck);

@@ -1647,5 +1647,31 @@ namespace CauldronTests
             AssertIsInPlay(c4);
             AssertIsInPlay(c5);
         }
+
+        [Test()]
+        public void TestPillarOfNight_CrushingRiftInteraction()
+        {
+            //from issue #764
+
+            SetupGameController(new[] { "Cauldron.Celadroch", "Cauldron.Impact", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var p1 = GetCard("PillarOfNight");
+            var p2 = GetCard("PillarOfSky");
+            var p3 = GetCard("PillarOfStorms");
+
+            //H = 3, 4 damage per trigger, 6 total triggers possible
+            DecisionSelectTurnTaker = impact.HeroTurnTaker;
+            QuickHandStorage(impact);
+            DealDamage(impact, p1, 4, DamageType.Cold);
+            QuickHandCheck(1);
+
+            //Pillar at 21 hp
+            DecisionSelectTarget = p1;
+            QuickHPStorage(p1);
+            PlayCard(impact, "CrushingRift");
+            QuickHPCheck(-10);
+            QuickHandCheck(2);
+        }
     }
 }

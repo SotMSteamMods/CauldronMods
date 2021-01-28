@@ -56,7 +56,7 @@ namespace Cauldron.Gargoyle
             ITrigger trigger = null;
             YesNoDecision decision;
            
-            decision = new YesNoDecision(base.GameController, DecisionMaker, SelectionType.ReduceDamageTaken);
+            decision = new YesNoDecision(base.GameController, DecisionMaker, SelectionType.ReduceDamageTaken, gameAction: dealDamageAction, cardSource: GetCardSource());
             coroutine = base.GameController.MakeDecisionAction(decision);
             if (base.UseUnityCoroutines)
             {
