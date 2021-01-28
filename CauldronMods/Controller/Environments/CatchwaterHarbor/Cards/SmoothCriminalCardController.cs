@@ -37,6 +37,7 @@ namespace Cauldron.CatchwaterHarbor
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+
         }
     }
 }
