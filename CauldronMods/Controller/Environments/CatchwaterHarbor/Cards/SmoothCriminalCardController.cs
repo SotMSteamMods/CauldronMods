@@ -26,6 +26,7 @@ namespace Cauldron.CatchwaterHarbor
 
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
+            //this card deals each hero target X projectile damage, where X is 1 plus the number of Transports in play.
             IEnumerator coroutine = DealDamage(Card, (Card c) => c.IsHero, (Card c) => 1 + GetNumberOfTransportsInPlay(), DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
