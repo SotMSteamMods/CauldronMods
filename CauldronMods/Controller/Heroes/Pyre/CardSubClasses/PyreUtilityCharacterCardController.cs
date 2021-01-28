@@ -12,6 +12,7 @@ namespace Cauldron.Pyre
 {
     public abstract class PyreUtilityCharacterCardController : HeroCharacterCardController
     {
+        private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
         private PyreTurnTakerController PyreTTC
         {
             get
@@ -87,7 +88,7 @@ namespace Cauldron.Pyre
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
-                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), $"{cardToIrradiate.Title} is irradiated until it leaves {cardToIrradiate.Location.GetFriendlyName()}.", new TriggerType[] { TriggerType.Hidden }, cardToIrradiate);
+                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, IrradiationEffectFunction, $"{cardToIrradiate.Title} is irradiated until it leaves {cardToIrradiate.Location.GetFriendlyName()}.", new TriggerType[] { TriggerType.Hidden }, cardToIrradiate);
                 irradiateEffect.CardMovedExpiryCriteria.Card = cardToIrradiate;
 
                 coroutine = AddStatusEffect(irradiateEffect, true);
@@ -115,6 +116,19 @@ namespace Cauldron.Pyre
             if(marks != null && marks.Any())
             {
                 IEnumerator coroutine = BulkMoveCard(DecisionMaker, marks, TurnTaker.OffToTheSide, false, false, DecisionMaker, false);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            var irradiationEffects = GameController.StatusEffectControllers.Where((StatusEffectController sec) => sec.StatusEffect is OnPhaseChangeStatusEffect opc && (opc.MethodToExecute == IrradiationEffectFunction && opc.CardMovedExpiryCriteria.Card == card)).Select(sec => sec.StatusEffect).ToList();
+            foreach(StatusEffect effect in irradiationEffects)
+            {
+                IEnumerator coroutine = GameController.ExpireStatusEffect(effect, GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

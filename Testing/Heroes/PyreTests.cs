@@ -225,7 +225,7 @@ namespace CauldronTests
             AssertIrradiated(ring);
             AssertIrradiated(surge);
             AssertNotIrradiated(fort);
-            AssertNumberOfStatusEffectsInPlay(0);
+            AssertNumberOfStatusEffectsInPlay(2);
         }
         [Test]
         public void TestAtomicPunchIrradiateOwnCards()
@@ -238,6 +238,7 @@ namespace CauldronTests
             Card drive = PutInHand("CherenkovDrive");
             Card ion = PutInHand("IonTrace");
 
+            GoToPlayCardPhase(pyre);
             DecisionSelectTurnTaker = pyre.TurnTaker;
             DecisionSelectCards = new Card[] { chromo, drive, baron.CharacterCard };
             QuickHPStorage(baron, pyre, legacy, bunker, scholar);
@@ -247,6 +248,15 @@ namespace CauldronTests
             AssertIrradiated(drive);
             AssertNotIrradiated(ion);
             AssertNumberOfStatusEffectsInPlay(3);
+
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+            DealDamage(pyre, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+
+            GoToStartOfTurn(legacy);
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+            QuickHPCheck(-1, 0, 0, 0, 0);
         }
         [Test]
         public void TestAtomicPunchNotIrradiateAlreadyIrradiated()
@@ -459,6 +469,70 @@ namespace CauldronTests
             QuickHPCheck(-2, -2, 0, 0, 0);
             QuickHandCheck(-1, 0, 0, 0);
             AssertInTrash(punch);
+        }
+        [Test]
+        public void TestContainmentBreachCardPlayResponse()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card breach = PlayCard("ContainmentBreach");
+            QuickHPStorage(baron);
+            Card cell = PutOnDeck("CellularIrradiation");
+            UsePower(pyre);
+
+            Card cascade = PutInTrash("RogueFissionCascade");
+            QuickShuffleStorage(pyre);
+
+            PlayCard(cell);
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+            QuickHPCheck(-2);
+            DealDamage(pyre, baron, 1, DTM);
+            QuickHPCheck(-1);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            AssertInDeck(cascade);
+            QuickShuffleCheck(1);
+
+            GoToStartOfTurn(pyre);
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutOnDeck("TheLegacyRing");
+            UsePower(pyre);
+            PlayCard(ring);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+            QuickHPCheck(-3);
+
+            QuickShuffleCheck(0);
+
+            PlayCard("SurgeOfStrength");
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            Card fort = PutOnDeck("Fortitude");
+            UsePower(pyre);
+            PlayCard(fort, isPutIntoPlay: true);
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+            QuickHPCheck(-3);
+
+            GoToStartOfTurn(legacy);
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
+        [Test]
+        public void TestContainmentBreachPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            QuickShuffleStorage(pyre);
+            Card breach = PlayCard("ContainmentBreach");
+            Card traffic = PlayCard("TrafficPileup");
+            Card redist = PlayCard("ElementalRedistributor");
+
+            QuickHPStorage(baron.CharacterCard, redist, pyre.CharacterCard, legacy.CharacterCard, tempest.CharacterCard, scholar.CharacterCard, traffic);
+            UsePower(breach);
+            QuickHPCheck(-1, -1, -1, 0, 0, 0, -1);
         }
     }
 }

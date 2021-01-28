@@ -30,6 +30,10 @@ namespace Cauldron.Pyre
             }
             return false;
         }
+        protected bool IsCascade(Card c)
+        {
+            return GameController.DoesCardContainKeyword(c, "cascade");
+        }
 
         protected IEnumerator IrradiateCard(Card cardToIrradiate)
         {

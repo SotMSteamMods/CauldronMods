@@ -31,7 +31,7 @@ namespace Cauldron.Pyre
             if(irradiateStorage.Count() >= 2)
             {
                 var effect = new IncreaseDamageStatusEffect(1);
-                effect.UntilEndOfNextTurn(TurnTaker);
+                effect.UntilEndOfPhase(TurnTaker, Phase.End);
                 effect.SourceCriteria.IsSpecificCard = CharacterCard;
                 effect.DamageTypeCriteria.AddType(DamageType.Energy);
                 effect.CreateImplicitExpiryConditions();
