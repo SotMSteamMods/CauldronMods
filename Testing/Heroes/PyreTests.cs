@@ -534,5 +534,39 @@ namespace CauldronTests
             UsePower(breach);
             QuickHPCheck(-1, -1, -1, 0, 0, 0, -1);
         }
+        [Test]
+        public void TestFissionRegulatorCascadePrevention()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card punch = PutOnDeck("AtomicPunch");
+            Card regulator = PlayCard("FissionRegulator");
+            Card cascade = PlayCard("RogueFissionCascade");
+            AssertOnTopOfDeck(cascade);
+            AssertInHand(punch);
+            AssertInTrash(regulator);
+        }
+        [Test]
+        public void TestFissionRegulatorPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card punch = PutInHand("AtomicPunch");
+            Card ring = PutInHand("TheLegacyRing");
+            Card strat = PutInHand("IntoTheStratosphere");
+            Card iron = PutInHand("FleshToIron");
+
+            Card regulator = PlayCard("FissionRegulator");
+            DecisionSelectCards = new Card[] { punch, ring, strat, iron };
+            UsePower(regulator);
+            AssertIrradiated(punch);
+            AssertIrradiated(ring);
+            AssertIrradiated(strat);
+            AssertIrradiated(iron);
+        }
     }
 }

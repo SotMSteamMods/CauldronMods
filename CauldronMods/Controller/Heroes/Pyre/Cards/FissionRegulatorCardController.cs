@@ -99,16 +99,7 @@ namespace Cauldron.Pyre
         private IEnumerator SelectAndIrradiateCardInHand(TurnTaker tt)
         {
             var heroTTC = FindHeroTurnTakerController(tt.ToHero());
-            IEnumerator coroutine = SelectAndIrradiateCardsInHand(heroTTC, tt, 1, 0);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
+            return SelectAndIrradiateCardsInHand(heroTTC, tt, 1, 1);
         }
     }
 }
