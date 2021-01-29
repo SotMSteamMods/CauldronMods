@@ -26,7 +26,23 @@ namespace Cauldron.Pyre
 
         private IEnumerator DestroyCladdingOrBreachResponse(CardEntersPlayAction cep)
         {
-            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c == Card || c.Identifier == "ContainmentBreach"), false, cardSource: GetCardSource());
+            return GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c == Card || c.Identifier == "ContainmentBreach"), false, cardSource: GetCardSource());
+        }
+
+        public override IEnumerator UsePower(int index = 0)
+        {
+            //"Draw 2 cards. Destroy this card."
+            IEnumerator coroutine = DrawCards(DecisionMaker, 2);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = DestroyThisCardResponse(null);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
