@@ -674,5 +674,42 @@ namespace CauldronTests
             AssertIsInPlay(rod);
             QuickHPCheck(-5, -1, 0, 0, 0, 0, -1);
         }
+        [Test]
+        public void TestHullCladdingDamageReduction()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("HullCladding");
+            QuickHPStorage(baron, pyre);
+            DealDamage(baron, pyre, 2, DTM);
+            DealDamage(pyre, baron, 2, DTM);
+            QuickHPCheck(-1, -1);
+            DealDamage(pyre, pyre, 4, DTM);
+            DealDamage(baron, baron, 4, DTM);
+            QuickHPCheck(-4, -2);
+        }
+        [Test]
+        public void TestHullCladdingContainmentBreachDestruction()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card cladding = PlayCard("HullCladding");
+            DecisionSelectCard = cladding;
+            Card breach = PlayCard("ContainmentBreach");
+            AssertInTrash(cladding);
+            AssertIsInPlay(breach);
+
+            PlayCard(cladding);
+            AssertInTrash(cladding);
+
+            DecisionSelectCard = breach;
+            PlayCard(cladding);
+            AssertInTrash(breach);
+            AssertIsInPlay(cladding);
+        }
     }
 }
