@@ -654,5 +654,25 @@ namespace CauldronTests
             AssertNotIrradiated(fort);
             AssertIrradiated(ring);
         }
+        [Test]
+        public void TestHalfLife()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card traffic = PutIntoPlay("TrafficPileup");
+            Card redist = PutIntoPlay("ElementalRedistributor");
+            UsePower(legacy);
+
+            Card rod = PutOnDeck("FracturedControlRod");
+
+            DecisionSelectCards = new Card[] { rod, rod, baron.CharacterCard };
+            DecisionAutoDecideIfAble = true;
+            QuickHPStorage(baron.CharacterCard, redist, pyre.CharacterCard, legacy.CharacterCard, tempest.CharacterCard, scholar.CharacterCard, traffic);
+            PlayCard("HalfLife");
+            AssertIsInPlay(rod);
+            QuickHPCheck(-5, -1, 0, 0, 0, 0, -1);
+        }
     }
 }
