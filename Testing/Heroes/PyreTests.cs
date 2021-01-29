@@ -568,5 +568,46 @@ namespace CauldronTests
             AssertIrradiated(strat);
             AssertIrradiated(iron);
         }
+        [Test]
+        public void TestFracturedControlRodDamageWhenPlayed()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            QuickHPStorage(baron);
+            Card rod = PutInHand("FracturedControlRod");
+            PlayCard(rod);
+            QuickHPCheckZero();
+            PutOnDeck(pyre, rod);
+            UsePower(pyre);
+            PlayCard(rod);
+            QuickHPCheck(-3);
+
+        }
+        [Test]
+        public void TestFracturedControlRodDestroyToPlayDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card fort = PutOnDeck("Fortitude");
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            UsePower(pyre);
+            Card surge = PutInHand("SurgeOfStrength");
+
+            Card rod = PlayCard("FracturedControlRod");
+            DecisionYesNo = true;
+
+            GameController.ExhaustCoroutine(GameController.DiscardCard(legacy, surge, null));
+            AssertInTrash(surge);
+            AssertIsInPlay(rod);
+
+            GameController.ExhaustCoroutine(GameController.DiscardCard(legacy, fort, null));
+            AssertInTrash(rod);
+            AssertIsInPlay(fort);
+
+        }
     }
 }
