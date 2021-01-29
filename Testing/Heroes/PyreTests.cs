@@ -885,5 +885,40 @@ namespace CauldronTests
             PutInHand("RogueFissionCascade");
             QuickHPCheck(0, -2, -2, 0);
         }
+        [Test]
+        public void TestThermonuclearCoreEnteringHandResponse()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card core = PutOnDeck("ThermonuclearCore");
+            Card punch = PutInHand("AtomicPunch");
+            Card hull = PutOnDeck("HullCladding");
+            UsePower(pyre);
+
+            DecisionSelectCard = punch;
+            AssertNextDecisionChoices(new Card[] { core, punch }, new Card[] { hull });
+            PutInHand(core);
+            AssertIrradiated(hull);
+            AssertIrradiated(punch);
+            AssertNotIrradiated(core);
+        }
+        [Test]
+        public void TestThermonuclearCoreEndOfTurn()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, tempest.TurnTaker, scholar.TurnTaker };
+            UsePower(pyre);
+            UsePower(pyre);
+
+            GoToStartOfTurn(pyre);
+            PlayCard("ThermonuclearCore");
+            Card iron = PutOnDeck("FleshToIron");
+            AssertNextDecisionChoices(new TurnTaker[] { pyre.TurnTaker, scholar.TurnTaker }, new TurnTaker[] { legacy.TurnTaker, tempest.TurnTaker });
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(iron);
+        }
     }
 }

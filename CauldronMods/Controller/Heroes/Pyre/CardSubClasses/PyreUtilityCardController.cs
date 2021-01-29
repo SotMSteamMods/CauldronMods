@@ -10,6 +10,7 @@ namespace Cauldron.Pyre
 {
     public abstract class PyreUtilityCardController : CardController
     {
+        private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
         protected PyreUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -54,7 +55,7 @@ namespace Cauldron.Pyre
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
-                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), $"{cardToIrradiate.Title} is irradiated until it leaves {cardToIrradiate.Location.GetFriendlyName()}.", new TriggerType[] { TriggerType.Hidden }, Card);
+                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, IrradiationEffectFunction, $"{cardToIrradiate.Title} is irradiated until it leaves {cardToIrradiate.Location.GetFriendlyName()}.", new TriggerType[] { TriggerType.Hidden }, cardToIrradiate);
                 irradiateEffect.CardMovedExpiryCriteria.Card = cardToIrradiate;
 
                 coroutine = AddStatusEffect(irradiateEffect, true);
