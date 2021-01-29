@@ -607,7 +607,52 @@ namespace CauldronTests
             GameController.ExhaustCoroutine(GameController.DiscardCard(legacy, fort, null));
             AssertInTrash(rod);
             AssertIsInPlay(fort);
+        }
 
+        [Test]
+        public void TestGammaBurst()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card traffic = PutIntoPlay("TrafficPileup");
+            Card redist = PutIntoPlay("ElementalRedistributor");
+
+            DecisionAutoDecideIfAble = true;
+            MoveAllCardsFromHandToDeck(legacy);
+            Card fort = PutInHand("Fortitude");
+            Card ring = PutInHand("TheLegacyRing");
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+
+            QuickHPStorage(baron.CharacterCard, redist, pyre.CharacterCard, legacy.CharacterCard, tempest.CharacterCard, scholar.CharacterCard, traffic);
+            PlayCard("GammaBurst");
+            QuickHPCheck(-2, -2, 0, -2, 0, 0, -2);
+            AssertIrradiated(fort);
+            AssertIrradiated(ring);
+        }
+        [Test]
+        public void TestGammaBurstIrradiatesOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card traffic = PutIntoPlay("TrafficPileup");
+            Card redist = PutIntoPlay("ElementalRedistributor");
+
+            DecisionAutoDecideIfAble = true;
+            MoveAllCardsFromHandToDeck(legacy);
+            Card fort = PutInHand("Fortitude");
+            Card ring = PutInHand("TheLegacyRing");
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+
+            DecisionSelectCards = new Card[] { ring, null };
+            QuickHPStorage(baron.CharacterCard, redist, pyre.CharacterCard, legacy.CharacterCard, tempest.CharacterCard, scholar.CharacterCard, traffic);
+            PlayCard("GammaBurst");
+            QuickHPCheck(-1, -1, 0, -1, 0, 0, -1);
+            AssertNotIrradiated(fort);
+            AssertIrradiated(ring);
         }
     }
 }
