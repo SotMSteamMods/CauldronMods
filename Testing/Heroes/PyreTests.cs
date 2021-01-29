@@ -846,5 +846,44 @@ namespace CauldronTests
             UsePower(collider);
             QuickHPCheck(-1);
         }
+        [Test]
+        public void TestRogueFissionCascadeAutoplay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectFunction = 0;
+            Card top = PutOnDeck("AtomicPunch");
+            Card cascade = PutInHand("RogueFissionCascade");
+            AssertInTrash(cascade);
+            AssertInHand(top);
+
+            DecisionSelectFunction = 1;
+            top = PutOnDeck("Chromodynamics");
+            PutInHand(cascade);
+            AssertInTrash(top);
+            AssertInTrash(cascade);
+        }
+        [Test]
+        public void TestRogueFissionCascadeDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, tempest.TurnTaker };
+            UsePower(pyre);
+
+            QuickHPStorage(pyre, legacy, tempest, scholar);
+            PutOnDeck("AtomicPunch");
+            PutInHand("RogueFissionCascade");
+            QuickHPCheck(0, -1, 0, 0);
+
+            UsePower(pyre);
+            PutOnDeck("AtomicPunch");
+            PutInHand("RogueFissionCascade");
+            QuickHPCheck(0, -2, -2, 0);
+        }
     }
 }
