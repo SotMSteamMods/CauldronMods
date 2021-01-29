@@ -794,5 +794,57 @@ namespace CauldronTests
             DealDamage(pyre, pyre, 1, DTM);
             QuickHPCheck(0, -1, 0);
         }
+        [Test]
+        public void TestParticleColliderPowerPlayIrradiated()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card fort = PutOnDeck("Fortitude");
+            Card ring = PutOnDeck("TheLegacyRing");
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            UsePower(pyre);
+            UsePower(pyre);
+
+            Card collider = PlayCard("ParticleCollider");
+            DecisionSelectCards = new Card[] { fort, null };
+            UsePower(collider);
+            AssertIsInPlay(fort);
+            AssertIrradiated(ring);
+            UsePower(collider);
+            AssertNotInPlay(ring);
+
+            DecisionSelectCards = null;
+            PutInTrash(ring);
+            QuickHandStorage(pyre, legacy, tempest, scholar);
+            UsePower(collider);
+            QuickHandCheckZero();
+        }
+        [Test]
+        public void TestParticleColliderPowerDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card core = PlayCard("ThermonuclearCore");
+            Card collider = PlayCard("ParticleCollider");
+
+            DecisionYesNo = false;
+
+            QuickHPStorage(baron);
+            UsePower(collider);
+            QuickHPCheck(-1);
+            AssertIsInPlay(core);
+
+            DecisionYesNo = true;
+            UsePower(collider);
+            QuickHPCheck(-4);
+            AssertInTrash(core);
+
+            UsePower(collider);
+            QuickHPCheck(-1);
+        }
     }
 }
