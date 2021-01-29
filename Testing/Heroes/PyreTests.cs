@@ -755,5 +755,44 @@ namespace CauldronTests
             AssertIrradiated(fort);
             AssertNotIrradiated(ball);
         }
+        [Test]
+        public void TestNeutronForcefieldIndestructibility()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            GoToStartOfTurn(pyre);
+            Card neutron = PutOnDeck("NeutronForcefield");
+            UsePower(pyre);
+            PlayCard(neutron);
+
+            DestroyCard(neutron);
+            AssertIsInPlay(neutron);
+            GoToStartOfTurn(legacy);
+            DestroyCard(neutron);
+            AssertInTrash(neutron);
+        }
+        [Test]
+        public void TestNeutronForcefieldPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card neutron = PlayCard("NeutronForcefield");
+            UsePower(neutron);
+            AssertInTrash(neutron);
+
+            QuickHPStorage(baron, pyre, legacy);
+            DealDamage(baron, baron, 1, DTM);
+            DealDamage(pyre, pyre, 1, DTM);
+            DealDamage(legacy, legacy, 1, DTM);
+            QuickHPCheck(-1, 0, -1);
+
+            GoToStartOfTurn(pyre);
+            DealDamage(pyre, pyre, 1, DTM);
+            QuickHPCheck(0, -1, 0);
+        }
     }
 }

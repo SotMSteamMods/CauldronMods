@@ -29,7 +29,7 @@ namespace Cauldron.Pyre
 
         public override void AddStartOfGameTriggers()
         {
-            AddTrigger((PlayCardAction pc) => pc.CardToPlay == Card && IsIrradiated(Card), MarkIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before, outOfPlayTrigger: true);
+            AddTrigger((PlayCardAction pc) => pc.CardToPlay == Card, MarkIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before, outOfPlayTrigger: true);
         }
         public override IEnumerator Play()
         {
@@ -93,7 +93,7 @@ namespace Cauldron.Pyre
 
         private IEnumerator MarkIrradiatedPlay(PlayCardAction pc)
         {
-            WasPlayedIrradiated = true;
+            WasPlayedIrradiated = IsIrradiated(Card);
             yield return null;
             yield break;
         }
