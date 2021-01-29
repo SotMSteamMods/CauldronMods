@@ -37,6 +37,10 @@ namespace Cauldron.Pyre
 
         protected IEnumerator IrradiateCard(Card cardToIrradiate)
         {
+            if(IsIrradiated(cardToIrradiate))
+            {
+                yield break;
+            }
             var marker = TurnTaker.GetAllCards(realCardsOnly: false).Where((Card c) => !c.IsRealCard && c.Location.IsOffToTheSide).FirstOrDefault();
             if (marker != null && cardToIrradiate.Location.IsHand)
             {
@@ -68,6 +72,41 @@ namespace Cauldron.Pyre
                     PyreTTC.AddIrradiatedSpecialString(cardToIrradiate);
                 }
                 */
+            }
+            yield break;
+        }
+
+        protected IEnumerator SelectAndIrradiateCardsInHand(HeroTurnTakerController decisionMaker, TurnTaker playerWithHand, int maxCards, int? minCards = null, List<SelectCardDecision> storedResults = null, Func<Card, bool> additionalCriteria = null)
+        {
+            
+            if(additionalCriteria == null)
+            {
+                additionalCriteria = (Card c) => true;
+            }
+            Func<Card, bool> handCriteria = (Card c) => c != null && c.IsInHand;
+            if(playerWithHand != null)
+            {
+                handCriteria = (Card c) => c != null && c.Location == playerWithHand.ToHero().Hand;
+            }
+
+            var fullCriteria = new LinqCardCriteria((Card c) => handCriteria(c) && !IsIrradiated(c) && additionalCriteria(c), "non-irradiated");
+            if(storedResults == null)
+            {
+                storedResults = new List<SelectCardDecision>();
+            }
+            if(minCards == null)
+            {
+                minCards = maxCards;
+            }
+
+            IEnumerator coroutine = GameController.SelectCardsAndDoAction(decisionMaker, fullCriteria, SelectionType.CardFromHand, IrradiateCard, maxCards, false, minCards, storedResults, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }

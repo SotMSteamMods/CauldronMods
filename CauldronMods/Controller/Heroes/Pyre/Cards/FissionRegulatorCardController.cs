@@ -99,8 +99,7 @@ namespace Cauldron.Pyre
         private IEnumerator SelectAndIrradiateCardInHand(TurnTaker tt)
         {
             var heroTTC = FindHeroTurnTakerController(tt.ToHero());
-            var storedCard = new List<SelectCardDecision>();
-            IEnumerator coroutine = GameController.SelectCardAndStoreResults(heroTTC, SelectionType.CardFromHand, new LinqCardCriteria((Card c) => c.Location == heroTTC.HeroTurnTaker.Hand && !IsIrradiated(c), "non-irradiated"), storedCard, false, cardSource: GetCardSource());
+            IEnumerator coroutine = SelectAndIrradiateCardsInHand(heroTTC, tt, 1, 0);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -108,20 +107,6 @@ namespace Cauldron.Pyre
             else
             {
                 GameController.ExhaustCoroutine(coroutine);
-            }
-
-            if(DidSelectCard(storedCard))
-            {
-                var toIrradiate = GetSelectedCard(storedCard);
-                coroutine = IrradiateCard(toIrradiate);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
             }
             yield break;
         }

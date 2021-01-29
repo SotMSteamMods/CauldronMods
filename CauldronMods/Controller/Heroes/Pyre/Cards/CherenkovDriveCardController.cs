@@ -43,10 +43,10 @@ namespace Cauldron.Pyre
 
         private IEnumerator IrradiateCardInHandAndMaybeUsePower(TurnTaker tt)
         {
-            //1 player may select 1 non-{PyreIrradiate} card in their hand.
+            //1 player may select 1 non-{PyreIrradiate} card in their hand. {PyreIrradiate} that card it until it leaves their hand.
             var storedCard = new List<SelectCardDecision>();
             var heroTTC = FindHeroTurnTakerController(tt.ToHero());
-            IEnumerator coroutine = GameController.SelectCardAndStoreResults(heroTTC, SelectionType.CardFromHand, new LinqCardCriteria((Card c) => c.Location == heroTTC.HeroTurnTaker.Hand && !IsIrradiated(c), "non-irradiated"), storedCard, true, cardSource: GetCardSource());
+            IEnumerator coroutine = SelectAndIrradiateCardsInHand(heroTTC, tt, 1, 0, storedResults: storedCard);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -61,19 +61,8 @@ namespace Cauldron.Pyre
                 yield break;
             }
 
-            //{PyreIrradiate} that card it until it leaves their hand.
-            var selectedCard = GetSelectedCard(storedCard);
-            coroutine = IrradiateCard(selectedCard);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-
             // Then, they may use a power on that card.
+            var selectedCard = GetSelectedCard(storedCard);
             if (selectedCard.HasPowers)
             {
                 var controller = FindCardController(selectedCard);

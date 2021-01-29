@@ -62,9 +62,8 @@ namespace Cauldron.Pyre
 
         private IEnumerator IrradiateCardsInHand(TurnTaker tt, List<bool> pyreCardsIrradiateCount)
         {
-            var heroTT = tt.ToHero();
-            var decision = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => c.Location == heroTT.Hand && !IsIrradiated(c), SelectionType.CardFromHand, 2, false, cardSource: GetCardSource());
-            IEnumerator coroutine = GameController.SelectCardsAndDoAction(decision, (SelectCardDecision scd) => IrradiateAndStoreIfPyre(scd, pyreCardsIrradiateCount), cardSource: GetCardSource());
+            var storedResults = new List<SelectCardDecision>();
+            IEnumerator coroutine = SelectAndIrradiateCardsInHand(DecisionMaker, tt, 2, storedResults: storedResults);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -73,25 +72,9 @@ namespace Cauldron.Pyre
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
-        }
-
-        private IEnumerator IrradiateAndStoreIfPyre(SelectCardDecision scd, List<bool> pyreCardsIrradiateCount)
-        {
-            var toIrradiate = scd.SelectedCard;
-            if(toIrradiate != null)
+            foreach(SelectCardDecision scd in storedResults)
             {
-                IEnumerator coroutine = IrradiateCard(toIrradiate);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-
-                if (toIrradiate.Owner == TurnTaker)
+                if(scd.SelectedCard != null && scd.SelectedCard.Owner == TurnTaker)
                 {
                     pyreCardsIrradiateCount.Add(true);
                 }
