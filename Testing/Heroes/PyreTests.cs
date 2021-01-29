@@ -711,5 +711,49 @@ namespace CauldronTests
             AssertInTrash(breach);
             AssertIsInPlay(cladding);
         }
+        [Test]
+        public void TestIonTraceDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DiscardAllCards(pyre, legacy, tempest, scholar);
+            UsePower(legacy);
+            Card traffic = PutIntoPlay("TrafficPileup");
+            Card redist = PutIntoPlay("ElementalRedistributor");
+
+            QuickHPStorage(baron.CharacterCard, redist, pyre.CharacterCard, legacy.CharacterCard, tempest.CharacterCard, scholar.CharacterCard, traffic);
+            PlayCard("IonTrace");
+            QuickHPCheck(-1, -1, 0, 0, 0, 0, -1);
+        }
+        [Test]
+        public void TestIonTraceRecovery()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(legacy);
+            MoveAllCardsFromHandToDeck(tempest);
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, legacy.TurnTaker, tempest.TurnTaker };
+            Card thokk = PutOnDeck("Thokk");
+            UsePower(pyre);
+            Card ring = PutInHand("TheLegacyRing");
+            Card surge = PutInTrash("SurgeOfStrength");
+            Card danger = PutInTrash("DangerSense");
+            Card fort = PutInTrash("Fortitude");
+
+            Card ball = PutInHand("BallLightning");
+            Card aqua = PutInTrash("AquaticCorrespondence");
+
+            DecisionSelectCards = new Card[] { ring, fort, null };
+            PlayCard("IonTrace");
+            AssertInHand(fort);
+            AssertInTrash(aqua, surge, danger);
+            AssertIrradiated(ring);
+            AssertIrradiated(fort);
+            AssertNotIrradiated(ball);
+        }
     }
 }
