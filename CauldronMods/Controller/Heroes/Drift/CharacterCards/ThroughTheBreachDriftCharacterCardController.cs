@@ -63,7 +63,7 @@ namespace Cauldron.Drift
                 {
                     //Pick position
                     List<SelectNumberDecision> numberDecisions = new List<SelectNumberDecision>();
-                    coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.MoveCard, 1, 4, additionalCriteria: (int position) => this.GetBreachedCard(position) == null, storedResults: numberDecisions, cardSource: base.GetCardSource());
+                    coroutine = PickPosition(numberDecisions);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -72,10 +72,33 @@ namespace Cauldron.Drift
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
-
                     if (numberDecisions.Any())
                     {
                         //Move card
+
+                        while(numberDecisions.FirstOrDefault().SelectedNumber.Value == 0)
+                        {
+                            numberDecisions.Clear();
+                            coroutine = GameController.SendMessageAction("Please pick a valid position!", Priority.High, GetCardSource());
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                            coroutine = PickPosition(numberDecisions);
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                        }
+
                         Card cardToMove = revealedCards.FirstOrDefault();
                         int cardPosition = numberDecisions.FirstOrDefault().SelectedNumber.Value;
                         coroutine = base.GameController.MoveCard(base.TurnTakerController, cardToMove, base.GetShiftTrack().UnderLocation, cardSource: base.GetCardSource());
@@ -127,6 +150,33 @@ namespace Cauldron.Drift
                     }
                 }
             }
+            yield break;
+        }
+
+        private IEnumerator PickPosition(List<SelectNumberDecision> numberDecisions)
+        {
+            int available = 4;
+            for(int i=1; i<=4; i++)
+            {
+                if(this.GetBreachedCard(i) != null)
+                {
+                    available--;
+                }
+            }
+            if(available == 0)
+            {
+                yield break;
+            }
+            IEnumerator coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.MoveCard, 1, 4, additionalCriteria: (int position) => this.GetBreachedCard(position) == null, storedResults: numberDecisions, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
             yield break;
         }
 
