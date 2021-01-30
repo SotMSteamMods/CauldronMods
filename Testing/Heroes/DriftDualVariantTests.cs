@@ -56,23 +56,17 @@ namespace CauldronTests
             AssertMaximumHitPoints(GetCard("FutureDriftCharacter"), 16);
         }
 
-        [Test()]
-        public void TestDriftCharacter_StartWithFuture()
+        [Test]
+        public void TestDriftCharacter_StartWith([Values("PastDriftCharacter", "FutureDriftCharacter")] string characterId)
         {
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            Card track = FindCardsWhere((Card c) => c.Identifier == $"Dual{ShiftTrack}1", false).FirstOrDefault();
+            Card character = FindCardsWhere((Card c) => c.Identifier == characterId).FirstOrDefault();
+            Card other = FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Owner == drift.TurnTaker && c.Identifier != characterId).FirstOrDefault();
+            DecisionSelectCards = new Card[] { track, character };
+            StartGame(false);
 
-            AssertIsInPlay(FutureDriftCharacter);
-        }
-
-        [Test, Ignore("Decisions before start don't seem to work. Tested in game and it works.")]
-        public void TestDriftCharacter_StartWithPast()
-        {
-            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            DecisionSelectCard = GetCard(FutureDriftCharacter);
-            StartGame();
-
-            AssertIsInPlay(PastDriftCharacter);
+            AssertIsInPlay(other);
         }
 
         [Test()]
