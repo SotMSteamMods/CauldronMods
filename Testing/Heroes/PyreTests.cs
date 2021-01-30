@@ -58,6 +58,51 @@ namespace CauldronTests
 
             Assert.AreEqual(29, pyre.CharacterCard.HitPoints);
         }
+        [Test]
+        public void TestPyreDeckList()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            AssertHasKeyword("cascade", new string[]
+            {
+                "RogueFissionCascade"
+            });
+            AssertHasKeyword("equipment", new string[]
+            {
+                "AtmosphereScrubbers",
+                "CherenkovDrive",
+                "FissionRegulator",
+                "FracturedControlRod",
+                "HullCladding",
+                "NeutronForcefield",
+                "ParticleCollider",
+                "ThermonuclearCore"
+            });
+            AssertHasKeyword("limited", new string[]
+            {
+                "Chromodynamics",
+                "ContainmentBreach",
+                "FissionRegulator",
+                "HullCladding",
+                "NeutronForcefield",
+                "ParticleCollider",
+                "ThermonuclearCore"
+            });
+            AssertHasKeyword("one-shot", new string[]
+            {
+                "AtomicPunch",
+                "CellularIrradiation",
+                "GammaBurst",
+                "HalfLife",
+                "IonTrace",
+                "RogueFissionCascade"
+            });
+            AssertHasKeyword("ongoing", new string[]
+            {
+                "Chromodynamics",
+                "ContainmentBreach"
+            });
+        }
 
         [Test]
         public void TestPyreInnatePowerDrawCard()

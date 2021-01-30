@@ -460,7 +460,7 @@
             "body": "The card this is next to is irradiated."
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "PyreCharacter",
             "promoIdentifier": "UnstablePyreCharacter",
