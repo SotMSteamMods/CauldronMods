@@ -133,6 +133,21 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestArtifactNotBreakReload()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.VaultFive");
+            StartGame();
+
+            Card nail = PlayCard("ByrgsNail");
+            GoToStartOfTurn(ra);
+            PrintSpecialStringsForCard(nail);
+            SaveAndLoad();
+            nail = GetCard("ByrgsNail");
+            PrintSpecialStringsForCard(nail);
+
+        }
+
+        [Test()]
         public void TestByrgsNail()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.VaultFive");
