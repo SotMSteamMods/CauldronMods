@@ -207,25 +207,14 @@ namespace CauldronTests
             QuickHandCheckZero();
         }
 
-        [Test]
-        public void TestShiftTrackSetup()
+        [Test, Sequential]
+        //[Ignore("Picking a ShiftTrack by Identifier always returns the first one. Testing in game confirms this works.")]
+        public void TestShiftTrackSetup([Values(1, 2, 3, 4)] int decision)
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + 1, false).FirstOrDefault();
+            Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + decision, false).FirstOrDefault();
             DecisionSelectCard = track;
-            StartGame();
-
-            Assert.AreEqual(1, CurrentShiftPosition());
-            AssertIsInPlay(track);
-        }
-
-        [Test, Sequential, Ignore("Picking a ShiftTrack by Identifier always returns the first one. Testing in game confirms this works.")]
-        public void TestShiftTrackSetup_Other([Values(2, 3, 4)] int decision)
-        {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            Card track = FindCardsWhere((Card c) => c.Identifier == ShiftTrack + decision, false).FirstOrDefault();
-            DecisionSelectCard = track;
-            StartGame();
+            StartGame(false);
 
             Assert.AreEqual(decision, CurrentShiftPosition());
             AssertIsInPlay(track);

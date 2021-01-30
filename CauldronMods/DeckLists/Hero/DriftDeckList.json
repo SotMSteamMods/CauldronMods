@@ -671,10 +671,10 @@
         },
         {
             "identifier": "DualShiftTrack2",
-            "sharedIdentifier": "ShiftTrack: Past",
+            "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "D1D2D4",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Past",
             "character": true,
             "isReal": false,
             "notsetup": [
@@ -705,10 +705,10 @@
         },
         {
             "identifier": "DualShiftTrack3",
-            "sharedIdentifier": "ShiftTrack: Future",
+            "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "D1D2D4",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Future",
             "character": true,
             "isReal": false,
             "notsetup": [

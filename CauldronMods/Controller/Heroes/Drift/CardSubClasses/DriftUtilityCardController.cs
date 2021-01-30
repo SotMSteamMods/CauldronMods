@@ -8,66 +8,14 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public abstract class DriftUtilityCardController : CardController
+    public abstract class DriftUtilityCardController : DriftBaseCardController
     {
         protected DriftUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => "Drift is at position " + this.CurrentShiftPosition() + ", this is in the " + Past, () => "Drift is at position " + this.CurrentShiftPosition() + ", this is in the " + Future);
         }
 
-        protected const string Base = "Base";
-        protected const string Dual = "Dual";
-        protected const string ThroughTheBreach = "ThroughTheBreach";
-
-        protected const string Past = "Past";
-        protected const string Future = "Future";
-
-        protected const string HasShifted = "HasShifted";
-        protected const string ShiftTrack = "ShiftTrack";
         private int totalShifts = 0;
         public int TotalShifts { get => totalShifts; set => totalShifts = value; }
-
-        public int CurrentShiftPosition()
-        {
-            if (this.GetShiftPool() == null)
-            {
-                return 0;
-            }
-            return this.GetShiftPool().CurrentValue;
-        }
-
-        public Card GetActiveCharacterCard()
-        {
-            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == base.TurnTaker)).FirstOrDefault();
-        }
-
-        public TokenPool GetShiftPool()
-        {
-            return this.GetShiftTrack().FindTokenPool("ShiftPool");
-        }
-
-        public Card GetShiftTrack()
-        {
-            return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText, false).FirstOrDefault();
-        }
-
-        public bool IsFocus(Card c)
-        {
-            return c.DoKeywordsContain("focus");
-        }
-
-        public bool IsTimeMatching(string time)
-        {
-            if (this.CurrentShiftPosition() == 1 || this.CurrentShiftPosition() == 2)
-            {
-                return time == Past;
-            }
-            if (this.CurrentShiftPosition() == 3 || this.CurrentShiftPosition() == 4)
-            {
-                return time == Future;
-            }
-            return false;
-        }
 
         public IEnumerator ShiftL()
         {
@@ -251,16 +199,6 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-        }
-
-        private SpecialString TimeSpecialString()
-        {
-            string time = Past;
-            if (this.IsTimeMatching(Future))
-            {
-                time = Future;
-            }
-            return base.SpecialStringMaker.ShowSpecialString(() => "Drift is at position " + this.CurrentShiftPosition() + ", this is in the " + time);
         }
     }
 }
