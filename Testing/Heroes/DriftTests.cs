@@ -779,13 +779,14 @@ namespace CauldronTests
         [Test]
         public void TestKnightsHeritage()
         {
-            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 
+            IEnumerable<Card> knights = FindCardsWhere(c => c.Identifier == KnightsHeritage).Take(2);
             Card fFocus = PutInHand(FutureFocus);
             Card second = PutInHand(MakeEverySecondCount);
-            Card knight0 = PutInHand(GetCard(KnightsHeritage, 0));
-            Card knight1 = PutInHand(GetCard(KnightsHeritage, 1));
+            Card knight0 = PutInHand(knights.First());
+            Card knight1 = PutInHand(knights.Last());
             DecisionSelectCards = new Card[] { fFocus, second };
 
             PlayCard(knight0);
