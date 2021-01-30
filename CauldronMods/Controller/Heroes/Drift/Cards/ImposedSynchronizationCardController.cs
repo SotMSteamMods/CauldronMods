@@ -28,8 +28,8 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //{DriftFuture}
-            if (base.IsTimeMatching(Future))
+            //{DriftPast}
+            if (base.IsTimeMatching(Past))
             {
                 List<SelectCardDecision> targetDecisions = new List<SelectCardDecision>();
                 //Select a target. Reduce damage dealt to that target by 1 until the start of your next turn.
@@ -68,8 +68,8 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            //{DriftPast} 
-            if (base.IsTimeMatching(Past))
+            //{DriftFuture} 
+            if (base.IsTimeMatching(Future))
             {
                 List<SelectCardDecision> targetDecisions = new List<SelectCardDecision>();
                 //Select a target. Increase damage dealt by that target by 1 until the start of your next turn. 

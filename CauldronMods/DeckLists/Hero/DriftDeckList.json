@@ -339,8 +339,8 @@
             ],
             "body": [
                 "Draw a card.",
-                "{Future} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {L}.",
-                "{Past} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {R}."
+                "{Past} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {L}.",
+                "{Future} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {R}."
             ],
             "flavorQuotes": [
                 {
