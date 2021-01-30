@@ -31,7 +31,7 @@ namespace Cauldron.Drift
 
             //At the end of your next turn, return it from play to your hand. 
             Card playedCard = playAction.FirstOrDefault().CardToPlay;
-            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.EndOfTurnResponse), "At the end of your next turn, return " + playedCard.Title + " from play to your hand. Shift {DriftRR}", new TriggerType[] { TriggerType.MoveCard, TriggerType.AddTokensToPool }, this.Card);
+            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.EndOfTurnResponse), "At the end of your next turn, return " + playedCard.Title + " from play to your hand.", new TriggerType[] { TriggerType.MoveCard, TriggerType.AddTokensToPool }, this.Card);
             statusEffect.NumberOfUses = 1;
             statusEffect.BeforeOrAfter = BeforeOrAfter.Before;
             statusEffect.TurnPhaseCriteria.Phase = Phase.End;
@@ -49,7 +49,7 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //Shift {DriftRR}.
+            //Shift {RR}.
             coroutine = base.ShiftRR();
             if (base.UseUnityCoroutines)
             {
