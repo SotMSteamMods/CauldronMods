@@ -256,18 +256,23 @@ namespace CauldronTests
 
             QuickHandStorage(haka);
             QuickHPStorage(apostate);
+            QuickShuffleStorage(haka.TurnTaker.Deck);
             UseIncapacitatedAbility(drift, 1);
             QuickHandCheck(1);
             QuickHPCheck(-2);
             AssertInDeck(mere);
+            QuickShuffleCheck(1);
 
             Card hurricane = PutInTrash("LocalizedHurricane");
             DecisionPowerIndex = 1;
 
             //Make sure we can use other indexes
             QuickHPStorage(apostate);
+            QuickShuffleStorage(tempest.TurnTaker.Deck);
             UseIncapacitatedAbility(drift, 1);
             QuickHPCheck(0);
+            QuickShuffleCheck(1);
+
             AssertInDeck(hurricane);
         }
 
