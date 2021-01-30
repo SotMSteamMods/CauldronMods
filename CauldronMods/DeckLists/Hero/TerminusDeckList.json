@@ -18,6 +18,15 @@
             "powers": [
                 "{Terminus} deals herself 2 cold damage and 1 target 3 cold damage."
             ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
+            ],
             "icons": [
                 "HasPower",
                 "DealDamageCold"
@@ -39,131 +48,29 @@
             "complexity": 2
         },
         {
-            "identifier": "BoneChillingTouch",
-            "count": 2,
-            "title": "Bone-Chilling Touch",
+            "identifier": "StainedBadge",
+            "count": 1,
+            "title": "Stained Badge",
             "keywords": [
-                "ongoing"
+                "memento"
             ],
             "icons": [
-                "CannotGainHP",
-                "CannotDealDamage",
-                "DealDamageCold"
-            ],
-            "body": "A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.",
-            "powers": [
-                "{Terminus} deals 1 target 2 cold damage. You may move this card next to that target."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Terminus",
-                    "text": "I'm not here for you, but{BR}that doesn't mean I can't punch your{BR}ticket. Last chance. Get out of my way."
-                }
-            ],
-            "flavorReference": "Terminus, Unusual Suspects #6"
-        },
-        {
-            "identifier": "CovenantOfWrath",
-            "count": 2,
-            "title": "Covenant of Wrath",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "RemoveTokens",
-                "DealDamageCold",
-                "DestroySelf"
-            ],
-            "body": "When this card would be destroyed, you may remove 3 tokens from your Wrath pool. If you removed 3 tokens this way, prevent that destruction.",
-            "powers": [
-                "{Terminus} deals 1 target 6 cold damage. Destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Celadroch",
-                    "text": "Who among you{BR}can overthrow death itself?"
-                },
-                {
-                    "identifier": "Terminus",
-                    "text": "Let's find out."
-                }
-            ],
-            "flavorReference": "Death Masks: Collected Edition"
-        },
-        {
-            "identifier": "EtherealArmory",
-            "count": 2,
-            "title": "Ethereal Armory",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "PlayCardNow",
-                "Manipulate"
-            ],
-            "body": [
-                "Each player may play an ongoing or equipment card now.",
-                "At the start of your next turn, return each of those cards that is still in play to its player's hand."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Terminus",
-                    "text": "Kick it into gear, kids.{BR}Ether fades at sunrise."
-                },
-                {
-                    "identifier": "Tango One",
-                    "text": "I won't need long."
-                }
-            ],
-            "flavorReference": "Guilty Metal #33"
-        },
-        {
-            "identifier": "FlashBeforeYourEyes",
-            "count": 2,
-            "title": "Flash Before Your Eyes",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
+                "Indestructible",
+                "RemoveFromGame",
                 "EndOfTurnAction",
-                "Manipulate"
+                "AddTokens"
             ],
             "body": [
-                "At the end of your turn, select a trash pile and put a card from it on top of its associated deck.",
-                "You cannot select that trash pile again for this effect until this card leaves play."
+                "This card and {Terminus} are indestructible unless all other heroes are incapacitated. If another Memento would enter play, instead remove it from the game.",
+                "At the end of your turn, add 1 token to your Wrath pool if {Terminus} has 1 or more HP."
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "Pyre",
-                    "text": "I'm already paying{BR}for my mistakes. Stop{BR}making me relive them."
+                    "identifier": "Terminus",
+                    "text": "This city's full of cops and{BR}crooks, but we were the worst of{BR}both. It's time to make things right."
                 }
             ],
-            "flavorReference": "Pyre, Jailbreaker #2"
-        },
-        {
-            "identifier": "FullMoonExpress",
-            "count": 2,
-            "title": "Full Moon Express",
-            "keywords": [
-                "ghost"
-            ],
-            "icons": [
-                "CounterDamage",
-                "StartOfTurnAction",
-                "RemoveFromGame"
-            ],
-            "body": [
-                "Whenever {Terminus} is dealt damage by a non-hero target, she deals that target 2 melee damage. If Stained Badge is not in play, redirect damage dealt by non-hero targets to {Terminus}.",
-                "At the start of your turn, remove this card from the game."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "KataMichi",
-                    "text": "I did not think that{BR}fear could survive death. But it{BR}comes for us along these rails."
-                }
-            ],
-            "flavorReference": "Kata Michi, End of the Line #20"
+            "flavorReference": "Terminus, The Endless Ride #2"
         },
         {
             "identifier": "GravenShell",
@@ -183,108 +90,6 @@
                 "Whenever {Terminus} destroys a card, add 2 tokens to your Wrath pool and she regains 1HP."
             ],
             "flavorText": "The bullet that should{BR}have killed Tang Daiyu became a{BR}powerful weapon against the ghosts{BR}she was tasked with hunting."
-        },
-        {
-            "identifier": "GuiltyVerdict",
-            "count": 2,
-            "title": "Guilty Verdict",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "AddTokens",
-                "RemoveTokens",
-                "IncreaseDamageDealt"
-            ],
-            "body": [
-                "Whenever a hero target is dealt 3 or more damage, add 1 token or remove 3 tokens from your Wrath pool.",
-                "If you removed 3 tokens this way, increase damage dealt by that hero target by 1 until the start of the next environment turn."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Terminus",
-                    "text": "You're dead, not doomed.{BR}What comes next is up to you."
-                }
-            ],
-            "flavorReference": "Terminus, Highway to Hades #1"
-        },
-        {
-            "identifier": "ImmortalCoils",
-            "count": 3,
-            "title": "Immortal Coils",
-            "keywords": [
-                "equipment"
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageCold",
-                "AddOrRemoveTokens",
-                "ReduceDamageDealt"
-            ],
-            "powers": [
-                "{Terminus} deals 1 target 3 cold damage. Add 1 or remove 3 tokens from your Wrath pool.{BR}If you removed 3 tokens this way, reduce damage dealt by that target by 1 until the start of your next turn."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Terminus",
-                    "text": "Outnumbered? I just wish there{BR}were more than five of you idiots."
-                }
-            ],
-            "flavorReference": "Terminus, Silencer #3"
-        },
-        {
-            "identifier": "Jailbreaker",
-            "count": 2,
-            "title": "Jailbreaker",
-            "keywords": [
-                "equipment"
-            ],
-            "icons": [
-                "AddTokens",
-                "HasPower",
-                "DealDamageCold",
-                "DealDamageProjectile"
-            ],
-            "body":  "When this card enters play, add 3 tokens to your Wrath pool and destroy all other copies of Jailbreaker.",
-            "powers": [
-                "{Terminus} deals herself 1 cold damage and any number of other targets 2 projectile damage each."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Ra",
-                    "text": "Nice gun."
-                },
-                {
-                    "identifier": "Terminus",
-                    "text": "Nice dress."
-                }
-            ],
-            "flavorReference": "Unusual Suspects #12"
-        },
-        {
-            "identifier": "NoRestForTheWicked",
-            "count": 2,
-            "title": "No Rest For The Wicked",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "PlayCardNow",
-                "DealDamageInfernal",
-                "AddTokens"
-            ],
-            "body": [
-                "You may put a target from the villain trash into play. If that target has more than 5HP, reduce its current HP to 5. That target deals up to 2 other targets 5 infernal damage each.",
-                "If no target enters play this way, add 5 tokens to your Wrath pool."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Terminus",
-                    "text": "Dust off and shut up.{BR}You work for me now."
-                }
-            ],
-            "flavorReference": "Terminus, Full Moon Express #5"
         },
         {
             "identifier": "RailwaySpike",
@@ -341,6 +146,112 @@
             "flavorReference": "Terminus, Silencer #10"
         },
         {
+            "identifier": "ImmortalCoils",
+            "count": 3,
+            "title": "Immortal Coils",
+            "keywords": [
+                "equipment"
+            ],
+            "icons": [
+                "HasPower",
+                "DealDamageCold",
+                "AddOrRemoveTokens",
+                "ReduceDamageDealt"
+            ],
+            "powers": [
+                "{Terminus} deals 1 target 3 cold damage. Add 1 or remove 3 tokens from your Wrath pool.{BR}If you removed 3 tokens this way, reduce damage dealt by that target by 1 until the start of your next turn."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Terminus",
+                    "text": "Outnumbered? I just wish there{BR}were more than five of you idiots."
+                }
+            ],
+            "flavorReference": "Terminus, Silencer #3"
+        },
+        {
+            "identifier": "Jailbreaker",
+            "count": 2,
+            "title": "Jailbreaker",
+            "keywords": [
+                "equipment"
+            ],
+            "icons": [
+                "AddTokens",
+                "HasPower",
+                "DealDamageCold",
+                "DealDamageProjectile"
+            ],
+            "body":  "When this card enters play, add 3 tokens to your Wrath pool and destroy all other copies of Jailbreaker.",
+            "powers": [
+                "{Terminus} deals herself 1 cold damage and any number of other targets 2 projectile damage each."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Ra",
+                    "text": "Nice gun."
+                },
+                {
+                    "identifier": "Terminus",
+                    "text": "Nice dress."
+                }
+            ],
+            "flavorReference": "Unusual Suspects #12"
+        },
+        {
+            "identifier": "TheChainConductor",
+            "count": 3,
+            "title": "The Chain Conductor",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "Manipulate",
+                "AddTokens",
+                "DealDamageCold"
+            ],
+            "body": [
+                "Reveal cards from the top of your deck until you reveal a Memento or Equipment card. Put it into play or into your hand. Shuffle the rest of the revealed cards into your deck.",
+                "If no card entered play this way, add 3 tokens to your Wrath pool and {Terminus} deals 1 target 2 cold damage."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "TheConductor",
+                    "text": "<Welcome aboard, Officer Tang.{BR}We've got a long ride ahead of us.>"
+                }
+            ],
+            "flavorReference": "The Conductor, The Endless Ride #1"
+        },
+        {
+            "identifier": "CovenantOfWrath",
+            "count": 2,
+            "title": "Covenant of Wrath",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "RemoveTokens",
+                "DealDamageCold",
+                "DestroySelf",
+                "HasPower"
+            ],
+            "body": "When this card would be destroyed, you may remove 3 tokens from your Wrath pool. If you removed 3 tokens this way, prevent that destruction.",
+            "powers": [
+                "{Terminus} deals 1 target 6 cold damage. Destroy this card."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Celadroch",
+                    "text": "Who among you{BR}can overthrow death itself?"
+                },
+                {
+                    "identifier": "Terminus",
+                    "text": "Let's find out."
+                }
+            ],
+            "flavorReference": "Death Masks: Collected Edition"
+        },
+        {
             "identifier": "SearingGaze",
             "count": 2,
             "title": "Searing Gaze",
@@ -362,6 +273,81 @@
                 }
             ],
             "flavorReference": "Terminus, Department of Secrets #49"
+        },
+        {
+            "identifier": "EtherealArmory",
+            "count": 2,
+            "title": "Ethereal Armory",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "Manipulate"
+            ],
+            "body": [
+                "Each player may play an ongoing or equipment card now.",
+                "At the start of your next turn, return each of those cards that is still in play to its player's hand."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Terminus",
+                    "text": "Kick it into gear, kids.{BR}Ether fades at sunrise."
+                },
+                {
+                    "identifier": "Tango One",
+                    "text": "I won't need long."
+                }
+            ],
+            "flavorReference": "Guilty Metal #33"
+        },
+        {
+            "identifier": "UnusualSuspects",
+            "count": 2,
+            "title": "Unusual Suspects",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "AddTokens",
+                "DealDamageCold",
+                "IncreaseDamageDealt"
+            ],
+            "body": [
+                "Add 2 tokens to your Wrath pool.",
+                "{Terminus} deals up to 2 targets 2 cold damage each. If {Terminus} deals damage this way to a target that shares a keyword with a card in any trash pile, increase that damage by 2."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Terminus",
+                    "text": "Took it with him to{BR}his grave? Should have gone{BR}somewhere harder to follow."
+                }
+            ],
+            "flavorReference": "Terminus, Guilty Metal #7"
+        },
+        {
+            "identifier": "NoRestForTheWicked",
+            "count": 2,
+            "title": "No Rest For The Wicked",
+            "keywords": [
+                "one-shot"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DealDamageInfernal",
+                "AddTokens"
+            ],
+            "body": [
+                "You may put a target from the villain trash into play. If that target has more than 5HP, reduce its current HP to 5. That target deals up to 2 other targets 5 infernal damage each.",
+                "If no target enters play this way, add 5 tokens to your Wrath pool."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Terminus",
+                    "text": "Dust off and shut up.{BR}You work for me now."
+                }
+            ],
+            "flavorReference": "Terminus, Full Moon Express #5"
         },
         {
             "identifier": "SoulIgnition",
@@ -394,29 +380,29 @@
             "flavorReference": "Armed and Dangerous One-shot"
         },
         {
-            "identifier": "StainedBadge",
-            "count": 1,
-            "title": "Stained Badge",
+            "identifier": "GuiltyVerdict",
+            "count": 2,
+            "title": "Guilty Verdict",
             "keywords": [
-                "memento"
+                "ongoing",
+                "limited"
             ],
             "icons": [
-                "Indestructible",
-                "RemoveFromGame",
-                "EndOfTurnAction",
-                "AddTokens"
+                "AddTokens",
+                "RemoveTokens",
+                "IncreaseDamageDealt"
             ],
             "body": [
-                "This card and {Terminus} are indestructible. If another Memento would enter play, instead remove it from the game. If all other heroes are incapacitated, the heroes lose.",
-                "At the end of your turn, add 1 token to your Wrath pool if {Terminus} has 1 or more HP."
+                "Whenever a hero target is dealt 3 or more damage, add 1 token or remove 3 tokens from your Wrath pool.",
+                "If you removed 3 tokens this way, increase damage dealt by that hero target by 1 until the start of the next environment turn."
             ],
             "flavorQuotes": [
                 {
                     "identifier": "Terminus",
-                    "text": "This city's full of cops and{BR}crooks, but we were the worst of{BR}both. It's time to make things right."
+                    "text": "You're dead, not doomed.{BR}What comes next is up to you."
                 }
             ],
-            "flavorReference": "Terminus, The Endless Ride #2"
+            "flavorReference": "Terminus, Highway to Hades #1"
         },
         {
             "identifier": "StokeTheFurnace",
@@ -445,28 +431,76 @@
             "flavorReference": "The Conductor, Book of the Dead #67"
         },
         {
-            "identifier": "TheChainConductor",
-            "count": 3,
-            "title": "The Chain Conductor",
+            "identifier": "FlashBeforeYourEyes",
+            "count": 2,
+            "title": "Flash Before Your Eyes",
             "keywords": [
-                "one-shot"
+                "ongoing",
+                "limited"
             ],
             "icons": [
-                "Manipulate",
-                "AddTokens",
-                "DealDamageCold"
+                "EndOfTurnAction",
+                "Manipulate"
             ],
             "body": [
-                "Reveal cards from the top of your deck until you reveal a Memento or Equipment card. Put it into play or into your hand. Shuffle the rest of the revealed cards into your deck.",
-                "If no card entered play this way, add 3 tokens to your Wrath pool and {Terminus} deals 1 target 2 cold damage."
+                "At the end of your turn, select a trash pile and put a card from it on top of its associated deck.",
+                "You cannot select that trash pile again for this effect until this card leaves play."
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TheConductor",
-                    "text": "<Welcome aboard, Officer Tang.{BR}We've got a long ride ahead of us.>"
+                    "identifier": "Pyre",
+                    "text": "I'm already paying{BR}for my mistakes. Stop{BR}making me relive them."
                 }
             ],
-            "flavorReference": "The Conductor, The Endless Ride #1"
+            "flavorReference": "Pyre, Jailbreaker #2"
+        },
+        {
+            "identifier": "FullMoonExpress",
+            "count": 2,
+            "title": "Full Moon Express",
+            "keywords": [
+                "ghost"
+            ],
+            "icons": [
+                "CounterDamage",
+                "StartOfTurnAction",
+                "RemoveFromGame"
+            ],
+            "body": [
+                "Whenever {Terminus} is dealt damage by a non-hero target, she may deal that target 2 melee damage. If Stained Badge is not in play, you may redirect damage dealt by non-hero targets to {Terminus}.",
+                "At the start of your turn, remove this card from the game."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "KataMichi",
+                    "text": "I did not think that{BR}fear could survive death. But it{BR}comes for us along these rails."
+                }
+            ],
+            "flavorReference": "Kata Michi, End of the Line #20"
+        },
+        {
+            "identifier": "BoneChillingTouch",
+            "count": 2,
+            "title": "Bone-Chilling Touch",
+            "keywords": [
+                "ongoing"
+            ],
+            "icons": [
+                "CannotGainHP",
+                "CannotDealDamage",
+                "DealDamageCold"
+            ],
+            "body": "A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.",
+            "powers": [
+                "{Terminus} deals 1 target 2 cold damage. You may move this card next to that target."
+            ],
+            "flavorQuotes": [
+                {
+                    "identifier": "Terminus",
+                    "text": "I'm not here for you, but{BR}that doesn't mean I can't punch your{BR}ticket. Last chance. Get out of my way."
+                }
+            ],
+            "flavorReference": "Terminus, Unusual Suspects #6"
         },
         {
             "identifier": "TheLightAtTheEnd",
@@ -492,30 +526,6 @@
                 }
             ],
             "flavorReference": "Terminus, Full Moon Express #19"
-        },
-        {
-            "identifier": "UnusualSuspects",
-            "count": 2,
-            "title": "Unusual Suspects",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "AddTokens",
-                "DealDamageCold",
-                "IncreaseDamageDealt"
-            ],
-            "body": [
-                "Add 2 tokens to your Wrath pool.",
-                "{Terminus} deals up to 2 targets 2 cold damage each. If {Terminus} deals damage this way to a target that shares a keyword with a card in any trash pile, increase that damage by 2."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Terminus",
-                    "text": "Took it with him to{BR}his grave? Should have gone{BR}somewhere harder to follow."
-                }
-            ],
-            "flavorReference": "Terminus, Guilty Metal #7"
         }
     ],
     "notPromoCards": [
@@ -589,7 +599,7 @@
             "incapacitatedAbilities": [
                 "One hero may use a power now.",
                 "Each environment target deals itself 3 cold damage.",
-                "Reveal the top 2 cards of a non-villain deck. Replace them in the same order."
+                "Reveal the top 2 cards of a non-villain deck and replace them in the same order."
             ],
             "flippedIcons": [
                 "UsePowerNow",
