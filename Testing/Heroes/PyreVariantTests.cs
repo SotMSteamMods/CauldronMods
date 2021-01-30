@@ -59,6 +59,82 @@ namespace CauldronTests
             Assert.AreEqual(30, pyre.CharacterCard.HitPoints);
         }
         [Test]
+        public void TestExpeditionOblaskPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/ExpeditionOblaskPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card ring = PutInHand("TheLegacyRing");
+            Card punch = PutInHand("AtomicPunch");
+            Card fort = PutInHand("Fortitude");
+            Card iron = PutInHand("FleshToIron");
+
+            DecisionSelectCards = new Card[] { ring, punch, fort, iron };
+            UsePower(pyre);
+            AssertIrradiated(ring);
+            AssertIrradiated(punch);
+            AssertIrradiated(fort);
+            AssertNotIrradiated(iron);
+        }
+        [Test]
+        public void TestExpeditionOblaskIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/ExpeditionOblaskPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card ring = PutInHand("TheLegacyRing");
+            Card punch = PutInHand("AtomicPunch");
+            Card fort = PutInHand("Fortitude");
+            Card surge = PutInHand("SurgeOfStrength");
+            Card iron = PutInHand("FleshToIron");
+            Card aqua = PutInHand("AquaticCorrespondence");
+
+
+            DecisionSelectCards = new Card[] { ring, punch, fort };
+            UsePower(pyre);
+
+            DealDamage(baron, pyre, 50, DTM);
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, legacy.TurnTaker, legacy.TurnTaker, tempest.TurnTaker, scholar.TurnTaker };
+            DecisionSelectCards = new Card[] { null, ring, surge, aqua, iron };
+            DecisionSelectCardsIndex = 0;
+
+            QuickHandStorage(legacy, tempest, scholar);
+            UseIncapacitatedAbility(pyre, 0);
+            AssertInHand(ring, surge, iron, aqua);
+            QuickHandCheckZero();
+
+            UseIncapacitatedAbility(pyre, 0);
+            AssertInTrash(ring, aqua);
+            AssertIsInPlay(surge, iron);
+            QuickHandCheck(-2, 2, -1);
+        }
+        [Test]
+        public void TestExpeditionOblaskIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/ExpeditionOblaskPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, pyre, 50, DTM);
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card police = PlayCard("PoliceBackup");
+            Card hostage = PlayCard("HostageSituation");
+
+            DecisionSelectCards = new Card[] { hostage, traffic, police };
+            UseIncapacitatedAbility(pyre, 1);
+            AssertInTrash(hostage, traffic);
+            AssertIsInPlay(police);
+        }
+        [Test]
+        public void TestExpeditionOblaskIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/ExpeditionOblaskPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DealDamage(baron, pyre, 50, DTM);
+
+            AssertIncapLetsHeroDrawCard(pyre, 2, legacy, 1);
+        }
+        [Test]
         public void TestUnstablePyreLoads()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre/UnstablePyreCharacter", "Megalopolis");
@@ -69,6 +145,11 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(UnstablePyreCharacterCardController), pyre.CharacterCardController);
 
             Assert.AreEqual(33, pyre.CharacterCard.HitPoints);
+        }
+        public void TestUnstablePower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/UnstablePyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
         }
         [Test]
         public void TestWastelandRoninPyreLoads()
@@ -81,6 +162,11 @@ namespace CauldronTests
             Assert.IsInstanceOf(typeof(WastelandRoninPyreCharacterCardController), pyre.CharacterCardController);
 
             Assert.AreEqual(28, pyre.CharacterCard.HitPoints);
+        }
+        public void TestWastelandRoninPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/WastelandRoninPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
         }
     }
 }

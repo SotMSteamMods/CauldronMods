@@ -13,17 +13,6 @@ namespace Cauldron.Pyre
     public abstract class PyreUtilityCharacterCardController : HeroCharacterCardController
     {
         private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
-        private PyreTurnTakerController PyreTTC
-        {
-            get
-            {
-                if (TurnTakerControllerWithoutReplacements is PyreTurnTakerController pyreTTC)
-                {
-                    return pyreTTC;
-                }
-                return null;
-            }
-        }
         protected PyreUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Deck, TurnTaker.Trash }, new LinqCardCriteria((Card c) => GameController.DoesCardContainKeyword(c, "cascade"), "cascade"));
@@ -36,13 +25,7 @@ namespace Cauldron.Pyre
                 ttc.MoveMarkersToSide();
             }
         }
-        /*
-        public override void AddTriggers()
-        {
-            base.AddTriggers();
-            AddTrigger((MoveCardAction mc) => IsByIrradiationMarker(mc.CardToMove) && (mc.Origin.IsHand || mc.Origin.IsRevealed) && !(mc.Destination.IsHand || mc.Destination.IsRevealed), mc => ClearIrradiation(mc.CardToMove), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
-        }
-        */
+
         public override void AddSideTriggers()
         {
             base.AddSideTriggers();
