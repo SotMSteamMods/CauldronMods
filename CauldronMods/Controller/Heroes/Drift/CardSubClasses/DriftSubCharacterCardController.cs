@@ -10,8 +10,11 @@ namespace Cauldron.Drift
     {
         protected DriftSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}, this is in the {Past}", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}, this is in the {Future}");
         }
+
+        protected const string Past = "Past";
+        protected const string Future = "Future";
 
         protected const string Base = "Base";
         protected const string Dual = "Dual";
@@ -36,6 +39,19 @@ namespace Cauldron.Drift
         public Card GetShiftTrack()
         {
             return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText, false).FirstOrDefault();
+        }
+
+        public bool IsTimeMatching(string time)
+        {
+            if (this.CurrentShiftPosition() == 1 || this.CurrentShiftPosition() == 2)
+            {
+                return time == Past;
+            }
+            if (this.CurrentShiftPosition() == 3 || this.CurrentShiftPosition() == 4)
+            {
+                return time == Future;
+            }
+            return false;
         }
 
         public Card GetPositionalShiftTrack(int position)
