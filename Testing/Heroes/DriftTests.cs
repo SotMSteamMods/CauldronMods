@@ -318,6 +318,27 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestBorrowedTime_NoShiftPossible()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(drift, 17);
+
+            //Shift to future
+            GoToShiftPosition(4);
+
+            DecisionSelectFunction = 1;
+            DecisionSelectNumber = 2;
+            QuickHPStorage(apostate, drift, haka, bunker);
+            PlayCard(BorrowedTime);
+            QuickHPCheck(0, 0, 0, 0);
+
+           
+        }
+
+        [Test]
         public void TestDanceOfTheDragons_Future()
         {
             SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
