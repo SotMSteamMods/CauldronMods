@@ -1,0 +1,17 @@
+JADE
+Alias: Karima Ferhat
+Age: 40 
+Occupation: Businesswoman, Anthropologist 
+Birthplace: Algeria
+Power Source: Magic, Wealth
+
+ORIPHEL
+Alias: The Breathing Shadow
+Age: Unknown
+Occupation: Marid
+Birthplace: The Veil
+Power Source: Djinn Magic
+
+BOTH
+First Appearance: Arabian Nightmares #1
+Set: Experimental
