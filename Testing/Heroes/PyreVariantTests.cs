@@ -146,10 +146,99 @@ namespace CauldronTests
 
             Assert.AreEqual(33, pyre.CharacterCard.HitPoints);
         }
+        [Test]
         public void TestUnstablePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre/UnstablePyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
             StartGame();
+
+            DiscardAllCards(pyre);
+            Card rod = PutInHand("FracturedControlRod");
+            Card collider = PutInHand("ParticleCollider");
+            Card punch = PutInHand("AtomicPunch");
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutInHand("TheLegacyRing");
+            Card fort = PutInHand("Fortitude");
+
+            DecisionSelectCards = new Card[] { ring, rod, fort, collider };
+            Card cascade = PutInTrash("RogueFissionCascade");
+            QuickShuffleStorage(pyre);
+
+            UsePower(pyre);
+            AssertInDeck(cascade);
+            QuickShuffleCheck(1);
+            AssertIrradiated(ring);
+            AssertNotIrradiated(fort);
+            AssertIsInPlay(rod);
+            AssertInHand(punch, collider);
+
+            UsePower(pyre);
+            QuickShuffleCheck(0);
+            AssertIrradiated(fort);
+            AssertIsInPlay(rod, collider);
+            AssertInHand(punch);
+        }
+        [Test]
+        public void TestUnstableIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/UnstablePyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card ring = PutInHand("TheLegacyRing");
+            DiscardAllCards(pyre);
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectCard = ring;
+            UsePower(pyre);
+            DealDamage(baron, pyre, 50, DTM);
+
+            SetHitPoints(legacy, 20);
+            SetHitPoints(tempest, 20);
+            SetHitPoints(scholar, 20);
+            DecisionSelectCards = new Card[] { null, ring, tempest.CharacterCard };
+            QuickHPStorage(baron, legacy, tempest, scholar);
+
+            UseIncapacitatedAbility(pyre, 0);
+            AssertIrradiated(ring);
+            QuickHPCheckZero();
+
+            UseIncapacitatedAbility(pyre, 0);
+            AssertInTrash(ring);
+            QuickHPCheck(0, 0, 4, 0);
+
+        }
+        [Test]
+        public void TestUnstableIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/UnstablePyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DealDamage(baron, pyre, 50, DTM);
+
+            DecisionSelectCard = tempest.CharacterCard;
+            UseIncapacitatedAbility(pyre, 1);
+            QuickHPStorage(legacy, tempest, scholar);
+            DealDamage(legacy, tempest, 1, DTM);
+            DealDamage(tempest, legacy, 1, DTM);
+            QuickHPCheck(-1, -1, 0);
+
+            GoToStartOfTurn(base.env);
+            DealDamage(legacy, tempest, 1, DTM);
+            DealDamage(tempest, legacy, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+
+            GoToStartOfTurn(baron);
+            DealDamage(legacy, tempest, 1, DTM);
+            DealDamage(tempest, legacy, 1, DTM);
+            QuickHPCheck(-1, -1, 0);
+        }
+        [Test]
+        public void TestUnstableIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/UnstablePyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DealDamage(baron, pyre, 50, DTM);
+
+            AssertIncapLetsHeroDrawCard(pyre, 2, legacy, 1);
         }
         [Test]
         public void TestWastelandRoninPyreLoads()
