@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -22,7 +22,7 @@ namespace Cauldron.Drift
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
                     new Function(base.HeroTurnTakerController, "Shift Left", SelectionType.RemoveTokens, () => this.ShiftResponse(0)),
                     new Function(base.HeroTurnTakerController, "Shift Right", SelectionType.AddTokens, () => this.ShiftResponse(1))
-            });
+            }, associatedCards: GetShiftTrack().ToEnumerable());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
