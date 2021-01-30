@@ -988,13 +988,16 @@ namespace CauldronTests
             QuickHandStorage(drift);
             int trackPosition = CurrentShiftPosition();
 
-            UsePower(saber);
+            UsePower(saber, 0);
 
             //{DriftPast} Draw a card. Shift {DriftR}.
             //{DriftFuture} {Drift} 1 target 2 radiant damage. Shift {DriftL}.
             QuickHandCheck(1);
             AssertTrackPosition(trackPosition + 1);
             QuickHPCheck(0);
+
+            AssertNextMessageContains("is not in the future, so nothing happens!");
+            UsePower(saber, 1);
         }
 
         [Test]
@@ -1010,13 +1013,16 @@ namespace CauldronTests
             QuickHandStorage(drift);
             int trackPosition = CurrentShiftPosition();
 
-            UsePower(saber);
+            UsePower(saber, 1);
 
             //{DriftPast} Draw a card. Shift {DriftR}.
             //{DriftFuture} {Drift} 1 target 2 radiant damage. Shift {DriftL}.
             QuickHandCheck(0);
             AssertTrackPosition(trackPosition - 1);
             QuickHPCheck(-2);
+
+            AssertNextMessageContains("is not in the past, so nothing happens!");
+            UsePower(saber, 0);
         }
 
         [Test]
