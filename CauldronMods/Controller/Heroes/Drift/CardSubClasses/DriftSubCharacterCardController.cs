@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Cauldron.Drift
 {
-    public class DriftSubCharacterCardController : HeroCharacterCardController
+    public abstract class DriftSubCharacterCardController : HeroCharacterCardController
     {
-        public DriftSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        protected DriftSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
