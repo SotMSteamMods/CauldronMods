@@ -252,10 +252,115 @@ namespace CauldronTests
 
             Assert.AreEqual(28, pyre.CharacterCard.HitPoints);
         }
+        [Test]
         public void TestWastelandRoninPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre/WastelandRoninPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
             StartGame();
+            DestroyNonCharacterVillainCards();
+            RemoveCascadeFromGame();
+
+            DiscardAllCards(pyre);
+            Card punch = PutOnDeck("AtomicPunch");
+            Card trace = PutOnDeck("IonTrace");
+            Card rod = PutInHand("FracturedControlRod");
+            DecisionSelectCard = rod;
+            QuickHPStorage(baron, pyre, legacy, tempest, scholar);
+
+            UsePower(pyre);
+            AssertNumberOfStatusEffectsInPlay(1);
+            AssertInHand(punch, trace);
+            AssertInTrash(rod);
+            QuickHPCheckZero();
+
+            DecisionRedirectTarget = baron.CharacterCard;
+            DealDamage(pyre, baron, 5, DTM);
+            DealDamage(legacy, pyre, 5, DTM);
+            QuickHPCheck(-5, -5, 0, 0, 0);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            DealDamage(pyre, legacy, 5, DTM);
+            QuickHPCheck(-5, 0, 0, 0, 0);
+            AssertNumberOfStatusEffectsInPlay(0);
+
+            DealDamage(pyre, legacy, 5, DTM);
+            QuickHPCheck(0, 0, -5, 0, 0);
+
+        }
+        [Test]
+        public void TestWastelandRoninIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/WastelandRoninPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card aqua = PutInHand("AquaticCorrespondence");
+            Card strat = PutInHand("IntoTheStratosphere");
+            DecisionSelectTurnTaker = tempest.TurnTaker;
+            DecisionSelectCards = new Card[] { aqua, strat, baron.CharacterCard };
+            PlayCard("AtomicPunch");
+            AssertIrradiated(strat);
+
+            DealDamage(baron, pyre, 50, DTM);
+            Card traffic = PutIntoPlay("TrafficPileup");
+            Card redist = PutIntoPlay("ElementalRedistributor");
+            QuickHPStorage(baron.CharacterCard, redist, legacy.CharacterCard, tempest.CharacterCard, scholar.CharacterCard, traffic);
+            DecisionSelectCards = new Card[] { null, strat, baron.CharacterCard, traffic, redist, tempest.CharacterCard };
+            DecisionSelectCardsIndex = 0;
+
+            UseIncapacitatedAbility(pyre, 0);
+            QuickHPCheckZero();
+            AssertInHand(strat);
+
+            UseIncapacitatedAbility(pyre, 0);
+            AssertInTrash(strat);
+            QuickHPCheck(-3, -3, 0, 0, 0, -3);
+        }
+        [Test]
+        public void TestWastelandRoninIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/WastelandRoninPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, pyre, 50, DTM);
+
+            Card traffic = PutIntoPlay("TrafficPileup");
+            Card redist = PutIntoPlay("ElementalRedistributor");
+
+            SetHitPoints(new TurnTakerController[] { baron, legacy, tempest, scholar }, 10);
+            SetHitPoints(new Card[] { traffic, redist }, 5);
+            QuickHPStorage(baron.CharacterCard, redist, legacy.CharacterCard, tempest.CharacterCard, scholar.CharacterCard, traffic);
+
+            UseIncapacitatedAbility(pyre, 1);
+            QuickHPCheck(1, 1, 1, 1, 1, 1);
+
+        }
+        [Test]
+        public void TestWastelandRoninIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre/WastelandRoninPyreCharacter", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            DealDamage(baron, pyre, 50, DTM);
+
+
+            Card surge = PlayCard("SurgeOfStrength");
+            Card fort = PutInHand("Fortitude");
+            Card sense = PutInHand("DangerSense");
+            QuickHPStorage(baron, legacy, tempest, scholar);
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            DecisionSelectCards = new Card[] { fort, sense };
+
+            DecisionYesNo = false;
+            UseIncapacitatedAbility(pyre, 2);
+            QuickHPCheckZero();
+            AssertInHand(fort, sense);
+
+            DecisionYesNo = true;
+            UseIncapacitatedAbility(pyre, 2);
+            QuickHPCheck(0, -3, 0, 0);
+            AssertIsInPlay(fort, sense);
         }
     }
 }
