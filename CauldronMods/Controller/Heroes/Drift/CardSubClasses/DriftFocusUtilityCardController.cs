@@ -10,7 +10,7 @@ namespace Cauldron.Drift
     {
         protected DriftFocusUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasShiftedThisTurn(), () => "Drift has shifted this turn", () => "Drift has not shifted this turn");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasShiftedThisTurn(), () => $"{TurnTaker.Name} has shifted this turn", () => $"{TurnTaker.Name} has not shifted this turn");
         }
 
         public override IEnumerator Play()
