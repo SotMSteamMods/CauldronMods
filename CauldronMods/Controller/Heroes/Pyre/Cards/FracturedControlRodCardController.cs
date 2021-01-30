@@ -11,18 +11,7 @@ namespace Cauldron.Pyre
     public class FracturedControlRodCardController : PyreUtilityCardController
     {
         private bool WasPlayedIrradiated = false;
-        private List<Guid> _recentIrradiatedDiscards;
-        private List<Guid> RecentIrradiatedDiscards
-        {
-            get
-            {
-                if(_recentIrradiatedDiscards == null)
-                {
-                    _recentIrradiatedDiscards = new List<Guid>();
-                }
-                return _recentIrradiatedDiscards;
-            }
-        }
+
         public FracturedControlRodCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -53,20 +42,30 @@ namespace Cauldron.Pyre
         public override void AddTriggers()
         {
             //"Whenever a player discards a {PyreIrradiate} card, they may destroy this card to play the discarded card."
-            AddTrigger((DiscardCardAction dc) => IsIrradiated(dc.CardToDiscard), MarkIrradiatedDiscard, TriggerType.Hidden, TriggerTiming.Before);
-            AddTrigger((DiscardCardAction dc) => RecentIrradiatedDiscards.Contains(dc.InstanceIdentifier), PlayDiscardedCardResponse, TriggerType.PlayCard, TriggerTiming.After, isActionOptional: true);
+
+            AddTrigger((MoveCardAction mc) => mc.IsDiscard && IsIrradiated(mc.CardToMove) && mc.CanChangeDestination && IsFirstOrOnlyCopyOfThisCardInPlay() && GameController.CanPlayCard(FindCardController(mc.CardToMove)) == CanPlayCardResult.CanPlay, PlayDiscardedCardFromMove, TriggerType.PlayCard, TriggerTiming.Before);
         }
 
-        private IEnumerator PlayDiscardedCardResponse(DiscardCardAction dc)
+        private IEnumerator PlayDiscardedCardFromMove(MoveCardAction mc)
         {
-            RecentIrradiatedDiscards.Remove(dc.InstanceIdentifier);
-            if(dc.IsSuccessful)
+            //mc.SetDestination(mc.CardToMove.Owner.PlayArea);
+            var cardToPlay = mc.CardToMove;
+            var hero = cardToPlay.Owner.ToHero();
+            var heroTTC = FindHeroTurnTakerController(hero);
+            var storedYesNo = new List<YesNoCardDecision>();
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(heroTTC, SelectionType.PlayCard, cardToPlay, storedResults: storedYesNo, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
             {
-                var cardToPlay = dc.CardToDiscard;
-                var hero = dc.CardToDiscard.Owner.ToHero();
-                var heroTTC = dc.HeroTurnTakerController ?? FindHeroTurnTakerController(hero);
-                var storedYesNo = new List<YesNoCardDecision>();
-                IEnumerator coroutine = GameController.MakeYesNoCardDecision(heroTTC, SelectionType.PlayCard, cardToPlay, storedResults: storedYesNo, cardSource: GetCardSource());
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(DidPlayerAnswerYes(storedYesNo))
+            {
+                coroutine = ClearIrradiation(cardToPlay);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -75,17 +74,43 @@ namespace Cauldron.Pyre
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
-                if(DidPlayerAnswerYes(storedYesNo))
+
+                coroutine = GameController.DestroyCard(heroTTC, this.Card, postDestroyAction: () => PlayCardAndCancelMove(mc, heroTTC, cardToPlay), cardSource: GetCardSource());
+                if (UseUnityCoroutines)
                 {
-                    coroutine = GameController.DestroyCard(heroTTC, this.Card, postDestroyAction: () => GameController.PlayCard(heroTTC, cardToPlay, cardSource: GetCardSource()), cardSource: GetCardSource());
-                    if (UseUnityCoroutines)
-                    {
-                        yield return GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        GameController.ExhaustCoroutine(coroutine);
-                    }
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
+
+        private IEnumerator PlayCardAndCancelMove(MoveCardAction mc, HeroTurnTakerController heroTTC, Card cardToPlay)
+        {
+            var playStorage = new List<bool>();
+            IEnumerator coroutine = GameController.PlayCard(heroTTC, cardToPlay, wasCardPlayed: playStorage, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(playStorage.Any(x => x))
+            {
+                coroutine = CancelAction(mc, showOutput: false);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
                 }
             }
             yield break;
@@ -94,12 +119,6 @@ namespace Cauldron.Pyre
         private IEnumerator MarkIrradiatedPlay(PlayCardAction pc)
         {
             WasPlayedIrradiated = IsIrradiated(Card);
-            yield return null;
-            yield break;
-        }
-        private IEnumerator MarkIrradiatedDiscard(DiscardCardAction dc)
-        {
-            RecentIrradiatedDiscards.Add(dc.InstanceIdentifier);
             yield return null;
             yield break;
         }

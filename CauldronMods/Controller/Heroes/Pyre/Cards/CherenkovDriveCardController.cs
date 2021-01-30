@@ -142,6 +142,9 @@ namespace Cauldron.Pyre
         {
             if(CardUsingPower == c)
             {
+                //this is done to check whether the power destroys the card it is on
+                //GameController.DestroyCard checks if the card it's aiming at is out-of-play before making a DestroyCardAction,
+                //but it will do indestructibility checks before it does an in-play check.
                 TriedSelfDestruct = true;
             }
             return false;
