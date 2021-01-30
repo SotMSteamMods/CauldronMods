@@ -32,7 +32,7 @@
             "hitpointColor": "fbf767",
             "character": true,
             "powers": [
-                "Shift {LL}, {L}, {R}, {RR}. Drift regains 1 HP."
+                "Shift {LL}, {L}, {R}, or {RR}. Drift regains 1 HP."
             ],
             "icons": [
                 "HasPower",
