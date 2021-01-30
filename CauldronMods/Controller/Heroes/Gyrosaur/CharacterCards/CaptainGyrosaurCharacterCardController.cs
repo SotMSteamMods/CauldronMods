@@ -82,8 +82,8 @@ namespace Cauldron.Gyrosaur
                 var effectSource = FindCardController(effect.CardSource).GetCardSource(effect);
                 var functions = new List<Function>
                 {
-                    new Function(heroTTC, $"Play {affectedCard.Title}", SelectionType.PlayCard, () => GameController.PlayCard(heroTTC, affectedCard, reassignPlayIndex: true, cardSource: effectSource), onlyDisplayIfTrue: GameController.CanPlayCard(FindCardController(affectedCard)) == CanPlayCardResult.CanPlay, forcedActionMessage: $"{affectedCard.Title} cannot be played, so it will be drawn"),
-                    new Function(heroTTC, $"Draw {affectedCard.Title}", SelectionType.DrawCard, () => DrawCardFromUnder(heroTTC, affectedCard, effectSource), onlyDisplayIfTrue: GameController.CanDrawCards(heroTTC, effectSource), forcedActionMessage: $"{affectedCard.Title} cannot be drawn, so it will be played.")
+                    new Function(heroTTC, $"Play {affectedCard.Title}", SelectionType.PlayCard, () => GameController.PlayCard(heroTTC, affectedCard, reassignPlayIndex: true, cardSource: effectSource), onlyDisplayIfTrue: GameController.CanPlayCard(FindCardController(affectedCard)) == CanPlayCardResult.CanPlay, forcedActionMessage: $"{affectedCard.Title} cannot be drawn, so it will be played."),
+                    new Function(heroTTC, $"Draw {affectedCard.Title}", SelectionType.DrawCard, () => DrawCardFromUnder(heroTTC, affectedCard, effectSource), onlyDisplayIfTrue: GameController.CanDrawCards(heroTTC, effectSource), forcedActionMessage: $"{affectedCard.Title} cannot be played, so it will be drawn")
                 };
 
                 var selectFunction = new SelectFunctionDecision(GameController, heroTTC, functions, false, noSelectableFunctionMessage: $"{affectedCard.Title} can neither be played nor drawn.", associatedCards: new Card[] { affectedCard }, cardSource: effectSource);
