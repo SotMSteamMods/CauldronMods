@@ -17,8 +17,8 @@ namespace Cauldron.Drift
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //At the start of your next turn, shift {DriftL} or {DriftR}, then draw a card or use a power.
-            OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.StartOfTurnResponse), "At the start of your next turn, shift {DriftL} or {DriftR}, then draw a card or use a power", new TriggerType[] { TriggerType.ModifyTokens, TriggerType.DrawCard, TriggerType.UsePower }, this.Card);
+            //At the start of your next turn, shift {L} or {R}, then draw a card or use a power.
+            OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.StartOfTurnResponse), "At the start of your next turn, shift {L} or {R}, then draw a card or use a power", new TriggerType[] { TriggerType.ModifyTokens, TriggerType.DrawCard, TriggerType.UsePower }, this.Card);
             effect.UntilEndOfNextTurn(base.HeroTurnTaker);
             effect.TurnTakerCriteria.IsSpecificTurnTaker = base.HeroTurnTaker;
             effect.TurnPhaseCriteria.Phase = Phase.Start;
