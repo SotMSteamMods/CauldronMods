@@ -225,8 +225,10 @@ namespace CauldronTests.Art
             List<string> identifiers = new List<string>();
             foreach (var item in Items())
             {
-                if (item.Kind == DeckDefinition.DeckKind.Hero)
+                if (item.Name != "Titan" && item.Kind == DeckDefinition.DeckKind.Hero)
                     identifiers.AddRange(item.StartEndIdentifiers);
+                if (item.Name == "Titan")
+                    identifiers.AddRange(item.CharacterIdentifiers);
             }
 
             string expectedDirectory = Path.Combine(ArtPath, @"Cutouts\YesNoDialog");
