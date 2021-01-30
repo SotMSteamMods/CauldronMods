@@ -28,7 +28,7 @@ namespace Cauldron.Drift
             //Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space.
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
                     new Function(base.HeroTurnTakerController, "Add the top 2 cards of your deck to your shift track", SelectionType.MoveCard, () => this.AddCardsResponse(cardNumeral)),
-                    new Function(base.HeroTurnTakerController, "discard the card from your current shift track space", SelectionType.DiscardCard, () => this.DiscardCardResponse(), this.GetBreachedCard(base.CurrentShiftPosition()) != null)
+                    new Function(base.HeroTurnTakerController, "discard the card from your current shift track space", SelectionType.DiscardCard, () => this.DiscardCardResponse(), onlyDisplayIfTrue: this.GetBreachedCard(base.CurrentShiftPosition()) != null)
             });
             if (base.UseUnityCoroutines)
             {

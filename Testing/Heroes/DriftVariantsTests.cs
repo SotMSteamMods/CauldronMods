@@ -515,6 +515,7 @@ namespace CauldronTests
             DecisionYesNo = true;
             //Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space.
             StackDeck(FutureFocus);
+            Card step = PutInTrash(DriftStep);
             Card[] top2 = GetTopCardsOfDeck(drift, 2).ToArray();
             UsePower(drift);
             AssertUnderCard(GetShiftTrack(), top2[0]);
@@ -522,17 +523,21 @@ namespace CauldronTests
 
             //When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage.
             QuickHPStorage(apostate);
-            DecisionSelectFunctions = new int?[] { 1, 0, 0, 0, 1, 1 };
+            DecisionSelectFunctions = new int?[] { 1, 0, 1, 0, 1, 1 };
             UsePower(drift);
             AssertIsInPlay(top2[0]);
             QuickHPCheck(0);
 
             //To shift to position 2
-            PlayCard(DestroyersAdagio);
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            PlayCard(step);
 
+            PrintSpecialStringsForCard(drift.CharacterCard);
             UsePower(drift);
             AssertNumberOfCardsUnderCard(GetShiftTrack(), 3);
+            PrintSpecialStringsForCard(drift.CharacterCard);
 
+            QuickHPUpdate();
             UsePower(drift);
             AssertInTrash(top2[1]);
             QuickHPCheck(-3);

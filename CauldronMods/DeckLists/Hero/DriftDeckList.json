@@ -801,10 +801,10 @@
         },
         {
             "identifier": "ThroughTheBreachShiftTrack2",
-            "sharedIdentifier": "ShiftTrack: Past",
+            "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "FCB040",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Past",
             "character": true,
             "isReal": false,
             "setup": [
