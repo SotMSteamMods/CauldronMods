@@ -7,19 +7,13 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron
 {
-    public abstract class GlyphCardController : CardController
+    public abstract class GlyphCardController : TheStrangerBaseCardController
     {
-        #region Constructors
-
         protected GlyphCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             var ss = SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} can prevent damage this turn.");
             ss.Condition = IsPreventionAvailable;
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         private bool IsPreventionAvailable()
         {
@@ -79,16 +73,5 @@ namespace Cauldron
 
             yield break;
         }
-
-        protected bool IsRune(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "rune", false, false);
-        }
-
-        protected bool IsGlyph(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "glyph", false, false);
-        }
-        #endregion Methods
     }
 }

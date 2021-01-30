@@ -43,9 +43,9 @@
 			"openingLines": {
 				"default": "Halt, villain! Leave, or cross my steel!",
 				"OutlanderCharacter": "There is no honor in one who prospers from the death of others. Whatever you once were, I see nothing of myself left in you now.",
-				"PastTheRamCharacter": "1929 Ram placeholder",
 				"WinterTiamatCharacter": "Foul Beast! I have slain thee once, I will do so again.",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "No matter how many heads this beast returns with, I shall vanquish it again!",
+				"FutureTiamatCharacter": "The dragon's armor appears even stronger than my own."
 			},
 			"complexity": 1
 		},
@@ -182,10 +182,9 @@
 			],
 			"body": [
 				"Play this card next to a target.",
-				"Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible."
-			],
-			"powers": [
-				"Destroy this card."
+				"Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible.",
+				"{TheKnight} gains the power:",
+				"[b]Power:[/b] Destroy Knight's Honor."
 			],
 			"flavorQuotes": [{
 				"identifier": "TheKnight",
@@ -386,13 +385,6 @@
 			"flippedIcons": [
 				"DestroyEquipment"
 			],
-			"openingLines": {
-				"default": "default placeholder",
-				"OutlanderCharacter": "Outlander placeholder",
-				"PastTheRamCharacter": "1929 Ram placeholder",
-				"WinterTiamatCharacter": "Tiamat placeholder",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
-			},
 			"complexity": 1
 		},
 		{
@@ -423,13 +415,6 @@
 			"flippedIcons": [
 				"DestroyEquipment"
 			],
-			"openingLines": {
-				"default": "default placeholder",
-				"OutlanderCharacter": "Outlander placeholder",
-				"PastTheRamCharacter": "1929 Ram placeholder",
-				"WinterTiamatCharacter": "Tiamat placeholder",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
-			},
 			"complexity": 1
 		}
 	],
@@ -469,9 +454,9 @@
 			"openingLines": {
 				"default": "Have at thee! I've always wanted to say that.",
 				"OutlanderCharacter": "And you are nothing but a broken reflection of my ancestor.",
-				"PastTheRamCharacter": "1929 Ram placeholder",
 				"WinterTiamatCharacter": "For my ancestors!",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "This dragon keeps getting uglier.",
+				"FutureTiamatCharacter": "Is that thing from the future?"
 			},
 			"complexity": 1
 		},
@@ -488,7 +473,7 @@
 			"hitpointColor": "CF5240",
 			"character": true,
 			"powers": [
-				"Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed by 1."
+				"Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed plus 1"
 			],
 			"icons": [
 				"HasPower",
@@ -512,9 +497,9 @@
 			"openingLines": {
 				"default": "Whether 'tis by my blood and bone alone, today shall be your undoing!",
 				"OutlanderCharacter": "I will not stand down while I yet draw breath.",
-				"PastTheRamCharacter": "1929 Ram placeholder",
 				"WinterTiamatCharacter": "Yeaaarghh! To battle!",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "Each of those necks shall feel my blade!",
+				"FutureTiamatCharacter": "An armored dragon! What a sight!"
 			},
 			"complexity": 1
 		},
@@ -555,10 +540,11 @@
 			"openingLines": {
 				"default": "You will not shed innocent blood while we stand.",
 				"OutlanderCharacter": "The tale is long, but the ending is simple: your defeat, at my blade.",
-				"PastTheRamCharacter": "1929 Ram placeholder",
+				"PastTheRamCharacter": "A sword, and my honor. You shall not destroy this city.",
 				"WinterTiamatCharacter": "Hold fast! We will smite this serpent where it stands.",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
-				"TheMistressOfFateCharacter": "Whatever sorcery this is, I have faced worse."
+				"HydraWinterTiamatCharacter": "Stand fast; this will be a fearsome onslaught.",
+				"TheMistressOfFateCharacter": "Whatever sorcery this is, I have faced worse.",
+				"FutureTiamatCharacter": "I have never seen a dragon such as this."
 			},
 			"complexity": 1
 		},
@@ -604,9 +590,9 @@
 			"openingLines": {
 				"default": "We survived the Wastelands; this should be easy!",
 				"OutlanderCharacter": "Well, you'll have to keep wondering!",
-				"PastTheRamCharacter": "1929 Ram placeholder",
 				"WinterTiamatCharacter": "I have seen worse horrors than you!",
-				"HydraWinterTiamatCharacter": "Tiamat Elemental placeholder"
+				"HydraWinterTiamatCharacter": "We've visited the future and seen your bones. You don't frighten us!",
+				"FutureTiamatCharacter": "These monsters are not flesh and blood; don't hold back!"
 			},
 			"complexity": 1
 		}

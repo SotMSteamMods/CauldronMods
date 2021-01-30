@@ -21,7 +21,7 @@ namespace Cauldron.Malichae
 
         public override Power GetGrantedPower(CardController cardController)
         {
-            return new Power(cardController.HeroTurnTakerController, this, $"{cardController.Card.Title} deals 1 target 4 energy damage. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, cardController.GetCardSource());
+            return new Power(cardController.HeroTurnTakerController, cardController, $"{cardController.Card.Title} deals 1 target 4 energy damage. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, GetCardSource());
         }
 
         private IEnumerator UseGrantedPower()
@@ -29,10 +29,10 @@ namespace Cauldron.Malichae
             int targets = GetPowerNumeral(0, 1);
             int damages = GetPowerNumeral(1, 4);
 
-            var usePowerAction = ActionSources.OfType<UsePowerAction>().First();
-            var cs = usePowerAction.CardSource ?? usePowerAction.Power.CardSource;
+            CardSource cs = GetCardSourceForGrantedPower();
+            var card = cs.Card;
 
-            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, cs.Card), damages, DamageType.Energy, targets, false, targets, cardSource: cs);
+            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), damages, DamageType.Energy, targets, false, targets, cardSource: cs);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

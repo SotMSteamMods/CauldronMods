@@ -17,14 +17,43 @@ namespace Cauldron.Starlight
 
         public override void AddTriggers()
         {
+            //GameController.CanPerformPhaseAction(GameController.FindTurnPhase(TurnTaker, Phase.PlayCard))
+            //GameController.FindNextTurnPhase
+
             //"At the start of your play phase, put a constellation card from your hand or trash into play."
             //because of how the game handles play phase with no cards in hand, this is actually "end of start phase"
             AddPhaseChangeTrigger((TurnTaker tt) => tt == TurnTaker,
                                 (Phase p) => true,
-                                (PhaseChangeAction pc) => pc.FromPhase.Phase == Phase.Start,
+                                (PhaseChangeAction pc) => PhaseChangeCriteria(pc),
                                 PlayConstellationFromHandOrTrash,
                                 new TriggerType[] { TriggerType.PutIntoPlay },
-                                TriggerTiming.Before);
+                                TriggerTiming.After);
+        }
+
+        private bool PhaseChangeCriteria(PhaseChangeAction action)
+        {
+            //get the phase that would come after this.
+            var nextTurnPhase = GameController.FindNextTurnPhase(action.FromPhase);
+
+            //The engine skips the play phase if the player has no cards, that's why we can't check the ToPhase directly.
+            //There's also the case of Wager Master: Breaking the Rules that can reorder the phase order.
+            //cases:
+            //from: My Start, to: My Play
+            //from: My Start, to: My Power, no cards in hand to play
+            //from: My Power, to: My Play, Breaking the Rules
+
+            //if the next phase would be my play card phase
+            if (nextTurnPhase.Phase == Phase.PlayCard && nextTurnPhase.TurnTaker == TurnTaker)
+            {
+                //check that theres not a status effect that's about to skip my play phase
+                //this is partially implementation dependant, but all the base set cards that skip phases use this status effect
+                //except RealmOfDiscord:Time Crawls and Northspar:FrozenSolid which works correctly as the skip depends on the user's actions.
+                if (GameController.StatusEffectControllers.Any(c => c.StatusEffect is PreventPhaseActionStatusEffect s && s.ToTurnPhaseCriteria.Phase == Phase.PlayCard && s.ToTurnPhaseCriteria.TurnTaker == TurnTaker))
+                    return false;
+
+                return true;
+            }
+            return false;
         }
 
         private IEnumerator PlayConstellationFromHandOrTrash(PhaseChangeAction pc)

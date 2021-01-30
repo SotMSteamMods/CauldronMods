@@ -28,7 +28,14 @@ namespace Cauldron.Celadroch
         // This card may not regain HP.
         public override bool AskIfActionCanBePerformed(GameAction gameAction)
         {
-            if (gameAction is GainHPAction hpAction && hpAction.HpGainer == Card)
+            //prevent HP gain via GainHP Action
+            if (gameAction is GainHPAction ghpAction && ghpAction.HpGainer == Card)
+            {
+                return false;
+            }
+
+            //prevent HP gain via SetHP Action.  Hp decrease via Set Hp Action is allowed.
+            if (gameAction is SetHPAction shpAction && shpAction.HpGainer == Card && shpAction.AmountActuallyChanged > 0)
             {
                 return false;
             }
@@ -43,21 +50,33 @@ namespace Cauldron.Celadroch
 
             //reward triggers
             //incremental damage trigger
-            AddTrigger<DealDamageAction>(PillarCardRewardTrigger, PillarCardRewardResponse, _rewardType, TriggerTiming.After);
+            AddTrigger<DealDamageAction>(ga => ga.Target == Card && ga.DidDealDamage, PillarCardRewardDamageResponse, _rewardType, TriggerTiming.After);
+            AddTrigger<SetHPAction>(ga => ga.HpGainer == Card && ga.AmountActuallyChanged < 0, PillarCardRewardSetHpResponse, _rewardType, TriggerTiming.After);
             //destroyed by HP damage final
-            AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy.Card == Card && dca.DealDamageAction != null && dca.DealDamageAction.DidDealDamage, dca => PillarCardRewardResponse(dca.DealDamageAction), _rewardType, TriggerTiming.Before);
+            AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy.Card == Card && dca.DealDamageAction != null && dca.DealDamageAction.DidDealDamage, dca => PillarCardRewardDamageResponse(dca.DealDamageAction), _rewardType, TriggerTiming.Before);
 
             //when this card would leave play, remove it from the game.
             AddTrigger<MoveCardAction>(mca => mca.CardToMove == Card && mca.Origin.IsPlayArea && (!mca.Destination.HighestRecursiveLocation.IsInPlay || !mca.Destination.IsUnderCard), MoveOutOfPlayResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
             AddTrigger<FlipCardAction>(fca => fca.CardToFlip.Card == Card, fca => GameController.MoveCard(TurnTakerController, Card, TurnTaker.OutOfGame, cardSource: GetCardSource()), TriggerType.RemoveFromGame, TriggerTiming.Before);
         }
 
-        private bool PillarCardRewardTrigger(DealDamageAction action)
+        private IEnumerator PillarCardRewardSetHpResponse(SetHPAction action)
         {
-            return action.Target == Card && action.DidDealDamage;
+            int beforeHp = action.Amount - action.AmountActuallyChanged;
+            int afterHp = action.Amount;
+
+            return PillarCardRewardResponse(action, beforeHp, afterHp);
         }
 
-        private IEnumerator PillarCardRewardResponse(DealDamageAction action)
+        private IEnumerator PillarCardRewardDamageResponse(DealDamageAction action)
+        {
+            int beforeHp = action.TargetHitPointsBeforeBeingDealtDamage.Value;
+            int afterHp = action.TargetHitPointsAfterBeingDealtDamage.Value;
+
+            return PillarCardRewardResponse(action, beforeHp, afterHp);
+        }
+
+        private IEnumerator PillarCardRewardResponse(GameAction action, int beforeHp, int afterHp)
         {
             //plan:
             // pull pending triggers
@@ -70,8 +89,7 @@ namespace Cauldron.Celadroch
             // loop
 
             int pendingTriggers = GetCardPropertyJournalEntryInteger(PendingTriggersKey) ?? 0;
-            int beforeHp = action.TargetHitPointsBeforeBeingDealtDamage.Value;
-            int afterHp = action.TargetHitPointsAfterBeingDealtDamage.Value;
+
             System.Console.WriteLine($"{Card.Title} - before = {beforeHp}, after = {afterHp}");
             int newTriggers = _rewards.NumberOfTriggers(beforeHp, afterHp);
             pendingTriggers += newTriggers;

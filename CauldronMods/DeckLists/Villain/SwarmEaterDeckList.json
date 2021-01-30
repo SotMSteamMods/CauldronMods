@@ -507,9 +507,9 @@
             "difficulty": 2,
             "openingLines": {
                 "default": "We are legion. Soon all will join the hive mind.",
-                "CypherCharacter": "Cypher placeholder",
-                "FirstResponseCypherCharacter": "First Response Cypher placeholder",
-                "SwarmingProtocolCypherCharacter": "Swarming Protocol Cypher placeholder"
+                "CypherCharacter": "We...are...legion.",
+                "FirstResponseCypherCharacter": "We are no longer Swarm Eater. Or Halberd-13. We are something new. Something better.",
+                "SwarmingProtocolCypherCharacter": "Another hive mind. Yours powers will amplify our own."
             }
         }
     ]

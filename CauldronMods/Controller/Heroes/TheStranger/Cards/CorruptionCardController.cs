@@ -6,7 +6,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.TheStranger
 {
-    public class CorruptionCardController : CardController
+    public class CorruptionCardController : TheStrangerBaseCardController
     {
         #region Constructors
 
@@ -43,7 +43,7 @@ namespace Cauldron.TheStranger
             //For each card drawn this way, {TheStranger} deals himself 1 toxic damage.
 
             int numberOfCardsDrawn = base.GetNumberOfCardsDrawn(storedResultsDraw);
-            for(int i=0; i < numberOfCardsDrawn; i++)
+            for (int i = 0; i < numberOfCardsDrawn; i++)
             {
                 IEnumerator coroutine2 = base.DealDamage(base.CharacterCard, base.CharacterCard, 1, DamageType.Toxic);
                 if (base.UseUnityCoroutines)
@@ -55,7 +55,7 @@ namespace Cauldron.TheStranger
                     base.GameController.ExhaustCoroutine(coroutine2);
                 }
             }
-            
+
         }
         #endregion Methods
     }

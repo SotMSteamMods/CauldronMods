@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Cauldron.Titan
 {
-    public class TitanCharacterCardController : HeroCharacterCardController
+    public class TitanCharacterCardController : TitanBaseCharacterCardController
     {
         public TitanCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

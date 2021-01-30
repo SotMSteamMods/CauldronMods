@@ -190,5 +190,51 @@ namespace CauldronTests
 
         }
 
+        protected int CurrentShiftPosition()
+        {
+            return this.GetShiftPool().CurrentValue;
+        }
+
+        protected TokenPool GetShiftPool()
+        {
+            return this.GetShiftTrack().FindTokenPool("ShiftPool");
+        }
+
+        protected Card GetShiftTrack()
+        {
+            return base.FindCardsWhere((Card c) => c.SharedIdentifier == "ShiftTrack" && c.IsInPlayAndHasGameText, false).FirstOrDefault();
+        }
+
+        protected void AssertTrackPosition(int expectedPosition)
+        {
+            Assert.AreEqual(expectedPosition, CurrentShiftPosition(), "Expected position: " + expectedPosition + ", was: " + CurrentShiftPosition());
+        }
+
+        protected void GoToShiftPosition(int position)
+        {
+            if (position > CurrentShiftPosition())
+            {
+                DecisionSelectFunction = 2;
+                for (int i = CurrentShiftPosition(); i < position; i++)
+                {
+                    UsePower(drift);
+                }
+            }
+            else
+            {
+                DecisionSelectFunction = 1;
+                for (int i = CurrentShiftPosition(); i > position; i--)
+                {
+                    UsePower(drift);
+                }
+            }
+        }
+
+        public Card GetPositionalBreachShiftTrack(int position)
+        {
+
+            return GetCard("ThroughTheBreachShiftTrack" + position);
+        }
+
     }
 }
