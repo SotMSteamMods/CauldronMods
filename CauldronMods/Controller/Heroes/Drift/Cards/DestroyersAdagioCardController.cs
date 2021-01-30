@@ -20,9 +20,10 @@ namespace Cauldron.Drift
             //{DriftPast}
             if (base.IsTimeMatching(Past))
             {
-                //You may play an onoing card from your trash, or one player may play a card now.
+                //You may play an ongoing card from your trash, or one player may play a card now.
                 IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "You may play an ongoing from your trash", SelectionType.PlayCard, () => this.PlayTrashOngoingResponse()),
+                    new Function(base.HeroTurnTakerController, "You may play an ongoing from your trash", SelectionType.PlayCard, () => this.PlayTrashOngoingResponse(),
+                     onlyDisplayIfTrue: base.GameController.GetAllCards().Any(c => c.IsOngoing && TurnTaker.Trash.HasCard(c))),
                     new Function(base.HeroTurnTakerController, "One player may play a card now", SelectionType.PlayCard, () => this.PlayCardNowResponse())
                 });
                 if (base.UseUnityCoroutines)

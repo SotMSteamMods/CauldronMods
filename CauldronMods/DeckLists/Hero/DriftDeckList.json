@@ -264,7 +264,7 @@
                 "DealDamageRadiant"
             ],
             "body": [
-                "{Past} You may play an onoing card from your trash, or one player may play a card now. Shift {R}",
+                "{Past} You may play an ongoing card from your trash, or one player may play a card now. Shift {R}",
                 "{Future} {Drift} deals 1 target 2 radiant damage. Shift {LL}"
             ],
             "flavorQuotes": [
