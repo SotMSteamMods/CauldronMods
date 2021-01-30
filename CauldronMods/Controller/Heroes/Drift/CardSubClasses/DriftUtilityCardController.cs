@@ -252,15 +252,5 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
         }
-
-        private SpecialString TimeSpecialString()
-        {
-            string time = Past;
-            if (this.IsTimeMatching(Future))
-            {
-                time = Future;
-            }
-            return base.SpecialStringMaker.ShowSpecialString(() => "Drift is at position " + this.CurrentShiftPosition() + ", this is in the " + time);
-        }
     }
 }
