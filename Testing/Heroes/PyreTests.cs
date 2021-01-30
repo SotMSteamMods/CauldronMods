@@ -100,6 +100,82 @@ namespace CauldronTests
             QuickShuffleCheck(1);
         }
         [Test]
+        public void TestPyreIncap1()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutOnDeck("TheLegacyRing");
+            UsePower(pyre);
+            Card fort = PutInHand("Fortitude");
+            Card thokk = PutOnDeck("Thokk");
+
+            DealDamage(baron, pyre, 50, DTM);
+
+            DecisionSelectCards = new Card[] { null, ring, fort };
+
+            //discard-to-do-stuff is optional
+            UseIncapacitatedAbility(pyre, 0);
+            AssertIrradiated(ring);
+            AssertInHand(fort);
+            AssertNumberOfUsablePowers(legacy, 1);
+            AssertOnTopOfDeck(thokk);
+
+            UseIncapacitatedAbility(pyre, 0);
+            AssertInTrash(ring);
+            AssertIsInPlay(fort);
+            AssertInHand(thokk);
+            AssertNumberOfUsablePowers(legacy, 0);
+        }
+        [Test]
+        public void TestPyreIncap2()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DealDamage(baron, pyre, 50, DTM);
+
+            DecisionSelectCard = legacy.CharacterCard;
+            Card traffic = PlayCard("TrafficPileup");
+            QuickHPStorage(baron.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, traffic);
+            UseIncapacitatedAbility(pyre, 1);
+            QuickHPCheck(-2, -1, -1, -1, -1);
+
+
+        }
+        [Test]
+        public void TestPyreIncap3()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DealDamage(baron, pyre, 50, DTM);
+
+            DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, bunker.TurnTaker, scholar.TurnTaker };
+            Card thokk = PutInHand("Thokk");
+            Card surge = PutInHand("SurgeOfStrength");
+            Card ring = PutOnDeck("TheLegacyRing");
+            Card fort = PutOnDeck("Fortitude");
+
+            DiscardAllCards(bunker);
+            Card flak = PutOnDeck("FlakCannon");
+            Card plating = PutOnDeck("HeavyPlating");
+
+            Card iron = PutOnDeck("FleshToIron");
+            DecisionsYesNo = new bool[] { true, true, false };
+            DecisionSelectCards = new Card[] { thokk, surge };
+            UseIncapacitatedAbility(pyre, 2);
+            AssertInTrash(thokk, surge);
+            AssertInHand(ring, fort);
+
+            UseIncapacitatedAbility(pyre, 2);
+            AssertInHand(flak, plating);
+
+            UseIncapacitatedAbility(pyre, 2);
+            AssertOnTopOfDeck(iron);
+        }
+        [Test]
         public void TestChromodynamicsDamageTrigger()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
