@@ -640,7 +640,7 @@
             "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "D1D2D4",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Past",
             "character": true,
             "isReal": false,
             "notsetup": [
@@ -671,7 +671,7 @@
         },
         {
             "identifier": "DualShiftTrack2",
-            "sharedIdentifier": "ShiftTrack",
+            "sharedIdentifier": "ShiftTrack: Past",
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
@@ -705,7 +705,7 @@
         },
         {
             "identifier": "DualShiftTrack3",
-            "sharedIdentifier": "ShiftTrack",
+            "sharedIdentifier": "ShiftTrack: Future",
             "backgroundColor": "D1D2D4",
             "count": 1,
             "title": "Shift Track",
@@ -742,7 +742,7 @@
             "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "D1D2D4",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Future",
             "character": true,
             "isReal": false,
             "notsetup": [
@@ -776,7 +776,7 @@
             "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "FCB040",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Past",
             "character": true,
             "isReal": false,
             "setup": [
@@ -801,7 +801,7 @@
         },
         {
             "identifier": "ThroughTheBreachShiftTrack2",
-            "sharedIdentifier": "ShiftTrack",
+            "sharedIdentifier": "ShiftTrack: Past",
             "backgroundColor": "FCB040",
             "count": 1,
             "title": "Shift Track",
@@ -832,7 +832,7 @@
             "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "FCB040",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Future",
             "character": true,
             "isReal": false,
             "setup": [
@@ -860,7 +860,7 @@
             "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "FCB040",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Future",
             "character": true,
             "isReal": false,
             "setup": [
