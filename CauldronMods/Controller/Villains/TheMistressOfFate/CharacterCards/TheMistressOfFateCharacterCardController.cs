@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -12,6 +12,9 @@ namespace Cauldron.TheMistressOfFate
     {
         private TurnTaker HeroBeingRevived = null;
         private Location _dayDeck;
+
+        public static readonly string IncapLocation = "IncapLocation";
+        public static readonly string LocationIndex = "LocationIndex";
         private Location dayDeck
         {
             get
@@ -345,60 +348,47 @@ namespace Cauldron.TheMistressOfFate
             var cardsInHand = hero.ToHero().Hand.Cards;
             var cardsInDeck = hero.Deck.Cards;
             var cardsInTrash = hero.Trash.Cards;
-            IEnumerator coroutine = GameController.BulkMoveCards(TurnTakerController, cardsInHand, StorageLocation(hero, "Hand"));
-            if (UseUnityCoroutines)
+            string hand = "hand";
+            string deck = "deck";
+            string trash = "trash";
+            foreach(Card card in cardsInHand)
             {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            coroutine = GameController.BulkMoveCards(TurnTakerController, cardsInDeck, StorageLocation(hero, "Deck"));
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            coroutine = GameController.BulkMoveCards(TurnTakerController, cardsInTrash, StorageLocation(hero, "Trash"));
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            var cardsRemaining = GameController.GetAllCards().Where((Card c) => !c.IsCharacter && c.Owner == hero && c.Location.HighestRecursiveLocation.IsInGame);
-            coroutine = GameController.BulkMoveCards(TurnTakerController, cardsRemaining, StorageLocation(hero, "Trash"));
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
+
+                Game.Journal.RecordCardProperties(card, IncapLocation, new List<string>() { hand, cardsInHand.IndexOf(card).ToString() });
             }
 
-            coroutine = CancelAction(bmc);
-            if (UseUnityCoroutines)
+            foreach (Card card in cardsInDeck)
             {
-                yield return GameController.StartCoroutine(coroutine);
+                Game.Journal.RecordCardProperties(card, IncapLocation, new List<string>() { deck, cardsInDeck.IndexOf(card).ToString() });
+
             }
-            else
+
+            foreach (Card card in cardsInTrash)
             {
-                GameController.ExhaustCoroutine(coroutine);
+                Game.Journal.RecordCardProperties(card, IncapLocation, new List<string>() { trash, cardsInTrash.IndexOf(card).ToString() });
             }
+
+
+            var cardsRemaining = GameController.GetAllCards().Where((Card c) => !c.IsCharacter && c.Owner == hero && !hero.Deck.HasCard(c) && !hero.Trash.HasCard(c) && !hero.ToHero().Hand.HasCard(c));
+            int index = cardsInTrash.Count();
+            foreach (Card card in cardsRemaining)
+            {
+                Game.Journal.RecordCardProperties(card, IncapLocation, new List<string>() { trash, index.ToString() });
+                index++;
+            }
+
             yield break;
         }
 
         private IEnumerator RestoreHeroCards(BulkMoveCardsAction bmc)
         {
             var hero = bmc.Destination.OwnerTurnTaker;
-            IEnumerator coroutine = GameController.BulkMoveCards(TurnTakerController, StorageLocation(hero, "Deck").Cards, hero.Deck, cardSource: GetCardSource());
+            var toHand = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "hand").OrderBy(c => Convert.ToInt32(Game.Journal.GetCardPropertiesStringList(c, IncapLocation).Last()));
+            var toDeck = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "deck").OrderBy(c => Convert.ToInt32(Game.Journal.GetCardPropertiesStringList(c, IncapLocation).Last()));
+            var toTrash = hero.GetAllCards().Where(c => Game.Journal.GetCardPropertiesStringList(c, IncapLocation) != null && Game.Journal.GetCardPropertiesStringList(c, IncapLocation).First() == "trash").OrderBy(c => Convert.ToInt32(Game.Journal.GetCardPropertiesStringList(c, IncapLocation).Last()));
+
+
+            IEnumerator coroutine = GameController.BulkMoveCards(TurnTakerController, toDeck, hero.Deck, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -408,7 +398,7 @@ namespace Cauldron.TheMistressOfFate
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.BulkMoveCards(TurnTakerController, StorageLocation(hero, "Hand").Cards, hero.ToHero().Hand, cardSource: GetCardSource());
+            coroutine = GameController.BulkMoveCards(TurnTakerController, toHand, hero.ToHero().Hand, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -418,7 +408,7 @@ namespace Cauldron.TheMistressOfFate
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.BulkMoveCards(TurnTakerController, StorageLocation(hero, "Trash").Cards, hero.Trash, cardSource: GetCardSource());
+            coroutine = GameController.BulkMoveCards(TurnTakerController, toTrash, hero.Trash, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -449,15 +439,6 @@ namespace Cauldron.TheMistressOfFate
             return false;
         }
 
-        private Location StorageLocation(TurnTaker hero, string variety)
-        {
-            var card = hero.OffToTheSide.Cards.Where((Card c) => c.Identifier == variety + "Storage").FirstOrDefault();
-            if(card != null)
-            {
-                return card.UnderLocation;
-            }
-            return null;
-        }
         protected bool IsDay(Card c)
         {
             if (c != null && c.Definition.Keywords.Contains("day"))

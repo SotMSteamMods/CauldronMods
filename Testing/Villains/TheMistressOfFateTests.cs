@@ -37,11 +37,7 @@ namespace CauldronTests
                 GameController.ExhaustCoroutine(GameController.ExpireStatusEffect(effect, fate.CharacterCardController.GetCardSource()));
             }
         }
-        private Card heroStorage(HeroTurnTakerController hero, string variety)
-        {
-            var cards = hero.TurnTaker.OffToTheSide.Cards;
-            return cards.Where((Card c) => c.Identifier == variety + "Storage").FirstOrDefault();
-        }
+       
 
         private DamageType DTM = DamageType.Melee;
         private string MessageTerminator = "There should have been no other messages.";
@@ -118,7 +114,6 @@ namespace CauldronTests
             StartGame();
             ResetDays();
 
-            AssertNumberOfCardsAtLocation(legacy.TurnTaker.OffToTheSide, 3);
             AssertIsInPlay("TheTimeline");
             var days = new Card[] { GetCard("DayOfSaints"), GetCard("DayOfSinners"), GetCard("DayOfSorrows"), GetCard("DayOfSwords") };
             AssertIsInPlay(days);
@@ -140,10 +135,12 @@ namespace CauldronTests
             Card presence = PutIntoPlay("InspiringPresence");
 
             DealDamage(fate, legacy, 50, DamageType.Melee);
-            AssertUnderCard(heroStorage(legacy, "Hand"), fortitude);
-            AssertUnderCard(heroStorage(legacy, "Deck"), ring);
-            AssertUnderCard(heroStorage(legacy, "Trash"), surge);
-            AssertUnderCard(heroStorage(legacy, "Trash"), presence);
+            AssertIncapacitated(legacy);
+            FlipCard(fate);
+            AssertInHand(fortitude);
+            AssertInDeck(ring);
+            AssertInTrash(surge);
+            AssertInTrash(presence);
         }
 
         [Test]
@@ -1343,8 +1340,7 @@ namespace CauldronTests
             DestroyCard(medico);
             DestroyCard(writhe);
 
-            Assert.AreEqual(sentinels.TurnTaker.OffToTheSide, chains.Location.HighestRecursiveLocation);
-            Assert.AreEqual(sentinels.TurnTaker.OffToTheSide, oath.Location.HighestRecursiveLocation);
+            AssertIncapacitated(sentinels);
 
             FlipCard(fate);
 
