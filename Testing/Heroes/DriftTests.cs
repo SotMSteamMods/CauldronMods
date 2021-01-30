@@ -1039,14 +1039,17 @@ namespace CauldronTests
             QuickHPStorage(apostate.CharacterCard, traffic);
             int trackPosition = CurrentShiftPosition();
 
-            UsePower(shard);
+            AssertNextMessageContains("is not in the future, so nothing happens!");
+            UsePower(shard, 1);
+
+            UsePower(shard, 0);
 
             //{DriftPast} 1 target regains 2 HP. Shift {DriftRR}.
             //{DriftFuture} {Drift} deals each non-hero target 1 radiant damage. Shift {DriftLL}.
 
-            //First part pushes Drift into the Future, triggering the Future part
-            QuickHPCheck(1, -1);
-            AssertTrackPosition(trackPosition);
+            QuickHPCheck(2, 0);
+            AssertTrackPosition(trackPosition + 2);
+
         }
 
         [Test]
@@ -1064,12 +1067,16 @@ namespace CauldronTests
             QuickHPStorage(apostate.CharacterCard, traffic);
             int trackPosition = CurrentShiftPosition();
 
-            UsePower(shard);
+            AssertNextMessageContains("is not in the past, so nothing happens!");
+            UsePower(shard, 0);
+
+            UsePower(shard, 1);
 
             //{DriftPast} 1 target regains 2 HP. Shift {DriftRR}.
             //{DriftFuture} {Drift} deals each non-hero target 1 radiant damage. Shift {DriftLL}.
             QuickHPCheck(-1, -1);
             AssertTrackPosition(trackPosition - 2);
+
         }
 
         [Test]
