@@ -25,7 +25,7 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         public override bool AskIfCardIsIndestructible(Card card)
         {
-            if (!CanBeDestroyed)
+            if (!CanBeDestroyed && card == Card)
                 return true;
 
             return base.AskIfCardIsIndestructible(card);

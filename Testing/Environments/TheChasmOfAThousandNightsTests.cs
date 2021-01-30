@@ -406,6 +406,12 @@ namespace CauldronTests
             Card nature = djinn.BelowLocation.TopCard;
             DestroyCard(djinn, baron.CharacterCard);
             AssertIsInPlay(djinn);
+
+            //only tavael
+            Card mdp = PlayCard("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+            AssertInTrash(mdp);
+
             DealDamage(baron, djinn, 10000, DamageType.Melee);
             AssertInTrash(djinn);
         }

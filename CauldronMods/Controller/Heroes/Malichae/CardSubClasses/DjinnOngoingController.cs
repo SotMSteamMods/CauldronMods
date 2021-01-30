@@ -22,6 +22,20 @@ namespace Cauldron.Malichae
         //This is here for possible Promo support.
         public abstract Power GetGrantedPower(CardController cardController);
 
+        protected CardSource GetCardSourceForGrantedPower()
+        {
+            var card = GetCardThisCardIsNextTo();
+            if (card is null)
+            {
+                return GetCardSource().AssociatedCardSources.First();
+            }
+            else
+            {
+                var cc = FindCardController(card);
+                return cc.GetCardSource();
+            }
+        }
+
         public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
         {
             if (cardController.Card == base.GetCardThisCardIsNextTo(true))

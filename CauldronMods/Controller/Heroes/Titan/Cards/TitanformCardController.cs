@@ -15,6 +15,39 @@ namespace Cauldron.Titan
             AllowFastCoroutinesDuringPretend = false;
         }
 
+        public static readonly string RevertToNormal = "RevertToNormalForm";
+
+        public Card FindTitanFormCharacterCard()
+        {
+            var characters = base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && c.SharedIdentifier == CharacterCardWithoutReplacements.SharedIdentifier).ToList();
+            string desiredIdentifier = CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier.Replace("TitanCharacter", "TitanFormCharacter");
+
+            var titanCharacter = characters.First(c => c.Identifier == desiredIdentifier);
+            return titanCharacter;
+        }
+
+        public override IEnumerator Play()
+        {
+            if (CharacterCard == CharacterCardWithoutReplacements)
+            {
+                var titanCharacter = FindTitanFormCharacterCard();
+                titanCharacter.SetHitPoints(CharacterCardWithoutReplacements.HitPoints.Value);
+
+                Log.Debug($"Switching to {titanCharacter.Identifier}");
+                Log.Debug($"What should happen is \"SwitchCutoutCard: from {CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier} to {titanCharacter.PromoIdentifierOrIdentifier}\"");
+
+                var coroutine = GameController.SwitchCards(CharacterCardWithoutReplacements, titanCharacter, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+
         public override void AddTriggers()
         {
             //Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.
@@ -22,6 +55,8 @@ namespace Cauldron.Titan
 
             //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, this.DestroyThisCardToIncreaseDamageResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.IncreaseDamage }, TriggerTiming.Before, isActionOptional: true);
+
+            base.AddAfterLeavesPlayAction(FlagReturnToNormalCard);
         }
 
         private IEnumerator DealtDamageResponse(DealDamageAction action)
@@ -62,12 +97,9 @@ namespace Cauldron.Titan
 
         private IEnumerator DestroyThisCardToIncreaseDamageResponse(DealDamageAction action)
         {
-            List<DestroyCardAction> destroyList = new List<DestroyCardAction>();
-            //...you may destroy this card...
-            IEnumerator coroutine = base.GameController.DestroyCard(base.HeroTurnTakerController, base.Card, true,
-                actionSource: action,
-                storedResults: destroyList,
-                cardSource: GetCardSource());
+            //NB: GameController.MakeYesNoCardDecision seems to give a different UI in game, this gives the UI we want.
+            var yesNo = new YesNoCardDecision(GameController, DecisionMaker, SelectionType.DestroyCard, Card, action, null, GetCardSource());
+            var coroutine = GameController.MakeDecisionAction(yesNo);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -76,8 +108,19 @@ namespace Cauldron.Titan
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            if (base.DidDestroyCard(destroyList))
+
+            if (DidPlayerAnswerYes(yesNo))
             {
+                coroutine = base.GameController.DestroyCard(HeroTurnTakerController, Card, false);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
                 this.AddInhibitorException((GameAction ga) => ga is IncreaseDamageAction);
                 //...to increase that damage by 2.
                 coroutine = GameController.IncreaseDamage(action, 2, false, GetCardSource());
@@ -91,7 +134,14 @@ namespace Cauldron.Titan
                 }
                 RemoveInhibitorException();
             }
-            yield break;
+        }
+
+        private IEnumerator FlagReturnToNormalCard()
+        {
+            var card = FindTitanFormCharacterCard();
+            if (card.IsInPlayAndHasGameText)
+                Journal.RecordCardProperties(card, RevertToNormal, true);
+            yield return null;
         }
     }
 }

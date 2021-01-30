@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Titan
 {
-    public class OniTitanCharacterCardController : HeroCharacterCardController
+    public class OniTitanCharacterCardController : TitanBaseCharacterCardController
     {
         public OniTitanCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

@@ -324,7 +324,7 @@
 	"sourceSize": {"w":330,"h":260},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"InflitratorGargoyleCharacter.png":
+"InfiltratorGargoyleCharacter.png":
 {
 	"frame": {"x":0,"y":789,"w":330,"h":260},
 	"rotated": false,

@@ -5,6 +5,12 @@
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 	<Deterministic>true</Deterministic>
 	<DebugType>pdbonly</DebugType>
+	<Authors>CauldronMods Dev. Team</Authors>
+	<Company>CauldronMods Dev. Team</Company>
+	<Product>CauldronMods</Product>
+	<Description>Automated tests for the Cauldron Fan Expansion for the Sentinels of the Multiverse Digital Card Game.</Description>
+	<Copyright>All rights reserved, 2020-2021</Copyright>
+	<PackageProjectUrl>https://github.com/SotMSteamMods/CauldronMods</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
