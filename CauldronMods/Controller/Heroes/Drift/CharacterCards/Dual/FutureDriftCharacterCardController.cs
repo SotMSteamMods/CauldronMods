@@ -29,24 +29,27 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //At the end of your next turn, return it from play to your hand. 
-            Card playedCard = playAction.FirstOrDefault().CardToPlay;
-            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.EndOfTurnResponse), "At the end of your next turn, return " + playedCard.Title + " from play to your hand.", new TriggerType[] { TriggerType.MoveCard, TriggerType.AddTokensToPool }, this.Card);
-            statusEffect.NumberOfUses = 1;
-            statusEffect.BeforeOrAfter = BeforeOrAfter.Before;
-            statusEffect.TurnPhaseCriteria.Phase = Phase.End;
-            statusEffect.TurnPhaseCriteria.TurnTaker = base.TurnTaker;
-            statusEffect.TurnIndexCriteria.GreaterThan = base.Game.TurnIndex;
-            statusEffect.CardMovedExpiryCriteria.Card = playedCard;
+            if(playAction.Any())
+            {
+                //At the end of your next turn, return it from play to your hand. 
+                Card playedCard = playAction.FirstOrDefault().CardToPlay;
+                OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.EndOfTurnResponse), "At the end of your next turn, return " + playedCard.Title + " from play to your hand.", new TriggerType[] { TriggerType.MoveCard, TriggerType.AddTokensToPool }, this.Card);
+                statusEffect.NumberOfUses = 1;
+                statusEffect.BeforeOrAfter = BeforeOrAfter.Before;
+                statusEffect.TurnPhaseCriteria.Phase = Phase.End;
+                statusEffect.TurnPhaseCriteria.TurnTaker = base.TurnTaker;
+                statusEffect.TurnIndexCriteria.GreaterThan = base.Game.TurnIndex;
+                statusEffect.CardMovedExpiryCriteria.Card = playedCard;
 
-            coroutine = base.AddStatusEffect(statusEffect);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = base.AddStatusEffect(statusEffect);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             //Shift {RR}.
