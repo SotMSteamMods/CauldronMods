@@ -78,29 +78,36 @@ namespace CauldronTests
         [Test()]
         public void TestDriftCharacter_SwitchActiveHero()
         {
-            SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: new int?(-2054413546));
             StartGame();
 
             //Start with Future
             AssertIsInPlay(FutureDriftCharacter);
             int position1 = CurrentShiftPosition();
 
+            PrintSeparator("Preparing to Shift Right");
+
             //Shift Right 1
-            PlayCard(DestroyersAdagio);
+            DecisionSelectFunction = 1;
+            PlayCard(DriftStep);
             AssertTrackPosition(position1 + 1);
             int position2 = CurrentShiftPosition();
 
+            PrintSeparator("Triggering Switch");
             //Trigger switch with phase change
             DecisionYesNo = true;
             GoToEndOfTurn(baron);
 
+            PrintSeparator("Switch completed");
             //Assert that other character and starting position are active
             AssertIsInPlay(PastDriftCharacter);
             AssertTrackPosition(position1);
 
+            PrintSeparator("Switching Back");
             //Switch back
             GoToPlayCardPhase(drift);
 
+            PrintSeparator("Switch back successful");
             //Assert in secondary position
             AssertIsInPlay(FutureDriftCharacter);
             AssertTrackPosition(position2);
