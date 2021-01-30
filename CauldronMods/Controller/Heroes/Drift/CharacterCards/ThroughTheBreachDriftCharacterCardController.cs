@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -149,7 +149,7 @@ namespace Cauldron.Drift
             coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
                     new Function(base.HeroTurnTakerController, "you may play the discarded card", SelectionType.AddTokens, () => base.GameController.PlayCard(base.TurnTakerController, cardToDiscard, optional: true, cardSource: base.GetCardSource())),
                     new Function(base.HeroTurnTakerController, "Drift may deal 1 target 3 radiant damage", SelectionType.AddTokens, () => base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Radiant, 1, false, 0, cardSource:base.GetCardSource()))
-            });
+            }, associatedCards: cardToDiscard.ToEnumerable());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
