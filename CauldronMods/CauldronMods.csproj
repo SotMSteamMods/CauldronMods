@@ -16,6 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controller\Heroes\Drift\CharacterCards\AllInGoodTime\**" />
+    <Compile Remove="Controller\Heroes\Drift\CharacterCards\Base\**" />
+    <EmbeddedResource Remove="Controller\Heroes\Drift\CharacterCards\AllInGoodTime\**" />
+    <EmbeddedResource Remove="Controller\Heroes\Drift\CharacterCards\Base\**" />
+    <None Remove="Controller\Heroes\Drift\CharacterCards\AllInGoodTime\**" />
+    <None Remove="Controller\Heroes\Drift\CharacterCards\Base\**" />
     <None Remove="DeckLists\**\*.json" />
     <None Include="..\LICENSE">
       <Pack>True</Pack>
