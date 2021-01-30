@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -27,7 +27,7 @@ namespace Cauldron.Drift
 
             //Discard 1, 2, or 3 cards.
             List<SelectNumberDecision> numberDecision = new List<SelectNumberDecision>();
-            IEnumerator coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.DiscardCard, 0, 4, additionalCriteria: (int i) => discardNumerals.Contains(i), storedResults: numberDecision, cardSource: base.GetCardSource());
+            IEnumerator coroutine = PickDiscards(discardNumerals, numberDecision);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -36,7 +36,6 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
             List<DiscardCardAction> discardActions = new List<DiscardCardAction>();
             coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, numberDecision.FirstOrDefault().SelectedNumber, storedResults: discardActions);
             if (base.UseUnityCoroutines)
@@ -55,7 +54,7 @@ namespace Cauldron.Drift
                 coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
                     new Function(base.HeroTurnTakerController, "Shift Left", SelectionType.RemoveTokens, () => base.ShiftL()),
                     new Function(base.HeroTurnTakerController, "Shift Right", SelectionType.AddTokens, () => base.ShiftR())
-            });
+            }, associatedCards: GetShiftTrack().ToEnumerable());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -76,6 +75,46 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            yield break;
+        }
+
+        private IEnumerator PickDiscards(int[] discardNumerals, List<SelectNumberDecision> numberDecision)
+        {
+            IEnumerator coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.DiscardCard, 0, 4, additionalCriteria: (int i) => discardNumerals.Contains(i), storedResults: numberDecision, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if(!discardNumerals.Any(i => i ==numberDecision.FirstOrDefault().SelectedNumber))
+            {
+                numberDecision.Clear();
+                coroutine = GameController.SendMessageAction("Please pick a valid position!", Priority.High, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = PickDiscards(discardNumerals, numberDecision);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
+
             yield break;
         }
 
