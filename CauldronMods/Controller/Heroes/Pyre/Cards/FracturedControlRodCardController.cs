@@ -14,6 +14,7 @@ namespace Cauldron.Pyre
 
         public FracturedControlRodCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowIrradiatedCardsInHands();
         }
 
         public override void AddStartOfGameTriggers()

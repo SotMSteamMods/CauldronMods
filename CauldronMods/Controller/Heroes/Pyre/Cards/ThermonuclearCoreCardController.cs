@@ -44,7 +44,25 @@ namespace Cauldron.Pyre
         private IEnumerator EntersHandResponse()
         {
             //"When this card enters your hand, select 1 non-{PyreIrradiate} card in your hand. {PyreIrradiate} that card until it leaves your hand.",
-            return SelectAndIrradiateCardsInHand(DecisionMaker, TurnTaker, 1, 1);
+            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} irradiates a card in {Card.Location.GetFriendlyName()}", Priority.Medium, GetCardSource(), showCardSource: true);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = SelectAndIrradiateCardsInHand(DecisionMaker, TurnTaker, 1, 1);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
         public override void AddTriggers()
         {
@@ -53,8 +71,42 @@ namespace Cauldron.Pyre
         }
         private IEnumerator SelectHeroToDrawIrradiatedCard(PhaseChangeAction pc)
         {
-            var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllHeroes.Where(htt => !htt.Hand.Cards.Any((Card c) => IsIrradiated(c))).Select(htt => htt as TurnTaker), SelectionType.DrawCard, cardSource: GetCardSource());
-            return GameController.SelectTurnTakerAndDoAction(selectHero, DrawAndIrradiateDrawnCard);
+            var validHeroes = GameController.AllHeroControllers.Where(httc => !httc.HeroTurnTaker.Hand.Cards.Any((Card c) => IsIrradiated(c)) && GameController.CanDrawCards(httc, GetCardSource())).Select(httc => httc.TurnTaker).ToList();
+            IEnumerator coroutine;
+            if (!validHeroes.Any())
+            {
+                coroutine = GameController.SendMessageAction($"There are no heroes that can draw for {Card.Title}", Priority.Medium, GetCardSource());
+            }
+            else if (validHeroes.Count() == 1)
+            {
+                var hero = validHeroes.FirstOrDefault();
+                var isAre = hero.DeckDefinition.IsPlural ? "are" : "is";
+                coroutine = GameController.SendMessageAction($"{hero.Name} {isAre} the only hero that can draw for {Card.Title}", Priority.Medium, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = DrawAndIrradiateDrawnCard(hero);
+            }
+            else
+            {
+                var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, validHeroes, SelectionType.DrawCard, cardSource: GetCardSource());
+                coroutine = GameController.SelectTurnTakerAndDoAction(selectHero, DrawAndIrradiateDrawnCard);
+            }
+
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
         private IEnumerator DrawAndIrradiateDrawnCard(TurnTaker tt)
         {

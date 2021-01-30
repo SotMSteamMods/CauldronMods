@@ -22,7 +22,17 @@ namespace Cauldron.Pyre
         private IEnumerator PreventCascadeResponse(CardEntersPlayAction cep)
         {
             //Instead,
-            IEnumerator coroutine = CancelAction(cep);
+            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} delays a catastrophic cascade!", Priority.High, GetCardSource(), associatedCards: new Card[] { cep.CardEnteringPlay }, true);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = CancelAction(cep);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
