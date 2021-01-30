@@ -542,7 +542,7 @@
             "icons": [
                 "DealDamagePsychic"
             ],
-            "body": "Whenever you shift from {Past} to {Future} or from {Future} to {DrifitFuture}, {Drift} may deal 1 other target and herself 1 psychic damage.",
+            "body": "Whenever you shift from {Past} to {Future} or from {Future} to {Future}, {Drift} may deal 1 other target and herself 1 psychic damage.",
             "flavorQuotes": [
                 {
                     "identifier": "Drift",
