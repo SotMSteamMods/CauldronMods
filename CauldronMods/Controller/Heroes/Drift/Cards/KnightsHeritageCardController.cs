@@ -20,7 +20,7 @@ namespace Cauldron.Drift
         public override IEnumerator Play()
         {
             //When this card enters play, destroy all other copies of Knight's Heritage...
-            IEnumerator coroutine = base.GameController.DestroyCards(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.Identifier == this.Card.Identifier && c != this.Card));
+            IEnumerator coroutine = base.GameController.DestroyCards(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.Identifier == this.Card.Identifier && c != this.Card), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

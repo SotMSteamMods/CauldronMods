@@ -79,7 +79,7 @@ namespace Cauldron.Drift
         private IEnumerator PlayTrashOngoingResponse()
         {
             //You may play an ongoing from your trash
-            IEnumerator coroutine = base.GameController.SelectAndPlayCard(base.HeroTurnTakerController, base.FindCardsWhere((Card c) => c.IsOngoing && c.Location == base.TurnTaker.Trash), true);
+            IEnumerator coroutine = base.GameController.SelectAndPlayCard(base.HeroTurnTakerController, base.FindCardsWhere((Card c) => c.IsOngoing && c.Location == base.TurnTaker.Trash), true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

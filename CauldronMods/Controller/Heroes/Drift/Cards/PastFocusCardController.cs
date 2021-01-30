@@ -48,7 +48,7 @@ namespace Cauldron.Drift
                 //If you shifted {DriftLLL} this way, you may play a card.
                 if (base.TotalShifts >= 3)
                 {
-                    coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true);
+                    coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

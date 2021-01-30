@@ -18,9 +18,9 @@ namespace Cauldron.Drift
         public override void AddTriggers()
         {
             //Whenever you shift from {DriftPast} to {DriftFuture}... 
-            base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.CurrentValue == 3, this.DealDamageResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
+            base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.CurrentValue == 3, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             //...or from {DriftFuture} to {DriftPast}...
-            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.CurrentValue == 2, this.DealDamageResponse, TriggerType.ReduceDamageOneUse, TriggerTiming.After);
+            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.CurrentValue == 2, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             //...{Drift} may deal 1 other target and herself 1 psychic damage.
         }
 

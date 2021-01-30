@@ -59,7 +59,7 @@ namespace Cauldron.Drift
                 }
 
                 //{Drift} regains 1 HP. 
-                coroutine = base.GameController.GainHP(base.GetActiveCharacterCard(), 1);
+                coroutine = base.GameController.GainHP(base.GetActiveCharacterCard(), 1, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

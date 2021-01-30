@@ -31,7 +31,7 @@ namespace Cauldron.Drift
             if (base.IsTimeMatching(Past))
             {
                 //{DriftPast} Destroy 1 environment card.
-                coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsEnvironment), false);
+                coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsEnvironment), false, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -44,7 +44,7 @@ namespace Cauldron.Drift
             if (base.IsTimeMatching(Future))
             {
                 //{DriftFuture} Destroy 1 ongoing card.
-                coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing), false);
+                coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing), false, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
