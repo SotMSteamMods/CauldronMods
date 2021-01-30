@@ -101,7 +101,7 @@ namespace Cauldron.Drift
 
                         Card cardToMove = revealedCards.FirstOrDefault();
                         int cardPosition = numberDecisions.FirstOrDefault().SelectedNumber.Value;
-                        coroutine = base.GameController.MoveCard(base.TurnTakerController, cardToMove, base.GetShiftTrack().UnderLocation, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.MoveCard(base.TurnTakerController, cardToMove, base.GetPositionalShiftTrack(cardPosition).UnderLocation, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

@@ -230,5 +230,11 @@ namespace CauldronTests
             }
         }
 
+        public Card GetPositionalBreachShiftTrack(int position)
+        {
+
+            return GetCard("ThroughTheBreachShiftTrack" + position);
+        }
+
     }
 }

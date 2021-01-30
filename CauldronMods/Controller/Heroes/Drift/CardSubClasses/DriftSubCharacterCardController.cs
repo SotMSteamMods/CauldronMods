@@ -38,6 +38,20 @@ namespace Cauldron.Drift
             return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText, false).FirstOrDefault();
         }
 
+        public Card GetPositionalShiftTrack(int position)
+        {
+            string promoIdentifier = Base;
+            if (base.CharacterCardController is DualDriftSubCharacterCardController)
+            {
+                promoIdentifier = Dual;
+            }
+            else if (base.CharacterCardController is ThroughTheBreachDriftCharacterCardController)
+            {
+                promoIdentifier = ThroughTheBreach;
+            }
+            return base.FindCard(promoIdentifier + ShiftTrack + position, false);
+        }
+
         public IEnumerator ShiftL()
         {
             //Ensures not shifting off track

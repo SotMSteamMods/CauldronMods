@@ -518,8 +518,8 @@ namespace CauldronTests
             Card step = PutInTrash(DriftStep);
             Card[] top2 = GetTopCardsOfDeck(drift, 2).ToArray();
             UsePower(drift);
-            AssertUnderCard(GetShiftTrack(), top2[0]);
-            AssertUnderCard(GetShiftTrack(), top2[1]);
+            AssertUnderCard(GetPositionalBreachShiftTrack(1), top2[0]);
+            AssertUnderCard(GetPositionalBreachShiftTrack(2), top2[1]);
 
             //When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage.
             QuickHPStorage(apostate);
@@ -534,7 +534,6 @@ namespace CauldronTests
 
             PrintSpecialStringsForCard(drift.CharacterCard);
             UsePower(drift);
-            AssertNumberOfCardsUnderCard(GetShiftTrack(), 3);
             PrintSpecialStringsForCard(drift.CharacterCard);
 
             QuickHPUpdate();
