@@ -14,17 +14,17 @@ namespace Cauldron.VaultFive
 
         public ArtifactCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => BuildArtifactSpecialString(), relatedCards: () => Card.Owner.CharacterCards).Condition = () => Card.Owner != TurnTaker && Card.IsInDeck;
+            SpecialStringMaker.ShowSpecialString(() => BuildArtifactSpecialString(), relatedCards: () => Card.Owner.CharacterCards).Condition = () => Card.Owner.Identifier != Card.ParentDeck.Identifier && Card.IsInDeck;
         }
 
         private string BuildArtifactSpecialString()
         {
-            if(Card.Owner == TurnTaker || !Card.IsInDeck)
+            if(Card.Owner.Identifier == Card.ParentDeck.Identifier || !Card.IsInDeck)
             {
                 return "";
             }
 
-            IEnumerable<Card> artifactsInDeck = FindCardsWhere(c => c.Location == Card.Location && c.ParentDeck == Card.ParentDeck);
+            IEnumerable<Card> artifactsInDeck = FindCardsWhere(c => c.Location == Card.Location && c.ParentDeck == Card.ParentDeck && IsArtifact(c));
             List<int> positionList = new List<int>();
             int position;
             foreach(Card artifact in artifactsInDeck)

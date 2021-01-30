@@ -138,9 +138,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.VaultFive");
             StartGame();
 
-            PlayCard("ByrgsNail");
+            Card nail = PlayCard("ByrgsNail");
             GoToStartOfTurn(ra);
+            PrintSpecialStringsForCard(nail);
             SaveAndLoad();
+            nail = GetCard("ByrgsNail");
+            PrintSpecialStringsForCard(nail);
+
         }
 
         [Test()]
