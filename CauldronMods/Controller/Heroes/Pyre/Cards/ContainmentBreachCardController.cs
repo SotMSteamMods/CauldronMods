@@ -24,6 +24,7 @@ namespace Cauldron.Pyre
         }
         public ContainmentBreachCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowIrradiatedCount();
         }
         public override void AddTriggers()
         {

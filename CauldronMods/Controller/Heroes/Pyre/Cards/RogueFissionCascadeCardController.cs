@@ -14,20 +14,21 @@ namespace Cauldron.Pyre
         {
             AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
             AddInhibitorException((GameAction ga) => ga is PlayCardAction && Card.Location.IsHand);
+            ShowIrradiatedCount();
         }
 
         public override void AddStartOfGameTriggers()
         {
             //"When this card enters your hand, put it into play.",
             AddTrigger((DrawCardAction d) => d.DrawnCard == Card, (DrawCardAction d) => PlayFromHandResponse(), new TriggerType[2]
-        {
-            TriggerType.PutIntoPlay,
-            TriggerType.Hidden
-        }, TriggerTiming.After, null, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: true);
+            {
+                TriggerType.PutIntoPlay,
+                TriggerType.Hidden
+            }, TriggerTiming.After, null, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: true);
             AddTrigger((MoveCardAction m) => m.Destination == HeroTurnTaker.Hand && m.CardToMove == Card, (MoveCardAction m) => PlayFromHandResponse(), new TriggerType[2]
             {
-            TriggerType.PutIntoPlay,
-            TriggerType.Hidden
+                TriggerType.PutIntoPlay,
+                TriggerType.Hidden
             }, TriggerTiming.After, null, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: true);
         }
         private IEnumerator PlayFromHandResponse()

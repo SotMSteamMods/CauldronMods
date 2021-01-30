@@ -12,6 +12,7 @@ namespace Cauldron.Pyre
     {
         public HalfLifeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowListOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria((Card c) => IsEquipment(c), "equipment"));
         }
         public override IEnumerator Play()
         {

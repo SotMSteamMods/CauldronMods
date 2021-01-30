@@ -6,6 +6,8 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.Pyre
 {
     public abstract class PyreUtilityCardController : CardController
@@ -13,6 +15,19 @@ namespace Cauldron.Pyre
         private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
         protected PyreUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+
+        protected void ShowIrradiatedCardsInHands()
+        {
+            foreach (HeroTurnTaker hero in Game.HeroTurnTakers)
+            {
+                SpecialStringMaker.ShowListOfCardsAtLocation(hero.Hand, new LinqCardCriteria((Card c) => IsIrradiated(c), "irradiated"));
+            }
+        }
+        protected void ShowIrradiatedCount(bool reverse = false)
+        {
+            string descriptor = reverse ? "non-irradiated" : "irradiated";
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => GameController.AllHeroes.Select(htt => htt.Hand), new LinqCardCriteria((Card c) => IsIrradiated(c) != reverse, descriptor));
         }
 
         protected bool IsIrradiated(Card c)

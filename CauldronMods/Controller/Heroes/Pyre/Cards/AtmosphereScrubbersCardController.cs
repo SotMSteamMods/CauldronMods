@@ -12,6 +12,7 @@ namespace Cauldron.Pyre
     {
         public AtmosphereScrubbersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowIrradiatedCardsInHands();
         }
 
         public override IEnumerator Play()

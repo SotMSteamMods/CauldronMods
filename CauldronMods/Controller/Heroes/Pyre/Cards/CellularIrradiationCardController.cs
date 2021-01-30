@@ -12,6 +12,7 @@ namespace Cauldron.Pyre
     {
         public CellularIrradiationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowIrradiatedCount();
         }
 
         public override IEnumerator Play()

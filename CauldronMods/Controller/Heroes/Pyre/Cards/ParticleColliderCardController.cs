@@ -12,6 +12,7 @@ namespace Cauldron.Pyre
     {
         public ParticleColliderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowIrradiatedCardsInHands();
         }
         public override IEnumerator UsePower(int index = 0)
         {
@@ -118,7 +119,7 @@ namespace Cauldron.Pyre
             }
 
             //actually deal the damage
-            coroutine = GameController.DealDamage(DecisionMaker, this.Card, (Card c) => selectedTargets.Contains(c), numDamage, DamageType.Energy, cardSource: GetCardSource());
+            coroutine = GameController.DealDamage(DecisionMaker, CharacterCard, (Card c) => selectedTargets.Contains(c), numDamage, DamageType.Energy, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

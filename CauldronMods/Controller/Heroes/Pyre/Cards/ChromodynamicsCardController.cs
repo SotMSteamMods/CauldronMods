@@ -24,6 +24,7 @@ namespace Cauldron.Pyre
         }
         public ChromodynamicsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowIrradiatedCount();
         }
 
         public override void AddTriggers()

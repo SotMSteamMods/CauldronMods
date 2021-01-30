@@ -12,6 +12,7 @@ namespace Cauldron.Pyre
     {
         public HullCladdingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfElseSpecialString(() => GameController.GetAllCards().Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ContainmentBreach"), () => "Containment Breach is in play", () => "Containment Breach is not in play.");
         }
 
         public override void AddTriggers()
@@ -31,8 +32,9 @@ namespace Cauldron.Pyre
 
         public override IEnumerator UsePower(int index = 0)
         {
-            //"Draw 2 cards. Destroy this card."
-            IEnumerator coroutine = DrawCards(DecisionMaker, 2);
+            int numDraw = GetPowerNumeral(0, 2);
+            //"Draw 2 cards. 
+            IEnumerator coroutine = DrawCards(DecisionMaker, numDraw);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -42,6 +44,7 @@ namespace Cauldron.Pyre
                 GameController.ExhaustCoroutine(coroutine);
             }
 
+            //Destroy this card."
             coroutine = DestroyThisCardResponse(null);
             if (UseUnityCoroutines)
             {

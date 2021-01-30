@@ -14,6 +14,7 @@ namespace Cauldron.Pyre
         {
             AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
             AddInhibitorException((GameAction ga) => (ga is MakeDecisionAction || ga is MoveCardAction || ga is AddStatusEffectAction) && Card.Location.IsHand);
+            ShowIrradiatedCount();
         }
         public override void AddStartOfGameTriggers()
         {
