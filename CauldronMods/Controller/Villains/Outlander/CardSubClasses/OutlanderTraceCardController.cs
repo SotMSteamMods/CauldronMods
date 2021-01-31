@@ -14,5 +14,7 @@ namespace Cauldron.Outlander
         {
             SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
         }
+
+        public override bool CanBeDestroyed => false;
     }
 }
