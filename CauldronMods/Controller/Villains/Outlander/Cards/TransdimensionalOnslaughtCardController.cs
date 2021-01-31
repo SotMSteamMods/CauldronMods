@@ -12,13 +12,13 @@ namespace Cauldron.Outlander
     {
         public TransdimensionalOnslaughtCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsTrace(c), "trace"));
         }
 
         public override IEnumerator Play()
         {
             //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => base.FindCardsWhere(new LinqCardCriteria((Card card) => base.IsTrace(card) && c.IsInPlayAndHasGameText)).Count(), DamageType.Psychic);
+            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => FindCardsWhere(new LinqCardCriteria((Card card) => IsTrace(card) && c.IsInPlayAndHasGameText)).Count(), DamageType.Psychic, isIrreducible: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -27,7 +27,6 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }
