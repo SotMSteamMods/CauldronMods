@@ -12,14 +12,13 @@ namespace Cauldron.Outlander
     {
         public RiftbladeStrikesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP(2);
-            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP();
+            SpecialStringMaker.ShowNonVillainTargetWithHighestHP(numberOfTargets: 2);
         }
 
         public override IEnumerator Play()
         {
             //{Outlander} deals the non-villain target with the second highest HP 2 fire damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 2, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => 2, DamageType.Fire);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 2, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 2, DamageType.Fire);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -30,7 +29,7 @@ namespace Cauldron.Outlander
             }
 
             //{Outlander} deals the non-villain target with the highest HP 4 melee damage.
-            coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => 4, DamageType.Melee);
+            coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 4, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -39,7 +38,6 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }

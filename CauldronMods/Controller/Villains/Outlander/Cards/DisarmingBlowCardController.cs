@@ -12,14 +12,14 @@ namespace Cauldron.Outlander
     {
         public DisarmingBlowCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP(numberOfTargets: 2);
+            SpecialStringMaker.ShowNonVillainTargetWithHighestHP(numberOfTargets: 2);
         }
 
         public override IEnumerator Play()
         {
             //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
             //Any hero damaged this way discards 1 card.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => 3, DamageType.Melee, numberOfTargets: () => 2, addStatusEffect: (DealDamageAction action) => base.GameController.SelectAndDiscardCard(base.FindHeroTurnTakerController(action.Target.Owner.ToHero()), additionalCriteria: (Card c) => action.Target.IsCharacter && action.Amount > 0, cardSource: base.GetCardSource()));
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 3, DamageType.Melee, numberOfTargets: () => 2, addStatusEffect: (DealDamageAction action) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(action.Target.Owner.ToHero()), additionalCriteria: (Card c) => action.Target.IsCharacter && action.Amount > 0, cardSource: GetCardSource()));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
