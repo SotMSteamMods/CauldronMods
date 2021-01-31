@@ -942,7 +942,8 @@
             "openingLines": {
                 "default": "What year is this again?",
                 "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
-                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger."
+                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
+                "FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
             },
             "complexity": 3
         },
