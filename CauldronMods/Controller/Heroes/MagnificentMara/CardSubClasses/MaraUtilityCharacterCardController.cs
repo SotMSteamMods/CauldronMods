@@ -10,13 +10,33 @@ namespace Cauldron.MagnificentMara
     public class MaraUtilityCharacterCardController : HeroCharacterCardController
     {
         private List<StatusEffectController> _inUseTriggers;
+        private List<StatusEffectController> InUseTriggers
+        {
+            get
+            {
+                if(_inUseTriggers == null)
+                {
+                    _inUseTriggers = new List<StatusEffectController>();
+                }
+                return _inUseTriggers;
+            }
+        }
         private List<StatusEffectController> _hasBeenUsedTriggers;
+        private List<StatusEffectController> HasBeenUsedTriggers
+        {
+            get
+            {
+                if (_hasBeenUsedTriggers == null)
+                {
+                    _hasBeenUsedTriggers = new List<StatusEffectController>();
+                }
+                return _hasBeenUsedTriggers;
+            }
+        }
         private const string CrystalEffectString = "DowsingCrystalDamageBoostResponse";
 
         protected MaraUtilityCharacterCardController(Card card, TurnTakerController ttc) : base(card, ttc)
         {
-            _inUseTriggers = new List<StatusEffectController> { };
-            _hasBeenUsedTriggers = new List<StatusEffectController> { };
         }
 
         public override void AddTriggers()
@@ -52,7 +72,7 @@ namespace Cauldron.MagnificentMara
                 {
                     continue;
                 }
-                _inUseTriggers.Add(seController);
+                InUseTriggers.Add(seController);
 
                 
                 if(!crystalSource.Card.IsInPlay)
@@ -146,10 +166,10 @@ namespace Cauldron.MagnificentMara
                     }
 
 
-                    _hasBeenUsedTriggers.Add(seController);
+                    HasBeenUsedTriggers.Add(seController);
                 }
 
-                _inUseTriggers.Remove(seController);
+                InUseTriggers.Remove(seController);
             }
 
             yield break;
@@ -163,14 +183,14 @@ namespace Cauldron.MagnificentMara
 
         private IEnumerator ClearTriggerLists()
         {
-            _inUseTriggers.Clear();
-            _hasBeenUsedTriggers.Clear();
+            InUseTriggers.Clear();
+            HasBeenUsedTriggers.Clear();
             yield return null;
             yield break;
         }
         private bool IsSpecificTriggerAvailable(StatusEffectController sec)
         {
-            if(_inUseTriggers.Contains(sec) || _hasBeenUsedTriggers.Contains(sec))
+            if(InUseTriggers.Contains(sec) || HasBeenUsedTriggers.Contains(sec))
             {
                 return false;
             }
