@@ -257,8 +257,8 @@ namespace CauldronTests
         [Test]
         public void TestAnchoredFragment_NoDamage()
         {
-            //seed: 177078817, 1591246529
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard("Magekiller");
             StartGame();
 
             //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
@@ -278,8 +278,8 @@ namespace CauldronTests
         [Test]
         public void TestAnchoredFragment_NotEnoughDamage()
         {
-            //seed: 1591366208
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard("Magekiller");
             StartGame();
 
             //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
@@ -302,7 +302,8 @@ namespace CauldronTests
         public void TestAnchoredFragment_EnoughDamage()
         {
             //seed: 1588414095
-            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: 1588414095);
+            outlander.DebugTraceToPlay = GetCard("Magekiller");
             StartGame();
 
             //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
