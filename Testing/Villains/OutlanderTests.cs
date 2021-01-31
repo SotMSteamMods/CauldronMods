@@ -25,6 +25,23 @@ namespace CauldronTests
         protected const string TransdimensionalOnslaught = "TransdimensionalOnslaught";
         protected const string Warbrand = "Warbrand";
 
+        private void SetupFlipped()
+        {
+            var inPlay = outlander.FindCardsWhere((Card c) => c.DoKeywordsContain("trace") && c.IsInPlayAndHasGameText).ToList();
+            var outOfPlay = outlander.CharacterCard.UnderLocation.Cards.ToList();
+
+            while (inPlay.Count < GameController.Game.H - 1)
+            {
+                var card = outOfPlay.First();
+                outOfPlay.Remove(card);
+                PlayCard(card, isPutIntoPlay: true);
+                inPlay.Add(card);
+            }
+            FlipCard(outlander.CharacterCard);
+            AssertFlipped(outlander.CharacterCard);
+        }
+
+
 
         [Test()]
         public void TestOutlander_Load()
@@ -229,26 +246,22 @@ namespace CauldronTests
         [Test]
         public void TestOutlander_Back_Advanced()
         {
-            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" }, advanced: true);
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" }, advanced: true, randomSeed: 1138828501);
             outlander.DebugTraceToPlay = GetCard(Archangel);
             StartGame();
-            AddCannotPlayCardsStatusEffect(outlander, false, true);
 
-            DealDamage(haka, outlander, 100, DamageType.Melee);
-            GoToStartOfTurn(outlander);
-            DealDamage(haka, outlander, 100, DamageType.Melee);
-            GoToStartOfTurn(outlander);
-            DealDamage(haka, outlander, 100, DamageType.Melee);
-            GoToStartOfTurn(outlander);
-            DealDamage(haka, outlander, 100, DamageType.Melee);
-            AssertFlipped(outlander);
+            SetupFlipped();
 
             Card moko = PlayCard("TaMoko");
             Card mere = PlayCard("Mere");
             Card endure = PlayCard("EnduringIntercession");
             Card tai = PlayCard("Taiaha");
+            AssertIsInPlay(moko, mere, endure, tai);
+
+            AddCannotDealDamageTrigger(outlander, outlander.CharacterCard);
 
             //At the end of the villain turn, destroy {H - 2} hero ongoing and/or equipment cards.
+            DecisionSelectCards = new[] { moko, endure, mere };
             GoToEndOfTurn(outlander);
             AssertIsInPlay(tai);
             AssertInTrash(endure, moko, mere);
@@ -618,6 +631,7 @@ namespace CauldronTests
         [Test]
         public void TestTransdimensionalOnslaught()
         {
+            //862560385
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
             outlander.DebugTraceToPlay = GetCard(Archangel);
             StartGame();
@@ -627,9 +641,10 @@ namespace CauldronTests
             Card traffic = PlayCard("TrafficPileup");
             Card rail = PlayCard("PlummetingMonorail");
             //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
+            DecisionAutoDecideIfAble = true;
             QuickHPStorage(traffic, rail, haka.CharacterCard, unity.CharacterCard, scholar.CharacterCard);
             PlayCard("TransdimensionalOnslaught");
-            QuickHPCheck(-1, -1, 0, -1, -1);
+            QuickHPCheck(-1, -1, -1, -1, -1);
         }
 
         [Test]
@@ -647,9 +662,10 @@ namespace CauldronTests
             Card traffic = PlayCard("TrafficPileup");
             Card rail = PlayCard("PlummetingMonorail");
             //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
+            DecisionAutoDecideIfAble = true;
             QuickHPStorage(traffic, rail, haka.CharacterCard, unity.CharacterCard, scholar.CharacterCard);
             PlayCard("TransdimensionalOnslaught");
-            QuickHPCheck(-3, -3, -2, -3, -3);
+            QuickHPCheck(-3, -3, -3, -3, -3);
         }
 
         [Test]

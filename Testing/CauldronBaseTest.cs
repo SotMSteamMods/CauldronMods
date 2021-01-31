@@ -78,13 +78,17 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
-        protected void AddCannotPlayCardsStatusEffect(TurnTakerController ttc, bool heroesCannotPlay, bool villainsCannotPlay)
+        protected void AddCannotPlayCardsStatusEffect(TurnTakerController source, bool heroesCannotPlay, bool villainsCannotPlay, bool envCardsCannotPlay = false)
         {
             CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
-            effect.CardCriteria.IsHero = new bool?(heroesCannotPlay);
-            effect.CardCriteria.IsVillain = new bool?(villainsCannotPlay);
-            effect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(ttc.CharacterCardController)));
+            if (heroesCannotPlay)
+                effect.CardCriteria.IsHero = true;
+            if (villainsCannotPlay)
+                effect.CardCriteria.IsVillain = true;
+            if (envCardsCannotPlay)
+                effect.CardCriteria.IsEnvironment = true;
+            effect.UntilStartOfNextTurn(source.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(source.CharacterCardController)));
         }
 
         protected void AddImmuneToNextDamageEffect(TurnTakerController ttc, bool villains, bool heroes)
