@@ -577,15 +577,18 @@ namespace CauldronTests
         [Test()]
         public void TestHarkinParishJr_EntersPlay_TiedForHighest()
         {
-            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "SkyScraper", "Cauldron.CatchwaterHarbor");
+            SetupGameController(new[] { "BaronBlade", "Ra", "Bunker", "Haka", "SkyScraper", "Cauldron.CatchwaterHarbor" });
             StartGame();
             DestroyNonCharacterVillainCards();
             SetHitPoints(haka, sky.CharacterCard.HitPoints.Value);
             SetHitPoints(bunker, 10);
             Card hakaOngoing = PutInHand("Dominion");
+            PutInHand("SavageMana");
             Card raOngoing = PutInHand("FlameBarrier");
+            PutInHand("ImbuedFire");
             Card bunkerOngoing1 = PutInHand("AmmoDrop");
             Card bunkerOngoing2 = PutInHand("TurretMode");
+            PutInHand("UpgradeMode");
 
             IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
             AssertNextDecisionChoices(notIncluded: offToSideSky);
