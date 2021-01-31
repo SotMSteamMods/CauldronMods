@@ -1126,12 +1126,13 @@ namespace CauldronTests
         [Test()]
         public void TestFrozenSolid_NoPowerCanPlay()
         {
-            SetupGameController("WagerMaster", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            SetupGameController(new[] { "WagerMaster", "AbsoluteZero", "Legacy", "Ra", "TheSentinels", "Cauldron.Northspar" });
             StartGame();
+
             SetHitPoints(az, 10);
             SetHitPoints(legacy, 11);
 
-            PlayCard("BreakingTheRules");
+            PlayCard("BreakingTheRules", 0, true);
 
             DecisionSelectCard = az.CharacterCard;
             Card frozenSolid = PlayCard("FrozenSolid");
@@ -1141,8 +1142,6 @@ namespace CauldronTests
 
             GoToPlayCardPhase(az);
             AssertPhaseActionCount(new int?(1));
-
-
         }
 
         [Test()]
