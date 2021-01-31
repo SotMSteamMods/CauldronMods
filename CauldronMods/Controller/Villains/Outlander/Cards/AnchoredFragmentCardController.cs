@@ -12,14 +12,16 @@ namespace Cauldron.Outlander
     {
         public AnchoredFragmentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
-            base.SpecialStringMaker.ShowSpecialString(() => "Outlander has taken " + base.Journal.DealDamageEntries().Where((DealDamageJournalEntry entry) => entry.Round == base.Game.Round && entry.TargetCard == base.CharacterCard).Sum((DealDamageJournalEntry entry) => entry.Amount) + " this round");
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            var ss = SpecialStringMaker.ShowSpecialString(() => "Outlander has taken " + Journal.DealDamageEntriesThisRound().Where(je => je.TargetCard == CharacterCard).Sum(je => je.Amount) + " this round");
+            ss.ShowInEffectsList = () => true;
+            ss.RelatedCards = () => new[] { CharacterCard };
         }
 
         public override IEnumerator Play()
         {
             //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => 1, DamageType.Melee);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHero, (Card c) => 1, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -28,22 +30,32 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
 
         public override void AddTriggers()
         {
             //At the start of the villain turn, if {Outlander} was not dealt at least {H} times 2 damage in the last round, destroy {H} hero ongoing and/or equipment cards.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.MaybeDestroyCardsResponse, TriggerType.DestroyCard);
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, MaybeDestroyCardsResponse, TriggerType.DestroyCard);
         }
 
         private IEnumerator MaybeDestroyCardsResponse(PhaseChangeAction action)
         {
-            //...if {Outlander} was not dealt at least {H} times 2 damage in the last round, 
-            if (base.Journal.DealDamageEntries().Where((DealDamageJournalEntry entry) => entry.Round == base.Game.Round - 1 && entry.TargetCard == base.CharacterCard).Sum((DealDamageJournalEntry entry) => entry.Amount) < base.Game.H * 2)
+            //...if {Outlander} was not dealt at least {H} times 2 damage in the last round,
+            int damageDealt = Journal.DealDamageEntries().Where(je => je.Round == Game.Round - 1 && je.TargetCard == CharacterCard).Sum(je => je.Amount);
+            if (damageDealt < (Game.H * 2))
             {
+                IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} reacts!{{BR}}Outlander was only dealt {damageDealt} damage last round.", Priority.Medium, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
                 //...destroy {H} hero ongoing and/or equipment cards.
-                IEnumerator coroutine = base.GameController.SelectAndDestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), base.Game.H, cardSource: base.GetCardSource());
+                coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), Game.H, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -53,7 +65,6 @@ namespace Cauldron.Outlander
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            yield break;
         }
     }
 }
