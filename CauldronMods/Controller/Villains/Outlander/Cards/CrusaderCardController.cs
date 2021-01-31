@@ -8,26 +8,26 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Outlander
 {
-    public class CrusaderCardController : OutlanderUtilityCardController
+    public class CrusaderCardController : OutlanderTraceCardController
     {
         public CrusaderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNonVillainTargetWithHighestHP(numberOfTargets: 2);
+            SpecialStringMaker.ShowNonVillainTargetWithHighestHP(numberOfTargets: 2);
         }
 
         public override void AddTriggers()
         {
             //Increase damage dealt by {Outlander} by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, 1);
+            AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == CharacterCard, 1);
 
             //At the end of the villain turn, {Outlander} deals the 2 non-villain targets with the highest HP 2 irreducible melee damage each.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+            AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DealDamageResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals the 2 non-villain targets with the highest HP 2 irreducible melee damage each.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => 2, DamageType.Melee, true, numberOfTargets: () => 2);
+            var coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 2, DamageType.Melee, isIrreducible: true, numberOfTargets: () => 2);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -36,7 +36,6 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }
