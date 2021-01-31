@@ -12,17 +12,18 @@ namespace Cauldron.Mythos
     {
         public DangerousInvestigationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowTokenPool(DangerousInvestigationPool);
-            base.SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: base.Game.H - this.NumberOfCardsChosenThisTurn());
             base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
             base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
+            base.SpecialStringMaker.ShowTokenPool(DangerousInvestigationPool);
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: base.Game.H - this.NumberOfCardsChosenThisTurn());
+
         }
 
         private TokenPool DangerousInvestigationPool
         {
             get
             {
-                return this.Card.FindTokenPool("DangerousInvestigationPool");
+                return this.Card.FindTokenPool(DangerousInvestigationPoolName);
             }
         }
 
@@ -31,11 +32,12 @@ namespace Cauldron.Mythos
         private const string ThirdCardPlay = "ThirdCardPlay";
         private const string FourthCardPlay = "FourthCardPlay";
         private const string FifthCardPlay = "FifthCardPlay";
+        private const string DangerousInvestigationPoolName = "DangerousInvestigationPool";
 
         public override void AddTriggers()
         {
             //{MythosClue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.ClueResponse, TriggerType.PlayCard, (PhaseChangeAction action) => base.IsTopCardMatching(MythosClueDeckIdentifier));
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.ClueResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.AddTokensToPool }, (PhaseChangeAction action) => base.IsTopCardMatching(MythosClueDeckIdentifier));
             //At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
             base.AddTrigger<MakeDecisionAction>((MakeDecisionAction action) => action.Decision.SelectionType == SelectionType.PlayTopCardOfVillainDeck && action.Decision is YesNoDecision yesNo && yesNo.Answer == true, this.DecisionResponse, TriggerType.AddTokensToPool, TriggerTiming.After);
@@ -100,7 +102,7 @@ namespace Cauldron.Mythos
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero, (Card c) => 3, DamageType.Infernal, numberOfTargets: () => base.Game.H - this.NumberOfCardsChosenThisTurn());
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsInPlayAndHasGameText, (Card c) => 3, DamageType.Infernal, numberOfTargets: () => base.Game.H - this.NumberOfCardsChosenThisTurn());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
