@@ -628,7 +628,9 @@ namespace CauldronTests
             Card dok = PlayCard(DoktorVonFaust);
 
             //At the end of the villain turn, search the villain deck for a Clockwork Revenant and put it into play. Shuffle the villain deck. If no card was put into play this way, this card deals each non-villain target 3 lightning damage.
-            FindCardInPlay(ClockworkRevenant);
+            GoToEndOfTurn(mythos);
+
+            AssertIsInPlay(ClockworkRevenant);
 
             //{MythosClue} Reduce damage dealt to this card by 2.
             QuickHPStorage(dok);
@@ -839,7 +841,6 @@ namespace CauldronTests
 
             //Clue
             Card topCard = PutOnDeck(TornPage);
-            Card bottomCard = mythos.TurnTaker.Deck.BottomCard;
 
             IEnumerable<Card> trashOngoings = PutInTrash(new string[] { OtherworldlyAlignment, WhispersAndLies });
             IEnumerable<Card> trashOther = PutInTrash(new string[] { AclastyphWhoPeers, ClockworkRevenant });
@@ -848,6 +849,8 @@ namespace CauldronTests
             PlayCard(PallidAcademic);
             AssertIsInPlay(trashOngoings);
             AssertInTrash(trashOther);
+            Card bottomCard = mythos.TurnTaker.Deck.BottomCard;
+
 
             //When a hero target is dealt damage by another hero target:
             DealDamage(haka, legacy, 2, DamageType.Melee);

@@ -12,10 +12,12 @@ namespace Cauldron.Mythos
     {
         public DoktorVonFaustCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCardsAtLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.Identifier == "ClockworkRevenant", "Clockwork Revenant"));
             base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
             base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
+            base.SpecialStringMaker.ShowListOfCardsAtLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.Identifier == "ClockworkRevenant", "Clockwork Revenant"));
         }
+
+        private const string ClockworkRevenantIdentifier = "ClockworkRevenant";
 
         public override void AddTriggers()
         {
@@ -29,8 +31,8 @@ namespace Cauldron.Mythos
         private IEnumerator EndOfTurnResponse(PhaseChangeAction action)
         {
             //...search the villain deck for a Clockwork Revenant and put it into play. Shuffle the villain deck. 
-            List<Card> storedPlayResults = new List<Card>();
-            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(this.TurnTakerController, base.TurnTaker.Deck, false, true, false, new LinqCardCriteria((Card c) => c.Identifier == "ClockworkRevenant"), 1, storedPlayResults: storedPlayResults);
+            List<bool> storedPlayResults = new List<bool>();
+            IEnumerator coroutine = PlayRevenentFromDeckThenShuffle(storedPlayResults);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -41,18 +43,47 @@ namespace Cauldron.Mythos
             }
 
             //If no card was put into play this way, this card deals each non-villain target 3 lightning damage.
-            if (!storedPlayResults.Any())
+            if (storedPlayResults.Any() && storedPlayResults.First() == true)
             {
-                coroutine = base.DealDamage(this.Card, (Card c) => !base.IsVillain(c), 3, DamageType.Lightning);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
+                yield break;
             }
+            coroutine = base.DealDamage(this.Card, (Card c) => !base.IsVillain(c), 3, DamageType.Lightning);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            
+            yield break;
+        }
+
+        private IEnumerator PlayRevenentFromDeckThenShuffle(List<bool> storedPlay)
+        {
+          
+            //When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.
+            IEnumerator coroutine = base.PlayCardFromLocation(base.TurnTaker.Deck, ClockworkRevenantIdentifier, isPutIntoPlay: true, wasCardPlayed: storedPlay, shuffleAfterwardsIfDeck: false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
             yield break;
         }
     }
