@@ -229,6 +229,7 @@ namespace CauldronTests
         [Test]
         public void TestOutlander_Back_Advanced()
         {
+            //seed: 1329910074
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" }, true);
             outlander.DebugTraceToPlay = GetCard(Archangel);
             StartGame();
@@ -256,6 +257,7 @@ namespace CauldronTests
         [Test]
         public void TestAnchoredFragment_NoDamage()
         {
+            //seed: 177078817, 1591246529
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 
@@ -276,6 +278,7 @@ namespace CauldronTests
         [Test]
         public void TestAnchoredFragment_NotEnoughDamage()
         {
+            //seed: 1591366208
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 
@@ -298,6 +301,7 @@ namespace CauldronTests
         [Test]
         public void TestAnchoredFragment_EnoughDamage()
         {
+            //seed: 1588414095
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 

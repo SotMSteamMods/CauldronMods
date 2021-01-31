@@ -19,7 +19,7 @@ namespace Cauldron.Outlander
         public override IEnumerator StartGame()
         {
             //Search the villain deck for all Trace cards and put them beneath this card. 
-            IEnumerator coroutine = base.GameController.MoveCards(this, base.FindCardsWhere((Card c) => this.IsTrace(c) && c.Location.IsDeck && c.IsVillain), base.CharacterCard.UnderLocation);
+            IEnumerator coroutine = GameController.MoveCards(this, FindCardsWhere((Card c) => IsTrace(c) && c.Location.IsDeck && c.IsVillain), CharacterCard.UnderLocation, cardSource: CharacterCardController.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -28,14 +28,14 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
 
-                Card traceToPlay = base.CharacterCard.UnderLocation.Cards.TakeRandomFirstOrDefault(base.GameController.Game.RNG);
+                Card traceToPlay = CharacterCard.UnderLocation.Cards.TakeRandomFirstOrDefault(GameController.Game.RNG);
                 if (DebugTraceToPlay != null)
                 {
                     traceToPlay = DebugTraceToPlay;
                     Log.Debug("Forcing starting Trace to be: " + traceToPlay.Title);
                 }
                 //Put 1 random Trace card from beneath this one into play.
-                coroutine = base.GameController.PlayCard(this, traceToPlay, true);
+                coroutine = base.GameController.PlayCard(this, traceToPlay, true, cardSource: CharacterCardController.GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -46,7 +46,7 @@ namespace Cauldron.Outlander
                 }
 
                 //Shuffle the villain deck.
-                coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck);
+                coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: CharacterCardController.GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
