@@ -12,6 +12,19 @@ namespace Cauldron.Outlander
     {
         public KnightsHatredCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public override void AddTriggers()
+        {
+            //Increase damage dealt by {Outlander} by 1.
+            AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.IsSameCard(CharacterCard), 1);
+
+            //Reduce damage dealt to {Outlander} by 1.
+            AddReduceDamageTrigger((Card c) => c == CharacterCard, 1);
+
+            //At the start of the villain turn, destroy this card.
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
         }
     }
 }
