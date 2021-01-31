@@ -874,6 +874,22 @@ namespace CauldronTests
             QuickHPCheck(0, -1, -1);
         }
         [Test]
+        public void TestMysticalEnhancementDamageBoost_DamageEffect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "VoidGuardMainstay/VoidGuardRoadWarriorMainstay", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DecisionSelectCards = new Card[] { voidMainstay.CharacterCard, MDP };
+
+            PlayCard("MysticalEnhancement");
+            QuickHPStorage(MDP, voidMainstay.CharacterCard);
+            DecisionYesNo = true;
+            UsePower(voidMainstay);
+            DealDamage(MDP, voidMainstay, 1, DTM);
+            QuickHPCheck(-2, -1);
+        }
+        [Test]
         public void TestMysticalEnhancementDestroyInsteadResponse()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
