@@ -16,7 +16,6 @@ namespace Cauldron.Outlander
             Card.UnderLocation.OverrideIsInPlay = false;
             SpecialStringMaker.ShowIfElseSpecialString(() => HasBeenSetToTrueThisTurn(OncePerTurn), () => "Outlander has been dealt damage this turn.", () => "Outlander has not been dealt damage this turn.").Condition = () => Card.IsFlipped;
             SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsTrace(c), "trace"));
-
         }
 
         protected const string OncePerTurn = "OutlanderFlippedOncePerTurn";
@@ -36,8 +35,8 @@ namespace Cauldron.Outlander
                     //At the end of the villain turn, destroy {H - 2} hero ongoing and/or equipment cards.
                     base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, DestroyCardsResponse, TriggerType.DestroyCard));
                 }
+                base.AddDefeatedIfDestroyedTriggers();
             }
-            base.AddDefeatedIfDestroyedTriggers();
         }
 
         private IEnumerator ReduceDamageResponse(DealDamageAction action)

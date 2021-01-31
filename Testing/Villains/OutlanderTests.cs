@@ -202,6 +202,16 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestOutlander_FlipDestroy()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            DestroyCard(outlander.CharacterCard);
+            AssertNotGameOver();
+        }
+
+        [Test]
         public void TestOutlander_Flip_3H()
         {
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" });
