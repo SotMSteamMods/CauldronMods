@@ -229,10 +229,10 @@ namespace CauldronTests
         [Test]
         public void TestOutlander_Back_Advanced()
         {
-            //seed: 1329910074
-            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" }, true);
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" }, advanced: true);
             outlander.DebugTraceToPlay = GetCard(Archangel);
             StartGame();
+            AddCannotPlayCardsStatusEffect(outlander, false, true);
 
             DealDamage(haka, outlander, 100, DamageType.Melee);
             GoToStartOfTurn(outlander);
