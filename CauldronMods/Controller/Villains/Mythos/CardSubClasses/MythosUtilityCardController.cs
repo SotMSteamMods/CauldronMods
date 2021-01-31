@@ -15,9 +15,9 @@ namespace Cauldron.Mythos
 
         }
 
-        protected const string MythosClueDeckIdentifier = "MythosClue";
-        protected const string MythosDangerDeckIdentifier = "MythosDanger";
-        protected const string MythosMadnessDeckIdentifier = "MythosMadness";
+        protected const string MythosClueDeckIdentifier = "Clue";
+        protected const string MythosDangerDeckIdentifier = "Danger";
+        protected const string MythosMadnessDeckIdentifier = "Madness";
 
         private string GetIconIdentifier(Card c)
         {
@@ -41,7 +41,7 @@ namespace Cauldron.Mythos
             }
             return identifier;
             /**Remove above when Subdecks are implemented**/
-            return c.ParentDeck.Identifier;
+            //return c.ParentDeck.Identifier;
         }
 
         public bool IsTopCardMatching(string type)
@@ -83,15 +83,15 @@ namespace Cauldron.Mythos
                 switch (this.GetIconIdentifier(c))
                 {
                     case MythosClueDeckIdentifier:
-                        output += place + ": {MythosClue}";
+                        output += place + ": {Clue}";
                         break;
 
                     case MythosDangerDeckIdentifier:
-                        output += place + ": {MythosDanger}";
+                        output += place + ": {Danger}";
                         break;
 
                     case MythosMadnessDeckIdentifier:
-                        output += place + ": {MythosMadness}";
+                        output += place + ": {Madness}";
                         break;
                 }
                 if (base.TurnTaker.Deck.Cards.Count() != place)
