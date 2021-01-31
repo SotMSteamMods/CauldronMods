@@ -27,37 +27,36 @@ namespace Cauldron.Outlander
             else
             {
                 GameController.ExhaustCoroutine(coroutine);
+            }
+            Card traceToPlay = CharacterCard.UnderLocation.Cards.TakeRandomFirstOrDefault(GameController.Game.RNG);
+            if (DebugTraceToPlay != null)
+            {
+                traceToPlay = DebugTraceToPlay;
+                Log.Debug("Forcing starting Trace to be: " + traceToPlay.Title);
+            }
+            //Put 1 random Trace card from beneath this one into play.
+            coroutine = base.GameController.PlayCard(this, traceToPlay, isPutIntoPlay: true, evenIfAlreadyInPlay: true, cardSource: CharacterCardController.GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
 
-                Card traceToPlay = CharacterCard.UnderLocation.Cards.TakeRandomFirstOrDefault(GameController.Game.RNG);
-                if (DebugTraceToPlay != null)
-                {
-                    traceToPlay = DebugTraceToPlay;
-                    Log.Debug("Forcing starting Trace to be: " + traceToPlay.Title);
-                }
-                //Put 1 random Trace card from beneath this one into play.
-                coroutine = base.GameController.PlayCard(this, traceToPlay, true, cardSource: CharacterCardController.GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-
-                //Shuffle the villain deck.
-                coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: CharacterCardController.GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-                yield break;
+            //Shuffle the villain deck.
+            coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: CharacterCardController.GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
             }
         }
+
 
         private bool IsTrace(Card c)
         {
