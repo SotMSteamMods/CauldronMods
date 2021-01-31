@@ -8,31 +8,30 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Outlander
 {
-    public class MagekillerCardController : OutlanderUtilityCardController
+    public class MagekillerCardController : OutlanderTraceCardController
     {
         public MagekillerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => base.HasBeenSetToTrueThisTurn(OncePerTurn), () => "A hero one shot has entered play yet this turn.", () => "A hero one shot has not entered play yet this turn.");
-            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowIfElseSpecialString(() => HasBeenSetToTrueThisTurn(OncePerTurn), () => "A hero one shot has entered play this turn.", () => "A hero one shot has not yet entered play this turn.");
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
         }
 
-        protected const string OncePerTurn = "OncePerTurn";
+        protected const string OncePerTurn = "OutlanderMagekillerOncePerTurn";
 
         public override void AddTriggers()
         {
             //The first time a hero one-shot enters play each turn, {Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.CardEnteringPlay.IsHero && action.CardEnteringPlay.IsOneShot, this.OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
+            AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !HasBeenSetToTrueThisTurn(OncePerTurn) && action.CardEnteringPlay.IsHero && action.CardEnteringPlay.IsOneShot, OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             //At the end of the villain turn, {Outlander} deals the hero target with the highest HP 3 melee damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+            AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DealDamageResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator OncePerTurnResponse(CardEntersPlayAction action)
         {
-            base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
-            var a = FindCardsWhere((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
+            SetCardPropertyToTrueIfRealAction(OncePerTurn);
             //...{Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 1, DamageType.Lightning, true);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 1, DamageType.Lightning, isIrreducible: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -41,13 +40,12 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals the hero target with the highest HP 3 melee damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 3, DamageType.Melee);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 3, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -56,7 +54,6 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }
