@@ -27,15 +27,6 @@ namespace Cauldron.Mythos
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
 
             //Search the villain deck for Dangerous Investigations and put it into play. Shuffle the villain deck.
             coroutine = base.PutCardIntoPlay("DangerousInvestigation");
@@ -47,6 +38,18 @@ namespace Cauldron.Mythos
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
+            coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            
             yield break;
         }
     }
