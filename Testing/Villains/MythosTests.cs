@@ -270,8 +270,9 @@ namespace CauldronTests
             SetupGameController("Cauldron.Mythos", "AkashThriya", "Haka", "Legacy", "Bunker", "Unity", "Megalopolis");
             StartGame();
 
-            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
-            Card acad1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            IEnumerable<Card> academic = FindCardsWhere(c => c.Owner == mythos.TurnTaker && c.Identifier == PallidAcademic).Take(2);
+            Card acad0 = PutOnDeck(mythos, academic.First());
+            Card acad1 = PutOnDeck(mythos, academic.Last());
             DecisionsYesNo = new bool[] { true, true, false, false, false };
 
             //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 
@@ -293,9 +294,9 @@ namespace CauldronTests
 
             //Ensures later cards don't deal end of turn damage
             PutOnDeck(Revelations);
-
-            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
-            Card acad1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            IEnumerable<Card> academic = FindCardsWhere(c => c.Owner == mythos.TurnTaker && c.Identifier == PallidAcademic).Take(2);
+            Card acad0 = PutOnDeck(mythos, academic.First());
+            Card acad1 = PutOnDeck(mythos, academic.Last());
             Card site = PutOnDeck(RitualSite);
             DecisionsYesNo = new bool[] { true, true, true, false, false };
 
@@ -318,9 +319,9 @@ namespace CauldronTests
 
             //Ensures later cards don't deal end of turn damage
             PutOnDeck(Revelations);
-
-            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
-            Card acad1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            IEnumerable<Card> academic = FindCardsWhere(c => c.Owner == mythos.TurnTaker && c.Identifier == PallidAcademic).Take(2);
+            Card acad0 = PutOnDeck(mythos, academic.First());
+            Card acad1 = PutOnDeck(mythos, academic.Last());
             Card site = PutOnDeck(RitualSite);
             Card prey0 = PutOnDeck(mythos, GetCard(PreyUponTheMind, 0));
             DecisionsYesNo = new bool[] { true, true, true, true, false, false };
@@ -344,12 +345,14 @@ namespace CauldronTests
 
             //Ensures later cards don't deal end of turn damage
             PutOnDeck(Revelations);
+            IEnumerable<Card> academic = FindCardsWhere(c => c.Owner == mythos.TurnTaker && c.Identifier == PallidAcademic).Take(2);
+            IEnumerable<Card> prey = FindCardsWhere(c => c.Owner == mythos.TurnTaker && c.Identifier == PreyUponTheMind).Take(2);
 
-            Card acad0 = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
-            Card acad1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
+            Card acad0 = PutOnDeck(mythos, academic.First());
+            Card acad1 = PutOnDeck(mythos, academic.Last());
             Card site = PutOnDeck(RitualSite);
-            Card prey0 = PutOnDeck(mythos, GetCard(PreyUponTheMind, 0));
-            Card prey1 = PutOnDeck(mythos, GetCard(PreyUponTheMind, 1));
+            Card prey0 = PutOnDeck(mythos, prey.First());
+            Card prey1 = PutOnDeck(mythos, prey.Last());
             DecisionsYesNo = new bool[] { true, true, true, true, true, false, false };
 
             //At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. 

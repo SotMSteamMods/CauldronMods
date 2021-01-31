@@ -13,14 +13,16 @@ namespace Cauldron.Mythos
         public MythosCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-            base.SpecialStringMaker.ShowTokenPool("DangerousInvestigation", "DangerousInvestigationPool");
+            base.SpecialStringMaker.ShowTokenPool(DangerousInvestigationIdentifier, DangerousInvestigationPool);
             base.SpecialStringMaker.ShowSpecialString(() => this.DeckIconList());
         }
 
 
-        protected const string MythosClueDeckIdentifier = "MythosClue";
-        protected const string MythosDangerDeckIdentifier = "MythosDanger";
-        protected const string MythosMadnessDeckIdentifier = "MythosMadness";
+        protected const string MythosClueDeckIdentifier = "Clue";
+        protected const string MythosDangerDeckIdentifier = "Danger";
+        protected const string MythosMadnessDeckIdentifier = "Madness";
+        protected const string DangerousInvestigationPool = "DangerousInvestigationPool";
+        protected const string DangerousInvestigationIdentifier = "DangerousInvestigation";
 
         public override void AddSideTriggers()
         {
@@ -91,7 +93,7 @@ namespace Cauldron.Mythos
         {
             get
             {
-                return base.FindCard("DangerousInvestigation");
+                return base.FindCard(DangerousInvestigationIdentifier);
             }
         }
 
@@ -111,7 +113,7 @@ namespace Cauldron.Mythos
             if (this.IsTopCardMatching((MythosClueDeckIdentifier)))
             {
                 //{MythosClue} Play the top card of the villain deck.
-                coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, cardSource: base.GetCardSource());
+                coroutine = PlayTheTopCardOfTheVillainDeckWithMessageResponse(action);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -153,15 +155,15 @@ namespace Cauldron.Mythos
                 switch (this.GetIconIdentifier(c))
                 {
                     case MythosClueDeckIdentifier:
-                        output += place + ": {MythosClue}";
+                        output += place + ": {Clue}";
                         break;
 
                     case MythosDangerDeckIdentifier:
-                        output += place + ": {MythosDanger}";
+                        output += place + ": {Danger}";
                         break;
 
                     case MythosMadnessDeckIdentifier:
-                        output += place + ": {MythosMadness}";
+                        output += place + ": {Madness}";
                         break;
                 }
                 if (base.TurnTaker.Deck.Cards.Count() != place)
@@ -207,7 +209,7 @@ namespace Cauldron.Mythos
             }
 
             //Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.
-            if (this.DangerousInvestigationCard.FindTokenPool("DangerousInvestigationPool").CurrentValue == base.Game.H)
+            if (this.DangerousInvestigationCard.FindTokenPool(DangerousInvestigationPool).CurrentValue == base.Game.H)
             {
                 coroutine = base.FlipThisCharacterCardResponse(action);
                 if (UseUnityCoroutines)
