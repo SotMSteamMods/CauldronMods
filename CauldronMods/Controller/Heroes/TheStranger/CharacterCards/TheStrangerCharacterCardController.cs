@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.TheStranger
 {
-    public class TheStrangerCharacterCardController : HeroCharacterCardController
+    public class TheStrangerCharacterCardController : TheStrangerBaseCharacterCardController
     {
         public TheStrangerCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -14,7 +14,7 @@ namespace Cauldron.TheStranger
         public override IEnumerator UsePower(int index = 0)
         {
             //Play a rune.
-            IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, null, new LinqCardCriteria((Card c) => this.IsRune(c), "rune"), false, false, true, null);
+            IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, null, IsRuneCriteria(), false, false, true, null);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -112,11 +112,6 @@ namespace Cauldron.TheStranger
             yield break;
         }
 
-        private bool IsRune(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "rune", false, false);
-        }
-
         protected IEnumerator RevealCard_PutItBackOrDiscardIt(TurnTakerController revealingTurnTaker, Location deck, LinqCardCriteria autoPlayCriteria = null, List<MoveCardAction> storedResults = null, bool showRevealedCards = true, TurnTaker responsibleTurnTaker = null, bool isDiscard = true)
         {
             RevealedCardDisplay revealedCardDisplay = RevealedCardDisplay.None;
@@ -138,9 +133,9 @@ namespace Cauldron.TheStranger
             {
                 responsibleTurnTaker = this.TurnTaker;
             }
-            if (revealedCards.Count<Card>() > 0)
+            if (revealedCards.Any())
             {
-                Card card = revealedCards.First<Card>();
+                Card card = revealedCards.First();
                 CardController cardController = this.FindCardController(card);
                 TurnTaker ownerTurnTaker = deck.OwnerTurnTaker;
 

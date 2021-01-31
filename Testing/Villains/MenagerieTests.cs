@@ -974,8 +974,8 @@ namespace CauldronTests
             //When this card enters play, place the top card of the villain deck beneath it face down and destroy {H - 2} hero ongoing cards.
             Card sphere = PlayCard("SecuritySphere");
             AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
-            AssertInTrash(flak);
-            AssertIsInPlay(mode);
+            AssertIsInPlay(flak);
+            AssertInTrash(mode);
 
             //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks.
             SetHitPoints(bunker, 17);
@@ -1077,6 +1077,34 @@ namespace CauldronTests
 
             //{Menagerie} deals each hero, environment, and Specimen target 1 psychic damage.
             QuickHPCheck(-1, -1, -1, -1, -1);
+        }
+        [Test]
+        public void TestEnclosureUnderCardTriggers()
+        {
+            SetupGameController("Cauldron.Menagerie", "Parse", "Benchmark", "Haka", "Megalopolis");
+            DiscardAllCards(haka);
+            StartGame();
+
+            FlipCard(menagerie);
+            Card reinforced = PutOnDeck("ReinforcedSphere");
+            Card aqua = PlayCard("AquaticSphere");
+            Card tak = PlayCard("TakIshmael");
+            AssertUnderCard(aqua, reinforced);
+
+            QuickHPStorage(tak);
+            DealDamage(haka, tak, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            Card hive = PutOnDeck("HalberdHive");
+            PlayCard("ViewingApertures");
+
+            DealDamage(haka, tak, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            DestroyCard(aqua);
+            AssertInTrash(reinforced);
+            DealDamage(haka, tak, 1, DamageType.Melee);
+            QuickHPCheck(-1);
         }
     }
 }

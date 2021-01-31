@@ -382,11 +382,11 @@ namespace CauldronTests
             //don't destroy aqueducts
             DecisionDoNotSelectCard = SelectionType.DestroyCard;
             GoToPlayCardPhase(catacombs);
-            //At the end of the environment turn, each target regains 1 HP.
+            //At the start of the villain turn, each target regains 1 HP.
             PrintSeparator("check all targets regain 1 HP");
             QuickHPStorage(baron.CharacterCard, mdp, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
 
-            GoToEndOfTurn(catacombs);
+            GoToStartOfTurn(baron);
 
             QuickHPCheck(1, 1, 1, 1, 1);
 

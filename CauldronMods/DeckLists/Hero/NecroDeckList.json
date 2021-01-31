@@ -38,9 +38,8 @@
             ],
             "openingLines": {
                 "default": "What comes next may be unpleasant.",
-                "PastTheRamCharacter": "1929 Ram placeholder",
                 "WinterTiamatCharacter": "You are but the shape of my folly. I raised you, now I shall send you back to the underworld!",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
+                "HydraWinterTiamatCharacter": "Impressive; you have returned from death even stronger. I should like to learn such a trick.",
                 "MythosCharacter": "You seem happy to make it one for others. I will not allow it!"
             },
             "complexity": 2
@@ -417,9 +416,8 @@
             ],
             "openingLines": {
                 "default": "There is no defense against the horrors I shall unleash.",
-                "PastTheRamCharacter": "1929 Ram placeholder",
                 "WinterTiamatCharacter": "The Chaos Wyrm! Impressive, but Chaos serves me now.",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
+                "HydraWinterTiamatCharacter": "I shall not hold back.",
                 "MythosCharacter": "It is exactly because I have seen greater fears that death holds no terror for me."
             },
             "complexity": 2
@@ -459,9 +457,9 @@
             ],
             "openingLines": {
                 "default": "I will bring my most powerful rituals to bear against this foe.",
-                "PastTheRamCharacter": "1929 Ram placeholder",
+                "PastTheRamCharacter": "Oh, I am no academic...",
                 "WinterTiamatCharacter": "You will not survive my undead hordes!",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
+                "HydraWinterTiamatCharacter": "Come forth, my servants, and attend to this beast!",
                 "MythosCharacter": "Those papers you hold... But how did [i]you[/i] obtain the missing pages of my tome?",
                 "TheMistressOfFateCharacter": "I have thwarted death! I will not stop now, not until you are defeated."
             },
@@ -501,9 +499,8 @@
             ],
             "openingLines": {
                 "default": "We must all... repent... before it is... too late.",
-                "PastTheRamCharacter": "1929 Ram placeholder",
                 "WinterTiamatCharacter": "One of my first mistakes, but not the last.",
-                "HydraWinterTiamatCharacter": "Tiamat Elemental placeholder",
+                "HydraWinterTiamatCharacter": "I see we both refuse to stay dead.",
                 "MythosCharacter": "Is this to be my atonement? Thwarting the designs I spent so long advancing? Very well.",
                 "CeladrochCharacter": "The sins of a lost and maddened soul. I stand here now to make amends, and stop you at all costs."
             },

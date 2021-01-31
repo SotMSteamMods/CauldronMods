@@ -1,0 +1,5 @@
+Location: Ruins of Akelabad
+Storm Height: 18km (11 miles)
+Average Wind Speed: 160kph (100mph)
+Floating Skyscrapers: 9
+Set: Stormfall

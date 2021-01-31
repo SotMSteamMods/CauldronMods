@@ -746,7 +746,7 @@ namespace CauldronTests
             QuickHPCheck(-4, 0, 0);
 
             PrintSeparator("Test Power");
-            UsePower("KnightsHonor");
+            UsePower(knight.CharacterCard, 1);
             AssertInTrash("KnightsHonor");
 
             PrintSeparator("no redirect redirect after card leaves play");

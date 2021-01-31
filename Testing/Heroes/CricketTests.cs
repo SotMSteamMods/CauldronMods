@@ -326,10 +326,11 @@ namespace CauldronTests
             //Non targets deal damage
             Card hostage = PlayCard("HostageSituation");
             DealDamage(hostage, cricket, 2, DamageType.Melee);
-            if(cramped.IsInPlayAndHasGameText)
+            if (cramped.IsInPlayAndHasGameText)
             {
                 QuickHPCheck(-3);
-            } else
+            }
+            else
             {
                 QuickHPCheck(-2);
             }
@@ -337,7 +338,7 @@ namespace CauldronTests
             GoToStartOfTurn(cricket);
             //Until Start of next turn
             QuickHPStorage(cricket);
-            if(!rail.IsInPlayAndHasGameText)
+            if (!rail.IsInPlayAndHasGameText)
             {
                 PlayCard(rail);
             }
@@ -402,19 +403,21 @@ namespace CauldronTests
             //Destroy 1 ongoing or environment card.
             AssertInTrash(rail0);
             //If you destroyed an environment card this way, {Cricket} deals each non-hero target 1 sonic damage.
-           if(FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any() && !FindCardsWhere((Card c) => c.Identifier == "MountainousCarapace" && c.IsInPlayAndHasGameText).Any())
-            { 
+            if (FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any() && !FindCardsWhere((Card c) => c.Identifier == "MountainousCarapace" && c.IsInPlayAndHasGameText).Any())
+            {
                 //the only way rooftop combat is in play is if disrupt the field came out, and played it
                 //that would have destroyed the other monorail
                 QuickHPCheck(-2, -2, -2, -2, 0, 0);
-            } else if((FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any() && FindCardsWhere((Card c) => c.Identifier == "MountainousCarapace" && c.IsInPlayAndHasGameText).Any()))
+            }
+            else if ((FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any() && FindCardsWhere((Card c) => c.Identifier == "MountainousCarapace" && c.IsInPlayAndHasGameText).Any()))
             {
                 QuickHPCheck(-1, -2, -2, -2, 0, 0);
             }
             else if ((!FindCardsWhere((Card c) => c.Identifier == "RooftopCombat" && c.IsInPlayAndHasGameText).Any() && FindCardsWhere((Card c) => c.Identifier == "MountainousCarapace" && c.IsInPlayAndHasGameText).Any()))
-             {
+            {
                 QuickHPCheck(-0, -1, -1, -1, -1, 0);
-            } else
+            }
+            else
             {
                 QuickHPCheck(-1, -1, -1, -1, -1, 0);
 
@@ -745,27 +748,19 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestVoiceMimicry()
+        [Sequential]
+        public void TestVoiceMimicry([Values("ArborealPhalanges", "TheLegacyRing", "SeismicDefender")] string identifier)
         {
-            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria");
+            SetupGameController(new[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Magmaria" });
             StartGame();
+            PutOnDeck("LivingRockslide"); //to prevent chain plays
 
-            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(akash.TurnTaker.Deck), new LocationChoice(legacy.TurnTaker.Deck), new LocationChoice(env.TurnTaker.Deck) };
-
-            Card phlange = PutOnDeck("ArborealPhalanges");
+            Card card = PutOnDeck(identifier);
+            DecisionSelectLocation = new LocationChoice(card.Owner.Deck);
             //Play the top card of a deck.
             PlayCard("VoiceMimicry");
-            AssertIsInPlay(phlange);
+            AssertIsInPlay(card);
 
-            Card ring = PutOnDeck("TheLegacyRing");
-            //Play the top card of a deck.
-            PlayCard("VoiceMimicry");
-            AssertIsInPlay(ring);
-
-            Card defender = PutOnDeck("SeismicDefender");
-            //Play the top card of a deck.
-            PlayCard("VoiceMimicry");
-            AssertIsInPlay(defender);
         }
     }
 }

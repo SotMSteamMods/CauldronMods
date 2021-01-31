@@ -642,7 +642,7 @@
             "gameplay": [
                 "The heroes may not win the game.",
                 "At the start of the villain turn, if {InfernoTiamatCharacter} is decapitated, flip this card and put {HydraDecayTiamatCharacter} into play with 15 HP.",
-                "At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 1 fire damage."
+                "At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage."
             ],
             "advanced": "The first time {InfernoTiamatCharacter} deals damage each turn, increase that damage by 2.",
             "icons": [
@@ -719,7 +719,7 @@
                 "dragonscale"
             ],
             "body": [
-                "When this card is destroyed, 1 hero may draw a card or use a power. Then, flip this card."
+                "When this card is destroyed, 1{BR}hero may draw a card or use a{BR}power. Then, flip this card."
             ],
             "icons": [
                 "DrawCardNow",
@@ -729,7 +729,7 @@
             "flippedKeywords": [
                 "ruined scale"
             ],
-            "flippedBody": "This card is indestructible and cannot leave the villain play area.",
+            "flippedBody": "This card is indestructible and{BR}cannot leave the villain play area.",
             "difficulty": 1
         },
         {
@@ -745,7 +745,7 @@
                 "dragonscale"
             ],
             "body": [
-                "When this card is destroyed, 1 hero may draw a card or play a card. Then, flip this card."
+                "When this card is destroyed, 1{BR}hero may draw a card or play a{BR}card. Then, flip this card."
             ],
             "icons": [
                 "DrawCardNow",
@@ -755,7 +755,7 @@
             "flippedKeywords": [
                 "ruined scale"
             ],
-            "flippedBody": "This card is indestructible and cannot leave the villain play area.",
+            "flippedBody": "This card is indestructible and{BR}cannot leave the villain play area.",
             "difficulty": 1
         }
     ],
@@ -870,7 +870,17 @@
             ],
             "difficulty": 1,
             "openingLines": {
-                "default": "BzzzzzrroooOOAAGH!"
+                "default": "BzzzzzrroooOOAAGH!",
+                "TheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "BerserkerTheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "FairTheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "PastTheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "WastelandRoninTheKnightCharacter": "BzzzzzrroooOOAAGH!",
+                "DriftCharacter": "BzzzzzrroooOOAAGH.",
+                "DualDriftCharacter": "BzzzzzrroooOOAAGH.",
+                "FutureTerminusCharacter": "BzzzzzrroooOOAAGH!",
+                "FutureGargoyleCharacter": "BzzzzzrroooOOAAGH!",
+                "FutureLadyOfTheWoodCharacter": "BzzzzzrroooOOAAGH!"
             }
         }
     ]

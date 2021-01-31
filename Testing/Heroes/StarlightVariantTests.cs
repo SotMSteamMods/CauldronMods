@@ -871,6 +871,36 @@ namespace CauldronTests
             QuickHandCheck(-1);
         }
 
+
+        [Test]
+        public void Area51StarlightInnatePower_SplitLocations()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Starlight/Area51StarlightCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            DiscardAllCards(starlight);
+            //load the hand with some stuff
+            var c = PutInHand("EventHorizon");
+            PutInHand("NightloreArmor");
+            PutInHand("Redshift");
+            PutInHand("StellarWind");
+            var pillar1 = GetCard("PillarsOfCreation", 0);
+            var pillar2 = PutInTrash("PillarsOfCreation", 1);
+
+            GoToUsePowerPhase(starlight);
+
+            DecisionSelectCards = new[] { c, pillar1 };
+            DecisionSelectFunction = 1;
+
+            QuickHandStorage(starlight);
+            UsePower(starlight);
+            AssertInPlayArea(starlight, pillar2);
+            AssertInTrash(c);
+            QuickHandCheck(-1);
+        }
+
         [Test]
         public void Area51StarlightIncap1()
         {

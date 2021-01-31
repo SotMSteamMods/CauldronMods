@@ -6,11 +6,12 @@ using System.Linq;
 
 namespace Cauldron.TheStranger
 {
-    public class WastelandRoninTheStrangerCharacterCardController : HeroCharacterCardController
+    public class WastelandRoninTheStrangerCharacterCardController : TheStrangerBaseCharacterCardController
     {
         public WastelandRoninTheStrangerCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //Discard a rune. If you do, {TheStranger} deals 1 target 4 infernal damage.
@@ -18,7 +19,7 @@ namespace Cauldron.TheStranger
             int amount = GetPowerNumeral(1, 4);
 
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-            IEnumerator coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, new int?(1), optional: false, storedResults: storedResults, cardCriteria: new LinqCardCriteria((Card c) => IsRune(c), "rune"));
+            IEnumerator coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, 1, optional: false, storedResults: storedResults, cardCriteria: IsRuneCriteria());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -30,7 +31,7 @@ namespace Cauldron.TheStranger
 
             if(DidDiscardCards(storedResults))
             {
-                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.Card), amount, DamageType.Infernal, target, optional: false, target, cardSource: GetCardSource());
+                coroutine = base.GameController.SelectTargetsAndDealDamage(HeroTurnTakerController, new DamageSource(GameController, CharacterCard), amount, DamageType.Infernal, target, optional: false, target, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -112,11 +113,5 @@ namespace Cauldron.TheStranger
             }
             yield break;
         }
-
-        private bool IsRune(Card card)
-        {
-            return card != null && base.GameController.DoesCardContainKeyword(card, "rune", false, false);
-        }
-
     }
 }

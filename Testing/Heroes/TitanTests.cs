@@ -410,6 +410,7 @@ namespace CauldronTests
             PlayCard("JuggernautStrike");
             QuickHPCheck(-4, -1, -1, 0, 0);
         }
+
         [Test()]
         public void TestTitanformDamageBoost()
         {
@@ -434,6 +435,43 @@ namespace CauldronTests
             QuickHPCheck(-5);
             AssertInTrash(tform);
         }
+
+        [Test()]
+        public void TestTitanformCharacterSwitch([Values("", "/FutureTitanCharacter", "/MinistryOfStrategicScienceTitanCharacter", "/OniTitanCharacter")] string promoVersion)
+        {
+            SetupGameController(new[] { "Omnitron", "Cauldron.Titan" + promoVersion, "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            var ttCard = titan.CharacterCard;
+            var bodyText = titan.CharacterCard.Definition.Body.First();
+            var identifier = titan.CharacterCard.PromoIdentifierOrIdentifier;
+
+            Card tform = PlayCard("Titanform");
+            AssertInPlayArea(titan, tform);
+
+            var afterTTCard = titan.CharacterCard;
+            var afterBodyText = titan.CharacterCard.Definition.Body.First();
+            var afterIdentifier = titan.CharacterCard.Identifier;
+
+            Assert.AreNotEqual(ttCard, afterTTCard);
+            Assert.AreEqual(bodyText, afterBodyText);
+            Assert.AreEqual(identifier.Replace("TitanCharacter", "TitanFormCharacter"), afterIdentifier);
+
+            DestroyCard(tform);
+
+            GoToPlayCardPhase(omnitron);
+
+            afterTTCard = titan.CharacterCard;
+            afterBodyText = titan.CharacterCard.Definition.Body.First();
+            afterIdentifier = titan.CharacterCard.PromoIdentifierOrIdentifier;
+
+            //reverted
+            Assert.AreEqual(ttCard, afterTTCard);
+            Assert.AreEqual(bodyText, afterBodyText);
+            Assert.AreEqual(identifier, afterIdentifier);
+        }
+
+
         [Test()]
         public void TestTitanformDR()
         {

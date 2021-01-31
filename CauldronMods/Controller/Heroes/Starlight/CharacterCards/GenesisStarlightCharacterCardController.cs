@@ -17,8 +17,8 @@ namespace Cauldron.Starlight
         public override IEnumerator UsePower(int index = 0)
         {
             int damageNumeral = base.GetPowerNumeral(0, 1);
-            //"Starlight deals each hero target 1 radiant damage."
-            IEnumerator damageHeroes = DealDamage(this.Card, (Card c) => c.IsInPlayAndHasGameText && c.IsHero, damageNumeral, DamageType.Radiant);
+            //"Starlight deals each hero target 1 energy damage."
+            IEnumerator damageHeroes = DealDamage(this.Card, (Card c) => c.IsInPlayAndHasGameText && c.IsHero, damageNumeral, DamageType.Energy);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(damageHeroes);

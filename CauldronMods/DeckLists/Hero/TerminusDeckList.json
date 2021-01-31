@@ -598,7 +598,8 @@
             ],
             "openingLines": {
                 "default": "Get out of our way, or we'll punch your ticket.",
-                "TheInfernalChoirCharacter": "Oh, I'm just getting started."
+                "TheInfernalChoirCharacter": "Oh, I'm just getting started.",
+				"FutureTiamatCharacter": "The bigger they are, the harder they fall."
             },
             "complexity": 2
         }

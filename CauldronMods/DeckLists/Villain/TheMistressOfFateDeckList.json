@@ -73,7 +73,7 @@
                 "PastVanishCharacter":"Ah, the traveler. I appreciate the anomaly you created for me.",
                 "PastMagnificentMaraCharacter":"False magician. You will stay trapped here forever, as revenge for what was done to me.",
                 "PastTheKnightCharacter":"Old knight, already lost in time. Now you are mine!",
-                "SplitDriftCharacter":"What impudence! I am trapped in this speck of history, and you flit about it at will? I will crush the very memory of you!"
+                "DualDriftCharacter":"What impudence! I am trapped in this speck of history, and you flit about it at will? I will crush the very memory of you!"
             }
         },
         {
@@ -512,42 +512,6 @@
                         }
                     ],
                     "flavorReference": "Unity, Abstract Tales Annual #4"
-                },
-                {
-                    "identifier": "DeckStorage",
-                    "count": 5,
-                    "title": "Deck Storage",
-                    "keywords": [],
-                    "icons": [],
-                    "isReal": false,
-                    "body": [
-                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
-                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
-                    ]
-                },
-                {
-                    "identifier": "HandStorage",
-                    "count": 5,
-                    "title": "Hand Storage",
-                    "keywords": [],
-                    "icons": [],
-                    "isReal": false,
-                    "body": [
-                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
-                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
-                    ]
-                },
-                {
-                    "identifier": "TrashStorage",
-                    "count": 5,
-                    "title": "Trash Storage",
-                    "keywords": [],
-                    "icons": [],
-                    "isReal": false,
-                    "body": [
-                        "This exists as a way to help the Mistress of Fate organize the cards of incapacitated heroes.",
-                        "If you see this card in gameplay, something has gone wrong. Please file a bug report at https://github.com/SotMSteamMods/CauldronMods"
-                    ]
                 }
     ],
     "subdecks": [
