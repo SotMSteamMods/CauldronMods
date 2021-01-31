@@ -12,7 +12,7 @@ namespace Cauldron.Outlander
     {
         public DimensionalInsinuationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => c.Identifier == "AnchoredFragment", "Anchored Fragment", true));
         }
 
         public override IEnumerator Play()
@@ -22,7 +22,7 @@ namespace Cauldron.Outlander
             IEnumerable<Card> deckFragments = base.GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "AnchoredFragment" && c.Location.IsDeck && c.Location.IsVillain));
             if (deckFragments.Any())
             {
-                coroutine = base.GameController.PlayCard(base.TurnTakerController, deckFragments.FirstOrDefault(), cardSource: base.GetCardSource());
+                coroutine = base.GameController.PlayCard(TurnTakerController, deckFragments.FirstOrDefault(), isPutIntoPlay: true, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -34,7 +34,7 @@ namespace Cauldron.Outlander
             }
 
             //Shuffle the villain deck...
-            coroutine = base.ShuffleDeck(base.HeroTurnTakerController, base.TurnTaker.Deck);
+            coroutine = base.ShuffleDeck(HeroTurnTakerController, TurnTaker.Deck);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -45,7 +45,7 @@ namespace Cauldron.Outlander
             }
 
             //...and play its top card.
-            coroutine = base.GameController.PlayTopCard(base.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
+            coroutine = base.GameController.PlayTopCard(DecisionMaker, TurnTakerController, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -60,10 +60,10 @@ namespace Cauldron.Outlander
         public override void AddTriggers()
         {
             //Damage dealt by {Outlander} is irreducible.
-            base.AddMakeDamageIrreducibleTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard);
+            base.AddMakeDamageIrreducibleTrigger((DealDamageAction action) => action.DamageSource.IsSameCard(CharacterCard));
 
             //At the start of the villain turn, destroy this card.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyThisCardResponse, TriggerType.DestroySelf);
+            base.AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
         }
     }
 }
