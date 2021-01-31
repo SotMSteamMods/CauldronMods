@@ -12,15 +12,21 @@ namespace Cauldron.Mythos
     {
         public AclastyphWhoPeersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
             base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
             base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
+
         }
 
         public override void AddTriggers()
         {
             //At the end of the villain turn:
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, new TriggerType[]
+            {
+                TriggerType.DealDamage,
+                TriggerType.MoveCard,
+                TriggerType.GainHP
+            });
         }
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction action)
@@ -29,7 +35,7 @@ namespace Cauldron.Mythos
             if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
             {
                 //{MythosDanger} This card deals the hero target with the highest HP 2 melee damage. 
-                coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => c.IsHero, (Card c) => 2, DamageType.Melee);
+                coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => c.IsHero && c.IsInPlayAndHasGameText, (Card c) => 2, DamageType.Melee);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

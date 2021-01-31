@@ -463,8 +463,10 @@ namespace CauldronTests
             Card peer = PlayCard(AclastyphWhoPeers);
 
             //Danger
-            Card pros1 = PutOnDeck(mythos, GetCard(FaithfulProselyte, 1));
-            Card pros = PutOnDeck(mythos, GetCard(FaithfulProselyte, 0));
+            IEnumerable<Card> prosList = FindCardsWhere(c => c.Owner == mythos.TurnTaker && c.Identifier == FaithfulProselyte).Take(2);
+
+            Card pros1 = PutOnDeck(mythos, prosList.First());
+            Card pros = PutOnDeck(mythos, prosList.Last());
 
             QuickHPStorage(haka, bunker, legacy);
             GoToEndOfTurn(mythos);
@@ -486,8 +488,10 @@ namespace CauldronTests
             SetHitPoints(peer, 1);
 
             //Clue
-            Card aca1 = PutOnDeck(mythos, GetCard(PallidAcademic, 1));
-            Card aca = PutOnDeck(mythos, GetCard(PallidAcademic, 0));
+            IEnumerable<Card> academic = FindCardsWhere(c => c.Owner == mythos.TurnTaker && c.Identifier == PallidAcademic).Take(2);
+
+            Card aca1 = PutOnDeck(mythos,academic.First());
+            Card aca = PutOnDeck(mythos, academic.Last());
 
             QuickHPStorage(peer);
             GoToEndOfTurn(mythos);
