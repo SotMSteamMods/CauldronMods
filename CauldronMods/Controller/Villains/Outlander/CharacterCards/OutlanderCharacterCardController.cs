@@ -19,7 +19,7 @@ namespace Cauldron.Outlander
 
         }
 
-        protected const string OncePerTurn = "OutlanderOncePerTurn";
+        protected const string OncePerTurn = "OutlanderFlippedOncePerTurn";
         private ITrigger ReduceDamageTrigger;
 
         public override void AddSideTriggers()
