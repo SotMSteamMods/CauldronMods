@@ -37,17 +37,26 @@ namespace Cauldron.Dynamo
             {
                 //Back-Advanced:
                 //Increase damage dealt by villain targets by 1.
-                base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsVillainTarget(action.DamageSource.Card), 1));
+                base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsVillain(action.DamageSource.Card) && action.DamageSource.Card.IsTarget, 1));
             }
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
+            IEnumerator coroutine = base.AfterFlipCardImmediateResponse();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             if (base.CharacterCard.IsFlipped)
             {
                 //Back:
                 //When Dynamo flips to this side, play the top 2 cards of the villain deck. 
-                IEnumerator coroutine = base.GameController.PlayTopCard(base.DecisionMaker, base.TurnTakerController, numberOfCards: 2, cardSource: base.GetCardSource());
+                coroutine = base.GameController.PlayTopCard(base.DecisionMaker, base.TurnTakerController, numberOfCards: 2, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -80,16 +89,6 @@ namespace Cauldron.Dynamo
 
                 //...and flip {Dynamo}'s villain character cards.
                 coroutine = base.GameController.FlipCard(this, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                coroutine = base.AfterFlipCardImmediateResponse();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

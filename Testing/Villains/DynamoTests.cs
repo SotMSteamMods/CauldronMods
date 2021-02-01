@@ -110,7 +110,7 @@ namespace CauldronTests
             StartGame();
 
 
-            //At the end of the villain turn, if there are at least 6 cards in the villain trash, flip {Dynamo}'s villain character card.
+            //Front: At the end of the villain turn, if there are at least 6 cards in the villain trash, flip {Dynamo}'s villain character card.
             AssertNumberOfCardsInTrash(dynamo, 1);
             GoToEndOfTurn(dynamo);
             AssertNotFlipped(dynamo);
@@ -134,11 +134,36 @@ namespace CauldronTests
             //Make sure game doesn't end
             SetHitPoints(new TurnTakerController[] { haka, bunker, scholar }, 40);
 
-            //When Dynamo flips to this side, play the top 2 cards of the villain deck. Then, shuffle the villain trash, put it on the bottom of the villain deck, and flip {Dynamo}'s villain character cards.
+            //Back: When Dynamo flips to this side, play the top 2 cards of the villain deck. Then, shuffle the villain trash, put it on the bottom of the villain deck, and flip {Dynamo}'s villain character cards.
             GoToEndOfTurn(dynamo);
             AssertIsInPlay(HardenedCriminals, WantonDestruction);
             AssertNumberOfCardsInTrash(dynamo, 0);
             AssertNotFlipped(dynamo);
+        }
+
+        [Test]
+        public void TestDynamo_Advanced()
+        {
+            SetupGameController(new string[] { "Cauldron.Dynamo", "Haka", "Unity", "TheScholar", "Megalopolis" }, true);
+            StartGame();
+
+            AssertNumberOfCardsInTrash(dynamo, 1);
+            //Front-Advanced: Whenever a villain target enters play, discard the top card of the villain deck.
+            Card copper = PlayCard(Copperhead);
+            AssertNumberOfCardsInTrash(dynamo, 2);
+            AssertIsInPlay(copper);
+
+            DiscardTopCards(dynamo.TurnTaker.Deck, 10);
+
+            StackDeck(HelmetedCharge, HardenedCriminals);
+            QuickHPStorage(haka, unity, scholar);
+            GoToEndOfTurn(dynamo);
+            //Back-Advanced: Increase damage dealt by villain targets by 1.
+            //Helmeted Charge: If Copperhead is in play, he deals each hero target 2 melee damage.
+
+            //This damage is not increased because Villain has flipped back already
+            //Copperhead: At the end of the villain turn, this card deals the 2 hero targets with the highest HP {H} melee damage each.
+            QuickHPCheck(-6, -3, -6);
         }
     }
 }
