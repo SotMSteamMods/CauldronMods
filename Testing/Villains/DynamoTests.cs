@@ -68,5 +68,77 @@ namespace CauldronTests
             AssertMaximumHitPoints(GetCard(Copperhead), 18);
             AssertMaximumHitPoints(GetCard(Python), 10);
         }
+
+        [Test]
+        public void TestDynamo_Front_Start_3H()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //At the start of the villain turn, discard the top card of the villain deck and {Dynamo} deals the hero target with the highest HP {H} energy damage.
+            AssertNumberOfCardsInTrash(dynamo, 1);
+            AssertHitPoints(haka.CharacterCard, haka.CharacterCard.MaximumHitPoints - 3 ?? 0);
+        }
+
+        [Test]
+        public void TestDynamo_Front_Start_4H()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "Unity", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //At the start of the villain turn, discard the top card of the villain deck and {Dynamo} deals the hero target with the highest HP {H} energy damage.
+            AssertNumberOfCardsInTrash(dynamo, 1);
+            AssertHitPoints(haka.CharacterCard, haka.CharacterCard.MaximumHitPoints - 4 ?? 0);
+        }
+
+        [Test]
+        public void TestDynamo_Front_Start_5H()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "Unity", "Ra", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //At the start of the villain turn, discard the top card of the villain deck and {Dynamo} deals the hero target with the highest HP {H} energy damage.
+            AssertNumberOfCardsInTrash(dynamo, 1);
+            AssertHitPoints(haka.CharacterCard, haka.CharacterCard.MaximumHitPoints - 5 ?? 0);
+        }
+
+        [Test]
+        public void TestDynamo_Flip()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StackDeck(dynamo, new string[] { Copperhead, Python, BankHeist, CatharticDemolition, CrimeSpree, EnergyConversion, HardenedCriminals, WantonDestruction });
+            StartGame();
+
+
+            //At the end of the villain turn, if there are at least 6 cards in the villain trash, flip {Dynamo}'s villain character card.
+            AssertNumberOfCardsInTrash(dynamo, 1);
+            GoToEndOfTurn(dynamo);
+            AssertNotFlipped(dynamo);
+
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, 2);
+            AssertNotFlipped(dynamo);
+
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, 3);
+            AssertNotFlipped(dynamo);
+
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, 4);
+            AssertNotFlipped(dynamo);
+
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, 5);
+            AssertNotFlipped(dynamo);
+
+            //Make sure game doesn't end
+            SetHitPoints(new TurnTakerController[] { haka, bunker, scholar }, 40);
+
+            //When Dynamo flips to this side, play the top 2 cards of the villain deck. Then, shuffle the villain trash, put it on the bottom of the villain deck, and flip {Dynamo}'s villain character cards.
+            GoToEndOfTurn(dynamo);
+            AssertIsInPlay(HardenedCriminals, WantonDestruction);
+            AssertNumberOfCardsInTrash(dynamo, 0);
+            AssertNotFlipped(dynamo);
+        }
     }
 }
