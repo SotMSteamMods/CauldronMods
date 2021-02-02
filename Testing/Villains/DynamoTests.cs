@@ -165,5 +165,51 @@ namespace CauldronTests
             //Copperhead: At the end of the villain turn, this card deals the 2 hero targets with the highest HP {H} melee damage each.
             QuickHPCheck(-6, -3, -6);
         }
+
+        [Test]
+        public void TestBankHeist_Discard()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+            PlayCard(BankHeist);
+
+            //At the end of the villain turn, each player may discard 1 card. If fewer than {H - 1} cards were discarded this way, discard the top card of the villain deck.
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash);
+        }
+
+        [Test]
+        public void TestBankHeist_NoDiscard()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+            PlayCard(BankHeist);
+
+            //At the end of the villain turn, each player may discard 1 card. If fewer than {H - 1} cards were discarded this way, discard the top card of the villain deck.
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash + 1);
+        }
+
+        [Test]
+        public void TestCatharticDemolition()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card cat = PlayCard(CatharticDemolition);
+
+            QuickHPStorage(haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, traffic);
+            //At the start of the villain turn, destroy all Plot cards and this card.
+            GoToStartOfTurn(dynamo);
+            //When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
+            QuickHPCheck(-2, -2, -2, -2);
+            AssertInTrash(cat);
+        }
     }
 }
