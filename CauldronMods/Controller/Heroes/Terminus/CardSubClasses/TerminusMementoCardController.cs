@@ -12,8 +12,11 @@ namespace Cauldron.Terminus
     {
         protected TerminusMementoCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
+
+        public override bool CanBeDestroyed => false;
 
         public override bool AskIfCardIsIndestructible(Card card)
         {
@@ -30,7 +33,7 @@ namespace Cauldron.Terminus
         private IEnumerator PlayCardActionResponse(PlayCardAction playCardAction)
         {
             IEnumerator coroutine;
-            
+
             coroutine = CancelAction(playCardAction);
             if (base.UseUnityCoroutines)
             {

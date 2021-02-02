@@ -687,6 +687,7 @@ namespace CauldronTests
             tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
             returnFire = PutInHand("ReturnFire");
             covenantOfWrath = PutInHand("CovenantOfWrath");
+            var topCard = GetTopCardOfDeck(terminus);
 
             DecisionSelectTarget = baron.CharacterCard;
             DecisionSelectCardToPlay = covenantOfWrath;
@@ -694,6 +695,9 @@ namespace CauldronTests
             QuickHPStorage(baron, terminus, legacy, bunker, scholar);
             QuickHandStorage(terminus, legacy, bunker, scholar);
             PlayCard(returnFire);
+            AssertInTrash(returnFire);
+            AssertInHand(topCard);
+            AssertIsInPlay(covenantOfWrath);
             QuickHPCheck(-2, -1, 0, 0, 0);
             QuickHandCheck(-1, 0, 0, 0);
         }
