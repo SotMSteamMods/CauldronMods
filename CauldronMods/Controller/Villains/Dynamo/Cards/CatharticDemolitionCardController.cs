@@ -26,8 +26,19 @@ namespace Cauldron.Dynamo
 
         private IEnumerator DestroyCardsResponse(PhaseChangeAction action)
         {
-            //...destroy all Plot cards and this card.
-            IEnumerator coroutine = base.GameController.DestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => base.IsPlot(c) || c == this.Card));
+            //...destroy all Plot cards...
+            IEnumerator coroutine = base.GameController.DestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => base.IsPlot(c)));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //...and this card.
+            coroutine = base.DestroyThisCardResponse(action);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -196,7 +196,7 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestCatharticDemolition()
+        public void TestCatharticDemolition_1X()
         {
             SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
@@ -208,8 +208,50 @@ namespace CauldronTests
             //At the start of the villain turn, destroy all Plot cards and this card.
             GoToStartOfTurn(dynamo);
             //When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
-            QuickHPCheck(-2, -2, -2, -2);
+            //Dynamo deals highest H
+            QuickHPCheck(-5, -2, -2, -2);
             AssertInTrash(cat);
+        }
+
+        [Test]
+        public void TestCatharticDemolition_2X()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card cat = PlayCard(CatharticDemolition);
+            GoToEndOfTurn(env);
+            Card bank = PlayCard(BankHeist);
+
+            QuickHPStorage(haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, traffic);
+            //At the start of the villain turn, destroy all Plot cards and this card.
+            GoToStartOfTurn(dynamo);
+            //When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
+            //Dynamo deals highest H
+            QuickHPCheck(-7, -4, -4, -4);
+            AssertInTrash(cat, bank);
+        }
+
+        [Test]
+        public void TestCatharticDemolition_3X()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card cat = PlayCard(CatharticDemolition);
+            GoToEndOfTurn(env);
+            Card bank = PlayCard(BankHeist);
+            Card crime = PlayCard(CrimeSpree);
+
+            QuickHPStorage(haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, traffic);
+            //At the start of the villain turn, destroy all Plot cards and this card.
+            GoToStartOfTurn(dynamo);
+            //When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
+            //Dynamo deals highest H
+            QuickHPCheck(-9, -6, -6, -6);
+            AssertInTrash(cat, bank, crime);
         }
     }
 }
