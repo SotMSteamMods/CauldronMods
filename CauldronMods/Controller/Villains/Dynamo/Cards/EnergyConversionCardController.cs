@@ -34,7 +34,7 @@ namespace Cauldron.Dynamo
         public override void AddTriggers()
         {
             //When {Dynamo} is dealt 4 or more damage from a single source, discard the top card of the villain deck and {Dynamo} deals each hero target {H} energy damage. Then, destroy this card.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard && action.Amount == 4, this.TakeDamageResponse, new TriggerType[] { TriggerType.DiscardCard, TriggerType.DealDamage, TriggerType.DestroySelf }, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.CharacterCard && action.Amount >= 4, this.TakeDamageResponse, new TriggerType[] { TriggerType.DiscardCard, TriggerType.DealDamage, TriggerType.DestroySelf }, TriggerTiming.After);
         }
 
         private IEnumerator TakeDamageResponse(DealDamageAction action)

@@ -315,5 +315,43 @@ namespace CauldronTests
             QuickHPCheckZero();
             AssertIsInPlay(traffic);
         }
+
+        [Test]
+        public void TestEnergyConversion()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+
+            //When this card enters play, discard the top card of the villain deck.
+            Card energy = PlayCard(EnergyConversion);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash + 1);
+            dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+
+            //When {Dynamo} is dealt 4 or more damage from a single source, discard the top card of the villain deck and {Dynamo} deals each hero target {H} energy damage. Then, destroy this card.
+
+            //needs to be 4 or more
+            QuickHPStorage(haka, bunker, scholar);
+            DealDamage(haka, dynamo, 2, DamageType.Melee);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash);
+            QuickHPCheckZero();
+            AssertIsInPlay(energy);
+
+            //needs to be all at once
+            QuickHPStorage(haka, bunker, scholar);
+            DealDamage(haka, dynamo, 2, DamageType.Melee);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash);
+            QuickHPCheckZero();
+            AssertIsInPlay(energy);
+
+            //4 or more
+            QuickHPStorage(haka, bunker, scholar);
+            DealDamage(haka, dynamo, 4, DamageType.Melee);
+            //Discard and destroy
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash + 2);
+            QuickHPCheck(-3, -3, -3);
+            AssertInTrash(energy);
+        }
     }
 }
