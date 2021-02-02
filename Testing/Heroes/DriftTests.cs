@@ -806,7 +806,37 @@ namespace CauldronTests
             PlayCard(knight1);
             AssertInTrash(knight0);
         }
+        [Test]
+        public void TestKnightsHeritage_ShiftOptional()
+        {
+            SetupGameController(new string[] { "Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
 
+            IEnumerable<Card> knights = FindCardsWhere(c => c.Identifier == KnightsHeritage).Take(2);
+            Card fFocus = PutInHand(FutureFocus);
+            Card second = PutInHand(MakeEverySecondCount);
+            Card knight0 = PutInHand(knights.First());
+            Card knight1 = PutInHand(knights.Last());
+            DecisionSelectCards = new Card[] { fFocus, second };
+
+            GoToShiftPosition(2);
+            PlayCard(knight0);
+            //...and play up to 2 ongoing cards from your hand.
+            AssertIsInPlay(fFocus, second);
+            DestroyCards(fFocus, second);
+
+            //The first time {Drift} is dealt damage each turn, you may shift {DriftL} or {DriftR}.
+            int trackPosition = CurrentShiftPosition();
+            DecisionDoNotSelectFunction = true;
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition);
+
+            //Only first time
+            trackPosition = CurrentShiftPosition();
+            AssertNoDecision();
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition);
+        }
         [Test]
         public void TestMakeEverySecondCount()
         {
