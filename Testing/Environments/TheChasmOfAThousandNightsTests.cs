@@ -564,6 +564,30 @@ namespace CauldronTests
             //Whenever the target next to this card deals damage to a hero, that hero must discard a card.
             QuickHandCheck(0, 0, 0);
         }
+        [Test()]
+        public void TestThieving_NonCharacter()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "TheVisionary", "Cauldron.TheChasmOfAThousandNights" }, randomSeed: new int?(1599956386));
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+
+            var djinnNames = new string[] { "GrandAmaraqiel", "HighMhegas", "HighTemoq", "Axion", "Tevael", "Gul" };
+            foreach (string name in djinnNames)
+            {
+                PlayCard(name);
+            }
+
+            Card thieving = GetCard("Thieving");
+            Card djinn = thieving.Location.OwnerCard;
+
+            PlayCard("DecoyProjection");
+            QuickHandStorage(ra, legacy, visionary);
+            DealDamage(djinn, visionary, 2, DamageType.Melee);
+
+            //Whenever the target next to this card deals damage to a hero, that hero must discard a card.
+            QuickHandCheckZero();
+        }
 
         [Test()]
         public void TestBeyondTheVeil_EntersPlay()
