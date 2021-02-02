@@ -374,9 +374,51 @@ namespace CauldronTests
         }
 
         [Test]
-        public void TestHelmetedCharge_NotInPlay()
+        public void TestHelmetedCharge_InDeck()
         {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
 
+            Card cop = GetCard(Copperhead);
+
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(HelmetedCharge);
+            //If Copperhead is in play, he deals each hero target 2 melee damage.
+            QuickHPCheckZero();
+
+            //Otherwise, seach the villain deck and trash for Copperhead and put him into play. If you searched the villain deck, shuffle it.
+            AssertIsInPlay(cop);
+        }
+
+        [Test]
+        public void TestHelmetedCharge_InTrash()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card cop = PutInTrash(Copperhead);
+
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(HelmetedCharge);
+            //If Copperhead is in play, he deals each hero target 2 melee damage.
+            QuickHPCheckZero();
+
+            //Otherwise, seach the villain deck and trash for Copperhead and put him into play. If you searched the villain deck, shuffle it.
+            AssertIsInPlay(cop);
+        }
+
+        [Test]
+        public void TestHelmetedCharge_InPlay()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card cop = PlayCard(Copperhead);
+
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(HelmetedCharge);
+            //If Copperhead is in play, he deals each hero target 2 melee damage.
+            QuickHPCheck(-2, -2, -2);
         }
     }
 }
