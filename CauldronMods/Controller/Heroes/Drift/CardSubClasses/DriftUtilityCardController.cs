@@ -23,7 +23,9 @@ namespace Cauldron.Drift
             if (this.CurrentShiftPosition() > 1)
             {
                 base.SetCardPropertyToTrueIfRealAction(HasShifted);
-                IEnumerator coroutine = base.GameController.RemoveTokensFromPool(this.GetShiftPool(), 1, cardSource: base.GetCardSource());
+
+                //Switch to the new card
+                IEnumerator coroutine = this.SwitchTrack(-1);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -33,8 +35,7 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                //Switch to the new card
-                coroutine = this.SwitchTrack();
+                coroutine = base.GameController.RemoveTokensFromPool(this.GetShiftPool(), 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -43,6 +44,8 @@ namespace Cauldron.Drift
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+
+
 
                 totalShifts++;
             }
@@ -104,7 +107,9 @@ namespace Cauldron.Drift
             if (this.CurrentShiftPosition() < 4)
             {
                 base.SetCardPropertyToTrueIfRealAction(HasShifted);
-                IEnumerator coroutine = base.GameController.AddTokensToPool(this.GetShiftPool(), 1, cardSource: base.GetCardSource());
+
+                //Switch to the new card
+                IEnumerator coroutine = this.SwitchTrack(1);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -114,8 +119,7 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                //Switch to the new card
-                coroutine = this.SwitchTrack();
+                coroutine = base.GameController.AddTokensToPool(this.GetShiftPool(), 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -179,7 +183,7 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        private IEnumerator SwitchTrack()
+        private IEnumerator SwitchTrack(int newPositionModifier = 0)
         {
             string promoIdentifier = Base;
             if (base.CharacterCardController is DualDriftSubCharacterCardController)
@@ -190,7 +194,7 @@ namespace Cauldron.Drift
             {
                 promoIdentifier = ThroughTheBreach;
             }
-            IEnumerator coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(promoIdentifier + ShiftTrack + this.CurrentShiftPosition(), false));
+            IEnumerator coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(promoIdentifier + ShiftTrack + (this.CurrentShiftPosition() + newPositionModifier), false));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
