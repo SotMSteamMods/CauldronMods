@@ -17,12 +17,14 @@ namespace Cauldron.Drift
 
         public override IEnumerator Play()
         {
+            RemoveTemporaryTriggers();
+            AddToTemporaryTriggerList(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.Card == this.Card && this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(dd.Target) == 1, 1));
             //{DriftFuture}
             if (base.IsTimeMatching(Future))
             {
                 //{Drift} deals up to 3 targets 2 radiant damage each.
                 //Increase damage dealt this way by 1 to targets that entered play since the end of your last turn.
-                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), (Card target) => 2 + this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(target), DamageType.Radiant, () => 3, false, 0, cardSource: base.GetCardSource());
+                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), (Card target) => 2, DamageType.Radiant, () => 3, false, 0, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
