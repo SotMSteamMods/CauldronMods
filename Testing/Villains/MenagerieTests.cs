@@ -132,6 +132,17 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMenagerieFrontCannotPlayCards()
+        {
+            SetupGameController("Cauldron.Menagerie", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("TakeDown");
+            GoToEndOfTurn(legacy);
+            AssertNumberOfCardsAtLocation(menagerie.TurnTaker.Revealed, 0);
+        }
+
+        [Test()]
         public void TestMenagerieFrontEnclosureDestroyActionLeavesPlay()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "TheScholar", "Megalopolis");

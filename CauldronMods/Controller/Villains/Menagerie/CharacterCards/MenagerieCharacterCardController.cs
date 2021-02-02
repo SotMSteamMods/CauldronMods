@@ -97,7 +97,8 @@ namespace Cauldron.Menagerie
             if (base.FindCardsWhere((new LinqCardCriteria((Card c) => this.IsEnclosure(c) && c.IsInDeck))).Any())
             {
                 //...reveal cards from the top of the villain deck until an enclosure is revealed, play it, and shuffle the other revealed cards back into the deck.
-                coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, true, false, false, new LinqCardCriteria((Card c) => this.IsEnclosure(c), "enclosure"), 1, revealedCardDisplay: RevealedCardDisplay.ShowMatchingCards, shuffleReturnedCards: true);
+                var playStorage = new List<Card>();
+                coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, true, false, false, new LinqCardCriteria((Card c) => this.IsEnclosure(c), "enclosure"), 1, revealedCardDisplay: RevealedCardDisplay.ShowMatchingCards, storedPlayResults: playStorage, shuffleReturnedCards: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -105,6 +106,40 @@ namespace Cauldron.Menagerie
                 else
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if(playStorage.Any((Card c) => c.Location.IsRevealed))
+                {
+                    var enclosure = playStorage.FirstOrDefault();
+                    coroutine = GameController.SendMessageAction($"Menagerie shuffles {enclosure.Title} into her deck.", Priority.Medium, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    coroutine = GameController.MoveCard(TurnTakerController, enclosure, TurnTaker.Deck, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    coroutine = ShuffleDeck(DecisionMaker, TurnTaker.Deck);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
 
