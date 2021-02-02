@@ -353,5 +353,30 @@ namespace CauldronTests
             QuickHPCheck(-3, -3, -3);
             AssertInTrash(energy);
         }
+
+        [Test]
+        public void TestHardenedCriminals()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card pyt = PlayCard(Python);
+            Card cop = PlayCard(Copperhead);
+
+            //Reduce damage dealt to villain targets by 1.
+            PlayCard(HardenedCriminals);
+
+            QuickHPStorage(dynamo.CharacterCard, pyt, cop);
+            DealDamage(haka, dynamo, 2, DamageType.Melee);
+            DealDamage(bunker, pyt, 2, DamageType.Melee);
+            DealDamage(pyt, cop, 2, DamageType.Melee);
+            QuickHPCheck(-1, -1, -1);
+        }
+
+        [Test]
+        public void TestHelmetedCharge_NotInPlay()
+        {
+
+        }
     }
 }
