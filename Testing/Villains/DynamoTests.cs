@@ -253,5 +253,67 @@ namespace CauldronTests
             QuickHPCheck(-9, -6, -6, -6);
             AssertInTrash(cat, bank, crime);
         }
+
+        [Test]
+        public void TestCopperhead()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(dynamo);
+            Card cop = PlayCard(Copperhead);
+
+            //At the end of the villain turn, this card deals the 2 hero targets with the highest HP {H} melee damage each.
+            QuickHPStorage(haka, bunker, scholar);
+            GoToEndOfTurn(dynamo);
+            QuickHPCheck(-3, 0, -3);
+
+            //If this card has 10 or fewer HP, increase damage it deals by 2.
+            SetHitPoints(cop, 10);
+            QuickHPStorage(cop);
+            DealDamage(cop, cop, 2, DamageType.Melee);
+            QuickHPCheck(-4);
+
+            QuickHPStorage(haka);
+            DealDamage(cop, haka, 2, DamageType.Melee);
+            QuickHPCheck(-4);
+        }
+
+        [Test]
+        public void TestCrimeSpree_NoPlay()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            Card traffic = StackDeck("TrafficPileup");
+
+            PlayCard(CrimeSpree);
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+
+            //At the end of the villain turn, the players may choose to play the top card of the environment deck. If they do not, discard the top card of the villain deck and {Dynamo} deals each hero target 1 energy damage.
+            QuickHPStorage(haka, bunker, scholar);
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash + 1);
+            QuickHPCheck(-1, -1, -1);
+            AssertOnTopOfDeck(traffic);
+        }
+
+        [Test]
+        public void TestCrimeSpree_Play()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            Card traffic = StackDeck("TrafficPileup");
+
+            PlayCard(CrimeSpree);
+            DecisionYesNo = true;
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+
+            //At the end of the villain turn, the players may choose to play the top card of the environment deck. If they do not, discard the top card of the villain deck and {Dynamo} deals each hero target 1 energy damage.
+            QuickHPStorage(haka, bunker, scholar);
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash);
+            QuickHPCheckZero();
+            AssertIsInPlay(traffic);
+        }
     }
 }

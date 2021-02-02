@@ -36,7 +36,7 @@ namespace Cauldron.Dynamo
             }
 
             //If they do not...
-            if (DidPlayCards(storedResults, 1))
+            if (!base.DidPlayCards(storedResults, 1))
             {
                 //...discard the top card of the villain deck...
                 List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
