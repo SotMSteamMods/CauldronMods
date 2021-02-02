@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Terminus
 {
-    public class TerminusCharacterCardController : HeroCharacterCardController
+    public class TerminusCharacterCardController : TerminusBaseCharacterCardController
     {
         private int SelfColdDamage => GetPowerNumeral(0, 2);
         private int TargetCount => GetPowerNumeral(1, 1);
@@ -16,30 +16,14 @@ namespace Cauldron.Terminus
 
         public TerminusCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowTokenPool(base.Card.FindTokenPool("TerminusWrathPool"));
-            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
-
-        public override bool AskIfCardIsIndestructible(Card card)
-        {
-            bool isIndestructible = false;
-            Card stainedBadge = base.FindCard("StainedBadge");
-
-            if (stainedBadge.IsInPlayAndHasGameText && card == base.CharacterCard && base.GameController.AllTurnTakers.Count((tt) => tt != base.TurnTaker && tt.IsHero && !tt.IsIncapacitatedOrOutOfGame) > 0)
-            {
-                isIndestructible = true;
-            }
-
-            return isIndestructible;
-        }
-                
+        
         public override void AddStartOfGameTriggers()
         {
-            base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "StainedBadge" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
-            base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "RailwaySpike" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
-            base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "GravenShell" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
-            base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.GameController.AddTokensToPool(base.CharacterCard.FindTokenPool("TerminusWrathPool"), 3, base.GetCardSource()), TriggerType.PhaseChange, TriggerTiming.After);
-
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "UnusualSuspects" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "TheLightAtTheEnd" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "CovenantOfWrath" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.GameController.AddTokensToPool(base.CharacterCard.FindTokenPool("TerminusWrathPool"), 3, base.GetCardSource()), TriggerType.PhaseChange, TriggerTiming.After);
         }
 
         // "{Terminus} deals herself 2 cold damage and 1 target 3 cold damage."
@@ -47,7 +31,7 @@ namespace Cauldron.Terminus
         {
             IEnumerator coroutine;
 
-            coroutine = base.GameController.DealDamageToSelf(DecisionMaker, (card) => card == base.Card, SelfColdDamage, DamageType.Cold, cardSource: base.GetCardSource());
+            coroutine = base.GameController.DealDamageToSelf(DecisionMaker, (card) => card == base.CharacterCard, SelfColdDamage, DamageType.Cold, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -57,7 +41,7 @@ namespace Cauldron.Terminus
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), TargetColdDamage, DamageType.Cold, TargetCount, false, TargetCount, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), TargetColdDamage, DamageType.Cold, TargetCount, false, TargetCount, additionalCriteria: (card) => card != base.CharacterCard, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

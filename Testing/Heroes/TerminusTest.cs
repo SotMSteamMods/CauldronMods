@@ -250,7 +250,7 @@ namespace CauldronTests
 
             QuickHandStorage(terminus, legacy, bunker, scholar);
             DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed };
-            PlayCard("EtherealArmory"); 
+            PlayCard("EtherealArmory");
             QuickHandCheck(-1, -1, -1, -1);
             AssertIsInPlay(covenantOfWrath);
             AssertIsInPlay(motivationalCharge);
@@ -426,6 +426,8 @@ namespace CauldronTests
 
             tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
             railwaySpike = PutIntoPlay("RailwaySpike");
+            gravenShell = PutInHand("GravenShell");
+            stainedBadge = PutInHand("StainedBadge");
             AddTokensToPool(tokenPool, 5);
             QuickHPStorage(baron.CharacterCard, terminus.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
             QuickTokenPoolStorage(tokenPool);
@@ -441,10 +443,10 @@ namespace CauldronTests
 
             QuickHandStorage(terminus, legacy, bunker, scholar);
 
-            gravenShell = PlayCard(terminus, "GravenShell");
+            gravenShell = PlayCard(terminus, gravenShell);
             QuickHandCheck(3, 0, 0, 0);
 
-            stainedBadge = PlayCard(terminus, "StainedBadge");
+            stainedBadge = PlayCard(terminus, stainedBadge);
             QuickHandCheck(3, 0, 0, 0);
 
             AssertIsInPlay(railwaySpike);
@@ -489,7 +491,7 @@ namespace CauldronTests
 
             DealDamage(baron, terminus, 2, DamageType.Melee);
             AssertNotIncapacitatedOrOutOfGame(terminus);
-            
+
             gravenShell = PlayCard(terminus, "GravenShell");
             railwaySpike = PlayCard(terminus, "RailwaySpike");
 
@@ -517,5 +519,559 @@ namespace CauldronTests
         }
 
         #endregion
+
+        #region Test Guilty Verdict
+
+        /* 
+         * Whenever a hero target is dealt 3 or more damage, add 1 token or remove 3 tokens from your Wrath pool. 
+         * If you removed 3 tokens this way, increase damage dealt by that hero target by 1 until the start of 
+         * the next environment turn.
+         */
+        [Test]
+        public void TestGuiltyVerdict()
+        {
+            TokenPool tokenPool;
+            StartTestGame();
+
+            PutIntoPlay("GuiltyVerdict");
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 2);
+
+            base.GameController.SkipToTurnTakerTurn(legacy);
+
+            DecisionSelectFunctions = new int?[] { 0, 1 };
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            QuickTokenPoolStorage(tokenPool);
+
+            DealDamage(baron, legacy, 3, DamageType.Melee);
+            DealDamage(legacy, baron, 3, DamageType.Melee);
+            QuickHPCheck(-4, 0, -4, 0, 0);
+            QuickTokenPoolCheck(1);
+
+            DealDamage(baron, legacy, 3, DamageType.Melee);
+            DealDamage(legacy, baron, 3, DamageType.Melee);
+            QuickHPCheck(-5, 0, -4, 0, 0);
+            QuickTokenPoolCheck(-3);
+
+            base.GoToEndOfTurn(base.env);
+            DealDamage(legacy, baron, 3, DamageType.Melee);
+            QuickHPCheck(-4, 0, 0, 0, 0);
+            QuickTokenPoolCheck(0);
+        }
+        #endregion Test Guilty Verdict
+
+        #region Test Immortal Coils
+        /*
+         * Power
+         * {Terminus} deals 1 target 3 cold damage. Add 1 or remove 3 tokens from your Wrath pool. If you removed 3 tokens this way, 
+         * reduce damage dealt by that target by 1 until the start of your next turn.
+         */
+        [Test]
+        public void TestImmortalCoils()
+        {
+            Card immortalCoils;
+            TokenPool tokenPool;
+            StartTestGame();
+
+            immortalCoils = PutIntoPlay("ImmortalCoils");
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 2);
+            base.GameController.SkipToTurnTakerTurn(terminus);
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, baron.CharacterCard };
+            DecisionSelectFunctions = new int?[] { 0, 1, 0 };
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            QuickTokenPoolStorage(tokenPool);
+
+            UsePower(immortalCoils);
+            DealDamage(baron, legacy, 1, DamageType.Melee);
+            QuickHPCheck(-3, 0, -2, 0, 0);
+            QuickTokenPoolCheck(1);
+
+            UsePower(immortalCoils);
+            DealDamage(baron, legacy, 1, DamageType.Melee);
+            QuickHPCheck(-3, 0, -1, 0, 0);
+            QuickTokenPoolCheck(-3);
+
+            base.GameController.SkipToTurnPhase(new TurnPhase(baron.TurnTaker, Phase.End));
+
+            base.GoToStartOfTurn(terminus);
+            DealDamage(baron, legacy, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, -2, 0, 0);
+            QuickTokenPoolCheck(0);
+
+        }
+        #endregion Test Immortal Coils
+
+        #region Test Jailbreaker
+
+        /*
+         * When this card enters play, add 3 tokens to your Wrath pool and destroy all other copies of Jailbreaker.
+         * Powers 
+         * {Terminus} deals herself 1 cold damage and any number of other targets 2 projectile damage each.
+         */
+        [Test]
+        public void TestJailbreaker()
+        {
+            Card jailbreaker1;
+            Card jailbreaker2;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+
+            QuickTokenPoolStorage(tokenPool);
+            jailbreaker1 = PutIntoPlay("Jailbreaker");
+            QuickTokenPoolCheck(3);
+            jailbreaker2 = PutIntoPlay("Jailbreaker");
+            QuickTokenPoolCheck(3);
+            AssertNotInPlay(jailbreaker1);
+            AssertIsInPlay(jailbreaker2);
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, legacy.CharacterCard, null };
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            UsePower(jailbreaker2);
+            QuickHPCheck(-2, -1, -2, 0, 0);
+        }
+        #endregion Test Jailbreaker
+
+        #region Test No Rest For The Wicked
+
+        /*
+         * You may put a target from the villain trash into play. If that target has more than 5HP, 
+         * reduce its current HP to 5. That target deals up to 2 other targets 5 infernal damage each. 
+         * If no target enters play this way, add 5 tokens to your Wrath pool.
+         */
+        [Test]
+        public void TestNoRestForTheWicked()
+        {
+            Card noRestForTheWicked;
+            Card elementalRedistributor;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            elementalRedistributor = PutInTrash("ElementalRedistributor");
+            PutOnDeck(baron, FindCardsWhere((card) => card.Identifier == "MobileDefensePlatform" && card.IsInTrash));
+            QuickTokenPoolStorage(tokenPool);
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(baron.TurnTaker.Trash), new LocationChoice(baron.TurnTaker.Trash) };
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            noRestForTheWicked = PlayCard("NoRestForTheWicked");
+            QuickHPCheck(-5, -5, 0, 0, 0);
+            QuickTokenPoolCheck(0);
+            AssertHitPoints(elementalRedistributor, 5);
+
+            noRestForTheWicked = PlayCard("NoRestForTheWicked");
+            QuickHPCheck(0, 0, 0, 0, 0);
+            QuickTokenPoolCheck(5);
+
+        }
+        #endregion Test No Rest For The Wicked
+
+        #region Test Return Fire
+
+        /*
+         * Select a non-hero target. That target deals {Terminus} 1 projectile damage, then {Terminus} deals it 2 projectile damage. 
+         * You may draw a card. 
+         * You may play a card.
+         */
+        [Test]
+        public void TestReturnFire()
+        {
+            Card returnFire;
+            Card covenantOfWrath;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            returnFire = PutInHand("ReturnFire");
+            covenantOfWrath = PutInHand("CovenantOfWrath");
+
+            DecisionSelectTarget = baron.CharacterCard;
+            DecisionSelectCardToPlay = covenantOfWrath;
+            DecisionsYesNo = new bool[] { true, true };
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            PlayCard(returnFire);
+            QuickHPCheck(-2, -1, 0, 0, 0);
+            QuickHandCheck(-1, 0, 0, 0);
+        }
+        #endregion Test Return Fire
+
+        #region Test Searing Gaze
+        /* 
+         * {Terminus} deals 6 cold damage to a target that dealt her damage since your last turn.
+         * If a non-character target is destroyed this way, you may remove it and this card from 
+         * the game.
+         */
+        [Test]
+        public void TestSearingGaze()
+        {
+            Card searingGaze;
+            Card bladeBattalion;
+            Card elementalRedistributor;
+
+            StartTestGame();
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+            elementalRedistributor = PutIntoPlay("ElementalRedistributor");
+            GoToEndOfTurn(base.env);
+            GoToStartOfTurn(terminus);
+            QuickHPStorage(baron.CharacterCard, elementalRedistributor, terminus.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            DealDamage(bladeBattalion, terminus, 5, DamageType.Cold);
+            DealDamage(elementalRedistributor, terminus, 5, DamageType.Cold);
+            SelectYesNoForNextDecision(true, true);
+            DecisionSelectTargets = new Card[] { bladeBattalion, elementalRedistributor };
+            searingGaze = PutIntoPlay("SearingGaze");
+            AssertOutOfGame(bladeBattalion);
+            AssertOutOfGame(searingGaze);
+            searingGaze = PutIntoPlay("SearingGaze");
+            QuickHPCheck(0, -6, -10, 0, 0, 0);
+            AssertIsInPlay(elementalRedistributor);
+            AssertInTrash(searingGaze);
+        }
+        #endregion Test Searing Gaze
+
+        #region Test Soul Ignition
+
+        /* 
+         * Add 3 tokens to your Wrath pool. 
+         * You may use a power now. 
+         * You may discard a card. If you do, add 3 tokens to your Wrath pool or use a power now.
+         */
+        [Test]
+        public void TestSoulIgntionGainTokens()
+        {
+            Card soulIgnition;
+            Card jailbreaker;
+            Card covenantOfWrath;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            soulIgnition = PutInHand("SoulIgnition");
+            jailbreaker = PutIntoPlay("Jailbreaker");
+            covenantOfWrath = PutIntoPlay("CovenantOfWrath");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+
+            DecisionsYesNo = new bool[] { true, true };
+            DecisionSelectFunctions = new int?[] { 0 };
+            DecisionSelectPowers = new Card[] { jailbreaker, covenantOfWrath };
+            QuickTokenPoolStorage(tokenPool);
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            PlayCard(soulIgnition);
+            QuickHandCheck(-2, 0, 0, 0);
+            QuickTokenPoolCheck(6);
+        }
+
+        [Test]
+        public void TestSoulIgntionGainTokensUseExtraPower()
+        {
+            Card soulIgnition;
+            Card jailbreaker;
+            Card covenantOfWrath;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            soulIgnition = PutInHand("SoulIgnition");
+            jailbreaker = PutIntoPlay("Jailbreaker");
+            covenantOfWrath = PutIntoPlay("CovenantOfWrath");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+
+            DecisionsYesNo = new bool[] { true, true };
+            DecisionSelectFunctions = new int?[] { 1 };
+            DecisionSelectPowers = new Card[] { jailbreaker, covenantOfWrath };
+            QuickTokenPoolStorage(tokenPool);
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            PlayCard(soulIgnition);
+            QuickHandCheck(-2, 0, 0, 0);
+            QuickTokenPoolCheck(0);
+        }
+
+        #endregion Test Soul Ignition
+
+        #region Test Stoke the Furnace
+        /* 
+         * Draw 2 cards. 
+         * Increase damage dealt by {Terminus} by 1 until the start of your next turn. 
+         * Add or remove 3 tokens from your Wrath pool. If you removed 3 tokens this way, you may play a card.
+         */
+        [Test]
+        public void TestStokeTheFurnaceAddTokens()
+        {
+            Card stokeTheFurnace;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            stokeTheFurnace = PutInHand("StokeTheFurnace");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+
+            DecisionSelectFunctions = new int?[] { 0 };
+            DecisionsYesNo = new bool[] { true };
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            QuickTokenPoolStorage(tokenPool);
+
+            DealDamage(terminus, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+
+            PlayCard(stokeTheFurnace);
+            DealDamage(terminus, baron, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+            QuickHandCheck(1, 0, 0, 0);
+            QuickTokenPoolCheck(3);
+
+            base.GameController.SkipToTurnTakerTurn(legacy);
+            base.GameController.SkipToTurnTakerTurn(baron);
+            base.GoToStartOfTurn(terminus);
+            DealDamage(terminus, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+        }
+        [Test]
+        public void TestStokeTheFurnacePlayCard()
+        {
+            Card covenantOfWrath;
+            Card stokeTheFurnace;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            stokeTheFurnace = PutInHand("StokeTheFurnace");
+            covenantOfWrath = PutInHand("CovenantOfWrath");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 3);
+
+            DecisionSelectFunctions = new int?[] { 1 };
+            DecisionsYesNo = new bool[] { true };
+            DecisionSelectCards = new Card[] { covenantOfWrath  };
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            QuickTokenPoolStorage(tokenPool);
+
+            DealDamage(terminus, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+
+            PlayCard(stokeTheFurnace);
+            DealDamage(terminus, baron, 1, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0, 0);
+            QuickHandCheck(0, 0, 0, 0);
+            QuickTokenPoolCheck(-3);
+
+            base.GameController.SkipToTurnTakerTurn(legacy);
+            base.GameController.SkipToTurnTakerTurn(baron);
+            base.GoToStartOfTurn(terminus);
+            DealDamage(terminus, baron, 1, DamageType.Melee);
+            QuickHPCheck(-1, 0, 0, 0, 0);
+        }
+        #endregion Test Stoke the Furnace
+
+        #region Test The Chain Conductor
+        /* 
+         * Reveal cards from the top of your deck until you reveal a Memento or Equipment card. Put it into play or into 
+         * your hand. Shuffle the rest of the revealed cards into your deck. 
+         * If no card entered play this way, add 3 tokens to your Wrath pool and {Terminus} deals 1 target 2 cold damage.
+         */
+        [Test]
+        public void TestTheChainConductorPutInPlay()
+        {
+            Card boneChillingTouch;
+            Card stokeTheFurnace;
+            Card stainedBadge;
+            Card theChainCoductor;
+            int cardsInDeck;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            stainedBadge = PutOnDeck("StainedBadge");
+            boneChillingTouch = PutOnDeck("BoneChillingTouch");
+            stokeTheFurnace = PutOnDeck("StokeTheFurnace");
+            theChainCoductor = PutInHand("TheChainConductor");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            cardsInDeck = terminus.TurnTaker.Deck.NumberOfCards;
+            DecisionSelectFunctions = new int?[] { 0 };
+            QuickTokenPoolStorage(tokenPool);
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            PlayCard(theChainCoductor);
+            AssertNumberOfCardsInDeck(terminus, cardsInDeck - 1);
+            QuickTokenPoolCheck(0);
+            QuickHandCheck(-1, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestTheChainConductorPutInHand()
+        {
+            int cardsInDeck;
+            Card boneChillingTouch;
+            Card stokeTheFurnace;
+            Card stainedBadge;
+            Card theChainCoductor;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            stainedBadge = PutOnDeck("StainedBadge");
+            boneChillingTouch = PutOnDeck("BoneChillingTouch");
+            stokeTheFurnace = PutOnDeck("StokeTheFurnace");
+            theChainCoductor = PutInHand("TheChainConductor");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            cardsInDeck = terminus.TurnTaker.Deck.NumberOfCards;
+            DecisionSelectFunctions = new int?[] { 1 };
+            QuickTokenPoolStorage(tokenPool);
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            PlayCard(theChainCoductor);
+            base.GoToEndOfTurn(terminus);
+            AssertNumberOfCardsInDeck(terminus, cardsInDeck - 1);
+            QuickTokenPoolCheck(3);
+            QuickHandCheckZero();
+        }
+        #endregion Test The Chain Conductor
+
+        #region Test The Light At The End
+        /* 
+         * When this card enters play, put a one-shot from your trash into play.
+         * At the end of your turn, you may remove 3 tokens from your Wrath pool. 
+         * If you do, {Terminus} regains 2HP or destroys 1 ongoing card.
+         */
+        [Test]
+        public void TestTheLightAtTheEndDontSpendTokens()
+        {
+            Card etherealArmory;
+            Card theLightAtTheEnd;
+            Card covenantOfWrath;
+            Card motivationalCharge;
+            Card ammoDrop;
+            Card bringWhatYouNeed;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            base.GoToPlayCardPhase(terminus);
+            etherealArmory = PutInTrash("EtherealArmory");
+            covenantOfWrath = PutInHand("CovenantOfWrath");
+            theLightAtTheEnd = GetCard("TheLightAtTheEnd");
+            motivationalCharge = PutInHand("MotivationalCharge");
+            ammoDrop = PutInHand("AmmoDrop");
+            bringWhatYouNeed = PutInHand("BringWhatYouNeed");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 3);
+            SetHitPoints(terminus, 20);
+            DecisionSelectFunctions = new int?[] { 0 };
+            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed, covenantOfWrath };
+
+            QuickTokenPoolStorage(tokenPool);
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            PlayCard(theLightAtTheEnd);
+            base.GoToEndOfTurn(terminus);
+            QuickHPCheckZero();
+            QuickTokenPoolCheck(0);
+            AssertIsInPlay(covenantOfWrath);
+        }
+
+        [Test]
+        public void TestTheLightAtTheEndGainHP()
+        {
+            Card etherealArmory;
+            Card theLightAtTheEnd;
+            Card covenantOfWrath;
+            Card motivationalCharge;
+            Card ammoDrop;
+            Card bringWhatYouNeed;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            base.GoToPlayCardPhase(terminus);
+            etherealArmory = PutInTrash("EtherealArmory");
+            covenantOfWrath = PutInHand("CovenantOfWrath");
+            theLightAtTheEnd = GetCard("TheLightAtTheEnd");
+            motivationalCharge = PutInHand("MotivationalCharge");
+            ammoDrop = PutInHand("AmmoDrop");
+            bringWhatYouNeed = PutInHand("BringWhatYouNeed");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 3);
+            SetHitPoints(terminus, 20);
+            DecisionsYesNo = new bool[] { true };
+            DecisionSelectFunctions = new int?[] { 0 };
+            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed, covenantOfWrath };
+
+            QuickTokenPoolStorage(tokenPool);
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            PlayCard(theLightAtTheEnd);
+            base.GoToEndOfTurn(terminus);
+            QuickHPCheck(0, 2, 0, 0, 0);
+            QuickTokenPoolCheck(-3);
+            AssertIsInPlay(covenantOfWrath);
+        }
+
+        [Test]
+        public void TestTheLightAtTheEndRemoveOngoing()
+        {
+            Card etherealArmory;
+            Card theLightAtTheEnd;
+            Card covenantOfWrath;
+            Card motivationalCharge;
+            Card ammoDrop;
+            Card bringWhatYouNeed;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            base.GoToPlayCardPhase(terminus);
+            etherealArmory = PutInTrash("EtherealArmory");
+            covenantOfWrath = PutInHand("CovenantOfWrath");
+            theLightAtTheEnd = GetCard("TheLightAtTheEnd");
+            motivationalCharge = PutInHand("MotivationalCharge");
+            ammoDrop = PutInHand("AmmoDrop");
+            bringWhatYouNeed = PutInHand("BringWhatYouNeed");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 3);
+            SetHitPoints(terminus, 20);
+            DecisionsYesNo = new bool[] { true, false };
+            DecisionSelectFunctions = new int?[] { 1 };
+            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed, covenantOfWrath };
+
+            QuickTokenPoolStorage(tokenPool);
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            PlayCard(theLightAtTheEnd);
+            base.GoToEndOfTurn(terminus);
+            QuickHPCheckZero();
+            QuickTokenPoolCheck(-3);
+            AssertNotInPlay(covenantOfWrath);
+        }
+        #endregion Test The Chain Conductor
+
+        #region Test Unusual Suspects
+        /* 
+         * Add 2 tokens to your Wrath pool.
+         * {Terminus} deals up to 2 targets 2 cold damage each. If {Terminus} deals damage this way to
+         * a target that shares a keyword with a card in any trash pile, increase that damage by 2.
+         */
+        [Test]
+        public void TestUnusualSuspects()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            base.GoToPlayCardPhase(terminus);
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            DealDamage(terminus, bladeBattalion1, 6, DamageType.Melee);
+
+            DecisionSelectCards = new Card[] { baron.CharacterCard, bladeBattalion2 };
+            QuickTokenPoolStorage(tokenPool);
+            QuickHPStorage(baron.CharacterCard, terminus.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion2);
+            PlayCard("UnusualSuspects");
+            QuickTokenPoolCheck(2);
+            QuickHPCheck(-2, 0, 0, 0, 0, -4);
+
+        }
+        #endregion Test Unusual Suspects
     }
 }

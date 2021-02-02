@@ -17,6 +17,7 @@ namespace Cauldron.Terminus
          */
         public GravenShellCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.SpecialStringMaker.ShowTokenPool(base.WrathPool);
         }
 
         public override void AddTriggers()
@@ -29,7 +30,7 @@ namespace Cauldron.Terminus
         {
             IEnumerator coroutine;
 
-            coroutine = base.GameController.AddTokensToPool(WrathPool, 2, base.GetCardSource());
+            coroutine = base.AddWrathTokens(2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -37,16 +38,6 @@ namespace Cauldron.Terminus
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            coroutine = base.GameController.SendMessageAction($"2 tokens added to {WrathPool.Name}", Priority.Medium, base.GetCardSource(), null, true);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
             }
 
             coroutine = base.GameController.GainHP(base.CharacterCard, 1, cardSource: base.GetCardSource());

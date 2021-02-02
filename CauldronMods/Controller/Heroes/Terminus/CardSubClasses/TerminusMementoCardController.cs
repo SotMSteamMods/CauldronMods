@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Terminus
 {
-    public abstract class TerminusMementoCardController : TerminusUtilityCardController
+    public abstract class TerminusMementoCardController : TerminusBaseCardController
     {
         protected TerminusMementoCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -30,7 +30,7 @@ namespace Cauldron.Terminus
         private IEnumerator PlayCardActionResponse(PlayCardAction playCardAction)
         {
             IEnumerator coroutine;
-
+            
             coroutine = CancelAction(playCardAction);
             if (base.UseUnityCoroutines)
             {

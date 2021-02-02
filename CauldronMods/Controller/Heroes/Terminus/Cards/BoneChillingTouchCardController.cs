@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Terminus
 {
-    public class BoneChillingTouchCardController : TerminusUtilityCardController
+    public class BoneChillingTouchCardController : TerminusBaseCardController
     {
         /* 
          * A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.
@@ -28,6 +28,7 @@ namespace Cauldron.Terminus
             // A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.
             AddPreventDamageTrigger(DealDamageActionCriteria, isPreventEffect: false);
             AddTrigger<GainHPAction>(GainHPActionCriteria, GainHPActionResponse, TriggerType.ModifyHPGain, TriggerTiming.Before);
+            AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(alsoRemoveTriggersFromThisCard: false);
         }
 
         private bool DealDamageActionCriteria(DealDamageAction dealDamageAction)
@@ -59,11 +60,12 @@ namespace Cauldron.Terminus
         {
             IEnumerator coroutine;
             List<SelectCardDecision> storedResultsDecisions = new List<SelectCardDecision>();
+            List<DealDamageAction> storedDamageActions = new List<DealDamageAction>();
             List<YesNoCardDecision> yesNoCardDecisions = new List<YesNoCardDecision>();
             Card target;
 
             // {Terminus} deals 1 target 2 cold damage. 
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.Card), ColdDamage, DamageType.Cold, TargetCount, false, TargetCount, storedResultsDecisions: storedResultsDecisions, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.Card), ColdDamage, DamageType.Cold, TargetCount, false, TargetCount, storedResultsDecisions: storedResultsDecisions, storedResultsDamage: storedDamageActions, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -73,24 +75,14 @@ namespace Cauldron.Terminus
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (storedResultsDecisions != null && storedResultsDecisions.Count() > 0)
+            if (storedResultsDecisions != null && storedResultsDecisions.Count() > 0 && storedDamageActions != null && storedDamageActions.Count() > 0)
             {
                 target = storedResultsDecisions.FirstOrDefault().SelectedCard;
 
-                // You may move this card next to that target.
-                coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardNextToCard, base.Card, storedResults: yesNoCardDecisions, associatedCards: new Card[] { target }, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
+                if (!storedDamageActions.FirstOrDefault().DidDestroyTarget)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                if (base.DidPlayerAnswerYes(yesNoCardDecisions))
-                {
-                    coroutine = GameController.MoveCard(DecisionMaker, base.Card, target.NextToLocation, playCardIfMovingToPlayArea: false, cardSource: GetCardSource());
+                    // You may move this card next to that target.
+                    coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardNextToCard, base.Card, storedResults: yesNoCardDecisions, associatedCards: new Card[] { target }, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -98,6 +90,19 @@ namespace Cauldron.Terminus
                     else
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    if (base.DidPlayerAnswerYes(yesNoCardDecisions))
+                    {
+                        coroutine = GameController.MoveCard(DecisionMaker, base.Card, target.NextToLocation, playCardIfMovingToPlayArea: false, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
                     }
                 }
             }

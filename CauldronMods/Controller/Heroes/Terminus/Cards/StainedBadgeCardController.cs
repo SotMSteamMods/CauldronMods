@@ -17,7 +17,7 @@ namespace Cauldron.Terminus
          */
         public StainedBadgeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowTokenPool(base.WrathPool);
         }
 
         public override void AddTriggers()
@@ -30,17 +30,7 @@ namespace Cauldron.Terminus
         {
             IEnumerator coroutine;
 
-            coroutine = base.GameController.AddTokensToPool(WrathPool, 1, base.GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-
-            coroutine = base.GameController.SendMessageAction($"1 token added to {WrathPool.Name}", Priority.Medium, base.GetCardSource(), null, true);
+            coroutine = base.AddWrathTokens(1); 
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

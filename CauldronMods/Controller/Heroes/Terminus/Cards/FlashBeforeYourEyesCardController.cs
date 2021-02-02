@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Terminus
 {
-    public class FlashBeforeYourEyesCardController : TerminusUtilityCardController
+    public class FlashBeforeYourEyesCardController : TerminusBaseCardController
     {
         /*
          * At the end of your turn, select a trash pile and put a card from it on top of its associated deck.

@@ -182,7 +182,7 @@
                 "DealDamageCold",
                 "DealDamageProjectile"
             ],
-            "body":  "When this card enters play, add 3 tokens to your Wrath pool and destroy all other copies of Jailbreaker.",
+            "body": "When this card enters play, add 3 tokens to your Wrath pool and destroy all other copies of Jailbreaker.",
             "powers": [
                 "{Terminus} deals herself 1 cold damage and any number of other targets 2 projectile damage each."
             ],
@@ -528,7 +528,7 @@
             "flavorReference": "Terminus, Full Moon Express #19"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "TerminusCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceTerminusCharacter",
@@ -543,6 +543,15 @@
             "character": true,
             "powers": [
                 "Remove X tokens from your wrath pool (up to 2). {Terminus} deals 1 target X+1 cold damage and regains X+1 HP."
+            ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
             ],
             "icons": [
                 "HasPower",
@@ -587,6 +596,15 @@
             "powers": [
                 "Play a card. {Terminus} deals herself 2 cold damage."
             ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
+            ],
             "icons": [
                 "HasPower",
                 "PlayCardNow",
@@ -609,7 +627,7 @@
             "openingLines": {
                 "default": "Get out of our way, or we'll punch your ticket.",
                 "TheInfernalChoirCharacter": "Oh, I'm just getting started.",
-				"FutureTiamatCharacter": "The bigger they are, the harder they fall."
+                "FutureTiamatCharacter": "The bigger they are, the harder they fall."
             },
             "complexity": 2
         }

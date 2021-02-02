@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Terminus
 {
-    public class FullMoonExpressCardController : TerminusUtilityCardController
+    public class FullMoonExpressCardController : TerminusBaseCardController
     {
 		/*
 		 * Whenever {Terminus} is dealt damage by a non-hero target, she may deal that target 2 melee damage. If Stained Badge is not in play, 

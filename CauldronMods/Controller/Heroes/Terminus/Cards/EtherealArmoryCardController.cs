@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Terminus
 {
-    public class EtherealArmoryCardController : TerminusUtilityCardController
+    public class EtherealArmoryCardController : TerminusBaseCardController
     {
         /* 
          * Each player may play an ongoing or equipment card now.

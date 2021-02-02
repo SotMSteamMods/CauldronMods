@@ -8,7 +8,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Terminus
 {
-    public class CovenantOfWrathCardController : TerminusUtilityCardController
+    public class CovenantOfWrathCardController : TerminusBaseCardController
     {
         /* 
          * When this card would be destroyed, you may remove 3 tokens from your Wrath pool. If you removed 3 tokens this way, prevent that destruction.
@@ -32,13 +32,12 @@ namespace Cauldron.Terminus
         private IEnumerator DestroyCardActionResponse(DestroyCardAction destroyCardAction)
         {
             IEnumerator coroutine;
-            List<RemoveTokensFromPoolAction> storedResults;
 
             if (destroyCardAction.CanBeCancelled)
             {
+                // TODO: This needs to be optional
                 // When this card would be destroyed, you may remove 3 tokens from your Wrath pool.
-                storedResults = new List<RemoveTokensFromPoolAction>();
-                coroutine = base.GameController.RemoveTokensFromPool(base.WrathPool, TokensToRemove, storedResults, optional: true, destroyCardAction, GetCardSource());
+                coroutine = base.RemoveWrathTokens<DestroyCardAction>(TokensToRemove, PreventDestructionResponse, destroyCardAction, $"{base.Card.Title} will be destroyed", true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -47,18 +46,26 @@ namespace Cauldron.Terminus
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                if (DidRemoveTokens(storedResults, TokensToRemove))
+            }
+
+            yield break;
+        }
+
+        private IEnumerator PreventDestructionResponse(DestroyCardAction destroyCardAction, List<RemoveTokensFromPoolAction> storedResults)
+        {
+            IEnumerator coroutine;
+
+            if (DidRemoveTokens(storedResults, TokensToRemove))
+            {
+                // If you removed 3 tokens this way, prevent that destruction.
+                coroutine = base.GameController.CancelAction(destroyCardAction, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
                 {
-                    // If you removed 3 tokens this way, prevent that destruction.
-                    coroutine = base.GameController.CancelAction(destroyCardAction, cardSource: GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
 
