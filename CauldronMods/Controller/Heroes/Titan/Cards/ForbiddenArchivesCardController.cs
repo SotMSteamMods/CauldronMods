@@ -28,8 +28,8 @@ namespace Cauldron.Titan
                 this.GameController.ExhaustCoroutine(coroutine);
             }
 
-            var otherDrawingHeroes =  new List<HeroTurnTaker>{ };            
-            foreach(DrawCardAction draw in storedResults)
+            var otherDrawingHeroes = new List<HeroTurnTaker> { };
+            foreach (DrawCardAction draw in storedResults)
             {
                 if (draw.HeroTurnTaker != this.HeroTurnTaker && !otherDrawingHeroes.Contains(draw.HeroTurnTaker))
                 {
@@ -56,7 +56,7 @@ namespace Cauldron.Titan
 
         private YesNoDecision YesNoDecisionMaker(HeroTurnTakerController hero)
         {
-            return new YesNoDecision(base.GameController, hero, SelectionType.DrawExtraCard, cardSource: base.GetCardSource()); ;
+            return new YesNoDecision(base.GameController, hero, SelectionType.DrawExtraCard, cardSource: base.GetCardSource());
         }
 
         private IEnumerator YesAction(HeroTurnTakerController hero, YesNoDecision decision, List<DrawCardAction> storedDraw)
