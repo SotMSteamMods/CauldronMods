@@ -1326,6 +1326,153 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestTornPage_Danger()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put danger on deck
+            PutOnDeck(AclastyphWhoPeers);
+            DecisionYesNo = false;
+
+            //The first time each turn that [condition happens] this card deals that hero 2 infernal damage and 2 psychic damage.
+            Card page = PlayCard(TornPage);
+            PrintSpecialStringsForCard(page);
+
+            //{MythosDanger} a hero card is drawn...
+            QuickHPStorage(mythos, legacy, bunker, haka);
+            DrawCard(bunker);
+            QuickHPCheck(0, 0, -4, 0);
+
+
+            //only first damage
+            QuickHPUpdate();
+            DrawCard(legacy);
+            QuickHPCheckZero();
+
+            //resets next turn
+            GoToNextTurn();
+            QuickHPUpdate();
+            DrawCard(haka);
+            QuickHPCheck(0, 0, 0, -4);
+
+            GoToNextTurn();
+
+            PrintSpecialStringsForCard(page);
+
+
+            //{MythosMadness} a hero card enters play...
+            QuickHPUpdate();
+            PlayCard("NextEvolution");
+            QuickHPCheckZero();
+
+
+            //{MythosClue} a power is used...
+            QuickHPUpdate();
+            UsePower(legacy.CharacterCard);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestTornPage_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put madness on deck
+            PutOnDeck(WhispersAndLies);
+            DecisionYesNo = false;
+
+            //The first time each turn that [condition happens] this card deals that hero 2 infernal damage and 2 psychic damage.
+            Card page = PlayCard(TornPage);
+            PrintSpecialStringsForCard(page);
+
+            //{MythosMadness} a hero card enters play...
+            QuickHPStorage(mythos, legacy, bunker, haka);
+            PlayCard("NextEvolution");
+            QuickHPCheck(0, -4, 0, 0);
+
+
+            //only first damage
+            QuickHPUpdate();
+            PlayCard("Dominion");
+            QuickHPCheckZero();
+
+            //resets next turn
+            GoToNextTurn();
+            QuickHPUpdate();
+            PlayCard("Mere");
+            QuickHPCheck(0, 0, 0, -4);
+
+            GoToNextTurn();
+
+            PrintSpecialStringsForCard(page);
+
+            //{MythosDanger} a hero card is drawn...
+            QuickHPUpdate();
+            DrawCard(bunker);
+            QuickHPCheckZero();
+
+
+            //{MythosClue} a power is used...
+
+            QuickHPUpdate();
+            UsePower(legacy.CharacterCard);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestTornPage_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put clue on deck
+            PutOnDeck(PallidAcademic);
+            DecisionYesNo = false;
+
+            //The first time each turn that [condition happens] this card deals that hero 2 infernal damage and 2 psychic damage.
+            Card page = PlayCard(TornPage);
+            PrintSpecialStringsForCard(page);
+
+            //{MythosClue} a power is used...
+            QuickHPStorage(mythos, legacy, bunker, haka);
+            UsePower(legacy.CharacterCard);
+            QuickHPCheck(0, -4, 0, 0);
+
+
+            //only first damage
+            QuickHPUpdate();
+            UsePower(legacy.CharacterCard);
+            QuickHPCheckZero();
+
+            //resets next turn
+            GoToNextTurn();
+            QuickHPUpdate();
+            UsePower(legacy.CharacterCard);
+            QuickHPCheck(0, -4, 0, 0);
+
+            GoToNextTurn();
+
+            PrintSpecialStringsForCard(page);
+
+            //{MythosDanger} a hero card is drawn...
+            QuickHPUpdate();
+            DrawCard(bunker);
+            QuickHPCheckZero();
+
+
+            //{MythosMadness} a hero card enters play...
+
+            QuickHPUpdate();
+            PlayCard("NextEvolution");
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
         public void TestYourDarkestSecrets()
         {
             SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Unity", "Ra", "Megalopolis");
