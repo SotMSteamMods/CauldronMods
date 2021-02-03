@@ -26,6 +26,10 @@ namespace Cauldron.Pyre
         {
             ShowIrradiatedCount();
         }
+        public override bool ShouldBeDestroyedNow()
+        {
+            return Card.IsInPlayAndHasGameText && FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "HullCladding").Any();
+        }
         public override void AddTriggers()
         {
             //"Whenever a player plays a {PyreIrradiate} card, increase energy damage dealt by {Pyre} by 1 until the end of your turn. Then shuffle a Cascade card from your trash into your deck.",

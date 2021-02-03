@@ -848,6 +848,32 @@ namespace CauldronTests
             AssertIsInPlay(cladding);
         }
         [Test]
+        public void TestHullCladdingIndestructibleDrops()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "TimeCataclysm");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card point = PlayCard("FixedPoint");
+
+            Card cladding = PlayCard("HullCladding");
+            DecisionSelectCard = cladding;
+            Card breach = PlayCard("ContainmentBreach");
+            
+            AssertIsInPlay(cladding, breach);
+
+            DestroyCard(point);
+            AssertInTrash(cladding);
+            AssertIsInPlay(breach);
+
+            PlayCard(point);
+            DecisionSelectCard = breach;
+            PlayCard(cladding);
+            DestroyCard(point);
+            AssertInTrash(breach);
+            AssertIsInPlay(cladding);
+        }
+        [Test]
         public void TestHullCladdingPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");

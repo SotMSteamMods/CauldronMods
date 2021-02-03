@@ -8,11 +8,17 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Pyre
 {
+
     public class HullCladdingCardController : PyreUtilityCardController
     {
+
         public HullCladdingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowIfElseSpecialString(() => GameController.GetAllCards().Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ContainmentBreach"), () => "Containment Breach is in play", () => "Containment Breach is not in play.");
+        }
+        public override bool ShouldBeDestroyedNow()
+        {
+            return Card.IsInPlayAndHasGameText && FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ContainmentBreach").Any();
         }
 
         public override void AddTriggers()
