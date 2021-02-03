@@ -18,8 +18,8 @@ namespace Cauldron.Dynamo
         public override IEnumerator Play()
         {
             //{Dynamo} deals the hero target with the highest HP 5 energy damage.
-            List<DealDamageAction> dealDamageActions = new List<DealDamageAction>();
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 5, DamageType.Energy, storedResults: dealDamageActions);
+            List<Card> storeHighest = new List<Card>();
+            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => c.IsHero && c.IsTarget, storeHighest, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -29,7 +29,18 @@ namespace Cauldron.Dynamo
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (dealDamageActions.Any())
+            List<DealDamageAction> dealDamageActions = new List<DealDamageAction>();
+            coroutine = base.DealDamage(base.CharacterCard, storeHighest.FirstOrDefault(), 5, DamageType.Energy, storedResults: dealDamageActions, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (dealDamageActions.FirstOrDefault().DidDealDamage)
             {
                 DealDamageAction damageAction = dealDamageActions.FirstOrDefault();
                 //If a hero target takes damage this way...
@@ -46,32 +57,20 @@ namespace Cauldron.Dynamo
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
+            }
 
-                //{Dynamo} deals each other hero target 1 sonic damage.
-                coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget && c != damageAction.OriginalTarget, (Card c) => 1, DamageType.Sonic);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+            //{Dynamo} deals each other hero target 1 sonic damage.
+            coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget && !storeHighest.Contains(c), (Card c) => 1, DamageType.Sonic);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                //If somehow no targets were hit, go after all hero targets
-                coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget, (Card c) => 1, DamageType.Sonic);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                base.GameController.ExhaustCoroutine(coroutine);
+
+                yield break;
             }
-            yield break;
         }
     }
 }

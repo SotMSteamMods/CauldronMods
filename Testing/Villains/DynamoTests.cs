@@ -648,5 +648,39 @@ namespace CauldronTests
             //If Python is in play, destroy {H} hero ongoing and/or equipment cards.
             AssertInTrash(flak, moko, mere);
         }
+
+        [Test]
+        public void TestTakeItOutside_TakesDamage()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(TakeItOutside);
+            //{Dynamo} deals the hero target with the highest HP 5 energy damage. If a hero target takes damage this way, destroy 1 environment card.
+            AssertInTrash(traffic);
+            //{Dynamo} deals each other hero target 1 sonic damage.
+            QuickHPCheck(-5, -1, -1);
+        }
+
+        [Test]
+        public void TestTakeItOutside_NoTakeDamage()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+            SetHitPoints(new TurnTakerController[] { haka, bunker, scholar }, 17);
+
+            AddCannotDealNextDamageTrigger(dynamo, dynamo.CharacterCard);
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(TakeItOutside);
+            //{Dynamo} deals the hero target with the highest HP 5 energy damage. If a hero target takes damage this way, destroy 1 environment card.
+            AssertIsInPlay(traffic);
+            //{Dynamo} deals each other hero target 1 sonic damage.
+            QuickHPCheck(0, -1, -1);
+        }
     }
 }
