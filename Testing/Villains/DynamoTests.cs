@@ -682,5 +682,57 @@ namespace CauldronTests
             //{Dynamo} deals each other hero target 1 sonic damage.
             QuickHPCheck(0, -1, -1);
         }
+
+        [Test]
+        public void TestWantonDestruction_NoDestroy()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+            PlayCard(WantonDestruction);
+
+            //At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 1} cards were destroyed this way, discard the top card of the villain deck.
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash + 1);
+        }
+
+        [Test]
+        public void TestWantonDestruction_Destroy()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+            PlayCard(WantonDestruction);
+
+            Card mere = PlayCard("Mere");
+            Card flak = PlayCard("FlakCannon");
+            Card iron = PlayCard("FleshToIron");
+
+            //At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 1} cards were destroyed this way, discard the top card of the villain deck.
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash);
+            AssertInTrash(mere, flak, iron);
+        }
+
+        [Test]
+        public void TestWantonDestruction_OnlyDestroy1PerHero()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+            PlayCard(WantonDestruction);
+
+            Card mere = PlayCard("Mere");
+            Card moko = PlayCard("TaMoko");
+
+            //At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 1} cards were destroyed this way, discard the top card of the villain deck.
+            GoToEndOfTurn(dynamo);
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash + 1);
+            AssertInTrash(mere);
+            AssertIsInPlay(moko);
+        }
     }
 }
