@@ -1250,6 +1250,77 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRustedArtifact_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put clue on deck
+            PutOnDeck(PallidAcademic);
+
+            Card rusted = PlayCard("RustedArtifact");
+
+            //Increase damage dealt to hero targets by 1.
+            QuickHPStorage(legacy);
+            DealDamage(mythos, legacy, 3, DamageType.Infernal);
+            QuickHPCheck(-4);
+
+            //{MythosMadness}{MythosDanger} This card is indestructible and immune to damage.
+            DealDamage(legacy, rusted, 3, DamageType.Melee);
+            AssertInTrash(rusted);
+
+
+        }
+
+        [Test()]
+        public void TestRustedArtifact_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put madness on deck
+            PutOnDeck(WhispersAndLies);
+
+            Card rusted = PlayCard("RustedArtifact");
+
+            //Increase damage dealt to hero targets by 1.
+            QuickHPStorage(legacy);
+            DealDamage(mythos, legacy, 3, DamageType.Infernal);
+            QuickHPCheck(-4);
+
+            //{MythosMadness}{MythosDanger} This card is indestructible and immune to damage.
+            DealDamage(legacy, rusted, 3, DamageType.Melee);
+            AssertInPlayArea(mythos, rusted);
+            AssertHitPoints(rusted, 1);
+
+
+        }
+
+        [Test()]
+        public void TestRustedArtifact_Danger()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put danger on deck
+            PutOnDeck(AclastyphWhoPeers);
+
+            Card rusted = PlayCard("RustedArtifact");
+
+            //Increase damage dealt to hero targets by 1.
+            QuickHPStorage(legacy);
+            DealDamage(mythos, legacy, 3, DamageType.Infernal);
+            QuickHPCheck(-4);
+
+            //{MythosMadness}{MythosDanger} This card is indestructible and immune to damage.
+            DealDamage(legacy, rusted, 3, DamageType.Melee);
+            AssertInPlayArea(mythos, rusted);
+            AssertHitPoints(rusted, 1);
+
+
+        }
+
+        [Test()]
         public void TestYourDarkestSecrets()
         {
             SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Unity", "Ra", "Megalopolis");

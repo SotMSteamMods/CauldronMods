@@ -12,6 +12,7 @@ namespace Cauldron.Mythos
     {
         public RustedArtifactCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
         public override void AddTriggers()
