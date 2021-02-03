@@ -10,6 +10,7 @@ namespace Cauldron.WindmillCity
 {
     public class FrameJobCardController : WindmillCityUtilityCardController
     {
+        public override bool AllowFastCoroutinesDuringPretend => false;
         public FrameJobCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(c => IsResponder(c), "responder")).Condition = () => !Card.IsInPlayAndHasGameText;
