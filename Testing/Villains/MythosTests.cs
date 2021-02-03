@@ -349,9 +349,9 @@ namespace CauldronTests
             IEnumerable<Card> prey = FindCardsWhere(c => c.Owner == mythos.TurnTaker && c.Identifier == PreyUponTheMind).Take(2);
 
             Card acad0 = PutOnDeck(mythos, academic.First());
-            Card acad1 = PutOnDeck(mythos, academic.Last());
+            Card acad1 = PutOnDeck(mythos, prey.First());
             Card site = PutOnDeck(RitualSite);
-            Card prey0 = PutOnDeck(mythos, prey.First());
+            Card prey0 = PutOnDeck(mythos, academic.Last());
             Card prey1 = PutOnDeck(mythos, prey.Last());
             DecisionsYesNo = new bool[] { true, true, true, true, true, false, false };
 
@@ -866,13 +866,15 @@ namespace CauldronTests
             SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
             StartGame();
 
+            Card academic = PutInTrash(PallidAcademic);
+
             //Madness
             PutOnDeck(ClockworkRevenant);
             //Danger
             Card topCard = PutOnDeck(AclastyphWhoPeers);
             Card bottomCard = mythos.TurnTaker.Deck.BottomCard;
 
-            PlayCard(PallidAcademic);
+            PlayCard(academic);
 
             //When a hero target is dealt damage by another hero target:
             DealDamage(haka, legacy, 2, DamageType.Melee);
@@ -882,6 +884,114 @@ namespace CauldronTests
             //Playing the top card reveals a Madness card
             //{MythosMadness} Move the bottom card of a deck to the top of that deck.
             AssertOnTopOfDeck(bottomCard);
+        }
+
+        [Test()]
+        public void TestPreyUponTheMind_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put madness on deck
+            PutOnDeck(ClockworkRevenant);
+
+            Card on1 = PlayCard("NextEvolution");
+            Card on2 = PlayCard("AmmoDrop");
+            Card on3 = PlayCard("Dominion");
+            Card d1 = GetRandomCardFromHand(legacy);
+            Card d2 = GetRandomCardFromHand(bunker);
+            Card d3 = GetRandomCardFromHand(haka);
+            DecisionSelectCards = new Card[] { on2, d1, d2, d3 };
+            DecisionAutoDecideIfAble = true;
+
+            QuickHandStorage(legacy, bunker, haka);
+            QuickHPStorage(mythos, legacy, bunker, haka);
+
+            PlayCard("PreyUponTheMind");
+
+            //Destroy {H - 2} hero ongoing cards.
+            AssertInPlayArea(legacy, on1);
+            AssertInPlayArea(haka, on3);
+            AssertInTrash(on2);
+
+            //{MythosMadness} Each player discards 1 card.
+            QuickHandCheck(-1, -1, -1);
+            AssertInTrash(d1, d2, d3);
+
+            //{MythosDanger} {Mythos} deals each hero target 1 infernal damage.
+            QuickHPCheck(0, 0, 0, 0);
+        }
+
+        [Test()]
+        public void TestPreyUponTheMind_Danger()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+
+            //put danger on deck
+            PutOnDeck(AclastyphWhoPeers);
+
+            Card on1 = PlayCard("NextEvolution");
+            Card on2 = PlayCard("AmmoDrop");
+            Card on3 = PlayCard("Dominion");
+            Card d1 = GetRandomCardFromHand(legacy);
+            Card d2 = GetRandomCardFromHand(bunker);
+            Card d3 = GetRandomCardFromHand(haka);
+            DecisionSelectCards = new Card[] { on2, d1, d2, d3 };
+            DecisionAutoDecideIfAble = true;
+            QuickHandStorage(legacy, bunker, haka);
+            QuickHPStorage(mythos, legacy, bunker, haka);
+
+            PlayCard("PreyUponTheMind");
+
+            //Destroy {H - 2} hero ongoing cards.
+            AssertInPlayArea(legacy, on1);
+            AssertInPlayArea(haka, on3);
+            AssertInTrash(on2);
+
+            //{MythosMadness} Each player discards 1 card.
+            QuickHandCheck(0, 0, 0);
+            AssertInHand(d1, d2, d3);
+
+            //{MythosDanger} {Mythos} deals each hero target 1 infernal damage.
+            QuickHPCheck(0, -1, -1, -1);
+        }
+
+        [Test()]
+        public void TestPreyUponTheMind_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put clue on deck
+            PutOnDeck(PallidAcademic);
+
+            Card on1 = PlayCard("NextEvolution");
+            Card on2 = PlayCard("AmmoDrop");
+            Card on3 = PlayCard("Dominion");
+            Card d1 = GetRandomCardFromHand(legacy);
+            Card d2 = GetRandomCardFromHand(bunker);
+            Card d3 = GetRandomCardFromHand(haka);
+            DecisionSelectCards = new Card[] { on2, d1, d2, d3 };
+            DecisionAutoDecideIfAble = true;
+
+            QuickHandStorage(legacy, bunker, haka);
+            QuickHPStorage(mythos, legacy, bunker, haka);
+
+            PlayCard("PreyUponTheMind");
+
+            //Destroy {H - 2} hero ongoing cards.
+            AssertInPlayArea(legacy, on1);
+            AssertInPlayArea(haka, on3);
+            AssertInTrash(on2);
+
+            //{MythosMadness} Each player discards 1 card.
+            QuickHandCheck(0, 0, 0);
+            AssertInHand(d1, d2, d3);
+
+            //{MythosDanger} {Mythos} deals each hero target 1 infernal damage.
+            QuickHPCheck(0, 0, 0, 0);
         }
 
         [Test()]

@@ -41,7 +41,7 @@ namespace Cauldron.Mythos
                 }
             }
 
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
             {
                 //{MythosDanger} {Mythos} deals each hero target 1 infernal damage.
                 coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Infernal);
