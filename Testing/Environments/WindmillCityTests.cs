@@ -551,21 +551,45 @@ namespace CauldronTests
             StartGame();
             DestroyNonCharacterVillainCards();
             Card battalion = PlayCard("BladeBattalion");
-            Card responder = PutOnDeck("DetectiveSedrick");
+            Card responder1 = PutOnDeck("DetectiveSedrick");
+            Card responder2 = PlayCard("IntrepidReporter");
             //When this card enters play, play the top card of the environment deck.
             Card saveDay = PlayCard("SaveTheDay");
-            AssertInPlayArea(windmill, responder);
-            SetHitPoints(responder, 3);
+            AssertInPlayArea(windmill, responder1);
+            SetHitPoints(responder1, 3);
+            SetHitPoints(responder2, 3);
             SetHitPoints(battalion, 3);
 
             //Whenever a hero card destroys a villain target, 1 Responder regains 1HP.
-            DecisionSelectCards = new Card[] { battalion, baron.CharacterCard };
-            QuickHPStorage(responder);
+            DecisionSelectCards = new Card[] { battalion, responder1, baron.CharacterCard };
+            QuickHPStorage(responder1, responder2);
             PlayCard("FinalDive");
-            QuickHPCheck(1);
+            QuickHPCheck(1, 0);
+        }
+        [Test()]
+        public void TestSaveTheDay_OnlyHero()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Fanatic", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            Card redistributor = PlayCard("ElementalRedistributor");
+            Card responder1 = PutOnDeck("DetectiveSedrick");
+            Card responder2 = PlayCard("IntrepidReporter");
+            //When this card enters play, play the top card of the environment deck.
+            Card saveDay = PlayCard("SaveTheDay");
+            AssertInPlayArea(windmill, responder1);
+            SetHitPoints(responder1, 3);
+            SetHitPoints(responder2, 3);
+            SetHitPoints(battalion, 3);
+
+            //Whenever a hero card destroys a villain target, 1 Responder regains 1HP.
+            QuickHPStorage(responder1, responder2);
+            DealDamage(legacy, redistributor, 10, DamageType.Melee);
+            QuickHPCheck(1, 0);
+            DealDamage(baron.CharacterCard, battalion, 5, DamageType.Melee);
+            QuickHPCheckZero();
             
-
-
         }
 
         [Test()]
