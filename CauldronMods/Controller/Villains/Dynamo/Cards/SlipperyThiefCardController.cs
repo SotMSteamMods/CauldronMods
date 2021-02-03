@@ -75,7 +75,7 @@ namespace Cauldron.Dynamo
             }
 
             //...deals the hero target with the lowest HP {H - 2} melee damage.
-            coroutine = base.DealDamageToLowestHP(lowestVillain, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => base.Game.H, DamageType.Melee);
+            coroutine = base.DealDamageToLowestHP(lowestVillain, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => base.Game.H - 2, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

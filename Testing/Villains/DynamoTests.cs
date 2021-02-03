@@ -555,5 +555,45 @@ namespace CauldronTests
             PutInTrash(SlipperyThief);
             QuickHPCheck(0, -1, -1);
         }
+
+        [Test]
+        public void TestSlipperyThief_NoPython()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            QuickHPStorage(haka, bunker, scholar);
+            //If Python is in play, he deals each hero target 1 toxic damage, regains {H} HP, and discards the top card of the villain deck.
+            //The villain target with the lowest HP deals the hero target with the lowest HP {H - 2} melee damage.
+            PlayCard(SlipperyThief);
+            QuickHPCheck(0, -1, 0);
+        }
+
+        [Test]
+        public void TestSlipperyThief_Python()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            StackDeck(HardenedCriminals);
+
+            AddCannotDealNextDamageTrigger(dynamo, dynamo.CharacterCard);
+            Card pyt = PlayCard(Python);
+            SetHitPoints(pyt, 3);
+            int dynamoTrash = dynamo.TurnTaker.Trash.NumberOfCards;
+
+            QuickHPStorage(haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, pyt);
+            //If Python is in play, he deals each hero target 1 toxic damage, regains {H} HP, and discards the top card of the villain deck.
+            //The villain target with the lowest HP deals the hero target with the lowest HP {H - 2} melee damage.
+            PlayCard(SlipperyThief);
+
+            //Python hits all for 1 becasue he's in play
+            //Slippery Thief hits lowest (Bunker) for 1
+            //Because a One-Shot entered the trash Python's card deals 1 to Bunker and Scholar
+            QuickHPCheck(-1, -3, -2, 3);
+
+            //card played and top card discarded
+            AssertNumberOfCardsInTrash(dynamo, dynamoTrash + 2);
+        }
     }
 }
