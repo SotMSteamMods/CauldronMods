@@ -5,7 +5,8 @@
 	"initialCardIdentifiers": [
 		"MalichaeCharacter"
 	],
-	"cards": [{
+	"cards": [
+		{
 			"identifier": "MalichaeCharacter",
 			"count": 1,
 			"title": "Malichae",
@@ -60,10 +61,12 @@
 				"Discard a Djinn card. If you do, you may put a Djinn from your trash into play or draw 2 cards.",
 				"You may use a power now."
 			],
-			"flavorQuotes": [{
-				"identifier": "Malichae",
-				"text": "Ezael, I need you now. Come forth on borrowed essence."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "Malichae",
+					"text": "Ezael, I need you now. Come forth on borrowed essence."
+				}
+			],
 			"flavorReference": "Malichae, Shatterpoint #50"
 		},
 		{
@@ -127,8 +130,8 @@
 				"One player may draw a card.",
 				"One player may put a card from their trash on top of their deck."
 			],
-			"flavorText": "I travelled for years, looking for the Compass. I know a guy here we can talk to.",
-			"flavorReference": "Arabian Nightmares #1"
+			"flavorText": "I travelled for years, looking{BR}for the Compass. I know a guy here{BR}we can talk to.",
+			"flavorReference": "Malichae, Arabian Nightmares #1"
 		},
 		{
 			"identifier": "GrandBathiel",
@@ -149,10 +152,12 @@
 				"[b]Power:[/b] Bathiel deals 1 target 6 energy damage.",
 				"At the end of your turn, destroy this card."
 			],
-			"flavorQuotes": [{
-				"identifier": "Malichae",
-				"text": "Alright, Bathiel, show 'em what they're made of."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "Malichae",
+					"text": "Alright, Bathiel, show{BR}'em what they're made of."
+				}
+			],
 			"flavorReference": "Malichae, Shardcatcher Malichae #254"
 		},
 		{
@@ -174,10 +179,12 @@
 				"[b]Power:[/b] All hero targets regain 3HP.",
 				"At the end of your turn, destroy this card."
 			],
-			"flavorQuotes": [{
-				"identifier": "Malichae",
-				"text": "Look after them, Ezael. Bathiel and I are going to finish this."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "Malichae",
+					"text": "Look after them, Ezael. Bathiel{BR}and I are going to finish this."
+				}
+			],
 			"flavorReference": "Malichae, Shardcatcher Malichae #378"
 		},
 		{
@@ -198,11 +205,13 @@
 				"[b]Power:[/b] Reshiel deals each non-hero target 2 sonic damage.",
 				"At the end of your turn, destroy this card."
 			],
-			"flavorQuotes": [{
-				"identifier": "TheStranger",
-				"text": "He is channeling his own lifeforce into the Djinn so that it may sustain its true form on this side of the Veil."
-			}],
-			"flavorReference": "TheStranger, Djinn & Tonic One-shot"
+			"flavorQuotes": [
+				{
+					"identifier": "TheStranger",
+					"text": "He is channeling his own lifeforce{BR}into the Djinn so that it may sustain its{BR}true form on this side of the Veil."
+				}
+			],
+			"flavorReference": "The Stranger, Djinn & Tonic One-shot"
 		},
 		{
 			"identifier": "GrandSomael",
@@ -223,10 +232,12 @@
 				"[b]Power:[/b] Reduce damage dealt to hero targets by 2 until the start of your next turn.",
 				"At the end of your turn, destroy this card."
 			],
-			"flavorQuotes": [{
-				"identifier": "TheStranger",
-				"text": "It appears we are now under his protection."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "TheStranger",
+					"text": "It appears we are now under his protection."
+				}
+			],
 			"flavorReference": "The Stranger, Book of the Dead #1022"
 		},
 		{
@@ -246,13 +257,15 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Bathiel. If Bathiel is ever not in play, destroy this card.",
-				"Increase damage dealt by Bathiel by 1.",
-				"[b]Power:[/b] Bathiel deals 1 target 4 energy damage. Destroy this card."
+				"Increase damage dealt by Bathiel by 1."
 			],
-			"flavorQuotes": [{
-				"identifier": "Malichae",
-				"text": "When I finally broke through the Veil, he was the first Djinn I encountered. A lot's happened since then."
-			}],
+			"powers": "Bathiel deals 1 target 4 energy damage. Destroy this card.",
+			"flavorQuotes": [
+				{
+					"identifier": "Malichae",
+					"text": "When I finally broke{BR}through the Veil, he was the{BR}first Djinn I encountered. A{BR}lot's happened since then."
+				}
+			],
 			"flavorReference": "Malichae, Tome of the Bizarre #35"
 		},
 		{
@@ -271,13 +284,15 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Ezael. If Ezael is ever not in play, destroy this card.",
-				"At the end of your turn, each Djinn regains 1HP.",
-				"[b]Power:[/b] All Djinn regain 2HP. All other hero targets regain 1HP. Destroy this card."
+				"At the end of your turn, each Djinn regains 1HP."
 			],
-			"flavorQuotes": [{
-				"identifier": "DocHavoc",
-				"text": "If their medic's that good, how bad are their wars?"
-			}],
+			"powers": "All Djinn regain 2HP. All other hero targets regain 1HP. Destroy this card.",
+			"flavorQuotes": [
+				{
+					"identifier": "DocHavoc",
+					"text": "If their medic's that good,{BR}how bad are their wars?"
+				}
+			],
 			"flavorReference": "Doc Havoc, War Journal #516"
 		},
 		{
@@ -297,13 +312,15 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Reshiel. If Reshiel is ever not in play, destroy this card.",
-				"Increase damage dealt by Reshiel by 1.",
-				"[b]Power:[/b] Reshiel deals up to 3 targets 2 sonic damage each. Destroy this card."
+				"Increase damage dealt by Reshiel by 1."
 			],
-			"flavorQuotes": [{
-				"identifier": "Gloomweaver",
-				"text": "It disgusts me, the affinity that these denizens of the Veil have for a mortal. What has he done to earn their bond?"
-			}],
+			"powers": "Reshiel deals up to 3 targets 2 sonic damage each. Destroy this card.",
+			"flavorQuotes": [
+				{
+					"identifier": "Gloomweaver",
+					"text": "It disgusts me, the{BR}affinity that these denizens of the{BR}Veil have for a mortal. What has he{BR}done to earn their bond?"
+				}
+			],
 			"flavorReference": "Gloomweaver, Rook City #404"
 		},
 		{
@@ -322,15 +339,16 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Somael. If Somael is ever not in play, destroy this card.",
-				"Reduce damage dealt to Djinn by 1.",
-				"[b]Power:[/b] Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy this card."
+				"Reduce damage dealt to Djinn by 1."
 			],
-			"flavorQuotes": [{
+			"powers": "Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy this card.",
+			"flavorQuotes": [
+				{
 					"identifier": "Malichae",
 					"text": "He's really very friendly."
 				},
 				{
-					"identifier": "TangoOne",
+					"identifier": "Tango One",
 					"text": "If you say so."
 				}
 			],
@@ -351,8 +369,7 @@
 				"Reveal the top 3 cards of your deck. Put 2 into your hand and 1 into your trash.",
 				"You may play a Djinn now."
 			],
-			"flavorText": "From the depths of the crystal, Bathiel's silent stare met Malichae's. He nodded once, slowly, and shattered it upon the ground.",
-			"flavorReference": "and shattered it upon the ground."
+			"flavorText": "From the depths of the crystal,{BR}Bathiel's silent stare met Malichae's. He{BR}nodded once, slowly, and shattered it{BR}upon the ground."
 		},
 		{
 			"identifier": "Reshiel",
@@ -393,10 +410,12 @@
 				"You may draw a card.",
 				"You may play a card."
 			],
-			"flavorQuotes": [{
-				"identifier": "Malichae",
-				"text": "It's been a long time, old friend."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "Malichae",
+					"text": "It's been a long time, old friend."
+				}
+			],
 			"flavorReference": "Malichae, Shatterpoint #182"
 		},
 		{
@@ -411,10 +430,12 @@
 				"DestroySelf"
 			],
 			"body": "Play this card next to a target. Increase damage dealt to that target by Djinn cards by 1. If that target leaves play, destroy this card.",
-			"flavorQuotes": [{
-				"identifier": "Malichae",
-				"text": "It calls out to the Djinn in this foreign place. Like a taste of home, like blood in the water."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "Malichae",
+					"text": "It calls out to the Djinn in{BR}this foreign place. Like a taste of{BR}home, like blood in the water."
+				}
+			],
 			"flavorReference": "Malichae, Shardcatcher Malichae #64"
 		},
 		{
@@ -453,10 +474,12 @@
 			"powers": [
 				"Put a Djinn from your hand into play."
 			],
-			"flavorQuotes": [{
-				"identifier": "TheScholar",
-				"text": "Think of it as a lock, guarding the Djinn's location in the other realm. Until you break it, and it becomes a door."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "TheScholar",
+					"text": "Think of it as a lock,{BR}guarding the Djinn's location{BR}in the other realm. Until you break{BR}it, and it becomes a door."
+				}
+			],
 			"flavorReference": "The Scholar, Arabian Nightmares #3"
 		},
 		{
@@ -471,11 +494,13 @@
 				"UsePowerExtra"
 			],
 			"body": "You may use an additional power during your power phase.",
-			"flavorQuotes": [{
-				"identifier": "Malichae",
-				"text": "She's only got two volumes. Off isn't one of them!"
-			}],
-			"flavorReference": "Malichae, Reshiel One-Shot"
+			"flavorQuotes": [
+				{
+					"identifier": "Malichae",
+					"text": "She's only got two{BR}volumes. Off isn't one of them!"
+				}
+			],
+			"flavorReference": "Malichae, Djinn and Tonic One-Shot"
 		},
 		{
 			"identifier": "ZephaerensCompass",
@@ -494,14 +519,17 @@
 			"powers": [
 				"Put a Djinn target in play back into your hand. If you do, destroy up to X ongoing or environment cards, where X is 1 plus the number of Djinn ongoings attached to that target."
 			],
-			"flavorQuotes": [{
-				"identifier": "Malichae",
-				"text": "The compass shows the path back to their realm. And when that door opens, you're going along for the ride!"
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "Malichae",
+					"text": "The compass shows the{BR}path back to their realm. And{BR}when that door opens, you're{BR}going along for the ride!"
+				}
+			],
 			"flavorReference": "Malichae, Bathiel One-shot"
 		}
 	],
-	"promoCards": [{
+	"promoCards": [
+		{
 			"identifier": "MalichaeCharacter",
 			"promoIdentifier": "ShardmasterMalichaeCharacter",
 			"count": 1,
