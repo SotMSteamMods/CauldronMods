@@ -34,7 +34,7 @@ namespace Cauldron.MagnificentMara
         {
             var hero = FindHeroTurnTakerController(tt.ToHero());
             var returnedStorage = new List<SelectCardDecision> { };
-            IEnumerator coroutine = SelectAndMoveCardOptional(hero, (Card c) => c.IsInPlay && !c.IsCharacter && c.Owner == hero.TurnTaker && !GameController.IsCardIndestructible(c), hero.HeroTurnTaker.Hand, optional: true, storedResults: returnedStorage, cardSource: GetCardSource());
+            IEnumerator coroutine = SelectAndMoveCardOptional(hero, (Card c) => c.IsInPlay && !c.IsCharacter && !c.IsOneShot && c.Owner == hero.TurnTaker && !GameController.IsCardIndestructible(c), hero.HeroTurnTaker.Hand, optional: true, storedResults: returnedStorage, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
