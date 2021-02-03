@@ -101,7 +101,7 @@
                 "DealDamageToxic",
                 "IncreaseDamageDealt"
             ],
-            "body": "Whenever {Gargoyle} deals himself damage, he may also deal that to 1 other target.",
+            "body": "Whenever {Gargoyle} deals himself damage, he may also deal that damage to 1 other target.",
             "powers": [
                 "{Gargoyle} deals each non-hero target 1 toxic damage.{BR}Increase the next damage {Gargoyle} deals by 1."
             ],
@@ -183,7 +183,7 @@
                     "text": "Waiting is not one{BR}of my strengths."
                 }
             ],
-            "flavorReference": "Demon Core #3"
+            "flavorReference": "Demon Core #5"
         },
         {
             "identifier": "LeechField",
