@@ -99,6 +99,20 @@ namespace Cauldron.Pyre
                 }
                 CardUsingPower = selectedCard;
 
+
+                /*
+                 * slightly simpler way to do this?
+                coroutine = GameController.SelectAndUsePower(heroTTC, true, (Power p) => p.CardController == controller, allowAnyHeroPower: true, allowOutOfPlayPower: true, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                */
+
                 //use the power
                 coroutine = GameController.UsePower(powerDecision.SelectedPower, heroUsingPower: heroTTC, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
