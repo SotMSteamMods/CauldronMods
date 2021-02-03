@@ -995,6 +995,167 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRevelations_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+
+            //put clue on deck
+            PutOnDeck(RitualSite);
+
+            Card minion1 = PlayCard(PallidAcademic);
+            Card minion2 = PlayCard(ClockworkRevenant);
+
+            SetHitPoints(mythos, 20);
+            SetHitPoints(minion1, 1);
+            SetHitPoints(minion2, 1);
+
+            PlayCard("HostageSituation");
+            PlayCard("TrafficPileup");
+
+            Card trash1 = PutInTrash(DoktorVonFaust);
+            Card trash2 = PutInTrash(FaithfulProselyte);
+            Card trash3 = PutInTrash(HallucinatedHorror);
+            DecisionSelectCards = new Card[] { trash2, trash3 };
+            DecisionAutoDecideIfAble = true;
+
+            QuickHPStorage(mythos.CharacterCard, minion1, minion2, legacy.CharacterCard, bunker.CharacterCard, haka.CharacterCard);
+
+            PlayCard("Revelations");
+
+            //{Mythos} regains {H} HP for each environment card in play. 
+            //{MythosMadness} Each Minion regains {H} HP.
+            QuickHPCheck(6, 0, 0, 0, 0, 0);
+
+            //Move 2 cards from the villain trash to the bottom of the villain deck.
+            AssertOnBottomOfDeck(trash2, offset: 0);
+            AssertOnBottomOfDeck(trash3, offset: 1);
+            AssertInTrash(trash1);
+
+            SetAllTargetsToMaxHP();
+
+            //{MythosClue} Reduce damage dealt by hero targets by 1 until the start of the villain turn.
+            QuickHPStorage(minion2);
+            DealDamage(haka, minion2, 3, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //check expiration
+            GoToStartOfTurn(mythos);
+            QuickHPUpdate();
+            DealDamage(haka, minion2, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestRevelations_Danger()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+
+            //put danger on deck
+            PutOnDeck(AclastyphWhoPeers);
+
+            Card minion1 = PlayCard(PallidAcademic);
+            Card minion2 = PlayCard(ClockworkRevenant);
+
+            SetHitPoints(mythos, 20);
+            SetHitPoints(minion1, 1);
+            SetHitPoints(minion2, 1);
+
+            PlayCard("HostageSituation");
+            PlayCard("TrafficPileup");
+
+            Card trash1 = PutInTrash(DoktorVonFaust);
+            Card trash2 = PutInTrash(FaithfulProselyte);
+            Card trash3 = PutInTrash(HallucinatedHorror);
+            DecisionSelectCards = new Card[] { trash2, trash3 };
+            DecisionAutoDecideIfAble = true;
+
+            QuickHPStorage(mythos.CharacterCard, minion1, minion2, legacy.CharacterCard, bunker.CharacterCard, haka.CharacterCard);
+
+            PlayCard("Revelations");
+
+            //{Mythos} regains {H} HP for each environment card in play. 
+            //{MythosMadness} Each Minion regains {H} HP.
+            QuickHPCheck(6, 0, 0, 0, 0, 0);
+
+            //Move 2 cards from the villain trash to the bottom of the villain deck.
+            AssertOnBottomOfDeck(trash2, offset: 0);
+            AssertOnBottomOfDeck(trash3, offset: 1);
+            AssertInTrash(trash1);
+
+            SetAllTargetsToMaxHP();
+
+            //{MythosClue} Reduce damage dealt by hero targets by 1 until the start of the villain turn.
+            QuickHPStorage(minion2);
+            DealDamage(haka, minion2, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //check expiration
+            GoToStartOfTurn(mythos);
+            QuickHPUpdate();
+            DealDamage(haka, minion2, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestRevelations_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            //put madness on deck
+            PutOnDeck(WhispersAndLies);
+
+            Card minion1 = PlayCard(PallidAcademic);
+            Card minion2 = PlayCard(ClockworkRevenant);
+
+            SetHitPoints(mythos, 20);
+            SetHitPoints(minion1, 1);
+            SetHitPoints(minion2, 1);
+
+            PlayCard("HostageSituation");
+            PlayCard("TrafficPileup");
+
+            Card trash1 = PutInTrash(DoktorVonFaust);
+            Card trash2 = PutInTrash(FaithfulProselyte);
+            Card trash3 = PutInTrash(HallucinatedHorror);
+            DecisionSelectCards = new Card[] { trash2, trash3 };
+            DecisionAutoDecideIfAble = true;
+
+            QuickHPStorage(mythos.CharacterCard, minion1, minion2, legacy.CharacterCard, bunker.CharacterCard, haka.CharacterCard);
+
+            PlayCard("Revelations");
+
+            //{Mythos} regains {H} HP for each environment card in play. 
+            //{MythosMadness} Each Minion regains {H} HP.
+            QuickHPCheck(6, 2, 3, 0, 0, 0);
+
+            //Move 2 cards from the villain trash to the bottom of the villain deck.
+            AssertOnBottomOfDeck(trash2, offset: 0);
+            AssertOnBottomOfDeck(trash3, offset: 1);
+            AssertInTrash(trash1);
+
+            SetAllTargetsToMaxHP();
+
+            //{MythosClue} Reduce damage dealt by hero targets by 1 until the start of the villain turn.
+            QuickHPStorage(minion2);
+            DealDamage(haka, minion2, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //check expiration
+            GoToStartOfTurn(mythos);
+            QuickHPUpdate();
+            DealDamage(haka, minion2, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
         public void TestYourDarkestSecrets()
         {
             SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Unity", "Ra", "Megalopolis");
