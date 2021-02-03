@@ -316,7 +316,7 @@ namespace CauldronTests
         [Test()]
         public void TestGrayPharmaceuticalBuilding_Increase()
         {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Fanatic", "Cauldron.WindmillCity");
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Fanatic", "VoidGuardMainstay/VoidGuardRoadWarriorMainstayCharacter", "Cauldron.WindmillCity");
             StartGame();
             DestroyNonCharacterVillainCards();
 
@@ -353,6 +353,13 @@ namespace CauldronTests
             QuickHPUpdate();
             UsePower(fanatic.CharacterCard);
             QuickHPCheck(-6);
+
+            //try a status effect
+            UsePower(voidMainstay);
+            DecisionYesNo = true;
+            QuickHPUpdate();
+            DealDamage(baron, voidMainstay, 1, DamageType.Melee);
+            QuickHPCheck(-3);
         }
 
         [Test()]
