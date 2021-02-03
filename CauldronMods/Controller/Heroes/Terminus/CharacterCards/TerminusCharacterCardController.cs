@@ -20,7 +20,9 @@ namespace Cauldron.Terminus
         
         public override void AddStartOfGameTriggers()
         {
-            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "UnusualSuspects" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.GameController.SetHP(base.CharacterCard, 2), TriggerType.PhaseChange, TriggerTiming.After);
+
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "StainedBadge" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
             //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "TheLightAtTheEnd" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
             //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "CovenantOfWrath" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
             //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.GameController.AddTokensToPool(base.CharacterCard.FindTokenPool("TerminusWrathPool"), 3, base.GetCardSource()), TriggerType.PhaseChange, TriggerTiming.After);

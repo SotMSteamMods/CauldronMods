@@ -512,9 +512,6 @@ namespace CauldronTests
             SetHitPoints(scholar.CharacterCard, 1);
             DealDamage(baron, scholar, 2, DamageType.Melee);
             AssertIncapacitated(scholar);
-            AssertNotIncapacitatedOrOutOfGame(terminus);
-
-            DealDamage(baron, terminus, 2, DamageType.Melee);
             AssertIncapacitated(terminus);
         }
 
