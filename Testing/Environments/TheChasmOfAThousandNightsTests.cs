@@ -540,6 +540,54 @@ namespace CauldronTests
             //Whenever the target next to this card deals damage to a hero, that hero must discard a card.
             QuickHandCheck(0, -1, 0);
         }
+        [Test()]
+        public void TestThieving_NoDamage()
+        {
+            //NOTE: This test uses a random seed to guarantee that the nature that goes below Grand Amaraqiel is Thieving
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.TheChasmOfAThousandNights" }, randomSeed: new int?(1599956386));
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            GoToPlayCardPhase(chasm);
+            Card djinn = PlayCard("GrandAmaraqiel");
+            Card nature = djinn.BelowLocation.TopCard;
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            //At the end of the environment turn, this card deals the 2 non-environment targets with the highest HP 3 cold damage each.
+            //baron and legacy
+
+            PrintSeparator("Checking Triggers In Play");
+            PrintTriggers();
+            PrintSeparator("Finished Checking Triggers");
+            PlayCard("HeroicInterception");
+            QuickHandStorage(ra, legacy, haka);
+            GoToEndOfTurn(chasm);
+            //Whenever the target next to this card deals damage to a hero, that hero must discard a card.
+            QuickHandCheck(0, 0, 0);
+        }
+        [Test()]
+        public void TestThieving_NonCharacter()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "TheVisionary", "Cauldron.TheChasmOfAThousandNights" }, randomSeed: new int?(1599956386));
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+
+            var djinnNames = new string[] { "GrandAmaraqiel", "HighMhegas", "HighTemoq", "Axion", "Tevael", "Gul" };
+            foreach (string name in djinnNames)
+            {
+                PlayCard(name);
+            }
+
+            Card thieving = GetCard("Thieving");
+            Card djinn = thieving.Location.OwnerCard;
+
+            PlayCard("DecoyProjection");
+            QuickHandStorage(ra, legacy, visionary);
+            DealDamage(djinn, visionary, 2, DamageType.Melee);
+
+            //Whenever the target next to this card deals damage to a hero, that hero must discard a card.
+            QuickHandCheckZero();
+        }
 
         [Test()]
         public void TestBeyondTheVeil_EntersPlay()
