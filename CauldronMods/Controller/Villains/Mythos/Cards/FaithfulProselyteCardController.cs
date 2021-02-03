@@ -37,22 +37,8 @@ namespace Cauldron.Mythos
         public override void AddTriggers()
         {
             //At the end of the villain turn, this card deals the hero target with the second highest HP {H - 1} lightning damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+            base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero, TargetType.HighestHP, Game.H - 1, DamageType.Lightning, highestLowestRanking: 2);
         }
 
-        private IEnumerator DealDamageResponse(PhaseChangeAction action)
-        {
-            //...this card deals the hero target with the second highest HP {H - 1} lightning damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(this.Card, 2, (Card c) => c.IsHero, (Card c) => base.Game.H - 1, DamageType.Lightning);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
     }
 }
