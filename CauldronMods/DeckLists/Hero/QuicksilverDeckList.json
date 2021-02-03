@@ -173,7 +173,7 @@
             "body": "Destroy a target with 3 or fewer HP, or deal 1 target 3 irreducible melee damage.",
             "flavorQuotes": [
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "Your armor{BR}rivals my own."
                 },
                 {
@@ -251,7 +251,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "OmnitronX",
-                    "text": "Analysis: polymimetic{BR}bio-alloy is extremely resilient and{BR}possibly sentient; comparable with{BR}nanomachinery capabilities."
+                    "text": "Analysis: polymimetic bio-alloy is{BR}extremely resilient and possibly sentient;{BR}comparable with nanomachinery capabilities."
                 }
             ],
             "flavorReference": "Omnitron-X, Blood and Mercury #18"
@@ -299,11 +299,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "HalcyonSoldier",
+                    "identifier": "Halcyon Soldier",
                     "text": "Sir! She's shooting{BR}electrified metal spikes!"
                 },
                 {
-                    "identifier": "CptReager",
+                    "identifier": "Cpt Reager",
                     "text": "Don't be stupid."
                 }
             ],
