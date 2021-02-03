@@ -1293,6 +1293,8 @@ namespace CauldronTests
             AssertInPlayArea(mythos, rusted);
             AssertHitPoints(rusted, 1);
 
+            DestroyCard(rusted, haka.CharacterCard);
+            AssertInPlayArea(mythos, rusted);
 
         }
 
@@ -1316,6 +1318,9 @@ namespace CauldronTests
             DealDamage(legacy, rusted, 3, DamageType.Melee);
             AssertInPlayArea(mythos, rusted);
             AssertHitPoints(rusted, 1);
+
+            DestroyCard(rusted, haka.CharacterCard);
+            AssertInPlayArea(mythos, rusted);
 
 
         }
