@@ -307,7 +307,7 @@
                 "Whenever {LadyOfTheWood} regains HP, you may select a target that hasn't been dealt damage this turn. {LadyOfTheWood} deals that target 1 cold damage."
             ],
             "powers": [
-                "{LadyOfTheWood} regains 3HP."
+                "{LadyOfTheWood} regains 3 HP."
             ],
             "flavorQuotes": [
                 {

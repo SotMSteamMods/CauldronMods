@@ -119,7 +119,7 @@
             "icons": [
                 "DealDamageMelee"
             ],
-            "body": "{Quicksilver} may deal 6 melee damage to a target with more than 8HP, or 3 melee damage to a target with 8 or fewer HP.",
+            "body": "{Quicksilver} may deal 6 melee damage to a target with more than 8 HP, or 3 melee damage to a target with 8 or fewer HP.",
             "flavorQuotes": [
                 {
                     "identifier": "CptReager",
@@ -197,7 +197,7 @@
                 "PlayCardNow"
             ],
             "body": [
-                "When this card enters play, draw a card and {Quicksilver} regains 2HP.",
+                "When this card enters play, draw a card and {Quicksilver} regains 2 HP.",
                 "When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card."
             ],
             "flavorQuotes": [
@@ -244,9 +244,9 @@
                 "GainHP",
                 "HasPower"
             ],
-            "body": "If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1HP.",
+            "body": "If {Quicksilver} would be reduced from greater than 1 HP to 0 or fewer HP, restore her to 1 HP.",
             "powers": [
-                "If {Quicksilver} has not dealt damage this turn, she regains 3HP."
+                "If {Quicksilver} has not dealt damage this turn, she regains 3 HP."
             ],
             "flavorQuotes": [
                 {
@@ -344,7 +344,7 @@
                 "SkipTurn"
             ],
             "body": [
-                "{Quicksilver} regains 6HP.",
+                "{Quicksilver} regains 6 HP.",
                 "Immediately end your turn."
             ],
             "flavorQuotes": [
@@ -502,7 +502,7 @@
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
-                "Destroy a target with exactly 3HP.",
+                "Destroy a target with exactly 3 HP.",
                 "One player may discard a one-shot. If they do, 2 players may each draw a card now."
             ],
             "flippedIcons": [

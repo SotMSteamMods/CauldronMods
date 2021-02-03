@@ -85,7 +85,7 @@
 			"body": [
 				"At the end of your turn, this card may deal 1 target 2 energy damage.",
 				"This card is immune to energy damage.",
-				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
+				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5 HP, otherwise put it in your hand."
 			],
 			"flavorText": "Bathiel, the Cursed Champion.",
 			"flavorReference": "Entry in the Scrolls of Zephaeren",
@@ -105,9 +105,9 @@
 				"Manipulate"
 			],
 			"body": [
-				"At the end of your turn, 1 hero target regains 2HP.",
+				"At the end of your turn, 1 hero target regains 2 HP.",
 				"This card is immune to radiant damage.",
-				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
+				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5 HP, otherwise put it in your hand."
 			],
 			"flavorText": "Ezael, the Heavenly Sentinel.",
 			"flavorReference": "Entry in the Scrolls of Zephaeren",
@@ -126,7 +126,7 @@
 				"Manipulate"
 			],
 			"body": [
-				"One character regains 2HP.",
+				"One character regains 2 HP.",
 				"One player may draw a card.",
 				"One player may put a card from their trash on top of their deck."
 			],
@@ -176,7 +176,7 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Ezael. If High Ezael is ever not in play, destroy this card.",
-				"[b]Power:[/b] All hero targets regain 3HP.",
+				"[b]Power:[/b] All hero targets regain 3 HP.",
 				"At the end of your turn, destroy this card."
 			],
 			"flavorQuotes": [
@@ -387,7 +387,7 @@
 			"body": [
 				"At the end of your turn this card deals up to 2 targets 1 sonic damage each.",
 				"This card is immune to sonic damage.",
-				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
+				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5 HP, otherwise put it in your hand."
 			],
 			"flavorText": "Reshiel, the Screaming Trickster.",
 			"flavorReference": "Entry in the Scrolls of Zephaeren",
@@ -454,7 +454,7 @@
 			"body": [
 				"At the end of your turn select a hero target. Reduce damage dealt to that target by 1 until the start of your turn.",
 				"This card is immune to projectile damage.",
-				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5HP, otherwise put it in your hand."
+				"When this card would be destroyed, destroy a Djinn ongoing attached to it and restore it to 5 HP, otherwise put it in your hand."
 			],
 			"flavorText": "Somael, the Plated Guardian.",
 			"flavorReference": "Entry in the Scrolls of Zephaeren",

@@ -58,7 +58,7 @@
             ],
             "body": [
                 "At the start of your turn, destroy this card.",
-                "Whenever a non-hero target is destroyed, 1 hero target regains 2HP."
+                "Whenever a non-hero target is destroyed, 1 hero target regains 2 HP."
             ],
             "flavorQuotes": [
                 {
@@ -160,7 +160,7 @@
             ],
             "body": [
                 "At the start of a player's turn, that player may choose to skip their power Phase. If they do, they may play 1 additional card during their play Phase.",
-                "At the start of your turn, destroy this card and each hero target regains 1HP."
+                "At the start of your turn, destroy this card and each hero target regains 1 HP."
             ],
             "flavorQuotes": [
                 {
@@ -234,7 +234,7 @@
             ],
             "body": [
                 "At the start of a player's turn, that player may choose to skip their play Phase. If they do, they may use 1 additional power during their power Phase.",
-                "At the start of your turn, destroy this card and each hero target regains 1HP."
+                "At the start of your turn, destroy this card and each hero target regains 1 HP."
             ],
             "flavorQuotes": [
                 {
@@ -464,7 +464,7 @@
                 "GainHP"
             ],
             "powers": [
-                "{Echelon} deals 1 target 1 projectile damage and regains 2HP.",
+                "{Echelon} deals 1 target 1 projectile damage and regains 2 HP.",
                 "Destroy this card. One player draws 2 cards."
             ],
             "extraConfirmationIndices": [

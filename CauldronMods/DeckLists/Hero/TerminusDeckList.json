@@ -180,7 +180,7 @@
             ],
             "body": [
                 "This card is indestructible. If another Memento would enter play, instead remove it from the game and increase damage dealt by {Terminus} by 1.",
-                "Whenever {Terminus} destroys a card, add 2 tokens to your Wrath pool and she regains 1HP."
+                "Whenever {Terminus} destroys a card, add 2 tokens to your Wrath pool and she regains 1 HP."
             ],
             "flavorText": "The bullet that should{BR}have killed Tang Daiyu became a{BR}powerful weapon against the ghosts{BR}she was tasked with hunting."
         },
@@ -275,7 +275,7 @@
                 "AddTokens"
             ],
             "body": [
-                "You may put a target from the villain trash into play. If that target has more than 5HP, reduce its current HP to 5. That target deals up to 2 other targets 5 infernal damage each.",
+                "You may put a target from the villain trash into play. If that target has more than 5 HP, reduce its current HP to 5. That target deals up to 2 other targets 5 infernal damage each.",
                 "If no target enters play this way, add 5 tokens to your Wrath pool."
             ],
             "flavorQuotes": [
@@ -483,7 +483,7 @@
             ],
             "body": [
                 "When this card enters play, put a one-shot from your trash into play.",
-                "At the end of your turn, you may remove 3 tokens from your Wrath pool. If you do, {Terminus} regains 2HP or destroys 1 ongoing card."
+                "At the end of your turn, you may remove 3 tokens from your Wrath pool. If you do, {Terminus} regains 2 HP or destroys 1 ongoing card."
             ],
             "flavorQuotes": [
                 {
