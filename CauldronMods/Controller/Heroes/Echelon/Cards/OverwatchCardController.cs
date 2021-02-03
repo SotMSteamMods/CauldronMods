@@ -10,7 +10,7 @@ namespace Cauldron.Echelon
     public class OverwatchCardController : CardController
     {
         //==============================================================
-        //Power: "Once before your next turn, when a hero target is dealt damage, {Echelon} may deal the source of that damage 3 melee damage"
+        //Power: "Once before your next turn, when a hero target is dealt damage by a non-hero target, {Echelon} may deal the source of that damage 3 melee damage"
         //==============================================================
 
         public static string Identifier = "Overwatch";
@@ -24,9 +24,10 @@ namespace Cauldron.Echelon
         {
             int numDamage = GetPowerNumeral(0, 3);
 
-            //"Once before your next turn, when a hero target is dealt damage, {Echelon} may deal the source of that damage 3 melee damage"
+            //"Once before your next turn, when a hero target is dealt damage by a non-hero target, {Echelon} may deal the source of that damage 3 melee damage"
             var statusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(MaybeCounterDamageResponse), $"Once before their next turn, when a hero target is dealt damage {DecisionMaker.Name} may deal the source of that damage {numDamage} melee damage.", new TriggerType[] { TriggerType.DealDamage }, DecisionMaker.TurnTaker, this.Card, new int[] { numDamage });
             statusEffect.TargetCriteria.IsHero = true;
+            statusEffect.SourceCriteria.IsHero = false;
             statusEffect.DamageAmountCriteria.GreaterThan = 0;
             statusEffect.UntilStartOfNextTurn(DecisionMaker.TurnTaker);
             statusEffect.UntilTargetLeavesPlay(CharacterCard);
@@ -51,11 +52,11 @@ namespace Cauldron.Echelon
             int numDamage = powerNumerals?[0] ?? 3;
             var player = FindHeroTurnTakerController(hero?.ToHero());
 
-            if(dd.DamageSource.IsCard && dd.DamageSource.IsTarget && player != null && !dd.DamageSource.Card.IsBeingDestroyed && effect.CardMovedExpiryCriteria.Card == null)
+            if (dd.DamageSource.IsCard && dd.DamageSource.IsTarget && player != null && !dd.DamageSource.Card.IsBeingDestroyed && effect.CardMovedExpiryCriteria.Card == null)
             {
                 var target = dd.DamageSource.Card;
 
-                
+
                 //...{Echelon} may...
                 var storedYesNo = new List<YesNoCardDecision>();
                 DealDamageAction fakeDamage = new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), target, numDamage, DamageType.Melee);
@@ -69,7 +70,7 @@ namespace Cauldron.Echelon
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                if(!DidPlayerAnswerYes(storedYesNo))
+                if (!DidPlayerAnswerYes(storedYesNo))
                 {
                     yield break;
                 }
@@ -105,7 +106,7 @@ namespace Cauldron.Echelon
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                
+
 
             }
             yield break;
