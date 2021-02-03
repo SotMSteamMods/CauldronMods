@@ -1156,6 +1156,100 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRitualSite_Clue()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            Card investigation = GetCardInPlay(DangerousInvestigation);
+            MoveCard(mythos, investigation, mythos.TurnTaker.Trash, overrideIndestructible: true, cardSource: mythos.CharacterCardController.GetCardSource());
+
+            //put clue on deck
+            PutOnDeck(PallidAcademic);
+
+            //don't allow extra card plays
+            DecisionYesNo = false;
+
+            Card env1 = PlayCard("PoliceBackup");
+
+            PlayCard("RitualSite");
+
+            //{MythosDanger} Increase damage dealt by environment cards to hero targets by 1.
+            QuickHPStorage(haka);
+            DealDamage(env1, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //{MythosMadness} At the end of the villain turn, this card deals each hero target 1 psychic damage.
+            QuickHPStorage(mythos, legacy, bunker, haka);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(0, 0, 0, 0);
+
+
+        }
+
+        [Test()]
+        public void TestRitualSite_Danger()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            Card investigation = GetCardInPlay(DangerousInvestigation);
+            MoveCard(mythos, investigation, mythos.TurnTaker.Trash, overrideIndestructible: true, cardSource: mythos.CharacterCardController.GetCardSource());
+
+            //put danger on deck
+            PutOnDeck(AclastyphWhoPeers);
+
+            //don't allow extra card plays
+            DecisionYesNo = false;
+
+            Card env1 = PlayCard("PoliceBackup");
+
+            PlayCard("RitualSite");
+
+            //{MythosDanger} Increase damage dealt by environment cards to hero targets by 1.
+            QuickHPStorage(haka);
+            DealDamage(env1, haka, 2, DamageType.Melee);
+            QuickHPCheck(-3);
+
+            //{MythosMadness} At the end of the villain turn, this card deals each hero target 1 psychic damage.
+            QuickHPStorage(mythos, legacy, bunker, haka);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(0, 0, 0, 0);
+
+
+        }
+
+
+        [Test()]
+        public void TestRitualSite_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+            Card investigation = GetCardInPlay(DangerousInvestigation);
+            MoveCard(mythos, investigation, mythos.TurnTaker.Trash, overrideIndestructible: true, cardSource: mythos.CharacterCardController.GetCardSource());
+
+            //put madness on deck
+            PutOnDeck(WhispersAndLies);
+
+            //don't allow extra card plays
+            DecisionYesNo = false;
+
+            Card env1 = PlayCard("PoliceBackup");
+
+            PlayCard("RitualSite");
+
+            //{MythosDanger} Increase damage dealt by environment cards to hero targets by 1.
+            QuickHPStorage(haka);
+            DealDamage(env1, haka, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //{MythosMadness} At the end of the villain turn, this card deals each hero target 1 psychic damage.
+            QuickHPStorage(mythos, legacy, bunker, haka);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(0, -1, -1, -1);
+
+
+        }
+
+        [Test()]
         public void TestYourDarkestSecrets()
         {
             SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Unity", "Ra", "Megalopolis");
