@@ -18,7 +18,7 @@ namespace Cauldron.Titan
         {
             List<DrawCardAction> storedResults = new List<DrawCardAction>();
             //Each player may draw 2 cards now.
-            IEnumerator coroutine = base.GameController.YesNoDoAction_ManyPlayers((HeroTurnTakerController hero) => !hero.IsIncapacitatedOrOutOfGame, (HeroTurnTakerController hero) => this.YesNoDecisionMaker(hero), (HeroTurnTakerController hero, YesNoDecision decision) => YesAction(hero, decision, storedResults), selectionType: SelectionType.DrawExtraCard, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.YesNoDoAction_ManyPlayers((HeroTurnTakerController hero) => !hero.IsIncapacitatedOrOutOfGame, (HeroTurnTakerController hero) => this.YesNoDecisionMaker(hero), (HeroTurnTakerController hero, YesNoDecision decision) => YesAction(hero, decision, storedResults), selectionType: SelectionType.DrawCard, cardSource: base.GetCardSource());
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);
