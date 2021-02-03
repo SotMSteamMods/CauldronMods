@@ -231,7 +231,7 @@
                 "For each card destroyed this way, destroy 1 ongoing or environment card."
             ],
             "flavorText": "Want to see what a{BR}thermonuclear warhead looks like{BR}after it's been through a black hole?",
-            "flavorReference": "Starlight To Baron Blade,{BR}Andromeda Tales #8"
+            "flavorReference": "Starlight To Baron Blade, Andromeda Tales #8"
         },
         {
             "identifier": "Exodus",
@@ -255,7 +255,7 @@
                     "text": "Dr. Andromeda McLear.{BR}Astrophysicist, astronomer,{BR}stargazer. We've been watching her for{BR}a long time."
                 }
             ],
-            "flavorReference": "Councilor Artemis Vector,{BR}Starlight #1"
+            "flavorReference": "Councilor Artemis Vector, Starlight #1"
         },
         {
             "identifier": "GoldenAstrolabe",
@@ -478,7 +478,7 @@
              "nemesisIdentifiers": [
                  "Starlight"
              ],
-             "flippedTitle": "Incapacitated",
+             "flippedBody": "Incapacitated",
              "complexity": 1
          },
          {
@@ -505,7 +505,7 @@
              "nemesisIdentifiers": [
                  "Starlight"
              ],
-             "flippedTitle": "Incapacitated",
+             "flippedBody": "Incapacitated",
              "complexity": 1
          },
          {
@@ -532,7 +532,7 @@
             "nemesisIdentifiers": [
                 "Starlight"
             ],
-            "flippedTitle": "Incapacitated",
+            "flippedBody": "Incapacitated",
             "complexity": 1
          }
     ],

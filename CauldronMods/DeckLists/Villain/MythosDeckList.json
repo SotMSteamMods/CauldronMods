@@ -88,7 +88,7 @@
             "body": [
                 "At the end of the villain turn:",
                 "{Danger} This card deals the hero target with the highest HP 2 melee damage. Discard the top card of the villain deck.",
-                "{Clue} This card regains 2HP. Discard the top card of the villain deck.",
+                "{Clue} This card regains 2 HP. Discard the top card of the villain deck.",
                 "{Madness} This card deals each other target 1 psychic damage."
             ],
             "flavorQuotes": [
@@ -737,7 +737,7 @@
                     "body": [
                         "At the end of the villain turn:",
                         "{Danger} This card deals the hero target with the highest HP 2 melee damage. Discard the top card of the villain deck.",
-                        "{Clue} This card regains 2HP. Discard the top card of the villain deck.",
+                        "{Clue} This card regains 2 HP. Discard the top card of the villain deck.",
                         "{Madness} This card deals each other target 1 psychic damage."
                     ],
                     "flavorQuotes": [

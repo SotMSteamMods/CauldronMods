@@ -157,7 +157,7 @@
                     "text": "Oops, I guess this{BR}doohickey was important."
                 }
             ],
-            "flavorReference": "Magnificent Mara,{BR}Carnival of Heroes #3"
+            "flavorReference": "Magnificent Mara, Carnival of Heroes #3"
         },
         {
             "identifier": "ImprobableEscape",
@@ -182,7 +182,7 @@
                     "text": "Quit complaining and take a bow."
                 }
             ],
-            "flavorReference": "Magnificent Mara,{BR}Carnival of Heroes #14"
+            "flavorReference": "Magnificent Mara, Carnival of Heroes #14"
         },
         {
             "identifier": "KalpakOfMysteries",
@@ -233,7 +233,7 @@
                     "text": "Better wash behind those ears."
                 }
             ],
-            "flavorReference": "Magnificent Mara,{BR}Smoke and Mirrors #20"
+            "flavorReference": "Magnificent Mara, Smoke and Mirrors #20"
         },
         {
             "identifier": "BootlegMesmerPendant",
@@ -300,7 +300,7 @@
                     "text": "Remember him? He's{BR}a big fan of yours."
                 }
             ],
-            "flavorReference": "Magnificent Mara,{BR}Carnival of Heroes #23"
+            "flavorReference": "Magnificent Mara, Carnival of Heroes #23"
         },
         {
             "identifier": "MysticalEnhancement",
@@ -390,7 +390,7 @@
                     "text": "She can really make{BR}a crowd disappear."
                 }
             ],
-            "flavorReference": "Absolute Zero,{BR}Carnival of Heroes #14"
+            "flavorReference": "Absolute Zero, Carnival of Heroes #14"
         }
     ],
     "unimplementableCards": [

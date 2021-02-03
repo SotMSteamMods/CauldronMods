@@ -89,7 +89,7 @@
             ],
             "body": [
                 "When this card enters play, it deals 1 target 3 projectile damage.",
-                "At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 hero target regains 2HP."
+                "At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 hero target regains 2 HP."
             ],
             "flavorText": "“There's a right way to do things,” said{BR}the detective, blowing on his coffee.{BR}“Most of these vigilantes are hardly{BR}better than criminals themselves.”",
             "hitpoints": 6

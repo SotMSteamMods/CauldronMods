@@ -62,11 +62,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "MagnificentMara",
+                    "identifier": "Magnificent Mara",
                     "text": "...And for my next trick-"
                 },
                 {
-                    "identifier": "DocHavoc",
+                    "identifier": "Doc Havoc",
                     "text": "Let's just take a minute."
                 }
             ],
@@ -188,11 +188,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "DocHavoc",
+                    "identifier": "Doc Havoc",
                     "text": "Don't tell me you{BR}haven't missed this."
                 }
             ],
-            "flavorReference": "Doc Havoc, Stormfront One-shot"
+            "flavorReference": "Stormfall One-shot"
         },
         {
             "identifier": "KnowYourEnemy",
@@ -262,7 +262,7 @@
                 "DealDamageMelee"
             ],
             "powers": [
-                "Once before your next turn, when a hero target is dealt damage, {Echelon} may deal the source of that damage 3 melee damage"
+                "Once before your next turn, when a hero target is dealt damage by a non-hero target, {Echelon} may deal the source of that damage 3 melee damage"
             ],
             "flavorQuotes": [
                 {
@@ -375,7 +375,7 @@
                     "text": "Set 'em up..."
                 },
                 {
-                    "identifier": "MisterFixer",
+                    "identifier": "Mister Fixer",
                     "text": "..knock 'em down."
                 }
             ],
@@ -473,10 +473,10 @@
             "flavorQuotes": [
                 {
                     "identifier": "Cypher",
-                    "text": "I'd like to see that oversized lizard shoot this one down."
+                    "text": "I'd like to see that oversized lizard{BR}shoot this one down."
                 }
             ],
-            "flavorReference": "Cypher: First Response #5"
+            "flavorReference": "Cypher, First Response #5"
         }
     ],
     "promoCards": [
