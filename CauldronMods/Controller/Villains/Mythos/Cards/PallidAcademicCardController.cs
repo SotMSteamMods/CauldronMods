@@ -12,8 +12,6 @@ namespace Cauldron.Mythos
     {
         public PallidAcademicCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
-            base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
         }
 
         public override IEnumerator Play()

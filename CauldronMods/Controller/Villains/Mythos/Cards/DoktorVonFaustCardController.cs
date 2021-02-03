@@ -12,8 +12,6 @@ namespace Cauldron.Mythos
     {
         public DoktorVonFaustCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
-            base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
             base.SpecialStringMaker.ShowListOfCardsAtLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.Identifier == "ClockworkRevenant", "Clockwork Revenant"));
         }
 

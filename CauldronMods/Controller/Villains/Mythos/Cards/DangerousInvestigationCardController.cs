@@ -12,8 +12,6 @@ namespace Cauldron.Mythos
     {
         public DangerousInvestigationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
-            base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
             base.SpecialStringMaker.ShowTokenPool(DangerousInvestigationPool);
             base.SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: base.Game.H - this.NumberOfCardsChosenThisTurn());
 

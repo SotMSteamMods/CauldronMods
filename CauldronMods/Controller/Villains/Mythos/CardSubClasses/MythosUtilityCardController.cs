@@ -12,7 +12,8 @@ namespace Cauldron.Mythos
     {
         protected MythosUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowSpecialString(() => DeckIconList());
+            base.SpecialStringMaker.ShowSpecialString(() => ThisCardsIcon());
         }
 
         protected const string MythosClueDeckIdentifier = "Clue";

@@ -15,8 +15,6 @@ namespace Cauldron.Mythos
             base.AddAsPowerContributor();
             base.SpecialStringMaker.ShowVillainTargetWithLowestHP();
             base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
-            base.SpecialStringMaker.ShowSpecialString(() => base.DeckIconList());
-            base.SpecialStringMaker.ShowSpecialString(() => base.ThisCardsIcon());
         }
 
         public override void AddTriggers()
