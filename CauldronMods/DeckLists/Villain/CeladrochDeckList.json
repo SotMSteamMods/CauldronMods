@@ -217,8 +217,8 @@
 			],
 			"body": [
 				"When this card enters play, play the top card of the villain deck.",
-				"At the end of the villain turn, each villain target regains 2HP.",
-				"When this card is destroyed, {Celadroch} regains 10HP."
+				"At the end of the villain turn, each villain target regains 2 HP.",
+				"When this card is destroyed, {Celadroch} regains 10 HP."
 			],
 			"flavorQuotes": [{
 					"identifier": "Titan",
@@ -364,7 +364,7 @@
 			],
 			"body": [
 				"This card may not regain HP. Reduce damage dealt to {Celadroch} by 1.",
-				"For every {H + 1} HP this card loses, including when it reaches 0HP, 1 player may immediately draw a card. When this card would leave play, remove it from the game."
+				"For every {H + 1} HP this card loses, including when it reaches 0 HP, 1 player may immediately draw a card. When this card would leave play, remove it from the game."
 			],
 			"flavorText": "Darkness",
 			"hitpoints": 25
@@ -384,7 +384,7 @@
 			],
 			"body": [
 				"This card may not regain HP. Reduce damage dealt to {Celadroch} by 1.",
-				"For every {H + 1} HP this card loses, including when it reaches 0HP, 1 hero may immediately use a power. When this card would leave play, remove it from the game."
+				"For every {H + 1} HP this card loses, including when it reaches 0 HP, 1 hero may immediately use a power. When this card would leave play, remove it from the game."
 			],
 			"flavorText": "Emptiness",
 			"hitpoints": 25
@@ -404,7 +404,7 @@
 			],
 			"body": [
 				"This card may not regain HP. Reduce damage dealt to {Celadroch} by 1. ",
-				"For every {H + 1} HP this card loses, including when it reaches 0HP, 1 player may immediately play a card. When this card would leave play, remove it from the game."
+				"For every {H + 1} HP this card loses, including when it reaches 0 HP, 1 player may immediately play a card. When this card would leave play, remove it from the game."
 			],
 			"flavorText": "Indifference",
 			"hitpoints": 25

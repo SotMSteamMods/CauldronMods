@@ -233,7 +233,7 @@
             "body": [
                 "This card is immune to damage from hero targets that are not Up Close.",
                 "At the end of the villain turn, play the top card of the villain deck.",
-                "At the end of the villain turn, all Devices and Nodes regain 1HP."
+                "At the end of the villain turn, all Devices and Nodes regain 1 HP."
             ],
             "flavorQuotes": [
                 {
@@ -255,7 +255,7 @@
                 "EndOfTurnAction",
                 "GainHP"
             ],
-            "body": "At the end of the villain turn, if no heroes are Up Close, {TheRam} regains 10HP and all Devices and Nodes regain 2HP.",
+            "body": "At the end of the villain turn, if no heroes are Up Close, {TheRam} regains 10 HP and all Devices and Nodes regain 2 HP.",
             "flavorQuotes": [
                 {
                     "identifier": "CptReager",

@@ -70,7 +70,7 @@
                 "DealDamageMelee"
             ],
             "body": [
-                "This card is immune to damage dealt by targets with less than 10HP.",
+                "This card is immune to damage dealt by targets with less than 10 HP.",
                 "At the end of the environment turn, this card deals the {H - 2} hero target with the highest HP 2 melee damage each."
             ],
             "flavorText": "The timeship attracts everything that{BR}might have been, including denizens{BR}of a potential world whose ice{BR}age never ended.",
