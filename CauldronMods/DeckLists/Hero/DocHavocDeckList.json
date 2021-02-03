@@ -226,10 +226,10 @@
                 },
                 {
                     "identifier": "Haka",
-                    "text": "But it's amazing what you can punch through{BR}when you can't feel your knuckles!"
+                    "text": "But it's amazing what you can punch{BR}through when you can't feel your knuckles!"
                 }
             ],
-            "flavorReference": "Book of the Dead #720"
+            "flavorReference": "Book of the Dead #113"
         },
         {
             "identifier": "PhosphorBlast",
@@ -393,7 +393,7 @@
             "body": [
                 "When this card enters play, 1 target regains 2HP.",
                 "At the end of your turn, you may destroy 1 ongoing or environment card. If you do, destroy this card."
-                ],
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
