@@ -233,6 +233,22 @@ namespace CauldronTests
             GoToEndOfTurn(mythos);
             AssertFlipped(mythos);
         }
+        [Test()]
+        public void TestMythosFlip_AtZeroHP()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            PutOnDeck(PallidAcademic);
+
+            //{Mythos} and Dangerous Investigation are indestructible. 
+            QuickHPStorage(mythos);
+            DealDamage(haka, mythos, 100, 0);
+            AssertNotGameOver();
+
+            FlipCard(mythos);
+            AssertGameOver();
+        }
 
         [Test()]
         public void TestMythosFront_EndOfTurn_0Play_TestDangerousInvestigation()
