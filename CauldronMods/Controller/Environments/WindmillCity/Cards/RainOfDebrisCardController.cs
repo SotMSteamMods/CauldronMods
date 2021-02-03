@@ -54,15 +54,15 @@ namespace Cauldron.WindmillCity
                 GameController.ExhaustCoroutine(coroutine);
             }
             //This card deals any hero that did not discard a card this way 2 melee damage.
-            List<HeroTurnTakerController> discardHeroes = new List<HeroTurnTakerController>();
+            List<TurnTaker> discardHeroes = new List<TurnTaker>();
             if(DidDiscardCards(storedResultsDiscard))
             {
                 foreach(DiscardCardAction dca in storedResultsDiscard)
                 {
-                    discardHeroes.Add(dca.HeroTurnTakerController);
+                    discardHeroes.Add(dca.HeroTurnTakerController.TurnTaker);
                 }
             }
-            coroutine = DealDamage(Card, (Card card) => card.IsHeroCharacterCard && !discardHeroes.Select((HeroTurnTakerController t) => t.TurnTaker).Contains(card.Owner), 2, DamageType.Melee);
+            coroutine = DealDamage(Card, (Card card) => card.IsHeroCharacterCard && !discardHeroes.Contains(card.Owner), 2, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

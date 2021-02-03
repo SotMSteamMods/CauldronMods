@@ -519,6 +519,30 @@ namespace CauldronTests
             AssertInTrash(raDiscard);
             AssertInTrash(hakaDiscard);
         }
+        [Test()]
+        public void TestRainOfDebris_MultiCharHero()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "TheSentinels", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card responder1 = PlayCard("DetectiveSedrick");
+            Card responder2 = PlayCard("IntrepidReporter");
+            SetHitPoints(responder1, 4);
+
+            GoToPlayCardPhase(windmill);
+            //When this card enters play, it deals the Responder wth the lowest HP 2 melee damage. 
+            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, mainstay, idealist, writhe, medico, responder1, responder2);
+            Card rain = PlayCard("RainOfDebris");
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, -2, 0);
+
+            //At the end of the environment turn, each hero may discard a card. This card deals any hero that did not discard a card this way 2 melee damage.
+            DiscardAllCards(sentinels);
+            QuickHandStorage(ra, legacy, sentinels);
+            QuickHPUpdate();
+            GoToEndOfTurn(windmill);
+            QuickHPCheck(0, 0, 0, -2, -2, -2, -2, 0, 0);
+            QuickHandCheck(-1, -1, 0);
+        }
 
         [Test()]
         public void TestSaveTheDay()
