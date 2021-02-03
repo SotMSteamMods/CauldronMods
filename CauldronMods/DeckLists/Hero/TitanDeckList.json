@@ -72,7 +72,7 @@
                     "text": "Should have kept your eyes on me."
                 }
             ],
-            "flavorReference": "The Archive #8"
+            "flavorReference": "Titan, The Archive #8"
         },
         {
             "identifier": "ForbiddenArchives",
@@ -109,7 +109,7 @@
                     "text": "I think they're friendly!"
                 }
             ],
-            "flavorReference": "The Archive #5"
+            "flavorReference": "Titan, The Archive #5"
         },
         {
             "identifier": "Immolate",
@@ -133,7 +133,7 @@
                     "text": "Some things don’t react well to being set on fire."
                 }
             ],
-            "flavorReference": "Department of Secrets #117"
+            "flavorReference": "Dr. Wells, Department of Secrets #117"
         },
         {
             "identifier": "JuggernautStrike",
@@ -157,7 +157,7 @@
                     "text": "This is not the part we call being sneaky."
                 }
             ],
-            "flavorReference": "Experimental One-shot"
+            "flavorReference": "Cricket, Experimental One-shot"
         },
         {
             "identifier": "Misbehavior",
@@ -180,7 +180,7 @@
                     "text": "I'm due for a bad idea any minute now."
                 }
             ],
-            "flavorReference": "Dancing Ghosts #71"
+            "flavorReference": "Titan, Dancing Ghosts #71"
         },
         {
             "identifier": "MoltenVeins",
@@ -199,13 +199,7 @@
                 "You may search your deck and trash for a copy of the card Titanform and put it into your hand. If you searched your deck, shuffle it.",
                 "You may play a card."
             ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "Why don't you pick on someone your own density."
-                }
-            ],
-            "flavorReference": "The Archive #1"
+            "flavorText": "The obsidian shard embedded in Titan's forearm began to gleam. Then it began to spread."
         },
         {
             "identifier": "Ms5DemolitionCharge",
@@ -224,7 +218,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "CptReager",
+                    "identifier": "Cpt. Reager",
                     "text": "What are you doing?!"
                 },
                 {
@@ -255,7 +249,7 @@
                     "text": "I call it the right hand of doom."
                 }
             ],
-            "flavorReference": "The Archive #1"
+            "flavorReference": "Titan, The Archive #1"
         },
         {
             "identifier": "PaybackTime",
@@ -280,7 +274,7 @@
                     "text": "Oh don't get him started."
                 }
             ],
-            "flavorReference": "Fall of Titan One-shot"
+            "flavorReference": "Agent Nelson, Fall of Titan One-shot"
         },
         {
             "identifier": "Reversal",
@@ -305,7 +299,7 @@
                     "text": "Watch it. We're not all indestructible."
                 }
             ],
-            "flavorReference": "Somael One-Shot"
+            "flavorReference": "Malichae, Somael One-Shot"
         },
         {
             "identifier": "StubbornGoliath",
@@ -329,7 +323,7 @@
                     "text": "He likes it that way. The whole 'lone hero' thing."
                 }
             ],
-            "flavorReference": "Paranormal Squad #3"
+            "flavorReference": "Tango One, Paranormal Squad #3"
         },
         {
             "identifier": "TheChaplain",
@@ -354,7 +348,7 @@
                     "text": "I might not be a good shot, but the Chaplain here fires very large bullets."
                 }
             ],
-            "flavorReference": "Paranormal Squad #4"
+            "flavorReference": "Titan, Paranormal Squad #4"
         },
         {
             "identifier": "Titanform",
@@ -378,7 +372,7 @@
                     "text": "Why don't you pick on someone your own density?"
                 }
             ],
-            "flavorReference": "The Archive #1"
+            "flavorReference": "Titan, The Archive #1"
         },
         {
             "identifier": "Unbreakable",
@@ -404,7 +398,7 @@
                     "text": "You. Shall. Not. Pass."
                 }
             ],
-            "flavorReference": "The Archive #5"
+            "flavorReference": "Titan, The Archive #5"
         },
         {
             "identifier": "VulcansJudgment",
@@ -429,7 +423,7 @@
                     "text": "The beast awakens!"
                 }
             ],
-            "flavorReference": "The Archive #1"
+            "flavorReference": "Mythos, The Archive #1"
         },
         {
             "identifier": "TitanFormCharacter",
