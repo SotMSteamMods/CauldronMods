@@ -63,10 +63,10 @@ namespace Cauldron.Mythos
         public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
         {
             //{MythosMadness} Heroes gain the following power:
-            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier) && cardController.HeroTurnTakerController != null && cardController.Card.IsHeroCharacterCard && cardController.Card.Owner.IsHero && !cardController.Card.Owner.ToHero().IsIncapacitatedOrOutOfGame && !cardController.Card.IsFlipped)
+            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier) && cardController.HeroTurnTakerController != null && cardController.Card.IsHeroCharacterCard && cardController.Card.Owner.IsHero && !cardController.Card.Owner.ToHero().IsIncapacitatedOrOutOfGame && !cardController.Card.IsFlipped && cardController.Card.IsRealCard)
             {
                 //Power: Shuffle 2 cards from the villain trash into the villain deck.
-                Power power = new Power(cardController.HeroTurnTakerController, cardController, "Shuffle 2 cards from the villain trash into the villain deck.", this.ShuffleVillainCardsResponse(cardController), 0, null, base.GetCardSource(null));
+                Power power = new Power(cardController.HeroTurnTakerController, cardController, "Shuffle 2 cards from the villain trash into the villain deck.", this.ShuffleVillainCardsResponse(cardController), 0, null, base.GetCardSource());
                 return new Power[]
                 {
                     power
@@ -79,7 +79,17 @@ namespace Cauldron.Mythos
         {
             IEnumerable<MoveCardDestination> cardDestinations = new MoveCardDestination(base.TurnTaker.Deck).ToEnumerable();
             //Shuffle 2 cards from the villain trash into the villain deck.
-            IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, 2, 2, new LinqCardCriteria((Card c) => c.Location.IsTrash && c.Location.IsVillain), cardDestinations, shuffleAfterwards: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardsFromLocationAndMoveThem(this.DecisionMaker, base.TurnTaker.Trash, 2, 2, new LinqCardCriteria((Card c) => c.Location.IsTrash && c.Location.IsVillain), cardDestinations,  cardSource: base.GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = ShuffleDeck(DecisionMaker, TurnTaker.Deck);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

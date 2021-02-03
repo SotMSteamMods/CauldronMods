@@ -1423,6 +1423,8 @@ namespace CauldronTests
 
         }
 
+       
+
         [Test()]
         public void TestTornPage_Clue()
         {
@@ -1469,6 +1471,77 @@ namespace CauldronTests
             QuickHPUpdate();
             PlayCard("NextEvolution");
             QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestWhispersAndLies_Madness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card investigation = GetCardInPlay(DangerousInvestigation);
+            MoveCard(mythos, investigation, mythos.TurnTaker.Trash, overrideIndestructible: true, cardSource: mythos.CharacterCardController.GetCardSource());
+
+            DecisionYesNo = false;
+
+            //put madness on deck
+            PutOnDeck(DoktorVonFaust);
+
+            PlayCard(WhispersAndLies);
+
+            //At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP 2 sonic damage.
+            QuickHPStorage(mythos, legacy, bunker, haka);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(0, 0, 0, -2);
+
+            //{MythosMadness} Heroes gain the following power:
+            //Power: Shuffle 2 cards from the villain trash into the villain deck.
+
+            Card villain1 = PutInTrash(PallidAcademic);
+            Card villain2 = PutInTrash(PreyUponTheMind);
+            Card villain3 = PutInTrash(TornPage);
+
+            AssertNumberOfUsablePowers(legacy.CharacterCard, 2);
+
+            DecisionSelectCards = new Card[] { villain2, villain3 };
+            QuickShuffleStorage(mythos.TurnTaker.Deck);
+            UsePower(legacy.CharacterCard, 1);
+            QuickShuffleCheck(1);
+            AssertInDeck(villain2);
+            AssertInDeck(villain3);
+            AssertInTrash(villain1);
+
+
+        }
+
+        [Test()]
+        public void TestWhispersAndLies_NotMadness()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card investigation = GetCardInPlay(DangerousInvestigation);
+            MoveCard(mythos, investigation, mythos.TurnTaker.Trash, overrideIndestructible: true, cardSource: mythos.CharacterCardController.GetCardSource());
+
+            DecisionYesNo = false;
+
+            //put danger on deck
+            PutOnDeck(AclastyphWhoPeers);
+
+            PlayCard(WhispersAndLies);
+
+            //At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP 2 sonic damage.
+            QuickHPStorage(mythos, legacy, bunker, haka);
+            GoToEndOfTurn(mythos);
+            QuickHPCheck(0, 0, 0, -2);
+
+            //{MythosMadness} Heroes gain the following power:
+            //Power: Shuffle 2 cards from the villain trash into the villain deck.
+
+            AssertNumberOfUsablePowers(legacy.CharacterCard, 1);
+
+
 
         }
 
