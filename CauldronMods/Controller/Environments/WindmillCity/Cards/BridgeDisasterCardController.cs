@@ -13,7 +13,7 @@ namespace Cauldron.WindmillCity
         public BridgeDisasterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowLowestHP(cardCriteria: new LinqCardCriteria(c => IsResponder(c), "responder"));
-            SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: Game.H - 1);
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: Game.H - 1);
         }
 
         public override IEnumerator Play()
