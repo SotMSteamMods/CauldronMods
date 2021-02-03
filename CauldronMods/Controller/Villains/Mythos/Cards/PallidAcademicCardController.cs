@@ -43,7 +43,7 @@ namespace Cauldron.Mythos
             if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
             {
                 //--{MythosDanger} Play the top card of the villain deck.
-                coroutine = base.PlayTheTopCardOfTheVillainDeckResponse(action);
+                coroutine = base.PlayTheTopCardOfTheVillainDeckWithMessageResponse(action);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
