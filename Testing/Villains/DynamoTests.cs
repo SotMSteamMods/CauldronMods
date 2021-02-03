@@ -595,5 +595,58 @@ namespace CauldronTests
             //card played and top card discarded
             AssertNumberOfCardsInTrash(dynamo, dynamoTrash + 2);
         }
+
+        [Test]
+        public void TestStranglehold_InDeck()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card mere = PlayCard("Mere");
+            Card moko = PlayCard("TaMoko");
+            Card flak = PlayCard("FlakCannon");
+
+            PlayCard(Stranglehold);
+            //If Python is in play, destroy {H} hero ongoing and/or equipment cards.
+            AssertIsInPlay(flak, moko, mere);
+            //Otherwise, search the villain deck and trash for Python and put him into play. If you searched the villain deck, shuffle it.
+            AssertIsInPlay(Python);
+        }
+
+        [Test]
+        public void TestStranglehold_InTrash()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card mere = PlayCard("Mere");
+            Card moko = PlayCard("TaMoko");
+            Card flak = PlayCard("FlakCannon");
+
+            Card pyt = PutInTrash(Python);
+
+            PlayCard(Stranglehold);
+            //If Python is in play, destroy {H} hero ongoing and/or equipment cards.
+            AssertIsInPlay(flak, moko, mere);
+            //Otherwise, search the villain deck and trash for Python and put him into play. If you searched the villain deck, shuffle it.
+            AssertIsInPlay(pyt);
+        }
+
+        [Test]
+        public void TestStranglehold_InPlay()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card mere = PlayCard("Mere");
+            Card moko = PlayCard("TaMoko");
+            Card flak = PlayCard("FlakCannon");
+
+            PlayCard(Python);
+
+            PlayCard(Stranglehold);
+            //If Python is in play, destroy {H} hero ongoing and/or equipment cards.
+            AssertInTrash(flak, moko, mere);
+        }
     }
 }
