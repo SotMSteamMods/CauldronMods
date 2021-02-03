@@ -100,7 +100,7 @@
                 "GainHP",
                 "DealDamageProjectile"
             ],
-            "body": "{TangoOne} regains 2HP and may deal up to 3 targets 1 projectile damage each.",
+            "body": "{TangoOne} regains 2 HP and may deal up to 3 targets 1 projectile damage each.",
             "flavorQuotes": [
                 {
                     "identifier": "AbsoluteZero",
