@@ -77,6 +77,17 @@ namespace Cauldron.Mythos
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+            
+            coroutine = GameController.DestroyAnyCardsThatShouldBeDestroyed(cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            
             base.RemoveSideTriggers();
             this.AddSideTriggers();
             yield return null;
