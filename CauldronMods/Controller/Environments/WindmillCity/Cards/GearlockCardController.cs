@@ -24,31 +24,33 @@ namespace Cauldron.WindmillCity
             AddCounterDamageTrigger((DealDamageAction dd) => dd.Target == Card, () => Card, () => Card, false, 3, DamageType.Lightning);
 
             //When this card is reduced to 0 HP, play the top card of each hero deck in turn order.
-            AddTrigger((GameAction a) => !_triggered && base.Card.HitPoints.Value <= 0, LessThanZeroResponse, TriggerType.PlayCard, TriggerTiming.Before);
+            AddBeforeDestroyAction(LessThanZeroResponse);
         }
-
         private IEnumerator LessThanZeroResponse(GameAction action)
         {
-            _triggered = true;
-            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} plays the top card of each hero deck!", Priority.Medium, GetCardSource(), showCardSource: true);
-            if (base.UseUnityCoroutines)
+            if (Card.HitPoints <= 0 && !_triggered)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                _triggered = true;
+                IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} plays the top card of each hero deck!", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => ttc.IsHero, (Location loc) => loc.IsHero);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                _triggered = false;
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            coroutine = PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => ttc.IsHero, (Location loc) => loc.IsHero);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            _triggered = false;
             yield break;
         }
     }
