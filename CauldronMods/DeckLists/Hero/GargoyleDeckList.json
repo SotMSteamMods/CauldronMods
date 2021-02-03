@@ -146,7 +146,7 @@
             ],
             "body": [
                 "{Gargoyle} may deal 3 targets 1 toxic damage each or 1 target 3 melee damage.",
-                "If any targets were dealt damage this way, {Gargoyle} regains 1HP."
+                "If any targets were dealt damage this way, {Gargoyle} regains 1 HP."
             ],
             "flavorQuotes": [
                 {
@@ -250,7 +250,7 @@
                 "HasPower",
                 "DrawCardNow"
             ],
-            "body": "When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X, where X is the amount of negative HP that target had. The first time this happens each turn, {Gargoyle} regains 1HP.",
+            "body": "When {Gargoyle} destroys a target by reducing its HP below 0, increase the next damage dealt by {Gargoyle} by X, where X is the amount of negative HP that target had. The first time this happens each turn, {Gargoyle} regains 1 HP.",
             "powers": [
                 "Discard 2 cards. Draw 2 cards."
             ],

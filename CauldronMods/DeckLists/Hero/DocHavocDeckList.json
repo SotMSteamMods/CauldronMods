@@ -95,7 +95,7 @@
                 "GainHP",
                 "HasPower"
             ],
-            "body": "At the start of your turn, 1 hero target regains 1HP.",
+            "body": "At the start of your turn, 1 hero target regains 1 HP.",
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
@@ -108,7 +108,7 @@
             ],
             "flavorReference": "War Journal #355",
             "powers": [
-                "Each hero target regains 1HP."
+                "Each hero target regains 1 HP."
             ]
         },
         {
@@ -123,7 +123,7 @@
                 "PlayCardNow"
             ],
             "body": [
-                "Each hero target regains 1HP.",
+                "Each hero target regains 1 HP.",
                 "You may play a card now."
                 ],
             "flavorText": "His flask was a gift, cast from the{BR}molten remains of a holy sword. Other{BR}supplies were more rudimentary."
@@ -140,7 +140,7 @@
                 "DestroyEnvironment",
                 "GainHP"
             ],
-            "body": "Whenever an environment card is destroyed, {DocHavoc} regains 2HP.",
+            "body": "Whenever an environment card is destroyed, {DocHavoc} regains 2 HP.",
             "flavorQuotes": [
                 {
                     "identifier": "DocHavoc",
@@ -164,7 +164,7 @@
             ],
             "body": [
                 "Each player may take a card from their trash and place it in their hand, or discard a card and draw 2 cards.",
-                "Each villain target regains 2HP."
+                "Each villain target regains 2 HP."
                 ],
             "flavorQuotes": [
                 {

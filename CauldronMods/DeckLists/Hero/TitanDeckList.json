@@ -168,7 +168,7 @@
             "hitpointColor": "e68078",
             "character": true,
             "powers": [
-                "Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
+                "Titan regains 1 HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
             ],
             "icons": [
                 "HasPower",
@@ -206,7 +206,7 @@
             ],
             "body": "When a non-hero card enters play, you may destroy this card. If you do, you may use a power now.",
             "powers": [
-                "{Titan} regains 3HP."
+                "{Titan} regains 3 HP."
             ],
             "flavorQuotes": [
                 {
@@ -337,7 +337,7 @@
                 "PlayCardNow"
             ],
             "body": [
-                "{Titan} regains 2HP.",
+                "{Titan} regains 2 HP.",
                 "You may search your deck and trash for a copy of the card Titanform and put it into your hand. If you searched your deck, shuffle it.",
                 "You may play a card."
             ],
@@ -414,7 +414,7 @@
             ],
             "body": [
                 "Increase damage dealt by {Titan} by 1 to non-hero targets that have dealt him damage since the end of his last turn.",
-                "At the end of your turn {Titan} regains 1HP."
+                "At the end of your turn {Titan} regains 1 HP."
             ],
             "flavorQuotes": [
                 {
@@ -672,7 +672,7 @@
             "hitpointColor": "e68078",
             "character": true,
             "powers": [
-                "Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
+                "Titan regains 1 HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
             ],
             "icons": [
                 "HasPower",

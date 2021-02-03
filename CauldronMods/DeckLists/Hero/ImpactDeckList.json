@@ -252,7 +252,7 @@
                 "DealDamageSonic"
             ],
             "body": [
-                "When this card enters play, {Impact} regains 1HP.",
+                "When this card enters play, {Impact} regains 1 HP.",
                 "The first time {Impact} would be dealt damage each environment turn, prevent that damage."
             ],
             "flavorQuotes": [

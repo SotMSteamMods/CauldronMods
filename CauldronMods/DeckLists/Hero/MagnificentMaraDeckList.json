@@ -173,7 +173,7 @@
                 "DrawCardNow"
             ],
             "body": [
-                "When a hero character is reduced to 0 or fewer HP, restore them to 2HP, then destroy this card.",
+                "When a hero character is reduced to 0 or fewer HP, restore them to 2 HP, then destroy this card.",
                 "When this card or any of your ongoing cards are destroyed you may draw a card."
             ],
             "flavorQuotes": [
