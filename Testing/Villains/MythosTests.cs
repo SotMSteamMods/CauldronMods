@@ -631,7 +631,7 @@ namespace CauldronTests
             GoToEndOfTurn(mythos);
 
             AssertIsInPlay(ClockworkRevenant);
-
+            PutOnDeck(AclastyphWhoPeers);
             //{MythosClue} Reduce damage dealt to this card by 2.
             QuickHPStorage(dok);
             DealDamage(haka, dok, 3, DamageType.Melee);

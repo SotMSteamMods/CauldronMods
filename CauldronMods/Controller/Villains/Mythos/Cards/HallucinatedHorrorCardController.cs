@@ -19,7 +19,7 @@ namespace Cauldron.Mythos
             //{MythosMadness}{MythosDanger} When this card enters play, play the top card of the villain deck.
             if (base.IsTopCardMatching(MythosMadnessDeckIdentifier) || base.IsTopCardMatching(MythosDangerDeckIdentifier))
             {
-                IEnumerator coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck);
+                IEnumerator coroutine = PlayTheTopCardOfTheVillainDeckWithMessageResponse(null);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -35,24 +35,9 @@ namespace Cauldron.Mythos
         public override void AddTriggers()
         {
             //At the end of the villain turn, this card deals each hero target 2 sonic damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
+            base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero, TargetType.All, 2, DamageType.Sonic);
             //Destroy this card when a hero is dealt damage by another hero target.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target.IsHero && action.DamageSource.IsHero && action.Target != action.DamageSource.Card, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
-        }
-
-        private IEnumerator DealDamageResponse(PhaseChangeAction action)
-        {
-            //...this card deals each hero target 2 sonic damage.
-            IEnumerator coroutine = base.DealDamage(this.Card, (Card c) => c.IsHero, 2, DamageType.Sonic);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
         }
     }
 }
