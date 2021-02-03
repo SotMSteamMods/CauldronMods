@@ -240,6 +240,10 @@ namespace CauldronTests.Art.Hero
 
             var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
 
+            var source = _startEndIdentifiers;
+            if (_name == "Titan")
+                source = _characterIdentifiers;
+
             foreach (var character in _startEndIdentifiers)
             {
                 string str = "YesNoDialog" + character;
