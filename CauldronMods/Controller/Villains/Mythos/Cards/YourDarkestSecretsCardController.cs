@@ -38,10 +38,10 @@ namespace Cauldron.Mythos
                     if (base.GameController.GetAllKeywords(handCard).Intersect(base.GameController.GetAllKeywords(card)).Any())
                     {
                         Card target = card.Owner.CharacterCard;
-                        if (!target.IsRealCard)
+                        if (card.Owner.HasMultipleCharacterCards )
                         {
                             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DealDamage, new LinqCardCriteria((Card c) => c.Owner == target.Owner && c.IsHeroCharacterCard), storedResults, false, cardSource: base.GetCardSource());
+                            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DealDamage, new LinqCardCriteria((Card c) => c.Owner == card.Owner && c.IsHeroCharacterCard), storedResults, false, cardSource: base.GetCardSource());
                             if (UseUnityCoroutines)
                             {
                                 yield return GameController.StartCoroutine(coroutine);
