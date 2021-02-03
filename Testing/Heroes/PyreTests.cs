@@ -869,6 +869,7 @@ namespace CauldronTests
             PlayCard(point);
             DecisionSelectCard = breach;
             PlayCard(cladding);
+            PlayCard("Fortitude");
             DestroyCard(point);
             AssertInTrash(breach);
             AssertIsInPlay(cladding);

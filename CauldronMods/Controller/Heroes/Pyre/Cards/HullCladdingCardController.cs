@@ -28,7 +28,7 @@ namespace Cauldron.Pyre
             AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(CharacterCard), dd => 1);
 
             //"If Containment Breach is ever in play, destroy it or destroy this card."
-            AddTrigger((CardEntersPlayAction cep) => GameController.GetAllCards().Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ContainmentBreach" && GameController.IsCardVisibleToCardSource(c, GetCardSource())), DestroyCladdingOrBreachResponse, TriggerType.DestroyCard, TriggerTiming.After);
+            AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay.Identifier == "ContainmentBreach" || (cep.CardEnteringPlay == Card && GameController.GetAllCards().Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ContainmentBreach" && GameController.IsCardVisibleToCardSource(c, GetCardSource()))), DestroyCladdingOrBreachResponse, TriggerType.DestroyCard, TriggerTiming.After);
         }
 
         private IEnumerator DestroyCladdingOrBreachResponse(CardEntersPlayAction cep)
