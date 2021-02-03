@@ -478,6 +478,20 @@ namespace CauldronTests
             GoToStartOfTurn(windmill);
             QuickHPCheck(0, -8, -8, -8);
         }
+        [Test()]
+        public void TestIronWaspDynamic()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card wasp = PlayCard("IronWasp");
+            PlayCard("FlameBarrier");
+            GoToEndOfTurn(haka);
+            //At the start of the environment turn, this card deals each hero target X melee damage, where X is the current HP of this card.
+            QuickHPStorage(baron, ra, legacy, haka);
+            GoToStartOfTurn(windmill);
+            QuickHPCheck(0, -8, -6, -6);
+        }
 
         [Test()]
         public void TestRainOfDebris()
