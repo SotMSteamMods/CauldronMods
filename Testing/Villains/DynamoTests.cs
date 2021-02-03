@@ -539,7 +539,21 @@ namespace CauldronTests
             Card pyt = PlayCard(Python);
 
             //The first time a hero target deals damage to this card each turn, reduce damage dealt by that target by 1 until the start of the next villain turn.
+            DealDamage(haka, pyt, 1, DamageType.Melee);
+
+            QuickHPStorage(dynamo.CharacterCard, pyt);
+            DealDamage(haka, dynamo, 2, DamageType.Melee);
+            DealDamage(bunker, pyt, 2, DamageType.Melee);
+            QuickHPCheck(-1, -2);
+
+            QuickHPStorage(dynamo.CharacterCard, pyt);
+            DealDamage(bunker, pyt, 2, DamageType.Melee);
+            QuickHPCheck(0, -1);
+
             //Whenever a One-shot enters the villain trash, this card deals the 2 hero targets with the lowest HP {H - 2} toxic damage each.
+            QuickHPStorage(haka, bunker, scholar);
+            PutInTrash(SlipperyThief);
+            QuickHPCheck(0, -1, -1);
         }
     }
 }
