@@ -420,5 +420,126 @@ namespace CauldronTests
             //If Copperhead is in play, he deals each hero target 2 melee damage.
             QuickHPCheck(-2, -2, -2);
         }
+
+        [Test]
+        public void TestHeresThePlan()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(HeresThePlan);
+
+            //Reveal cards from the top of the villain deck until a Plot is revealed. Put it into play and shuffle the other revealed cards back into the villain deck.
+            AssertNumberOfCardsInPlay((Card c) => c.DoKeywordsContain("plot"), 1);
+
+            //The villain target with the highest HP deals each hero target {H - 1} melee damage.
+            QuickHPCheck(-2, -2, -2);
+        }
+
+        [Test]
+        public void TestHeresThePlan_DynamoNotHighest()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            AddCannotDealNextDamageTrigger(dynamo, dynamo.CharacterCard);
+            SetHitPoints(dynamo, 1);
+            PlayCard(Copperhead);
+
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(HeresThePlan);
+
+            //Reveal cards from the top of the villain deck until a Plot is revealed. Put it into play and shuffle the other revealed cards back into the villain deck.
+            AssertNumberOfCardsInPlay((Card c) => c.DoKeywordsContain("plot"), 1);
+
+            //The villain target with the highest HP deals each hero target {H - 1} melee damage.
+            QuickHPCheck(-2, -2, -2);
+        }
+
+        [Test]
+        public void TestImperviousAdvance_NoCopperhead()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //The villain target with the highest HP deals the hero target with the second highest HP {H} melee damage
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(ImperviousAdvance);
+            QuickHPCheck(0, 0, -3);
+
+            //If Copperhead is in play, reduce damage dealt to villain targets by 1 until the start of the next villain turn.
+            QuickHPStorage(dynamo);
+            DealDamage(haka, dynamo, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test]
+        public void TestImperviousAdvance_Copperhead()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            AddCannotDealNextDamageTrigger(dynamo, dynamo.CharacterCard);
+            SetHitPoints(dynamo, 6);
+            Card cop = PlayCard(Copperhead);
+
+            //The villain target with the highest HP deals the hero target with the second highest HP {H} melee damage
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(ImperviousAdvance);
+            QuickHPCheck(0, 0, -3);
+
+            //If Copperhead is in play, reduce damage dealt to villain targets by 1 until the start of the next villain turn.
+            QuickHPStorage(dynamo.CharacterCard, cop);
+            DealDamage(haka, cop, 2, DamageType.Melee);
+            DealDamage(haka, dynamo, 2, DamageType.Melee);
+            QuickHPCheck(-1, -1);
+
+            GoToStartOfTurn(dynamo);
+            QuickHPStorage(dynamo.CharacterCard, cop);
+            DealDamage(haka, cop, 2, DamageType.Melee);
+            DealDamage(haka, dynamo, 2, DamageType.Melee);
+            QuickHPCheck(-2, -2);
+        }
+
+        [Test]
+        public void TestKineticEnergyBeam()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+
+            //{Dynamo} deals the hero target with the second highest HP {H} energy damage.
+            QuickHPStorage(haka, bunker, scholar);
+            PlayCard(KineticEnergyBeam);
+            QuickHPCheck(0, 0, -3);
+
+            //Increase damage dealt to that target by environment cards by 1 until the start of the next villain turn.
+            QuickHPStorage(haka, scholar);
+            //only environment
+            DealDamage(dynamo, scholar, 2, DamageType.Melee);
+            //only target
+            DealDamage(traffic, haka, 2, DamageType.Melee);
+            DealDamage(traffic, scholar, 2, DamageType.Melee);
+            QuickHPCheck(-2, -5);
+
+            GoToStartOfTurn(dynamo);
+            QuickHPStorage(scholar);
+            DealDamage(traffic, scholar, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test]
+        public void TestPython()
+        {
+            SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card pyt = PlayCard(Python);
+
+            //The first time a hero target deals damage to this card each turn, reduce damage dealt by that target by 1 until the start of the next villain turn.
+            //Whenever a One-shot enters the villain trash, this card deals the 2 hero targets with the lowest HP {H - 2} toxic damage each.
+        }
     }
 }
