@@ -123,5 +123,37 @@ namespace Cauldron.Drift
             }
             yield break;
         }
+
+        public override bool IsIncapacitated
+        {
+            get
+            {
+                if (base.TurnTaker.Identifier == "Drift")
+                {
+                    if (this.GetActiveCharacterCard().IsFlipped)
+                    {
+                        return true;
+                    }
+                }
+                return base.IsIncapacitated;
+            }
+        }
+
+        public override bool IsIncapacitatedOrOutOfGame
+        {
+            get
+            {
+                if (!IsIncapacitated)
+                {
+                    return IncapacitationCardController.Card.IsOutOfGame;
+                }
+                return true;
+            }
+        }
+
+        public Card GetActiveCharacterCard()
+        {
+            return base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == this.TurnTaker).FirstOrDefault();
+        }
     }
 }
