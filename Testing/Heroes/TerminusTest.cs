@@ -14,6 +14,10 @@ namespace CauldronTests
     [TestFixture()]
     public class TerminusTest : CauldronBaseTest
     {
+        protected Card terra { get { return GetCard("StarlightOfTerraCharacter"); } }
+        protected Card asheron { get { return GetCard("StarlightOfAsheronCharacter"); } }
+        protected Card cryos { get { return GetCard("StarlightOfCryosFourCharacter"); } }
+
         #region Terminus Utilities
         private string[] gameDecks => new string[] { "BaronBlade", "Cauldron.Terminus", "Legacy", "Bunker", "TheScholar", "Megalopolis" };
 
@@ -477,6 +481,7 @@ namespace CauldronTests
             tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
             stainedBadge = PutIntoPlay("StainedBadge");
 
+            // Check tokens added functionality
             QuickTokenPoolStorage(tokenPool);
             GoToEndOfTurn(terminus);
             QuickTokenPoolCheck(1);
@@ -489,9 +494,11 @@ namespace CauldronTests
             GoToEndOfTurn(terminus);
             QuickTokenPoolCheck(0);
 
+            // Test terminus indestructible
             DealDamage(baron, terminus, 2, DamageType.Melee);
             AssertNotIncapacitatedOrOutOfGame(terminus);
 
+            // Test removes mementos
             gravenShell = PlayCard(terminus, "GravenShell");
             railwaySpike = PlayCard(terminus, "RailwaySpike");
 
@@ -499,6 +506,7 @@ namespace CauldronTests
             AssertOutOfGame(gravenShell);
             AssertOutOfGame(railwaySpike);
 
+            // Test terminus stays indestructible until the last hero falls
             SetHitPoints(legacy.CharacterCard, 1);
             DealDamage(baron, legacy, 2, DamageType.Melee);
             AssertIncapacitated(legacy);
@@ -513,8 +521,130 @@ namespace CauldronTests
             DealDamage(baron, scholar, 2, DamageType.Melee);
             AssertIncapacitated(scholar);
             AssertIncapacitated(terminus);
+            AssertGameOver(EndingResult.HeroesDestroyedDefeat);
         }
 
+        [Test]
+        public void TestStainedBadgeRepresentativOfEarth()
+        {
+            Card representativeOfEarth;
+            Card stainedBadge;
+            Card representativeTerminus;
+
+            StartTestGame("BaronBlade", "Cauldron.Terminus", "Legacy", "Bunker", "TheScholar", "TheCelestialTribunal");
+            base.GameController.SkipToTurnTakerTurn(terminus);
+
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Terminus";
+            DecisionSelectFromBoxIdentifiers = new string[] { "Cauldron.MinistryOfStrategicScienceTerminusCharacter" };
+            
+            representativeOfEarth = PutIntoPlay("RepresentativeOfEarth");
+            stainedBadge = PutIntoPlay("StainedBadge");
+
+            representativeTerminus = representativeOfEarth.GetAllNextToCards(true).FirstOrDefault();
+
+            // Test ends game
+            SetHitPoints(representativeTerminus, 2);
+            DealDamage(baron, representativeTerminus, 2, DamageType.Cold);
+            AssertGameOver(EndingResult.EnvironmentDefeat);
+        }
+
+        [Test]
+        public void TestStainedBadgeResurrectionRitual()
+        {
+            Card gravenShell;
+            Card railwaySpike;
+            Card resurrectionRitual;
+            Card stainedBadge;
+            int countUnder = 0;
+
+            StartTestGame("BaronBlade", "Cauldron.Terminus", "Legacy", "Bunker", "TheScholar", "TheTempleOfZhuLong");
+            base.GameController.SkipToTurnTakerTurn(terminus);
+
+            resurrectionRitual = PutIntoPlay("ResurrectionRitual");
+            stainedBadge = PutIntoPlay("StainedBadge");
+
+            countUnder = resurrectionRitual.UnderLocation.Cards.Count();
+            gravenShell = PlayCard(terminus, "GravenShell");
+            AssertNumberOfCardsAtLocation(resurrectionRitual.UnderLocation, countUnder);
+
+            railwaySpike = PlayCard(terminus, "RailwaySpike");
+            AssertNumberOfCardsAtLocation(resurrectionRitual.UnderLocation, countUnder);
+
+
+            SetHitPoints(terminus, -1);
+            SetHitPoints(legacy.CharacterCard, 1);
+            DealDamage(baron, legacy, 2, DamageType.Melee);
+            AssertIncapacitated(legacy);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            SetHitPoints(bunker.CharacterCard, 1);
+            DealDamage(baron, bunker, 2, DamageType.Melee);
+            AssertIncapacitated(bunker);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            SetHitPoints(scholar.CharacterCard, 1);
+            DealDamage(baron, scholar, 2, DamageType.Melee);
+            AssertIncapacitated(scholar);
+            AssertIncapacitated(terminus);
+            AssertNumberOfCardsAtLocation(resurrectionRitual.UnderLocation, countUnder);
+            AssertGameOver(EndingResult.HeroesDestroyedDefeat);
+        }
+
+        [Test]
+        public void TestStainedBadgeMultipleCharacterCards()
+        {
+            Card stainedBadge;
+            var nightloreDict = new Dictionary<string, string> { };
+            nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
+            SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Cauldron.Terminus", "TheSentinels", "Megalopolis" }, false, nightloreDict);
+
+            base.GameController.SkipToTurnTakerTurn(terminus);
+
+            stainedBadge = PutIntoPlay("StainedBadge");
+
+            // Test terminus indestructible
+            SetHitPoints(terminus, 2);
+            DealDamage(baron, terminus, 2, DamageType.Melee);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            // Test terminus stays indestructible until the last hero falls
+            SetHitPoints(mainstay, 1);
+            DealDamage(baron, mainstay, 2, DamageType.Melee);
+            AssertNotIncapacitatedOrOutOfGame(sentinels);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            SetHitPoints(writhe, 1);
+            DealDamage(baron, writhe, 2, DamageType.Melee);
+            AssertNotIncapacitatedOrOutOfGame(sentinels);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            SetHitPoints(medico, 1);
+            DealDamage(baron, medico, 2, DamageType.Melee);
+            AssertNotIncapacitatedOrOutOfGame(sentinels);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            SetHitPoints(idealist, 1);
+            DealDamage(baron, idealist, 2, DamageType.Melee);
+            AssertIncapacitated(sentinels);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            SetHitPoints(terra, 1);
+            DealDamage(baron, terra, 2, DamageType.Melee);
+            AssertNotIncapacitatedOrOutOfGame(starlight);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            SetHitPoints(asheron, 1);
+            DealDamage(baron, asheron, 2, DamageType.Melee);
+            AssertNotIncapacitatedOrOutOfGame(starlight);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            SetHitPoints(cryos, 1);
+            DealDamage(baron, cryos, 2, DamageType.Melee);
+            AssertIncapacitated(starlight);
+
+            AssertIncapacitated(terminus);
+            AssertGameOver(EndingResult.HeroesDestroyedDefeat);
+        }
         #endregion
 
         #region Test Guilty Verdict
