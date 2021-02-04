@@ -31,14 +31,27 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator DiscardAllBut1CardResponse(HeroTurnTakerController httc)
         {
-            return base.GameController.SelectCardsFromLocationAndMoveThem(httc, httc.HeroTurnTaker.Hand,
-                        null, httc.NumberOfCardsInHand - 1,
-                        new LinqCardCriteria(card => card.Location == httc.HeroTurnTaker.Hand && GameController.IsLocationVisibleToSource(card.Location, GetCardSource()), "hand"),
-                        new[] { new MoveCardDestination(httc.TurnTaker.Trash) },
-                        isDiscardIfMovingToTrash: true,
-                        cancelDecisionsIfTrue: () => httc.HeroTurnTaker.NumberOfCardsInHand <= 1,
-                        selectionType: SelectionType.DiscardCard,
-                        cardSource: base.GetCardSource());
+            List<SelectCardDecision> cardDecisions = new List<SelectCardDecision>();
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(httc, SelectionType.CardFromHand, new LinqCardCriteria((Card c) => c.Location.IsHand && c.Location.OwnerTurnTaker == httc.TurnTaker), cardDecisions, false, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.GameController.BulkMoveCards(httc, httc.HeroTurnTaker.Hand.Cards.Where((Card c) => c != cardDecisions.FirstOrDefault().SelectedCard), httc.TurnTaker.Trash, isDiscard: true, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         private IEnumerator DealPsychicDamageResponse(HeroTurnTakerController httc)
