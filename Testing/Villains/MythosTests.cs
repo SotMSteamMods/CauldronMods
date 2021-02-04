@@ -439,6 +439,20 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMythosBack_SoftlockWhenNoCardsInDeck()
+        {
+            SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+
+            DiscardTopCards(mythos.TurnTaker.Deck, mythos.TurnTaker.Deck.NumberOfCards);
+            DecisionsYesNo = new bool[] { false, false, false };
+            AddTokensToDangerousInvestigationPool(3);
+
+            GoToEndOfTurn();
+            AssertNotGameOver();
+        }
+
+        [Test()]
         public void TestMythosBack_Madness_SkipPlay()
         {
             SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" });

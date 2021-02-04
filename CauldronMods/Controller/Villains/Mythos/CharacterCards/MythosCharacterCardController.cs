@@ -262,6 +262,11 @@ namespace Cauldron.Mythos
 
         private bool IsTopCardMatching(string type)
         {
+            if(TurnTaker.Deck.NumberOfCards == 0)
+            {
+                return false;
+            }
+
             //Advanced - Back: Activate all {MythosDanger} effects.
             if (base.Game.IsAdvanced && base.CharacterCard.IsFlipped && type == MythosDangerDeckIdentifier)
             {
