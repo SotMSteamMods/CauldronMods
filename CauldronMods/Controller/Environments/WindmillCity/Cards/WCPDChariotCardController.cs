@@ -42,35 +42,8 @@ namespace Cauldron.WindmillCity
             if(lowestCard != null && lowestCard.FirstOrDefault() != null)
             {
                 Card target = lowestCard.FirstOrDefault();
-                /*
-                coroutine = DealDamage(this.Card, target, Game.H - 1, DamageType.Projectile, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                */
                 DealDamageAction dd = new DealDamageAction(GetCardSource(), new DamageSource(GameController, Card), target, Game.H - 1, DamageType.Projectile);
-                _ownDamage = dd.InstanceIdentifier;
-                /*
-                 * if(target.IsHero)
-                {
-                    coroutine = RedirectHeroDamageResponse(dd);
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                }
-                */
-
-              
+                _ownDamage = dd.InstanceIdentifier;        
                 coroutine = DoAction(dd);
                 if (base.UseUnityCoroutines)
                 {
