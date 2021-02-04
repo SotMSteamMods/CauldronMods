@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Drift
@@ -211,6 +212,24 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
+
+        protected override IEnumerator RemoveCardsFromGame(IEnumerable<Card> cardsEnum)
+        {
+            //add special code to remove shift track from game
+            cardsEnum = cardsEnum.Where((Card c) => !c.IsCharacter && !c.IsMissionCard && !c.Location.IsOffToTheSide);
+            List<Card> cards = cardsEnum.ToList();
+            cards.Add(GetShiftTrack());
+            IEnumerator coroutine = base.GameController.BulkMoveCards(base.TurnTakerController, cards, base.TurnTakerControllerWithoutReplacements.TurnTaker.OutOfGame);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+           
         }
     }
 }
