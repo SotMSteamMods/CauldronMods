@@ -96,6 +96,34 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDriftIncap()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, haka, 50, 0);
+            DealDamage(baron, bunker, 50, 0);
+            DealDamage(baron, scholar, 50, 0);
+            DealDamage(baron, drift, 50, 0);
+            AssertGameOver();
+        }
+
+        [Test()]
+        public void TestDriftResurrect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "TheTempleOfZhuLong");
+            StartGame();
+
+            DealDamage(baron, drift, 50, 0);
+            AssertIncapacitated(drift);
+
+            PlayCard("RitesOfRevival");
+            GoToEndOfTurn(base.env);
+            AssertNotIncapacitatedOrOutOfGame(drift);
+            AssertNotFlipped(GetShiftTrack());
+        }
+
+        [Test()]
         public void TestDriftCharacter_InnatePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
