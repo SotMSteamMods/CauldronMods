@@ -14,5 +14,48 @@ namespace Cauldron.Drift
         {
 
         }
+
+        public override void AddStartOfGameTriggers()
+        {
+            if (Card.IsInPlay && Card.IsFlipped)
+            {
+                AddFlipTriggers();
+            }
+        }
+
+        public override void AddTriggers()
+        {
+            base.AddTriggers();
+            AddFlipTriggers();
+        }
+
+        private void AddFlipTriggers()
+        {
+            AddTrigger((FlipCardAction fc) => fc.CardToFlip == CharacterCardController, FlipThisCardResponse, TriggerType.Hidden, TriggerTiming.After);
+        }
+
+        public override IEnumerator AfterFlipCardImmediateResponse()
+        {
+            if (Card.IsFlipped)
+            {
+                RemoveAllTriggers(includingOutOfPlay: true, includeUnresolvedOnDestroyTriggers: false);
+                AddFlipTriggers();
+            }
+            else if (Card.IsInPlay)
+            {
+                RemoveInhibitor();
+                AddCardTriggers();
+            }
+            yield return null;
+        }
+
+        private IEnumerator FlipThisCardResponse(FlipCardAction fc)
+        {
+            if (Card.IsFlipped != CharacterCard.IsFlipped)
+            {
+                return GameController.FlipCard(this, cardSource: GetCardSource());
+            }
+            return DoNothing();
+        }
     }
 }

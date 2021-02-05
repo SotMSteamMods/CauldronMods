@@ -21,6 +21,7 @@ namespace Cauldron.Drift
 
         public override void AddTriggers()
         {
+            base.AddTriggers();
             //Once per turn you may do the following in order:
             //1. Place your active character on your current shift track space.
             //2. Place the shift token on your inactive character's shift track space.
