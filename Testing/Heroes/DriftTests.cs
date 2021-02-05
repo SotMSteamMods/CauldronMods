@@ -705,6 +705,24 @@ namespace CauldronTests
             AssertTrackPosition(4);
             QuickHPCheck(0);
         }
+        [Test]
+        public void TestFutureFocus_ShiftsNotCarriedOver()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard(FutureFocus);
+            DecisionYesNo = true;
+            QuickHPStorage(apostate);
+
+            DealDamage(apostate, drift, 1, DamageType.Melee);
+            AssertTrackPosition(4);
+            QuickHPCheck(-3);
+
+            GoToStartOfTurn(drift);
+            DealDamage(apostate, drift, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
 
         [Test]
         public void TestImposedSynchronization_Future()
