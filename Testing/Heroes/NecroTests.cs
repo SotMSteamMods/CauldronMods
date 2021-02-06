@@ -1341,5 +1341,55 @@ namespace CauldronTests
             QuickHPCheck(0, -2, 0, 0);
         }
 
+        [Test()]
+        public void TestGhoulSpecialStrings()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/PastNecroCharacter", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(necro);
+
+            Card ghoul = PlayCard("Ghoul");
+            PrintSpecialStringsForCard(ghoul);
+
+            GoToUsePowerPhase(necro);
+            UsePower(necro.CharacterCard);
+            PrintSpecialStringsForCard(ghoul);
+
+        }
+
+        [Test()]
+        public void TestZombieSpecialStrings()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/PastNecroCharacter", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(necro);
+
+            Card zombie = PlayCard("NecroZombie");
+            PrintSpecialStringsForCard(zombie);
+
+            GoToUsePowerPhase(necro);
+            UsePower(necro.CharacterCard);
+            PrintSpecialStringsForCard(zombie);
+
+        }
+        [Test()]
+        public void TestPossessedCorpseSpecialStrings()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/PastNecroCharacter", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            GoToPlayCardPhase(necro);
+
+            Card corpse = PlayCard("PossessedCorpse");
+            PrintSpecialStringsForCard(corpse);
+
+            GoToUsePowerPhase(necro);
+            UsePower(necro.CharacterCard);
+            PrintSpecialStringsForCard(corpse);
+
+        }
+
     }
 }
