@@ -36,20 +36,11 @@ namespace Cauldron.Northspar
                 moveDestinations.Add(new MoveCardDestination(base.TurnTaker.PlayArea));
 
                 List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
-
-                //dynamically set search locations based on what cards are where
-                List<LocationChoice> choices = new List<LocationChoice>();
-                if (TurnTaker.Deck.Cards.Any((Card c) => base.IsWaypoint(c)))
+                IEnumerator coroutine = GameController.SelectLocation(this.DecisionMaker, new LocationChoice[2]
                 {
-                    choices.Add(new LocationChoice(TurnTaker.Deck));
-                }
-
-                if (TurnTaker.Trash.Cards.Any((Card c) => base.IsWaypoint(c)))
-                {
-                    choices.Add(new LocationChoice(TurnTaker.Trash));
-                }
-
-                IEnumerator coroutine = GameController.SelectLocation(this.DecisionMaker, choices, SelectionType.SearchLocation, storedLocation, optional: false, GetCardSource());
+                    new LocationChoice(base.TurnTaker.Deck),
+                    new LocationChoice(base.TurnTaker.Trash)
+                }, SelectionType.SearchLocation, storedLocation, optional: false, GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
