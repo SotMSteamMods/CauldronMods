@@ -136,18 +136,12 @@ namespace Cauldron.LadyOfTheWood
         {
             // You may change its type by spending a token
 
-            TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (elementPool == null || !base.TurnTaker.IsHero)
-            {
-                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
-                if (turnTaker != null)
-                {
-                    elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-                }
-            }
+            TokenPool elementPool = GetElementTokenPool();
+
+            HeroTurnTakerController httc = FindHeroTurnTakerController(hero.ToHero());
 
             List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
-            IEnumerator coroutine = base.GameController.RemoveTokensFromPool(elementPool, 1, storedResults: storedResults, optional: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = RemoveTokensFromPoolNewDecisionMaker(elementPool, 1, storedResults: storedResults, optional: true, httc: httc, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -160,7 +154,7 @@ namespace Cauldron.LadyOfTheWood
             {
                 //Select a damage type.
                 List<SelectDamageTypeDecision> storedDamageTypeResults = new List<SelectDamageTypeDecision>();
-                coroutine = base.GameController.SelectDamageType(FindHeroTurnTakerController(hero.ToHero()), storedDamageTypeResults, cardSource: GetCardSource());
+                coroutine = base.GameController.SelectDamageType(httc, storedDamageTypeResults, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -198,7 +192,7 @@ namespace Cauldron.LadyOfTheWood
                 case 1:
                     {
                         // Add 1 token to your element pool.
-                        TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+                        TokenPool elementPool = GetElementTokenPool();
                         IEnumerator coroutine2 = base.GameController.AddTokensToPool(elementPool, 1, GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
@@ -213,7 +207,7 @@ namespace Cauldron.LadyOfTheWood
                 case 2:
                     {
                         // Spend 1 token from your element pool. If you do, 1 hero deals 1 target 3 damage of any type.
-                        TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+                        TokenPool elementPool = GetElementTokenPool();
                         List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
                         IEnumerator coroutine = base.GameController.RemoveTokensFromPool(elementPool, 1, storedResults: storedResults, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
@@ -393,6 +387,54 @@ namespace Cauldron.LadyOfTheWood
                 RemoveAllTriggers();
             }
 
+        }
+
+        public IEnumerator RemoveTokensFromPoolNewDecisionMaker(TokenPool pool, int numberOfTokens, List<RemoveTokensFromPoolAction> storedResults = null, bool optional = false, GameAction gameAction = null, HeroTurnTakerController httc = null, IEnumerable<Card> associatedCards = null, CardSource cardSource = null)
+        {
+            bool proceed = true;
+
+            if (httc == null)
+            {
+                httc = DecisionMaker;
+            }
+
+            if (optional)
+            {
+                proceed = false;
+                SelectionType type = SelectionType.RemoveTokens;
+                if (pool.CurrentValue < numberOfTokens)
+                {
+                    type = SelectionType.RemoveTokensToNoEffect;
+                }
+                YesNoAmountDecision yesNo = new YesNoAmountDecision(GameController, httc, type, numberOfTokens, upTo: false, requireUnanimous: false, gameAction, associatedCards: associatedCards, cardSource);
+                IEnumerator coroutine = GameController.MakeDecisionAction(yesNo);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                if (yesNo.Answer.HasValue)
+                {
+                    proceed = yesNo.Answer.Value;
+                }
+            }
+            if (proceed)
+            {
+                RemoveTokensFromPoolAction removeTokensFromPoolAction = ((cardSource == null) ? new RemoveTokensFromPoolAction(GameController, pool, numberOfTokens) : new RemoveTokensFromPoolAction(cardSource, pool, numberOfTokens));
+                storedResults?.Add(removeTokensFromPoolAction);
+                IEnumerator coroutine2 = DoAction(removeTokensFromPoolAction);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine2);
+                }
+            }
         }
 
     }
