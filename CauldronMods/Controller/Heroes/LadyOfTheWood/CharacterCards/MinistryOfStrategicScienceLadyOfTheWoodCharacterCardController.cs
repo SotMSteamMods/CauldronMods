@@ -13,7 +13,7 @@ namespace Cauldron.LadyOfTheWood
         public MinistryOfStrategicScienceLadyOfTheWoodCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             AllowFastCoroutinesDuringPretend = false;
-            SpecialString specialString = base.SpecialStringMaker.ShowTokenPool(base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier));
+            SpecialString specialString = base.SpecialStringMaker.ShowTokenPool(GetElementTokenPool());
             specialString.ShowWhileIncapacitated = true;
         }
 
@@ -30,10 +30,10 @@ namespace Cauldron.LadyOfTheWood
 
         private TokenPool GetElementTokenPool()
         {
-            TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (TurnTaker.Identifier != "LadyOfTheWood")
+            TokenPool elementPool = CharacterCardWithoutReplacements.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+            if (elementPool is null || TurnTaker.Identifier != LadyOfTheWoodIdentifier)
             {
-                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
+                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == LadyOfTheWoodIdentifier).FirstOrDefault();
                 if (turnTaker is null)
                 {
                     return null;
@@ -49,6 +49,7 @@ namespace Cauldron.LadyOfTheWood
         private IEnumerator SpendTokenResponse(DealDamageAction dd)
         {
             TokenPool elementPool = GetElementTokenPool();
+
             List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
             IEnumerator coroutine = base.GameController.RemoveTokensFromPool(elementPool, 1, storedResults: storedResults, optional: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -92,7 +93,7 @@ namespace Cauldron.LadyOfTheWood
             int tokensToAdd = GetPowerNumeral(0, 2);
             bool otherHeroUsingPower = false;
 
-            if(TurnTaker.Identifier != "LadyOfTheWood")
+            if(TurnTaker.Identifier != LadyOfTheWoodIdentifier)
             {
                 otherHeroUsingPower = true;
             }
@@ -110,7 +111,7 @@ namespace Cauldron.LadyOfTheWood
 
             if (otherHeroUsingPower)
             {
-                OnDealDamageStatusEffect effect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(ChangeDamageTypeResponse), "When " + base.Card.Title + " would deal damage, you may change its type by spending a token", new TriggerType[]
+                OnDealDamageStatusEffect effect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(ChangeDamageTypeResponse), "When " + base.Card.Title + " would deal damage, you may change its type by spending an element token.", new TriggerType[]
                 {
                 TriggerType.ModifyTokens,
                 TriggerType.ChangeDamageType
@@ -137,6 +138,11 @@ namespace Cauldron.LadyOfTheWood
             // You may change its type by spending a token
 
             TokenPool elementPool = GetElementTokenPool();
+
+            if(elementPool is null || elementPool.CurrentValue == 0)
+            {
+                yield break;
+            }
 
             HeroTurnTakerController httc = FindHeroTurnTakerController(hero.ToHero());
 
@@ -269,6 +275,7 @@ namespace Cauldron.LadyOfTheWood
         }
 
         public static string LadyOfTheWoodElementPoolIdentifier = "LadyOfTheWoodElementPool";
+        public static string LadyOfTheWoodIdentifier = "LadyOfTheWood";
 
         //override flip response to remove resetting token pools
         public override IEnumerator BeforeFlipCardImmediateResponse(FlipCardAction flip)
