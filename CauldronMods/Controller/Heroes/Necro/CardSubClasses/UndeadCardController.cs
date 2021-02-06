@@ -44,9 +44,7 @@ namespace Cauldron.Necro
 
         protected string BuildUndeadSpecialString(bool highestOrLowest, int ranking = 1, Func<int> numberOfTargets = null, LinqCardCriteria cardCriteria = null)
         {
-
             return HighestOrLowest(highest: highestOrLowest, ranking, numberOfTargets, cardCriteria, null, false);
-
         }
 
         private string HighestOrLowest(bool highest, int ranking = 1, Func<int> numberOfTargets = null, LinqCardCriteria cardCriteria = null, BattleZone battleZone = null, bool ignoreBattleZone = false)
