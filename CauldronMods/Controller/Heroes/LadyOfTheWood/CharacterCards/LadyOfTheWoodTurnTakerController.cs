@@ -18,10 +18,14 @@ namespace Cauldron.LadyOfTheWood
 
         public override IEnumerator StartGame()
         {
-            TokenPool unlucky = TurnTaker.CharacterCard.TokenPools[0];
-            TokenPool element = TurnTaker.CharacterCard.TokenPools[1];
-            TurnTaker.CharacterCard.TokenPools[0] = element;
-            TurnTaker.CharacterCard.TokenPools[1] = unlucky;
+            if (base.CharacterCardController is MinistryOfStrategicScienceLadyOfTheWoodCharacterCardController)
+            {
+                TokenPool unlucky = TurnTaker.CharacterCard.TokenPools[0];
+                TokenPool element = TurnTaker.CharacterCard.TokenPools[1];
+                TurnTaker.CharacterCard.TokenPools[0] = element;
+                TurnTaker.CharacterCard.TokenPools[1] = unlucky;
+            }
+            
             yield break;
         }
 
