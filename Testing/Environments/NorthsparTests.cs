@@ -963,6 +963,7 @@ namespace CauldronTests
             //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
             DecisionSelectCard = makeshift;
             DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Trash);
+            AssertNumberOfChoicesInNextDecision(2, SelectionType.SearchLocation);
             QuickShuffleStorage(northspar);
             GoToStartOfTurn(northspar);
             AssertIsInPlay(makeshift);
@@ -986,6 +987,7 @@ namespace CauldronTests
             //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
             DecisionSelectCards = new Card[] { depot, haka.CharacterCard };
             DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Deck);
+            AssertNumberOfChoicesInNextDecision(1, SelectionType.SearchLocation);
 
             QuickShuffleStorage(northspar);
             GoToStartOfTurn(northspar);
@@ -1014,7 +1016,7 @@ namespace CauldronTests
             //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
             DecisionSelectCard = landing;
             DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Deck);
-
+            AssertNumberOfChoicesInNextDecision(1, SelectionType.SearchLocation);
             QuickShuffleStorage(northspar);
             GoToStartOfTurn(northspar);
             AssertIsInPlay(landing);
