@@ -31,13 +31,16 @@ namespace Cauldron.LadyOfTheWood
         private TokenPool GetElementTokenPool()
         {
             TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (elementPool == null || !base.TurnTaker.IsHero)
+            if (TurnTaker.Identifier != "LadyOfTheWood")
             {
                 TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
-                if (turnTaker != null)
+                if (turnTaker is null)
                 {
-                    elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+                    return null;
                 }
+
+                elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+
             }
 
             return elementPool;
@@ -88,19 +91,13 @@ namespace Cauldron.LadyOfTheWood
             // Add 2 tokens to your element pool. 
             int tokensToAdd = GetPowerNumeral(0, 2);
             bool otherHeroUsingPower = false;
-            TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (elementPool == null || !base.TurnTaker.IsHero)
+
+            if(TurnTaker.Identifier != "LadyOfTheWood")
             {
-                //TODO: Engine limitation currently prevents us from Dynamic pool generation, but once that exists this should
-                //		create a token pool on the other character card, and then allow for spending tokens from their
-                //		own token poool for the second part of the effect
                 otherHeroUsingPower = true;
-                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
-                if (turnTaker != null)
-                {
-                    elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-                }
             }
+            TokenPool elementPool = GetElementTokenPool();
+            
             IEnumerator coroutine = base.GameController.AddTokensToPool(elementPool, tokensToAdd, GetCardSource());
             if (base.UseUnityCoroutines)
             {
