@@ -28,85 +28,24 @@ namespace Cauldron.Northspar
 
         private IEnumerator SearchForWaypoints(PhaseChangeAction pca)
         {
-            if (base.TurnTaker.Deck.Cards.Any((Card c) => base.IsWaypoint(c)) || base.TurnTaker.Trash.Cards.Any((Card c) => base.IsWaypoint(c)))
-            {
-
-                // Search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play...
-                List<MoveCardDestination> moveDestinations = new List<MoveCardDestination>();
-                moveDestinations.Add(new MoveCardDestination(base.TurnTaker.PlayArea));
-
-                List<SelectLocationDecision> storedLocation = new List<SelectLocationDecision>();
-
-                //dynamically set search locations based on what cards are where
-                List<LocationChoice> choices = new List<LocationChoice>();
-                if (TurnTaker.Deck.Cards.Any((Card c) => base.IsWaypoint(c)))
-                {
-                    choices.Add(new LocationChoice(TurnTaker.Deck));
-                }
-
-                if (TurnTaker.Trash.Cards.Any((Card c) => base.IsWaypoint(c)))
-                {
-                    choices.Add(new LocationChoice(TurnTaker.Trash));
-                }
-
-                IEnumerator coroutine = GameController.SelectLocation(this.DecisionMaker, choices, SelectionType.SearchLocation, storedLocation, optional: false, GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-                if (storedLocation.FirstOrDefault() != null)
-                {
-                    Location origin = storedLocation.FirstOrDefault().SelectedLocation.Location;
-
-                    LinqCardCriteria criteria = new LinqCardCriteria((Card c) => base.IsWaypoint(c), "waypoint");
-                    IEnumerator coroutine2 = GameController.SelectCardsFromLocationAndMoveThem(base.DecisionMaker, origin, 1, 1, criteria, moveDestinations, isPutIntoPlay: true, cardSource: base.GetCardSource());
-                    if (UseUnityCoroutines)
-                    {
-                        yield return GameController.StartCoroutine(coroutine2);
-                    }
-                    else
-                    {
-                        GameController.ExhaustCoroutine(coroutine2);
-                    }
-                }
-
-            }
-            else
-            {
-                IEnumerator coroutine2 = base.GameController.SendMessageAction(base.Card.Title + " has no deck or trash to search.", Priority.Medium, GetCardSource(), null, showCardSource: true);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine2);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine2);
-                }
-            }
-
-            // then shuffle the deck...
-            IEnumerator coroutine3 = base.ShuffleDeck(base.DecisionMaker, base.TurnTaker.Deck);
+            IEnumerator coroutine = base.SearchForWaypoints();
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine3);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine3);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             // ...and destroy this card.
-            coroutine3 = base.DestroyThisCardResponse(pca);
+            coroutine = base.DestroyThisCardResponse(pca);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine3);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine3);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }
