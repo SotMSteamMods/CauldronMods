@@ -867,6 +867,19 @@ namespace CauldronTests
             Card mirrorWraith2 = PlayCard(MirrorWraithCardController.Identifier, 1);
             AssertInTrash(mirrorWraith2);
         }
+        [Test]
+        public void TestMirrorWraith_CopyMirrorWraith()
+        {
+            SetupGameController("BaronBlade", "Unity", "Legacy", "Haka", DeckNamespace);
+            StartGame();
+
+            Card bot = PlayCard("RaptorBot");
+            Card mirrorWraith1 = PlayCard(MirrorWraithCardController.Identifier, 0);
+            //Mirror Wraith 1 is limited and thus prevents the play of another Mirror Wraith
+            DestroyCard(bot);
+            Card mirrorWraith2 = PlayCard(MirrorWraithCardController.Identifier, 1);
+            AssertIsInPlay(mirrorWraith2);
+        }
 
         [Test]
         public void TestVengefulSpiritsDiscardToDestroy()
