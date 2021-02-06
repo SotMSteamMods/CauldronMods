@@ -114,7 +114,7 @@
 				"identifier": "Chrono-Ranger",
 				"text": "Get this thing off of me!"
 			}],
-			"flavorReference": "Roots of the World #49"
+			"flavorReference": "Chrono-Ranger, Roots of the World #49"
 		},
 		{
 			"identifier": "DarkDesign",
@@ -127,8 +127,9 @@
 				"Discard"
 			],
 			"body": "The last hero that dealt damage to a villain target must discard {H} cards from their hand.",
-			"flavorQuotes": [{
-					"identifier": "TheStranger",
+			"flavorQuotes": [
+				{
+					"identifier": "The Stranger",
 					"text": "She gave me this{BR}cursed mark, long ago."
 				},
 				{
@@ -193,7 +194,7 @@
 				"Destroy 1 equipment and 1 ongoing from the hero with the fewest cards in play, and 2 equipment and 2 ongoing cards from the hero with the most cards in play."
 			],
 			"flavorQuotes": [{
-				"identifier": "TheStranger",
+				"identifier": "The Stranger",
 				"text": "Did you think I was the only one?"
 			}],
 			"flavorReference": "The Stranger, Dark Design #1"
@@ -329,7 +330,7 @@
 				"identifier": "LadyOfTheWood",
 				"text": "She has corrupted some{BR}of the most ancient forest{BR}spirits and bound them to her."
 			}],
-			"flavorReference": "Lady of the Wood,{BR}Roots of the World #53",
+			"flavorReference": "Lady of the Wood, Roots of the World #53",
 			"hitpoints": 6
 		}
 	],

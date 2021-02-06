@@ -241,7 +241,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TangoOne",
+                    "identifier": "Tango One",
                     "text": "Those ghouls again?"
                 },
                 {
@@ -454,7 +454,7 @@
         {
             "identifier": "ResourcefulDaydreamer",
             "count": 4,
-            "title": "Resource Daydreamer",
+            "title": "Resourceful Daydreamer",
             "keywords": [
                 "one-shot"
             ],
@@ -475,7 +475,7 @@
                     "text": "She's people-watching."
                 },
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "Where are the people?"
                 }
             ],
@@ -542,7 +542,7 @@
             "icons": [
                 "DealDamagePsychic"
             ],
-            "body": "Whenever you shift from {Past} to {Future} or from {Future} to {Future}, {Drift} may deal 1 other target and herself 1 psychic damage.",
+            "body": "Whenever you shift from {Past} to {Future} or from {Future} to {Past}, {Drift} may deal 1 other target and herself 1 psychic damage.",
             "flavorQuotes": [
                 {
                     "identifier": "Drift",
@@ -912,7 +912,7 @@
             "incapacitatedAbilities": [
                 "One hero may draw a card now.",
                 "Two heroes may use a power now. If those powers deal damage, reduce that damage by 1.",
-                "Move 1 environment card from play to the of its deck."
+                "Move 1 environment card from play to the top of its deck."
             ],
             "flippedIcons": [
                 "DrawCardNow",

@@ -44,7 +44,7 @@
             "flippedBody": "Flanked Juggernaut",
             "flippedGameplay": [
                 "When {TheRam}'s character cards are flipped to this side, search the villain trash for Grappling claw and put it into play.",
-                "If a copy of Close Up attached to a hero leaves play, flip {TheRam}'s character cards.",
+                "If a copy of Up Close attached to a hero leaves play, flip {TheRam}'s character cards.",
                 "Increase damage dealt to {TheRam} by hero targets by 1.",
                 "At the end of the villain turn, {TheRam} deals the hero target with the highest HP {H - 1} melee damage."
             ],
@@ -156,10 +156,10 @@
             "flavorQuotes": [
                 {
                     "identifier": "Expatriette",
-                    "text": "Get in close! That{BR}field is permeable to low-{BR}velocity objects."
+                    "text": "Get in close! That field is{BR}permeable to low-velocity objects."
                 },
                 {
-                    "identifier": "DocHavoc",
+                    "identifier": "Doc Havoc",
                     "text": "Still stings like hell!"
                 }
             ],

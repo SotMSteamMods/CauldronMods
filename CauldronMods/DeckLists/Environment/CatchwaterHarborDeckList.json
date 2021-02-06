@@ -42,7 +42,7 @@
                 "DealDamagePsychic"
             ],
             "body": "Whenever this card or any other environment card is destroyed, this card deals the 2 non-environment targets with the lowest HP 2 psychic damage each.",
-            "flavorText": "The technology in these photographs{BR}is impossibly advanced, said Reager.{BR}Taking a closer look, he added. “Can{BR}the R42 be adapted for a pilot?”"
+            "flavorText": "“The technology in these photographs{BR}is impossibly advanced,” said Reager.{BR}Taking a closer look, he added. “Can{BR}the R42 be adapted for a pilot?”"
         },
         {
             "identifier": "FrightenedOnlookers",
@@ -145,7 +145,7 @@
                 "Play with the top card of each deck face up. Damage dealt to hero targets is irreducible.",
                 "At the start of the environment turn, destroy this card."
             ],
-            "flavorText": "Remember to tune to WC1100 for the{BR}day's important news! barked the radio.{BR}“We'll keep you informed about what's{BR}happening in beautiful Windmill City!”"
+            "flavorText": "“Remember to tune to WC1100 for the{BR}day's important news!“ barked the radio.{BR}“We'll keep you informed about what's{BR}happening in beautiful Windmill City!”"
         },
         {
             "identifier": "SmoothCriminal",

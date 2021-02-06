@@ -81,8 +81,14 @@
       "body": [
         "When this card enters play, shuffle each trash pile other than the environment and reveal a card from it. Put the revealed cards on top of each deck.",
         "At the start of the environment, turn destroy this card."
-       ],
-      "flavorText": "“This is a place of the past. Nothing{BR}stays buried,” said Chrono-Ranger,{BR}watching the soil begin to move. “Not{BR}for long, anyways.”"
+      ],
+      "flavorReference": [
+        {
+            "identifier": "ChronoRanger",
+            "text": "This is a place of the past. Nothing stays buried, Not for long, anyways."
+        }
+      ],
+      "flavorText": "“This is a place of the past. Nothing{BR}stays buried,“ said Chrono-Ranger,{BR}watching the soil begin to move. “Not{BR}for long, anyways.“"
     },
     {
       "identifier": "OvergrownCathedral",
@@ -117,7 +123,7 @@
         "At the start of the environment turn this card deals each hero target {H - 2} melee damage.",
         "Whenever an environment card is destroyed, this card deals the target with the highest HP 5 psychic damage."
        ],
-      "flavorText": "Darkness descended upon the{BR}bleeding heroes. One of the{BR}Blackwood’s shadows had arrived{BR}to feed.",
+      "flavorText": "Darkness descended upon the{BR}bleeding heroes. One of the{BR}Blackwood's shadows had arrived{BR}to feed.",
       "hitpoints": 15
     },
     {

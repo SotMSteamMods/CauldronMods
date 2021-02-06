@@ -95,7 +95,7 @@
                     "text": "Let's test that theory."
                 }
             ],
-            "flavorReference": "Quicksilver, Anachronic #1"
+            "flavorReference": "Anachronic #1"
         },
         {
             "identifier": "Archangel",
@@ -185,7 +185,7 @@
                     "text": "I'm going to need a new suit."
                 }
             ],
-            "flavorReference": "Eclipse #2"
+            "flavorReference": "Gargoyle, Eclipse #2"
         },
         {
             "identifier": "Dragonborn",
