@@ -270,7 +270,7 @@ namespace CauldronTests
             //try baron dealing damage to turret, should be +2
             QuickHPUpdate();
             DealDamage(baron, turret, 2, DamageType.Projectile);
-            QuickHPCheck(0, 0,  0, -4);
+            QuickHPCheck(0, 0, 0, -4);
 
             SetAllTargetsToMaxHP();
 
@@ -745,7 +745,7 @@ namespace CauldronTests
             int numCardsInTrashBefore = GetNumberOfCardsInTrash(necro);
             //Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.
             PlayCard(grand);
-            
+
             AssertInTrash(necro, grand);
             QuickShuffleCheck(0, 1, 0, 0);
 
