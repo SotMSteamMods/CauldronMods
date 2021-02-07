@@ -174,12 +174,12 @@ namespace CauldronTests.Art.Environment
         [Test]
         public void Endings()
         {
-            string expectedDirectory = Path.Combine(ArtPath, @"Endings\Environments\" + _name);
+            string expectedDirectory = Path.Combine(ArtPath, @"Endings\Environments\");
 
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath, "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory, "Ending-" + _name + "*.*").Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
 
             if (!files.Remove("Ending-" + _name))
             {
