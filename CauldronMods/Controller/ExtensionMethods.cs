@@ -16,7 +16,7 @@ namespace Cauldron
             int targetIndex = temp.FindIndex(tp => string.Equals(tp.Name, poolThatShouldBeFirst, StringComparison.Ordinal));
             //if targetIndex == -1, no matching pool found, make no change.
             //if targetIndex == 0, matching pool already first, make no change.
-            if (targetIndex > 1)
+            if (targetIndex > 0)
             {
                 var newFirst = tokenPools[targetIndex];
 
