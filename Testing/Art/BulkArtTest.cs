@@ -206,7 +206,7 @@ namespace CauldronTests.Art
 
             foreach (var id in identifiers)
             {
-                int removed = files.RemoveAll(s => s.StartsWith(id, StringComparison.OrdinalIgnoreCase));
+                int removed = files.RemoveAll(s => s.StartsWith(id + "StartOfGame", StringComparison.OrdinalIgnoreCase));
                 if (removed == 0)
                     Warn($"No Start of Game images found for {id}");
             }
