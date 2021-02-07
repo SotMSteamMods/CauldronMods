@@ -10,8 +10,13 @@ namespace Cauldron.LadyOfTheWood
 {
     public class MinistryOfStrategicScienceLadyOfTheWoodCharacterCardController : HeroCharacterCardController
     {
+        public static readonly string LadyOfTheWoodElementPoolIdentifier = "LadyOfTheWoodElementPool";
+        public readonly string LadyOfTheWoodIdentifier = "LadyOfTheWood";
+
         public MinistryOfStrategicScienceLadyOfTheWoodCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            CardWithoutReplacements.TokenPools.ReorderTokenPool(LadyOfTheWoodElementPoolIdentifier);
+
             AllowFastCoroutinesDuringPretend = false;
             SpecialString specialString = base.SpecialStringMaker.ShowTokenPool(GetElementTokenPool());
             specialString.ShowWhileIncapacitated = true;
@@ -31,7 +36,7 @@ namespace Cauldron.LadyOfTheWood
         private TokenPool GetElementTokenPool()
         {
             TokenPool elementPool = CharacterCardWithoutReplacements.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (elementPool is null || TurnTaker.Identifier != LadyOfTheWoodIdentifier)
+            if (elementPool is null && TurnTaker.Identifier != LadyOfTheWoodIdentifier)
             {
                 TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == LadyOfTheWoodIdentifier).FirstOrDefault();
                 if (turnTaker is null)
@@ -40,7 +45,6 @@ namespace Cauldron.LadyOfTheWood
                 }
 
                 elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-
             }
 
             return elementPool;
@@ -73,15 +77,19 @@ namespace Cauldron.LadyOfTheWood
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                DamageType damageType = GetSelectedDamageType(storedDamageTypeResults).Value;
-                coroutine = GameController.ChangeDamageType(dd, damageType, GetCardSource());
-                if (base.UseUnityCoroutines)
+
+                var damageType = GetSelectedDamageType(storedDamageTypeResults);
+                if (damageType.HasValue)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    coroutine = GameController.ChangeDamageType(dd, damageType.Value, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;
@@ -93,12 +101,12 @@ namespace Cauldron.LadyOfTheWood
             int tokensToAdd = GetPowerNumeral(0, 2);
             bool otherHeroUsingPower = false;
 
-            if(TurnTaker.Identifier != LadyOfTheWoodIdentifier)
+            if (TurnTaker.Identifier != LadyOfTheWoodIdentifier)
             {
                 otherHeroUsingPower = true;
             }
             TokenPool elementPool = GetElementTokenPool();
-            
+
             IEnumerator coroutine = base.GameController.AddTokensToPool(elementPool, tokensToAdd, GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -144,7 +152,7 @@ namespace Cauldron.LadyOfTheWood
 
             TokenPool elementPool = GetElementTokenPool();
 
-            if(elementPool is null || elementPool.CurrentValue == 0)
+            if (elementPool is null || elementPool.CurrentValue == 0)
             {
                 yield break;
             }
@@ -152,7 +160,7 @@ namespace Cauldron.LadyOfTheWood
             HeroTurnTakerController httc = FindHeroTurnTakerController(hero.ToHero());
             CardController cc = null;
             Dictionary<Card, bool> initialAllowCoroutineDict = new Dictionary<Card, bool>();
-            foreach(Card character in httc.CharacterCards)
+            foreach (Card character in httc.CharacterCards)
             {
                 cc = FindCardController(character);
 
@@ -203,7 +211,6 @@ namespace Cauldron.LadyOfTheWood
             {
                 cc = FindCardController(character);
                 cc.AllowFastCoroutinesDuringPretend = initialAllowCoroutineDict[character];
-
             }
             yield break;
         }
@@ -306,9 +313,6 @@ namespace Cauldron.LadyOfTheWood
             }
             yield break;
         }
-
-        public static string LadyOfTheWoodElementPoolIdentifier = "LadyOfTheWoodElementPool";
-        public static string LadyOfTheWoodIdentifier = "LadyOfTheWood";
 
         //override flip response to remove resetting token pools
         public override IEnumerator BeforeFlipCardImmediateResponse(FlipCardAction flip)
@@ -426,7 +430,6 @@ namespace Cauldron.LadyOfTheWood
             {
                 RemoveAllTriggers();
             }
-
         }
 
         public IEnumerator RemoveTokensFromPoolNewDecisionMaker(TokenPool pool, int numberOfTokens, List<RemoveTokensFromPoolAction> storedResults = null, bool optional = false, GameAction gameAction = null, HeroTurnTakerController httc = null, IEnumerable<Card> associatedCards = null, CardSource cardSource = null)
@@ -476,6 +479,5 @@ namespace Cauldron.LadyOfTheWood
                 }
             }
         }
-
     }
 }

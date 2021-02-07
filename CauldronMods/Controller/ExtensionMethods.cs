@@ -10,6 +10,26 @@ namespace Cauldron
 {
     public static class ExtensionMethods
     {
+        public static void ReorderTokenPool(this TokenPool[] tokenPools, string poolThatShouldBeFirst)
+        {
+            var temp = new List<TokenPool>(tokenPools);
+            int targetIndex = temp.FindIndex(tp => string.Equals(tp.Name, poolThatShouldBeFirst, StringComparison.Ordinal));
+            //if targetIndex == -1, no matching pool found, make no change.
+            //if targetIndex == 0, matching pool already first, make no change.
+            if (targetIndex > 1)
+            {
+                var newFirst = tokenPools[targetIndex];
+
+                //shuffle all other indexes forward without changing the relative order
+                int index = targetIndex;
+                while (index > 0)
+                {
+                    tokenPools[index] = tokenPools[--index];
+                }
+                tokenPools[0] = newFirst;
+            }
+        }
+
         public static void IncrementCardProperty(this CardController card, string key, int adjust = 1)
         {
             int num = card.GetCardPropertyJournalEntryInteger(key) ?? 0;
