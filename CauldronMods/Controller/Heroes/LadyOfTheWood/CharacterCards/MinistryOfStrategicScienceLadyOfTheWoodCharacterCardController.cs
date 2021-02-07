@@ -120,6 +120,11 @@ namespace Cauldron.LadyOfTheWood
                 effect.UntilTargetLeavesPlay(base.Card);
                 effect.BeforeOrAfter = BeforeOrAfter.Before;
                 effect.CanEffectStack = true;
+
+                if (GameController.StatusEffectManager.StatusEffectControllers.Any(sec => sec.StatusEffect is OnDealDamageStatusEffect removeToken && removeToken.MethodToExecute == nameof(ChangeDamageTypeResponse) && removeToken.Description == "When " + base.Card.Title + " would deal damage, you may change its type by spending an element token."))
+                {
+                    yield break;
+                }
                 coroutine = AddStatusEffect(effect);
                 if (base.UseUnityCoroutines)
                 {
@@ -145,6 +150,19 @@ namespace Cauldron.LadyOfTheWood
             }
 
             HeroTurnTakerController httc = FindHeroTurnTakerController(hero.ToHero());
+            CardController cc = null;
+            Dictionary<Card, bool> initialAllowCoroutineDict = new Dictionary<Card, bool>();
+            foreach(Card character in httc.CharacterCards)
+            {
+                cc = FindCardController(character);
+
+                Log.Debug($"AllowFastCoroutines before set: {cc.AllowFastCoroutinesDuringPretend}");
+
+                initialAllowCoroutineDict.Add(character, cc.AllowFastCoroutinesDuringPretend);
+                cc.AllowFastCoroutinesDuringPretend = false;
+
+                Log.Debug($"AllowFastCoroutines on set: {cc.AllowFastCoroutinesDuringPretend}");
+            }
 
             List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
             IEnumerator coroutine = RemoveTokensFromPoolNewDecisionMaker(elementPool, 1, storedResults: storedResults, optional: true, httc: httc, cardSource: base.GetCardSource());
@@ -156,6 +174,9 @@ namespace Cauldron.LadyOfTheWood
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
+            Log.Debug($"AllowFastCoroutines after token removal: {cc.AllowFastCoroutinesDuringPretend}");
+
             if (DidRemoveTokens(storedResults))
             {
                 //Select a damage type.
@@ -170,7 +191,31 @@ namespace Cauldron.LadyOfTheWood
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 DamageType damageType = GetSelectedDamageType(storedDamageTypeResults).Value;
-                dd.DamageType = damageType;
+
+                Log.Debug($"AllowFastCoroutines after selecting damage: {cc.AllowFastCoroutinesDuringPretend}");
+
+
+                coroutine = GameController.ChangeDamageType(dd, damageType, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                Log.Debug($"AllowFastCoroutines after change damage type: {cc.AllowFastCoroutinesDuringPretend}");
+
+            }
+
+            foreach (Card character in httc.CharacterCards)
+            {
+                cc = FindCardController(character);
+                cc.AllowFastCoroutinesDuringPretend = initialAllowCoroutineDict[character];
+
+                Log.Debug($"AllowFastCoroutines after reset: {cc.AllowFastCoroutinesDuringPretend}");
+
             }
             yield break;
         }
@@ -405,6 +450,8 @@ namespace Cauldron.LadyOfTheWood
                 httc = DecisionMaker;
             }
 
+            Log.Debug($"AllowFastCoroutines at start of RemoveTokensFromPoolNewDecisionMaker: {httc.CharacterCardController.AllowFastCoroutinesDuringPretend}");
+
             if (optional)
             {
                 proceed = false;
@@ -428,6 +475,8 @@ namespace Cauldron.LadyOfTheWood
                     proceed = yesNo.Answer.Value;
                 }
             }
+
+            Log.Debug($"Proceed: {proceed}");
             if (proceed)
             {
                 RemoveTokensFromPoolAction removeTokensFromPoolAction = ((cardSource == null) ? new RemoveTokensFromPoolAction(GameController, pool, numberOfTokens) : new RemoveTokensFromPoolAction(cardSource, pool, numberOfTokens));
