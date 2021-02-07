@@ -28,14 +28,21 @@ namespace Cauldron.StSimeonsCatacombs
         private IEnumerator StartOfHeroTurnResponse(PhaseChangeAction pca)
         {
             //put 2 cards from the hero this card is next to's hand into play at random.
-            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController,base.GetCardThisCardIsNextTo().Owner.ToHero().Hand, false, true, false, new LinqCardCriteria((Card c) => true), 2, shuffleBeforehand: true);
-            if (base.UseUnityCoroutines)
+            //do it one-at-a-time but twice, so we don't strand a card in Revealed
+            for (int i = 0; i < 2; i++)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                if (Card.IsInPlayAndHasGameText && GetCardThisCardIsNextTo() != null)
+                {
+                    IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.GetCardThisCardIsNextTo().Owner.ToHero().Hand, false, true, false, new LinqCardCriteria((Card c) => true), 1, shuffleBeforehand: true);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
             }
             yield break;
         }

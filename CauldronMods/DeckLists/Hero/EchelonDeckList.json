@@ -58,15 +58,15 @@
             ],
             "body": [
                 "At the start of your turn, destroy this card.",
-                "Whenever a non-hero target is destroyed, 1 hero target regains 2HP."
+                "Whenever a non-hero target is destroyed, 1 hero target regains 2 HP."
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "MagnificentMara",
+                    "identifier": "Magnificent Mara",
                     "text": "...And for my next trick-"
                 },
                 {
-                    "identifier": "DocHavoc",
+                    "identifier": "Doc Havoc",
                     "text": "Let's just take a minute."
                 }
             ],
@@ -160,7 +160,7 @@
             ],
             "body": [
                 "At the start of a player's turn, that player may choose to skip their power Phase. If they do, they may play 1 additional card during their play Phase.",
-                "At the start of your turn, destroy this card and each hero target regains 1HP."
+                "At the start of your turn, destroy this card and each hero target regains 1 HP."
             ],
             "flavorQuotes": [
                 {
@@ -188,11 +188,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "DocHavoc",
+                    "identifier": "Doc Havoc",
                     "text": "Don't tell me you{BR}haven't missed this."
                 }
             ],
-            "flavorReference": "Doc Havoc, Stormfront One-shot"
+            "flavorReference": "Stormfall One-shot"
         },
         {
             "identifier": "KnowYourEnemy",
@@ -234,7 +234,7 @@
             ],
             "body": [
                 "At the start of a player's turn, that player may choose to skip their play Phase. If they do, they may use 1 additional power during their power Phase.",
-                "At the start of your turn, destroy this card and each hero target regains 1HP."
+                "At the start of your turn, destroy this card and each hero target regains 1 HP."
             ],
             "flavorQuotes": [
                 {
@@ -262,7 +262,7 @@
                 "DealDamageMelee"
             ],
             "powers": [
-                "Once before your next turn, when a hero target is dealt damage, {Echelon} may deal the source of that damage 3 melee damage"
+                "Once before your next turn, when a hero target is dealt damage by a non-hero target, {Echelon} may deal the source of that damage 3 melee damage"
             ],
             "flavorQuotes": [
                 {
@@ -375,7 +375,7 @@
                     "text": "Set 'em up..."
                 },
                 {
-                    "identifier": "MisterFixer",
+                    "identifier": "Mister Fixer",
                     "text": "..knock 'em down."
                 }
             ],
@@ -464,7 +464,7 @@
                 "GainHP"
             ],
             "powers": [
-                "{Echelon} deals 1 target 1 projectile damage and regains 2HP.",
+                "{Echelon} deals 1 target 1 projectile damage and regains 2 HP.",
                 "Destroy this card. One player draws 2 cards."
             ],
             "extraConfirmationIndices": [
@@ -473,10 +473,10 @@
             "flavorQuotes": [
                 {
                     "identifier": "Cypher",
-                    "text": "I'd like to see that oversized lizard shoot this one down."
+                    "text": "I'd like to see that oversized lizard{BR}shoot this one down."
                 }
             ],
-            "flavorReference": "Cypher: First Response #5"
+            "flavorReference": "Cypher, First Response #5"
         }
     ],
     "promoCards": [

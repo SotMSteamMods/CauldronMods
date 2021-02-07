@@ -353,6 +353,28 @@ namespace CauldronTests
             AssertInTrash(thokk);
             AssertInHand(blast);
         }
+        [Test()]
+        public void TestSuperimposedRealitiesPlayActionPutIntoPlay()
+        {
+            SetupGameController("BaronBlade", "Legacy", "Ra", "OmnitronX", "Cauldron.FSCContinuanceWanderer");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(omnix);
+            Card plating = PutInHand("AblativeCoating");
+            Card blast = PutOnDeck("FireBlast");
+
+            DecisionSelectCard = omnix.CharacterCard;
+            PlayCard("SuperimposedRealities");
+            DecisionSelectCard = null;
+
+            DecisionSelectLocation = new LocationChoice(ra.TurnTaker.Deck);
+            DecisionYesNo = true;
+
+            UsePower(omnix);
+            AssertInTrash(blast);
+            AssertInHand(plating);
+        }
 
         [Test()]
         public void TestSuperimposedRealitiesPowerAction()
@@ -372,6 +394,7 @@ namespace CauldronTests
             DealDamage(legacy, haka, 2, DamageType.Melee);
             QuickHPCheck(-3, 0);
         }
+
 
         [Test()]
         public void TestSuperimposedRealitiesDrawAction()

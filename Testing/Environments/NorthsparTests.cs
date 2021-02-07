@@ -962,11 +962,10 @@ namespace CauldronTests
             Card makeshift = PutInTrash("MakeshiftShelter");
             //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
             DecisionSelectCard = makeshift;
-            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Trash);
             QuickShuffleStorage(northspar);
             GoToStartOfTurn(northspar);
             AssertIsInPlay(makeshift);
-            QuickShuffleCheck(1);
+            QuickShuffleCheck(0);
             AssertInTrash(eerie);
 
         }
@@ -985,8 +984,6 @@ namespace CauldronTests
             Card depot = PutOnDeck("SupplyDepot");
             //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
             DecisionSelectCards = new Card[] { depot, haka.CharacterCard };
-            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Deck);
-
             QuickShuffleStorage(northspar);
             GoToStartOfTurn(northspar);
             AssertIsInPlay(depot);
@@ -1013,8 +1010,6 @@ namespace CauldronTests
             Card landing = PutOnDeck("LandingSite");
             //At the start of the environment turn, search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play, then shuffle the deck and destroy this card.
             DecisionSelectCard = landing;
-            DecisionSelectLocation = new LocationChoice(northspar.TurnTaker.Deck);
-
             QuickShuffleStorage(northspar);
             GoToStartOfTurn(northspar);
             AssertIsInPlay(landing);
@@ -1126,12 +1121,13 @@ namespace CauldronTests
         [Test()]
         public void TestFrozenSolid_NoPowerCanPlay()
         {
-            SetupGameController("WagerMaster", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
+            SetupGameController(new[] { "WagerMaster", "AbsoluteZero", "Legacy", "Ra", "TheSentinels", "Cauldron.Northspar" });
             StartGame();
+
             SetHitPoints(az, 10);
             SetHitPoints(legacy, 11);
 
-            PlayCard("BreakingTheRules");
+            PlayCard("BreakingTheRules", 0, true);
 
             DecisionSelectCard = az.CharacterCard;
             Card frozenSolid = PlayCard("FrozenSolid");
@@ -1141,8 +1137,6 @@ namespace CauldronTests
 
             GoToPlayCardPhase(az);
             AssertPhaseActionCount(new int?(1));
-
-
         }
 
         [Test()]
@@ -1385,7 +1379,7 @@ namespace CauldronTests
             QuickShuffleStorage(northspar);
             Card whatsLeft = PlayCard("WhatsLeftOfThem");
             AssertIsInPlay(makeshift);
-            QuickShuffleCheck(1);
+            QuickShuffleCheck(0);
 
         }
 

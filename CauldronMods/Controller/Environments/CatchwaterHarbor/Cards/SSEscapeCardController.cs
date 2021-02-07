@@ -17,7 +17,7 @@ namespace Cauldron.CatchwaterHarbor
         public override IEnumerator UniqueOnPlayEffect()
         {
             //each target regains 2HP.
-            IEnumerator coroutine = GameController.GainHP(DecisionMaker, (Card c) => c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 2, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.GainHP(DecisionMaker, (Card c) => c.IsTarget && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 2, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -32,7 +32,7 @@ namespace Cauldron.CatchwaterHarbor
         public override IEnumerator ActivateTravel()
         {
             //Each player draws a card.
-            IEnumerator coroutine = EachPlayerDrawsACard((HeroTurnTaker tt) => GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
+            IEnumerator coroutine = EachPlayerDrawsACard((HeroTurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -42,7 +42,7 @@ namespace Cauldron.CatchwaterHarbor
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //Each villain target regains 3HP.
-            coroutine = GameController.GainHP(DecisionMaker, (Card c) => c.IsVillainTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 3, cardSource: GetCardSource());
+            coroutine = GameController.GainHP(DecisionMaker, (Card c) => IsVillainTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 3, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

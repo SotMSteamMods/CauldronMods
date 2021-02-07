@@ -14,7 +14,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "Whenever an ongoing or equipment card enters a hero trash pile, the villain character target with the lowest HP regains 2HP.",
+                "Whenever an ongoing or equipment card enters a hero trash pile, the villain character target with the lowest HP regains 2 HP.",
                 "When a Transport card would be destroyed, you may destroy this card instead."
             ],
             "flavorText": "Rather than handing the recovered{BR}devices over to the military, Admiral{BR}Winters kept them for a project of his{BR}own, hidden in the warehouse district."
@@ -42,7 +42,7 @@
                 "DealDamagePsychic"
             ],
             "body": "Whenever this card or any other environment card is destroyed, this card deals the 2 non-environment targets with the lowest HP 2 psychic damage each.",
-            "flavorText": "The technology in these photographs{BR}is impossibly advanced, said Reager.{BR}Taking a closer look, he added. “Can{BR}the R42 be adapted for a pilot?”"
+            "flavorText": "“The technology in these photographs{BR}is impossibly advanced,” said Reager.{BR}Taking a closer look, he added. “Can{BR}the R42 be adapted for a pilot?”"
         },
         {
             "identifier": "FrightenedOnlookers",
@@ -110,7 +110,7 @@
             ],
             "body": [
                 "Play this card next to the hero with the second lowest HP.",
-                "If the last villain character target is reduced to 0HP by a target other than that hero, or if that hero is incapacitated, they are stuck in the past and the heroes lose. [b]Game over.[/b]"
+                "If the last villain character target is reduced to 0 HP by a target other than that hero, or if that hero is incapacitated, they are stuck in the past and the heroes lose. [b]Game over.[/b]"
             ],
             "flavorText": "Necro, silent and bloody, watched{BR}as La Paradoja Magnifica{BR}disappeared into the glowing{BR}portal in the sky. He was alone."
         },
@@ -145,7 +145,7 @@
                 "Play with the top card of each deck face up. Damage dealt to hero targets is irreducible.",
                 "At the start of the environment turn, destroy this card."
             ],
-            "flavorText": "Remember to tune to WC1100 for the{BR}day's important news! barked the radio.{BR}“We'll keep you informed about what's{BR}happening in beautiful Windmill City!”"
+            "flavorText": "“Remember to tune to WC1100 for the{BR}day's important news!“ barked the radio.{BR}“We'll keep you informed about what's{BR}happening in beautiful Windmill City!”"
         },
         {
             "identifier": "SmoothCriminal",
@@ -179,12 +179,12 @@
                 "DrawCardNow"
             ],
             "body": [
-                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and each target regains 2HP."
+                "When this card enters play, search the environment deck and trash for All Aboard and put it into play. Shuffle the environment deck and each target regains 2 HP."
             ],
             "activatableAbilities":[
                 {
                    "name":"[u]travel[/u]:",
-                   "text":"Each player draws a card. Each villain target regains 3HP."
+                   "text":"Each player draws a card. Each villain target regains 3 HP."
                 }
              ],
             "flavorText": "Catchwater Harbor was an international{BR}melting pot. It was full of those{BR}looking to start a new life of{BR}opportunity, or in some cases, villainy."

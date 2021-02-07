@@ -24,9 +24,8 @@ namespace Cauldron.CatchwaterHarbor
 		public override IEnumerator Play()
 		{
 			// When this card enters play, 1 player may discard 3 cards.
-
 			List<SelectTurnTakerDecision> storedTurnTaker = new List<SelectTurnTakerDecision>();
-			IEnumerator coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.DiscardCard, false, false, storedTurnTaker, heroCriteria: new LinqTurnTakerCriteria(tt => GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), cardSource: GetCardSource());
+			IEnumerator coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.DiscardCard, false, false, storedTurnTaker, heroCriteria: new LinqTurnTakerCriteria(tt =>  !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), cardSource: GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

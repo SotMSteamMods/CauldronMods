@@ -348,7 +348,10 @@ namespace CauldronTests
             List<Card> arms = GetListOfArmsInPlay(anathema);
 
             //destroy both arms in play to have 2 villain targets left in play
-            DestroyCards(arms);
+            foreach(Card c in arms)
+            {
+                DestroyCard(c, anathema.CharacterCard);
+            }
            
 
             //verify that there are no arms in play now

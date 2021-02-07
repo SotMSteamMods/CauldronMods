@@ -288,7 +288,7 @@
                     "text": "It is raining! Dance with me!"
                 }
             ],
-            "flavorReference": "Lady Of The Wood, The Wanderer's Requiem{BR}#146"
+            "flavorReference": "Lady Of The Wood, The Wanderer's Requiem #146"
         },
         {
             "identifier": "SnowshadeGown",
@@ -307,7 +307,7 @@
                 "Whenever {LadyOfTheWood} regains HP, you may select a target that hasn't been dealt damage this turn. {LadyOfTheWood} deals that target 1 cold damage."
             ],
             "powers": [
-                "{LadyOfTheWood} regains 3HP."
+                "{LadyOfTheWood} regains 3 HP."
             ],
             "flavorQuotes": [
                 {
@@ -434,7 +434,7 @@
                 "DrawCardNow"
             ],
             "body": "Whenever {LadyOfTheWood} deals cold damage to a target, draw a card.",
-            "flavorText": "“It's awful quiet.”{BR}“'It is the silence of an indrawn breath. Just wait.”",
+            "flavorText": "“It's awful quiet.”{BR}“It is the silence of an indrawn breath.{BR}Just wait.”",
             "flavorReference": "Starlight And Lady Of The Wood, Starcrossed #72"
         }
     ],

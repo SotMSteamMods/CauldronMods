@@ -132,7 +132,7 @@ namespace Cauldron.Cypher
             }
 
             var otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard.Location.OwnerCard && c.IsHeroCharacterCard &&
-                                                         c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame)
+                                                         c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, realCardsOnly: true)
                                     .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
 
             IEnumerator routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard, otherHeroLocations,

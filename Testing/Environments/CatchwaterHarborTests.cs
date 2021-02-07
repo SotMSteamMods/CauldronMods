@@ -530,6 +530,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHarborCrane_SelfDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Increase damage dealt by the target next to this card by 1.
+            Card crane = PlayCard("HarborCrane");
+            DealDamage(crane, crane, 1, DamageType.Melee);
+            AssertNotNextToCard(crane, crane);
+
+            //move crane next to ra
+            DealDamage(ra, crane, 1, DamageType.Melee);
+            AssertNextToCard(crane, ra.CharacterCard);
+
+            DealDamage(crane, crane, 1, DamageType.Melee);
+            AssertNextToCard(crane, ra.CharacterCard);
+        }
+
+        [Test()]
         public void TestHarborCrane_WhenDestroyed()
         {
             SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
@@ -568,7 +588,9 @@ namespace CauldronTests
             PlayCard("HarkinParishJr");
             QuickHandCheck(-1, -1, -1);
             AssertInTrash(hakaOngoing1);
+            AssertInHand(hakaOngoing2);
             AssertInTrash(raOngoing1);
+            AssertInHand(raOngoing2);
             AssertInTrash(bunkerOngoing1);
             AssertInHand(bunkerOngoing2);
 
@@ -577,17 +599,24 @@ namespace CauldronTests
         [Test()]
         public void TestHarkinParishJr_EntersPlay_TiedForHighest()
         {
-            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            SetupGameController(new[] { "BaronBlade", "Ra", "Bunker", "Haka", "SkyScraper", "Cauldron.CatchwaterHarbor" });
             StartGame();
             DestroyNonCharacterVillainCards();
-            SetHitPoints(haka, ra.CharacterCard.HitPoints.Value);
+            SetHitPoints(haka, sky.CharacterCard.HitPoints.Value);
             SetHitPoints(bunker, 10);
             Card hakaOngoing = PutInHand("Dominion");
+            PutInHand("SavageMana");
             Card raOngoing = PutInHand("FlameBarrier");
+            PutInHand("ImbuedFire");
+            Card ssOngoing = PutInHand("ThorathianMonolith");
+            PutInHand("Proportionist");
             Card bunkerOngoing1 = PutInHand("AmmoDrop");
             Card bunkerOngoing2 = PutInHand("TurretMode");
+            PutInHand("UpgradeMode");
 
-            DecisionSelectCards = new Card[] { haka.CharacterCard, hakaOngoing, raOngoing, bunkerOngoing1 };
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            AssertNextDecisionChoices(notIncluded: offToSideSky);
+            DecisionSelectCards = new Card[] { haka.CharacterCard, hakaOngoing, raOngoing, bunkerOngoing1, ssOngoing };
             QuickHandStorage(ra, bunker, haka);
             //When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.
             PlayCard("HarkinParishJr");
@@ -804,11 +833,13 @@ namespace CauldronTests
         [Test()]
         public void TestSmoothCriminal()
         {
-            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor" });
             StartGame();
             DestroyNonCharacterVillainCards();
             PlayCard("SSEscape");
             PlayCard("ToOverbrook");
+
+            int num = GetNumberOfCardsInPlay((Card c) => IsTransport(c));
             //Reduce damage dealt to Gangsters by 1.
             Card smooth = PlayCard("SmoothCriminal");
             Card harkin = PlayCard("HarkinParishJr");
@@ -823,7 +854,7 @@ namespace CauldronTests
             AddCantGainHPDamageTrigger(catchwater, true, false);
             AddCantGainHPDamageTrigger(catchwater, false, true);
             GoToEndOfTurn(catchwater);
-            QuickHPCheck(0, -3, -3, -6, 0, 0);
+            QuickHPCheck(0, -1 - num, -1 - num, -4 - num, 0, 0);
 
         }
 
@@ -892,6 +923,35 @@ namespace CauldronTests
 
             Card raTop = PutOnDeck("FireBlast");
             Card raTop2 = ra.TurnTaker.Deck.GetTopCards(2).ElementAt(1);
+            DecisionSelectCards = new Card[] { ra.CharacterCard, ra.HeroTurnTaker.Hand.TopCard, ra.HeroTurnTaker.Hand.GetTopCards(2).ElementAt(1) };
+            DecisionSelectFunction = 1;
+            QuickHandStorage(ra);
+            QuickHPStorage(ra);
+            GoToEndOfTurn(catchwater);
+            QuickHPCheck(2);
+            AssertInTrash(raTop);
+            AssertInTrash(raTop2);
+            QuickHandCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestTheCervantesClub_ExcludesOffToSideSky()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "SkyScraper", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 10);
+            GoToPlayCardPhase(catchwater);
+            //At the end of the environment turn, 1 hero character regains X HP and discards the top X cards of their deck, where X is 1, 2, or 3.
+            //If any One-shots were discarded this way, that player discards 2 cards, then draws a card.
+            PlayCard("TheCervantesClub");
+
+
+            Card raTop = PutOnDeck("FireBlast");
+            Card raTop2 = ra.TurnTaker.Deck.GetTopCards(2).ElementAt(1);
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            AssertNextDecisionChoices(notIncluded: offToSideSky);
             DecisionSelectCards = new Card[] { ra.CharacterCard, ra.HeroTurnTaker.Hand.TopCard, ra.HeroTurnTaker.Hand.GetTopCards(2).ElementAt(1) };
             DecisionSelectFunction = 1;
             QuickHandStorage(ra);

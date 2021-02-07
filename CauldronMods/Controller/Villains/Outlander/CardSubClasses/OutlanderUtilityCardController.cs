@@ -12,6 +12,12 @@ namespace Cauldron.Outlander
     {
         protected OutlanderUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public bool IsTrace(Card c)
+        {
+            return c.DoKeywordsContain("trace");
         }
     }
 }

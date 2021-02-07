@@ -43,7 +43,7 @@ namespace CauldronTests
         protected TurnTakerController menagerie { get { return FindVillain("Menagerie"); } }
         protected TurnTakerController mythos { get { return FindVillain("Mythos"); } }
         protected TurnTakerController oriphel { get { return FindVillain("Oriphel"); } }
-        protected TurnTakerController outlander { get { return FindVillain("Outlander"); } }
+        protected Cauldron.Outlander.OutlanderTurnTakerController outlander { get { return (Cauldron.Outlander.OutlanderTurnTakerController)FindVillain("Outlander"); } }
         protected TurnTakerController phase { get { return FindVillain("PhaseVillain"); } }
         protected TurnTakerController scream { get { return FindVillain("ScreaMachine"); } }
         protected TurnTakerController swarm { get { return FindVillain("SwarmEater"); } }
@@ -78,13 +78,17 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
-        protected void AddCannotPlayCardsStatusEffect(TurnTakerController ttc, bool heroesCannotPlay, bool villainsCannotPlay)
+        protected void AddCannotPlayCardsStatusEffect(TurnTakerController source, bool heroesCannotPlay, bool villainsCannotPlay, bool envCardsCannotPlay = false)
         {
             CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
-            effect.CardCriteria.IsHero = new bool?(heroesCannotPlay);
-            effect.CardCriteria.IsVillain = new bool?(villainsCannotPlay);
-            effect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(ttc.CharacterCardController)));
+            if (heroesCannotPlay)
+                effect.CardCriteria.IsHero = true;
+            if (villainsCannotPlay)
+                effect.CardCriteria.IsVillain = true;
+            if (envCardsCannotPlay)
+                effect.CardCriteria.IsEnvironment = true;
+            effect.UntilStartOfNextTurn(source.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(source.CharacterCardController)));
         }
 
         protected void AddImmuneToNextDamageEffect(TurnTakerController ttc, bool villains, bool heroes)
@@ -188,6 +192,52 @@ namespace CauldronTests
                 Assert.Fail("storedResults was null");
             }
 
+        }
+
+        protected int CurrentShiftPosition()
+        {
+            return this.GetShiftPool().CurrentValue;
+        }
+
+        protected TokenPool GetShiftPool()
+        {
+            return this.GetShiftTrack().FindTokenPool("ShiftPool");
+        }
+
+        protected Card GetShiftTrack()
+        {
+            return base.FindCardsWhere((Card c) => c.SharedIdentifier == "ShiftTrack" && c.IsInPlayAndHasGameText, false).FirstOrDefault();
+        }
+
+        protected void AssertTrackPosition(int expectedPosition)
+        {
+            Assert.AreEqual(expectedPosition, CurrentShiftPosition(), "Expected position: " + expectedPosition + ", was: " + CurrentShiftPosition());
+        }
+
+        protected void GoToShiftPosition(int position)
+        {
+            if (position > CurrentShiftPosition())
+            {
+                DecisionSelectFunction = 2;
+                for (int i = CurrentShiftPosition(); i < position; i++)
+                {
+                    UsePower(drift);
+                }
+            }
+            else
+            {
+                DecisionSelectFunction = 1;
+                for (int i = CurrentShiftPosition(); i > position; i--)
+                {
+                    UsePower(drift);
+                }
+            }
+        }
+
+        public Card GetPositionalBreachShiftTrack(int position)
+        {
+
+            return GetCard("ThroughTheBreachShiftTrack" + position);
         }
 
     }

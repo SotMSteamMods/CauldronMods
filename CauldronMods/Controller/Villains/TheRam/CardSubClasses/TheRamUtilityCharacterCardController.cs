@@ -34,10 +34,10 @@ namespace Cauldron.TheRam
 
         protected IEnumerator PlayGivenUpCloseByGivenCard(Card upClose, Card target, bool isPutIntoPlay = false)
         {
-            CardController upCloseController = FindCardController(upClose);
-            if (upCloseController is UpCloseCardController)
+            CardController cardController = FindCardController(upClose);
+            if (cardController is UpCloseCardController upCloseController)
             {
-                IEnumerator play = (upCloseController as UpCloseCardController).PlayBySpecifiedHero(target, isPutIntoPlay, GetCardSource());
+                IEnumerator play = upCloseController.PlayBySpecifiedHero(target, isPutIntoPlay, GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(play);

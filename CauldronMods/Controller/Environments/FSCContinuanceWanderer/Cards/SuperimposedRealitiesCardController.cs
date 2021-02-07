@@ -39,7 +39,7 @@ namespace Cauldron.FSCContinuanceWanderer
             //base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), (PhaseChangeAction action) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(action.ToPhase.Phase), this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
             //If a hero were to hero play. Instead the Superimposed plays.
 
-            base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.TurnTakerController.TurnTaker != superimposedTurnTaker && action.TurnTakerController.IsHero && GameController.IsTurnTakerVisibleToCardSource(action.TurnTakerController.TurnTaker, GetCardSource()), SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
+            base.AddTrigger<PlayCardAction>((PlayCardAction action) => !action.IsPutIntoPlay && action.TurnTakerController.TurnTaker != superimposedTurnTaker && action.TurnTakerController.IsHero && GameController.IsTurnTakerVisibleToCardSource(action.TurnTakerController.TurnTaker, GetCardSource()), SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
 
             //If a hero were to use a power. Instead the Superimposed plays.
             base.AddTrigger<UsePowerAction>((UsePowerAction action) => action.HeroUsingPower.TurnTaker != superimposedTurnTaker && GameController.IsTurnTakerVisibleToCardSource(action.HeroUsingPower.TurnTaker, GetCardSource()), SuperimposePowerResponse, TriggerType.UsePower, TriggerTiming.Before);

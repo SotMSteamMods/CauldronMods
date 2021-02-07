@@ -12,7 +12,6 @@ namespace Cauldron.Necro
         {
         }
 
-
         public override void AddTriggers()
         {
             //At the end of your turn, this card deals all non-Undead hero targets 2 toxic damage.        

@@ -23,10 +23,10 @@ namespace CauldronTests.Art.Hero
     public class HeroArtTests : ArtTestBase
     {
         public static bool IsHeroLogosError = true;
-        public static bool IsEndGameHeroesError = false;
+        public static bool IsEndGameHeroesError = true;
 
-        public HeroArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> startEndIdentifiers)
-            : base(name, kind, cardIdentifiers, characterIdentifiers, startEndIdentifiers)
+        public HeroArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
+            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers)
         {
         }
 
@@ -63,7 +63,7 @@ namespace CauldronTests.Art.Hero
 
             foreach (var leftovers in files)
             {
-                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
             AssertNoWarnings();
         }
@@ -119,7 +119,7 @@ namespace CauldronTests.Art.Hero
 
             foreach (var leftovers in atlas)
             {
-                Assert.Warn($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -134,8 +134,10 @@ namespace CauldronTests.Art.Hero
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var atlas = ReadAtlasJson(expectedDirectory, "EndGameHeroes");
-            if (atlas is null)
+            if (atlas is null && !IsEndGameHeroesError)
                 Assert.Inconclusive();
+            if (atlas is null && IsEndGameHeroesError)
+                Assert.Fail("Atlas file " + "EndGameHeroes" + " does not exist");
 
             foreach (var character in _startEndIdentifiers)
             {
@@ -163,7 +165,7 @@ namespace CauldronTests.Art.Hero
             if (atlas is null)
                 Assert.Fail("Atlas file " + "HeroLogos" + " does not exist");
 
-            foreach (var character in _startEndIdentifiers)
+            foreach (var character in _heroLeadCharacterIdentifiers)
             {
                 string str = character;
 
@@ -189,7 +191,7 @@ namespace CauldronTests.Art.Hero
             if (atlas is null)
                 Assert.Fail("Atlas file " + "SetupGame" + " does not exist");
 
-            foreach (var character in _startEndIdentifiers)
+            foreach (var character in _heroLeadCharacterIdentifiers)
             {
                 string str = character;
 
@@ -240,7 +242,11 @@ namespace CauldronTests.Art.Hero
 
             var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
 
-            foreach (var character in _startEndIdentifiers)
+            var source = _startEndIdentifiers;
+            if (_name == "Titan")
+                source = _characterIdentifiers;
+
+            foreach (var character in source)
             {
                 string str = "YesNoDialog" + character;
 
@@ -298,7 +304,7 @@ namespace CauldronTests.Art.Hero
             foreach (var leftovers in files)
             {
                 //no big deal if there are extras in the atlas
-                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();

@@ -85,7 +85,7 @@
                     "text": "For every action there is a reaction."
                 }
             ],
-            "flavorReference": "Necro, Shadowfall #3"
+            "flavorReference": "Necro, Shadowfall #2"
         },
         {
             "identifier": "BloodRite",
@@ -286,11 +286,11 @@
             "body": "Whenever an Undead target is destroyed, {Necro} deals 1 non-hero target 3 infernal damage.",
             "flavorQuotes": [
                 {
-                    "identifier": "TheStranger",
+                    "identifier": "The Stranger",
                     "text": "Now that is black{BR}and ancient magic."
                 },
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "Only ancient to some."
                 }
             ],
