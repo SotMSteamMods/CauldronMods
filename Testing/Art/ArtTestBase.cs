@@ -56,11 +56,13 @@ namespace CauldronTests.Art
 
                 List<string> cardIdentifiers = new List<string>();
                 List<string> characterIdentifiers = new List<string>();
+                List<string> heroLeadCharacterIdentifiers = new List<string>();
                 List<string> startEndIdentifiers = new List<string>();
 
                 foreach (JSONValue card in cards)
                 {
                     var cardIdentifier = card.Obj.GetString("identifier");
+                    var sharedIdentifier = card.Obj.GetString("sharedIdentifier");
                     bool isCharacter = card.Obj.GetBoolean("character");
 
                     cardIdentifiers.Add(cardIdentifier);
@@ -69,7 +71,17 @@ namespace CauldronTests.Art
                         characterIdentifiers.Add(cardIdentifier);
 
                     if (cardIdentifier == initialCard)
-                        startEndIdentifiers.Add(cardIdentifier);
+                    {
+                        if (string.IsNullOrEmpty(sharedIdentifier))
+                        {
+                            startEndIdentifiers.Add(cardIdentifier);
+                        }
+                        else
+                        {
+                            startEndIdentifiers.Add(sharedIdentifier);
+                        }
+                        heroLeadCharacterIdentifiers.Add(cardIdentifier);
+                    }
                 }
 
                 List<JSONValue> promos = new List<JSONValue>();
@@ -94,28 +106,59 @@ namespace CauldronTests.Art
                         characterIdentifiers.Add(promoIdentifier);
 
                     if (cardIdentifier == initialCard)
+                    {
                         startEndIdentifiers.Add(promoIdentifier);
+                        heroLeadCharacterIdentifiers.Add(promoIdentifier);
+                    }
                 }
 
-                results.Add(ModifyForSpecificDecks(name, kind, cardIdentifiers, characterIdentifiers, startEndIdentifiers));
+                results.Add(ModifyForSpecificDecks(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers));
 
             }
 
             return results.GetEnumerator();
         }
 
-        private object[] ModifyForSpecificDecks(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> startEndIdentifiers)
+        private object[] ModifyForSpecificDecks(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
         {
-            return new object[] { name, kind, cardIdentifiers, characterIdentifiers, startEndIdentifiers };
+            if (name == "MagnificentMara")
+            {
+                cardIdentifiers.Add("MesmerPendant");
+            }
+
+            return new object[] { name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers };
         }
 
     }
 
     public abstract class ArtTestBase
     {
+        protected static readonly Dictionary<string, HashSet<string>> warningsToIgnore = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal)
+        {
+            ["TheMistressOfFate"] = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "TheMistressOfFate: file 'TheMistressOfFateDayDeckBack' was not used by any cards in the deck."
+            },
+            ["Tiamat"] = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "Tiamat: Atlas entry 'ElementalHydraTiamat' was not used by any cards in the deck."
+            },
+            ["Mythos"] = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "Mythos: Atlas entry 'MythosClueDeckBack' was not used by any cards in the deck.",
+                "Mythos: Atlas entry 'MythosDangerDeckBack' was not used by any cards in the deck.",
+                "Mythos: Atlas entry 'MythosMadnessDeckBack' was not used by any cards in the deck.",
+
+                "Mythos: file 'MythosEyeDeckBack' was not used by any cards in the deck.",
+                "Mythos: file 'MythosFearDeckBack' was not used by any cards in the deck.",
+                "Mythos: file 'MythosMindDeckBack' was not used by any cards in the deck.",
+            },
+        };
+
         #region Data
 
         public static bool IsMicroArtRequired = false;
+        public static bool IsUnusedCardError = true;
 
         protected readonly string ArtPath;
 
@@ -123,11 +166,13 @@ namespace CauldronTests.Art
         protected readonly string _kind;
         protected readonly List<string> _cardIdentifiers;
         protected readonly List<string> _characterIdentifiers;
+        protected readonly List<string> _heroLeadCharacterIdentifiers;
         protected readonly List<string> _startEndIdentifiers;
+        protected readonly HashSet<string> _ignoredWarnings;
         private int _numWarnings;
 
 
-        protected ArtTestBase(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> startEndIdentifiers)
+        protected ArtTestBase(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
         {
             ArtPath = GetArtPath();
 
@@ -135,7 +180,14 @@ namespace CauldronTests.Art
             _kind = kind;
             _cardIdentifiers = cardIdentifiers;
             _characterIdentifiers = characterIdentifiers;
+            _heroLeadCharacterIdentifiers = heroLeadCharacterIdentifiers;
             _startEndIdentifiers = startEndIdentifiers;
+
+            if (!warningsToIgnore.TryGetValue(_name, out var local))
+            {
+                local = new HashSet<string>(StringComparer.Ordinal);
+            }
+            _ignoredWarnings = local;
         }
 
         #endregion Data
@@ -189,8 +241,21 @@ namespace CauldronTests.Art
 
         protected void Warn(string message)
         {
-            Assert.Warn(message);
-            _numWarnings++;
+            if (!_ignoredWarnings.Contains(message))
+            {
+                Assert.Warn(message);
+                _numWarnings++;
+            }
+        }
+
+        protected void WarnAboutUnused(string message)
+        {
+            if (!_ignoredWarnings.Contains(message))
+            {
+                Assert.Warn(message);
+                if (IsUnusedCardError)
+                    _numWarnings++;
+            }
         }
 
         protected void AssertNoWarnings()
