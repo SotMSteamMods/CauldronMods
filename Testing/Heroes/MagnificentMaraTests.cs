@@ -467,10 +467,30 @@ namespace CauldronTests
 
             //all Dowsing Crytal effects should have expired
             var statusEffects = GameController.StatusEffectManager
-                                            .GetStatusEffectControllersInList(CardControllerListType.ActivatesEffects)
-                                            .Where((StatusEffectController sec) => (sec.StatusEffect as ActivateEffectStatusEffect).EffectName == "Dowsing Crystal trigger")
+                                            .StatusEffectControllers
+                                            .Where((StatusEffectController sec) => sec.StatusEffect is OnDealDamageStatusEffect oddse && oddse.MethodToExecute == "DowsingCrystalDamageBoostResponse")
                                             .ToList();
             Assert.AreEqual(0, statusEffects.Count());
+        }
+        [Test]
+        public void TestDowsingCrystalPowerModifiersTrack()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Unity", "TheSentinels", "TheScholar", "Mordengrad");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card crystal = PlayCard("DowsingCrystal");
+
+            DecisionSelectTurnTaker = mara.TurnTaker;
+            DecisionSelectPower = crystal;
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron);
+
+            PlayCard("HastyAugmentation");
+            PlayCard("BladeBattalion");
+            // -2 from base, -2 from self-boost, -2 from Hasty Augmentation
+            QuickHPCheck(-6);
+            AssertInTrash(crystal);
         }
         [Test]
         public void TestGlimpse()
@@ -874,6 +894,22 @@ namespace CauldronTests
             QuickHPCheck(0, -1, -1);
         }
         [Test]
+        public void TestMysticalEnhancementDamageBoost_DamageEffect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "VoidGuardMainstay/VoidGuardRoadWarriorMainstay", "TheScholar", "Megalopolis");
+
+            StartGame();
+
+            DecisionSelectCards = new Card[] { voidMainstay.CharacterCard, MDP };
+
+            PlayCard("MysticalEnhancement");
+            QuickHPStorage(MDP, voidMainstay.CharacterCard);
+            DecisionYesNo = true;
+            UsePower(voidMainstay);
+            DealDamage(MDP, voidMainstay, 1, DTM);
+            QuickHPCheck(-2, -1);
+        }
+        [Test]
         public void TestMysticalEnhancementDestroyInsteadResponse()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
@@ -1160,6 +1196,71 @@ namespace CauldronTests
             GoToStartOfTurn(mara);
             AssertIsInPlay(abra);
             AssertInTrash(apoc);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeGeneBoundBanshee()
+        {
+            SetupGameController("GrandWarlordVoss", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card banshee = PlayCard("GeneBoundBanshee");
+            Card hiftte = PlayCard("HandIsFasterThanTheEye");
+            PlayCard("Fortitude");
+
+            GoToEndOfTurn();
+            AssertInTrash(banshee);
+            AssertInTrash(hiftte);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeOtherMostCardsInPlay()
+        {
+            SetupGameController("Ambuscade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(legacy, 30);
+            SetHitPoints(scholar, 29);
+            //Card turret = PlayCard("AutomatedTurret");
+            Card banshee = PlayCard("CustomHandCannon");
+            Card hiftte = PlayCard("HandIsFasterThanTheEye");
+            PlayCard("Fortitude");
+
+            GoToEndOfTurn();
+            AssertInTrash(banshee);
+            AssertInTrash(hiftte);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeOtherTiedDecision()
+        {
+            SetupGameController("GrandWarlordVoss", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(legacy, 29);
+            Card minion = PlayCard("GeneBoundFiresworn");
+            Card hiftte = PlayCard("HandIsFasterThanTheEye");
+            PlayCard("Fortitude");
+
+            GoToEndOfTurn();
+            AssertInTrash(minion);
+            AssertInTrash(hiftte);
+        }
+        [Test]
+        public void TestHandIsFasterThanTheEyeNonDamageTurnTakerDecision()
+        {
+            SetupGameController("MissInformation", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            GoToPlayCardPhase(miss);
+            PlayCard("ThreatToThePresident");
+
+            PlayCard("DowsingCrystal");
+            PlayCard("Fortitude");
+            PlayCard("HandIsFasterThanTheEye");
+
+            GoToEndOfTurn();
         }
     }
 }

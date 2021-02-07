@@ -4340,6 +4340,8 @@ namespace Handelabra.Sentinels.UnitTest
             Console.WriteLine("==============================");
         }
 
+       
+
         public void PrintCardsInPlayWithGameText(Func<Card, bool> cardCriteria = null)
         {
             Func<Card, bool> fullCriteria = c => c.IsInPlayAndHasGameText;

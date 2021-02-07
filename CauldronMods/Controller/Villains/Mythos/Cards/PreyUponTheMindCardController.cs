@@ -13,5 +13,48 @@ namespace Cauldron.Mythos
         public PreyUponTheMindCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public override IEnumerator Play()
+        {
+            //Destroy {H - 2} hero ongoing cards.
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && c.IsOngoing), Game.H - 2, cardSource: base.GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (base.IsTopCardMatching(MythosMadnessDeckIdentifier))
+            {
+                //{MythosMadness} Each player discards 1 card.
+                coroutine = base.GameController.EachPlayerDiscardsCards(1, 1, cardSource: base.GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
+            {
+                //{MythosDanger} {Mythos} deals each hero target 1 infernal damage.
+                coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Infernal);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            yield break;
+        }
     }
 }

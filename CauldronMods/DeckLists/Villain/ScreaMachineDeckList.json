@@ -453,8 +453,8 @@
 				"DealDamageSonic"
 			],
 			"body": [
-				"Each villain target deals the target with the highest HP 2 sonic damage.",
-				"Activate all {Guitar} and {Vocal} effects."
+				"Each villain target deals the hero target with the highest HP 2 sonic damage.",
+				"Activate all {Guitar} and {Bass} effects."
 			],
 			"flavorQuotes": [{
 				"identifier": "Bloodlace",

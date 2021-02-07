@@ -1,6 +1,6 @@
 {
 	"name": "The Knight",
-    "sortName":"Knight",
+	"sortName": "Knight",
 	"kind": "Hero",
 	"expansionIdentifier": "Cauldron",
 	"initialCardIdentifiers": [
@@ -10,7 +10,8 @@
 		"TheYoungKnightCharacter",
 		"TheOldKnightCharacter"
 	],
-	"cards": [{
+	"cards": [
+		{
 			"identifier": "TheKnightCharacter",
 			"count": 1,
 			"title": "The Knight",
@@ -60,10 +61,12 @@
 				"Manipulate"
 			],
 			"body": "Select up to 2 Equipment cards from your trash. Put one into play and one into your hand.",
-			"flavorQuotes": [{
-				"identifier": "TheKnight",
-				"text": "One might not see the claws of the{BR}bear, but they are never far."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "TheKnight",
+					"text": "One might not see the claws of the{BR}bear, but they are never far."
+				}
+			],
 			"flavorReference": "The Knight, The Wanderer's Ballad #144"
 		},
 		{
@@ -78,10 +81,12 @@
 				"Manipulate"
 			],
 			"body": "Each player may draw a card, or take an Equipment or Ongoing card from their trash and put it on top of their deck.",
-			"flavorQuotes": [{
-				"identifier": "TheStranger",
-				"text": "I have a great respect for{BR}crows. They do not waste anything. Or{BR}nest on my head."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "TheStranger",
+					"text": "I have a great respect for{BR}crows. They do not waste anything. Or{BR}nest on my head."
+				}
+			],
 			"flavorReference": "The Stranger, Book of the Dead #578"
 		},
 		{
@@ -96,10 +101,12 @@
 				"GainHP"
 			],
 			"body": "Draw a card. {TheKnight} regains 2 HP.",
-			"flavorQuotes": [{
-				"identifier": "TheKnight",
-				"text": "A moment, and I will attend you."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "TheKnight",
+					"text": "A moment, and I will attend you."
+				}
+			],
 			"flavorReference": "The Knight, The Wanderer's Requiem #145"
 		},
 		{
@@ -117,11 +124,13 @@
 				"Search your deck for a Single Hand Equipment card and put it into play. Shuffle your deck.",
 				"Select a hero target. Until the start of your next turn, increase damage dealt by that target by 1."
 			],
-			"flavorQuotes": [{
-				"identifier": "LadyOfTheWood",
-				"text": "I did not think to{BR}set eyes on you again."
-			}],
-			"flavorReference": "Lady Of The Wood, The Wanderer's{BR}Requiem #146"
+			"flavorQuotes": [
+				{
+					"identifier": "LadyOfTheWood",
+					"text": "I did not think to{BR}set eyes on you again."
+				}
+			],
+			"flavorReference": "Lady Of The Wood, The Wanderer's Requiem #146"
 		},
 		{
 			"identifier": "DefenderOfTheRealm",
@@ -138,11 +147,13 @@
 				"Search your deck for a copy of “Plate Mail” or “Plate Helm” and put it into play. Shuffle your deck.",
 				"Select a hero target. Until the start of your next turn, reduce damage dealt to that target by 1."
 			],
-			"flavorQuotes": [{
-				"identifier": "TheKnight",
-				"text": "The Knight, This is my home now!"
-			}],
-			"flavorReference": "Dragonfire #12"
+			"flavorQuotes": [
+				{
+					"identifier": "TheKnight",
+					"text": "This is my home now!"
+				}
+			],
+			"flavorReference": "The Knight, Dragonfire #12"
 		},
 		{
 			"identifier": "HeavySwing",
@@ -155,7 +166,8 @@
 				"DealDamageMelee"
 			],
 			"body": "{TheKnight} deals 1 target 3 melee damage.",
-			"flavorQuotes": [{
+			"flavorQuotes": [
+				{
 					"identifier": "AbsoluteZero",
 					"text": "They don't make{BR}'em like they used to."
 				},
@@ -182,15 +194,16 @@
 			],
 			"body": [
 				"Play this card next to a target.",
-				"Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible."
+				"Whenever that target would take damage, redirect that damage to {TheKnight}. Damage redirected this way is irreducible.",
+				"{TheKnight} gains the power:",
+				"[b]Power:[/b] Destroy Knight's Honor."
 			],
-			"powers": [
-				"Destroy this card."
+			"flavorQuotes": [
+				{
+					"identifier": "TheKnight",
+					"text": "I shall protect the weak."
+				}
 			],
-			"flavorQuotes": [{
-				"identifier": "TheKnight",
-				"text": "I shall protect the weak."
-			}],
 			"flavorReference": "The Knight, The Wanderer's Ballad #49"
 		},
 		{
@@ -209,10 +222,12 @@
 			"powers": [
 				"You may play an Equipment card. Draw a card."
 			],
-			"flavorQuotes": [{
-				"identifier": "TheKnight",
-				"text": "I have an oath to uphold,"
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "TheKnight",
+					"text": "I have an oath to uphold,"
+				}
+			],
 			"flavorReference": "The Knight, The Wanderer's Ballad #1"
 		},
 		{
@@ -231,7 +246,7 @@
 				"When this card enters play, you may draw a card.",
 				"When {TheKnight} would be dealt damage, you may redirect that damage to this card."
 			],
-			"flavorText": "The Knight donned his helm,{BR}and The Scholar his sunglasses.{BR}“Ready”",
+			"flavorText": "The Knight donned his helm,{BR}and The Scholar his sunglasses.{BR}“Ready.”",
 			"flavorReference": "Temporal Targets #53",
 			"hitpoints": 3
 		},
@@ -247,7 +262,8 @@
 				"RedirectDamage"
 			],
 			"body": "When {TheKnight} would be dealt damage, you may redirect that damage to this card.",
-			"flavorQuotes": [{
+			"flavorQuotes": [
+				{
 					"identifier": "TheKnight",
 					"text": "Forgive me, I do not{BR}hail from this place."
 				},
@@ -313,10 +329,12 @@
 				"PlayCardNow",
 				"DrawCardNow"
 			],
-			"flavorQuotes": [{
-				"identifier": "DocHavoc",
-				"text": "Okay, he's the only one here{BR}allowed to run with scissors."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "DocHavoc",
+					"text": "Okay, he's the only one here{BR}allowed to run with scissors."
+				}
+			],
 			"flavorReference": "Doc Havoc, War Journal #200",
 			"powers": [
 				"You may play a one-shot now. Draw a card."
@@ -333,10 +351,12 @@
 				"DealDamageMelee"
 			],
 			"body": "{TheKnight} deals up to 2 targets 1 melee damage each.",
-			"flavorQuotes": [{
-				"identifier": "TheKnight",
-				"text": "Suprise is not something one{BR}shouts, it is something one embodies."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "TheKnight",
+					"text": "Suprise is not something one{BR}shouts, it is something one embodies."
+				}
+			],
 			"flavorReference": "The Knight, A Life in a Day One Shot"
 		},
 		{
@@ -351,10 +371,12 @@
 				"IncreaseDamageDealt"
 			],
 			"body": "Increase melee damage dealt by {TheKnight} by 1.",
-			"flavorQuotes": [{
-				"identifier": "TheKnight",
-				"text": "A warrior is only as good as his{BR}equipment."
-			}],
+			"flavorQuotes": [
+				{
+					"identifier": "TheKnight",
+					"text": "A warrior is only as good as his{BR}equipment."
+				}
+			],
 			"flavorReference": "The Knight, The Wanderer's Ballad #3"
 		},
 		{
@@ -419,7 +441,8 @@
 			"complexity": 1
 		}
 	],
-	"promoCards": [{
+	"promoCards": [
+		{
 			"identifier": "TheKnightCharacter",
 			"promoIdentifier": "FairTheKnightCharacter",
 			"count": 1,

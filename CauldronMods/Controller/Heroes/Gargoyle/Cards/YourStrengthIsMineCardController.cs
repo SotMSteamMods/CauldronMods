@@ -69,7 +69,7 @@ namespace Cauldron.Gargoyle
             Card target;
 
             // You may destroy this card at any time
-            coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: base.GetCardSource());
+            coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroySelf, base.Card, action: dealDamageAction, storedResults: storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -98,6 +98,13 @@ namespace Cauldron.Gargoyle
                 else
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                var destruction = destroyCardActions.FirstOrDefault();
+                if(this.Card.IsInPlayAndHasGameText && (destruction == null || !destruction.WasCardDestroyed))
+                {
+                    //in case the destruction fails for one reason or another
+                    SelfDestructTrigger = AddWhenDestroyedTrigger(CardDestroyedResponse, TriggerType.CreateStatusEffect);
                 }
             }
 

@@ -55,7 +55,8 @@ namespace Cauldron.Quicksilver
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.DealDamageSelf, base.Card, storedResults: storedResults);
+            var fake = new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), CharacterCard, 2, DamageType.Melee);
+            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.DealDamageSelf, base.Card, action: fake, storedResults: storedResults);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

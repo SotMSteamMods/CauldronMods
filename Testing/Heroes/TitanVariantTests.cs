@@ -304,5 +304,12 @@ namespace CauldronTests
             DealDamage(apostate, haka, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }
+        [Test]
+        public void TestTitanNotBotherSkyScraper()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Titan", "SkyScraper", "Legacy", "Megalopolis");
+            StartGame();
+            AssertIsInPlay(sky.CharacterCard);
+        }
     }
 }

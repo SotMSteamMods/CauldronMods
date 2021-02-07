@@ -57,7 +57,7 @@
                 "Manipulate",
                 "GainHP"
             ],
-            "body": "When a non-hero card enters play, you may destroy this card. If you do, select any number of Augments in play and move each one next to a new hero. Then, each augmented hero regains 2HP.",
+            "body": "When a non-hero card enters play, you may destroy this card. If you do, select any number of Augments in play and move each one next to a new hero. Then, each augmented hero regains 2 HP.",
             "flavorQuotes": [
                 {
                     "identifier": "ChronoRanger",
@@ -102,7 +102,7 @@
             ],
             "body": [
                 "Destroy any number of Augments.",
-                "When an Augment is destroyed this way, the hero it was next to regains 3HP."
+                "When an Augment is destroyed this way, the hero it was next to regains 3 HP."
             ],
             "flavorQuotes": [
                 {
@@ -317,7 +317,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "You're certain this{BR}is temporary?"
                 },
                 {

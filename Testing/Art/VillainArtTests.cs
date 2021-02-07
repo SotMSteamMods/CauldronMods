@@ -22,8 +22,8 @@ namespace CauldronTests.Art.Villain
     [TestFixtureSource(typeof(VillainArtSource))]
     public class VillainArtTests : ArtTestBase
     {
-        public VillainArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> startEndIdentifiers)
-            : base(name, kind, cardIdentifiers, characterIdentifiers, startEndIdentifiers)
+        public VillainArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
+            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers)
         {
         }
 
@@ -60,7 +60,7 @@ namespace CauldronTests.Art.Villain
 
             foreach (var leftovers in files)
             {
-                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -118,7 +118,7 @@ namespace CauldronTests.Art.Villain
             foreach (var leftovers in atlas)
             {
                 //no big deal if there are extras in the atlas
-                Assert.Warn($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -187,7 +187,7 @@ namespace CauldronTests.Art.Villain
 
             foreach (var leftovers in files)
             {
-                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -266,7 +266,7 @@ namespace CauldronTests.Art.Villain
 
             foreach (var leftovers in files)
             {
-                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();

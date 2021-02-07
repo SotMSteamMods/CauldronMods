@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using Handelabra;
+
 namespace Cauldron.VaultFive
 {
     public class ArtifactCardController : VaultFiveUtilityCardController
@@ -12,17 +14,17 @@ namespace Cauldron.VaultFive
 
         public ArtifactCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => BuildArtifactSpecialString(), relatedCards: () => Card.Owner.CharacterCards).Condition = () => Card.Owner != TurnTaker && Card.IsInDeck;
+            SpecialStringMaker.ShowSpecialString(() => BuildArtifactSpecialString(), relatedCards: () => Card.Owner.CharacterCards).Condition = () => Card.Owner.Identifier != Card.ParentDeck.Identifier && Card.IsInDeck;
         }
 
         private string BuildArtifactSpecialString()
         {
-            if(Card.Owner == TurnTaker || !Card.IsInDeck)
+            if(Card.Owner.Identifier == Card.ParentDeck.Identifier || !Card.IsInDeck)
             {
                 return "";
             }
 
-            IEnumerable<Card> artifactsInDeck = FindCardsWhere(c => c.Location == Card.Location && c.ParentDeck == Card.ParentDeck);
+            IEnumerable<Card> artifactsInDeck = FindCardsWhere(c => c.Location == Card.Location && c.ParentDeck == Card.ParentDeck && IsArtifact(c));
             List<int> positionList = new List<int>();
             int position;
             foreach(Card artifact in artifactsInDeck)
@@ -73,10 +75,18 @@ namespace Cauldron.VaultFive
         private const string  FirstTimeEnteredPlay = "FirstTimeEnteredPlay";
 
         public virtual IEnumerator UniqueOnPlayEffect() { return null; }
+
+        private bool HasOwner
+        {
+            get
+            {
+                return GetCardPropertyJournalEntryBoolean(FirstTimeEnteredPlay) != null && HasBeenSetToTrueThisGame(FirstTimeEnteredPlay);
+            }
+        }
         public override IEnumerator Play()
         {
             //The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.
-            if(!HasBeenSetToTrueThisGame(FirstTimeEnteredPlay))
+            if(!HasOwner)
             {
                 SetCardPropertyToTrueIfRealAction(FirstTimeEnteredPlay);
 
@@ -92,6 +102,7 @@ namespace Cauldron.VaultFive
                 }
                 if(DidSelectTurnTaker(storedResults))
                 {
+                    GameController.AddCardPropertyJournalEntry(Card, "OverrideTurnTaker", new string[] { "Cauldron.VaultFive", Card.Identifier });
                     TurnTaker hero = GetSelectedTurnTaker(storedResults);
                     GameController.ChangeCardOwnership(Card, hero);
                     coroutine = GameController.SendMessageAction($"{Card.Title} is now a part of { hero.ShortName}'s deck!", Priority.High, GetCardSource());
@@ -135,7 +146,7 @@ namespace Cauldron.VaultFive
         protected IEnumerator SelectActiveHeroCharacterCardToDoAction(List<Card> storedResults, SelectionType selectionType)
         {
             List<SelectCardDecision> storedDecision = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, selectionType, new LinqCardCriteria((Card c) => c.Owner == Card.Owner && c.IsCharacter && !c.IsIncapacitatedOrOutOfGame, "active hero"), storedDecision, false, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, selectionType, new LinqCardCriteria((Card c) => c.Owner == Card.Owner && c.IsCharacter && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "active hero"), storedDecision, false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

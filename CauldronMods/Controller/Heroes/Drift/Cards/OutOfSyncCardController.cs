@@ -12,6 +12,16 @@ namespace Cauldron.Drift
     {
         public OutOfSyncCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public override void AddTriggers()
+        {
+            //{DriftPast} Reduce damage dealt to {Drift} by 1.
+            base.AddReduceDamageTrigger((Card c) => base.IsTimeMatching(Past) && c == base.GetActiveCharacterCard(), 1);
+
+            //{DriftFuture} Increase damage dealt by {Drift} to other targets by 1.
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsTimeMatching(Future) && action.DamageSource.IsSameCard(base.GetActiveCharacterCard()) && action.Target != base.GetActiveCharacterCard(), 1);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Cauldron.TheRam
             if (!Card.Location.IsNextToCard && AllHeroesAreUpClose)
             {
                 IEnumerator message = GameController.SendMessageAction("All heroes were already Up Close, so the new one destroys itself.", Priority.High, GetCardSource());
-                IEnumerator destroy = DestroyThisCardResponse(FakeAction);
+                IEnumerator destroy = DestroyThisCardResponse(null);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(message);
@@ -86,7 +86,7 @@ namespace Cauldron.TheRam
             {
                 return new Power[1]
                 {
-                    new Power(heroController.HeroTurnTakerController, heroController, "Destroy Up Close.", DestroyThisCardResponse(FakeAction), 0, null, GetCardSource())
+                    new Power(heroController.HeroTurnTakerController, heroController, "Destroy Up Close.", DestroyThisCardResponse(null), 0, null, GetCardSource())
                 };
             }
             return null;
@@ -99,7 +99,7 @@ namespace Cauldron.TheRam
                 NextToHeroToGoTo = hero.NextToLocation;
             }
 
-            IEnumerator play = GameController.PlayCard(TurnTakerController, this.Card, wasCardPlayed: new List<bool> { !isPutIntoPlay }, isPutIntoPlay: isPutIntoPlay, cardSource: cardSource);
+            IEnumerator play = GameController.PlayCard(TurnTakerController, this.Card, wasCardPlayed: new List<bool>() { !isPutIntoPlay }, isPutIntoPlay: isPutIntoPlay, cardSource: cardSource);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(play);
@@ -128,14 +128,6 @@ namespace Cauldron.TheRam
                                        c.Owner.IsHero &&
                                        !c.Owner.ToHero().IsIncapacitatedOrOutOfGame &&
                                        !IsUpClose(c.Owner);
-            }
-        }
-
-        private GameAction FakeAction
-        {
-            get
-            {
-                return new CardEntersPlayAction(GetCardSource(), Card, true, TurnTakerController, this.Card.Location);
             }
         }
     }
