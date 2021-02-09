@@ -20,7 +20,7 @@ namespace Cauldron.OblaskCrater
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DestroyCardAction>((dca) => dca.DealDamageAction != null && dca.DealDamageAction.DamageSource.Card.DoKeywordsContain("predator"), DestroyCardActionResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DestroyCardAction>((dca) => dca.DealDamageAction != null && IsPredator(dca.DealDamageAction.DamageSource.Card), DestroyCardActionResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator DestroyCardActionResponse(DestroyCardAction destroyCardAction)
