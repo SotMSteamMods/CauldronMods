@@ -27,7 +27,7 @@ namespace Cauldron.OblaskCrater
 
         private bool DestroyCardActionCriteria(DestroyCardAction destroyCardAction)
         {
-            return destroyCardAction.CardToDestroy != null && destroyCardAction.WasCardDestroyed && destroyCardAction.CardToDestroy.Card.IsEnvironmentTarget;
+            return destroyCardAction.CardToDestroy != null && destroyCardAction.WasCardDestroyed && destroyCardAction.CardToDestroy.Card.IsEnvironmentTarget && GameController.IsCardVisibleToCardSource(destroyCardAction.CardToDestroy.Card, GetCardSource());
         }
 
         private IEnumerator DestroyCardActionResponse(DestroyCardAction destroyCardAction)
@@ -62,11 +62,8 @@ namespace Cauldron.OblaskCrater
              * from the environment trash into play.
              */
             IEnumerator coroutine;
-            List<RevealCardsAction> storedRevealCardResults = new List<RevealCardsAction>();
             Location environmentTrash = FindLocationsWhere(location => location.IsRealTrash && location.IsEnvironment && GameController.IsLocationVisibleToSource(location, GetCardSource())).First();
             TurnTakerController environmentTurnTakerController = FindEnvironment();
-            List<Card> otherCards;
-            Card matchedCard;
 
             coroutine = base.DiscardCardsFromTopOfDeck(environmentTurnTakerController, 2);
             if (base.UseUnityCoroutines)
@@ -78,7 +75,9 @@ namespace Cauldron.OblaskCrater
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = base.ShuffleDeck(DecisionMaker, environmentTrash);
+            string message = $"{Card.Title} plays a random target from {environmentTrash.GetFriendlyName()}.";
+           
+            coroutine = base.GameController.SendMessageAction(message, Priority.Medium, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -87,8 +86,8 @@ namespace Cauldron.OblaskCrater
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            coroutine = base.GameController.RevealCards(base.TurnTakerController,environmentTrash, (card) => card.IsTarget, 1, storedRevealCardResults);
+         
+            coroutine = ReviveCardFromTrash(base.TurnTakerController, (Card c) => c.IsTarget);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -96,35 +95,6 @@ namespace Cauldron.OblaskCrater
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            matchedCard = GetRevealedCards(storedRevealCardResults).FirstOrDefault(c => c.IsTarget);
-            otherCards = GetRevealedCards(storedRevealCardResults).Where(c => !c.IsTarget).ToList();
-            if (otherCards.Any())
-            {
-                // Put non matching revealed cards back in the trash
-                coroutine = GameController.MoveCards(environmentTurnTakerController, otherCards, environmentTrash, cardSource: GetCardSource());
-                if (this.UseUnityCoroutines)
-                {
-                    yield return this.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    this.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            if (matchedCard != null)
-            {
-                coroutine = base.GameController.MoveCard(environmentTurnTakerController, matchedCard, environmentTurnTakerController.TurnTaker.PlayArea, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
             }
 
             yield break;
