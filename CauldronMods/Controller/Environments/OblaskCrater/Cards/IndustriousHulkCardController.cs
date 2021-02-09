@@ -21,8 +21,35 @@ namespace Cauldron.OblaskCrater
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DrawCardAction>((dca) => dca.DrawnCard.IsHero, (dca) => base.DealDamage(base.Card, dca.HeroTurnTaker.CharacterCard, 1, DamageType.Melee, cardSource: base.GetCardSource()), TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger((DrawCardAction drawCard) => drawCard.IsSuccessful && drawCard.DidDrawCard && drawCard.DrawnCard.IsHero, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             base.AddWhenDestroyedTrigger((dca) => base.EachPlayerDrawsACard(optional: true), TriggerType.DrawCard);
         }
-    }
+
+		private IEnumerator DealDamageResponse(DrawCardAction drawCard)
+		{
+			List<Card> storedCharacter = new List<Card>();
+			IEnumerator coroutine = FindCharacterCardToTakeDamage(drawCard.HeroTurnTaker, storedCharacter, base.CharacterCard, 1, DamageType.Melee);
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+			Card card = storedCharacter.FirstOrDefault();
+			if (card != null)
+			{
+				IEnumerator coroutine2 = DealDamage(Card, card, 1, DamageType.Melee, cardSource: GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine2);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine2);
+				}
+			}
+		}
+	}
 }
