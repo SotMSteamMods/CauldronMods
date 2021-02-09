@@ -12,6 +12,9 @@ namespace Cauldron.Mythos
     {
         public OtherworldlyAlignmentCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+        protected override void ShowUniqueSpecialStrings()
+        {
             base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
             base.SpecialStringMaker.ShowHeroTargetWithLowestHP();
         }

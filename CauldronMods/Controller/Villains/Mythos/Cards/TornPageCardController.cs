@@ -12,6 +12,9 @@ namespace Cauldron.Mythos
     {
         public TornPageCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+        protected override void ShowUniqueSpecialStrings()
+        {
             SpecialStringMaker.ShowSpecialString(() => BuildTornPageSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
             SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeActivated).Condition = () => Card.IsInPlayAndHasGameText;
 

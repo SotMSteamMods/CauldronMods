@@ -12,6 +12,9 @@ namespace Cauldron.Mythos
     {
         public FaithfulProselyteCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+        protected override void ShowUniqueSpecialStrings()
+        {
             base.SpecialStringMaker.ShowHeroTargetWithHighestHP(2);
 
         }

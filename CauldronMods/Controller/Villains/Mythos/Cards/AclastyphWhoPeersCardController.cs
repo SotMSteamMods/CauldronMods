@@ -12,8 +12,10 @@ namespace Cauldron.Mythos
     {
         public AclastyphWhoPeersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+        protected override void ShowUniqueSpecialStrings()
+        {
             base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
-
         }
 
         public override void AddTriggers()
