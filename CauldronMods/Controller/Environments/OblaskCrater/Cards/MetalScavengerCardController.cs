@@ -28,39 +28,53 @@ namespace Cauldron.OblaskCrater
 
         private IEnumerator PhaseChangeActionResponse(PhaseChangeAction phaseChangeAction)
         {
-            IEnumerator coroutine;
+            IEnumerator messageRoutine;
+            IEnumerator moveRoutine;
+            IEnumerator damageRoutine;
             List<Card> cardsToMove = new List<Card>();
 
-            cardsToMove = base.GameController.TurnTakerControllers.Where(ttc => ttc != base.TurnTakerController && !ttc.IsIncapacitatedOrOutOfGame).Select((ttc) => ttc.TurnTaker.Trash.TopCard).ToList();
 
-            coroutine = base.GameController.BulkMoveCards(base.TurnTakerController, cardsToMove, base.Card.UnderLocation, cardSource: base.GetCardSource());
+
+            string message = $"{Card.Title} moves the top card of each other trash pile beneath this card!";
+
+            cardsToMove = base.GameController.TurnTakerControllers.Where(ttc => ttc != base.TurnTakerController && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Trash.HasCards).Select((ttc) => ttc.TurnTaker.Trash.TopCard).ToList();
+            moveRoutine = base.GameController.BulkMoveCards(base.TurnTakerController, cardsToMove, base.Card.UnderLocation, cardSource: base.GetCardSource());
+            if (!cardsToMove.Any())
+            {
+                moveRoutine = DoNothing();
+                message = $"THere are no cards in any trashes for {Card.Title} to move!";
+            }
+            messageRoutine = base.GameController.SendMessageAction(message, Priority.Medium, GetCardSource(), showCardSource: true);
+
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(messageRoutine);
+                yield return base.GameController.StartCoroutine(moveRoutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(messageRoutine);
+                base.GameController.ExhaustCoroutine(moveRoutine);
             }
 
-            coroutine = base.DealDamage(base.Card, (card) => card != base.Card, 1, DamageType.Toxic);
+            damageRoutine = base.DealDamage(base.Card, (card) => card != base.Card, 1, DamageType.Toxic);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(damageRoutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(damageRoutine);
             }
 
-            coroutine = base.DealDamage(base.Card, (card) => card == base.Card, 1, DamageType.Fire);
+            damageRoutine = base.DealDamage(base.Card, (card) => card == base.Card, 1, DamageType.Fire);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(damageRoutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(damageRoutine);
             }
 
             yield break;
