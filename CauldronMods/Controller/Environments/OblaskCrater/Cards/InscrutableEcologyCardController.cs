@@ -22,6 +22,9 @@ namespace Cauldron.OblaskCrater
         public override void AddTriggers()
         {
             base.AddStartOfTurnTrigger(tt => tt == base.TurnTaker, base.DestroyThisCardResponse, TriggerType.DestroySelf);
+
+            // Reduce damage dealt by environment targets by 1.            
+            AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsEnvironmentTarget, (DealDamageAction dd) => 1);
         }
 
         public override IEnumerator Play()
@@ -37,7 +40,7 @@ namespace Cauldron.OblaskCrater
             ReduceDamageStatusEffect reduceDamageStatusEffect;
 
             // reveal cards from the top of the environmnet deck until {H - 1} targets are  revealed
-            revealCardsRoutine = base.GameController.RevealCards(TurnTakerController, environmentDeck, card => card.IsTarget, base.H - 1, revealedCards);
+            revealCardsRoutine = base.GameController.RevealCards(TurnTakerController, environmentDeck, card => card.IsTarget, base.H - 1, revealedCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(revealCardsRoutine);
@@ -76,19 +79,6 @@ namespace Cauldron.OblaskCrater
                 }
             }
 
-            // Reduce damage dealt by environment targets by 1.            
-            reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
-            reduceDamageStatusEffect.SourceCriteria.IsEnvironment = true;
-            reduceDamageStatusEffect.SourceCriteria.IsTarget = true;
-            coroutine = base.AddStatusEffect(reduceDamageStatusEffect);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
             yield break;
         }
     }

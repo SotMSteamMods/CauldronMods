@@ -212,7 +212,7 @@ namespace CauldronTests
          * Reduce damage dealt by environment targets by 1. At the start of the environment turn, destroy this card.
          */
         [Test]
-        public void LoadInscrutableEcology()
+        public void TestInscrutableEcology()
         {
             Card oblaskObjectY3A;
             Card inscrutableEcology;
