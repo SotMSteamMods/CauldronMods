@@ -421,15 +421,11 @@ namespace CauldronTests
             numberOfCardsInHakaTrash = haka.TurnTaker.Trash.NumberOfCards;
             numberOfCardsInEnvTrash = env.TurnTaker.Trash.NumberOfCards;
 
-            DecisionSelectTurnTakers = new TurnTaker[] { baron.TurnTaker, ra.TurnTaker, legacy.TurnTaker, haka.TurnTaker, env.TurnTaker };
-            DecisionMoveCardDestinations = new MoveCardDestination[] 
-            { 
-                new MoveCardDestination( baron.TurnTaker.Trash), 
-                new MoveCardDestination(ra.TurnTaker.Trash), 
-                new MoveCardDestination(legacy.TurnTaker.Trash), 
-                new MoveCardDestination(haka.TurnTaker.Trash),
-                new MoveCardDestination(env.TurnTaker.Trash)
-            };
+            List<Location> locations = new List<Location>() { baron.TurnTaker.Deck, ra.TurnTaker.Deck, legacy.TurnTaker.Deck, haka.TurnTaker.Deck, env.TurnTaker.Deck };
+            DecisionSelectLocations = locations.Select(loc => new LocationChoice(loc)).ToArray();
+            IEnumerable<Card> topCards = locations.Select(loc => loc.TopCard).ToArray();
+
+            DecisionsYesNo = new bool[] { true, true, true, true, true };
             base.DealDamage(legacy, moonWatcher, 15, DamageType.Melee);
 
             AssertNumberOfCardsInTrash(baron, numberOfCardsInBaronTrash + 1);
@@ -437,7 +433,10 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(legacy, numberOfCardsInLegacyTrash + 1);
             AssertNumberOfCardsInTrash(haka, numberOfCardsInHakaTrash + 1);
             AssertNumberOfCardsInTrash(env, numberOfCardsInEnvTrash + 2);
+
+            AssertInTrash(topCards);
         }
+
         [Test]
         public void TestMoonWatcherDestroyReduceBelow0()
         {
@@ -461,15 +460,12 @@ namespace CauldronTests
             numberOfCardsInHakaTrash = haka.TurnTaker.Trash.NumberOfCards;
             numberOfCardsInEnvTrash = env.TurnTaker.Trash.NumberOfCards;
 
-            DecisionSelectTurnTakers = new TurnTaker[] { baron.TurnTaker, ra.TurnTaker, legacy.TurnTaker, haka.TurnTaker, env.TurnTaker };
-            DecisionMoveCardDestinations = new MoveCardDestination[]
-            {
-                new MoveCardDestination( baron.TurnTaker.Trash),
-                new MoveCardDestination(ra.TurnTaker.Trash),
-                new MoveCardDestination(legacy.TurnTaker.Trash),
-                new MoveCardDestination(haka.TurnTaker.Trash),
-                new MoveCardDestination(env.TurnTaker.Trash)
-            };
+
+            List<Location> locations = new List<Location>() { baron.TurnTaker.Deck, ra.TurnTaker.Deck, legacy.TurnTaker.Deck, haka.TurnTaker.Deck, env.TurnTaker.Deck };
+            DecisionSelectLocations = locations.Select(loc => new LocationChoice(loc)).ToArray();
+            IEnumerable<Card> topCards = locations.Select(loc => loc.TopCard).ToArray();
+
+            DecisionsYesNo = new bool[] { true, true, true, true, true };
             base.DealDamage(legacy, moonWatcher, 16, DamageType.Melee);
 
             AssertNumberOfCardsInTrash(baron, numberOfCardsInBaronTrash + 1);
@@ -477,6 +473,32 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(legacy, numberOfCardsInLegacyTrash + 1);
             AssertNumberOfCardsInTrash(haka, numberOfCardsInHakaTrash + 1);
             AssertNumberOfCardsInTrash(env, numberOfCardsInEnvTrash + 2);
+
+            AssertInTrash(topCards);
+        }
+
+        [Test]
+        public void TestMoonWatcherDestroyReduceBelow0_Kaargra()
+        {
+            /*
+             * When this card is destroyed, if it has 0 or fewer HP, reveal the top card of each deck and 
+             * replace or discard each one.
+             */
+            Card moonWatcher;
+
+            SetupGameController("KaargraWarfang", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            moonWatcher = PutIntoPlay("MoonWatcher");
+
+            List<Location> locations = new List<Location>() { warfang.TurnTaker.Decks.Last(), warfang.TurnTaker.Decks.First(), ra.TurnTaker.Deck, legacy.TurnTaker.Deck, haka.TurnTaker.Deck, env.TurnTaker.Deck };
+            DecisionSelectLocations = locations.Select(loc => new LocationChoice(loc)).ToArray();
+            IEnumerable<Card> topCards = locations.Select(loc => loc == warfang.TurnTaker.Decks.Last() ? loc.Cards.Reverse().ElementAt(1) : loc.TopCard).ToArray();
+
+            DecisionsYesNo = new bool[] { false, true, true, true, true, true };
+            DealDamage(warfang, moonWatcher, 100, DamageType.Fire);
+            AssertInTrash(topCards.Reverse().Take(5));
+            Assert.That(warfang.TurnTaker.Decks.Last().TopCard == topCards.First(), $"{topCards.First().Title} was supposed to be the top card of {warfang.TurnTaker.Decks.Last().GetFriendlyName()} but instead was in {topCards.First().Location.GetFriendlyName()}");
+           
         }
         [Test]
         public void TestMoonWatcherDestroyByEffect()
