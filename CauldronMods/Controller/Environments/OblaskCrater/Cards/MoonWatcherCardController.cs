@@ -33,7 +33,6 @@ namespace Cauldron.OblaskCrater
 
             if (base.Card.HitPoints <= 0)
             {
-                //coroutine = base.GameController.SelectTurnTakersAndDoAction(base.DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => true), SelectionType.RevealTopCardOfDeck, (TurnTaker tt) => base.RevealCard_DiscardItOrPutItOnDeck(base.DecisionMaker, base.FindTurnTakerController(tt), tt.Deck, false), allowAutoDecide: true, cardSource: base.GetCardSource());
                 coroutine = base.GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, (Location loc) => loc.IsDeck && !loc.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && loc.HasCards, RevealAndReplaceOrDiscardResponse, cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
@@ -51,7 +50,9 @@ namespace Cauldron.OblaskCrater
 
         private IEnumerator RevealAndReplaceOrDiscardResponse(Location location)
         {
-            List<Card> cards = new List<Card>();           
+            List<Card> cards = new List<Card>();
+            HeroTurnTakerController httc = location.IsHero ? FindHeroTurnTakerController(location.OwnerTurnTaker.ToHero()) : DecisionMaker;
+
             var coroutine = GameController.RevealCards(TurnTakerController, location, 1, cards, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -65,7 +66,7 @@ namespace Cauldron.OblaskCrater
             Card revealedCard = GetRevealedCard(cards);
             if (revealedCard != null)
             {
-                YesNoDecision yesNo = new YesNoCardDecision(GameController, DecisionMaker, SelectionType.DiscardCard, revealedCard, cardSource: GetCardSource());
+                YesNoDecision yesNo = new YesNoCardDecision(GameController, httc, SelectionType.DiscardCard, revealedCard, cardSource: GetCardSource());
                 List<IDecision> decisionSources = new List<IDecision>
                 {
                     yesNo
