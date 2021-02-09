@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -22,21 +23,27 @@ namespace Cauldron.OblaskCrater
         public FreshTracksCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.Card.UnderLocation.OverrideIsInPlay = false;
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria(c => Card.UnderLocation.HasCard(c), "target under this card", useCardsSuffix: false)).Condition = () => Card.IsInPlayAndHasGameText;
         }
 
         public override void AddTriggers()
         {
-            base.AddTrigger<PlayCardAction>((pca) => pca.CardToPlay.IsTarget, PlayCardActionResponse, TriggerType.DestroyCard, TriggerTiming.Before);
+            base.AddTrigger<CardEntersPlayAction>((cep) => cep.CardEnteringPlay.IsTarget, PlayCardActionResponse, new TriggerType[]
+                { 
+                    TriggerType.DestroyCard,
+                    TriggerType.PlayCard
+                }, TriggerTiming.Before);
         }
 
-        private IEnumerator PlayCardActionResponse(PlayCardAction playCardAction)
+        private IEnumerator PlayCardActionResponse(CardEntersPlayAction playCardAction)
         {
             IEnumerator coroutine;
             List<bool> storedResults = new List<bool>();
             List<DestroyCardAction> destroyCardActions = new List<DestroyCardAction>();
-            Card underCard;
+            Card underCard = base.Card.UnderLocation.BottomCard;
 
-            coroutine = base.MakeUnanimousDecision((httc) => true, SelectionType.DestroySelf, storedResults: storedResults, associatedCards: new List<Card> { base.Card });
+            List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
+            coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, Card, storedResults: storedYesNo, associatedCards: underCard.ToEnumerable(), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -46,13 +53,12 @@ namespace Cauldron.OblaskCrater
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (storedResults != null && storedResults.Count(selection=> selection == true) > 0)
+           if(DidPlayerAnswerYes(storedYesNo))
             {
-                underCard = base.Card.UnderLocation.BottomCard;
-                // Destory this card and put the target beneath it into play
+                // Destroy this card and put the target beneath it into play
                 coroutine = base.GameController.DestroyCard(base.DecisionMaker, base.Card, postDestroyAction: () =>
                 {
-                    return base.GameController.PlayCard(base.TurnTakerController, underCard);
+                    return base.GameController.PlayCard(base.TurnTakerController, underCard, cardSource: GetCardSource());
                 }, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
@@ -77,8 +83,8 @@ namespace Cauldron.OblaskCrater
             Card matchedCard;
             List<Card> otherCards;
 
-            // Reveal cards until target is revealed (if any)            
-            revealCardsRoutine = base.GameController.RevealCards(TurnTakerController, environmentDeck, card => card.IsTarget, NumberOfCardMatches, revealedCards);
+            // Reveal cards until target is revealed (if any)      
+            revealCardsRoutine = base.GameController.RevealCards(TurnTakerController, environmentDeck, card => card.IsTarget, NumberOfCardMatches, revealedCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(revealCardsRoutine);
@@ -107,7 +113,7 @@ namespace Cauldron.OblaskCrater
             if (matchedCard != null)
             {                
                 coroutine = base.GameController.MoveCard(base.TurnTakerController, matchedCard, base.Card.UnderLocation,
-                            showMessage: false,
+                            showMessage: true,
                             flipFaceDown: false,
                             cardSource: base.GetCardSource()); 
                 if (base.UseUnityCoroutines)

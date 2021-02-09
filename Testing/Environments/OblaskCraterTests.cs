@@ -68,9 +68,15 @@ namespace CauldronTests
             AssertNumberOfCardsUnderCard(freshTracks, 1);
             AssertNotInPlay(freshTracks.UnderLocation.Cards);
 
+            PrintSpecialStringsForCard(freshTracks);
+
             DecisionsYesNo = new bool[] { true };
             PlayCard("BladeBattalion");
             AssertIsInPlay(shadowOfOblask);
+
+            PrintSpecialStringsForCard(freshTracks);
+
+
         }
 
         /*
