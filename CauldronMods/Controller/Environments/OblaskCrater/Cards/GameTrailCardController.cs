@@ -45,7 +45,7 @@ namespace Cauldron.OblaskCrater
             IEnumerator coroutine;
 
             // When this card enters play, play the top card of the environment deck.
-            coroutine = base.GameController.PlayTopCard(base.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
+            coroutine = PlayTheTopCardOfTheEnvironmentDeckWithMessageResponse(null);
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);
