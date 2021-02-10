@@ -501,7 +501,7 @@ namespace CauldronTests
             fullMoonExpress = PutIntoPlay("FullMoonExpress");
 
             base.GameController.SkipToTurnPhase(new TurnPhase(baron.TurnTaker, Phase.End));
-            DecisionsYesNo = new bool[] { true, true };
+            DecisionsYesNo = new bool[] { true, true, true, false };
 
             QuickHPStorage(baron, terminus, legacy, bunker, scholar);
             DealDamage(baron, legacy, 2, DamageType.Melee);
@@ -510,8 +510,24 @@ namespace CauldronTests
             DealDamage(baron, terminus, 2, DamageType.Melee);
             QuickHPCheck(-2, -2, 0, 0, 0);
 
+            DealDamage(baron, legacy, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, -3, 0, 0);
+
             GoToStartOfTurn(terminus);
             AssertOutOfGame(fullMoonExpress);
+        }
+        [Test]
+        public void TestFullMoonExpressDamageOptional()
+        {
+            Card fullMoonExpress;
+
+            StartTestGame();
+            fullMoonExpress = PutIntoPlay("FullMoonExpress");
+
+            DecisionYesNo = false;
+            QuickHPStorage(baron, terminus);
+            DealDamage(baron, terminus, 1, DamageType.Melee);
+            QuickHPCheck(0, -1);
         }
 
         [Test]
@@ -524,7 +540,7 @@ namespace CauldronTests
             fullMoonExpress = PutIntoPlay("FullMoonExpress");
 
             base.GameController.SkipToTurnPhase(new TurnPhase(baron.TurnTaker, Phase.End));
-            DecisionsYesNo = new bool[] { true };
+            DecisionsYesNo = new bool[] { true, true };
 
             QuickHPStorage(baron, terminus, legacy, bunker, scholar);
             DealDamage(baron, legacy, 2, DamageType.Melee);

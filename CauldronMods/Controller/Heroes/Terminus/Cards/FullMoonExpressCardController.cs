@@ -24,7 +24,7 @@ namespace Cauldron.Terminus
         {
 			base.AddStartOfTurnTrigger((tt) => tt == base.TurnTaker, PhaseChangeActionResponse, TriggerType.RemoveFromGame);
 			base.AddRedirectDamageTrigger(RedirectDamageActionCritera, () => base.CharacterCard, true);
-			base.AddTrigger<DealDamageAction>((dda) => dda.DidDealDamage && dda.DamageSource.IsTarget && !dda.DamageSource.IsHero && dda.Target == base.CharacterCard, DealDamageActionResponse, TriggerType.DealDamage, TriggerTiming.After);
+			base.AddTrigger<DealDamageAction>((dda) => dda.DidDealDamage && dda.DamageSource != null && dda.DamageSource.IsTarget && !dda.DamageSource.IsHero && dda.Target == base.CharacterCard, DealDamageActionResponse, TriggerType.DealDamage, TriggerTiming.After, ActionDescription.DamageTaken);
 		}
 
 		private bool RedirectDamageActionCritera(DealDamageAction dealDamageAction)
@@ -55,7 +55,7 @@ namespace Cauldron.Terminus
 		{
 			IEnumerator coroutine;
 
-			coroutine = base.GameController.DealDamageToTarget(new DamageSource(base.GameController, base.CharacterCard), dealDamageAction.DamageSource.Card, 2, DamageType.Melee, cardSource: base.GetCardSource());
+			coroutine = base.GameController.DealDamageToTarget(new DamageSource(base.GameController, base.CharacterCard), dealDamageAction.DamageSource.Card, 2, DamageType.Melee, optional: true, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
