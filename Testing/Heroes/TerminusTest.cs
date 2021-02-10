@@ -20,6 +20,7 @@ namespace CauldronTests
 
         #region Terminus Utilities
         private string[] gameDecks => new string[] { "BaronBlade", "Cauldron.Terminus", "Legacy", "Bunker", "TheScholar", "Megalopolis" };
+        private TokenPool WrathPool => FindTokenPool("TerminusCharacter", "TerminusWrathPool");
 
         private void StartTestGame()
         {
@@ -48,6 +49,10 @@ namespace CauldronTests
             DealDamage(villain, terminus, 2, DamageType.Melee);
         }
 
+        private void AssertTokensInWrathPool(int expected)
+        {
+            Assert.AreEqual(expected, WrathPool.CurrentValue, $"Expected {expected} tokens in Terminus's wrath pool, but there were {WrathPool.CurrentValue}");
+        }
         #endregion Gargoyle Utilities
 
         [Test()]
@@ -243,6 +248,7 @@ namespace CauldronTests
             QuickHPCheck(-6, 0, 0, 0, 0);
 
             AssertNotInPlay(covenantOfWrath);
+            AssertTokensInWrathPool(0);
         }
         [Test]
         public void TestCovenantOfWrathEnoughTokens()
@@ -260,6 +266,42 @@ namespace CauldronTests
             UsePower(covenantOfWrath);
             QuickHPCheck(-6, 0, 0, 0, 0);
 
+            AssertIsInPlay(covenantOfWrath);
+            AssertTokensInWrathPool(0);
+        }
+        [Test]
+        public void TestCovenantOfWrathEnoughTokensOptional()
+        {
+            Card covenantOfWrath;
+
+            StartTestGame();
+            base.GameController.SkipToTurnTakerTurn(terminus);
+
+            base.AddTokensToPool(FindTokenPool("TerminusCharacter", "TerminusWrathPool"), 3);
+
+            DecisionsYesNo = new bool[] { false };
+            covenantOfWrath = PutIntoPlay("CovenantOfWrath");
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            UsePower(covenantOfWrath);
+            QuickHPCheck(-6, 0, 0, 0, 0);
+
+            AssertInTrash(covenantOfWrath);
+            AssertTokensInWrathPool(3);
+        }
+        [Test]
+        public void TestCovenantOfWrathOtherDestroy()
+        {
+            Card covenantOfWrath;
+
+            StartTestGame();
+            base.GameController.SkipToTurnTakerTurn(terminus);
+
+            base.AddTokensToPool(FindTokenPool("TerminusCharacter", "TerminusWrathPool"), 3);
+            DecisionsYesNo = new bool[] { true };
+            covenantOfWrath = PutIntoPlay("CovenantOfWrath");
+
+            DestroyCard(covenantOfWrath);
+            AssertTokensInWrathPool(0);
             AssertIsInPlay(covenantOfWrath);
         }
 
