@@ -36,48 +36,9 @@ namespace Cauldron.OblaskCrater
 
         public override void AddTriggers()
         {
-            base.AddEndOfTurnTrigger((tt) => tt.IsEnvironment, PhaseChangeActionResponse, TriggerType.DealDamage);
+            base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => GetCardThisCardIsNextTo() != null && GetCardThisCardIsNextTo() == c, TargetType.All, base.H - 1, DamageType.Melee);
+            base.AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsEnvironmentCard && dd.DamageSource.Card != Card &&  GetCardThisCardIsNextTo() != null && dd.Target == GetCardThisCardIsNextTo());
         }
-
-        private IEnumerator PhaseChangeActionResponse(PhaseChangeAction phaseChangeAction)
-        {
-            // At the end of the environment turn, this card deals the hero next to it {H - 1} melee damage.
-            IEnumerator coroutine;
-
-            coroutine = base.DealDamage(base.Card, base.GetCardThisCardIsNextTo(), base.H - 1, DamageType.Melee, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
-
-        public override IEnumerator Play()
-        {
-            // The hero next to this card is immune to damage from enviroment targets other than this one.
-            IEnumerator coroutine;
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect;
-
-            immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            immuneToDamageStatusEffect.SourceCriteria.IsTarget = true;
-            immuneToDamageStatusEffect.SourceCriteria.IsEnvironment = true;
-            immuneToDamageStatusEffect.SourceCriteria.IsNotSpecificCard = base.Card;
-            immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = base.GetCardThisCardIsNextTo();
-
-            coroutine = base.AddStatusEffect(immuneToDamageStatusEffect);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
-        }
+        
     }
 }
