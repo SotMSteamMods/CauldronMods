@@ -800,7 +800,7 @@ namespace CauldronTests
             var nightloreDict = new Dictionary<string, string> { };
             nightloreDict["Cauldron.Starlight"] = "NightloreCouncilStarlightCharacter";
             SetupGameController(new List<string> { "BaronBlade", "Cauldron.Starlight", "Cauldron.Terminus", "TheSentinels", "Megalopolis" }, false, nightloreDict);
-
+            StartGame();
             base.GameController.SkipToTurnTakerTurn(terminus);
 
             stainedBadge = PutIntoPlay("StainedBadge");
@@ -847,6 +847,38 @@ namespace CauldronTests
 
             AssertIncapacitated(terminus);
             AssertGameOver(EndingResult.HeroesDestroyedDefeat);
+        }
+        [Test]
+        public void TestStainedBadgeIsolated()
+        {
+            SetupGameController("MissInformation", "Cauldron.Terminus", "Legacy", "Tempest", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("StainedBadge");
+            DealDamage(miss, terminus, 50, DamageType.Melee);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            PlayCard("IsolatedHero");
+            AssertIncapacitated(terminus);
+        }
+        [Test]
+        public void TestStainedBadgeNotIndestructibleWhenAlone()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Legacy", "Tempest", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card badge = PlayCard("StainedBadge");
+            DestroyCard(badge);
+            AssertIsInPlay(badge);
+            
+            DealDamage(baron, legacy, 50, DamageType.Melee);
+            DealDamage(baron, tempest, 50, DamageType.Melee);
+            AssertNotIncapacitatedOrOutOfGame(terminus);
+
+            DestroyCard(badge);
+            AssertInTrash(badge);
         }
         #endregion
 

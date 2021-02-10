@@ -12,11 +12,14 @@ namespace Cauldron.Terminus
     {
         protected TerminusMementoCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
+            ShowIndestructibleString();
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
-        public override bool CanBeDestroyed => false;
+        protected virtual void ShowIndestructibleString()
+        {
+            SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
+        }
 
         public override bool AskIfCardIsIndestructible(Card card)
         {
