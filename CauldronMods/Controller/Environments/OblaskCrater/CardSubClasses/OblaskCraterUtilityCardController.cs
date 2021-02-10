@@ -13,5 +13,12 @@ namespace Cauldron.OblaskCrater
         protected OblaskCraterUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        public static readonly string PredatorKeyword = "predator";
+
+        protected bool IsPredator(Card card)
+        {
+            return card.DoKeywordsContain(PredatorKeyword);
+        }
     }
 }
