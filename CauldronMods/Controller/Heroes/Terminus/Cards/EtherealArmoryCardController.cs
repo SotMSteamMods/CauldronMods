@@ -66,10 +66,11 @@ namespace Cauldron.Terminus
             if (DidPlayCards(playCardActions))
             {
                 var playedCard = playCardActions.FirstOrDefault().CardToPlay;
+                string playerPossessive = DecisionMaker.Name;
 
                 onPhaseChangeStatusEffect = new OnPhaseChangeStatusEffect(base.Card, 
                     nameof(this.StartOfTurnResponse), 
-                    "At the start of {Terminus} next turn, return " + playedCard.Title + " from play to your hand.", 
+                    "At the start of " + DecisionMaker.Name +"'s next turn, return " + playedCard.Title + " from play to your hand.", 
                     new TriggerType[] { TriggerType.MoveCard }, 
                     playedCard);
                 onPhaseChangeStatusEffect.NumberOfUses = 1;

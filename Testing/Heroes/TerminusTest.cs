@@ -345,6 +345,41 @@ namespace CauldronTests
             AssertNotInPlay(bringWhatYouNeed);
 
         }
+        [Test]
+        public void TestEtherealArmoryNotReturnFromNotInPlay()
+        {
+            Card covenantOfWrath;
+            Card motivationalCharge;
+            Card ammoDrop;
+            Card bringWhatYouNeed;
+
+            StartTestGame();
+            GoToPlayCardPhase(terminus);
+            covenantOfWrath = PutInHand("CovenantOfWrath");
+            motivationalCharge = PutInHand("MotivationalCharge");
+            ammoDrop = PutInHand("AmmoDrop");
+            bringWhatYouNeed = PutInHand("BringWhatYouNeed");
+
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed };
+            PlayCard("EtherealArmory");
+            QuickHandCheck(-1, -1, -1, -1);
+            AssertIsInPlay(covenantOfWrath);
+            AssertIsInPlay(motivationalCharge);
+            AssertIsInPlay(ammoDrop);
+            AssertIsInPlay(bringWhatYouNeed);
+
+            DestroyCard(ammoDrop);
+            PutOnDeck(scholar, bringWhatYouNeed);
+
+            base.GameController.SkipToTurnTakerTurn(terminus);
+            base.GoToStartOfTurn(terminus);
+            QuickHandCheck(1, 1, 0, 0);
+            AssertInHand(covenantOfWrath);
+            AssertInHand(motivationalCharge);
+            AssertInTrash(ammoDrop);
+            AssertOnTopOfDeck(bringWhatYouNeed);
+        }
 
         #endregion Test Ethereal Armory
 
