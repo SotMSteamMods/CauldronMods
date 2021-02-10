@@ -83,7 +83,7 @@ namespace Cauldron.Terminus
 				addToken = $"{amountToAdd} tokens";
 			}
 			list.Add(new Function(cardController.DecisionMaker, $"Add {addToken} to {GetWrathPool(cardController).Name}", SelectionType.AddTokens, () => AddWrathTokenResponse(cardController, amountToAdd, addTokenResponse, addTokenGameAction)));
-			list.Add(new Function(cardController.DecisionMaker, $"Remove 3 tokens from  {GetWrathPool(cardController).Name}", SelectionType.RemoveTokens, () => RemoveWrathTokenResponse(cardController, amountToRemove, removeTokenResponse, removeTokenGameAction, storedResults, insufficientTokenMessage)));
+			list.Add(new Function(cardController.DecisionMaker, $"Remove 3 tokens from {GetWrathPool(cardController).Name}", SelectionType.RemoveTokens, () => RemoveWrathTokenResponse(cardController, amountToRemove, removeTokenResponse, removeTokenGameAction, storedResults, insufficientTokenMessage)));
 			selectFunction = new SelectFunctionDecision(cardController.GameController, cardController.DecisionMaker, list, false, null, null, null, cardController.GetCardSource());
 
 			coroutine = cardController.GameController.SelectAndPerformFunction(selectFunction);

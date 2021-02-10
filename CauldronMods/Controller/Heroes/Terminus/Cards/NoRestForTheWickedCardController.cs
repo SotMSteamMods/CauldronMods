@@ -47,7 +47,7 @@ namespace Cauldron.Terminus
                 selectedLocation = storedResults.FirstOrDefault().SelectedLocation.Location;
                 coroutine = base.GameController.SelectCardFromLocationAndMoveIt(DecisionMaker,
                     selectedLocation,
-                    new LinqCardCriteria((lcc) => lcc.IsTarget),
+                    new LinqCardCriteria((lcc) => lcc.IsTarget, "target"),
                     new List<MoveCardDestination> { new MoveCardDestination(selectedLocation.OwnerTurnTaker.PlayArea) },
                     storedResults: selectCardDecisions,
                     cardSource: base.GetCardSource());
@@ -120,7 +120,7 @@ namespace Cauldron.Terminus
             IEnumerator coroutine;
 
             // That target deals up to 2 other targets 5 infernal damage each.
-            coroutine = base.DealDamage(sourceCard, (card) => targetCard == card, 5, DamageType.Infernal);
+            coroutine = base.DealDamage(sourceCard, targetCard, 5, DamageType.Infernal);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
