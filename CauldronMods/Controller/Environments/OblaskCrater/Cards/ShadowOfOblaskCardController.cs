@@ -16,56 +16,14 @@ namespace Cauldron.OblaskCrater
          */
         public ShadowOfOblaskCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.AllowFastCoroutinesDuringPretend = false;
+            SpecialStringMaker.ShowHeroTargetWithLowestHP(ranking: 2);
+            SpecialStringMaker.ShowIfElseSpecialString(() => base.GameController.GetAllCards().Any(c => c != base.Card && c.IsInPlay && IsPredator(c)), () => "There is another predator card in play.", () => "There are no other predator cards in play.").Condition = () => Card.IsInPlayAndHasGameText;
         }
 
         public override void AddTriggers()
         {
-            base.AddEndOfTurnTrigger((tt)=>tt.IsEnvironment, PhaseChangeActionResponse, TriggerType.DealDamage);
-            base.AddTrigger<DealDamageAction>((dda) => dda.DamageSource.Card == base.Card, DealDamageActionResponse, TriggerType.ModifyDamageAmount, TriggerTiming.Before, isConditional: true, isActionOptional: true);
-        }
-
-        private IEnumerator PhaseChangeActionResponse(PhaseChangeAction phaseChangeAction)
-        {
-            IEnumerator coroutine;
-            IEnumerable<Card> targetsWith2ndLowestHP;
-
-            targetsWith2ndLowestHP = base.GameController.FindAllTargetsWithLowestHitPoints(2, (card) => card.IsHero, base.GetCardSource());
-
-            if (targetsWith2ndLowestHP != null && targetsWith2ndLowestHP.Count() > 0)
-            {
-                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.Card), base.H, DamageType.Energy, 1, false, 1, additionalCriteria: (card) => targetsWith2ndLowestHP.Contains(card), cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
-        }
-
-        private IEnumerator DealDamageActionResponse(DealDamageAction dealDamageAction)
-        {
-            IEnumerator coroutine;
-
-            if (base.GameController.GetAllCards().Count(card => card != base.Card && card.IsInPlay && card.DoKeywordsContain("predator")) == 0)
-            {
-                coroutine = base.GameController.IncreaseDamage(dealDamageAction, 1, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
+            base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.LowestHP, base.H, DamageType.Energy, highestLowestRanking: 2);
+            base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(Card) && !base.GameController.GetAllCards().Any(c => c != base.Card && c.IsInPlay && IsPredator(c)), 1);
         }
     }
 }

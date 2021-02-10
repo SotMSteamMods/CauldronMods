@@ -683,12 +683,13 @@ namespace CauldronTests
             shadowOfOblask = base.PutIntoPlay("ShadowOfOblask");
 
             base.GameController.SkipToTurnTakerTurn(base.env);
-
+            PrintSpecialStringsForCard(shadowOfOblask);
             QuickHPStorage(baron.CharacterCard, shadowOfOblask, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             GoToEndOfTurn(base.env);
             QuickHPCheck(0, 0, 0, -4, 0);
 
-            swarmOfFangs = base.PutIntoPlay("SwarmOfFangs"); 
+            swarmOfFangs = base.PutIntoPlay("SwarmOfFangs");
+            PrintSpecialStringsForCard(shadowOfOblask);
             base.GameController.SkipToTurnTakerTurn(base.env);
             QuickHPStorage(baron.CharacterCard, shadowOfOblask, swarmOfFangs, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             GoToEndOfTurn(base.env);
