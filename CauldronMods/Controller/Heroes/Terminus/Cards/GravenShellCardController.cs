@@ -17,6 +17,7 @@ namespace Cauldron.Terminus
          */
         public GravenShellCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.OutOfGame, new LinqCardCriteria((Card c) => GameController.DoesCardContainKeyword(c, "memento"), "memento"));
             base.SpecialStringMaker.ShowTokenPool(base.WrathPool);
         }
 
