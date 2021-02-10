@@ -169,6 +169,39 @@ namespace CauldronTests
             base.GainHP(baron, 2);
             QuickHPCheck(2, 0, 0, 0, 0, 0);
         }
+        [Test]
+        public void TestBoneChillingTouchExtraEffectsNotOnCharacter()
+        {
+            Card boneChillingTouch;
+            Card bladeBattalion;
+
+            StartTestGame();
+            GoToUsePowerPhase(terminus);
+            boneChillingTouch = PutIntoPlay("BoneChillingTouch");
+            bladeBattalion = PutIntoPlay("BladeBattalion");
+
+            SetHitPoints(baron, 20);
+            SetHitPoints(bladeBattalion, 2);
+            DecisionSelectCards = new Card[] { baron.CharacterCard };
+            DecisionsYesNo = new bool[] { true };
+
+            QuickHPStorage(baron.CharacterCard, bladeBattalion, terminus.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            base.UsePower(boneChillingTouch);
+            QuickHPCheck(-2, 0, 0, 0, 0, 0);
+
+            AssertNextToCard(boneChillingTouch, baron.CharacterCard);
+            base.DealDamage(bladeBattalion, terminus, 5, DamageType.Melee);
+            QuickHPCheck(0, 0, -5, 0, 0, 0);
+
+            base.GainHP(bladeBattalion, 2);
+            QuickHPCheck(0, 2, 0, 0, 0, 0);
+
+            base.DealDamage(baron, terminus, 5, DamageType.Melee);
+            QuickHPCheck(0, 0, -5, 0, 0, 0);
+
+            base.GainHP(baron, 2);
+            QuickHPCheck(2, 0, 0, 0, 0, 0);
+        }
 
         #endregion Test Bone Chilling Touch
 
