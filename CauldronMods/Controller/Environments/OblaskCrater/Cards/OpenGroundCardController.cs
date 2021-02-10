@@ -25,7 +25,12 @@ namespace Cauldron.OblaskCrater
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>((dda)=> !base.IsPropertyTrue(FirstTimeWouldBeDealtDamage) && dda.Target.IsHero && !dda.DamageSource.IsHero, DealDamageActionResponse, TriggerType.RedirectDamage, TriggerTiming.Before, requireActionSuccess: true, isActionOptional: true);
+            base.AddTrigger<DealDamageAction>((dda)=> !base.IsPropertyTrue(FirstTimeWouldBeDealtDamage) && dda.Target.IsHero && !dda.DamageSource.IsHero && dda.DamageSource.IsTarget, DealDamageActionResponse, new TriggerType[]
+                {
+                    TriggerType.IncreaseDamage,
+                    TriggerType.PlayCard,
+                    TriggerType.RedirectDamage
+                }, TriggerTiming.Before, requireActionSuccess: true, isActionOptional: true);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeWouldBeDealtDamage), TriggerType.Hidden);
         }
@@ -37,7 +42,7 @@ namespace Cauldron.OblaskCrater
             List<YesNoCardDecision> yesNoCardDecisions = new List<YesNoCardDecision>();
             List<PlayCardAction> playCardActions = new List<PlayCardAction>();
 
-            coroutine = base.GameController.MakeYesNoCardDecision(heroTurnTakerController, SelectionType.IncreaseDamage, base.Card, storedResults: yesNoCardDecisions, cardSource: base.GetCardSource());
+            coroutine = base.GameController.MakeYesNoCardDecision(heroTurnTakerController, SelectionType.PlayTopCardOfEnvironmentDeck, base.Card, action: dealDamageAction, storedResults: yesNoCardDecisions, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -85,9 +90,11 @@ namespace Cauldron.OblaskCrater
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
+
+                base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage);
+
             }
 
-            base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage);
             yield break;
         }
     }
