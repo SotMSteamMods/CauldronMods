@@ -1962,6 +1962,37 @@ namespace CauldronTests
             //At the start of that hero's turn, put 2 cards from their hand into play at random.
             GoToStartOfTurn(haka);
             AssertNumberOfCardsInHand(haka, 0);
+
+        }
+        [Test()]
+        public void TestPossessor_MidPlayDestruction()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Tempest", "Legacy", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            DrawCard(tempest);
+            GoToEndOfTurn(catacombs);
+
+            Card possessor = PlayCard("Possessor");
+            AssertNextToCard(possessor, tempest.CharacterCard);
+            MoveAllCardsFromHandToDeck(tempest);
+            Card flash1 = PutInHand("FlashFlood");
+            Card flash2 = PutInHand("FlashFlood");
+
+            Card torture = GetCard("TortureChamber");
+            Card ducts = GetCard("Aqueducts");
+
+            if (torture.IsInPlayAndHasGameText)
+            {
+                DecisionSelectCard = ducts;
+                DestroyCard(torture);
+            }
+
+            DecisionSelectCard = null;
+            DecisionSelectCards = new Card[] { ducts, torture, possessor };
+            GoToStartOfTurn(tempest);
+            AssertNumberOfCardsInTrash(tempest, 1);
+            AssertNumberOfCardsInHand(tempest, 1);
         }
 
         [Test()]

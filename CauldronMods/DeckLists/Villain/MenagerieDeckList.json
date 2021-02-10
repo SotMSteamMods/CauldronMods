@@ -77,7 +77,7 @@
             ],
             "body": [
                 "At the end of the villain turn, play the top card of the villain deck.",
-                "Whenever a target enters play, this card deals that target 2 melee damage and regains 6HP."
+                "Whenever a target enters play, this card deals that target 2 melee damage and regains 6 HP."
             ],
             "flavorQuotes": [
                 {
@@ -180,7 +180,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "TakIshmael",
-                    "text": "Attention! All personnel suit up and man your stations! Here comes the dinner bell."
+                    "text": "Attention! All personnel{BR}suit up and man your stations!{BR}Here comes the dinner bell."
                 }
             ],
             "flavorReference": "Tak Ishmael, Vault of Night #36"
@@ -204,7 +204,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Sky-Scraper",
-                    "text": "Every large pack of frosthounds is led by a frosthound that is large and leader of the pack."
+                    "text": "Every large pack of frosthounds is led by a Frosthound-that-is-large-and-leader-of-the-pack."
                 }
             ],
             "flavorReference": "Sky-Scraper, The Anvil #6",
@@ -326,7 +326,7 @@
                 "The first time a Specimen enters play each turn, play the top card of the villain deck.",
                 "At the end of the villain turn this card deals the hero target with the highest HP 2 projectile and 2 radiant damage."
             ],
-            "flavorText": "Blinding swarms of bioluminescent{BR}faerigaunts attacked anything that{BR}moved. The light often attarcted other{BR}carnivores.",
+            "flavorText": "Blinding swarms of bioluminescent{BR}faerigaunts attacked anything that{BR}moved. The light often attracted other{BR}carnivores.",
             "hitpoints": 3
         },
         {

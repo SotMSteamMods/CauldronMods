@@ -19,7 +19,7 @@ namespace Cauldron.Necro
             //When this card is destroyed, one player may play a card.
             base.AddWhenDestroyedTrigger(OnDestroyResponse, new TriggerType[] { TriggerType.PlayCard });
         }
-        
+
         private IEnumerator OnDestroyResponse(DestroyCardAction dca)
         {
             //one player may play a card.

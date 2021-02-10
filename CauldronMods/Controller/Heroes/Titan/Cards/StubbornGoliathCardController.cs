@@ -30,9 +30,8 @@ namespace Cauldron.Titan
             int targetNumeral = base.GetPowerNumeral(0, 2);
             int damageNumeral = base.GetPowerNumeral(1, 2);
 
-            List<SelectCardDecision> storedSelect = new List<SelectCardDecision>();
             //{Titan} deals up to 2 non-hero targets 2 infernal damage each.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Infernal, targetNumeral, false, 0, storedResultsDecisions: storedSelect, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Infernal, targetNumeral, false, 0, additionalCriteria: (Card c) => !c.IsHero, addStatusEffect: AddRedirectToSelfEffect, selectTargetsEvenIfCannotDealDamage: true, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -41,51 +40,41 @@ namespace Cauldron.Titan
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+            yield break;
+        }
 
-            //Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}.
-            if (storedSelect.FirstOrDefault() != null)
+        private IEnumerator AddRedirectToSelfEffect(DealDamageAction dd)
+        {
+            if (dd.Target != null)
             {
-                List<StatusEffect> redirects = new List<StatusEffect> { };
+                var onDealDamageStatusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements,
+                                                                            nameof(MaybeRedirectDamageResponse),
+                                                                            $"When {dd.Target.Title} would deal damage, {DecisionMaker.Name} may redirect it to themselves.",
+                                                                            new TriggerType[] { TriggerType.RedirectDamage, TriggerType.WouldBeDealtDamage },
+                                                                            this.TurnTaker,
+                                                                            this.Card);
 
-                foreach (SelectCardDecision decision in storedSelect)
+                //Until the start of your next turn...
+                onDealDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+                //...when those targets would deal damage...
+                onDealDamageStatusEffect.SourceCriteria.IsSpecificCard = dd.Target;
+                onDealDamageStatusEffect.DamageAmountCriteria.GreaterThan = 0;
+
+                //prevent it from asking to redirect from Titan to Titan
+                onDealDamageStatusEffect.TargetCriteria.IsNotSpecificCard = this.CharacterCard;
+
+                onDealDamageStatusEffect.UntilTargetLeavesPlay(dd.Target);
+                onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.Before;
+                onDealDamageStatusEffect.CanEffectStack = true;
+
+                IEnumerator coroutine = base.AddStatusEffect(onDealDamageStatusEffect);
+                if (base.UseUnityCoroutines)
                 {
-                    if (decision.SelectedCard != null && decision.SelectedCard.IsInPlayAndHasGameText)
-                    {
-                        OnDealDamageStatusEffect onDealDamageStatusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements,
-                                                                                                nameof(MaybeRedirectDamageResponse),
-                                                                                                $"When {decision.SelectedCard.Title} would deal damage, {DecisionMaker.Name} may redirect it to themselves.",
-                                                                                                new TriggerType[] { TriggerType.RedirectDamage, TriggerType.WouldBeDealtDamage },
-                                                                                                this.TurnTaker,
-                                                                                                this.Card);
-
-                        //Until the start of your next turn...
-                        onDealDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                        //...when those targets would deal damage...
-                        onDealDamageStatusEffect.SourceCriteria.IsSpecificCard = decision.SelectedCard;
-                        onDealDamageStatusEffect.DamageAmountCriteria.GreaterThan = 0;
-
-                        //prevent it from asking to redirect from Titan to Titan
-                        onDealDamageStatusEffect.TargetCriteria.IsNotSpecificCard = this.CharacterCard;
-
-                        onDealDamageStatusEffect.UntilTargetLeavesPlay(decision.SelectedCard);
-                        onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.Before;
-                        onDealDamageStatusEffect.CanEffectStack = true;
-
-                        redirects.Add(onDealDamageStatusEffect);
-                    }
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
-
-                foreach (StatusEffect effect in redirects)
+                else
                 {
-                    coroutine = base.AddStatusEffect(effect);
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
             yield break;
@@ -95,7 +84,7 @@ namespace Cauldron.Titan
         {
             //...you may redirect that damage to Titan.
             var storedYesNo = new List<YesNoCardDecision> { };
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.RedirectDamage, this.Card, storedResults: storedYesNo, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.RedirectDamage, this.Card, action: dd, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -43,15 +43,6 @@ namespace Cauldron.TheMistressOfFate
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.BulkMoveCards(this, TurnTaker.GetAllCards(realCardsOnly: false).Where((Card c) => !c.IsRealCard), TurnTaker.OffToTheSide);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
 
             //Shuffle the day cards face down, and place them in a row to the right of the Timeline."
             var days = TurnTaker.GetAllCards().Where((Card c) => IsDay(c)).ToList();
@@ -69,24 +60,6 @@ namespace Cauldron.TheMistressOfFate
                     GameController.ExhaustCoroutine(coroutine);
                 }
                 coroutine = GameController.MoveCard(this, day, TurnTaker.PlayArea, playCardIfMovingToPlayArea: false);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            //set up incapacitated hero storage
-            foreach(HeroTurnTaker hero in GameController.AllHeroes)
-            {
-                var hand = TurnTaker.GetCardsAtLocation(TurnTaker.OffToTheSide).Where((Card c) => c.Identifier == "HandStorage").FirstOrDefault();
-                var deck = TurnTaker.GetCardsAtLocation(TurnTaker.OffToTheSide).Where((Card c) => c.Identifier == "DeckStorage").FirstOrDefault();
-                var trash = TurnTaker.GetCardsAtLocation(TurnTaker.OffToTheSide).Where((Card c) => c.Identifier == "TrashStorage").FirstOrDefault();
-
-                coroutine = GameController.BulkMoveCards(this, new Card[] { hand, deck, trash }, hero.OffToTheSide, responsibleTurnTaker: TurnTaker, cardSource: CharacterCardController.GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

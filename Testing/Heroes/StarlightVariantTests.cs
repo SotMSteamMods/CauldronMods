@@ -891,7 +891,7 @@ namespace CauldronTests
 
             GoToUsePowerPhase(starlight);
 
-            DecisionSelectCards = new[] { c };
+            DecisionSelectCards = new[] { c, pillar1 };
             DecisionSelectFunction = 1;
 
             QuickHandStorage(starlight);

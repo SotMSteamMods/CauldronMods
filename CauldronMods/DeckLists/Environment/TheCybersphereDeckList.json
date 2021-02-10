@@ -49,7 +49,7 @@
                 "DealDamageLightning"
             ],
             "body": "At the end of the environment turn, this card deals the non-environment target with the second highest HP 3 melee damage and 1 lightning damage.",
-            "flavorText": "'That simulation is linked to defense{BR}grids around the globe,' said Bunker.{BR}'We’ve got to get a team in there and{BR}stop Gray before it’s too late.'",
+            "flavorText": "''That simulation is linked to defense{BR}grids around the globe,'' said Bunker.{BR}''We’ve got to get a team in there and{BR}stop Gray before it’s too late.''",
             "hitpoints": 7
         },
         {
@@ -98,7 +98,7 @@
                 "DealDamageMelee"
             ],
             "body": "At the start of the environment turn, this card deals the hero target with the lowest HP 1 melee damage, the hero target with the second highest HP 3 melee damage, and the hero target with the highest HP 5 melee damage.",
-            "flavorText": "There’s two kinds of viral constructs{BR}you can expect to run into; the ones you{BR}don’t want to mess with, and the ones{BR}you really don’t want to mess with.",
+            "flavorText": "''There’s two kinds of viral constructs{BR}you can expect to run into; the ones you{BR}don’t want to mess with, and the ones{BR}you really don’t want to mess with.''",
             "hitpoints": 8
         },
         {

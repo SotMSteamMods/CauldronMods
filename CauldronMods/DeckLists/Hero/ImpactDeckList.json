@@ -133,7 +133,7 @@
                     "text": "You're taking this{BR}all rather personally."
                 }
             ],
-            "flavorReference": "Phase, Pieces of the Sky{BR}Limited Series"
+            "flavorReference": "Phase, Pieces of the Sky Limited Series"
         },
         {
             "identifier": "GravitationalLensing",
@@ -252,7 +252,7 @@
                 "DealDamageSonic"
             ],
             "body": [
-                "When this card enters play, {Impact} regains 1HP.",
+                "When this card enters play, {Impact} regains 1 HP.",
                 "The first time {Impact} would be dealt damage each environment turn, prevent that damage."
             ],
             "flavorQuotes": [
@@ -287,7 +287,7 @@
                     "text": "You can put your hands in the air or I{BR}can put them in the ground."
                 }
             ],
-            "flavorReference": "Impact, Abstract Tales #32"
+            "flavorReference": "Impact, The Cricket #36"
         },
         {
             "identifier": "Meditate",

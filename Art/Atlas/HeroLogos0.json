@@ -612,7 +612,7 @@
 	"sourceSize": {"w":330,"h":260},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"SplitDriftCharacter.png":
+"DualDriftCharacter.png":
 {
 	"frame": {"x":2664,"y":1315,"w":330,"h":260},
 	"rotated": false,

@@ -37,7 +37,7 @@
                 "When this card enters play, the villain target with the highest HP regains {H} HP and deals the 2 non-villain targets with the highest HP 3 radiant damage each.",
                 "Then, destroy this card."
             ],
-            "flavorText": "She handed Gyrosaur a glowing green crystal. 'Aethium seeding brought life to the universe. But their energies can be used more nefariously as well.'"
+            "flavorText": "She handed Gyrosaur a glowing green{BR}crystal. 'Aethium seeding brought life to{BR}the universe. But their energies can be{BR}used more nefariously as well.'"
         },
         {
             "identifier": "ArtemisVector",
@@ -150,7 +150,7 @@
                 "DealDamageMelee",
                 "GainHP"
             ],
-            "body": "At the end of the environment turn, select the 2 non-environment targets with the lowest HP. This card deals 1 of those targets 2 melee damage, and the other target regains 2HP.",
+            "body": "At the end of the environment turn, select the 2 non-environment targets with the lowest HP. This card deals 1 of those targets 2 melee damage, and the other target regains 2 HP.",
             "flavorText": "The Arborean let out a low, sonorous{BR}“Noooome”, as she walked past. “Even{BR}Nightlore translators have some{BR}trouble with her,” explained Dr. McLear.",
             "hitpoints": 8
         },
@@ -193,7 +193,7 @@
                 "At the end of the environment turn, this card deals the villain target with the lowest HP 3 toxic damage.",
                 "Then, if Aethium Cannon is in play, put the top card of 1 hero deck beneath it."
             ],
-            "flavorText": "“They said something about being under attack,” said the Nightlore mechanic absent-mindedly. “I wasn’t really paying attention. There are things to fix.”",
+            "flavorText": "“They said something about being under{BR}attack,” said the Nightlore mechanic{BR}absent-mindedly. “I wasn’t really paying{BR}attention. There are things to fix.”",
             "hitpoints": 6
         },
         {
