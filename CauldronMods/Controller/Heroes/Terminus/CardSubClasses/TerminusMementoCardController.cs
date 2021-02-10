@@ -26,15 +26,15 @@ namespace Cauldron.Terminus
         public override void AddTriggers()
         {
             // If another Memento would enter play, instead remove it from the game and ...
-            base.AddTrigger<PlayCardAction>((pca) => pca.CardToPlay.DoKeywordsContain("memento"), PlayCardActionResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
+            base.AddTrigger<CardEntersPlayAction>((cep) => cep.CardEnteringPlay != this.Card && cep.CardEnteringPlay.DoKeywordsContain("memento"), MementoEntersPlayResponse, TriggerType.CancelAction, TriggerTiming.Before);
             base.AddTriggers();
         }
 
-        private IEnumerator PlayCardActionResponse(PlayCardAction playCardAction)
+        private IEnumerator MementoEntersPlayResponse(CardEntersPlayAction cardEntersPlay)
         {
             IEnumerator coroutine;
 
-            coroutine = CancelAction(playCardAction);
+            coroutine = CancelAction(cardEntersPlay);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -44,7 +44,7 @@ namespace Cauldron.Terminus
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = base.GameController.MoveCard(base.TurnTakerController, playCardAction.CardToPlay, base.TurnTaker.OutOfGame, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, null, null, null, evenIfIndestructible: false, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, GetCardSource());
+            coroutine = base.GameController.MoveCard(base.TurnTakerController, cardEntersPlay.CardEnteringPlay, base.TurnTaker.OutOfGame, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, null, null, null, evenIfIndestructible: true, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -575,6 +575,7 @@ namespace CauldronTests
             bladeBattalion = PutIntoPlay("BladeBattalion");
             gravenShell = PutIntoPlay("GravenShell");
             SetHitPoints(terminus, 20);
+            AssertTokensInWrathPool(0);
 
             QuickHPStorage(baron.CharacterCard, bladeBattalion, terminus.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
             DealDamage(terminus, baron, 1, DamageType.Melee);
@@ -591,9 +592,23 @@ namespace CauldronTests
             DealDamage(terminus, bladeBattalion, 5, DamageType.Melee); //When destroyed, the card resets it's hit points for some reason
             QuickHPCheck(0, 0, 1, 0, 0, 0);
 
+            AssertTokensInWrathPool(2);
             AssertIsInPlay(gravenShell);
             AssertOutOfGame(railwaySpike);
             AssertOutOfGame(stainedBadge);
+        }
+
+        [Test]
+        public void TestGravenShellRemovesMementosFromNonCardPlay()
+        {
+            StartTestGame();
+
+            Card shell = PlayCard("GravenShell");
+            Card badge = GetCard("StainedBadge");
+
+            GameController.ExhaustCoroutine(GameController.MoveCard(terminus, badge, terminus.TurnTaker.PlayArea, isPutIntoPlay: true));
+            AssertIsInPlay(shell);
+            AssertOutOfGame(badge);
         }
 
         #endregion
