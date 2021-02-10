@@ -51,7 +51,7 @@ namespace Cauldron.Terminus
             {
                 increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
                 increaseDamageStatusEffect.SourceCriteria.IsSpecificCard = dealDamageAction.Target;
-                increaseDamageStatusEffect.UntilEndOfNextTurn(base.FindEnvironment().TurnTaker);
+                increaseDamageStatusEffect.UntilStartOfNextTurn(base.FindEnvironment().TurnTaker);
                 coroutine = base.AddStatusEffect(increaseDamageStatusEffect);
             }
             else

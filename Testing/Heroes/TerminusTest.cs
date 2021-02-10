@@ -915,7 +915,7 @@ namespace CauldronTests
             QuickHPCheck(-5, 0, -4, 0, 0);
             QuickTokenPoolCheck(-3);
 
-            base.GoToEndOfTurn(base.env);
+            base.GoToStartOfTurn(base.env);
             DealDamage(legacy, baron, 3, DamageType.Melee);
             QuickHPCheck(-4, 0, 0, 0, 0);
             QuickTokenPoolCheck(0);
