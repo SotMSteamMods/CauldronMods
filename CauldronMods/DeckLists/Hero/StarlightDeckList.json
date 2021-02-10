@@ -456,6 +456,7 @@
         },
         {
              "identifier": "StarlightOfCryosFourCharacter",
+             "sharedIdentifier": "StarlightOfCryosFourCharacter",
              "promoIdentifier": "StarlightOfCryosFourCharacter",
              "count": 1,
              "title": "Starlight",
@@ -483,6 +484,7 @@
          },
          {
              "identifier": "StarlightOfAsheronCharacter",
+             "sharedIdentifier": "StarlightOfAsheronCharacter",
              "promoIdentifier": "StarlightOfAsheronCharacter",
              "count": 1,
              "title": "Starlight",
@@ -510,6 +512,7 @@
          },
          {
             "identifier": "StarlightOfTerraCharacter",
+            "sharedIdentifier": "StarlightOfTerraCharacter",
             "promoIdentifier": "StarlightOfTerraCharacter",
             "count": 1,
             "title": "Starlight",
