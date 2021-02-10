@@ -405,6 +405,7 @@ namespace CauldronTests
             DecisionSelectTurnTakers = new TurnTaker[] { baron.TurnTaker, baron.TurnTaker, base.env.TurnTaker, legacy.TurnTaker };
             DecisionSelectCards = new Card[] { bladeBattalion, plummetingMonorail, motivationalCharge };
 
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(baron.TurnTaker.Trash), new LocationChoice(baron.TurnTaker.Trash), new LocationChoice(base.env.TurnTaker.Trash), new LocationChoice(legacy.TurnTaker.Trash) };
             GoToEndOfTurn(terminus);
             AssertOnTopOfDeck(bladeBattalion);
 
@@ -419,6 +420,67 @@ namespace CauldronTests
             base.GameController.SkipToTurnTakerTurn(terminus);
             GoToEndOfTurn(terminus);
             AssertOnTopOfDeck(motivationalCharge);
+        }
+
+        [Test]
+        public void TestFlashBeforeYourEyesSelectEmptyTrash()
+        {
+            StartTestGame();
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(terminus.TurnTaker.Trash), new LocationChoice(baron.TurnTaker.Trash) };
+            Card flash = PutIntoPlay("FlashBeforeYourEyes");
+            AssertNumberOfCardsAtLocation(baron.TurnTaker.Trash, 1);
+            AssertNumberOfCardsAtLocation(terminus.TurnTaker.Trash, 0);
+            GoToEndOfTurn(terminus);
+
+            var allowedTrashes = new LocationChoice[] { new LocationChoice(baron.TurnTaker.Trash), new LocationChoice(legacy.TurnTaker.Trash), new LocationChoice(scholar.TurnTaker.Trash), new LocationChoice(base.env.TurnTaker.Trash) };
+            var forbiddenTrashes = new LocationChoice[] { new LocationChoice(terminus.TurnTaker.Trash) };
+            AssertNextDecisionChoices(allowedTrashes, forbiddenTrashes);
+
+            GoToEndOfTurn(terminus);
+            AssertNumberOfCardsAtLocation(baron.TurnTaker.Trash, 0);
+
+        }
+        [Test]
+        public void TestFlashBeforeYourEyesResetAfterLeavePlay()
+        {
+            StartTestGame();
+
+            Card mdp = GetCardFromTrash(baron, "MobileDefensePlatform");
+            Card batt = PutInTrash("BladeBattalion");
+
+            DecisionSelectLocation = new LocationChoice(baron.TurnTaker.Trash);
+
+            Card flash = PutIntoPlay("FlashBeforeYourEyes");
+            GoToEndOfTurn(terminus);
+            AssertNumberOfCardsAtLocation(baron.TurnTaker.Trash, 1);
+            GoToStartOfTurn(terminus);
+            DestroyCard(flash);
+            PlayCard(flash);
+            GoToEndOfTurn(terminus);
+            AssertNumberOfCardsAtLocation(baron.TurnTaker.Trash, 0);
+        }
+        [Test]
+        public void TestFlashBeforeYourEyesNoTrashesLeft()
+        {
+            StartTestGame();
+
+            PutInTrash("EtherealArmory", "TheLegacyRing", "AmmoDrop", "FleshToIron", "TrafficPileup");
+            Card flash = PlayCard("FlashBeforeYourEyes");
+
+            for(int i = 0; i < 6; i++)
+            {
+                GoToEndOfTurn(terminus);
+            }
+
+            AssertNumberOfCardsAtLocation(baron.TurnTaker.Trash, 0);
+            AssertNumberOfCardsAtLocation(terminus.TurnTaker.Trash, 0);
+            AssertNumberOfCardsAtLocation(legacy.TurnTaker.Trash, 0);
+            AssertNumberOfCardsAtLocation(bunker.TurnTaker.Trash, 0);
+            AssertNumberOfCardsAtLocation(scholar.TurnTaker.Trash, 0);
+            AssertNumberOfCardsAtLocation(base.env.TurnTaker.Trash, 0);
+
+            GoToEndOfTurn(terminus);
         }
 
         #endregion Test Flash Before Your Eyes

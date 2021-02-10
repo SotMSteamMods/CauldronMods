@@ -18,7 +18,7 @@ namespace Cauldron.Terminus
 
         public FlashBeforeYourEyesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowNumberOfCardsAtLocations(() => base.GameController.AllTurnTakers.Where(tt => CanSelectTrash(tt) && ((tt.IsEnvironment && tt.IsInGame == true) || (tt.IsHero && !tt.IsIncapacitatedOrOutOfGame) || (tt.IsVillain && !tt.IsIncapacitatedOrOutOfGame))).Select(tt=>tt.Trash).ToList());
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocations(() => AllVisibleTrashes().Where(lc => CanSelectTrash(lc)).Select(lc => lc.Location).ToList());
         }
 
         public override void AddTriggers()
@@ -30,38 +30,50 @@ namespace Cauldron.Terminus
             base.AddEndOfTurnTrigger((tt) => tt == base.TurnTaker, PhaseChangeActionResponse, TriggerType.PutOnDeck);
             AddAfterLeavesPlayAction(RemoveAllCardProperties, TriggerType.Hidden);
         }
-
         private IEnumerator PhaseChangeActionResponse(PhaseChangeAction phaseChangeAction)
         {
             IEnumerator coroutine;
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
             LinqCardCriteria criteria = new LinqCardCriteria((card) => card.IsInTrash, "a card in trash", useCardsSuffix: false);
-            Func<TurnTaker, bool> func = delegate (TurnTaker tt)
+            Func<LocationChoice, bool> notChosen = delegate (LocationChoice lc)
             {
-                bool flag = CanSelectTrash(tt);
-                if (flag)
-                {
-                    Location location = tt.Trash;
-
-                    flag &= (tt.IsEnvironment && tt.IsInGame == true) || (tt.IsHero && !tt.IsIncapacitatedOrOutOfGame) || (tt.IsVillain && !tt.IsIncapacitatedOrOutOfGame);
-                }
-                return flag;
+                return CanSelectTrash(lc);
             };
-            List<SelectTurnTakerDecision> selectTurnTakerDecisions = new List<SelectTurnTakerDecision>();
 
-            coroutine = base.GameController.SelectTurnTakersAndDoAction(
-                null,
-                new LinqTurnTakerCriteria(func, "trash with cards to move"),
-                SelectionType.MoveCardOnDeck,
-                (tt) => base.GameController.SelectCardsFromLocationAndMoveThem(base.HeroTurnTakerController, tt.Trash, 1, 1, criteria, new List<MoveCardDestination>
-                    {
-                        new MoveCardDestination(tt.Deck)
-                    }),
-                1,
-                false,
-                1,
-                selectTurnTakerDecisions,
-                cardSource: base.GetCardSource());
+            LocationChoice? forcedTrash = null;
+            var selectTrashDecision = new SelectLocationDecision(GameController, DecisionMaker, AllVisibleTrashes().Where(notChosen), SelectionType.MoveCardOnDeck, false, cardSource: GetCardSource());
+            if(selectTrashDecision.NumberOfChoices == 0)
+            {
+                coroutine = GameController.SendMessageAction($"No trashes can be chosen for {Card.Title}.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                yield break;
+            }
+
+            if (selectTrashDecision.NumberOfChoices == 1)
+            {
+                forcedTrash = selectTrashDecision.Choices.FirstOrDefault();
+                coroutine = GameController.SendMessageAction($"The only trash that {Card.Title} can select is {forcedTrash?.Location.GetFriendlyName()}.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = MoveCardFromTrashToDeck(forcedTrash?.Location);
+            }
+            else
+            {
+                coroutine = GameController.SelectLocationAndDoAction(selectTrashDecision, MoveCardFromTrashToDeck);
+            }
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -71,32 +83,66 @@ namespace Cauldron.Terminus
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (selectTurnTakerDecisions != null && selectTurnTakerDecisions.Count() > 0)
+            if(forcedTrash != null)
             {
-                AddCardProperty(selectTurnTakerDecisions.FirstOrDefault().SelectedTurnTaker);
+                AddCardProperty(forcedTrash.Value);
             }
-
+            else if(selectTrashDecision.Completed && selectTrashDecision.Index != null)
+            {
+                AddCardProperty(selectTrashDecision.SelectedLocation);
+            }
             yield break;
         }
+        private IEnumerator MoveCardFromTrashToDeck(Location trash)
+        {
+            var destination = trash.OwnerTurnTaker.Deck;
+            if(trash.IsSubTrash)
+            {
+                var foundDeck = trash.OwnerTurnTaker.SubDecks.Where(deck => deck.Identifier == trash.Identifier).FirstOrDefault();
+                if(foundDeck != null)
+                {
+                    destination = foundDeck;
+                }
+            }
 
-        private bool CanSelectTrash(TurnTaker turnTaker)
+            return GameController.SelectCardFromLocationAndMoveIt(DecisionMaker, trash, new LinqCardCriteria(x => true), new List<MoveCardDestination> { new MoveCardDestination(destination) }, showOutput: true, responsibleTurnTaker: TurnTaker, cardSource: GetCardSource());
+        }
+        private List<LocationChoice> AllVisibleTrashes()
+        {
+            var trashes = new List<LocationChoice>();
+            foreach(TurnTaker tt in Game.TurnTakers)
+            {
+                if(GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()))
+                {
+                    if(tt.Trash != null)
+                    {
+                        trashes.Add(new LocationChoice(tt.Trash));
+                    }
+                    if(tt.SubTrashes.Any())
+                    {
+                        trashes.AddRange(tt.SubTrashes.Where(l => l.IsRealTrash).Select((Location l) => new LocationChoice(l)));
+                    }
+                }
+            }
+            return trashes;
+        }
+        private bool CanSelectTrash(LocationChoice lc)
         {
             IEnumerable<string> trashPropertyKeys = base.Game.Journal.GetCardPropertiesStringList(base.Card, TrashPropertyListKey);
             bool canSelect = true;
-            string deckKey = $"{turnTaker.DeckDefinition.Name}:{turnTaker.DeckDefinition.Kind}:{turnTaker.DeckDefinition.ExpansionIdentifier}";
+            string trashKey = $"{lc.Location.GetFriendlyName()}:{lc.Location.OwnerTurnTaker.DeckDefinition.Kind}:{lc.Location.OwnerTurnTaker.DeckDefinition.ExpansionIdentifier}";
 
-            if (trashPropertyKeys != null && trashPropertyKeys.Count() > 0 &&  trashPropertyKeys.Contains(deckKey))
+            if (trashPropertyKeys != null && trashPropertyKeys.Count() > 0 && trashPropertyKeys.Contains(trashKey))
             {
                 canSelect = false;
             }
 
             return canSelect;
         }
-
-        private void AddCardProperty(TurnTaker turnTaker)
+        private void AddCardProperty(LocationChoice lc)
         {
             List<string> trashPropertyKeys = new List<string>();
-            string deckKey = BuildDeckKey(turnTaker);
+            string deckKey = BuildDeckKey(lc);
 
             if (base.Game.Journal.GetCardPropertiesStringList(base.Card, TrashPropertyListKey) != null)
             {
@@ -112,19 +158,16 @@ namespace Cauldron.Terminus
 
         private IEnumerator RemoveAllCardProperties(GameAction gameAction)
         {
-            IEnumerable<string> trashPropertyKeys = base.Game.Journal.GetCardPropertiesStringList(base.Card, TrashPropertyListKey);
-
-            foreach (string key in trashPropertyKeys)
+            if(IsRealAction())
             {
-                base.Game.Journal.RemoveCardProperties(base.Card, key);
+                Game.Journal.RecordCardProperties(base.Card, TrashPropertyListKey, new List<string> { });
             }
-
+            yield return null;
             yield break;
         }
-
-        private string BuildDeckKey(TurnTaker turnTaker)
+        private string BuildDeckKey(LocationChoice lc)
         {
-            return $"{turnTaker.DeckDefinition.Name}:{turnTaker.DeckDefinition.Kind}:{turnTaker.DeckDefinition.ExpansionIdentifier}";
+            return $"{lc.Location.GetFriendlyName()}:{lc.Location.OwnerTurnTaker.DeckDefinition.Kind}:{lc.Location.OwnerTurnTaker.DeckDefinition.ExpansionIdentifier}";
         }
     }
 }
