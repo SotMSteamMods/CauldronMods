@@ -624,9 +624,11 @@ namespace CauldronTests
             //Danger
             PutOnDeck(AclastyphWhoPeers);
 
+            QuickHPStorage(legacy, bunker, haka);
             //{MythosClue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.
             GoToEndOfTurn(mythos);
             Assert.IsTrue(FindCardInPlay(DangerousInvestigation).FindTokenPool(DangerousInvestigation + "Pool").CurrentValue == 0);
+            QuickHPCheck(-3, -3, -3);
         }
 
         [Test()]
@@ -639,11 +641,13 @@ namespace CauldronTests
             Card aca = PutOnDeck(PallidAcademic);
 
             DecisionsYesNo = new bool[] { false, true };
-
+            QuickHPStorage(legacy, bunker, haka);
             //{MythosClue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.
             GoToEndOfTurn(mythos);
             Assert.IsTrue(FindCardInPlay(DangerousInvestigation).FindTokenPool(DangerousInvestigation + "Pool").CurrentValue == 1);
             AssertIsInPlay(aca);
+            // 0 plays from Mythos, 1 from Investigation, should hit (3-1) = 2 heroes
+            QuickHPCheck(-3, 0, -3);
         }
 
         [Test()]
