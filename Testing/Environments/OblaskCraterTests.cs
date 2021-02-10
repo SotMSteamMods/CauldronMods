@@ -718,6 +718,7 @@ namespace CauldronTests
             base.DestroyNonCharacterVillainCards();
 
             swarmOfFangs = base.PutIntoPlay("SwarmOfFangs");
+            PrintSpecialStringsForCard(swarmOfFangs);
             base.GameController.SkipToTurnTakerTurn(base.env);
             QuickHPStorage(baron.CharacterCard, swarmOfFangs, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
             GoToEndOfTurn(base.env);

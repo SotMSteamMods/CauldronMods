@@ -17,6 +17,7 @@ namespace Cauldron.OblaskCrater
          */
         public SwarmOfFangsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowLowestHP(cardCriteria: new LinqCardCriteria(c => c != Card, "target othan the itself", useCardsSuffix: false));
         }
 
         public override void AddTriggers()
@@ -46,6 +47,16 @@ namespace Cauldron.OblaskCrater
 
                 if (DidDealDamage(dealDamageActions) && dealDamageActions.Count((dda)=>dda.DidDestroyTarget) > 0)
                 {
+                    coroutine = GameController.SendMessageAction($"{Card.Title} destroyed a target, so it repeats its effect!", Priority.Medium, GetCardSource(), showCardSource: true);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
                     coroutine = PhaseChangeActionResponse(phaseChangeAction);
                     if (base.UseUnityCoroutines)
                     {
