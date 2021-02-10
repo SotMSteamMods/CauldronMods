@@ -23,6 +23,7 @@ namespace Cauldron.OblaskCrater
          */
         public UnknownHerdsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsPredator(c), "predator"));
         }
 
         public override void AddTriggers()
@@ -34,13 +35,13 @@ namespace Cauldron.OblaskCrater
         private IEnumerator PhaseChangeActionResponse(PhaseChangeAction phaseChangeAction)
         {
             IEnumerator coroutine;
-            int totalPredators = base.GameController.GetAllCards().Count(card => card != base.Card && card.IsInPlay && card.DoKeywordsContain("predator"));
+            int totalPredators = base.GameController.GetAllCards().Count(card => card != base.Card && card.IsInPlay && IsPredator(card));
             List<UsePowerDecision> storedResultsAction = new List<UsePowerDecision>();
             List<SelectCardDecision> selectCardDecisions = new List<SelectCardDecision>();
 
             if (totalPredators == 0 || totalPredators == 1)
             {
-                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.HeroCharacterCard, new LinqCardCriteria((lcc) => lcc.IsHeroCharacterCard && !lcc.IsIncapacitatedOrOutOfGame), selectCardDecisions, true, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.UsePower, new LinqCardCriteria((lcc) => lcc.IsHeroCharacterCard && !lcc.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(lcc, GetCardSource())), selectCardDecisions, true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

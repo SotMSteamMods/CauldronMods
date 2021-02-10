@@ -841,6 +841,8 @@ namespace CauldronTests
             moonWatcher = PutIntoPlay("MoonWatcher");
             bladeBattalion = PutIntoPlay("BladeBattalion");
 
+            PrintSpecialStringsForCard(unknownHerds);
+
             SetHitPoints(shadowOfOblask, shadowOfOblask.MaximumHitPoints.Value - 3);
             SetHitPoints(moonWatcher, moonWatcher.MaximumHitPoints.Value - 3);
             SetHitPoints(bladeBattalion, bladeBattalion.MaximumHitPoints.Value - 3);
