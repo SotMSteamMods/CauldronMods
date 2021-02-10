@@ -16,6 +16,7 @@ namespace Cauldron.OblaskCrater
          */
         public UnseenTerrorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHighestHP(numberOfTargets: () => 3, cardCriteria: new LinqCardCriteria(c => c != Card, "other targets", useCardsSuffix: false));
         }
 
         public override void AddTriggers()
@@ -28,8 +29,6 @@ namespace Cauldron.OblaskCrater
             IEnumerator coroutine;
             List<DealDamageAction> storedDealDamageActions = new List<DealDamageAction>();
 
-            base.RemoveTemporaryTriggers();
-
             coroutine = base.DealDamageToHighestHP(base.Card, 1, (card) => card != base.Card, (card) => base.H - 2, DamageType.Cold, storedResults: storedDealDamageActions, numberOfTargets: () => 3);
             if (base.UseUnityCoroutines)
             {
@@ -41,9 +40,43 @@ namespace Cauldron.OblaskCrater
             }
             if (storedDealDamageActions != null && storedDealDamageActions.Count() > 0)
             {
-                base.AddToTemporaryTriggerList(base.AddPreventDamageTrigger((dda) => dda.Target == base.Card && !storedDealDamageActions.Select((item) => item.Target).Contains(dda.DamageSource.Card)));
+                base.AddToTemporaryTriggerList(base.AddImmuneToDamageTrigger((dda) => dda.Target == base.Card && !storedDealDamageActions.Where(item => item.DidDealDamage).Select((item) => item.Target).Contains(dda.DamageSource.Card)));
+
+                string targets = string.Join(" or ",storedDealDamageActions.Where(dd => dd.DidDealDamage).Select(dd => dd.Target.Title).ToArray());
+                string description = $"Until the end of the next environment turn, {Card.Title} is immune to damage from targets that are not {targets}.";
+                OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(RemoveTemporaryTriggerResponse), description, new TriggerType[] { TriggerType.RemoveTrigger }, Card);
+                effect.TurnTakerCriteria.IsSpecificTurnTaker = TurnTaker;
+                effect.TurnPhaseCriteria.Phase = Phase.End;
+                effect.TurnIndexCriteria.EqualTo = Game.TurnIndex + Game.TurnTakers.Count();
+                //effect.FromTurnPhaseExpiryCriteria.Phase = Phase.End;
+                //effect.FromTurnPhaseExpiryCriteria.TurnTaker = TurnTaker;
+                //effect.FromTurnPhaseExpiryCriteria.ExcludeRoundNumber = Game.Round;
+                coroutine = AddStatusEffect(effect);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
+            yield break;
+        }
+
+        public IEnumerator RemoveTemporaryTriggerResponse(PhaseChangeAction _, StatusEffect _2)
+        {
+            base.RemoveTemporaryTriggers();
+            IEnumerator coroutine = GameController.ExpireStatusEffect(_2, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }

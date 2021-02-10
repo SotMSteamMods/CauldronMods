@@ -866,7 +866,7 @@ namespace CauldronTests
             Card unseenTerror;
 
             SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", DeckNamespace);
-            //StartGame();
+            StartGame();
 
             base.DestroyNonCharacterVillainCards();
 
@@ -887,6 +887,7 @@ namespace CauldronTests
             // ra: 24
             // haka: 24
 
+            PrintTriggers();
 
             DealDamage(haka, unseenTerror, 1, DamageType.Fire);
             QuickHPCheckZero();
@@ -908,7 +909,8 @@ namespace CauldronTests
             QuickHPCheckZero();
             base.GoToEndOfTurn(base.env);
             QuickHPCheck(-1, 0, -1, 0, -1);
-
+            GoToNextTurn();
+            PrintTriggers();
             DealDamage(haka, unseenTerror, 3, DamageType.Melee);
             QuickHPCheck(0, -3, 0, 0, 0);
             DealDamage(ra, unseenTerror, 4, DamageType.Fire);
