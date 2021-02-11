@@ -342,10 +342,11 @@ namespace CauldronTests
             motivationalCharge = PutInHand("MotivationalCharge");
             ammoDrop = PutInHand("AmmoDrop");
             bringWhatYouNeed = PutInHand("BringWhatYouNeed");
+            Card armory = PutInTrash("EtherealArmory");
 
             QuickHandStorage(terminus, legacy, bunker, scholar);
-            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed };
-            PlayCard("EtherealArmory");
+            DecisionSelectCards = new Card[] { covenantOfWrath, motivationalCharge, ammoDrop, bringWhatYouNeed };
+            PlayCard(armory);
             QuickHandCheck(-1, -1, -1, -1);
             AssertIsInPlay(covenantOfWrath);
             AssertIsInPlay(motivationalCharge);
@@ -375,10 +376,11 @@ namespace CauldronTests
             motivationalCharge = PutInHand("MotivationalCharge");
             ammoDrop = PutInHand("AmmoDrop");
             bringWhatYouNeed = PutInHand("BringWhatYouNeed");
+            Card armory = PutInTrash("EtherealArmory");
 
             QuickHandStorage(terminus, legacy, bunker, scholar);
-            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed };
-            PlayCard("EtherealArmory");
+            DecisionSelectCards = new Card[] { covenantOfWrath, motivationalCharge, ammoDrop, bringWhatYouNeed };
+            PlayCard(armory);
             QuickHandCheck(-1, -1, -1, -1);
             AssertIsInPlay(covenantOfWrath);
             AssertIsInPlay(motivationalCharge);
