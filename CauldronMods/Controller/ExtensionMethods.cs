@@ -13,7 +13,7 @@ namespace Cauldron
         public static void ReorderTokenPool(this TokenPool[] tokenPools, string poolThatShouldBeFirst)
         {
             var temp = new List<TokenPool>(tokenPools);
-            int targetIndex = temp.FindIndex(tp => string.Equals(tp.Name, poolThatShouldBeFirst, StringComparison.Ordinal));
+            int targetIndex = temp.FindIndex(tp => string.Equals(tp.Identifier, poolThatShouldBeFirst, StringComparison.Ordinal));
             //if targetIndex == -1, no matching pool found, make no change.
             //if targetIndex == 0, matching pool already first, make no change.
             if (targetIndex > 0)

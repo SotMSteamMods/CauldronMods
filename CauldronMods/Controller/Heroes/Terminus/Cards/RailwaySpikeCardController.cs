@@ -32,7 +32,7 @@ namespace Cauldron.Terminus
             List<Function> list = new List<Function>();
             // SelectFunctionDecision selectFunction;
 
-            coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(1, 3, removeTokenResponse: RemoveTokenResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "no damage was dealt.");
+            coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(1, 3, removeTokenResponse: RemoveTokenResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "no damage was dealt.", removeEffectDescription: "deal counter damage", triggerAction: dealDamageAction);
             //list.Add(new Function(DecisionMaker, $"Add 1 token to {WrathPool.Name}", SelectionType.AddTokens, () => base.GameController.AddTokensToPool(WrathPool, 1, base.GetCardSource())));
             //list.Add(new Function(DecisionMaker, $"Remove 3 tokens from  {WrathPool.Name}", SelectionType.RemoveTokens, () => RemoveTokenResponse(dealDamageAction)));
             //selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, list, false, null, null, null, base.GetCardSource());

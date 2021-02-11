@@ -52,7 +52,7 @@ namespace Cauldron.Terminus
             }
 
             // Add or remove 3 tokens from your Wrath pool. If you removed 3 tokens this way, you may play a card.
-            coroutine = base.AddOrRemoveWrathTokens<GameAction, GameAction>(3, 3, removeTokenResponse: RemoveTokensResponse, insufficientTokenMessage: "you may not play a card.");
+            coroutine = base.AddOrRemoveWrathTokens<GameAction, GameAction>(3, 3, removeTokenResponse: RemoveTokensResponse, insufficientTokenMessage: "you may not play a card.", removeEffectDescription: "play a card");
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

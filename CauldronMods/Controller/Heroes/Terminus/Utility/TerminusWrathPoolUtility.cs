@@ -68,7 +68,7 @@ namespace Cauldron.Terminus
 			yield break;
 		}
 
-		public static IEnumerator AddOrRemoveWrathTokens<TAdd, TRemove>(CardController cardController, int amountToAdd, int amountToRemove, Func<TAdd, IEnumerator> addTokenResponse = null, TAdd addTokenGameAction = null, Func<TRemove, List<RemoveTokensFromPoolAction>, IEnumerator> removeTokenResponse = null, TRemove removeTokenGameAction = null, string insufficientTokenMessage = null)
+		public static IEnumerator AddOrRemoveWrathTokens<TAdd, TRemove>(CardController cardController, int amountToAdd, int amountToRemove, Func<TAdd, IEnumerator> addTokenResponse = null, TAdd addTokenGameAction = null, Func<TRemove, List<RemoveTokensFromPoolAction>, IEnumerator> removeTokenResponse = null, TRemove removeTokenGameAction = null, string insufficientTokenMessage = null, string removeEffectDescription = null, GameAction triggerAction = null)
 			where TAdd : GameAction
 			where TRemove : GameAction
 		{
@@ -76,15 +76,23 @@ namespace Cauldron.Terminus
 			List<Function> list = new List<Function>();
 			List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
 			SelectFunctionDecision selectFunction;
-			String addToken = "one token";
-
+			String addToken = "1 token";
+			String removeDescriber = "";
 			if (amountToAdd > 1)
 			{
 				addToken = $"{amountToAdd} tokens";
 			}
+			if(GetWrathPool(cardController).CurrentValue < amountToRemove)
+            {
+				removeDescriber = " to no effect";
+            }
+			else if (removeEffectDescription != null)
+            {
+				removeDescriber = " to " + removeEffectDescription;
+            }
 			list.Add(new Function(cardController.DecisionMaker, $"Add {addToken} to {GetWrathPool(cardController).Name}", SelectionType.AddTokens, () => AddWrathTokenResponse(cardController, amountToAdd, addTokenResponse, addTokenGameAction)));
-			list.Add(new Function(cardController.DecisionMaker, $"Remove 3 tokens from {GetWrathPool(cardController).Name}", SelectionType.RemoveTokens, () => RemoveWrathTokenResponse(cardController, amountToRemove, removeTokenResponse, removeTokenGameAction, storedResults, insufficientTokenMessage)));
-			selectFunction = new SelectFunctionDecision(cardController.GameController, cardController.DecisionMaker, list, false, null, null, null, cardController.GetCardSource());
+			list.Add(new Function(cardController.DecisionMaker, $"Remove 3 tokens from {GetWrathPool(cardController).Name}" + removeDescriber, SelectionType.RemoveTokens, () => RemoveWrathTokenResponse(cardController, amountToRemove, removeTokenResponse, removeTokenGameAction, storedResults, insufficientTokenMessage)));
+			selectFunction = new SelectFunctionDecision(cardController.GameController, cardController.DecisionMaker, list, false, triggerAction, null, null, cardController.GetCardSource());
 
 			coroutine = cardController.GameController.SelectAndPerformFunction(selectFunction);
 			if (cardController.UseUnityCoroutines)
@@ -155,21 +163,24 @@ namespace Cauldron.Terminus
 				cardController.GameController.ExhaustCoroutine(coroutine);
 			}
 
-			if ((storedResults.FirstOrDefault()?.NumberOfTokensActuallyRemoved ?? 0) >= amountToRemove)
+			if (storedResults.FirstOrDefault() != null)
 			{
-				coroutine = SendMessageWrathTokensRemoved(cardController, amountToRemove, storedResults);
-			}
-			else
-			{
-				coroutine = SendMessageAboutInsufficientWrathTokens(cardController, (storedResults.FirstOrDefault()?.NumberOfTokensActuallyRemoved ?? 0), insufficientTokenMessage);
-			}
-			if (cardController.UseUnityCoroutines)
-			{
-				yield return cardController.GameController.StartCoroutine(coroutine);
-			}
-			else
-			{
-				cardController.GameController.ExhaustCoroutine(coroutine);
+				if ((storedResults.FirstOrDefault()?.NumberOfTokensActuallyRemoved ?? 0) >= amountToRemove)
+				{
+					coroutine = SendMessageWrathTokensRemoved(cardController, amountToRemove, storedResults);
+				}
+				else
+				{
+					coroutine = SendMessageAboutInsufficientWrathTokens(cardController, (storedResults.FirstOrDefault()?.NumberOfTokensActuallyRemoved ?? 0), insufficientTokenMessage);
+				}
+				if (cardController.UseUnityCoroutines)
+				{
+					yield return cardController.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					cardController.GameController.ExhaustCoroutine(coroutine);
+				}
 			}
 
 			if (removeTokenResponse != null)
@@ -191,7 +202,7 @@ namespace Cauldron.Terminus
 		public static IEnumerator SendMessageWrathTokensAdded(CardController cardController, int numberAdded)
 		{
 			IEnumerator coroutine;
-			string message = "No tokens added";
+			string message = "No tokens were added";
 
 			if (numberAdded == 1)
 			{
@@ -205,6 +216,7 @@ namespace Cauldron.Terminus
 				}
 			}
 
+			message += $" to {GetWrathPool(cardController).Name}.";
 			coroutine = cardController.GameController.SendMessageAction(message, Priority.Medium, cardController.GetCardSource(), null, showCardSource: true);
 			if (cardController.UseUnityCoroutines)
 			{
@@ -221,7 +233,7 @@ namespace Cauldron.Terminus
 		public static IEnumerator SendMessageWrathTokensRemoved(CardController cardController, int numberRemoved, List<RemoveTokensFromPoolAction> removeTokensFromPoolActions)
 		{
 			IEnumerator coroutine;
-			string message = "No tokens removed";
+			string message = "No tokens were removed";
 
 			if (numberRemoved == 1)
 			{
@@ -235,6 +247,7 @@ namespace Cauldron.Terminus
 				}
 			}
 
+			message += $" from {GetWrathPool(cardController).Name}.";
 			coroutine = cardController.GameController.SendMessageAction(message, Priority.Medium, cardController.GetCardSource(), null, showCardSource: true);
 			if (cardController.UseUnityCoroutines)
 			{
@@ -251,7 +264,7 @@ namespace Cauldron.Terminus
 		public static IEnumerator SendMessageAboutInsufficientWrathTokens(CardController cardController, int numberRemoved, string suffix = null)
 		{
 			IEnumerator coroutine;
-			string message = "There are no tokens to remove";
+			string message = "There were no tokens to remove";
 
 			if (numberRemoved == 1)
 			{
@@ -262,9 +275,14 @@ namespace Cauldron.Terminus
 				message = $"Only {numberRemoved} tokens were removed";
 			}
 
+			message += $" from {GetWrathPool(cardController).Name}";
 			if (suffix != null && !string.IsNullOrEmpty(suffix.Trim()))
 			{
 				message = $"{message}, so {suffix}";
+			}
+			else
+			{
+				message += ".";
 			}
 
 			coroutine = cardController.GameController.SendMessageAction(message, Priority.Medium, cardController.GetCardSource(), null, showCardSource: true);

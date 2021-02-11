@@ -46,7 +46,7 @@ namespace Cauldron.Terminus
                 dealDamageAction = storedResults.FirstOrDefault();
             }
 
-            coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(AddTokenAmount, RemoveTokenAmount, removeTokenResponse: RemoveTokensFromPoolResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "nothing happens.");
+            coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(AddTokenAmount, RemoveTokenAmount, removeTokenResponse: RemoveTokensFromPoolResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "nothing happens.", removeEffectDescription: "reduce the target's damage", triggerAction: dealDamageAction);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

@@ -69,13 +69,13 @@ namespace Cauldron.Terminus
 			yield break;
 		}
 
-		protected IEnumerator AddOrRemoveWrathTokens<TAdd, TRemove>(int amountToAdd, int amountToRemove, Func<TAdd, IEnumerator> addTokenResponse = null, TAdd addTokenGameAction = null, Func<TRemove, List<RemoveTokensFromPoolAction>, IEnumerator> removeTokenResponse = null, TRemove removeTokenGameAction = null, string insufficientTokenMessage = null) 
+		protected IEnumerator AddOrRemoveWrathTokens<TAdd, TRemove>(int amountToAdd, int amountToRemove, Func<TAdd, IEnumerator> addTokenResponse = null, TAdd addTokenGameAction = null, Func<TRemove, List<RemoveTokensFromPoolAction>, IEnumerator> removeTokenResponse = null, TRemove removeTokenGameAction = null, string insufficientTokenMessage = null, string removeEffectDescription = null, GameAction triggerAction = null) 
 			where TAdd: GameAction 
 			where TRemove: GameAction
 		{
 			IEnumerator coroutine;
 
-			coroutine = TerminusWrathPoolUtility.AddOrRemoveWrathTokens<TAdd, TRemove>(this, amountToAdd, amountToRemove, addTokenResponse, addTokenGameAction, removeTokenResponse, removeTokenGameAction, insufficientTokenMessage);
+			coroutine = TerminusWrathPoolUtility.AddOrRemoveWrathTokens<TAdd, TRemove>(this, amountToAdd, amountToRemove, addTokenResponse, addTokenGameAction, removeTokenResponse, removeTokenGameAction, insufficientTokenMessage, removeEffectDescription, triggerAction);
 			if (UseUnityCoroutines)
 			{
 				yield return GameController.StartCoroutine(coroutine);

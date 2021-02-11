@@ -30,7 +30,7 @@ namespace Cauldron.Terminus
         {
             IEnumerator coroutine;
 
-            coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(1, 3, removeTokenResponse: RemoveTokensFromPoolResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "nothing happens.");
+            coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(1, 3, removeTokenResponse: RemoveTokensFromPoolResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "nothing happens.", removeEffectDescription: "increase the target's damage", triggerAction: dealDamageAction);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

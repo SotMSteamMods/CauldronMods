@@ -21,7 +21,7 @@
             "tokenPools": [
                 {
                     "identifier": "TerminusWrathPool",
-                    "name": "Wrath Pool",
+                    "name": "Terminus's Wrath Pool",
                     "initialValue": 0,
                     "minimumValue": 0,
                     "color": "D1426D"
@@ -546,7 +546,7 @@
             "tokenPools": [
                 {
                     "identifier": "TerminusWrathPool",
-                    "name": "Wrath Pool",
+                    "name": "Terminus's Wrath Pool",
                     "initialValue": 0,
                     "minimumValue": 0,
                     "color": "D1426D"
@@ -598,7 +598,7 @@
             "tokenPools": [
                 {
                     "identifier": "TerminusWrathPool",
-                    "name": "Wrath Pool",
+                    "name": "Terminus's Wrath Pool",
                     "initialValue": 0,
                     "minimumValue": 0,
                     "color": "D1426D"
