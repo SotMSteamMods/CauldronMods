@@ -36,12 +36,12 @@ namespace Cauldron.Terminus
 		public override IEnumerator Play()
 		{
 			IEnumerator coroutine;
-			SelectCardDecision selectCardDecision;
-			IEnumerable<Card> cardChoices = base.GameController.FindTargetsInPlay((card) => HasTargetDealtDamageToTerminusSinceHerLastTurn(card));
 
 			// Select a non-hero target.
-			selectCardDecision = new SelectCardDecision(base.GameController, DecisionMaker, SelectionType.DealDamage, cardChoices, cardSource: base.GetCardSource());
-			coroutine = base.GameController.SelectCardAndDoAction(selectCardDecision, ActionWithCardResponse);
+
+			var storedDamage = new List<DealDamageAction>();
+			// {Terminus} deals 6 cold damage to a target that dealt her damage since your last turn.
+			coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 6, DamageType.Infernal, 1, false, 1, storedResultsDamage: storedDamage, additionalCriteria: (Card c) => HasTargetDealtDamageToTerminusSinceHerLastTurn(c), cardSource: GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -51,19 +51,13 @@ namespace Cauldron.Terminus
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 
-			yield break;
-		}
-
-		private IEnumerator ActionWithCardResponse(SelectCardDecision targetCard)
-		{
-			IEnumerator coroutine;
-			List<DealDamageAction> storedResults = new List<DealDamageAction>();
 			List<YesNoCardDecision> yesNoCardDecisions = new List<YesNoCardDecision>();
-
-			if (targetCard != null && targetCard.SelectedCard != null)
-			{
-				// {Terminus} deals 6 cold damage to a target that dealt her damage since your last turn.
-				coroutine = base.DealDamage(base.CharacterCard, targetCard.SelectedCard, 6, DamageType.Cold, storedResults: storedResults, cardSource: base.GetCardSource());
+			var damage = storedDamage.FirstOrDefault();
+			// If a non-character target is destroyed this way, you may remove it and this card from the game.
+			if (damage != null && damage.DidDestroyTarget && !damage.Target.IsCharacter)
+            {
+				var targetCard = damage.Target;
+				coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.RemoveCardFromGame, targetCard, storedResults: yesNoCardDecisions, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);
@@ -73,10 +67,9 @@ namespace Cauldron.Terminus
 					base.GameController.ExhaustCoroutine(coroutine);
 				}
 
-				// If a non-character target is destroyed this way, you may remove it and this card from the game.
-				if (storedResults != null && storedResults.Count() > 0 && !storedResults.FirstOrDefault().Target.IsCharacter && storedResults.FirstOrDefault().DidDestroyTarget)
-                {
-					coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.RemoveCardFromGame, targetCard.SelectedCard, storedResults: yesNoCardDecisions, cardSource: base.GetCardSource());
+				if (DidPlayerAnswerYes(yesNoCardDecisions))
+				{
+					coroutine = base.GameController.MoveCard(base.TurnTakerController, targetCard, targetCard.Owner.OutOfGame, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, null, null, null, evenIfIndestructible: false, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, GetCardSource());
 					if (base.UseUnityCoroutines)
 					{
 						yield return base.GameController.StartCoroutine(coroutine);
@@ -86,41 +79,15 @@ namespace Cauldron.Terminus
 						base.GameController.ExhaustCoroutine(coroutine);
 					}
 
-					if (DidPlayerAnswerYes(yesNoCardDecisions))
-                    {
-						coroutine = base.GameController.MoveCard(base.TurnTakerController, targetCard.SelectedCard, targetCard.SelectedCard.Owner.OutOfGame, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, null, null, null, evenIfIndestructible: false, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, GetCardSource());
-						if (base.UseUnityCoroutines)
-						{
-							yield return base.GameController.StartCoroutine(coroutine);
-						}
-						else
-						{
-							base.GameController.ExhaustCoroutine(coroutine);
-						}
-
-						coroutine = base.GameController.MoveCard(base.TurnTakerController, base.Card, base.TurnTaker.OutOfGame, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, null, null, null, evenIfIndestructible: false, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, GetCardSource());
-						if (base.UseUnityCoroutines)
-						{
-							yield return base.GameController.StartCoroutine(coroutine);
-						}
-						else
-						{
-							base.GameController.ExhaustCoroutine(coroutine);
-						}
+					coroutine = base.GameController.MoveCard(base.TurnTakerController, base.Card, base.TurnTaker.OutOfGame, toBottom: false, isPutIntoPlay: false, playCardIfMovingToPlayArea: true, null, showMessage: false, null, null, null, evenIfIndestructible: false, flipFaceDown: false, null, isDiscard: false, evenIfPretendGameOver: false, shuffledTrashIntoDeck: false, doesNotEnterPlay: false, GetCardSource());
+					if (base.UseUnityCoroutines)
+					{
+						yield return base.GameController.StartCoroutine(coroutine);
 					}
-				}
-			}
-			else
-            {
-				// TODO: May need to notify that nothing happened because there was no damage.
-				coroutine = DoNothing();
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
+					else
+					{
+						base.GameController.ExhaustCoroutine(coroutine);
+					}
 				}
 			}
 
