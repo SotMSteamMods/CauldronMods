@@ -108,11 +108,11 @@ namespace Cauldron.Terminus
             if (storedResultsDecisions != null && storedResultsDecisions.Count() > 0 && storedDamageActions != null && storedDamageActions.Count() > 0)
             {
                 target = storedResultsDecisions.FirstOrDefault().SelectedCard;
-
-                if (!storedDamageActions.FirstOrDefault().DidDestroyTarget)
+                var damageAction = storedDamageActions.FirstOrDefault();
+                if (!damageAction.DidDestroyTarget)
                 {
                     // You may move this card next to that target.
-                    coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardNextToCard, base.Card, storedResults: yesNoCardDecisions, associatedCards: new Card[] { target }, cardSource: base.GetCardSource());
+                    coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCard, base.Card, storedResults: yesNoCardDecisions, associatedCards: new Card[] { target }, action: damageAction, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -142,13 +142,13 @@ namespace Cauldron.Terminus
         public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
         {
             Power[] powers = null;
-            if(cardController == CharacterCardController)
+            if(cardController.Card == CharacterCard)
             {
                 if (!HasPowerBeenUsedThisTurn(new Power(DecisionMaker, this, CardWithoutReplacements.AllPowers.FirstOrDefault(), this.UsePower(), 0, null, GetCardSource())))
                 {
                     return new Power[]
                     {
-                        new Power(DecisionMaker, this, "{Terminus} deals 1 target 2 cold damage. You may move Bone-Chilling Touch next to that target.", this.DoNothing(), 0, this, GetCardSource())
+                        new Power(DecisionMaker, cardController, "{Terminus} deals 1 target 2 cold damage. You may move Bone-Chilling Touch next to that target.", this.DoNothing(), 0, this, GetCardSource())
                     };
                 }
             }

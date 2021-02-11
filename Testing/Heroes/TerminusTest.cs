@@ -215,7 +215,8 @@ namespace CauldronTests
             Card touch = PlayCard("BoneChillingTouch");
             AssertNumberOfUsablePowers(terminus, 3);
 
-            
+            Assert.AreEqual(GameController.GetAllPowersForCardController(terminus.CharacterCardController).Count(), 2);
+            Assert.AreEqual(GameController.GetAllPowersForCardController(GameController.FindCardController(touch)).Count(), 1);
             UsePower(touch);
             AssertNumberOfUsablePowers(terminus, 1);
             GoToStartOfTurn(terminus);
