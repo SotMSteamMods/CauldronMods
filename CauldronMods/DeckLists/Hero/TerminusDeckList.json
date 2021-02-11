@@ -40,7 +40,12 @@
                 "Each hero may use a power printed on one of their non-character cards. Then destroy any card whose power was used this way.",
                 "Each target regains 1 HP."
             ],
-            "flippedIcons": [],
+            "flippedIcons": [
+                "PlayCardNow",
+                "UsePowerNow",
+                "Destroy",
+                "GainHP"
+            ],
             "openingLines": {
                 "default": "Judgment time.",
                 "TheInfernalChoirCharacter": "I've been on the wrong side of the tracks long enough. And my punishment is to deal with the likes of you."
@@ -57,6 +62,7 @@
             "icons": [
                 "CannotGainHP",
                 "CannotDealDamage",
+                "HasPower",
                 "DealDamageCold"
             ],
             "body": "A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.",
@@ -80,6 +86,7 @@
             ],
             "icons": [
                 "RemoveTokens",
+                "HasPower",
                 "DealDamageCold",
                 "DestroySelf"
             ],
@@ -159,11 +166,12 @@
             ],
             "icons": [
                 "CounterDamage",
+                "RedirectDamage",
                 "StartOfTurnAction",
                 "RemoveFromGame"
             ],
             "body": [
-                "Whenever {Terminus} is dealt damage by a non-hero target, she deals that target 2 melee damage. If Stained Badge is not in play, redirect damage dealt by non-hero targets to {Terminus}.",
+                "Whenever {Terminus} is dealt damage by a non-hero target, she may deal that target 2 melee damage. If Stained Badge is not in play, you may redirect damage dealt by non-hero targets to {Terminus}.",
                 "At the start of your turn, remove this card from the game."
             ],
             "flavorQuotes": [
