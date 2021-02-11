@@ -34,7 +34,7 @@ namespace Cauldron.Mythos
             //When a hero target is dealt damage by another hero target:
             //--{MythosDanger} Play the top card of the villain deck.
             //--{MythosMadness} Move the bottom card of a deck to the top of that deck.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsHero && action.Target.IsHero, this.DangerMadnessResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.MoveCard }, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && action.DamageSource.IsHero && action.DamageSource.IsTarget && action.Target.IsHero && action.Target != action.DamageSource.Card, this.DangerMadnessResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.MoveCard }, TriggerTiming.After);
         }
 
         private IEnumerator DangerMadnessResponse(DealDamageAction action)
