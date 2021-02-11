@@ -65,7 +65,8 @@ namespace Cauldron.Terminus
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = base.GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((lcc) => lcc.IsTarget && lcc.IsInPlayAndHasGameText && lcc != base.CharacterCard), SelectionType.DealDamage, ActionWithCardResponse, null, false, 0, cardSource: base.GetCardSource());                
+            //coroutine = base.GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((lcc) => lcc.IsTarget && lcc.IsInPlayAndHasGameText && lcc != base.CharacterCard), SelectionType.DealDamage, ActionWithCardResponse, null, false, 0, cardSource: base.GetCardSource());                
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 2, DamageType.Projectile, null, false, 0, allowAutoDecide: false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

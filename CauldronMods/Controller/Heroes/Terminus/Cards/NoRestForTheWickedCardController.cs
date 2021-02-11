@@ -29,28 +29,64 @@ namespace Cauldron.Terminus
             Location selectedLocation;
             bool targetEnteredPlay = false;
 
-            possibleDestinations = FindVillainTurnTakerControllers(true).Select((ttc) => new LocationChoice(ttc.TurnTaker.Trash)).ToList();
-
-            coroutine = base.GameController.SelectLocation(DecisionMaker, possibleDestinations, SelectionType.SearchTrash, storedResults, true, base.GetCardSource());
-            if (UseUnityCoroutines)
+            Func<TurnTakerController, List<LocationChoice>> allVillainTrashesWithTargets = delegate (TurnTakerController ttc)
             {
-                yield return GameController.StartCoroutine(coroutine);
+                var trashes = new List<LocationChoice>();
+                if(ttc.TurnTaker.Trash.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: ttc.TurnTaker.PlayArea) == CanPlayCardResult.CanPlay))
+                {
+                    trashes.Add(new LocationChoice(ttc.TurnTaker.Trash));
+                }
+                foreach (Location subtrash in ttc.TurnTaker.SubTrashes)
+                {
+                    if (subtrash.IsRealTrash && subtrash.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: ttc.TurnTaker.PlayArea) == CanPlayCardResult.CanPlay))
+                    {
+                        trashes.Add(new LocationChoice(subtrash));
+                    }
+                }
+                return trashes;
+            };
+            possibleDestinations = FindVillainTurnTakerControllers(true).Where(ttc => GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource())).SelectMany((TurnTakerController ttc) => allVillainTrashesWithTargets(ttc)).ToList();
+
+            Location chosenLocation = null;
+            if(possibleDestinations.Count() == 0)
+            {
+                coroutine = GameController.SendMessageAction($"There were no villain targets {Card.Title} could return from a trash.", Priority.Medium, GetCardSource());
+            }
+            else if (possibleDestinations.Count() == 1)
+            {
+                chosenLocation = possibleDestinations.FirstOrDefault().Location;
             }
             else
             {
-                GameController.ExhaustCoroutine(coroutine);
+                coroutine = base.GameController.SelectLocation(DecisionMaker, possibleDestinations, SelectionType.SearchTrash, storedResults, false, base.GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                if(DidSelectLocation(storedResults))
+                {
+                    chosenLocation = GetSelectedLocation(storedResults);
+                }
             }
 
-            if (DidSelectLocation(storedResults))
+            if (chosenLocation != null)
             {
+                var storedResultsMove = new List<MoveCardAction>();
                 // You may put a target from the villain trash into play.
-                selectedLocation = storedResults.FirstOrDefault().SelectedLocation.Location;
+                selectedLocation = chosenLocation;
                 coroutine = base.GameController.SelectCardFromLocationAndMoveIt(DecisionMaker,
                     selectedLocation,
                     new LinqCardCriteria((lcc) => lcc.IsTarget, "target"),
                     new List<MoveCardDestination> { new MoveCardDestination(selectedLocation.OwnerTurnTaker.PlayArea) },
+                    optional: true,
+                    storedResultsMove: storedResultsMove,
                     storedResults: selectCardDecisions,
-                    cardSource: base.GetCardSource());
+                    isPutIntoPlay: true,
+                    cardSource: base.GetCardSource()) ;
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -60,10 +96,15 @@ namespace Cauldron.Terminus
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
-                if (DidSelectCard(selectCardDecisions))
+                Card selectedCard = null;
+                var moveAction = storedResultsMove.FirstOrDefault();
+                if(moveAction != null && moveAction.Destination.IsInPlayAndNotUnderCard && moveAction.IsSuccessful)
                 {
                     targetEnteredPlay = true;
-                    var selectedCard = selectCardDecisions.FirstOrDefault().SelectedCard;
+                    selectedCard = selectCardDecisions.FirstOrDefault().SelectedCard;
+                }
+                if (selectedCard != null && selectedCard.IsInPlayAndHasGameText)
+                {
                     // If that target has more than 5HP, reduce its current HP to 5.
                     if (selectedCard.HitPoints > 5)
                     {
@@ -79,14 +120,8 @@ namespace Cauldron.Terminus
                     }
 
                     // That target deals up to 2 other targets 5 infernal damage each. 
-                    coroutine = base.GameController.SelectCardsAndDoAction(DecisionMaker, 
-                        new LinqCardCriteria((lcc) => lcc.IsTarget && lcc.IsInPlayAndHasGameText && lcc != selectedCard), 
-                        SelectionType.DealDamage, 
-                        (card) => ActionWithCardResponse(selectedCard, card), 
-                        2, 
-                        false, 
-                        0, 
-                        cardSource: base.GetCardSource());
+
+                    coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, selectedCard), 5, DamageType.Infernal, 2, false, 0, additionalCriteria: (Card c) => c != selectedCard, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -115,22 +150,5 @@ namespace Cauldron.Terminus
             yield break;
         }
 
-        private IEnumerator ActionWithCardResponse(Card sourceCard, Card targetCard)
-        {
-            IEnumerator coroutine;
-
-            // That target deals up to 2 other targets 5 infernal damage each.
-            coroutine = base.DealDamage(sourceCard, targetCard, 5, DamageType.Infernal);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            yield break;
-        }
     }
 }
