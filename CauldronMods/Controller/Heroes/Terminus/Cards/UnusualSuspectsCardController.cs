@@ -58,26 +58,6 @@ namespace Cauldron.Terminus
             yield break;
         }
 
-        private IEnumerator DealDamageActionResponse(DealDamageAction dealDamageAction)
-        {
-            IEnumerator coroutine;
-
-            if (dealDamageAction.DidDealDamage)
-            {
-                coroutine = base.GameController.IncreaseDamage(dealDamageAction, 2, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
-        }
-
         private bool HasKeywordInAnyTrash(Card target)
         {
             List<string> cardKeywords = target.GetKeywords().ToList();
@@ -86,7 +66,7 @@ namespace Cauldron.Terminus
 
             foreach (Location trash in allTrash)
             {
-                if (trash.Cards.Count(card => card.DoKeywordsContain(cardKeywords)) > 0)
+                if (trash.Cards.Any(card => card.DoKeywordsContain(cardKeywords)))
                 {
                     matchesKeyword = true;
                     break;
