@@ -207,6 +207,22 @@ namespace CauldronTests
             base.GainHP(baron, 2);
             QuickHPCheck(2, 0, 0, 0, 0, 0);
         }
+        [Test]
+        public void TestBoneChillingTouchGrantedPower()
+        {
+            StartTestGame();
+
+            Card touch = PlayCard("BoneChillingTouch");
+            AssertNumberOfUsablePowers(terminus, 3);
+
+            
+            UsePower(touch);
+            AssertNumberOfUsablePowers(terminus, 1);
+            GoToStartOfTurn(terminus);
+            UsePower(terminus, 1);
+            AssertNumberOfUsablePowers(terminus, 1);
+            
+        }
 
         #endregion Test Bone Chilling Touch
 

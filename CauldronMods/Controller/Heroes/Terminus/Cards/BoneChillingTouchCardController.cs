@@ -21,6 +21,7 @@ namespace Cauldron.Terminus
 
         public BoneChillingTouchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            AddAsPowerContributor();
         }
 
         public override void AddTriggers()
@@ -29,6 +30,35 @@ namespace Cauldron.Terminus
             AddPreventDamageTrigger(DealDamageActionCriteria, isPreventEffect: false);
             AddTrigger<GainHPAction>(GainHPActionCriteria, GainHPActionResponse, TriggerType.ModifyHPGain, TriggerTiming.Before);
             AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(alsoRemoveTriggersFromThisCard: false);
+
+            AddTrigger((UsePowerAction up) => up.Power != null && up.Power.IsContributionFromCardSource && up.Power.CopiedFromCardController == this,
+                            ReplaceWithActualPower,
+                            TriggerType.FirstTrigger,
+                            TriggerTiming.Before);
+        }
+
+        private IEnumerator ReplaceWithActualPower(UsePowerAction up)
+        {
+            IEnumerator coroutine = CancelAction(up, false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = UsePowerOnOtherCard(this.Card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
 
         private bool DealDamageActionCriteria(DealDamageAction dealDamageAction)
@@ -65,7 +95,7 @@ namespace Cauldron.Terminus
             Card target;
 
             // {Terminus} deals 1 target 2 cold damage. 
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.Card), ColdDamage, DamageType.Cold, TargetCount, false, TargetCount, storedResultsDecisions: storedResultsDecisions, storedResultsDamage: storedDamageActions, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), ColdDamage, DamageType.Cold, TargetCount, false, TargetCount, storedResultsDecisions: storedResultsDecisions, storedResultsDamage: storedDamageActions, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -107,6 +137,86 @@ namespace Cauldron.Terminus
                 }
             }
             yield break;
+        }
+
+        public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
+        {
+            Power[] powers = null;
+            if(cardController == CharacterCardController)
+            {
+                if (!HasPowerBeenUsedThisTurn(new Power(DecisionMaker, this, CardWithoutReplacements.AllPowers.FirstOrDefault(), this.UsePower(), 0, null, GetCardSource())))
+                {
+                    return new Power[]
+                    {
+                        new Power(DecisionMaker, this, "{Terminus} deals 1 target 2 cold damage. You may move Bone-Chilling Touch next to that target.", this.DoNothing(), 0, this, GetCardSource())
+                    };
+                }
+            }
+            return powers;
+        }
+
+        private bool HasPowerBeenUsedThisTurn(Power power)
+        {
+            List<UsePowerJournalEntry> source = Game.Journal.UsePowerEntriesThisTurn().ToList();
+            Func<UsePowerJournalEntry, bool> predicate = delegate (UsePowerJournalEntry p)
+            {
+                bool flag = power.CardController.CardWithoutReplacements == p.CardWithPower;
+                if (!flag && power.CardController.CardWithoutReplacements.SharedIdentifier != null && power.IsContributionFromCardSource)
+                {
+                    flag = power.CardController.CardWithoutReplacements.SharedIdentifier == p.CardWithPower.SharedIdentifier;
+                }
+                if (flag)
+                {
+                    flag &= p.NumberOfUses == 0;
+                }
+                if (flag)
+                {
+                    flag &= power.Index == p.PowerIndex;
+                }
+                if (flag)
+                {
+                    flag &= power.IsContributionFromCardSource == p.IsContributionFromCardSource;
+                }
+                if (flag)
+                {
+                    bool flag2 = power.TurnTakerController == null && p.PowerUser == null;
+                    bool flag3 = false;
+                    if (power.TurnTakerController != null && power.TurnTakerController.IsHero)
+                    {
+                        flag3 = power.TurnTakerController.ToHero().HeroTurnTaker == p.PowerUser;
+                    }
+                    flag = flag && (flag2 || flag3);
+                }
+                if (flag)
+                {
+                    if (!power.IsContributionFromCardSource)
+                    {
+                        if (flag && power.CardController.CardWithoutReplacements.PlayIndex.HasValue && p.CardWithPowerPlayIndex.HasValue)
+                        {
+                            flag &= power.CardController.CardWithoutReplacements.PlayIndex.Value == p.CardWithPowerPlayIndex.Value;
+                        }
+                    }
+                    else
+                    {
+                        flag &= p.CardSource == power.CardSource.Card;
+                        if (power.CardSource != null && power.CardSource.Card.PlayIndex.HasValue && p.CardSourcePlayIndex.HasValue)
+                        {
+                            flag &= power.CardSource.Card.PlayIndex.Value == p.CardSourcePlayIndex.Value;
+                        }
+                    }
+                }
+                return flag;
+            };
+            int num = source.Where(predicate).Count();
+            if (num > 0)
+            {
+                if (!GameController.StatusEffectManager.AskIfPowerCanBeReused(power, num))
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
     }
 }
