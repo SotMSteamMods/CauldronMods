@@ -38,7 +38,7 @@ namespace Cauldron.Terminus
             }
 
             // You may draw a card. 
-            coroutine = base.GameController.DrawCard(base.HeroTurnTaker, true, allowAutoDraw: false);
+            coroutine = base.GameController.DrawCard(base.HeroTurnTaker, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
