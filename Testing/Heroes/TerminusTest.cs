@@ -1257,13 +1257,15 @@ namespace CauldronTests
 
             tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
             cardsInDeck = terminus.TurnTaker.Deck.NumberOfCards;
-            DecisionSelectFunctions = new int?[] { 0 };
+            DecisionMoveCardDestination = new MoveCardDestination(terminus.HeroTurnTaker.PlayArea);
+            QuickHPStorage(baron);
             QuickTokenPoolStorage(tokenPool);
             QuickHandStorage(terminus, legacy, bunker, scholar);
             PlayCard(theChainCoductor);
             AssertNumberOfCardsInDeck(terminus, cardsInDeck - 1);
             QuickTokenPoolCheck(0);
             QuickHandCheck(-1, 0, 0, 0);
+            QuickHPCheckZero();
         }
 
         [Test]
@@ -1284,7 +1286,8 @@ namespace CauldronTests
 
             tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
             cardsInDeck = terminus.TurnTaker.Deck.NumberOfCards;
-            DecisionSelectFunctions = new int?[] { 1 };
+            DecisionMoveCardDestination = new MoveCardDestination(terminus.HeroTurnTaker.Hand);
+            QuickHPStorage(baron);
             QuickTokenPoolStorage(tokenPool);
             QuickHandStorage(terminus, legacy, bunker, scholar);
             PlayCard(theChainCoductor);
@@ -1292,6 +1295,38 @@ namespace CauldronTests
             AssertNumberOfCardsInDeck(terminus, cardsInDeck - 1);
             QuickTokenPoolCheck(3);
             QuickHandCheckZero();
+            QuickHPCheck(-2);
+        }
+        [Test]
+        public void TestTheChainConductorMementoExilesPlay()
+        {
+            int cardsInDeck;
+            Card boneChillingTouch;
+            Card stokeTheFurnace;
+            Card stainedBadge;
+            Card theChainCoductor;
+            TokenPool tokenPool;
+
+            StartTestGame();
+            PlayCard("GravenShell");
+            stainedBadge = PutOnDeck("StainedBadge");
+            boneChillingTouch = PutOnDeck("BoneChillingTouch");
+            stokeTheFurnace = PutOnDeck("StokeTheFurnace");
+            theChainCoductor = PutInHand("TheChainConductor");
+
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            cardsInDeck = terminus.TurnTaker.Deck.NumberOfCards;
+            DecisionMoveCardDestination = new MoveCardDestination(terminus.HeroTurnTaker.PlayArea);
+            QuickHPStorage(baron);
+            QuickTokenPoolStorage(tokenPool);
+            QuickHandStorage(terminus, legacy, bunker, scholar);
+            PlayCard(theChainCoductor);
+            base.GoToEndOfTurn(terminus);
+            AssertNumberOfCardsInDeck(terminus, cardsInDeck - 1);
+            QuickTokenPoolCheck(3);
+            QuickHandCheck(-1, 0, 0, 0);
+            AssertOutOfGame(stainedBadge);
+            QuickHPCheck(-3);
         }
         #endregion Test The Chain Conductor
 
