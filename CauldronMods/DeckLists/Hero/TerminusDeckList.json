@@ -416,7 +416,7 @@
                 "AddTokens"
             ],
             "body": [
-                "This card and {Terminus} are indestructible. If another Memento would enter play, instead remove it from the game. If all other heroes are incapacitated, the heroes lose.",
+                "This card and {Terminus} are indestructible unless all other heros are incapacitated. If another Memento would enter play, instead remove it from the game.",
                 "At the end of your turn, add 1 token to your Wrath pool if {Terminus} has 1 or more HP."
             ],
             "flavorQuotes": [
