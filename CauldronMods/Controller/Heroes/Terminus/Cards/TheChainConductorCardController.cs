@@ -29,7 +29,7 @@ namespace Cauldron.Terminus
             AddToTemporaryTriggerList(AddTrigger((CardEntersPlayAction cep) => cep.IsSuccessful && cep.CardSource != null && cep.CardSource.Card == this.Card, NoteEnteredPlayResponse, TriggerType.Hidden, TriggerTiming.After));
 
             // Reveal cards from the top of your deck until you reveal a Memento or Equipment card. Put it into play or into  your hand.
-            IEnumerator coroutine = RevealCards_SelectSome_MoveThem_ReturnTheRest(DecisionMaker, DecisionMaker, TurnTaker.Deck, (Card c) => IsEquipment(c) || c.DoKeywordsContain("memento"), 1, 1, true, true, true, "equipment or memento");
+            IEnumerator coroutine = CustomRevealAndMoveRoutine();
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -69,6 +69,83 @@ namespace Cauldron.Terminus
             yield break;
         }
 
+        private IEnumerator CustomRevealAndMoveRoutine()
+        {
+            List<RevealCardsAction> revealedCards = new List<RevealCardsAction>();
+            IEnumerator coroutine = GameController.RevealCards(DecisionMaker, DecisionMaker.TurnTaker.Deck, (Card c) => IsEquipment(c) || c.DoKeywordsContain("memento"), 1, revealedCards, RevealedCardDisplay.None, GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            var reveal = revealedCards.FirstOrDefault();
+            if (reveal != null && reveal.FoundMatchingCards)
+            {
+                var destinations = new List<MoveCardDestination> { new MoveCardDestination(HeroTurnTaker.PlayArea), new MoveCardDestination(HeroTurnTaker.Hand) };
+                coroutine = GameController.SelectLocationAndMoveCard(DecisionMaker, reveal.MatchingCards.FirstOrDefault(), destinations, true, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = GameController.MoveCards(DecisionMaker, reveal.NonMatchingCards.ToList(), TurnTaker.Deck, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                coroutine = ShuffleDeck(DecisionMaker, TurnTaker.Deck);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                coroutine = GameController.SendMessageAction("There were no equipment or memento cards in " + TurnTaker.Deck.GetFriendlyName() + " to reveal.", Priority.High, GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            var cardsToCleanup = new List<Card>();
+            if (reveal != null)
+            {
+                cardsToCleanup.AddRange(reveal.RevealedCards);
+            }
+            coroutine = CleanupCardsAtLocations(new List<Location>{TurnTaker.Revealed}, TurnTaker.Deck, cardsInList: cardsToCleanup);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+
+        }
         private IEnumerator NoteEnteredPlayResponse(CardEntersPlayAction cep)
         {
             _PlayedCard = cep.CardEnteringPlay;
