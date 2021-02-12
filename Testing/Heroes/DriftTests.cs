@@ -936,6 +936,22 @@ namespace CauldronTests
             DealDamage(haka, haka, 3, DamageType.Melee);
             QuickHPCheck(-3);
         }
+        [Test]
+        public void TestMakeEverySecondCount_OnlyShiftTrack()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Setback", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("MakeEverySecondCount");
+
+            PlayCard("FriendlyFire");
+            DecisionYesNo = true;
+            GoToShiftPosition(3);
+
+            DealDamage(drift, apostate, 1, DamageType.Melee);
+            AssertMaxNumberOfDecisions(1);
+            DealDamage(drift, apostate, 1, DamageType.Melee);
+        }
 
         [Test]
         public void TestOutOfSync()
@@ -1171,6 +1187,18 @@ namespace CauldronTests
             DecisionYesNo = false;
             GoToShiftPosition(3);
             QuickHPCheckZero();
+        }
+        [Test]
+        public void TestTransitionShock_OnlyShiftTrack()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Setback", "Bunker", "TheScholar", "TimeCataclysm");
+            StartGame();
+
+            PlayCard(TransitionShock);
+            Card lookingUp = PlayCard("LookingUp");
+
+            AssertMaxNumberOfDecisions(1);
+            UsePower(lookingUp);
         }
     }
 }

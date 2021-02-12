@@ -25,6 +25,7 @@ namespace Cauldron.Drift
 
         protected const string HasShifted = "HasShifted";
         protected const string ShiftTrack = "ShiftTrack";
+        protected const string ShiftPoolIdentifier = "ShiftPool";
 
         public int CurrentShiftPosition()
         {
