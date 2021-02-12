@@ -12,15 +12,13 @@ namespace Cauldron.TheInfernalChoir
     {
         public VagrantHeartPhase1CardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(() => VagrantDeck).Condition = () => Card.IsInPlay;
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(() => VagrantDeck).Condition = () => Card.IsInPlay && VagrantDeck != null;
             SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
 
             AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
             Card.UnderLocation.OverrideIsInPlay = false;
         }
-
-        public override bool CanBeDestroyed => false;
 
         public override bool AskIfCardIsIndestructible(Card card)
         {
@@ -154,6 +152,10 @@ namespace Cauldron.TheInfernalChoir
             }
 
             var vagrantHero = Card.Location.OwnerTurnTaker;
+            if(vagrantHero is null)
+            {
+                yield break;
+            }
             while (amount > 0 && vagrantHero.Deck.NumberOfCards > 0 && Card.IsInPlayAndHasGameText)
             {
                 //Card.IsInPlayAndHasGameText to check that the Phase1 card hasn't been moved out of play.
