@@ -23,8 +23,6 @@ namespace Cauldron.TheInfernalChoir
             AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 
-        public override bool CanBeDestroyed => false;
-
         public override bool AskIfCardIsIndestructible(Card card)
         {
             if (card == Card)
