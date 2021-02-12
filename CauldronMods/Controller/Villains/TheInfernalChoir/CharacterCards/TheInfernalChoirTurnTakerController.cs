@@ -64,7 +64,7 @@ namespace Cauldron.TheInfernalChoir
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.ShuffleLocation(TurnTaker.Deck, null, CharacterCardController.GetCardSource());
+            coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: CharacterCardController.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
