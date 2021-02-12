@@ -34,21 +34,54 @@ namespace Cauldron.Terminus
             IEnumerator coroutine;
             List<SelectNumberDecision> selectNumberDecisions = new List<SelectNumberDecision>();
             int valueOfX;
+            TokenPool wrathPool = TerminusWrathPoolUtility.GetWrathPool(this);
+            int realMax;
 
-            // Remove X tokens from your wrath pool (up to 2). {Terminus} deals 1 target X+1 cold damage and regains X+1 HP.
-            coroutine = base.GameController.SelectNumber(DecisionMaker, SelectionType.RemoveTokens, 0, UpToAmount, storedResults: selectNumberDecisions, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            if(wrathPool == null)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                realMax = 0;
+            }
+            else if (wrathPool.CurrentValue < UpToAmount)
+            {
+                realMax = wrathPool.CurrentValue;
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                realMax = UpToAmount;
             }
 
-            if (selectNumberDecisions != null && selectNumberDecisions.Count() > 0)
+            if (realMax == 0)
             {
-                valueOfX = selectNumberDecisions.FirstOrDefault().SelectedNumber ?? 0;
+                string message;
+                if(wrathPool == null)
+                {
+                    message = "There is no wrath pool to remove tokens from.";
+                }
+                else
+                {
+                    message = $"There are no tokens in {wrathPool.Name} to remove.";
+                }
+                coroutine = GameController.SendMessageAction(message, Priority.Medium, GetCardSource());
+                valueOfX = 0;
+            }
+            else
+            {
+                // Remove X tokens from your wrath pool (up to 2). 
+                coroutine = base.GameController.SelectNumber(DecisionMaker, SelectionType.RemoveTokens, 0, realMax, storedResults: selectNumberDecisions, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                valueOfX = selectNumberDecisions.FirstOrDefault()?.SelectedNumber ?? 0;
+            }
+
+            if (valueOfX > 0)
+            {
                 coroutine = TerminusWrathPoolUtility.RemoveWrathTokens<GameAction>(this, valueOfX);
                 if (base.UseUnityCoroutines)
                 {
@@ -58,27 +91,30 @@ namespace Cauldron.Terminus
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-
-                coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), PlusColdDamage + valueOfX, DamageType.Cold, TargetCount, false, TargetCount, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                coroutine = base.GameController.GainHP(base.CharacterCard, PlusHP + valueOfX, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
             }
+
+            //{Terminus} deals 1 target X+1 cold damage 
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), PlusColdDamage + valueOfX, DamageType.Cold, TargetCount, false, TargetCount, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //and regains X+1 HP.
+            coroutine = base.GameController.GainHP(base.CharacterCard, PlusHP + valueOfX, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            
 
             yield break;
         }
@@ -115,7 +151,35 @@ namespace Cauldron.Terminus
                     break;
                 // Reveal the top 3 cards of a hero deck. Discard 2 of them and replace the other.
                 case 2:
-                    coroutine = UseIncapacitatedAbility3();
+                    Func<TurnTaker, List<LocationChoice>> AllDecksForTurnTaker = delegate (TurnTaker tt)
+                    {
+                        var decks = new List<LocationChoice>();
+                        decks.Add(new LocationChoice(tt.Deck));
+                        foreach(Location subdeck in tt.SubDecks)
+                        {
+                            if(subdeck.IsRealDeck)
+                            {
+                                decks.Add(new LocationChoice(subdeck));
+                            }
+                        }
+                        return decks;
+                    };
+                    List<LocationChoice> heroDecks = GameController.AllTurnTakers.Where(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()))
+                                                            .SelectMany(tt => AllDecksForTurnTaker(tt))
+                                                            .ToList();
+                    if(heroDecks.Count() == 0)
+                    {
+                        coroutine = GameController.SendMessageAction("There were no decks that could be chosen.", Priority.High, GetCardSource());
+                    }
+                    if(heroDecks.Count() == 1)
+                    {
+                        coroutine = Incap3RevealAndDiscard(heroDecks.FirstOrDefault().Location);
+                    }
+                    else
+                    {
+                        var locationDecision = new SelectLocationDecision(GameController, DecisionMaker, heroDecks, SelectionType.RevealCardsFromDeck, false, cardSource: GetCardSource());
+                        coroutine = GameController.SelectLocationAndDoAction(locationDecision, Incap3RevealAndDiscard);
+                    }
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -137,7 +201,7 @@ namespace Cauldron.Terminus
             List<DealDamageAction> dealDamageActions = new List<DealDamageAction>();
             Card hero;
 
-            coroutine = base.GameController.SelectHeroCharacterCard(DecisionMaker, SelectionType.DealDamageSelf, selectCardDecisions, true, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectHeroCharacterCard(DecisionMaker, SelectionType.DealDamageSelf, selectCardDecisions, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -150,7 +214,14 @@ namespace Cauldron.Terminus
             if (selectCardDecisions != null && selectCardDecisions.Count() > 0)
             {
                 hero = selectCardDecisions.FirstOrDefault().SelectedCard;
-                coroutine = base.DealDamage(hero, hero, 2, DamageType.Psychic, isIrreducible: false, optional: false, isCounterDamage: false, null, dealDamageActions);
+                if(hero == null)
+                {
+                    yield break;
+                }
+                var heroTTC = FindHeroTurnTakerController(hero.Owner.ToHero());
+                var previewDamage = new DealDamageAction(GetCardSource(), new DamageSource(GameController, hero), hero, 2, DamageType.Psychic);
+                var dealSelfDamage = new YesNoAmountDecision(GameController, heroTTC, SelectionType.DealDamageSelf, 2, action: previewDamage, associatedCards: new Card[] { hero }, cardSource: GetCardSource());
+                coroutine = GameController.MakeDecisionEvent(dealSelfDamage);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -160,9 +231,18 @@ namespace Cauldron.Terminus
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                if (DidDealDamage(dealDamageActions))
+                if (DidPlayerAnswerYes(dealSelfDamage))
                 {
-                    coroutine = base.DrawCards(base.FindHeroTurnTakerController(hero.Owner.ToHero()), 2);
+                    coroutine = base.DealDamage(hero, hero, 2, DamageType.Psychic, isIrreducible: false, optional: false, isCounterDamage: false, null, dealDamageActions);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                    coroutine = base.DrawCards(heroTTC, 2);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -176,17 +256,22 @@ namespace Cauldron.Terminus
 
             yield break;
         }
-
-        private IEnumerator UseIncapacitatedAbility3()
+        private IEnumerator Incap3RevealAndDiscard(Location deck)
         {
-            // Reveal the top 3 cards of a hero deck. Discard 2 of them and replace the other.
-            IEnumerator coroutine;
-            List<SelectCardDecision> selectCardDecisions = new List<SelectCardDecision>();
-            Card hero;
-            MoveCardDestination topDeck;
-            MoveCardDestination trash;
+            var deckDestination = new MoveCardDestination(deck);
+            MoveCardDestination trashDestination;
+            if(deck.IsSubDeck)
+            {
+                var subTrash = deck.OwnerTurnTaker.FindSubTrash(deck.Identifier);
+                trashDestination = new MoveCardDestination(subTrash);
+            }
+            else
+            {
+                trashDestination = new MoveCardDestination(deck.OwnerTurnTaker.Trash);
+            }
+            
 
-            coroutine = base.GameController.SelectHeroCharacterCard(DecisionMaker, SelectionType.RevealCardsFromDeck, selectCardDecisions, true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.RevealCardsFromTopOfDeck_DetermineTheirLocation(DecisionMaker, base.FindHeroTurnTakerController(deck.OwnerTurnTaker.ToHero()), deck, trashDestination, deckDestination, 3, 2, 1, responsibleTurnTaker: TurnTaker);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -194,23 +279,6 @@ namespace Cauldron.Terminus
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            if (selectCardDecisions != null && selectCardDecisions.Count() > 0)
-            {
-                hero = selectCardDecisions.FirstOrDefault().SelectedCard;
-                topDeck = new MoveCardDestination(hero.Owner.Deck);
-                trash = new MoveCardDestination(hero.Owner.Trash);
-
-                coroutine = base.RevealCardsFromTopOfDeck_DetermineTheirLocation(DecisionMaker, base.FindHeroTurnTakerController(hero.Owner.ToHero()), hero.Owner.Deck, topDeck, trash, 3, 1, 0);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
             }
             yield break;
         }

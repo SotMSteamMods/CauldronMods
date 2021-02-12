@@ -1379,7 +1379,7 @@ namespace CauldronTests
             AddTokensToPool(tokenPool, 3);
             SetHitPoints(terminus, 20);
             DecisionSelectFunctions = new int?[] { 0 };
-            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed, covenantOfWrath };
+            DecisionSelectCards = new Card[] { covenantOfWrath, motivationalCharge, ammoDrop, bringWhatYouNeed, covenantOfWrath };
 
             QuickTokenPoolStorage(tokenPool);
             QuickHPStorage(baron, terminus, legacy, bunker, scholar);
@@ -1415,7 +1415,7 @@ namespace CauldronTests
             SetHitPoints(terminus, 20);
             DecisionsYesNo = new bool[] { true };
             DecisionSelectFunctions = new int?[] { 0 };
-            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed, covenantOfWrath };
+            DecisionSelectCards = new Card[] { covenantOfWrath, motivationalCharge, ammoDrop, bringWhatYouNeed, covenantOfWrath };
 
             QuickTokenPoolStorage(tokenPool);
             QuickHPStorage(baron, terminus, legacy, bunker, scholar);
@@ -1451,7 +1451,7 @@ namespace CauldronTests
             SetHitPoints(terminus, 20);
             DecisionsYesNo = new bool[] { true, false };
             DecisionSelectFunctions = new int?[] { 1 };
-            DecisionSelectCards = new Card[] { terminus.CharacterCard, covenantOfWrath, legacy.CharacterCard, motivationalCharge, bunker.CharacterCard, ammoDrop, scholar.CharacterCard, bringWhatYouNeed, covenantOfWrath };
+            DecisionSelectCards = new Card[] { covenantOfWrath, motivationalCharge, ammoDrop, bringWhatYouNeed, covenantOfWrath };
 
             QuickTokenPoolStorage(tokenPool);
             QuickHPStorage(baron, terminus, legacy, bunker, scholar);

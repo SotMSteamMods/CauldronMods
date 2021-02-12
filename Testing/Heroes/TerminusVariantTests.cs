@@ -122,6 +122,36 @@ namespace CauldronTests
             QuickTokenPoolCheck(-2);
         }
 
+        [Test()]
+        public void TestMinistryOfStrategicScienceTerminusInnatePowerNotMoreThanExisting()
+        {
+            Assert.Ignore("Not sure how to make a test for this, but the log shows it works if you comment this assert.");
+            TokenPool tokenPool;
+            StartTestGame(MinistryOfStrategicScienceTerminus);
+
+            GoToUsePowerPhase(terminus);
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 1);
+
+            DecisionSelectNumber = 2;
+            DecisionSelectTarget = baron.CharacterCard;
+            SetHitPoints(terminus, 20);
+
+            //remove 0 or remove 1, should not be able to try to remove 2
+            AssertNumberOfChoicesInNextDecision(2, SelectionType.SelectNumeral);
+
+            QuickTokenPoolStorage(tokenPool);
+            QuickHPStorage(baron, terminus, legacy, bunker, scholar);
+            Assert.Catch<Exception>(new TestDelegate(() => UsePower(terminus)));
+            QuickTokenPoolCheck(0);
+            QuickHPCheckZero();
+
+            DecisionSelectNumber = 1;
+            UsePower(terminus.CharacterCard);
+            QuickHPCheck(-2, 2, 0, 0, 0);
+            QuickTokenPoolCheck(-1);
+        }
+
         #endregion Test Innate Power
 
         #region Test Incap Powers
@@ -136,6 +166,7 @@ namespace CauldronTests
 
             SetupIncapTest(MinistryOfStrategicScienceTerminus);
             DecisionSelectCards = new Card[] { legacy.CharacterCard };
+            DecisionYesNo = true;
 
             QuickHandStorage(legacy, bunker, scholar);
             QuickHPStorage(baron, legacy, bunker, scholar);
@@ -152,7 +183,7 @@ namespace CauldronTests
 
             SetupIncapTest(MinistryOfStrategicScienceTerminus);
             DecisionSelectCards = new Card[] { null };
-
+            DecisionYesNo = false;
             QuickHandStorage(legacy, bunker, scholar);
             QuickHPStorage(baron, legacy, bunker, scholar);
             cardsInDeck = legacy.TurnTaker.Deck.NumberOfCards;
@@ -160,6 +191,26 @@ namespace CauldronTests
             QuickHandCheck(0, 0, 0);
             QuickHPCheck(0, 0, 0, 0);
             AssertNumberOfCardsInDeck(legacy, cardsInDeck);
+        }
+        [Test()]
+        public void TestMinistryOfStrategicScienceTerminusIncap1DamagePrevented()
+        {
+            //Incap does not make the draws conditional on taking the damage
+
+            int cardsInDeck;
+
+            SetupIncapTest(MinistryOfStrategicScienceTerminus);
+            DecisionSelectCards = new Card[] { scholar.CharacterCard };
+            PlayCard("FleshToIron");
+            DecisionYesNo = true;
+
+            QuickHandStorage(legacy, bunker, scholar);
+            QuickHPStorage(baron, legacy, bunker, scholar);
+            cardsInDeck = scholar.TurnTaker.Deck.NumberOfCards;
+            base.UseIncapacitatedAbility(terminus, 0);
+            QuickHandCheck(0, 0, 2);
+            QuickHPCheck(0, 0, 0, 0);
+            AssertNumberOfCardsInDeck(scholar, cardsInDeck - 2);
         }
         /* 
          * Incap 2
@@ -170,12 +221,14 @@ namespace CauldronTests
         {
             SetupIncapTest(MinistryOfStrategicScienceTerminus);
             DecisionSelectCards = new Card[] { baron.CharacterCard };
-
+            Card traffic = PlayCard("TrafficPileup");
+            SetHitPoints(traffic, 5);
+            AssertNextDecisionChoices(new Card[] { baron.CharacterCard, traffic }, new Card[] { legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard });
             SetHitPoints(baron.CharacterCard, 20);
-
             QuickHPStorage(baron, legacy, bunker, scholar);
             UseIncapacitatedAbility(terminus, 1);
             QuickHPCheck(3, 0, 0, 0);
+            Assert.AreEqual(5, traffic.HitPoints);
         }
 
         /* 
@@ -197,7 +250,8 @@ namespace CauldronTests
             heavyPlating = PutOnDeck("HeavyPlating");
             upgradeMode = PutOnDeck("UpgradeMode");
 
-            DecisionSelectCards = new Card[] { bunker.CharacterCard, upgradeMode, heavyPlating, adhesiveFoamGrenade };
+            DecisionSelectCards = new Card[] { heavyPlating, adhesiveFoamGrenade, upgradeMode };
+            DecisionSelectLocation = new LocationChoice(bunker.TurnTaker.Deck);
             bunkerDeckCount = bunker.TurnTaker.Deck.NumberOfCards;
             bunkerTrashCount = bunker.TurnTaker.Trash.NumberOfCards;
 
