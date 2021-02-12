@@ -77,7 +77,7 @@ namespace Cauldron.Terminus
             IEnumerator coroutine;
 
             // Terminus deals 1 target 6 cold damage.
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.Card), ColdDamage, DamageType.Cold, TargetCount, false, TargetCount, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), ColdDamage, DamageType.Cold, TargetCount, false, TargetCount, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
