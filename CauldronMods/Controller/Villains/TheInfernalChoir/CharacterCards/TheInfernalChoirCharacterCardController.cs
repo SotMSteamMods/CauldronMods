@@ -34,6 +34,17 @@ namespace Cauldron.TheInfernalChoir
         {
             SpecialStringMaker.ShowIfSpecificCardIsInPlay(() => !Card.IsFlipped ? FindCard("VagrantHeartPhase1") : FindCard("VagrantHeartPhase2"));
             SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.").Condition = () => !Card.IsFlipped;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => Card.IsFlipped;
+
+            AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            if (card == Card && !Card.IsFlipped)
+                return true;
+
+            return base.AskIfCardIsIndestructible(card);
         }
 
         public override void AddSideTriggers()
@@ -52,7 +63,7 @@ namespace Cauldron.TheInfernalChoir
             }
             else
             {
-                AddSideTrigger(AddRedirectDamageTrigger(dda => dda.DamageSource.IsHero && IsVillainTarget(dda.Target) && Game.ActiveTurnTaker == TurnTaker, () => GameController.OrderTargetsByHighestHitPoints(c => c.IsHero, false, GetCardSource()).First()));
+                AddSideTrigger(AddTrigger((DealDamageAction dda) => dda.DamageSource.IsHero && IsVillainTarget(dda.Target) && Game.ActiveTurnTaker == TurnTaker, RedirectToHighestHero, TriggerType.RedirectDamage, TriggerTiming.Before));
                 AddSideTrigger(AddStartOfTurnTrigger(tt => tt == TurnTaker, pca => FlippedCardRemoval(pca), new[] { TriggerType.RemoveFromGame, TriggerType.PlayCard }));
                 AddSideTrigger(AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => FlippedRemovePlayedCards(pca), TriggerType.RemoveFromGame));
 
@@ -72,8 +83,6 @@ namespace Cauldron.TheInfernalChoir
         {
             return c != null && (c.DoKeywordsContain("ghost", evenIfUnderCard, evenIfFaceDown) || GameController.DoesCardContainKeyword(c, "ghost", evenIfUnderCard, evenIfFaceDown));
         }
-
-        public override bool CanBeDestroyed => !Card.IsFlipped;
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
@@ -176,7 +185,7 @@ namespace Cauldron.TheInfernalChoir
                         GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    coroutine = GameController.DestroyCards(httc, new LinqCardCriteria(c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && htt.CharacterCards.Contains(c)),
+                    coroutine = GameController.DestroyCards(httc, new LinqCardCriteria(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && htt.CharacterCards.Contains(c)),
                                 autoDecide: true,
                                 cardSource: GetCardSource());
                     if (UseUnityCoroutines)
@@ -191,7 +200,7 @@ namespace Cauldron.TheInfernalChoir
             }
 
             List<Card> playedCards = new List<Card>();
-            coroutine = DoActionToEachTurnTakerInTurnOrder(ttc => !ttc.IsIncapacitatedOrOutOfGame && !ttc.TurnTaker.IsEnvironment, ttc => GameController.PlayTopCardOfLocation(ttc, ttc.TurnTaker.Deck, cardSource: GetCardSource(), playedCards: playedCards, showMessage: true));
+            coroutine = DoActionToEachTurnTakerInTurnOrder(ttc => !ttc.IsIncapacitatedOrOutOfGame && !ttc.TurnTaker.IsEnvironment && GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource()), ttc => GameController.PlayTopCardOfLocation(ttc, ttc.TurnTaker.Deck, cardSource: GetCardSource(), playedCards: playedCards, showMessage: true));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -210,7 +219,7 @@ namespace Cauldron.TheInfernalChoir
 
         private IEnumerator FlippedRemovePlayedCards(GameAction action)
         {
-            var cards = FindCardsWhere((Card c) => !c.IsOutOfGame && Journal.GetCardPropertiesBoolean(c, "TheInfernalChoirRemoveFromGame") == true, visibleToCard: GetCardSource());
+            var cards = FindCardsWhere((Card c) => !c.IsOutOfGame && Journal.GetCardPropertiesBoolean(c, "TheInfernalChoirRemoveFromGame") != null && Journal.GetCardPropertiesBoolean(c, "TheInfernalChoirRemoveFromGame")  == true, visibleToCard: GetCardSource());
             var coroutine = GameController.MoveCards(TurnTakerController, cards, c => new MoveCardDestination(c.Owner.OutOfGame, showMessage: true), cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -225,6 +234,12 @@ namespace Cauldron.TheInfernalChoir
         private IEnumerator AdvancedRemoveTopCardOfDeck(PhaseChangeAction action)
         {
             var tt = action.ToPhase.TurnTaker;
+
+            if(!tt.Deck.HasCards)
+            {
+                yield break;
+            }
+
             var coroutine = GameController.MoveCard(TurnTakerController, tt.Deck.TopCard, tt.OutOfGame, showMessage: true, actionSource: action, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -233,6 +248,34 @@ namespace Cauldron.TheInfernalChoir
             else
             {
                 GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        private IEnumerator RedirectToHighestHero(DealDamageAction dealDamage)
+        {
+          
+            List<Card> storedResults = new List<Card>();
+            IEnumerator coroutine2 = base.GameController.FindTargetWithHighestHitPoints(1, (Card card) => card.IsHero && base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), storedResults, dealDamage, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            if (storedResults.Count() > 0)
+            {
+                Card newTarget = storedResults.FirstOrDefault();
+                IEnumerator coroutine3 = base.GameController.RedirectDamage(dealDamage, newTarget, isOptional: false, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine3);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine3);
+                }
             }
         }
     }

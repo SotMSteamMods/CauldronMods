@@ -118,6 +118,57 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestTheInfernalChoir_Front_Indestructible()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            StartGame();
+
+            PrintSpecialStringsForCard(choir.CharacterCard);
+            DestroyCard(choir.CharacterCard, legacy.CharacterCard);
+            AssertNotGameOver();
+            AssertInPlayArea(choir, choir.CharacterCard);
+        }
+
+        [Test()]
+        public void TestTheInfernalChoir_Flipped_NotIndestructible()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis" }, advanced: true);
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            GetCard("BaneOfIron", 0);
+            GoToEndOfTurn(choir);
+
+            FlipCard(choir);
+            Card police = PlayCard("PoliceBackup");
+            PrintSpecialStringsForCard(choir.CharacterCard);
+            DealDamage(police, choir, 56, DamageType.Projectile, isIrreducible: true);
+            //DestroyCard(choir.CharacterCard, legacy.CharacterCard);
+            AssertGameOver();
+        }
+
+        [Test()]
+        public void TestTheInfernalChoir_Flipped_Redirect_Ambiguous()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis" }, advanced: true);
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            FlipCard(choir);
+
+            SetHitPoints(legacy.CharacterCard, 30);
+            SetHitPoints(haka.CharacterCard, 30);
+
+            DecisionSelectTarget = haka.CharacterCard;
+
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, writhe, mainstay, idealist, medico);
+            DealDamage(mainstay, choir, 5, DamageType.Melee);
+            QuickHPCheck(0, 0, -5, 0, 0, 0, 0);
+        }
+
+        [Test()]
         public void TestTheInfernalChoir_Front_EndOfTurnDamage()
         {
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis");
