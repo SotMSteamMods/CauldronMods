@@ -82,21 +82,21 @@ namespace Cauldron.DungeonsOfTerror
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if(DidSelectTurnTaker(storedResults))
+            if (DidSelectTurnTaker(storedResults))
             {
                 HeroTurnTakerController httc = FindHeroTurnTakerController(GetSelectedTurnTaker(storedResults).ToHero());
-                
+
                 //op1: play a card
                 var response1 = GameController.SelectAndPlayCardFromHand(httc, false, cardSource: GetCardSource());
                 var op1 = new Function(httc, "Play a card", SelectionType.PlayCard, () => response1);
 
                 //op2: draw a card
                 var response2 = DrawCard(hero: httc.HeroTurnTaker);
-                var op2 = new Function(httc, "Draw a card", SelectionType.PlayCard, () => response2);
+                var op2 = new Function(httc, "Draw a card", SelectionType.DrawCard, () => response2);
 
                 //op3: use a power
                 var response3 = GameController.SelectAndUsePower(httc, optional: false, cardSource: GetCardSource());
-                var op3 = new Function(httc, "Use a power", SelectionType.PlayCard, () => response3);
+                var op3 = new Function(httc, "Use a power", SelectionType.UsePower, () => response3);
 
                 //Execute
                 var options = new Function[] { op1, op2, op3 };
