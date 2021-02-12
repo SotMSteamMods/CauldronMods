@@ -1493,5 +1493,59 @@ namespace CauldronTests
 
         }
         #endregion Test Unusual Suspects
+
+        #region Test Borrowed Token Pools
+        [Test]
+        public void TestGuiseBorrowsImmortalCoil()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Guise", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card coil = PlayCard("ImmortalCoils");
+            PlayCard("LemmeSeeThat");
+
+
+            UsePower(coil);
+            AssertTokensInWrathPool(1);
+        }
+        [Test]
+        public void TestRepOfEarthNonTerminus()
+        {
+            Assert.Ignore("Representative of Earth does not work in test mode.");
+            SetupGameController("BaronBlade", "Haka", "Guise", "Legacy", "TheCelestialTribunal");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Terminus";
+            DecisionSelectFromBoxIdentifiers = new string[] { "Cauldron.MinistryOfStrategicScienceTeminus" };
+
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            SetHitPoints(haka, 20);
+            QuickHPStorage(baron, haka);
+            PlayCard("CalledToJudgement");
+            QuickHPCheck(-1, 1);
+        }
+        [Test]
+        public void TestRepOfEarthOtherTerminus()
+        {
+            Assert.Ignore("Representative of Earth does not work in test mode.");
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Guise", "Legacy", "TheCelestialTribunal");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Terminus";
+            DecisionSelectFromBoxIdentifiers = new string[] { "Cauldron.MinistryOfStrategicScienceTeminus" };
+
+            DecisionSelectTurnTaker = terminus.TurnTaker;
+            AddTokensToPool(WrathPool, 3);
+
+            DecisionSelectNumber = 2;
+
+            PlayCard("CalledToJudgement");
+
+            AssertTokensInWrathPool(1);
+        }
+        #endregion 
     }
 }

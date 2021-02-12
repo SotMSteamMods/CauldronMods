@@ -12,7 +12,29 @@ namespace Cauldron.Terminus
 	{
 		public static TokenPool GetWrathPool(CardController cardController)
         {
-			return cardController.CharacterCard.FindTokenPool("TerminusWrathPool");
+			//Check Character Card first
+			var prospect = cardController.CharacterCard.FindTokenPool("TerminusWrathPool");
+			if (prospect != null)
+			{
+				return prospect;
+			}
+
+			//If not, look for a "Terminus" TurnTaker and get their character card
+			var terminus = cardController.GameController.Game.HeroTurnTakers.Where(htt => htt.Identifier == "Terminus").FirstOrDefault();
+			if (terminus != null)
+			{
+				return terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+			}
+
+			//If not there, try the card itself (for Representative of Earth purposes)
+			prospect = cardController.CardWithoutReplacements.FindTokenPool("TerminusWrathPool");
+			if(prospect != null)
+            {
+				return prospect;
+            }
+
+			//If not, we have failed to find it - error handle!
+			return null;
 		}
 
 		public static IEnumerator AddWrathTokens(CardController cardController, int amountToAdd)
@@ -73,6 +95,20 @@ namespace Cauldron.Terminus
 			where TRemove : GameAction
 		{
 			IEnumerator coroutine;
+
+			if(GetWrathPool(cardController) == null)
+            {
+				coroutine = WrathPoolErrorMessage(cardController);
+				if (cardController.UseUnityCoroutines)
+				{
+					yield return cardController.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					cardController.GameController.ExhaustCoroutine(coroutine);
+				}
+				yield break;
+            }
 			List<Function> list = new List<Function>();
 			List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
 			SelectFunctionDecision selectFunction;
@@ -111,6 +147,19 @@ namespace Cauldron.Terminus
 			where TAdd : GameAction
 		{
 			IEnumerator coroutine;
+			if (GetWrathPool(cardController) == null)
+			{
+				coroutine = WrathPoolErrorMessage(cardController);
+				if (cardController.UseUnityCoroutines)
+				{
+					yield return cardController.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					cardController.GameController.ExhaustCoroutine(coroutine);
+				}
+				yield break;
+			}
 
 			coroutine = cardController.GameController.AddTokensToPool(GetWrathPool(cardController), amountToAdd, cardController.GetCardSource());
 			if (cardController.UseUnityCoroutines)
@@ -152,6 +201,19 @@ namespace Cauldron.Terminus
 			where TRemove : GameAction
 		{
 			IEnumerator coroutine;
+			if (GetWrathPool(cardController) == null)
+			{
+				coroutine = WrathPoolErrorMessage(cardController);
+				if (cardController.UseUnityCoroutines)
+				{
+					yield return cardController.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					cardController.GameController.ExhaustCoroutine(coroutine);
+				}
+				yield break;
+			}
 
 			coroutine = cardController.GameController.RemoveTokensFromPool(GetWrathPool(cardController), amountToRemove, storedResults, optional: optional, null, cardController.GetCardSource());
 			if (cardController.UseUnityCoroutines)
@@ -202,6 +264,20 @@ namespace Cauldron.Terminus
 		public static IEnumerator SendMessageWrathTokensAdded(CardController cardController, int numberAdded)
 		{
 			IEnumerator coroutine;
+			if (GetWrathPool(cardController) == null)
+			{
+				coroutine = WrathPoolErrorMessage(cardController);
+				if (cardController.UseUnityCoroutines)
+				{
+					yield return cardController.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					cardController.GameController.ExhaustCoroutine(coroutine);
+				}
+				yield break;
+			}
+
 			string message = "No tokens were added";
 
 			if (numberAdded == 1)
@@ -215,7 +291,7 @@ namespace Cauldron.Terminus
 					message = $"{numberAdded} tokens were added";
 				}
 			}
-
+			
 			message += $" to {GetWrathPool(cardController).Name}.";
 			coroutine = cardController.GameController.SendMessageAction(message, Priority.Medium, cardController.GetCardSource(), null, showCardSource: true);
 			if (cardController.UseUnityCoroutines)
@@ -233,6 +309,19 @@ namespace Cauldron.Terminus
 		public static IEnumerator SendMessageWrathTokensRemoved(CardController cardController, int numberRemoved, List<RemoveTokensFromPoolAction> removeTokensFromPoolActions)
 		{
 			IEnumerator coroutine;
+			if (GetWrathPool(cardController) == null)
+			{
+				coroutine = WrathPoolErrorMessage(cardController);
+				if (cardController.UseUnityCoroutines)
+				{
+					yield return cardController.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					cardController.GameController.ExhaustCoroutine(coroutine);
+				}
+				yield break;
+			}
 			string message = "No tokens were removed";
 
 			if (numberRemoved == 1)
@@ -264,6 +353,19 @@ namespace Cauldron.Terminus
 		public static IEnumerator SendMessageAboutInsufficientWrathTokens(CardController cardController, int numberRemoved, string suffix = null)
 		{
 			IEnumerator coroutine;
+			if (GetWrathPool(cardController) == null)
+			{
+				coroutine = WrathPoolErrorMessage(cardController);
+				if (cardController.UseUnityCoroutines)
+				{
+					yield return cardController.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					cardController.GameController.ExhaustCoroutine(coroutine);
+				}
+				yield break;
+			}
 			string message = "There were no tokens to remove";
 
 			if (numberRemoved == 1)
@@ -296,5 +398,9 @@ namespace Cauldron.Terminus
 			}
 		}
 
+		public static IEnumerator WrathPoolErrorMessage(CardController cardController)
+        {
+			return cardController.GameController.SendMessageAction("No appropriate Wrath Pool could be found.", Priority.High, cardController.GetCardSource());
+        }
 	}
 }
