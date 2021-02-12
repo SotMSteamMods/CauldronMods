@@ -51,7 +51,7 @@ namespace Cauldron.DungeonsOfTerror
 
             //op1: use a power
             var response1 = GameController.SelectAndUsePower(httc, optional: false, cardSource: GetCardSource());
-            var op1 = new Function(httc, "Use a power", SelectionType.PlayCard, () => response1);
+            var op1 = new Function(httc, "Use a power", SelectionType.UsePower, () => response1);
 
             //op2: play a card
             var response2 = GameController.SelectAndPlayCardFromHand(httc, false, cardSource: GetCardSource());
