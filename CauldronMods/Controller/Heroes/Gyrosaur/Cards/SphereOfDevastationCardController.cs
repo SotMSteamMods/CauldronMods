@@ -31,7 +31,7 @@ namespace Cauldron.Gyrosaur
 
             //{Gyrosaur} deals 1 target X+4 melee damage, where X is 4 times the number of cards discarded this way.",
             var damageStorage = new List<DealDamageAction>();
-            int damageAmount = (GetNumberOfCardsDiscarded(discardStorage) + 1) * 4;
+            int damageAmount = GetNumberOfCardsDiscarded(discardStorage) * 4;
             coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), damageAmount, DamageType.Melee, 1, false, 1, storedResultsDamage: damageStorage, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
