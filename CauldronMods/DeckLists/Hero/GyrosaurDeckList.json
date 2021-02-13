@@ -102,7 +102,7 @@
                 "Manipulate"
             ],
             "body": [
-                "When this card enters play, {Gyrosaur} regains 2HP. Then, reveal the top card of the environment deck and place it beneath this card.",
+                "When this card enters play, {Gyrosaur} regains 2 HP. Then, reveal the top card of the environment deck and place it beneath this card.",
                 "Cards beneath this one are not considered in play. When an environment card would enter play, you may first switch it with the card beneath this one."
             ],
             "flavorQuotes": [

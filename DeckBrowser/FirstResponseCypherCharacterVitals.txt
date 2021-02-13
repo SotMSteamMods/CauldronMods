@@ -1,0 +1,8 @@
+Alias: Karl Schrader
+Age: 26
+Occupation: Scientist
+Birthplace: Germany
+Power Source: Science, Nanites
+Group Affiliation: First Response
+First Appearance: First Response #1
+Set: Experimental

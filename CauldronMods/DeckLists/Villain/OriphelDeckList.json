@@ -21,7 +21,7 @@
 				"Malichae"
 			],
 			"setup": [
-				"At the start of the game, put {Oriphel}'s villain character cards into play, 'Shardwalker' side up.",
+				"At the start of the game, put {Jade}'s villain character cards into play, 'Shardwalker' side up.",
 				"Reveal cards from the top of the villain deck until {H - 2} guardians are revealed and put them into play. Shuffle the villain deck."
 			],
 			"gameplay": [
@@ -395,7 +395,7 @@
 				"If {Oriphel} is in play, destroy {H} hero ongoing and/or equipment cards. Play the top card of the villain deck."
 			],
 			"flavorQuotes": [{
-					"identifier": "TheStranger",
+					"identifier": "The Stranger",
 					"text": "What is she trying{BR}so desperately to find{BR}with that compass?"
 				},
 				{

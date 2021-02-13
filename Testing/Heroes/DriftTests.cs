@@ -96,6 +96,34 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDriftIncap()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, haka, 50, 0);
+            DealDamage(baron, bunker, 50, 0);
+            DealDamage(baron, scholar, 50, 0);
+            DealDamage(baron, drift, 50, 0);
+            AssertGameOver();
+        }
+
+        [Test()]
+        public void TestDriftResurrect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "TheTempleOfZhuLong");
+            StartGame();
+
+            DealDamage(baron, drift, 50, 0);
+            AssertIncapacitated(drift);
+
+            PlayCard("RitesOfRevival");
+            GoToEndOfTurn(base.env);
+            AssertNotIncapacitatedOrOutOfGame(drift);
+            AssertNotFlipped(GetShiftTrack());
+        }
+
+        [Test()]
         public void TestDriftCharacter_InnatePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -207,25 +235,14 @@ namespace CauldronTests
             QuickHandCheckZero();
         }
 
-        [Test]
-        public void TestShiftTrackSetup()
+        [Test, Sequential]
+        //[Ignore("Picking a ShiftTrack by Identifier always returns the first one. Testing in game confirms this works.")]
+        public void TestShiftTrackSetup([Values(1, 2, 3, 4)] int decision)
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + 1, false).FirstOrDefault();
+            Card track = FindCardsWhere((Card c) => c.Identifier == "Base" + ShiftTrack + decision, false).FirstOrDefault();
             DecisionSelectCard = track;
-            StartGame();
-
-            Assert.AreEqual(1, CurrentShiftPosition());
-            AssertIsInPlay(track);
-        }
-
-        [Test, Sequential, Ignore("Picking a ShiftTrack by Identifier always returns the first one. Testing in game confirms this works.")]
-        public void TestShiftTrackSetup_Other([Values(2, 3, 4)] int decision)
-        {
-            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            Card track = FindCardsWhere((Card c) => c.Identifier == ShiftTrack + decision, false).FirstOrDefault();
-            DecisionSelectCard = track;
-            StartGame();
+            StartGame(false);
 
             Assert.AreEqual(decision, CurrentShiftPosition());
             AssertIsInPlay(track);
@@ -716,6 +733,24 @@ namespace CauldronTests
             AssertTrackPosition(4);
             QuickHPCheck(0);
         }
+        [Test]
+        public void TestFutureFocus_ShiftsNotCarriedOver()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard(FutureFocus);
+            DecisionYesNo = true;
+            QuickHPStorage(apostate);
+
+            DealDamage(apostate, drift, 1, DamageType.Melee);
+            AssertTrackPosition(4);
+            QuickHPCheck(-3);
+
+            GoToStartOfTurn(drift);
+            DealDamage(apostate, drift, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
 
         [Test]
         public void TestImposedSynchronization_Future()
@@ -817,7 +852,37 @@ namespace CauldronTests
             PlayCard(knight1);
             AssertInTrash(knight0);
         }
+        [Test]
+        public void TestKnightsHeritage_ShiftOptional()
+        {
+            SetupGameController(new string[] { "Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
 
+            IEnumerable<Card> knights = FindCardsWhere(c => c.Identifier == KnightsHeritage).Take(2);
+            Card fFocus = PutInHand(FutureFocus);
+            Card second = PutInHand(MakeEverySecondCount);
+            Card knight0 = PutInHand(knights.First());
+            Card knight1 = PutInHand(knights.Last());
+            DecisionSelectCards = new Card[] { fFocus, second };
+
+            GoToShiftPosition(2);
+            PlayCard(knight0);
+            //...and play up to 2 ongoing cards from your hand.
+            AssertIsInPlay(fFocus, second);
+            DestroyCards(fFocus, second);
+
+            //The first time {Drift} is dealt damage each turn, you may shift {DriftL} or {DriftR}.
+            int trackPosition = CurrentShiftPosition();
+            DecisionDoNotSelectFunction = true;
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition);
+
+            //Only first time
+            trackPosition = CurrentShiftPosition();
+            AssertNoDecision();
+            DealDamage(apostate, drift, 2, DamageType.Melee);
+            AssertTrackPosition(trackPosition);
+        }
         [Test]
         public void TestMakeEverySecondCount()
         {

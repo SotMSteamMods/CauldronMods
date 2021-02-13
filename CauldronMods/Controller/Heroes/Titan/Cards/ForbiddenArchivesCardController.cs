@@ -18,7 +18,7 @@ namespace Cauldron.Titan
         {
             List<DrawCardAction> storedResults = new List<DrawCardAction>();
             //Each player may draw 2 cards now.
-            IEnumerator coroutine = base.GameController.YesNoDoAction_ManyPlayers((HeroTurnTakerController hero) => !hero.IsIncapacitatedOrOutOfGame, (HeroTurnTakerController hero) => this.YesNoDecisionMaker(hero), (HeroTurnTakerController hero, YesNoDecision decision) => YesAction(hero, decision, storedResults), selectionType: SelectionType.DrawExtraCard, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.YesNoDoAction_ManyPlayers((HeroTurnTakerController hero) => !hero.IsIncapacitatedOrOutOfGame, (HeroTurnTakerController hero) => this.YesNoDecisionMaker(hero), (HeroTurnTakerController hero, YesNoDecision decision) => YesAction(hero, decision, storedResults), selectionType: SelectionType.DrawCard, cardSource: base.GetCardSource());
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);
@@ -28,8 +28,8 @@ namespace Cauldron.Titan
                 this.GameController.ExhaustCoroutine(coroutine);
             }
 
-            var otherDrawingHeroes =  new List<HeroTurnTaker>{ };            
-            foreach(DrawCardAction draw in storedResults)
+            var otherDrawingHeroes = new List<HeroTurnTaker> { };
+            foreach (DrawCardAction draw in storedResults)
             {
                 if (draw.HeroTurnTaker != this.HeroTurnTaker && !otherDrawingHeroes.Contains(draw.HeroTurnTaker))
                 {
@@ -56,7 +56,7 @@ namespace Cauldron.Titan
 
         private YesNoDecision YesNoDecisionMaker(HeroTurnTakerController hero)
         {
-            return new YesNoDecision(base.GameController, hero, SelectionType.DrawExtraCard, cardSource: base.GetCardSource()); ;
+            return new YesNoDecision(base.GameController, hero, SelectionType.DrawExtraCard, cardSource: base.GetCardSource());
         }
 
         private IEnumerator YesAction(HeroTurnTakerController hero, YesNoDecision decision, List<DrawCardAction> storedDraw)

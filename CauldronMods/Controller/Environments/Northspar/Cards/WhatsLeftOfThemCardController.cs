@@ -69,49 +69,6 @@ namespace Cauldron.Northspar
             yield break;
         }
 
-        private IEnumerator SearchForWaypoints()
-        {
-            if (base.TurnTaker.Deck.Cards.Any((Card c) => base.IsWaypoint(c)) || base.TurnTaker.Trash.Cards.Any((Card c) => base.IsWaypoint(c)))
-            {
-                // Search the environment deck and trash for a First, Second, or Third Waypoint card and put it into play...
-                IEnumerable<Card> choices = TurnTaker.Deck.Cards.Concat(TurnTaker.Trash.Cards);
-                LinqCardCriteria criteria = new LinqCardCriteria((Card c) => base.IsWaypoint(c), "waypoint");
-                IEnumerator coroutine = GameController.SelectAndPlayCard(base.DecisionMaker, choices.Where((Card c) => base.IsWaypoint(c)), isPutIntoPlay: true, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
 
-            }
-            else
-            {
-                IEnumerator coroutine2 = base.GameController.SendMessageAction("There are no Waypoints in the deck or trash!", Priority.Medium, GetCardSource(), null, showCardSource: true);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine2);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine2);
-                }
-            }
-
-            // then shuffle the deck...
-            IEnumerator coroutine3 = base.ShuffleDeck(base.DecisionMaker, base.TurnTaker.Deck);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine3);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine3);
-            }
-
-            yield break;
-        }
     }
 }

@@ -12,7 +12,6 @@ namespace Cauldron.Drift
     {
         public ThroughTheBreachDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => "Drift is at position " + base.CurrentShiftPosition());
             base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(1) != null, () => "The card at position 1 is " + this.GetBreachedCard(1).Title, () => "There is no card at position 1");
             base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(2) != null, () => "The card at position 2 is " + this.GetBreachedCard(2).Title, () => "There is no card at position 2");
             base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(3) != null, () => "The card at position 3 is " + this.GetBreachedCard(3).Title, () => "There is no card at position 3");

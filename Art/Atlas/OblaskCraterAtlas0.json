@@ -1,0 +1,156 @@
+{"frames": {
+
+"FreshTracks.png":
+{
+	"frame": {"x":0,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"GameTrail.png":
+{
+	"frame": {"x":259,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"GentleTransport.png":
+{
+	"frame": {"x":518,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"IndustriousHulk.png":
+{
+	"frame": {"x":0,"y":191,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"InscrutableEcology.png":
+{
+	"frame": {"x":259,"y":191,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"InvasiveGrowth.png":
+{
+	"frame": {"x":518,"y":191,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"MetalScavenger.png":
+{
+	"frame": {"x":0,"y":382,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"MoonWatcher.png":
+{
+	"frame": {"x":259,"y":382,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"OblaskCraterDeckBack.png":
+{
+	"frame": {"x":518,"y":382,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"OblaskObjectY3A.png":
+{
+	"frame": {"x":697,"y":382,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"OpenGround.png":
+{
+	"frame": {"x":0,"y":641,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"PlatedGiant.png":
+{
+	"frame": {"x":259,"y":641,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"ShadowOfOblask.png":
+{
+	"frame": {"x":518,"y":641,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"SwarmOfFangs.png":
+{
+	"frame": {"x":0,"y":832,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"UnknownHerds.png":
+{
+	"frame": {"x":259,"y":832,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"UnseenTerror.png":
+{
+	"frame": {"x":518,"y":832,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "OblaskCraterAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1f3b172f148c86329f711e1194c24a3f:7ce2ba0746f293cbce311bac0f0fcdcd:6dc6aec214269802e8e908768f5d30bc$"
+}
+}

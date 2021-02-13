@@ -81,7 +81,7 @@ namespace Cauldron.CatchwaterHarbor
                     IEnumerable<string> keywords = GameController.GetAllKeywords(discardedCard);
                     Func<Card, bool> cardCriteria = (Card c) => GameController.GetAllKeywords(c).Intersect(keywords).Any();
                     var ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt != httc.TurnTaker && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
-                    coroutine = base.GameController.SelectTurnTakersAndDoAction(DecisionMaker, ttCriteria, SelectionType.DiscardCard, (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), additionalCriteria: cardCriteria, cardSource: GetCardSource()), associatedCards: list, cardSource: GetCardSource());
+                    coroutine = base.GameController.SelectTurnTakersAndDoAction(DecisionMaker, ttCriteria, SelectionType.DiscardCard, (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), additionalCriteria: cardCriteria, cardSource: GetCardSource()), allowAutoDecide: true, associatedCards: list, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

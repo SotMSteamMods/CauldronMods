@@ -42,7 +42,7 @@ namespace Cauldron.Titan
         public override void AddTriggers()
         {
             //The first time that target deals damage each turn, it deals itself 1 fire damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.Card == base.GetCardThisCardIsNextTo() && !base.IsPropertyTrue(FirstTimeDealingDamage, null), this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && action.DamageSource.Card == base.GetCardThisCardIsNextTo() && !base.IsPropertyTrue(FirstTimeDealingDamage, null), this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             //If that target leaves play, destroy this card.
             base.AddIfTheTargetThatThisCardIsNextToLeavesPlayDestroyThisCardTrigger();

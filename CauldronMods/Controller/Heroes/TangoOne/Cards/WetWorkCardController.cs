@@ -64,7 +64,6 @@ namespace Cauldron.TangoOne
                 numberOfCards: CardsToMoveFromTrash,
                 isOptional: false,
                 requiredDecisions: CardsToMoveFromTrash,
-                allowAutoDecide: true,
                 cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectCardsAndDoAction(scsd, scd => GameController.MoveCard(decisionMaker, scd.SelectedCard, turnTaker.Deck, cardSource: GetCardSource()), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)

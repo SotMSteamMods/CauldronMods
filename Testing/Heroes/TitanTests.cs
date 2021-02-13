@@ -357,6 +357,23 @@ namespace CauldronTests
             DestroyCard(omnitron.CharacterCard);
             AssertInTrash(imm);
         }
+        [Test()]
+        public void TestImmolateNoDamageDealt()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("Immolate");
+            PlayCard("TaMoko");
+
+            QuickHPStorage(omnitron, titan, haka);
+            DealDamage(omnitron, haka, 1, DamageType.Melee);
+            QuickHPCheckZero();
+            DealDamage(omnitron, titan, 1, DamageType.Melee);
+            QuickHPCheck(-1, -1, 0);
+            DealDamage(omnitron, haka, 2, DamageType.Melee);
+            QuickHPCheck(0, 0, -1);
+        }
 
         [Test()]
         public void TestJuggernautStrike()

@@ -20,7 +20,7 @@ namespace CauldronTests
 
         private readonly DamageType DTM = DamageType.Melee;
         private Card MDP => GetCardInPlay("MobileDefensePlatform");
-        
+
         #endregion
         [Test]
         public void TestEchelonLoads()
@@ -41,7 +41,7 @@ namespace CauldronTests
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             StartGame();
 
-            AssertHasKeyword("tactic", new []
+            AssertHasKeyword("tactic", new[]
             {
                 "AdvanceAndRegroup",
                 "BreakThrough",
@@ -133,10 +133,10 @@ namespace CauldronTests
             AssertInTrash(tactic);
             QuickHandCheck(gain);
         }
-        
+
         [Test]
         public void TestNonExtensibleTacticSelfDestroy([Values("AdvanceAndRegroup", "BreakThrough")] string tacticID)
-        {        
+        {
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             StartGame();
 
@@ -420,7 +420,7 @@ namespace CauldronTests
             AssertInTrash(wayin);
             QuickHPCheck(1, 1, 1, 1, 0);
         }
-        
+
         [Test]
         public void TestFirstResponderReturnTactics()
         {
@@ -460,7 +460,7 @@ namespace CauldronTests
 
         }
         [Test]
-        public void TestFirstResponderDoNothing()        
+        public void TestFirstResponderDoNothing()
         {
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
             StartGame();
@@ -574,6 +574,21 @@ namespace CauldronTests
 
             //only once
             DealDamage(MDP, ra, 1, DTM);
+            QuickHPCheck(-1, 0, 0);
+        }
+        [Test]
+        public void TestOverwatch_NonHeroDamageSource()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card overwatch = PlayCard("Overwatch");
+            UsePower(overwatch);
+
+            //Only if Non-Hero deals the damage
+            QuickHPStorage(ra, legacy, baron);
+            DealDamage(legacy, ra, 1, DTM);
             QuickHPCheck(-1, 0, 0);
         }
         [Test]
@@ -858,19 +873,19 @@ namespace CauldronTests
 
             int damage = numDestroys;
             //-1 tests that the damage is optional
-            if(numDestroys == -1)
+            if (numDestroys == -1)
             {
                 DecisionSelectCards = new Card[] { null, echelon.CharacterCard };
                 damage = 0;
                 numDestroys = 1;
             }
 
-            for(int i = 0; i < numDestroys; i++)
+            for (int i = 0; i < numDestroys; i++)
             {
                 PlayCard(advance);
                 DestroyCard(advance);
             }
-            
+
             QuickHPStorage(baron);
             GoToEndOfTurn(echelon);
             QuickHPCheck(-damage);

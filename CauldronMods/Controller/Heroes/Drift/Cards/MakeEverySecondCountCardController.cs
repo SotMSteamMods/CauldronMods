@@ -26,9 +26,14 @@ namespace Cauldron.Drift
 
         private IEnumerator ShiftResponse(ModifyTokensAction action)
         {
+            SelectionType type = SelectionType.ReduceNextDamageTaken;
+            if (action is AddTokensToPoolAction)
+            {
+                type = SelectionType.IncreaseNextDamage;
+            }
             //...select a hero target. 
             List<SelectTargetDecision> targetDecision = new List<SelectTargetDecision>();
-            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText)), targetDecision, selectionType: SelectionType.ReduceNextDamageTaken, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText)), targetDecision, selectionType: type, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

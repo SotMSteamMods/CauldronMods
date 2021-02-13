@@ -132,6 +132,17 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMenagerieFrontCannotPlayCards()
+        {
+            SetupGameController("Cauldron.Menagerie", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("TakeDown");
+            GoToEndOfTurn(legacy);
+            AssertNumberOfCardsAtLocation(menagerie.TurnTaker.Revealed, 0);
+        }
+
+        [Test()]
         public void TestMenagerieFrontEnclosureDestroyActionLeavesPlay()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -974,8 +985,8 @@ namespace CauldronTests
             //When this card enters play, place the top card of the villain deck beneath it face down and destroy {H - 2} hero ongoing cards.
             Card sphere = PlayCard("SecuritySphere");
             AssertNumberOfCardsAtLocation(sphere.UnderLocation, 1);
-            AssertInTrash(flak);
-            AssertIsInPlay(mode);
+            AssertIsInPlay(flak);
+            AssertInTrash(mode);
 
             //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks.
             SetHitPoints(bunker, 17);

@@ -18,6 +18,15 @@
             "powers": [
                 "{Terminus} deals herself 2 cold damage and 1 target 3 cold damage."
             ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Terminus's Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
+            ],
             "icons": [
                 "HasPower",
                 "DealDamageCold"
@@ -31,7 +40,12 @@
                 "Each hero may use a power printed on one of their non-character cards. Then destroy any card whose power was used this way.",
                 "Each target regains 1 HP."
             ],
-            "flippedIcons": [],
+            "flippedIcons": [
+                "PlayCardNow",
+                "UsePowerNow",
+                "Destroy",
+                "GainHP"
+            ],
             "openingLines": {
                 "default": "Judgment time.",
                 "TheInfernalChoirCharacter": "I've been on the wrong side of the tracks long enough. And my punishment is to deal with the likes of you."
@@ -48,6 +62,7 @@
             "icons": [
                 "CannotGainHP",
                 "CannotDealDamage",
+                "HasPower",
                 "DealDamageCold"
             ],
             "body": "A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.",
@@ -71,6 +86,7 @@
             ],
             "icons": [
                 "RemoveTokens",
+                "HasPower",
                 "DealDamageCold",
                 "DestroySelf"
             ],
@@ -150,11 +166,12 @@
             ],
             "icons": [
                 "CounterDamage",
+                "RedirectDamage",
                 "StartOfTurnAction",
                 "RemoveFromGame"
             ],
             "body": [
-                "Whenever {Terminus} is dealt damage by a non-hero target, she deals that target 2 melee damage. If Stained Badge is not in play, redirect damage dealt by non-hero targets to {Terminus}.",
+                "Whenever {Terminus} is dealt damage by a non-hero target, she may deal that target 2 melee damage. If Stained Badge is not in play, you may redirect damage dealt by non-hero targets to {Terminus}.",
                 "At the start of your turn, remove this card from the game."
             ],
             "flavorQuotes": [
@@ -180,7 +197,7 @@
             ],
             "body": [
                 "This card is indestructible. If another Memento would enter play, instead remove it from the game and increase damage dealt by {Terminus} by 1.",
-                "Whenever {Terminus} destroys a card, add 2 tokens to your Wrath pool and she regains 1HP."
+                "Whenever {Terminus} destroys a card, add 2 tokens to your Wrath pool and she regains 1 HP."
             ],
             "flavorText": "The bullet that should{BR}have killed Tang Daiyu became a{BR}powerful weapon against the ghosts{BR}she was tasked with hunting."
         },
@@ -275,7 +292,7 @@
                 "AddTokens"
             ],
             "body": [
-                "You may put a target from the villain trash into play. If that target has more than 5HP, reduce its current HP to 5. That target deals up to 2 other targets 5 infernal damage each.",
+                "You may put a target from the villain trash into play. If that target has more than 5 HP, reduce its current HP to 5. That target deals up to 2 other targets 5 infernal damage each.",
                 "If no target enters play this way, add 5 tokens to your Wrath pool."
             ],
             "flavorQuotes": [
@@ -407,7 +424,7 @@
                 "AddTokens"
             ],
             "body": [
-                "This card and {Terminus} are indestructible. If another Memento would enter play, instead remove it from the game. If all other heroes are incapacitated, the heroes lose.",
+                "This card and {Terminus} are indestructible unless all other heros are incapacitated. If another Memento would enter play, instead remove it from the game.",
                 "At the end of your turn, add 1 token to your Wrath pool if {Terminus} has 1 or more HP."
             ],
             "flavorQuotes": [
@@ -483,7 +500,7 @@
             ],
             "body": [
                 "When this card enters play, put a one-shot from your trash into play.",
-                "At the end of your turn, you may remove 3 tokens from your Wrath pool. If you do, {Terminus} regains 2HP or destroys 1 ongoing card."
+                "At the end of your turn, you may remove 3 tokens from your Wrath pool. If you do, {Terminus} regains 2 HP or destroys 1 ongoing card."
             ],
             "flavorQuotes": [
                 {
@@ -518,7 +535,7 @@
             "flavorReference": "Terminus, Guilty Metal #7"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "TerminusCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceTerminusCharacter",
@@ -533,6 +550,15 @@
             "character": true,
             "powers": [
                 "Remove X tokens from your wrath pool (up to 2). {Terminus} deals 1 target X+1 cold damage and regains X+1 HP."
+            ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Terminus's Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
             ],
             "icons": [
                 "HasPower",
@@ -576,6 +602,15 @@
             "character": true,
             "powers": [
                 "Play a card. {Terminus} deals herself 2 cold damage."
+            ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Terminus's Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
             ],
             "icons": [
                 "HasPower",

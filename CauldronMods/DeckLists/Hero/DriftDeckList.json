@@ -241,7 +241,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TangoOne",
+                    "identifier": "Tango One",
                     "text": "Those ghouls again?"
                 },
                 {
@@ -454,7 +454,7 @@
         {
             "identifier": "ResourcefulDaydreamer",
             "count": 4,
-            "title": "Resource Daydreamer",
+            "title": "Resourceful Daydreamer",
             "keywords": [
                 "one-shot"
             ],
@@ -475,7 +475,7 @@
                     "text": "She's people-watching."
                 },
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "Where are the people?"
                 }
             ],
@@ -542,7 +542,7 @@
             "icons": [
                 "DealDamagePsychic"
             ],
-            "body": "Whenever you shift from {Past} to {Future} or from {Future} to {Future}, {Drift} may deal 1 other target and herself 1 psychic damage.",
+            "body": "Whenever you shift from {Past} to {Future} or from {Future} to {Past}, {Drift} may deal 1 other target and herself 1 psychic damage.",
             "flavorQuotes": [
                 {
                     "identifier": "Drift",
@@ -671,10 +671,10 @@
         },
         {
             "identifier": "DualShiftTrack2",
-            "sharedIdentifier": "ShiftTrack: Past",
+            "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "D1D2D4",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Past",
             "character": true,
             "isReal": false,
             "notsetup": [
@@ -705,10 +705,10 @@
         },
         {
             "identifier": "DualShiftTrack3",
-            "sharedIdentifier": "ShiftTrack: Future",
+            "sharedIdentifier": "ShiftTrack",
             "backgroundColor": "D1D2D4",
             "count": 1,
-            "title": "Shift Track",
+            "title": "Shift Track: Future",
             "character": true,
             "isReal": false,
             "notsetup": [
@@ -912,7 +912,7 @@
             "incapacitatedAbilities": [
                 "One hero may draw a card now.",
                 "Two heroes may use a power now. If those powers deal damage, reduce that damage by 1.",
-                "Move 1 environment card from play to the of its deck."
+                "Move 1 environment card from play to the top of its deck."
             ],
             "flippedIcons": [
                 "DrawCardNow",
@@ -942,7 +942,8 @@
             "openingLines": {
                 "default": "What year is this again?",
                 "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
-                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger."
+                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
+                "FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
             },
             "complexity": 3
         },

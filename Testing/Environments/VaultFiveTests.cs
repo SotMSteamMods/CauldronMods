@@ -181,6 +181,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestByrgsNail_Skyscraper()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "SkyScraper", "Cauldron.VaultFive");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            SetHitPoints(legacy, 6);
+            SetHitPoints(ra, 7);
+            //a hero from its deck deals the 3 targets with the lowest HP 3 melee damage each
+            DecisionSelectTurnTaker = sky.TurnTaker;
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            IEnumerable<Card> inPlaySky = sky.TurnTaker.PlayArea.Cards.Where(c => c.IsCharacter);
+            AssertNextDecisionChoices(notIncluded: offToSideSky);
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, sky.CharacterCard);
+            Card artifact = PlayCard("ByrgsNail");
+            //lowest target is battalion, ra, legacy
+            QuickHPCheck(0, -3, -3, -3, 0, 0);
+        }
+
+        [Test()]
         public void TestDeeperIntoTheVault_Reveal()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.VaultFive");
@@ -358,6 +378,24 @@ namespace CauldronTests
             AssertInTrash(ra, artifact);
             AssertInPlayArea(ra, raToPlay);
             AssertInTrash(vault5, moment);
+        }
+
+        [Test()]
+        public void TestIssue813_MomentOfSanityGivesNonRealCardsPowers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "SkyScraper", "TheSentinels", "Cauldron.VaultFive");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Discard 1 Artifact card. If you do, play a card or destroy 1 environment card. Then destroy this card.
+            Card moment = PlayCard("MomentOfSanity");
+            Card instructions = sentinels.HeroTurnTaker.GetAllCards(realCardsOnly: false).Where(c => !c.IsRealCard).FirstOrDefault();
+            Assert.That(FindCardController(moment).AskIfContributesPowersToCardController(FindCardController(instructions)) == null, "Moment of Sanity granted a power to a non-real card!");
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            foreach(Card notSky in offToSideSky)
+            {
+                Assert.That(FindCardController(moment).AskIfContributesPowersToCardController(FindCardController(notSky)) == null, "Moment of Sanity granted a power to an off to the side card!");
+
+            }
         }
 
         [Test()]

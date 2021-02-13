@@ -22,8 +22,8 @@ namespace CauldronTests.Art.Environment
     [TestFixtureSource(typeof(EnvironmentArtSource))]
     public class EnvironmentArtTests : ArtTestBase
     {
-        public EnvironmentArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> startEndIdentifiers)
-            : base(name, kind, cardIdentifiers, characterIdentifiers, startEndIdentifiers)
+        public EnvironmentArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
+            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers)
         {
         }
 
@@ -60,7 +60,7 @@ namespace CauldronTests.Art.Environment
 
             foreach (var leftovers in files)
             {
-                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -117,7 +117,7 @@ namespace CauldronTests.Art.Environment
 
             foreach (var leftovers in atlas)
             {
-                Assert.Warn($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();
@@ -137,7 +137,7 @@ namespace CauldronTests.Art.Environment
 
             if (!atlas.Remove(_name + "DeckBack"))
             {
-                Assert.Warn($"{_name} - Atlas DeckBack Game Setup art is missing");
+                Warn($"{_name} - Atlas DeckBack Game Setup art is missing");
             }
 
             AssertNoWarnings();
@@ -164,7 +164,7 @@ namespace CauldronTests.Art.Environment
 
             foreach (var leftovers in files)
             {
-                Assert.Warn($"{_name}: file '{leftovers}' is not a reconized Environment scene name.");
+                WarnAboutUnused($"{_name}: file '{leftovers}' is not a reconized Environment scene name.");
             }
 
             AssertNoWarnings();
@@ -174,17 +174,20 @@ namespace CauldronTests.Art.Environment
         [Test]
         public void Endings()
         {
-            string expectedDirectory = Path.Combine(ArtPath, @"Endings\Environments\" + _name);
+            string expectedDirectory = Path.Combine(ArtPath, @"Endings\Environments\");
 
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath, "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory, "Ending-" + _name + "*.*").Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
 
             if (!files.Remove("Ending-" + _name))
             {
                 Warn($"{_name}: Ending Environment Scene Art is missing");
             }
+
+            if (_name == "CatchwaterHarbor")
+                files.Remove("Ending-" + _name + "EnvironmentDefeat");
 
             if (_name == "TheCybersphere")
                 files.Remove("Ending-" + _name + "EnvironmentDefeat");
@@ -194,7 +197,7 @@ namespace CauldronTests.Art.Environment
 
             foreach (var leftovers in files)
             {
-                Assert.Warn($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+                WarnAboutUnused($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
             }
 
             AssertNoWarnings();

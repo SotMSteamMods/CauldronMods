@@ -530,6 +530,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHarborCrane_SelfDamage()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Increase damage dealt by the target next to this card by 1.
+            Card crane = PlayCard("HarborCrane");
+            DealDamage(crane, crane, 1, DamageType.Melee);
+            AssertNotNextToCard(crane, crane);
+
+            //move crane next to ra
+            DealDamage(ra, crane, 1, DamageType.Melee);
+            AssertNextToCard(crane, ra.CharacterCard);
+
+            DealDamage(crane, crane, 1, DamageType.Melee);
+            AssertNextToCard(crane, ra.CharacterCard);
+        }
+
+        [Test()]
         public void TestHarborCrane_WhenDestroyed()
         {
             SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
@@ -568,7 +588,9 @@ namespace CauldronTests
             PlayCard("HarkinParishJr");
             QuickHandCheck(-1, -1, -1);
             AssertInTrash(hakaOngoing1);
+            AssertInHand(hakaOngoing2);
             AssertInTrash(raOngoing1);
+            AssertInHand(raOngoing2);
             AssertInTrash(bunkerOngoing1);
             AssertInHand(bunkerOngoing2);
 
@@ -577,19 +599,24 @@ namespace CauldronTests
         [Test()]
         public void TestHarkinParishJr_EntersPlay_TiedForHighest()
         {
-            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "SkyScraper", "Cauldron.CatchwaterHarbor");
+            SetupGameController(new[] { "BaronBlade", "Ra", "Bunker", "Haka", "SkyScraper", "Cauldron.CatchwaterHarbor" });
             StartGame();
             DestroyNonCharacterVillainCards();
             SetHitPoints(haka, sky.CharacterCard.HitPoints.Value);
             SetHitPoints(bunker, 10);
             Card hakaOngoing = PutInHand("Dominion");
+            PutInHand("SavageMana");
             Card raOngoing = PutInHand("FlameBarrier");
+            PutInHand("ImbuedFire");
+            Card ssOngoing = PutInHand("ThorathianMonolith");
+            PutInHand("Proportionist");
             Card bunkerOngoing1 = PutInHand("AmmoDrop");
             Card bunkerOngoing2 = PutInHand("TurretMode");
+            PutInHand("UpgradeMode");
 
             IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
             AssertNextDecisionChoices(notIncluded: offToSideSky);
-            DecisionSelectCards = new Card[] { haka.CharacterCard, hakaOngoing, raOngoing, bunkerOngoing1 };
+            DecisionSelectCards = new Card[] { haka.CharacterCard, hakaOngoing, raOngoing, bunkerOngoing1, ssOngoing };
             QuickHandStorage(ra, bunker, haka);
             //When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.
             PlayCard("HarkinParishJr");

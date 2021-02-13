@@ -56,7 +56,7 @@
             ],
             "body": [
                 "When this card is destroyed, it deals Teryx {H} toxic damage.",
-                "At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6HP."
+                "At the end of the environment turn, this card deals the non-environment target with the lowest HP 2 projectile damage. Then, if Submerge is in play, this card regains 6 HP."
             ],
             "flavorText": "The barnacles' size was{BR}proportionate to their host. But{BR}their temperment was far worse.",
             "hitpoints": 6
@@ -73,7 +73,7 @@
             "body": [
                 "When this card enters play, search the environment deck and trash for Teryx and put it into play, then shuffle the deck.",
                 "Increase damage dealt by villain cards by 1.",
-                "Destroy this card if Teryx regains 10HP in a single round."
+                "Destroy this card if Teryx regains 10 HP in a single round."
             ],
             "flavorText": "Apostate plunged his sword into{BR}the gap, and the island shook.{BR}“Your last journey is at hand!”"
         },
@@ -140,7 +140,7 @@
                 "GainHP"
             ],
             "body": [
-                "This card is indestructible. If this card reaches 0HP, the heroes lose.",
+                "This card is indestructible. If this card reaches 0 HP, the heroes lose.",
                 "At the end of the environment turn, the villain target with the highest HP deals Teryx {H + 2} energy damage.",
                 "Whenever a hero target would deal damage to Teryx, Teryx Instead regains that much HP."
             ],
