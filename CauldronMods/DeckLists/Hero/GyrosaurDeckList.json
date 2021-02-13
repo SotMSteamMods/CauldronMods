@@ -30,12 +30,11 @@
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
                 "One target with more than 10 HP deals itself 3 melee damage.",
-                "Select a non-character target. Increase damage dealt to that target by 1 until the start of your turn."
+                "Select a non-character target. Increase damage dealt to that target by 1 until the start of your next turn."
             ],
             "flippedIcons": [
                 "DrawCardNow",
-                "DealDamageMelee",
-                "IncreaseDamageDealt"
+                "DealDamageMelee"
             ],
             "openingLines": {
                 "default": "We're here to stop you! Although, I usually find stopping to be the hard part.",
@@ -128,7 +127,7 @@
             "body": [
                 "When this card enters play, you may play a card.",
                 "Increase damage dealt by {Gyrosaur} to non-hero targets by 1.",
-                "If you would draw a Crash card, play it instead. Then, destroy all copies of Hyperspin."
+                "If you would draw a Crash card, play it instead. Then, destroy all other copies of Hyperspin and this card."
             ],
             "flavorQuotes": [
                 {
@@ -247,6 +246,7 @@
             ],
             "icons": [
                 "EndOfTurnAction",
+                "DealDamagePsychic",
                 "HasPower",
                 "PlayCardNow",
                 "Manipulate"
@@ -491,6 +491,7 @@
             "icons": [
                 "HasPower",
                 "Discard",
+                "GainHP",
                 "DealDamageMelee",
                 "DrawCardNow"
             ],
