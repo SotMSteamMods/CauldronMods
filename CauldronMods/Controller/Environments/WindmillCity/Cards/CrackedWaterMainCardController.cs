@@ -17,8 +17,8 @@ namespace Cauldron.WindmillCity
 
         public override IEnumerator Play()
         {
-            //When this card enters play, it deals 1 Responder 2 melee damage.            
-            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, Card), 2, DamageType.Melee, 1, false, 1, additionalCriteria: (Card c) => IsResponder(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), cardSource: GetCardSource());
+            //When this card enters play, it deals 1 Responder 2 cold damage.            
+            IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, Card), 2, DamageType.Cold, 1, false, 1, additionalCriteria: (Card c) => IsResponder(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -33,7 +33,7 @@ namespace Cauldron.WindmillCity
         public override void AddTriggers()
         {
             //Reduce all damage dealt by non-environment cards by 1.
-            AddReduceDamageTrigger((Card c) => !c.IsEnvironment && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 1);
+            AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsCard && !dd.DamageSource.Card.IsEnvironment && GameController.IsCardVisibleToCardSource(dd.DamageSource.Card, GetCardSource()), dd => 1);
         }
     }
 }
