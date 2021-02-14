@@ -12,6 +12,7 @@ namespace Cauldron.TheInfernalChoir
     {
         public BaneOfIronCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => BuildHiddenHeartSpecialString()).Condition = () => IsVagrantHeartHiddenHeartInPlay() && GetPlayAreaContainingHiddenHeart() != null;
             SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => c.IsHero && (IsEquipment(c) || c.IsOngoing), "hero ongoing or equipment"));
         }
 

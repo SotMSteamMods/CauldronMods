@@ -967,12 +967,15 @@ namespace CauldronTests
             choir.DebugForceHeartPlayer = legacy;
             StartGame();
 
+
             DecisionAutoDecideIfAble = true;
             PlayCard("TakeDown");
             AddCannotDealDamageTrigger(choir, choir.CharacterCard);
 
             var card = PlayCard("BaneOfIron", 0, true);
             AssertInPlayArea(choir, card);
+
+            PrintSpecialStringsForCard(card);
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
             DealDamage(card, legacy, 1, DamageType.Melee);

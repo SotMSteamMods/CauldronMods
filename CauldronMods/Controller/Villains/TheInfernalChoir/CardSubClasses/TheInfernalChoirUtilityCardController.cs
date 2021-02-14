@@ -31,6 +31,14 @@ namespace Cauldron.TheInfernalChoir
             return tt == card.Location.OwnerTurnTaker;
         }
 
+        protected Location GetPlayAreaContainingHiddenHeart()
+        {
+            var card = FindVagrantHeartHiddenHeart();
+            if (card is null)
+                return null;
+            return card.Location;
+        }
+
         protected bool IsVagrantHeartHiddenHeartInPlay()
         {
             return FindVagrantHeartHiddenHeart() != null;
@@ -60,6 +68,12 @@ namespace Cauldron.TheInfernalChoir
         protected bool IsGhost(Card c, bool evenIfUnderCard = false, bool evenIfFaceDown = false)
         {
             return c != null && (c.DoKeywordsContain("ghost", evenIfUnderCard, evenIfFaceDown) || GameController.DoesCardContainKeyword(c, "ghost", evenIfUnderCard, evenIfFaceDown));
+        }
+
+        protected string BuildHiddenHeartSpecialString()
+        {
+            Card heart = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
+            return $"{heart.Title} is in {GetPlayAreaContainingHiddenHeart().GetFriendlyName()}.";
         }
     }
 }
