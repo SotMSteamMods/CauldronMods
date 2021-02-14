@@ -1190,11 +1190,12 @@ namespace CauldronTests
             QuickHPCheckZero();
             AssertNumberOfStatusEffectsInPlay(0);
         }
+
+        #region Test Sphere of Devastation
         [Test]
         public void TestSphereOfDevastationBelowThreshold()
         {
             Card wipeout; //Crash
-            Card indiscriminatePass; //Crash
             Card aMerryChase;
             Card policeBackup;
 
@@ -1206,38 +1207,25 @@ namespace CauldronTests
 
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            indiscriminatePass = PutInHand("IndiscriminatePass"); // Crash
             wipeout = PutInHand("Wipeout"); // Crash
             aMerryChase = PutInHand("AMerryChase");
             policeBackup = PutIntoPlay("PoliceBackup");
             QuickHandStorage(gyrosaur, legacy, ra);
 
             PlayCard("SphereOfDevastation");
-            QuickHPCheck(-8, 0, 0, 0); // 2 Crash cards discarded, should be 8 damage.
-            QuickHandCheck(-2, 0, 0);
-            AssertInTrash(indiscriminatePass);
-            AssertInTrash(wipeout);
-            AssertInHand(aMerryChase);
-            AssertIsInPlay(policeBackup);
-
-            wipeout = PutInHand("Wipeout"); // Crash
-            QuickHandUpdate();            
-
-            PlayCard("SphereOfDevastation");
-            QuickHPCheck(-4, 0, 0, 0); // Only 1 Crash card discarded, should be 4 damage.
+            QuickHPCheck(-8, 0, 0, 0); // 1 Crash card discarded, should be 8 damage.
             QuickHandCheck(-1, 0, 0);
             AssertInTrash(wipeout);
             AssertInHand(aMerryChase);
             AssertIsInPlay(policeBackup);
 
             PlayCard("SphereOfDevastation");
-            QuickHPCheck(0, 0, 0, 0);
+            QuickHPCheck(-4, 0, 0, 0);
         }
 
         [Test]
         public void TestSphereOfDevastationAboveThreshold()
         {
-            Card ricochet; // Crash
             Card wipeout; // Crash
             Card indiscriminatePass; // Crash
             Card aMerryChase;
@@ -1249,7 +1237,6 @@ namespace CauldronTests
 
             MoveAllCardsFromHandToDeck(gyrosaur);
 
-            ricochet = PutInHand("Ricochet");
             wipeout = PutInHand("Wipeout");
             indiscriminatePass = PutInHand("IndiscriminatePass");
             aMerryChase = PutInHand("AMerryChase");
@@ -1259,8 +1246,8 @@ namespace CauldronTests
             QuickHPStorage(baron, gyrosaur, legacy, ra);
             PlayCard("SphereOfDevastation");
             QuickHPCheck(-12, 0, 0, 0);
-            QuickHandCheck(-3, -1, -1);
-            AssertInTrash(ricochet, wipeout, indiscriminatePass, policeBackup);
+            QuickHandCheck(-2, -1, -1);
+            AssertInTrash(wipeout, indiscriminatePass, policeBackup);
             AssertInHand(aMerryChase);
         }
         [Test]
@@ -1284,6 +1271,7 @@ namespace CauldronTests
             AssertIsInPlay(police);
             AssertInHand(chase);
         }
+        #endregion Test Sphere of Devastation
 
         [Test]
         public void TestTerrifyingMomentumBelowThreshold()

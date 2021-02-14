@@ -17,6 +17,8 @@ namespace Cauldron.Gyrosaur
 
         public override IEnumerator Play()
         {
+            int valueOfX = 0;
+
             //"Discard all Crash cards in your hand. 
             var discardStorage = new List<DiscardCardAction>();
             IEnumerator coroutine = GameController.DiscardCards(DecisionMaker, new LinqCardCriteria((Card c) => c.Location == HeroTurnTaker.Hand && IsCrash(c), "crash"), discardStorage, cardSource: GetCardSource());
@@ -29,10 +31,10 @@ namespace Cauldron.Gyrosaur
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //{Gyrosaur} deals 1 target X+4 melee damage, where X is 4 times the number of cards discarded this way.",
+            //{Gyrosaur} deals 1 target X + 4 melee damage, where X is 4 times the number of cards discarded this way.",
             var damageStorage = new List<DealDamageAction>();
-            int damageAmount = GetNumberOfCardsDiscarded(discardStorage) * 4;
-            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), damageAmount, DamageType.Melee, 1, false, 1, storedResultsDamage: damageStorage, cardSource: GetCardSource());
+            valueOfX = GetNumberOfCardsDiscarded(discardStorage) * 4;
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), valueOfX + 4, DamageType.Melee, 1, false, 1, storedResultsDamage: damageStorage, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
