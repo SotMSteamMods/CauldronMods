@@ -12,7 +12,7 @@ namespace Cauldron.TheInfernalChoir
     {
         public NoWitnessesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP(1, H - 1);
+            SpecialStringMaker.ShowHeroCharacterCardWithLowestHP(numberOfTargets: H - 1);
         }
 
         public override IEnumerator Play()
@@ -30,7 +30,7 @@ namespace Cauldron.TheInfernalChoir
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            var turnTakers = result.Where(dda => dda.Target.IsHero && dda.Amount > 0 && dda.DidDealDamage).Select(dda => dda.Target.Owner).Distinct().ToList();
+            var turnTakers = result.Where(dda => dda.Target.IsHero && dda.Amount > 0 && dda.DidDealDamage && !dda.Target.IsIncapacitatedOrOutOfGame).Select(dda => dda.Target.Owner).Distinct().ToList();
             List<SelectTurnTakerDecision> decision = new List<SelectTurnTakerDecision>();
             coroutine = GameController.SelectTurnTaker(DecisionMaker, SelectionType.DrawCard, decision,
                             allowAutoDecide: true,
