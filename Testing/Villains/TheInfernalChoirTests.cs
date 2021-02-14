@@ -909,10 +909,14 @@ namespace CauldronTests
             var card = PlayCard("BaneOfEmbers", 0, true);
             AssertInPlayArea(choir, card);
 
+            PrintSpecialStringsForCard(card);
+
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
             DealDamage(legacy, card, 1, DamageType.Melee);
             QuickHPCheck(0, 0, 0, 0, -1);
+
+            PrintSpecialStringsForCard(card);
 
             //now immune
             QuickHPUpdate();
@@ -920,6 +924,8 @@ namespace CauldronTests
             QuickHPCheck(0, 0, 0, 0, 0);
 
             GoToStartOfTurn(legacy);
+
+            PrintSpecialStringsForCard(card);
 
             //now not
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
