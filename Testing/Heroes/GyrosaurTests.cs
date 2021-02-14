@@ -379,6 +379,14 @@ namespace CauldronTests
             QuickHandCheckZero();
             AssertNumberOfCardsInTrash(gyrosaur, numToDiscard);
         }
+
+        #region Test Hiddent Detour
+        /* 
+         * When this card enters play, {Gyrosaur} regains 2 HP. Then, reveal the top card of the environment 
+         * deck and place it beneath this card. 
+         * Cards beneath this one are not considered in play. When an environment card would enter play, you 
+         * may first switch it with the card beneath this one.
+         */
         [Test]
         public void TestHiddenDetourPlayCard()
         {
@@ -462,6 +470,34 @@ namespace CauldronTests
             AssertIsInPlay(hostage);
             AssertUnderCard(detour, traffic);
         }
+        [Test]
+        public void TestHiddenDetourWithPrisonRiot()
+        {
+            Card prisonRiot;
+            Card charr;
+            Card imprisonedRogue;
+            Card timeCrazedPrisoner;
+            Card hiddenDetour;
+
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "TheBlock");
+            StartGame();
+
+            imprisonedRogue = PutOnDeck("ImprisonedRogue");
+            charr = PutOnDeck("Char");
+            prisonRiot = PutOnDeck("PrisonRiot");
+            hiddenDetour = PlayCard("HiddenDetour");
+            AssertUnderCard(hiddenDetour, prisonRiot);
+
+            DecisionsYesNo = new bool[] { true, true, false };
+            timeCrazedPrisoner = PutIntoPlay("TimeCrazedPrisoner");
+
+            AssertIsInPlay(timeCrazedPrisoner);
+            AssertIsInPlay(imprisonedRogue);
+            AssertUnderCard(hiddenDetour, charr);
+        }
+
+        #endregion Test Hidden Detour
+
         [Test]
         public void TestHyperspinExtraPlayAndDamageBoost()
         {

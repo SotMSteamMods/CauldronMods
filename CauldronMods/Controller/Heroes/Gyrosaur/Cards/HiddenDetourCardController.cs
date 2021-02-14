@@ -10,12 +10,56 @@ namespace Cauldron.Gyrosaur
 {
     public class HiddenDetourCardController : GyrosaurUtilityCardController
     {
-        private bool IsReplacingPlay = false;
+        public List<Card> OwnSwappingCards { get; set; }
+
+        private List<Card> AllDetourSwapCards
+        {
+            get
+            {
+                List<Card> detourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText).ToList();
+                List<Card> swappingCards = new List<Card>();
+
+                foreach(Card detourCard in detourCards)
+                {
+                    var cardController = base.HeroTurnTakerController.FindCardController(detourCard);
+
+                    if (cardController != null && ((HiddenDetourCardController)cardController).OwnSwappingCards != null && ((HiddenDetourCardController)cardController).OwnSwappingCards.Count() > 0)
+                    {
+                        swappingCards.AddRange(((HiddenDetourCardController)cardController).OwnSwappingCards);
+                    }
+                }
+
+                return swappingCards;
+            }
+        }
+
+        private List<Card> AllDetourUnderCards
+        {
+            get
+            {
+                List<Card> detourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText).ToList();
+                List<Card> underCards = new List<Card>();
+
+                foreach (Card detourCard in detourCards)
+                {
+                    if (detourCard.UnderLocation.HasCards)
+                    {
+                        underCards.AddRange(detourCard.UnderLocation.Cards);
+                    }
+                }
+
+                return underCards;
+            }
+        }
+
+        //private bool IsReplacingPlay = false;
+
         public HiddenDetourCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             //Cards beneath this one are not considered in play.
             Card.UnderLocation.OverrideIsInPlay = false;
             SpecialStringMaker.ShowListOfCardsAtLocation(Card.UnderLocation, new LinqCardCriteria(c => true));
+            OwnSwappingCards = new List<Card>();
         }
 
         public override IEnumerator Play()
@@ -61,15 +105,23 @@ namespace Cauldron.Gyrosaur
         public override void AddTriggers()
         {
             //"When an environment card would enter play, you may first switch it with the card beneath this one."
-            AddTrigger((PlayCardAction pc) => Card.UnderLocation.HasCards && !IsReplacingPlay && pc.CardToPlay.IsEnvironment, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PlayCard }, TriggerTiming.Before, isActionOptional: true);
-            AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && !IsReplacingPlay && mc.CardToMove.IsEnvironment && !mc.Origin.IsInPlay && mc.Destination.IsInPlay && !mc.DoesNotEnterPlay, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PutIntoPlay }, TriggerTiming.Before, isActionOptional: true);
+            AddTrigger((PlayCardAction pc) => Card.UnderLocation.HasCards && !IsCardBeingReplaced(pc.CardToPlay) && pc.CardToPlay.IsEnvironment, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PlayCard }, TriggerTiming.Before, isActionOptional: true);
+            AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && !IsCardBeingReplaced(mc.CardToMove) && mc.CardToMove.IsEnvironment && !mc.Origin.IsInPlay && mc.Destination.IsInPlay && !mc.DoesNotEnterPlay, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PutIntoPlay }, TriggerTiming.Before, isActionOptional: true);
+
+            // Need this to cover issues with something like RevealCards_PutSomeIntoPlay_DiscardRemaining. Since cards under Hidden Detour do not have text, RevealCards_PutSomeIntoPlay_DiscardRemaining may remove
+            // them from under Hidden Detour once it finishes processing.
+            AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && IsCardUnderADetour(mc.CardToMove) && mc.CardToMove.IsEnvironment, PreventUnderCardRemoval, TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: true);
         }
 
+        // TODO: Store the card that is coming from under Hidden Detour. Don't allow that same card to trigger Hidden Detour again this turn. Remove IsReplacingPlay, it is preventing 
+        // cards like Prison Riot from triggering this affect more than once a turn.
         private IEnumerator AskToSwapCard(GameAction ga)
         {
-            IsReplacingPlay = true;
+            //IsReplacingPlay = true;
 
             Card cardEnteringPlay = null;
+            Card cardBeingSwapped = null;
+
             if(ga is PlayCardAction pc)
             {
                 cardEnteringPlay = pc.CardToPlay;
@@ -78,6 +130,7 @@ namespace Cauldron.Gyrosaur
             {
                 cardEnteringPlay = mc.CardToMove;
             }
+
             var storedYesNo = new List<YesNoCardDecision>();
             IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardToUnderCard, cardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
@@ -91,6 +144,9 @@ namespace Cauldron.Gyrosaur
 
             if(DidPlayerAnswerYes(storedYesNo))
             {
+                cardBeingSwapped = this.Card.UnderLocation.TopCard;
+                OwnSwappingCards.Add(cardEnteringPlay);
+                OwnSwappingCards.Add(cardBeingSwapped);
                 if(ga is PlayCardAction pc2)
                 {
                     coroutine = ReplaceWithPlayCardUnder(pc2);
@@ -99,6 +155,7 @@ namespace Cauldron.Gyrosaur
                 {
                     coroutine = ReplaceWithPutIntoPlayUnder(mc2);
                 }
+                OwnSwappingCards.Add(cardBeingSwapped);
 
                 if (base.UseUnityCoroutines)
                 {
@@ -108,9 +165,12 @@ namespace Cauldron.Gyrosaur
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+
+                OwnSwappingCards.Remove(cardEnteringPlay);
+                OwnSwappingCards.Remove(cardBeingSwapped);
             }
 
-            IsReplacingPlay = false;
+            //IsReplacingPlay = false;
             yield break;
         }
         private IEnumerator ReplaceWithPlayCardUnder(PlayCardAction pc)
@@ -249,6 +309,35 @@ namespace Cauldron.Gyrosaur
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        private IEnumerator PreventUnderCardRemoval(MoveCardAction moveCardAction)
+        {
+            IEnumerator coroutine;
+
+            if (moveCardAction.Destination.IsRealTrash && moveCardAction.Destination.IsEnvironment)
+            {
+                coroutine = CancelAction(moveCardAction); 
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            yield break;
+        }
+        private bool IsCardBeingReplaced(Card card)
+        {
+            return AllDetourSwapCards.Contains(card);
+        }
+
+        private bool IsCardUnderADetour(Card card)
+        {
+            return AllDetourUnderCards.Contains(card);
         }
     }
 }

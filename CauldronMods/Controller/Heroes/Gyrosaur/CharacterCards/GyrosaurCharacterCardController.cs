@@ -16,6 +16,18 @@ namespace Cauldron.Gyrosaur
         {
             ShowCrashInHandCount();
         }
+
+
+        // DEBUG CODE - Use AddStartOfGameTriggers in order to specify cards you want the character to start with. This allows
+        // us to debug specific cards live without having to wait until we draw the card at random.
+        public override void AddStartOfGameTriggers()
+        {
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "AMerryChase" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "GyroStabilizer" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "HiddenDetour" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
+            //base.AddTrigger<PhaseChangeAction>((pca) => pca.FromPhase == null, (pca) => base.SearchForCards(this.DecisionMaker, true, false, 1, 1, cardCriteria: new LinqCardCriteria((card) => "HiddenDetour" == card.Identifier), false, true, false, autoDecideCard: true), TriggerType.PhaseChange, TriggerTiming.After);
+        }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //"If you have at least 2 crash cards in your hand, {Gyrosaur} deals up to 3 targets 1 melee damage each. If not, draw a card."
@@ -26,6 +38,7 @@ namespace Cauldron.Gyrosaur
             Func<bool> showDecisionIf = delegate
             {
                 int trueCrash = TrueCrashInHand;
+                // Since Gyro Stabilizer may be in play, number of crash cards may be considered 1 higher than actually are in hand.
                 if(trueCrash == numCrashThreshold || trueCrash == numCrashThreshold - 1)
                 {
                     return true;
