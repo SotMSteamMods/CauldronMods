@@ -15,9 +15,12 @@ namespace Cauldron.TheInfernalChoir
             AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
         }
 
+        public readonly string GhostKeyword = "ghost";
+        public readonly string EquipmentKeyword = "equipment";
+
         public override bool AskIfCardContainsKeyword(Card card, string keyword, bool evenIfUnderCard = false, bool evenIfFaceDown = false)
         {
-            if (keyword == "ghost" && card.DoKeywordsContain("equipment", evenIfUnderCard, evenIfFaceDown))
+            if (keyword == GhostKeyword && card.DoKeywordsContain(EquipmentKeyword, evenIfUnderCard, evenIfFaceDown))
             {
                 return true;
             }
@@ -26,9 +29,9 @@ namespace Cauldron.TheInfernalChoir
 
         public override IEnumerable<string> AskForCardAdditionalKeywords(Card card)
         {
-            if (card.DoKeywordsContain("equipment", true, true))
+            if (card.DoKeywordsContain(EquipmentKeyword, true, true))
             {
-                return new[] { "ghost" };
+                return new[] { GhostKeyword };
             }
             return base.AskForCardAdditionalKeywords(card);
         }
