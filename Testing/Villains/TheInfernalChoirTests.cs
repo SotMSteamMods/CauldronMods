@@ -1343,6 +1343,35 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestBeneathTheFlesh_PlayCard_InitialDamageIncapsHero()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            int number = 2;
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var p1 = StackDeck("InspiringPresence");
+
+            var inDeck = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInDeck(httc));
+            var inTrash = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInTrash(httc));
+
+            var card = PlayCard("BeneathTheFlesh", 0, true);
+            AssertInPlayArea(choir, card);
+
+            DecisionSelectNumber = number;
+            DecisionYesNo = true;
+            DecisionSelectCard = p1;
+
+            SetHitPoints(legacy.CharacterCard, 2);
+            AssertNoDecision(SelectionType.DiscardFromDeck);
+            DealDamage(haka, legacy, 3, DamageType.Melee);
+        }
+
+        [Test()]
         public void TestBeneathTheFlesh_DontCard([Values(1, 2, 3)] int number)
         {
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");

@@ -17,12 +17,10 @@ namespace Cauldron.TheInfernalChoir
         public override void AddTriggers()
         {
             base.AddTriggers();
-
-            //dda.CardSource.Card != Card to prevent chain triggers of this card from itself.
-            AddTrigger<DealDamageAction>(dda => dda.Target.IsHeroCharacterCard && dda.Amount >= 3 && dda.CardSource.Card != Card, dda => ComplicatedThing(dda), new[] { TriggerType.DiscardCard, TriggerType.PutIntoPlay, TriggerType.DealDamage }, TriggerTiming.After);
+            AddTrigger<DealDamageAction>(dda => dda.Target.IsHeroCharacterCard && dda.Amount >= 3 && !dda.Target.IsIncapacitatedOrOutOfGame && dda.CardSource.Card != Card, dda => DiscardCardsAndOptionalDamageToPlayAndDestroyResponse(dda), new[] { TriggerType.DiscardCard, TriggerType.PutIntoPlay, TriggerType.DealDamage }, TriggerTiming.After);
         }
 
-        private IEnumerator ComplicatedThing(DealDamageAction dda)
+        private IEnumerator DiscardCardsAndOptionalDamageToPlayAndDestroyResponse(DealDamageAction dda)
         {
             IEnumerator coroutine;
             var httc = FindHeroTurnTakerController(dda.Target.Owner.ToHero());
