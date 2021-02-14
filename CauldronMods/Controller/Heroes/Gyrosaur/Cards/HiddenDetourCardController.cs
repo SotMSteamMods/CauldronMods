@@ -33,24 +33,24 @@ namespace Cauldron.Gyrosaur
             }
         }
 
-        private List<Card> AllDetourUnderCards
-        {
-            get
-            {
-                List<Card> detourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText).ToList();
-                List<Card> underCards = new List<Card>();
+        //private List<Card> AllDetourUnderCards
+        //{
+        //    get
+        //    {
+        //        List<Card> detourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText).ToList();
+        //        List<Card> underCards = new List<Card>();
 
-                foreach (Card detourCard in detourCards)
-                {
-                    if (detourCard.UnderLocation.HasCards)
-                    {
-                        underCards.AddRange(detourCard.UnderLocation.Cards);
-                    }
-                }
+        //        foreach (Card detourCard in detourCards)
+        //        {
+        //            if (detourCard.UnderLocation.HasCards)
+        //            {
+        //                underCards.AddRange(detourCard.UnderLocation.Cards);
+        //            }
+        //        }
 
-                return underCards;
-            }
-        }
+        //        return underCards;
+        //    }
+        //}
 
         //private bool IsReplacingPlay = false;
 
@@ -110,11 +110,9 @@ namespace Cauldron.Gyrosaur
 
             // Need this to cover issues with something like RevealCards_PutSomeIntoPlay_DiscardRemaining. Since cards under Hidden Detour do not have text, RevealCards_PutSomeIntoPlay_DiscardRemaining may remove
             // them from under Hidden Detour once it finishes processing.
-            AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && IsCardUnderADetour(mc.CardToMove) && mc.CardToMove.IsEnvironment, PreventUnderCardRemoval, TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: true);
+            AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && IsCardUnder(mc.CardToMove) && mc.CardToMove.IsEnvironment, PreventUnderCardRemoval, TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: true);
         }
 
-        // TODO: Store the card that is coming from under Hidden Detour. Don't allow that same card to trigger Hidden Detour again this turn. Remove IsReplacingPlay, it is preventing 
-        // cards like Prison Riot from triggering this affect more than once a turn.
         private IEnumerator AskToSwapCard(GameAction ga)
         {
             //IsReplacingPlay = true;
@@ -314,8 +312,9 @@ namespace Cauldron.Gyrosaur
         private IEnumerator PreventUnderCardRemoval(MoveCardAction moveCardAction)
         {
             IEnumerator coroutine;
-
-            if (moveCardAction.Destination.IsRealTrash && moveCardAction.Destination.IsEnvironment)
+            
+            //if (moveCardAction.Destination.IsRealTrash && moveCardAction.Destination.IsEnvironment)
+            if (moveCardAction.CardSource.Card != base.Card)
             {
                 coroutine = CancelAction(moveCardAction); 
                 if (base.UseUnityCoroutines)
@@ -335,9 +334,9 @@ namespace Cauldron.Gyrosaur
             return AllDetourSwapCards.Contains(card);
         }
 
-        private bool IsCardUnderADetour(Card card)
+        private bool IsCardUnder(Card card)
         {
-            return AllDetourUnderCards.Contains(card);
+            return Card.UnderLocation.HasCard(card); // AllDetourUnderCards.Contains(card);
         }
     }
 }

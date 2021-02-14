@@ -16,6 +16,7 @@ namespace CauldronTests
         #region GyrosaurHelperFunctions
         protected DamageType DTM = DamageType.Melee;
         #endregion
+
         [Test]
         public void TestGyrosaurLoads()
         {
@@ -28,6 +29,7 @@ namespace CauldronTests
 
             Assert.AreEqual(30, gyrosaur.CharacterCard.HitPoints);
         }
+
         [Test]
         public void TestGyrosaurDecklist()
         {
@@ -309,6 +311,8 @@ namespace CauldronTests
             GoToStartOfTurn(gyrosaur);
             AssertNumberOfStatusEffectsInPlay(0);
         }
+
+        #region Test A Merry Chase
         [Test]
         public void TestAMerryChase()
         {
@@ -354,6 +358,8 @@ namespace CauldronTests
             DealDamage(baron, legacy, 1, DTM);
             QuickHPCheck(0, 0, -2, 0);
         }
+        #endregion Test A Merry Chase
+
         //Gyro Stabilizer's "adjust crash-in-hand count" is done as an ActivatesEffect and tested on individual cards
         [Test]
         public void TestGyroStabilizerDiscardToDraw([Values(0, 1, 2, 3)] int numToDiscard)
@@ -495,7 +501,70 @@ namespace CauldronTests
             AssertIsInPlay(imprisonedRogue);
             AssertUnderCard(hiddenDetour, charr);
         }
+        [Test]
+        public void TestMultipleHiddenDetoursWithPrisonRiot()
+        {
+            Card prisonRiot;
+            Card defensiveDisplacement;
+            Card charr;
+            Card imprisonedRogue;
+            Card timeCrazedPrisoner;
+            Card hiddenDetour1;
+            Card hiddenDetour2;
 
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "TheBlock");
+            StartGame();
+
+            imprisonedRogue = PutOnDeck("ImprisonedRogue");
+            charr = PutOnDeck("Char");
+            defensiveDisplacement = PutOnDeck("DefensiveDisplacement");
+            prisonRiot = PutOnDeck("PrisonRiot");
+            hiddenDetour1 = PlayCard("HiddenDetour", 0);
+            hiddenDetour2 = PlayCard("HiddenDetour", 1);
+            AssertUnderCard(hiddenDetour1, prisonRiot);
+            AssertUnderCard(hiddenDetour2, defensiveDisplacement);
+
+            DecisionsYesNo = new bool[] { true, false, true, true };
+            // (true) Replace prison riot with Time Crazed Prisoner - Time Crazed Prisoner under Hidden Detour 1
+            // Prison riot comes into play and plays first Char and then Imprisoned Rogue
+            // (false) do not replace Time Crazed Prisoner under Hidden Detour 1 with Char - Time Crazed Prisoner under Hidden Detour 1
+            // (true) replace Defensive Placement under Hidden Detour 2 with Char - Char under Hidden Detour 2
+            // (true) replace Time Crazed Prisoner under Hidden Detour 1 with Imprisioned Rogue - Imprisioned Rogue under Hidden Detour 1
+            timeCrazedPrisoner = PutIntoPlay("TimeCrazedPrisoner");
+
+            AssertIsInPlay(timeCrazedPrisoner);
+            AssertIsInPlay(defensiveDisplacement);
+            AssertIsInPlay(prisonRiot);
+            AssertUnderCard(hiddenDetour1, imprisonedRogue);
+            AssertUnderCard(hiddenDetour2, charr);
+        }
+
+        [Test]
+        public void TestHiddenDetoursDestruction()
+        {
+            Card prisonRiot;
+            Card defensiveDisplacement;
+            Card hiddenDetour1;
+            Card hiddenDetour2;
+
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "TheBlock");
+            StartGame();
+
+            defensiveDisplacement = PutOnDeck("DefensiveDisplacement");
+            prisonRiot = PutOnDeck("PrisonRiot");
+            hiddenDetour1 = PlayCard("HiddenDetour", 0);
+            hiddenDetour2 = PlayCard("HiddenDetour", 1);
+            AssertUnderCard(hiddenDetour1, prisonRiot);
+            AssertUnderCard(hiddenDetour2, defensiveDisplacement);
+
+            DestroyCard(hiddenDetour1);
+            DestroyCard(hiddenDetour2);
+
+            AssertNotInPlay(hiddenDetour1);
+            AssertNotInPlay(hiddenDetour2);
+            AssertNotInPlay(defensiveDisplacement);
+            AssertNotInPlay(prisonRiot);
+        }
         #endregion Test Hidden Detour
 
         [Test]
