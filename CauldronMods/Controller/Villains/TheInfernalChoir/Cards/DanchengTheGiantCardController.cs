@@ -24,7 +24,6 @@ namespace Cauldron.TheInfernalChoir
             _reduceDamageTrigger = AddTrigger(new ReduceDamageTrigger(GameController, VerySecretCriteria, null, DiscardedCardDamageReduction, false, false, GetCardSource()));
         }
 
-        //TODO - If Character card cannot deal damage, flag may not be cleared correctly
         private bool VerySecretCriteria(DealDamageAction dda)
         {
             return dda.OriginalAmount == 4 && dda.OriginalDamageType == DamageType.Infernal && dda.DamageSource.IsSameCard(CharacterCard) && Journal.GetCardPropertiesBoolean(dda.Target, drawDiscardReaction) == true && dda.CardSource.Card == Card;
@@ -94,7 +93,7 @@ namespace Cauldron.TheInfernalChoir
                     Journal.RecordCardProperties(card, drawDiscardReaction, true);
                 }
 
-                coroutine = DealDamage(base.CharacterCard, card, 4, DamageType.Infernal);
+                coroutine = DealDamage(base.CharacterCard, card, 4, DamageType.Infernal, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
