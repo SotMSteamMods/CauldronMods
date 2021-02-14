@@ -21,8 +21,7 @@ namespace Cauldron.TheInfernalChoir
 
         public override IEnumerator Play()
         {
-            var env = FindEnvironment();
-            var coroutine = GameController.PlayTopCardOfLocation(env, env.TurnTaker.Deck, cardSource: GetCardSource(), showMessage: true, showMessageCardSource: true);
+            var coroutine = PlayTheTopCardOfTheEnvironmentDeckWithMessageResponse(null);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
