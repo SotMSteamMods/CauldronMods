@@ -24,6 +24,8 @@ namespace Cauldron.Gyrosaur
             AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
         }
 
+        // NOTE:The message currently says "All hero targets except for Gyrosaur is...". It should be "are...". This is a limitation with the engine.
+        // Handelabra needs to fix their IsSingular method to take into account "include all except" conditions and treat them as plural.
         private IEnumerator MakeImmuneToDamageResponse(DealDamageAction dd)
         {
             //All other hero targets become immune to damage dealt by that target until this card leaves play.
@@ -31,6 +33,7 @@ namespace Cauldron.Gyrosaur
             immunityEffect.SourceCriteria.IsSpecificCard = dd.DamageSource.Card;
             immunityEffect.TargetCriteria.IsHero = true;
             immunityEffect.TargetCriteria.IsNotSpecificCard = CharacterCard;
+            immunityEffect.TargetCriteria.OutputString = $"All hero targets except for {CharacterCard.Title}";
             immunityEffect.UntilCardLeavesPlay(Card);
             immunityEffect.UntilTargetLeavesPlay(dd.DamageSource.Card);
             immunityEffect.CardSource = Card;
