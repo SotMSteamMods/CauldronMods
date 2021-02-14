@@ -1290,6 +1290,8 @@ namespace CauldronTests
             DecisionSelectNumber = number;
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, writhe, mainstay, medico, idealist);
             var card = PlayCard("MoonEater", 0, true);
+            PrintSpecialStringsForCard(card);
+
             AssertInTrash(card);
             int expectedDamage = Math.Max(5 - number, 0);
             QuickHPCheck(0, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage);
@@ -1319,6 +1321,7 @@ namespace CauldronTests
             DecisionSelectNumber = number;
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
             var card = PlayCard("MoonEater", 0, true);
+            PrintSpecialStringsForCard(card);
             AssertInTrash(card);
             int expectedDamage = Math.Max(5 - (2 * number), 0);
             QuickHPCheck(0, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage);

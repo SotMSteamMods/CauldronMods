@@ -12,6 +12,7 @@ namespace Cauldron.TheInfernalChoir
     {
         public MoonEaterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(VagrantHeartSoulRevealedIdentifier);
         }
 
         public override IEnumerator Play()
@@ -48,7 +49,25 @@ namespace Cauldron.TheInfernalChoir
                 if (discardResult.Any())
                 {
                     int discards = GetNumberOfCardsMoved(discardResult);
-                    int damage = 5 - (IsVagrantHeartSoulRevealedInPlay() ? 2 * discards : discards);
+
+                    if(IsVagrantHeartSoulRevealedInPlay())
+                    {
+                        discards *= 2;
+                        coroutine = GameController.SendMessageAction($"{FindVagrantHeartSoulRevealed().Title} is in play, so X is doubled!", Priority.Medium, GetCardSource(), showCardSource: true);
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
+
+                    int damage = 5 - discards;
+
+                    if (damage <= 0) continue;
+
                     coroutine = GameController.DealDamageToSelf(httc, c => httc.CharacterCards.Contains(c) && !c.IsIncapacitatedOrOutOfGame, damage, DamageType.Cold, cardSource: GetCardSource());
                     if (UseUnityCoroutines)
                     {
