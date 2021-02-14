@@ -12,7 +12,7 @@ namespace Cauldron.TheInfernalChoir
     {
         public TheVoicesGatherCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => c.IsTarget, "", false, false, "target", "targets"));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => c.IsTarget, "", useCardsSuffix: false, singular: "target", plural: "targets"));
             SpecialStringMaker.ShowHeroTargetWithHighestHP();
             SpecialStringMaker.ShowIfSpecificCardIsInPlay(VagrantHeartSoulRevealedIdentifier);
         }
@@ -22,8 +22,8 @@ namespace Cauldron.TheInfernalChoir
          */
         public override IEnumerator Play()
         {
-            List<RevealCardsAction> results = new List<RevealCardsAction>();
-            var coroutine = GameController.RevealCards(TurnTakerController, TurnTaker.Deck, c => c.IsTarget, 1, results, RevealedCardDisplay.ShowMatchingCards, cardSource: GetCardSource());
+            List<Card> playedCards = new List<Card>();
+            var coroutine = RevealCards_PutSomeIntoPlay_DiscardRemaining(TurnTakerController, TurnTaker.Deck, null, new LinqCardCriteria(c => c.IsTarget, "target"), playedCards: playedCards, revealUntilNumberOfMatchingCards: 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -34,34 +34,9 @@ namespace Cauldron.TheInfernalChoir
             }
 
             Card target = null;
-            var result = results.FirstOrDefault();
-            if (result != null && result.FoundMatchingCards)
+            if(playedCards != null && playedCards.Any())
             {
-                List<PlayCardAction> playResult = new List<PlayCardAction>();
-                coroutine = GameController.PlayCard(TurnTakerController, result.MatchingCards.First(), true, storedResults: playResult, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                if (DidPlayCards(playResult, 1))
-                {
-                    target = playResult.First().CardToPlay;
-                }
-            }
-
-            coroutine = GameController.MoveCards(TurnTakerController, result.NonMatchingCards, TurnTaker.Trash, isDiscard: true, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                target = playedCards.First();
             }
 
             if (target != null)
@@ -80,8 +55,6 @@ namespace Cauldron.TheInfernalChoir
             var h1 = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
             var h2 = TurnTaker.FindCard(VagrantHeartSoulRevealedIdentifier, false);
 
-            //var a = IsVagrantHeartSoulRevealedInPlay();
-            //var b = IsVagrantHeartHiddenHeartInPlay();
             if (IsVagrantHeartSoulRevealedInPlay())
             {
                 coroutine = EachPlayerDrawsACard();

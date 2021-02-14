@@ -1235,6 +1235,7 @@ namespace CauldronTests
             QuickHandStorage(legacy, haka, sentinels);
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
             var card = PlayCard("TheVoicesGather", 0, true);
+            PrintSpecialStringsForCard(card);
             AssertInTrash(choir, card);
             AssertInPlayArea(choir, c1);
             AssertInTrash(c2);
@@ -1265,6 +1266,7 @@ namespace CauldronTests
             QuickHandStorage(legacy, haka, sentinels);
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
             var card = PlayCard("TheVoicesGather", 0, true);
+            PrintSpecialStringsForCard(card);
             AssertInTrash(choir, card);
             AssertInPlayArea(choir, c1);
             AssertInTrash(c2);
