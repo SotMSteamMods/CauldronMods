@@ -1062,6 +1062,25 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHauntingNocturne_EclipseRFG()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+
+            Card eclipse = GetCard("Eclipse");
+            MoveCard(choir, eclipse, choir.TurnTaker.OutOfGame);
+
+            var haunting = PlayCard("HauntingNocturne", 0, true);
+            AssertInPlayArea(choir, haunting);
+            AssertNotInPlayArea(choir, eclipse);
+
+        }
+
+        [Test()]
         public void TestWretchedSymphony_DamageReduction()
         {
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");

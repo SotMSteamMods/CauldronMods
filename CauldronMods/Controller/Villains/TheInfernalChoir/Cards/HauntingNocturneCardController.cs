@@ -12,16 +12,20 @@ namespace Cauldron.TheInfernalChoir
     {
         public HauntingNocturneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfSpecificCardIsInPlay("Eclipse");
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(EclipseIdentifier);
         }
+
+        public readonly string EclipseIdentifier = "Eclipse";
 
         public override IEnumerator Play()
         {
-            var card = TurnTaker.FindCard("Eclipse");
-            if (card is null || card.IsInPlay)
-                yield break;
+            var locations = new Location[]
+           {
+                base.TurnTaker.Deck,
+                base.TurnTaker.Trash
+           };
 
-            var coroutine = GameController.PlayCard(TurnTakerController, card, isPutIntoPlay: true, cardSource: GetCardSource());
+            IEnumerator coroutine = base.PlayCardFromLocations(locations, EclipseIdentifier, isPutIntoPlay: true, showMessageIfFailed: false, shuffleAfterwardsIfDeck: false);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
