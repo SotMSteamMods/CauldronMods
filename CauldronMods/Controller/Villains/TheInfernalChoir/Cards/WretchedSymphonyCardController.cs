@@ -12,7 +12,7 @@ namespace Cauldron.TheInfernalChoir
     {
         public WretchedSymphonyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfSpecificCardIsInPlay(() => FindVagrantHeartHiddenHeart() ?? FindVagrantHeartSoulRevealed());
+            SpecialStringMaker.ShowIfElseSpecialString(() => FindVagrantHeartHiddenHeart() is null, () => $"{FindVagrantHeartSoulRevealed().Title} is in play.", () => $"{FindVagrantHeartHiddenHeart().Title} is in {FindVagrantHeartHiddenHeart().Location.GetFriendlyName()}.");
         }
 
         public override void AddTriggers()
@@ -29,16 +29,17 @@ namespace Cauldron.TheInfernalChoir
             var vagrantTurnTaker = FindVagrantHeartHiddenHeart().Location.OwnerTurnTaker;
             var httc = FindHeroTurnTakerController(vagrantTurnTaker.ToHero());
             var result = new List<SelectCardDecision>();
-            var coroutine = GameController.SelectHeroCharacterCard(httc, SelectionType.CardToDealDamage, result, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
+            DealDamageAction gameAction = new DealDamageAction(GetCardSource(), null, null, 2, DamageType.Cold);
+            var coroutine = base.GameController.SelectCardAndStoreResults(httc, SelectionType.HeroToDealDamage, new LinqCardCriteria((Card c) => c.Owner == httc.TurnTaker && c.IsCharacter && !c.IsIncapacitatedOrOutOfGame, "active heroes"), result, false, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
             {
-                yield return GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
-
+           
             if (DidSelectCard(result))
             {
                 var source = GetSelectedCard(result);

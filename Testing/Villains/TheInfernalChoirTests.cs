@@ -1124,6 +1124,8 @@ namespace CauldronTests
             SetHitPoints(g2, 1);
 
             var card = PlayCard("WretchedSymphony", 0, true);
+            PrintSpecialStringsForCard(card);
+
             AssertInPlayArea(choir, card);
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
             GoToEndOfTurn(choir);
@@ -1147,11 +1149,37 @@ namespace CauldronTests
             SetHitPoints(g2, 1);
 
             var card = PlayCard("WretchedSymphony", 0, true);
+            PrintSpecialStringsForCard(card);
             AssertInPlayArea(choir, card);
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
             GoToEndOfTurn(choir);
             QuickHPCheck(0, 0, -2, -2, -2, -2, -2, 0);
+            AssertHitPoints(g2, 1);
+        }
+
+        [Test()]
+        public void TestWretchedSymphony_EndOfTurn_HiddenHeart_TheSentinels()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            choir.DebugForceHeartPlayer = sentinels;
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            var g2 = PlayCard("DanchengTheGiant", 0, true);
+            SetHitPoints(g2, 1);
+
+            var card = PlayCard("WretchedSymphony", 0, true);
+            PrintSpecialStringsForCard(card);
+            AssertInPlayArea(choir, card);
+
+            DecisionSelectCard = writhe;
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);
+            GoToEndOfTurn(choir);
+            QuickHPCheck(0, -2, -2, -3, 0, -3, -3, 0); //nemesis damage to other sentinels
             AssertHitPoints(g2, 1);
         }
 
@@ -1190,6 +1218,7 @@ namespace CauldronTests
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
             var card = PlayCard("TrueColors", 0, true);
+            PrintSpecialStringsForCard(card);
             AssertInTrash(choir, card);
             QuickHPCheck(0, 0, -6, 0, 0, 0, 0);
         }
@@ -1207,6 +1236,7 @@ namespace CauldronTests
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
             var card = PlayCard("TrueColors", 0, true);
+            PrintSpecialStringsForCard(card);
             AssertInTrash(choir, card);
             QuickHPCheck(0, -6, -6, 0, 0, 0, 0);
         }
