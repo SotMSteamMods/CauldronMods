@@ -10,29 +10,29 @@ using Handelabra;
 
 namespace Cauldron.Gyrosaur
 {
-    public abstract class GyrosaurUtilityCardController : CardController
+    public abstract class GyrosaurUtilityCharacterCardController : HeroCharacterCardController
     {
         protected const string StabilizerKey = "GyroStabilizerEffectKey";
-        protected GyrosaurUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public GyrosaurUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
-
         protected IEnumerator EvaluateCrashInHand(List<int> storedModifier, Func<bool> showDecisionIf = null, List<bool> didSkip = null)
         {
-            if(showDecisionIf == null)
+            if (showDecisionIf == null)
             {
                 showDecisionIf = () => true;
             }
             Func<bool> fullShowDecisionIf = () => showDecisionIf();
-            if(RARTInPlay)
+            if (RARTInPlay)
             {
                 fullShowDecisionIf = () => showDecisionIf() || RARTShowDecision();
             }
             //allow decision of increase/decrease if needed
             //sometimes it is not, as Gyro Stabilizer cannot increase/decrease the count past the requisite threshold
 
-            if (CanActivateEffect(DecisionMaker, StabilizerKey) && fullShowDecisionIf())
+            if (CanActivateEffect(TurnTakerController, StabilizerKey) && fullShowDecisionIf())
             {
+                //Log.Debug("Gyro Stabilizer active...");
                 IEnumerator coroutine;
                 int currentCrash = TrueCrashInHand;
                 var functions = new List<Function>
@@ -54,13 +54,13 @@ namespace Cauldron.Gyrosaur
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                if(DidSelectFunction(storedFunction, DecisionMaker))
+                if (DidSelectFunction(storedFunction, DecisionMaker))
                 {
                     storedModifier.Add(CrashModifierFromDecision(storedFunction.FirstOrDefault()));
                 }
                 else
                 {
-                    if(didSkip != null)
+                    if (didSkip != null)
                     {
                         didSkip.Add(true);
                     }
@@ -69,6 +69,7 @@ namespace Cauldron.Gyrosaur
             }
             else
             {
+                //Log.Debug("Gyro Stabilizer not active, returning 0.");
                 storedModifier.Add(0);
                 yield return null;
             }
@@ -88,14 +89,14 @@ namespace Cauldron.Gyrosaur
         //the Gyro Stabilizer choice, as it may set off RART, even if it doesn't otherwise matter to the effect in question
         protected int CrashModifierFromDecision(SelectFunctionDecision sfd)
         {
-            if(sfd.SelectedFunction != null)
+            if (sfd.SelectedFunction != null)
             {
                 var selectedType = sfd.SelectedFunction.SelectionType;
-                if(selectedType == SelectionType.RemoveTokens)
+                if (selectedType == SelectionType.RemoveTokens)
                 {
                     return -1;
                 }
-                if(selectedType == SelectionType.AddTokens)
+                if (selectedType == SelectionType.AddTokens)
                 {
                     return 1;
                 }
@@ -106,10 +107,10 @@ namespace Cauldron.Gyrosaur
         protected void ShowCrashInHandCount(bool otherInHand = false)
         {
             var standard = SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => IsCrash(c), "crash"));
-            if(otherInHand)
+            if (otherInHand)
             {
                 standard.Condition = () => !Card.Location.IsHand;
-                SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => c != this.Card && IsCrash(c), "other crash")).Condition = () => Card.Location.IsHand;
+                SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => c != this.Card && IsCrash(Card))).Condition = () => Card.Location.IsHand;
             }
         }
     }
