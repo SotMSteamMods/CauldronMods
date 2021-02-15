@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -156,11 +156,22 @@ namespace Cauldron.TheInfernalChoir
             {
                 yield break;
             }
+
+            int numCardsBeingMoved = Math.Min(Card.Location.OwnerTurnTaker.Deck.NumberOfCards, amount);
+            coroutine = GameController.SendMessageAction($"The damage to {CharacterCard.Title} is prevented and {numCardsBeingMoved} {GenericStringExtensions.ToString_CardOrCards(numCardsBeingMoved)} {GenericStringExtensions.ToString_IsOrAre(numCardsBeingMoved)} moved from the bottom of {Card.Location.OwnerTurnTaker.Deck.GetFriendlyName()} to beneath this card.", Priority.Medium, GetCardSource(), showCardSource: true);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
             while (amount > 0 && vagrantHero.Deck.NumberOfCards > 0 && Card.IsInPlayAndHasGameText)
             {
                 //Card.IsInPlayAndHasGameText to check that the Phase1 card hasn't been moved out of play.
                 amount--;
-
                 coroutine = GameController.MoveCard(TurnTakerController, vagrantHero.Deck.BottomCard, Card.UnderLocation, playCardIfMovingToPlayArea: false, actionSource: null, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
