@@ -773,11 +773,12 @@ namespace CauldronTests
 
             var e1 = PlayCard("StunBolt");
 
+            DecisionSelectTarget = legacy.CharacterCard;
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, wraith.CharacterCard, card);
             UsePower(e1);
-            QuickHPCheck(0, -3, -2, -2, -2);
+            //should have no effect
+            QuickHPCheck(0, -1, 0, 0, 0);
 
-            AssertNotUsablePower(wraith, e1);
         }
 
         [Test()]

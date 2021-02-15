@@ -20,7 +20,7 @@ namespace Cauldron.TheInfernalChoir
 
             AddIncreaseDamageTrigger(dda => IsVagrantHeartHiddenHeartInPlay() && DoesPlayAreaContainHiddenHeart(dda.DamageSource.Owner) && dda.DamageSource.IsHeroCharacterCard, 1);
 
-            AddTrigger<UsePowerAction>(upa => upa.Power.Description != KataMichiPowerDesc, upa => UsePowerResponse(upa), new[] { TriggerType.CancelAction, TriggerType.UsePower }, TriggerTiming.Before);
+            AddTrigger<UsePowerAction>(upa => upa.Power.Description != KataMichiPowerDesc && upa.Power.CardSource.Card.IsHeroCharacterCard, upa => UsePowerResponse(upa), new[] { TriggerType.CancelAction, TriggerType.UsePower }, TriggerTiming.Before);
         }
 
         private readonly string KataMichiPowerDesc = "Each hero target and each Ghost deals itself 2 cold damage.";
