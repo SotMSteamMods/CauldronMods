@@ -151,7 +151,7 @@ namespace Cauldron.TheInfernalChoir
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            var vagrantHero = Card.Location.OwnerTurnTaker;
+            var vagrantHero = VagrantTurnTaker;
             if(vagrantHero is null)
             {
                 yield break;
