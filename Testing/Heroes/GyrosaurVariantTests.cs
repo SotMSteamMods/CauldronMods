@@ -16,6 +16,8 @@ namespace CauldronTests
         #region GyrosaurHelperFunctions
         protected DamageType DTM => DamageType.Melee;
         #endregion
+
+        #region Speed Demon Gyrosaur
         [Test]
         public void TestSpeedDemonGyrosaurLoads()
         {
@@ -28,6 +30,11 @@ namespace CauldronTests
 
             Assert.AreEqual(28, gyrosaur.CharacterCard.HitPoints);
         }
+
+        #region Test Innate Power
+        /*
+         * If at least half of the cards in your hand are crash cards, draw a card. If not, play a card.
+         */
         [Test]
         public void TestSpeedDemonPowerLessThanHalfCrash()
         {
@@ -53,7 +60,7 @@ namespace CauldronTests
 
             MoveAllCardsFromHandToDeck(gyrosaur);
 
-            Card wreck = PutInHand("WreckingBall");
+            Card wreck = PutInHand("WreckingBall"); // Crash
             Card chase = PutOnDeck("AMerryChase");
 
             UsePower(gyrosaur);
@@ -69,7 +76,7 @@ namespace CauldronTests
             MoveAllCardsFromHandToDeck(gyrosaur);
 
             PlayCard("GyroStabilizer");
-            Card wreck = PutInHand("WreckingBall");
+            Card wreck = PutInHand("WreckingBall"); // Crash
             Card chase = PutOnDeck("AMerryChase");
             DecisionSelectFunction = 0;
 
@@ -104,9 +111,9 @@ namespace CauldronTests
             MoveAllCardsFromHandToDeck(gyrosaur);
             PlayCard("GyroStabilizer");
 
-            Card wipeout = PutInHand("Wipeout");
-            Card wreck = PutInHand("WreckingBall");
-            Card sphere = PutOnDeck("SphereOfDevastation");
+            Card wipeout = PutInHand("Wipeout"); // Crash
+            Card wreck = PutInHand("WreckingBall"); // Crash
+            Card sphere = PutOnDeck("SphereOfDevastation"); // Crash
 
             AssertNoDecision();
             UsePower(gyrosaur);
@@ -134,6 +141,14 @@ namespace CauldronTests
             AssertIsInPlay(shell);
             AssertOnTopOfDeck(wipeout);
         }
+        #endregion Test Innate Power
+
+        #region Test Incap Power
+        /* 
+         * One player may draw a card now. 
+         * One player with fewer than 4 cards in their hand may play 2 cards now. 
+         * Reduce the next damage dealt to a hero target by 2.
+         */
         [Test]
         public void TestSpeedDemonIncap1()
         {
@@ -160,7 +175,7 @@ namespace CauldronTests
             DecisionYesNo = true;
             UseIncapacitatedAbility(gyrosaur, 1);
             AssertNumberOfCardsInHand(legacy, 1);
-            AssertNumberOfCardsInPlay(legacy, 3);
+            AssertNumberOfCardsInPlay(legacy, 3); // Includes Legacy Character Card
         }
         [Test]
         public void TestSpeedDemonIncap2Optional()
@@ -178,7 +193,7 @@ namespace CauldronTests
             DecisionYesNo = false;
             UseIncapacitatedAbility(gyrosaur, 1);
             AssertNumberOfCardsInHand(legacy, 3);
-            AssertNumberOfCardsInPlay(legacy, 1);
+            AssertNumberOfCardsInPlay(legacy, 1); // Includes Legacy Character Card
         }
         [Test]
         public void TestSpeedDemonIncap2OnlyOne()
@@ -199,9 +214,9 @@ namespace CauldronTests
 
             UseIncapacitatedAbility(gyrosaur, 1);
             AssertNumberOfCardsInHand(legacy, 1);
-            AssertNumberOfCardsInPlay(legacy, 3);
+            AssertNumberOfCardsInPlay(legacy, 3); // Includes Legacy Character Card
             AssertNumberOfCardsInHand(wraith, 3);
-            AssertNumberOfCardsInPlay(wraith, 1);
+            AssertNumberOfCardsInPlay(wraith, 1); // Includes Wraith Character Card
         }
         [Test]
         public void TestSpeedDemonIncap3()
@@ -222,6 +237,11 @@ namespace CauldronTests
             DealDamage(baron, ra, 3, DTM);
             QuickHPCheck(0, 0, -3);
         }
+        #endregion Test Incap Power
+
+        #endregion Speed Demon Gyrosaur
+
+        #region Renegade Gyrosaur
         [Test]
         public void TestRenegadeGyrosaurLoads()
         {
@@ -234,6 +254,11 @@ namespace CauldronTests
 
             Assert.AreEqual(29, gyrosaur.CharacterCard.HitPoints);
         }
+
+        #region Test Innate Power
+        /*
+         * Discard a card. If it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card.
+         */
         [Test]
         public void TestRenegadePowerDiscardCrash()
         {
@@ -250,7 +275,7 @@ namespace CauldronTests
             }
             QuickHPStorage(ttcs);
 
-            Card wipeout = PutInHand("Wipeout");
+            Card wipeout = PutInHand("Wipeout"); // Crash
             Card chase = PutOnDeck("AMerryChase");
 
             UsePower(gyrosaur);
@@ -306,6 +331,14 @@ namespace CauldronTests
             AssertInHand(chase);
             QuickHPCheck(-2, 0, 0, 0);
         }
+        #endregion Test Innate Power
+
+        #region Test Incap Power
+        /* 
+         * One player may draw a card now. 
+         * Each hero with fewer than 2 non-character cards in play may use a power now. 
+         * Targets cannot regain HP until the start of your next turn.
+         */
         [Test]
         public void TestRenegadeIncap1()
         {
@@ -358,6 +391,11 @@ namespace CauldronTests
             GainHP(legacy, 10);
             QuickHPCheck(10, 10);
         }
+        #endregion Test Incap Power
+
+        #endregion Renegade Gyrosaur
+
+        #region Captain  Gyrosaur
         [Test]
         public void TestCaptainGyrosaurLoads()
         {
@@ -370,6 +408,11 @@ namespace CauldronTests
 
             Assert.AreEqual(29, gyrosaur.CharacterCard.HitPoints);
         }
+
+        #region Test Innate Power
+        /*
+         * Put the top card of your deck beneath {Gyrosaur}, face up. When she deals damage, play or draw it.
+         */
         [Test]
         public void TestCaptainPowerPlayStoredCard()
         {
@@ -436,7 +479,7 @@ namespace CauldronTests
 
             AssertNoDecision();
             Card wreck = PutOnDeck("WreckingBall");
-            PlayCard("TrafficPileup");
+            PlayCard("TrafficPileup"); // Prevent hero card play
 
             DealDamage(gyrosaur, ra, 1, DTM);
             AssertIsInPlay(chase);
@@ -458,7 +501,7 @@ namespace CauldronTests
 
             AssertNoDecision();
             Card wreck = PutOnDeck("WreckingBall");
-            PlayCard("HostageSituation");
+            PlayCard("HostageSituation"); // Prevent hero card play
 
             DealDamage(gyrosaur, ra, 1, DTM);
             AssertInHand(chase);
@@ -480,8 +523,8 @@ namespace CauldronTests
 
             AssertNoDecision();
             Card wreck = PutOnDeck("WreckingBall");
-            PlayCard("HostageSituation");
-            PlayCard("TrafficPileup");
+            PlayCard("HostageSituation"); // Prevent hero card play
+            PlayCard("TrafficPileup"); // Prevent hero card draw
 
             DealDamage(gyrosaur, ra, 1, DTM);
             AssertUnderCard(gyrosaur.CharacterCard, chase);
@@ -529,6 +572,36 @@ namespace CauldronTests
             AssertInTrash(spin);
             AssertNumberOfStatusEffectsInPlay(0);
         }
+
+        [Test]
+        public void TestCaptainGyrosaurPowerUnderCardsWithEndOfDays()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur/CaptainGyrosaurCharacter", "Legacy", "Fanatic", "Megalopolis");
+            StartGame();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            Card ricochet = PutOnDeck("Ricochet");
+            Card wreck = PutOnDeck("WreckingBall");
+            UsePower(gyrosaur);
+            AssertUnderCard(gyrosaur.CharacterCard, wreck);
+            UsePower(gyrosaur);
+            AssertUnderCard(gyrosaur.CharacterCard, ricochet);
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            PutIntoPlay("LeadFromTheFront");
+            PlayCard("EndOfDays");
+            GoToStartOfTurn(base.env);
+            AssertInTrash(gyrosaur, new List<Card> { wreck, ricochet });
+            AssertNumberOfStatusEffectsInPlay(0);
+        }
+        #endregion Test Innate Power
+
+        #region Test Incap Power
+        /* 
+         * One player may draw a card now.
+         * One hero may use a power now. 
+         * Select a target. Increase the next damage dealt to it by 2.
+         */
         [Test]
         public void TestCaptainIncap1()
         {
@@ -573,5 +646,8 @@ namespace CauldronTests
             DealDamage(ra, baron, 1, DTM);
             QuickHPCheck(-1, 0, 0);
         }
+        #endregion Test Incap Power
+
+        #endregion Captain Gyrosaur
     }
 }

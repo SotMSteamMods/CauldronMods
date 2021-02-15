@@ -383,7 +383,7 @@
                     "text": "Wherever I end up, pretend{BR}that's where I was aiming."
                 }
             ],
-            "flavorReference": "Gyrosaur, Crash #14",
+            "flavorReference": "Gyrosaur, Crash #14"
         },
         {
             "identifier": "Wipeout",
@@ -405,7 +405,7 @@
                     "text": "Stopping was{BR}supposed to be the easy part.{BR}Can someone help me up?"
                 }
             ],
-            "flavorReference": "Gyrosaur, Eclipse #6",
+            "flavorReference": "Gyrosaur, Eclipse #6"
         },
         {
             "identifier": "WreckingBall",
@@ -429,7 +429,7 @@
                     "text": "Sorry about your wall.{BR}And ceiling. And your floor."
                 }
             ],
-            "flavorReference": "Gyrosaur, Starlight #21",
+            "flavorReference": "Gyrosaur, Starlight #21"
         }
     ],
     "promoCards": [

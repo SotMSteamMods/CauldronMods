@@ -76,6 +76,12 @@ namespace CauldronTests
                 "WreckingBall"
             });
         }
+
+        #region Test Gyrosaur Innate Power
+        /*
+         * If you have at least 2 crash cards in your hand, {Gyrosaur} deals up to 3 targets 1 melee damage each. 
+         * If not, draw a card.
+         */
         [Test]
         public void TestGyrosaurInnate2CrashInHand()
         {
@@ -83,12 +89,12 @@ namespace CauldronTests
             StartGame();
             DestroyNonCharacterVillainCards();
 
-            PutInHand("SphereOfDevastation");
-            PutInHand("Ricochet");
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("Ricochet"); // Crash
 
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
             QuickHPStorage(baron, gyrosaur, legacy, ra);
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             UsePower(gyrosaur);
             QuickHPCheck(-1, -1, -1, 0);
             QuickHandCheckZero();
@@ -109,10 +115,10 @@ namespace CauldronTests
             MoveAllCardsFromHandToDeck(gyrosaur);
             Card stabilizer = PutOnDeck("GyroStabilizer");
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
             UsePower(gyrosaur);
-            QuickHandCheck(1);
+            QuickHandCheck(1, 0, 0);
             QuickHPCheckZero();
             AssertInHand(stabilizer);
         }
@@ -127,14 +133,14 @@ namespace CauldronTests
             PlayCard("GyroStabilizer");
             Card omni = PutOnDeck("Omnivore");
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
             AssertNoDecision();
 
             //with 0 cards in hand Gyro Stabilizer cannot bump it up to the threshold.
             //Therefore it should not present a decision.
             UsePower(gyrosaur);
-            QuickHandCheck(1);
+            QuickHandCheck(1, 0, 0);
             QuickHPCheckZero();
             AssertInHand(omni);
         }
@@ -147,10 +153,10 @@ namespace CauldronTests
 
             MoveAllCardsFromHandToDeck(gyrosaur);
             PlayCard("GyroStabilizer");
-            PutInHand("SphereOfDevastation");
+            PutInHand("SphereOfDevastation"); //Crash
             Card omni = PutOnDeck("Omnivore");
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
             DecisionDoNotSelectFunction = true;
@@ -158,7 +164,7 @@ namespace CauldronTests
             //with 1 crash in hand Gyro Stabilizer can bump it up to 2.
             //We should get a decision, and be able to stand pat for a draw.
             UsePower(gyrosaur);
-            QuickHandCheck(1);
+            QuickHandCheck(1, 0, 0);
             QuickHPCheckZero();
             AssertInHand(omni);
         }
@@ -175,7 +181,7 @@ namespace CauldronTests
             
             Card omni = PutOnDeck("Omnivore");
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
             DecisionSelectFunction = 2;
@@ -183,7 +189,7 @@ namespace CauldronTests
             //with 1 crash in hand Gyro Stabilizer can bump it up to 2.
             //We should get a decision, and be able to increase it for damage.
             UsePower(gyrosaur);
-            QuickHandCheck(0);
+            QuickHandCheck(0, 0, 0);
             QuickHPCheck(-1, -1, -1, 0);
             AssertOnTopOfDeck(omni);
         }
@@ -196,12 +202,12 @@ namespace CauldronTests
 
             MoveAllCardsFromHandToDeck(gyrosaur);
             PlayCard("GyroStabilizer");
-            PutInHand("SphereOfDevastation");
-            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("Wipeout"); // Crash
 
             Card omni = PutOnDeck("Omnivore");
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
             DecisionDoNotSelectFunction = true;
@@ -209,7 +215,7 @@ namespace CauldronTests
             //with 2 crash in hand, Gyro Stabilizer can bump it down to 1.
             //We should get a decision, and be able to leave it alone for damage.
             UsePower(gyrosaur);
-            QuickHandCheck(0);
+            QuickHandCheck(0, 0, 0);
             QuickHPCheck(-1, -1, -1, 0);
             AssertOnTopOfDeck(omni);
         }
@@ -222,12 +228,12 @@ namespace CauldronTests
 
             MoveAllCardsFromHandToDeck(gyrosaur);
             PlayCard("GyroStabilizer");
-            PutInHand("SphereOfDevastation");
-            PutInHand("Wipeout");
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("Wipeout"); // Crash
 
             Card omni = PutOnDeck("Omnivore");
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
             DecisionSelectFunction = 0;
@@ -235,7 +241,7 @@ namespace CauldronTests
             //with 2 crash in hand, Gyro Stabilizer can bump it down to 1.
             //We should get a decision, and be able to decrease it for a draw.
             UsePower(gyrosaur);
-            QuickHandCheck(1);
+            QuickHandCheck(1, 0, 0);
             QuickHPCheckZero();
             AssertInHand(omni);
         }
@@ -248,13 +254,13 @@ namespace CauldronTests
 
             MoveAllCardsFromHandToDeck(gyrosaur);
             PlayCard("GyroStabilizer");
-            PutInHand("SphereOfDevastation");
-            PutInHand("Wipeout");
-            PutInHand("Ricochet");
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("Wipeout"); // Crash
+            PutInHand("Ricochet"); // Crash
 
             Card omni = PutOnDeck("Omnivore");
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
             AssertMaxNumberOfDecisions(3);
@@ -262,10 +268,18 @@ namespace CauldronTests
             //with 3 crash in hand, Gyro Stabilizer cannot push them past the threshold.
             //We should not get a decision for it.
             UsePower(gyrosaur);
-            QuickHandCheck(0);
+            QuickHandCheck(0, 0, 0);
             QuickHPCheck(-1, -1, -1, 0);
             AssertOnTopOfDeck(omni);
         }
+        #endregion Test Gyrosaur Innate Power
+
+        #region Test Gyrosaur Incap Powers
+        /* 
+         * One player may draw a card now. 
+         * One target with more than 10 HP deals itself 3 melee damage. 
+         * Select a non-character target. Increase damage dealt to that target by 1 until the start of your next turn.
+        */
         [Test]
         public void TestGyrosaurIncap1()
         {
@@ -311,6 +325,7 @@ namespace CauldronTests
             GoToStartOfTurn(gyrosaur);
             AssertNumberOfStatusEffectsInPlay(0);
         }
+        #endregion Test Gyrosaur Incap Powers
 
         #region Test A Merry Chase
         [Test]
@@ -360,6 +375,11 @@ namespace CauldronTests
         }
         #endregion Test A Merry Chase
 
+        #region Test Gyro Stabilizer
+        /*
+         * When this card enters play, discard up to 3 cards. Draw as many cards as you discarded this way.
+         * Whenever you evaluate the number of Crash cards in your hand, you may treat it as being 1 higher or 1 lower than it is.
+         */
         //Gyro Stabilizer's "adjust crash-in-hand count" is done as an ActivatesEffect and tested on individual cards
         [Test]
         public void TestGyroStabilizerDiscardToDraw([Values(0, 1, 2, 3)] int numToDiscard)
@@ -380,11 +400,12 @@ namespace CauldronTests
                 }
             }
             DecisionSelectCards = discards.ToArray();
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             PlayCard("GyroStabilizer");
             QuickHandCheckZero();
             AssertNumberOfCardsInTrash(gyrosaur, numToDiscard);
         }
+        #endregion Test Gyro Stabilizer
 
         #region Test Hiddent Detour
         /* 
@@ -567,6 +588,12 @@ namespace CauldronTests
         }
         #endregion Test Hidden Detour
 
+        #region Test Hyperspin
+        /*
+         * When this card enters play, you may play a card.
+         * Increase damage dealt by {Gyrosaur} to non-hero targets by 1. 
+         * If you would draw a Crash card, play it instead. Then, destroy all other copies of Hyperspin and this card.
+         */
         [Test]
         public void TestHyperspinExtraPlayAndDamageBoost()
         {
@@ -600,7 +627,7 @@ namespace CauldronTests
 
             Card spin = PutOnDeck("Hyperspin");
             DecisionSelectCards = new Card[] { null };
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             PlayCard(spin);
             QuickHandCheckZero();
         }
@@ -620,13 +647,40 @@ namespace CauldronTests
             AssertInHand(stabilizer);
             AssertIsInPlay(spin1, spin2);
 
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             Card ball = PutOnDeck("WreckingBall");
             DrawCard(gyrosaur);
             AssertIsInPlay(ball);
             AssertInTrash(spin1, spin2);
             QuickHandCheckZero();
         }
+        [Test]
+        public void TestHyperspinNotLeakCrashStatus()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            DecisionYesNo = false;
+
+            PlayCard("Hyperspin");
+
+            Card pass = PutOnDeck("IndiscriminatePass"); // Crash
+            DrawCard(gyrosaur, optional: true);
+            AssertOnTopOfDeck(pass);
+
+            Card chase = PutOnDeck("AMerryChase");
+            DrawCard(gyrosaur, optional: true);
+            AssertOnTopOfDeck(chase);
+        }
+        #endregion Test Hyperspin
+
+        #region Test Indiscriminate Pass
+        /*
+         * If you have at least 1 Crash card in your hand, {Gyrosaur} deals another hero target 2 melee damage.
+         * {Gyrosaur} deals 1 non-hero target 4 melee damage.
+         */
         [Test]
         public void TestIndiscriminatePass0Crash()
         {
@@ -640,9 +694,9 @@ namespace CauldronTests
             Card batt = PlayCard("BladeBattalion");
             AssertNextDecisionChoices(new Card[] { baron.CharacterCard, batt, traffic }, new Card[] { gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard });
             DecisionSelectTarget = baron.CharacterCard;
-            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            QuickHPStorage(baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard, traffic, batt);
             PlayCard("IndiscriminatePass");
-            QuickHPCheck(-4, 0, 0, 0);
+            QuickHPCheck(-4, 0, 0, 0, 0, 0);
         }
         [Test]
         public void TestIndiscriminatePass1Crash()
@@ -652,16 +706,24 @@ namespace CauldronTests
             DestroyNonCharacterVillainCards();
 
             MoveAllCardsFromHandToDeck(gyrosaur);
-            PutInHand("WreckingBall");
+            PutInHand("WreckingBall"); // Crash
 
             Card traffic = PlayCard("TrafficPileup");
             Card batt = PlayCard("BladeBattalion");
             AssertNextDecisionChoices(new Card[] { legacy.CharacterCard, ra.CharacterCard }, new Card[] { gyrosaur.CharacterCard, baron.CharacterCard, batt, traffic });
             DecisionSelectTargets = new Card[] { legacy.CharacterCard, baron.CharacterCard };
-            QuickHPStorage(baron, gyrosaur, legacy, ra);
+            QuickHPStorage(baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard, traffic, batt);
             PlayCard("IndiscriminatePass");
-            QuickHPCheck(-4, 0, -2, 0);
+            QuickHPCheck(-4, 0, -2, 0, 0, 0);
         }
+        #endregion Test Indiscriminate Pass
+
+        #region Test Omnivore
+        /*
+         * Destroy a target with 3 or fewer HP.
+         * {Gyrosaur} regains X HP, where X is the HP of that target before it was destroyed. 
+         * You may shuffle your trash into your deck.
+         */
         [Test]
         public void TestOmnivoreDestroyAndGainHP()
         {
@@ -680,13 +742,15 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { mdp, traffic };
 
             SetHitPoints(gyrosaur, 20);
-            QuickHPStorage(gyrosaur);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(ra, 20);
+            QuickHPStorage(gyrosaur, legacy, ra);
             PlayCard("Omnivore");
-            QuickHPCheck(3);
+            QuickHPCheck(3, 0, 0);
             AssertInTrash(mdp);
             AssertIsInPlay(traffic);
             PlayCard("Omnivore");
-            QuickHPCheck(2);
+            QuickHPCheck(2, 0, 0);
             AssertInTrash(traffic);
             PlayCard("Omnivore");
             QuickHPCheckZero();
@@ -699,9 +763,11 @@ namespace CauldronTests
 
             SetHitPoints(baron, 3);
             SetHitPoints(gyrosaur, 10);
-            QuickHPStorage(gyrosaur);
+            SetHitPoints(legacy, 10);
+            SetHitPoints(ra, 10);
+            QuickHPStorage(gyrosaur, legacy, ra);
             PlayCard("Omnivore");
-            QuickHPCheck(3);
+            QuickHPCheck(3, 0, 0);
         }
         [Test]
         public void TestOmnivoreShuffleTrash()
@@ -721,6 +787,13 @@ namespace CauldronTests
             AssertInDeck(chase);
             QuickShuffleCheck(1);
         }
+        #endregion Test Omnivore
+
+        #region Test On A Roll
+        /*
+         * At the end of your turn, draw a card. Then if you have at least 2 Crash cards in your hand, {Gyrosaur} deals 
+         * each non-hero target 1 melee damage and this card is destroyed.
+         */
         [Test]
         public void TestOnARollDraw()
         {
@@ -732,8 +805,9 @@ namespace CauldronTests
 
             Card chase = PutOnDeck("AMerryChase");
             GoToPlayCardPhaseAndPlayCard(gyrosaur, "OnARoll");
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             GoToEndOfTurn();
+            QuickHandCheck(1, 0, 0);
             AssertInHand(chase);
             AssertIsInPlay("OnARoll");
         }
@@ -745,11 +819,11 @@ namespace CauldronTests
             DestroyNonCharacterVillainCards();
             MoveAllCardsFromHandToDeck(gyrosaur);
 
-            Card traffic = PlayCard("TrafficPileup");
+            Card traffic = PlayCard("TrafficPileup"); // Prevents card draw
             Card roll = PlayCard("OnARoll");
 
-            PutInHand("Wipeout");
-            PutInHand("WreckingBall");
+            PutInHand("Wipeout"); // Crash
+            PutInHand("WreckingBall"); // Crash
             Card top = PutOnDeck("AMerryChase");
             QuickHPStorage(baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard, traffic);
 
@@ -764,6 +838,44 @@ namespace CauldronTests
             QuickHPCheck(-1, 0, 0, 0, -1);
         }
         [Test]
+        public void TestOnARollSelfDestructResponseFromDraw()
+        {
+            Card plummetingMonorail;
+            Card onARoll;
+            Card top;
+
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            plummetingMonorail = PlayCard("PlummetingMonorail");
+            onARoll = PlayCard("OnARoll");
+
+            PutInHand("Wipeout"); // Crash
+            top = PutOnDeck("WreckingBall"); // Crash
+
+            QuickHPStorage(baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard, plummetingMonorail);
+
+            GoToPlayCardPhase(gyrosaur);
+            AssertIsInPlay(onARoll);
+            AssertOnTopOfDeck(top);
+            QuickHPCheckZero();
+
+            GoToEndOfTurn();
+            AssertNotOnTopOfDeck(gyrosaur, top);
+            AssertInHand(top);
+            AssertInTrash(onARoll);
+            QuickHPCheck(-1, 0, 0, 0, -1);
+        }
+        #endregion Test On A Roll
+
+        #region Test Protective Escort
+        /*
+         * Draw 2 cards. 
+         * Select a target and a damage type. That target is immune to that damage type until the start of your next turn.
+         */
+        [Test]
         public void TestProtectiveEscort()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
@@ -772,11 +884,11 @@ namespace CauldronTests
 
             DecisionSelectCard = legacy.CharacterCard;
             DecisionSelectDamageType = DamageType.Projectile;
-            QuickHandStorage(gyrosaur);
+            QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
             PlayCard("ProtectiveEscort");
-            QuickHandCheck(2);
+            QuickHandCheck(2, 0, 0);
 
             //check immunity
             AssertNumberOfStatusEffectsInPlay(1);
@@ -795,9 +907,17 @@ namespace CauldronTests
             //check expiration time
             GoToStartOfTurn(gyrosaur);
             AssertNumberOfStatusEffectsInPlay(0);
-            DealDamage(baron, legacy, 1, DamageType.Melee);
+            DealDamage(baron, legacy, 1, DamageType.Projectile);
             QuickHPCheck(0, 0, -2, 0);
         }
+        #endregion
+
+        #region Test Rapturian Shell
+        /*
+         * At the end of your turn, if you have 0 Crash cards in your hand, {Gyrosaur} deals 1 other hero 2 psychic damage.
+         * Powers 
+         * Play a Crash card, or discard cards from the top of your deck until you discard a Crash card and put it into your hand.
+         */
         [Test]
         public void TestRapturianShellEndOfTurn([Values(true, false)] bool hasCrashInHand)
         {
@@ -809,7 +929,7 @@ namespace CauldronTests
             PlayCard("RapturianShell");
             if(hasCrashInHand)
             {
-                PutInHand("WreckingBall");
+                PutInHand("WreckingBall"); // Crash
             }
 
             QuickHPStorage(baron, gyrosaur, legacy, ra);
@@ -834,8 +954,8 @@ namespace CauldronTests
             Card shell = PlayCard("RapturianShell");
             MoveAllCardsFromHandToDeck(gyrosaur);
 
-            Card ball = PutInHand("WreckingBall");
-            Card pass = PutInHand("IndiscriminatePass");
+            Card ball = PutInHand("WreckingBall"); // Crash
+            Card pass = PutInHand("IndiscriminatePass"); // Crash
             Card chase = PutInHand("AMerryChase");
             DecisionSelectFunction = 0;
             DecisionSelectCard = ball;
@@ -854,11 +974,10 @@ namespace CauldronTests
             Card shell = PlayCard("RapturianShell");
             MoveAllCardsFromHandToDeck(gyrosaur);
 
-            Card ball = PutInHand("WreckingBall");
-            Card pass = PutOnDeck("IndiscriminatePass");
+            Card ball = PutInHand("WreckingBall"); // Crash
+            Card pass = PutOnDeck("IndiscriminatePass"); // Crash
             Card chase = PutOnDeck("AMerryChase");
-            DecisionSelectFunction = 1;
-            
+            DecisionSelectFunction = 1;            
 
             AssertMaxNumberOfDecisions(1);
             UsePower(shell);
@@ -874,17 +993,25 @@ namespace CauldronTests
             Card shell = PlayCard("RapturianShell");
             MoveAllCardsFromHandToDeck(gyrosaur);
 
-            Card ball = PutInHand("WreckingBall");
-            Card pass = PutOnDeck("IndiscriminatePass");
+            Card ball = PutInHand("WreckingBall"); // Crash
+            Card pass = PutOnDeck("IndiscriminatePass"); // Crash
             Card chase = PutOnDeck("AMerryChase");
             DecisionSelectFunction = 1;
 
-            PlayCard("HostageSituation");
+            PlayCard("HostageSituation"); // Prevents hero card play
             AssertNoDecision();
             UsePower(shell);
             AssertInHand(pass, ball);
             AssertInTrash(chase);
         }
+        #endregion Test Rapturian Shell
+
+        #region Test Read The Terrain
+        /*
+         * At the start of your turn, reveal the top card of your deck and replace or discard it.
+         * Powers
+         * If {Gyrosaur} deals no damage this turn, increase damage dealt by {Gyrosaur} during your next turn to non-hero targets by 1.
+         */
         [Test]
         public void TestReadTheTerrainStartOfTurnReplace()
         {
@@ -1015,6 +1142,14 @@ namespace CauldronTests
             DealDamage(gyrosaur, baron, 1, DTM);
             QuickHPCheck(-1, 0, -1, 0);
         }
+        #endregion Test Read The Terrain
+
+        #region Test Reckless Alien Racing Tortoise
+        /*
+         * During your turn, the first time you have more than 3 Crash cards in your hand, immediately use this card's power and then destroy it.
+         * Powers
+         * {Gyrosaur} deals 1 target X+1 melee damage, where X is the number of Crash cards in your hand.
+         */
         [Test]
         public void TestRecklessAlienRacingTortoisePower()
         {
@@ -1030,12 +1165,12 @@ namespace CauldronTests
             UsePower(rart);
             QuickHPCheck(-1, 0, 0, 0);
 
-            PutInHand("Wipeout");
+            PutInHand("Wipeout"); //Crash
             UsePower(rart);
             QuickHPCheck(-2, 0, 0, 0);
         }
         [Test]
-        public void TestRecklessAlienRacingTortoiseAutouseStartOfTurn()
+        public void TestRecklessAlienRacingTortoiseAutoUseStartOfTurn()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
             StartGame();
@@ -1046,10 +1181,10 @@ namespace CauldronTests
             Card rart = PlayCard("RecklessAlienRacingTortoise");
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            PutInHand("Wipeout");
-            PutInHand("SphereOfDevastation");
-            PutInHand("WreckingBall");
-            PutInHand("IndiscriminatePass");
+            PutInHand("Wipeout"); // Crash
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("WreckingBall"); // Crash
+            PutInHand("IndiscriminatePass"); // Crash
 
             AssertIsInPlay(rart);
             GoToStartOfTurn(gyrosaur);
@@ -1057,7 +1192,7 @@ namespace CauldronTests
             AssertInTrash(rart);
         }
         [Test]
-        public void TestRecklessAlienRacingTortoiseAutouseFromDrawCrash()
+        public void TestRecklessAlienRacingTortoiseAutoUseFromDrawCrash()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
             StartGame();
@@ -1068,11 +1203,11 @@ namespace CauldronTests
             Card rart = PlayCard("RecklessAlienRacingTortoise");
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            PutInHand("Wipeout");
-            PutInHand("SphereOfDevastation");
-            PutInHand("WreckingBall");
+            PutInHand("Wipeout"); // Crash
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("WreckingBall"); // Crash
 
-            PutOnDeck("IndiscriminatePass");
+            PutOnDeck("IndiscriminatePass"); // Crash
 
             AssertIsInPlay(rart);
             GoToPlayCardPhase(gyrosaur);
@@ -1082,7 +1217,7 @@ namespace CauldronTests
             AssertInTrash(rart);
         }
         [Test]
-        public void TestRecklessAlienRacingTortoiseAutouseFromPutInHand()
+        public void TestRecklessAlienRacingTortoiseAutoUseFromPutInHand()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
             StartGame();
@@ -1093,22 +1228,21 @@ namespace CauldronTests
             Card rart = PlayCard("RecklessAlienRacingTortoise");
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            PutInHand("Wipeout");
-            PutInHand("SphereOfDevastation");
-            PutInHand("WreckingBall");
-
+            PutInHand("Wipeout"); //Crash
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("WreckingBall"); // Crash
 
             AssertIsInPlay(rart);
             GoToPlayCardPhase(gyrosaur);
             AssertIsInPlay(rart);
 
-            PutInHand("IndiscriminatePass");
+            PutInHand("IndiscriminatePass"); // Crash
 
             QuickHPCheck(-5, 0, 0, 0);
             AssertInTrash(rart);
         }
         [Test]
-        public void TestRecklessAlienRacingTortoiseAutouseOnlyOnce()
+        public void TestRecklessAlienRacingTortoiseAutoUseOnlyOnce()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "TimeCataclysm");
             StartGame();
@@ -1119,18 +1253,17 @@ namespace CauldronTests
             Card rart = PlayCard("RecklessAlienRacingTortoise");
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            PutInHand("Wipeout");
-            PutInHand("SphereOfDevastation");
-            PutInHand("WreckingBall");
+            PutInHand("Wipeout"); // Crash
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("WreckingBall"); // Crash
 
             PlayCard("FixedPoint");
-
 
             AssertIsInPlay(rart);
             GoToPlayCardPhase(gyrosaur);
             AssertIsInPlay(rart);
 
-            PutInHand("IndiscriminatePass");
+            PutInHand("IndiscriminatePass"); // Crash
 
             QuickHPCheck(-5, 0, 0, 0);
             AssertIsInPlay(rart);
@@ -1139,7 +1272,7 @@ namespace CauldronTests
             QuickHPCheckZero();
         }
         [Test]
-        public void TestRecklessAlienRacingTortoiseAutouseStabilizedUpToFive()
+        public void TestRecklessAlienRacingTortoiseAutoUseStabilizedUpToFive()
         {
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
             StartGame();
@@ -1151,10 +1284,10 @@ namespace CauldronTests
             PlayCard("GyroStabilizer");
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            PutInHand("Wipeout");
-            PutInHand("SphereOfDevastation");
-            PutInHand("WreckingBall");
-            PutInHand("IndiscriminatePass");
+            PutInHand("Wipeout"); // Crash
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("WreckingBall"); // Crash
+            PutInHand("IndiscriminatePass"); // Crash
 
             DecisionSelectFunction = 0;
             GoToPlayCardPhase(gyrosaur);
@@ -1179,10 +1312,10 @@ namespace CauldronTests
             PlayCard("GyroStabilizer");
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            PutInHand("Wipeout");
-            PutInHand("SphereOfDevastation");
-            PutInHand("WreckingBall");
-            PutInHand("IndiscriminatePass");
+            PutInHand("Wipeout"); // Crash
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("WreckingBall"); // Crash
+            PutInHand("IndiscriminatePass"); // Crash
 
             DecisionDoNotSelectFunction = true;
 
@@ -1205,10 +1338,10 @@ namespace CauldronTests
             PlayCard("GyroStabilizer");
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            PutInHand("Wipeout");
-            PutInHand("SphereOfDevastation");
-            PutInHand("WreckingBall");
-            PutInHand("IndiscriminatePass");
+            PutInHand("Wipeout"); // Crash
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("WreckingBall"); // Crash
+            PutInHand("IndiscriminatePass"); // Crash
             DecisionSelectFunction = 0;
 
             GoToPlayCardPhase(gyrosaur);
@@ -1217,6 +1350,38 @@ namespace CauldronTests
             AssertInTrash(rart);
             QuickHPCheck(-5, 0, 0, 0);
         }
+        [Test]
+        public void TestRecklessAlienRacingTortoiseNotLeakCrashStatus()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+            PlayCard("RecklessAlienRacingTortoise");
+            PutInHand("IndiscriminatePass"); // Crash
+            PutInHand("WreckingBall"); // Crash
+            PutInHand("SphereOfDevastation"); // Crash
+
+            GoToStartOfTurn(gyrosaur);
+
+            DecisionYesNo = false;
+            Card wipeout = PutOnDeck("Wipeout");
+            DrawCard(gyrosaur, optional: true);
+            AssertOnTopOfDeck(wipeout);
+
+            Card chase = PutOnDeck("AMerryChase");
+            DrawCard(gyrosaur, optional: true);
+            AssertOnTopOfDeck(chase);
+        }
+
+        #endregion Test Reckless Alien Racing Tortoise
+
+        #region Test Ricochet
+        /* 
+         * {Gyrosaur} deals 1 target 2 melee damage. {Gyrosaur} deals a second target X melee damage, where X is the amount of damage she dealt to the first target. 
+         * Reduce the next damage dealt by non-hero targets damaged this way to 0.
+         */
         [Test]
         public void TestRicochet()
         {
@@ -1260,7 +1425,13 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(0);
         }
 
+        #endregion Test Ricochet
+
         #region Test Sphere of Devastation
+        /*
+         * Discard all Crash cards in your hand. {Gyrosaur} deals 1 target X+4 melee damage, where X is 4 times the number of cards discarded this way. 
+         * If {Gyrosaur} dealt more than 10 damage this way, destroy all environment cards and each other player discards a card.
+         */
         [Test]
         public void TestSphereOfDevastationBelowThreshold()
         {
@@ -1342,6 +1513,12 @@ namespace CauldronTests
         }
         #endregion Test Sphere of Devastation
 
+        #region Test Terrifying Momentum
+        /*
+         * {Gyrosaur} deals 1 target X+2 melee damage, where X is the number of Crash cards in your hand. 
+         * If X is more than 4, redirect this damage to the non-hero target with the lowest HP. 
+         * Draw a card.
+         */
         [Test]
         public void TestTerrifyingMomentumBelowThreshold()
         {
@@ -1352,21 +1529,21 @@ namespace CauldronTests
             MoveAllCardsFromHandToDeck(gyrosaur);
 
             //2 crash cards
-            Card wipe = PutInHand("Wipeout");
-            Card pass = PutInHand("IndiscriminatePass");
+            Card wipe = PutInHand("Wipeout"); // Crash
+            Card pass = PutInHand("IndiscriminatePass"); // Crash
             Card chase = PutOnDeck("AMerryChase");
 
             Card innocents = PutIntoPlay("TargetingInnocents");
             DecisionSelectTarget = baron.CharacterCard;
-            QuickHPStorage(baron.CharacterCard, innocents);
+            QuickHPStorage(baron.CharacterCard, innocents, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
             PlayCard("TerrifyingMomentum");
-            QuickHPCheck(-4, 0);
+            QuickHPCheck(-4, 0, 0, 0, 0);
             AssertInHand(chase);
 
             PutInTrash(wipe);
             //only 1 crash card now
-            PlayCard("TerrifyingMomentum");
-            QuickHPCheck(-3, 0);
+            PlayCard("TerrifyingMomentum"); // Crash
+            QuickHPCheck(-3, 0, 0, 0, 0);
         }
         [Test]
         public void TestTerrifyingMomentumAboveThreshold()
@@ -1378,25 +1555,31 @@ namespace CauldronTests
             MoveAllCardsFromHandToDeck(gyrosaur);
 
             //5 crash cards
-            Card wipe = PutInHand("Wipeout");
-            Card pass = PutInHand("IndiscriminatePass");
-            Card rico = PutInHand("Ricochet");
-            Card wreck = PutInHand("WreckingBall");
-            Card sphere = PutInHand("SphereOfDevastation");
+            Card wipe = PutInHand("Wipeout"); // Crash
+            Card pass = PutInHand("IndiscriminatePass"); // Crash
+            Card rico = PutInHand("Ricochet"); // Crash
+            Card wreck = PutInHand("WreckingBall"); // Crash
+            Card sphere = PutInHand("SphereOfDevastation"); // Crash
             Card chase = PutOnDeck("AMerryChase");
 
             Card innocents = PutIntoPlay("TargetingInnocents");
             DecisionSelectTarget = baron.CharacterCard;
-            QuickHPStorage(baron.CharacterCard, innocents);
+            QuickHPStorage(baron.CharacterCard, innocents, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
             PlayCard("TerrifyingMomentum");
-            QuickHPCheck(0, -7);
+            QuickHPCheck(0, -7, 0, 0, 0);
             AssertInHand(chase);
 
             PutInTrash(wipe);
             //only 4 crash cards now
             PlayCard("TerrifyingMomentum");
-            QuickHPCheck(-6, 0);
+            QuickHPCheck(-6, 0, 0, 0, 0);
         }
+        #endregion Test Terrifying Momentum
+
+        #region Test Wipeout
+        /*
+         * {Gyrosaur} deals up to X+1 targets 4 melee damage each, then deals herself X+1 melee damage, where X is the number of Crash cards in your hand.
+         */
         [Test]
         public void TestWipeout()
         {
@@ -1412,16 +1595,23 @@ namespace CauldronTests
             Card redist = PutIntoPlay("ElementalRedistributor");
 
             DecisionSelectTargets = new Card[] { baron.CharacterCard, redist };
-            QuickHPStorage(baron.CharacterCard, redist, gyrosaur.CharacterCard);
+            QuickHPStorage(baron.CharacterCard, redist, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard);
 
             PlayCard(wipe1);
-            QuickHPCheck(-4, -4, -2);
+            QuickHPCheck(-4, -4, -2, 0, 0);
 
             DecisionSelectTargetsIndex = 0;
 
             PlayCard(wipe2);
-            QuickHPCheck(-4, 0, -1);
+            QuickHPCheck(-4, 0, -1, 0, 0);
         }
+        #endregion Test Wipeout
+
+        #region Test Wrecking Ball
+        /*
+         * When this card enters play, {Gyrosaur} deals each target 1 melee damage.
+         * Increase damage dealt to environment targets by 1.
+         */
         [Test]
         public void TestWreckingBall()
         {
@@ -1439,49 +1629,6 @@ namespace CauldronTests
             DealDamage(legacy, traffic, 1, DTM);
             QuickHPCheck(0, 0, 0, 0, 0, -2);
         }
-        [Test]
-        public void TestRecklessAlienRacingTortoiseNotLeakCrashStatus()
-        {
-            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
-            StartGame();
-            DestroyNonCharacterVillainCards();
-
-            MoveAllCardsFromHandToDeck(gyrosaur);
-            PlayCard("RecklessAlienRacingTortoise");
-            PutInHand("IndiscriminatePass");
-            PutInHand("WreckingBall");
-            PutInHand("SphereOfDevastation");
-
-            GoToStartOfTurn(gyrosaur);
-
-            DecisionYesNo = false;
-            Card wipeout = PutOnDeck("Wipeout");
-            DrawCard(gyrosaur, optional: true);
-            AssertOnTopOfDeck(wipeout);
-
-            Card chase = PutOnDeck("AMerryChase");
-            DrawCard(gyrosaur, optional: true);
-            AssertOnTopOfDeck(chase);
-        }
-        [Test]
-        public void TestHyperspinNotLeakCrashStatus()
-        {
-            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
-            StartGame();
-            DestroyNonCharacterVillainCards();
-
-            MoveAllCardsFromHandToDeck(gyrosaur);
-            DecisionYesNo = false;
-
-            PlayCard("Hyperspin");
-
-            Card pass = PutOnDeck("IndiscriminatePass");
-            DrawCard(gyrosaur, optional: true);
-            AssertOnTopOfDeck(pass);
-
-            Card chase = PutOnDeck("AMerryChase");
-            DrawCard(gyrosaur, optional: true);
-            AssertOnTopOfDeck(chase);
-        }
+        #endregion Test Wrecking Ball
     }
 }
