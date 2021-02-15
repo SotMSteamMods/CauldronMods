@@ -20,7 +20,6 @@ namespace Cauldron.TheInfernalChoir
             SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.");
 
             AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-            AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
         }
 
         public override bool AskIfCardIsIndestructible(Card card)
@@ -31,33 +30,7 @@ namespace Cauldron.TheInfernalChoir
             return base.AskIfCardIsIndestructible(card);
         }
 
-        private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
-        {
-            //remove this card as an option to make decisions
-            md.RemoveDecisions((IDecision d) => d.SelectedCard == base.Card);
-            return base.DoNothing();
-        }
-
-        public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
-        {
-            if (card == base.Card && !cardSource.Card.IsVillain)
-            {
-                return false;
-            }
-            return base.AskIfCardIsVisibleToCardSource(card, cardSource);
-        }
-
-        public override bool AskIfActionCanBePerformed(GameAction action)
-        {
-            bool? effected = action.DoesFirstCardAffectSecondCard((Card c) => !c.IsVillain, (Card c) => c == base.Card);
-            if (effected == true)
-            {
-                return false;
-            }
-
-            return base.AskIfActionCanBePerformed(action);
-        }
-
+       
         public override void AddTriggers()
         {
             base.AddTriggers();
@@ -72,8 +45,6 @@ namespace Cauldron.TheInfernalChoir
             AddTrigger<ShuffleTrashIntoDeckAction>(ga => ga.TurnTakerController.IsHero && !ga.TurnTakerController.TurnTaker.Deck.HasCards && !ga.NecessaryToPlayCard, ga => StashCardsForPotentialDiscardAction(ga), TriggerType.Hidden, TriggerTiming.Before);
             AddTrigger<MoveCardAction>(ga => ga.Origin.IsHero && ga.Origin.IsDeck && ga.Destination.IsHero && ga.Destination.IsTrash && ga.IsDiscard && ga.ShuffledTrashIntoDeck, ga => HeartDiscardCancelReponse(ga), TriggerType.CancelAction, TriggerTiming.Before);
 
-            //visibility
-            base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && !md.CardSource.Card.IsVillain, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
         }
 
         private Dictionary<TurnTaker, List<Card>> _stashedTrashOrder = new Dictionary<TurnTaker, List<Card>>();
