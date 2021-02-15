@@ -47,7 +47,7 @@ namespace CauldronTests
         protected TurnTakerController phase { get { return FindVillain("PhaseVillain"); } }
         protected TurnTakerController scream { get { return FindVillain("ScreaMachine"); } }
         protected TurnTakerController swarm { get { return FindVillain("SwarmEater"); } }
-        protected TurnTakerController choir { get { return FindVillain("TheInfernalChoir"); } }
+        protected Cauldron.TheInfernalChoir.TheInfernalChoirTurnTakerController choir { get { return FindVillain("TheInfernalChoir") as Cauldron.TheInfernalChoir.TheInfernalChoirTurnTakerController; ; } }
         protected TurnTakerController fate { get { return FindVillain("TheMistressOfFate"); } }
         protected TurnTakerController ram { get { return FindVillain("TheRam"); } }
         protected TurnTakerController tiamat { get { return FindVillain("Tiamat"); } }
