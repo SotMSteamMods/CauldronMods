@@ -13,6 +13,7 @@ namespace Cauldron.TheInfernalChoir
         public TrueColorsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(VagrantHeartSoulRevealedIdentifier);
         }
 
         public override IEnumerator Play()
