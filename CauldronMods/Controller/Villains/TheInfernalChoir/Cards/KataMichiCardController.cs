@@ -18,7 +18,7 @@ namespace Cauldron.TheInfernalChoir
         {
             base.AddTriggers();
 
-            AddIncreaseDamageTrigger(dda => IsVagrantHeartHiddenHeartInPlay() && DoesPlayAreaContainHiddenHeart(dda.DamageSource.Owner), 1);
+            AddIncreaseDamageTrigger(dda => IsVagrantHeartHiddenHeartInPlay() && DoesPlayAreaContainHiddenHeart(dda.DamageSource.Owner) && dda.DamageSource.IsHeroCharacterCard, 1);
 
             AddTrigger<UsePowerAction>(upa => upa.Power.Description != KataMichiPowerDesc, upa => UsePowerResponse(upa), new[] { TriggerType.CancelAction, TriggerType.UsePower }, TriggerTiming.Before);
         }
