@@ -190,6 +190,15 @@ namespace CauldronTests
             DealDamage(haka, ra, 2, DamageType.Melee);
             QuickHPCheck(-1);
 
+            //works when hitting environment
+            QuickHPStorage(ra.CharacterCard, responder1);
+            DealDamage(ra, responder1, 2, DamageType.Melee);
+            QuickHPCheck(0, -1);
+
+            //does not affect environment hitting non-environment
+            DealDamage(responder1, ra, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
         }
 
         [Test()]
