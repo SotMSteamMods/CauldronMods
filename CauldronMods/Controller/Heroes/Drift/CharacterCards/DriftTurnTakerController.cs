@@ -121,6 +121,18 @@ namespace Cauldron.Drift
                 //Then place 1 of your 2 character cards (1929 or 2199) next to that same space
                 base.GameController.AddCardPropertyJournalEntry(selectedTrack, "DriftPosition" + tokensToAdd, true);
             }
+            else
+            {
+                coroutine = base.GameController.BulkMoveCards(this, base.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), base.TurnTaker.OutOfGame);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
         }
 
