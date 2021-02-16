@@ -880,7 +880,7 @@ namespace CauldronTests
 
             DestroyCard("MobileDefensePlatform");
 
-            DiscardAllCards(starlight);
+            MoveAllCardsFromHandToDeck(starlight);
             //load the hand with some stuff
             var c = PutInHand("EventHorizon");
             PutInHand("NightloreArmor");
