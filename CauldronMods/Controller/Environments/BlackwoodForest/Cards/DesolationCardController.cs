@@ -42,7 +42,17 @@ namespace Cauldron.BlackwoodForest
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = base.GameController.BulkMoveCards(httc, httc.HeroTurnTaker.Hand.Cards.Where((Card c) => c != cardDecisions.FirstOrDefault().SelectedCard), httc.TurnTaker.Trash, isDiscard: true, cardSource: base.GetCardSource());
+            coroutine = GameController.SendMessageAction($"{Card.Title} discards all cards in {httc.HeroTurnTaker.Hand.GetFriendlyName()} except {cardDecisions.FirstOrDefault().SelectedCard.Title}.", Priority.Medium, GetCardSource(), showCardSource: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.GameController.MoveCards(httc, httc.HeroTurnTaker.Hand.Cards.Where((Card c) => c != cardDecisions.FirstOrDefault().SelectedCard), httc.TurnTaker.Trash, isDiscard: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
