@@ -1404,7 +1404,7 @@
 	"sourceSize": {"w":400,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"Titan.png":
+"TitanCharacter.png":
 {
 	"frame": {"x":2418,"y":3045,"w":400,"h":200},
 	"rotated": false,
@@ -1413,7 +1413,7 @@
 	"sourceSize": {"w":400,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"TitanFlipped.png":
+"TitanCharacterFlipped.png":
 {
 	"frame": {"x":2821,"y":3045,"w":400,"h":200},
 	"rotated": false,
