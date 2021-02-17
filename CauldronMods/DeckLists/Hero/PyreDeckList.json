@@ -16,7 +16,7 @@
             "hitpointColor": "bdbebf",
             "character": true,
             "powers": [
-                "1 player draws a card. {PyreIrradiate} that card until it leaves their hand. Shuffle a cascade card from your trash into your deck."
+                "1 player draws a card. {Irradiate} that card until it leaves their hand. Shuffle a cascade card from your trash into your deck."
             ],
             "icons": [
                 "HasPower",
@@ -28,7 +28,7 @@
                 "Pyre"
             ],
             "incapacitatedAbilities": [
-                "One player may discard a {PyreIrradiate} card to draw a card, play a card, and use a power now.",
+                "One player may discard an {Irradiated} card to draw a card, play a card, and use a power now.",
                 "One hero target deals each target 1 energy damage.",
                 "One player may discard 2 cards, then draw 2 cards."
             ],
@@ -60,7 +60,7 @@
             ],
             "body": "When this card enters play, you may use a power.",
             "powers": [
-                "2 heroes may each discard a card to regain 2 HP. Each hero who discards a {PyreIrradiate} card this way may draw a card."
+                "2 heroes may each discard a card to regain 2 HP. Each hero who discards an {Irradiated} card this way may draw a card."
             ],
             "flavorQuotes": [
                 {
@@ -83,7 +83,7 @@
                 "DealDamageEnergy"
             ],
             "body": [
-                "Select 2 non-{PyreIrradiate} cards in 1 player's hand. {PyreIrradiate} those cards until they leave that player's hand. If 2 of your cards were {PyreIrradiate} this way, increase energy damage dealt by {Pyre} by 1 until the end of your turn.",
+                "Select 2 non-{Irradiated} cards in 1 player's hand. {Irradiate} those cards until they leave that player's hand. If 2 of your cards were {Irradiate} this way, increase energy damage dealt by {Pyre} by 1 until the end of your turn.",
                 "{Pyre} deals 1 target 2 energy damage."
             ],
             "flavorQuotes": [
@@ -108,7 +108,7 @@
                 "PlayCardNow"
             ],
             "body": [
-                "Select a hero. They activate each of the following in order if they have at least that many {PyreIrradiate} cards in their hand:",
+                "Select a hero. They activate each of the following in order if they have at least that many {Irradiated} cards in their hand:",
                 "{ 1: Use a power.",
                 "{ 2: Draw a card.",
                 "{ 3: Deal themselves 2 energy damage.",
@@ -139,7 +139,7 @@
                 "UsePowerNow"
             ],
             "body": [
-                "At the end of your turn, 1 player may select 1 non-{PyreIrradiate} card in their hand. {PyreIrradiate} that card it until it leaves their hand. Then, they may use a power on that card.",
+                "At the end of your turn, 1 player may select 1 non-{Irradiated} card in their hand. {Irradiate} that card it until it leaves their hand. Then, they may use a power on that card.",
                 "If that power destroys that card, discard it instead."
             ],
             "flavorQuotes": [
@@ -164,7 +164,7 @@
                 "Discard",
                 "DealDamageLightning"
             ],
-            "body": "Whenever a player plays a {PyreIrradiate} card, {Pyre} deals 1 target 1 energy damage.",
+            "body": "Whenever a player plays an {Irradiated} card, {Pyre} deals 1 target 1 energy damage.",
             "powers": [
                 "Discard a card. {Pyre} deals 2 targets 2 lightning damage each."
             ],
@@ -190,7 +190,7 @@
                 "HasPower",
                 "DealDamageEnergy"
             ],
-            "body": "Whenever a player plays a {PyreIrradiate} card, increase energy damage dealt by {Pyre} by 1 until the end of your turn. Then shuffle a Cascade card from your trash into your deck.",
+            "body": "Whenever a player plays an {Irradiated} card, increase energy damage dealt by {Pyre} by 1 until the end of your turn. Then shuffle a Cascade card from your trash into your deck.",
             "powers": [
                 "{Pyre} deals himself and each non-hero target 1 energy damage."
             ],
@@ -218,7 +218,7 @@
             ],
             "body": "When Rogue Fission Cascade would enter play, instead discard it and draw a card. Then put a Cascade card from your trash on top of your deck and destroy this card.",
             "powers": [
-                "Each player selects 1 non-{PyreIrradiate} card in their hand. {PyreIrradiate} those cards until they leave their hands."
+                "Each player selects 1 non-{Irradiated} card in their hand. {Irradiate} those cards until they leave their hands."
             ],
             "flavorText": "“Destruction without{BR}profit has no appeal,” said Gray.{BR}Vanish narrowed her eyes. “I'll{BR}pretend that was a 'thank you'”."
         },
@@ -235,8 +235,8 @@
                 "PlayCardNow"
             ],
             "body": [
-                "If this card is {PyreIrradiate} when you play it, {Pyre} deals 1 target 3 toxic damage.",
-                "Whenever a player discards a {PyreIrradiate} card, they may destroy this card to play the discarded card."
+                "If this card is {Irradiated} when you play it, {Pyre} deals 1 target 3 toxic damage.",
+                "Whenever a player discards an {Irradiated} card, they may destroy this card to play the discarded card."
             ],
             "flavorQuotes": [
                 {
@@ -258,8 +258,8 @@
                 "DealDamageEnergy"
             ],
             "body": [
-                "Select up to 2 non-{PyreIrradiate} cards in 1 player's hand. {PyreIrradiate} those cards until they leave that player's hand.",
-                "{Pyre} deals that hero and each non-hero target X energy damage, where X is the number of cards {PyreIrradiate} this way."
+                "Select up to 2 non-{Irradiated} cards in 1 player's hand. {Irradiate} those cards until they leave that player's hand.",
+                "{Pyre} deals that hero and each non-hero target X energy damage, where X is the number of cards {Irradiate} this way."
             ],
             "flavorQuotes": [
                 {
@@ -287,7 +287,7 @@
                 "DealDamageEnergy"
             ],
             "body": [
-                "Search your deck for an equipment card and put it into your hand. {PyreIrradiate} that card until it leaves your hand. Shuffle your deck. ",
+                "Search your deck for an equipment card and put it into your hand. {Irradiate} that card until it leaves your hand. Shuffle your deck. ",
                 "You may play an equipment card.",
                 "{Pyre} deals each non-hero target 0 energy damage."
             ],
@@ -340,7 +340,7 @@
                 "DealDamageEnergy"
             ],
             "body": [
-                "Two players may each select a non-{PyreIrradiate} card in their hand and move a card that shares a keyword with it from their trash to their hand. {PyreIrradiate} any cards selected or moved this way until they leave their hands.",
+                "Two players may each select a non-{Irradiated} card in their hand and move a card that shares a keyword with it from their trash to their hand. {Irradiate} any cards selected or moved this way until they leave their hands.",
                 "{Pyre} deals each non-hero target 0 energy damage."
             ],
             "flavorText": "The suit helped to drown{BR}out the constant scratching in his{BR}mind, allowing him to focus on the{BR}lingering energy signature."
@@ -359,7 +359,7 @@
                 "ImmuneToDamage",
                 "DestroySelf"
             ],
-            "body": "If this card is {PyreIrradiate} when you play it, it becomes indestructible until the end of your turn.",
+            "body": "If this card is {Irradiated} when you play it, it becomes indestructible until the end of your turn.",
             "powers": [
                 "Select a hero target. Until the start of your next turn, that target is immune to damage. Destroy this card."
             ],
@@ -386,7 +386,7 @@
                 "IncreaseDamageDealt"
             ],
             "powers": [
-                "1 player may play a {PyreIrradiate} card now. {Pyre} deals 1 target 1 energy damage. You may destroy a copy of Thermonuclear Core. If you do, increase this damage by 3."
+                "1 player may play an {Irradiated} card now. {Pyre} deals 1 target 1 energy damage. You may destroy a copy of Thermonuclear Core. If you do, increase this damage by 3."
             ],
             "flavorQuotes": [
                 {
@@ -411,7 +411,7 @@
             ],
             "body": [
                 "When this card enters your hand, put it into play.",
-                "{Pyre} deals each hero with {PyreIrradiate} cards in their hand X energy damage, where X is the number of {PyreIrradiate} cards in all hands.",
+                "{Pyre} deals each hero with {Irradiated} cards in their hand X energy damage, where X is the number of {Irradiated} cards in all hands.",
                 "Reveal the top card of your deck and draw or discard it."
             ],
             "flavorQuotes": [
@@ -436,8 +436,8 @@
                 "DrawCardNow"
             ],
             "body": [
-                "When this card enters your hand, select 1 non-{PyreIrradiate} card in your hand. {PyreIrradiate} that card until it leaves your hand.",
-                "At the end of your turn, 1 player with no {PyreIrradiate} cards in their hand draws a card. {PyreIrradiate} that card until it leaves their hand."
+                "When this card enters your hand, select 1 non-{Irradiated} card in your hand. {Irradiate} that card until it leaves your hand.",
+                "At the end of your turn, 1 player with no {Irradiated} cards in their hand draws a card. {Irradiate} that card until it leaves their hand."
             ],
             "flavorQuotes": [
                 {
@@ -474,7 +474,7 @@
             "hitpointColor": "CDDFB4",
             "character": true,
             "powers": [
-                "{PyreIrradiate} 1 non-{PyreIrradiate} card in a player's hand until it leaves their hand. Play an equipment card. Shuffle a cascade card from your trash into your deck."
+                "{Irradiate} 1 non-{Irradiated} card in a player's hand until it leaves their hand. Play an equipment card. Shuffle a cascade card from your trash into your deck."
             ],
             "icons": [
                 "HasPower",
@@ -486,7 +486,7 @@
                 "Pyre"
             ],
             "incapacitatedAbilities": [
-                "One player may discard a {PyreIrradiate} card. If they do, 1 target regains 4 HP.",
+                "One player may discard an {Irradiated} card. If they do, 1 target regains 4 HP.",
                 "Select a target. That target is immune to damage during the next environment turn.",
                 "One player may draw a card now."
             ],
@@ -528,7 +528,7 @@
                 "Pyre"
             ],
             "incapacitatedAbilities": [
-                "One player may discard a {PyreIrradiate} card. If they do, they deal 3 targets 3 energy damage each.",
+                "One player may discard an {Irradiated} card. If they do, they deal 3 targets 3 energy damage each.",
                 "Each target regains 1 HP.",
                 "One hero may deal themselves 2 energy damage and play 2 cards."
             ],
@@ -557,7 +557,7 @@
             "hitpointColor": "E7C4A2",
             "character": true,
             "powers": [
-                "Select 3 Non-{PyreIrradiate} cards among all players' hands and {PyreIrradiate} them until they leave those players' hands."
+                "Select 3 non-{Irradiated} cards among all players' hands and {Irradiate} them until they leave those players' hands."
             ],
             "icons": [
                 "HasPower",
@@ -568,7 +568,7 @@
                 "Pyre"
             ],
             "incapacitatedAbilities": [
-                "One player may discard a {PyreIrradiate} card. If they do, each player may play a card now.",
+                "One player may discard an {Irradiated} card. If they do, each player may play a card now.",
                 "Destroy 2 environment cards.",
                 "One player may draw a card now."
             ],
