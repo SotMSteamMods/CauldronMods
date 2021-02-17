@@ -33,7 +33,7 @@ namespace Cauldron.Necro
 
         protected bool IsVillianConsidering1929(Card card)
         {
-            if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey)  == true)
+            if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
             {
                 return card.IsHero;
             }

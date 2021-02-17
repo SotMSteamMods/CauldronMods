@@ -96,7 +96,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "My neck is beginning{BR}to cause me discomfort."
                 },
                 {
@@ -104,7 +104,7 @@
                     "text": "You get used to it."
                 }
             ],
-            "flavorReference": "Titan, Experimental One-Shot"
+            "flavorReference": "Experimental One-Shot"
         },
         {
             "identifier": "BladeAug",
@@ -428,7 +428,7 @@
                 "Search the villain deck and trash for Single-Minded Pursuit and put it into play. If you searched the deck, shuffle it.",
                 "Play the top card of the villain deck."
             ],
-            "flavoText": "“I will absorb your power! MWAHA!” he{BR}cried, as he ran past Cypher and toward{BR}the T-Rex."
+            "flavorText": "“I will absorb your power! MWAHA!” he{BR}cried, as he ran past Cypher and toward{BR}the T-Rex."
         },
         {
             "identifier": "VenomAug",

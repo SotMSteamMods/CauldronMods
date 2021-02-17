@@ -47,19 +47,19 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
+            var shiftCounter = new List<bool>();
             int selectedNumber = numberDecision.FirstOrDefault().SelectedNumber ?? default;
             for (int i = 0; i < selectedNumber; i++)
             {
                 //{DriftL}
                 if (response == 0)
                 {
-                    coroutine = base.ShiftL();
+                    coroutine = base.ShiftL(shiftCounter);
                 }
                 //{DriftR}
                 else
                 {
-                    coroutine = base.ShiftR();
+                    coroutine = base.ShiftR(shiftCounter);
                 }
                 if (base.UseUnityCoroutines)
                 {
@@ -75,13 +75,13 @@ namespace Cauldron.Drift
             if (response == 0)
             {
                 //If you shifted at least {DriftL} this way, X targets regain 2 HP each.
-                coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, 2, numberOfTargets: base.TotalShifts, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, 2, numberOfTargets: shiftCounter.Count(), cardSource: base.GetCardSource());
             }
             //{DriftR}
             else
             {
                 //If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
-                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, base.TotalShifts, false, selectedNumber, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, shiftCounter.Count(), false, selectedNumber, cardSource: base.GetCardSource());
             }
             if (base.UseUnityCoroutines)
             {

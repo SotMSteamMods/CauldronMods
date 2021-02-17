@@ -121,7 +121,51 @@ namespace Cauldron.Drift
                 //Then place 1 of your 2 character cards (1929 or 2199) next to that same space
                 base.GameController.AddCardPropertyJournalEntry(selectedTrack, "DriftPosition" + tokensToAdd, true);
             }
+            else
+            {
+                coroutine = base.GameController.BulkMoveCards(this, base.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), base.TurnTaker.OutOfGame);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
+        }
+
+        public override bool IsIncapacitated
+        {
+            get
+            {
+                if (base.TurnTaker.Identifier == "Drift")
+                {
+                    if (this.GetActiveCharacterCard().IsFlipped)
+                    {
+                        return true;
+                    }
+                }
+                return base.IsIncapacitated;
+            }
+        }
+
+        public override bool IsIncapacitatedOrOutOfGame
+        {
+            get
+            {
+                if (!IsIncapacitated)
+                {
+                    return IncapacitationCardController.Card.IsOutOfGame;
+                }
+                return true;
+            }
+        }
+
+        public Card GetActiveCharacterCard()
+        {
+            return base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == this.TurnTaker).FirstOrDefault();
         }
     }
 }

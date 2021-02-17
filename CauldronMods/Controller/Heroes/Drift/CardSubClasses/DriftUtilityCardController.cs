@@ -14,11 +14,12 @@ namespace Cauldron.Drift
         {
         }
 
-        private int totalShifts = 0;
-        public int TotalShifts { get => totalShifts; set => totalShifts = value; }
-
-        public IEnumerator ShiftL()
+        public IEnumerator ShiftL(List<bool> shiftCounter = null)
         {
+            if (shiftCounter == null)
+            {
+                shiftCounter = new List<bool>();
+            }
             //Ensures not shifting off track
             if (this.CurrentShiftPosition() > 1)
             {
@@ -45,9 +46,10 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-
-
-                totalShifts++;
+                if (shiftCounter != null)
+                {
+                    shiftCounter.Add(true);
+                }
             }
             else
             {
@@ -64,45 +66,64 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        public IEnumerator ShiftLL()
+        public IEnumerator ShiftLL(List<bool> shiftCounter = null)
         {
-            IEnumerator coroutine = this.ShiftL();
-            IEnumerator coroutine2 = this.ShiftL();
-            if (base.UseUnityCoroutines)
+            if (shiftCounter == null)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
+                shiftCounter = new List<bool>();
             }
-            else
+            for (int i = 0; i < 2; i++)
             {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
+                IEnumerator coroutine = this.ShiftL(shiftCounter);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                if(shiftCounter.Count() <= i)
+                {
+                    //if we have already failed to shift we don't need to try again
+                    break;
+                }
             }
             yield break;
         }
 
-        public IEnumerator ShiftLLL()
+        public IEnumerator ShiftLLL(List<bool> shiftCounter = null)
         {
-            IEnumerator coroutine = this.ShiftL();
-            IEnumerator coroutine2 = this.ShiftL();
-            IEnumerator coroutine3 = this.ShiftL();
-            if (base.UseUnityCoroutines)
+            if(shiftCounter == null)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
-                yield return base.GameController.StartCoroutine(coroutine3);
+                shiftCounter = new List<bool>();
             }
-            else
+            for (int i = 0; i < 3; i++)
             {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
-                base.GameController.ExhaustCoroutine(coroutine3);
+                IEnumerator coroutine = this.ShiftL(shiftCounter);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                if (shiftCounter.Count() <= i)
+                {
+                    //if we have already failed to shift we don't need to try again
+                    break;
+                }
             }
             yield break;
         }
 
-        public IEnumerator ShiftR()
+        public IEnumerator ShiftR(List<bool> shiftCounter = null)
         {
+            if (shiftCounter == null)
+            {
+                shiftCounter = new List<bool>();
+            }
             //Ensures not shifting off track
             if (this.CurrentShiftPosition() < 4)
             {
@@ -129,7 +150,10 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                totalShifts++;
+                if (shiftCounter != null)
+                {
+                    shiftCounter.Add(true);
+                }
             }
             else
             {
@@ -146,39 +170,54 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        public IEnumerator ShiftRR()
+        public IEnumerator ShiftRR(List<bool> shiftCounter = null)
         {
-            IEnumerator coroutine = this.ShiftR();
-            IEnumerator coroutine2 = this.ShiftR();
-            if (base.UseUnityCoroutines)
+            if (shiftCounter == null)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
+                shiftCounter = new List<bool>();
             }
-            else
+            for (int i = 0; i < 2; i++)
             {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
+                IEnumerator coroutine = this.ShiftR(shiftCounter);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                if (shiftCounter.Count() <= i)
+                {
+                    //if we have already failed to shift we don't need to try again
+                    break;
+                }
             }
             yield break;
         }
 
-        public IEnumerator ShiftRRR()
+        public IEnumerator ShiftRRR(List<bool> shiftCounter = null)
         {
-            IEnumerator coroutine = this.ShiftR();
-            IEnumerator coroutine2 = this.ShiftR();
-            IEnumerator coroutine3 = this.ShiftR();
-            if (base.UseUnityCoroutines)
+            if (shiftCounter == null)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
-                yield return base.GameController.StartCoroutine(coroutine3);
+                shiftCounter = new List<bool>();
             }
-            else
+            for (int i = 0; i < 3; i++)
             {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
-                base.GameController.ExhaustCoroutine(coroutine3);
+                IEnumerator coroutine = this.ShiftR(shiftCounter);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                if (shiftCounter.Count() <= i)
+                {
+                    //if we have already failed to shift we don't need to try again
+                    break;
+                }
             }
             yield break;
         }

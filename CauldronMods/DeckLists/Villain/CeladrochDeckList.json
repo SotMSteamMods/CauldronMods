@@ -41,7 +41,7 @@
 			"flippedGameplay": [
 				"At the start of the villain turn, add 1 token to the storm pool. You may play the top card of the villain deck to remove 2 tokens from the storm pool.",
 				"Whenever an elemental, zombie, demon, or chosen is played from the top of the villain deck, search the villain deck and trash for all other cards with the same keyword and put them into play. Shuffle the villain deck.",
-				"At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2. Tf Forsaken Crusader is in the villain trash, put it into play. If a villain card was not played this turn, destroy {H} hero ongoing and/or equipment cards."
+				"At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2. If Forsaken Crusader is in the villain trash, put it into play. If a villain card was not played this turn, destroy {H} hero ongoing and/or equipment cards."
 			],
 			"flippedAdvanced": "When {Celadroch} flips to this side, add 2 tokens to the storm pool.",
 			"flippedIcons": [
@@ -178,7 +178,6 @@
 				"At the end of the villain turn, this card deals the hero next to it {H} psychic damage."
 			],
 			"flavorText": "A tendril of white crept{BR}between the dried lips, with a sound{BR}like distant sighing. Then the corpse's{BR}eyes snapped open.",
-			"flavorReference": "with a sound like distant sighing. Then the corpse's eyes snapped open.",
 			"hitpoints": 6
 		},
 		{
@@ -201,7 +200,7 @@
 				"identifier": "LadyOfTheWood",
 				"text": "You've met with a{BR}terrible fate, haven't you?"
 			}],
-			"flavorReference": "Lady of the Wood,{BR}Full Moon Masquerade #24",
+			"flavorReference": "Lady of the Wood, Full Moon Masquerade #24",
 			"hitpoints": 10
 		},
 		{
@@ -292,7 +291,7 @@
 			],
 			"body": [
 				"When this card enters play, play the top card of the villain deck.",
-				"Destroy this card when {Celadroch} is dealt 16 damage in a single round.",
+				"Destroy this card when {Celadroch} is dealt 16 or more damage in a single round.",
 				"When this card is destroyed, put all targets from the villain trash into play."
 			],
 			"flavorQuotes": [{
@@ -322,7 +321,7 @@
 				"identifier": "LadyOfTheWood",
 				"text": "Even during his{BR}imprisonment, his power seeped into{BR}the world and found servants for him."
 			}],
-			"flavorReference": "Lady of the Wood, Temple of the{BR}Four Winds #1",
+			"flavorReference": "Lady of the Wood, Temple of the Four Winds #1",
 			"hitpoints": 12
 		},
 		{
@@ -347,7 +346,7 @@
 				"identifier": "Necro",
 				"text": "The bells...they've all gone silent."
 			}],
-			"flavorReference": "Roots of the Underworld #27"
+			"flavorReference": "Necro, Roots of the Underworld #27"
 		},
 		{
 			"identifier": "PillarOfNight",
@@ -430,7 +429,7 @@
 				"identifier": "Lord of the Midnight Revel",
 				"text": "Limbs flailing, feet flying,{BR}bones dancing to his desire."
 			}],
-			"flavorReference": "Lord of the Midnight Revel, Roots of the{BR}Underworld #30"
+			"flavorReference": "Lord of the Midnight Revel, Roots of the Underworld #30"
 		},
 		{
 			"identifier": "ScreamingGale",
@@ -533,8 +532,7 @@
 				"Shuffle all targets from the villain trash into the villain deck.",
 				"Play the top card of the villain deck."
 			],
-			"flavorText": "When the temple broke, scattered{BR}pieces of the death god's essence{BR}simultaneously recalled their single, terrible purpose.",
-			"flavorReference": "terrible purpose."
+			"flavorText": "When the temple broke, scattered{BR}pieces of the death god's essence{BR}simultaneously recalled their single,{BR}terrible purpose."
 		},
 		{
 			"identifier": "WhisperingBreath",
@@ -556,7 +554,7 @@
 				"identifier": "Celadroch",
 				"text": "I see you have breathed{BR}life into your own champion. But{BR}once before, he belonged to my realm."
 			}],
-			"flavorReference": "Celadroch, Roots of the{BR}Underworld #22",
+			"flavorReference": "Celadroch, Roots of the Underworld #22",
 			"hitpoints": 6
 		},
 		{

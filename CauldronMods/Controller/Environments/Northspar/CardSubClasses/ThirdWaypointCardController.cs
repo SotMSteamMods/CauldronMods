@@ -12,6 +12,7 @@ namespace Cauldron.Northspar
         protected ThirdWaypointCardController(Card card, TurnTakerController turnTakerController, string cardToRemoveIdentifier) : base(card, turnTakerController)
         {
             this.CardToRemoveIdentifier = cardToRemoveIdentifier;
+            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} is in {Card.Location.GetFriendlyName()}.").Condition = () => !Card.IsInPlay;
         }
 
         public override IEnumerator Play()

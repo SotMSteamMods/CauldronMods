@@ -96,6 +96,34 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDriftIncap()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DealDamage(baron, haka, 50, 0);
+            DealDamage(baron, bunker, 50, 0);
+            DealDamage(baron, scholar, 50, 0);
+            DealDamage(baron, drift, 50, 0);
+            AssertGameOver();
+        }
+
+        [Test()]
+        public void TestDriftResurrect()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "TheTempleOfZhuLong");
+            StartGame();
+
+            DealDamage(baron, drift, 50, 0);
+            AssertIncapacitated(drift);
+
+            PlayCard("RitesOfRevival");
+            GoToEndOfTurn(base.env);
+            AssertNotIncapacitatedOrOutOfGame(drift);
+            AssertNotFlipped(GetShiftTrack());
+        }
+
+        [Test()]
         public void TestDriftCharacter_InnatePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -705,6 +733,24 @@ namespace CauldronTests
             AssertTrackPosition(4);
             QuickHPCheck(0);
         }
+        [Test]
+        public void TestFutureFocus_ShiftsNotCarriedOver()
+        {
+            SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard(FutureFocus);
+            DecisionYesNo = true;
+            QuickHPStorage(apostate);
+
+            DealDamage(apostate, drift, 1, DamageType.Melee);
+            AssertTrackPosition(4);
+            QuickHPCheck(-3);
+
+            GoToStartOfTurn(drift);
+            DealDamage(apostate, drift, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
 
         [Test]
         public void TestImposedSynchronization_Future()
@@ -889,6 +935,22 @@ namespace CauldronTests
             QuickHPStorage(haka);
             DealDamage(haka, haka, 3, DamageType.Melee);
             QuickHPCheck(-3);
+        }
+        [Test]
+        public void TestMakeEverySecondCount_OnlyShiftTrack()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Setback", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("MakeEverySecondCount");
+
+            PlayCard("FriendlyFire");
+            DecisionYesNo = true;
+            GoToShiftPosition(3);
+
+            DealDamage(drift, apostate, 1, DamageType.Melee);
+            AssertMaxNumberOfDecisions(1);
+            DealDamage(drift, apostate, 1, DamageType.Melee);
         }
 
         [Test]
@@ -1125,6 +1187,18 @@ namespace CauldronTests
             DecisionYesNo = false;
             GoToShiftPosition(3);
             QuickHPCheckZero();
+        }
+        [Test]
+        public void TestTransitionShock_OnlyShiftTrack()
+        {
+            SetupGameController("Apostate", "Cauldron.Drift", "Setback", "Bunker", "TheScholar", "TimeCataclysm");
+            StartGame();
+
+            PlayCard(TransitionShock);
+            Card lookingUp = PlayCard("LookingUp");
+
+            AssertMaxNumberOfDecisions(1);
+            UsePower(lookingUp);
         }
     }
 }

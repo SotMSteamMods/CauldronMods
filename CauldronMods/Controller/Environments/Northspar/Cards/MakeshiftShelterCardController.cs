@@ -12,6 +12,7 @@ namespace Cauldron.Northspar
         public MakeshiftShelterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            SpecialStringMaker.ShowSpecialString(() => $"{Card.Title} is in {Card.Location.GetFriendlyName()}.").Condition = () => !Card.IsInPlay;
             SpecialStringMaker.ShowLocationOfCards(new LinqCardCriteria(c => c.Identifier == TakAhabIdentifier, "Tak Ahab", useCardsSuffix: false));
         }
 

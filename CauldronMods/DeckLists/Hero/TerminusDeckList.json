@@ -18,6 +18,15 @@
             "powers": [
                 "{Terminus} deals herself 2 cold damage and 1 target 3 cold damage."
             ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Terminus's Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
+            ],
             "icons": [
                 "HasPower",
                 "DealDamageCold"
@@ -31,7 +40,12 @@
                 "Each hero may use a power printed on one of their non-character cards. Then destroy any card whose power was used this way.",
                 "Each target regains 1 HP."
             ],
-            "flippedIcons": [],
+            "flippedIcons": [
+                "PlayCardNow",
+                "UsePowerNow",
+                "Destroy",
+                "GainHP"
+            ],
             "openingLines": {
                 "default": "Judgment time.",
                 "TheInfernalChoirCharacter": "I've been on the wrong side of the tracks long enough. And my punishment is to deal with the likes of you."
@@ -48,6 +62,7 @@
             "icons": [
                 "CannotGainHP",
                 "CannotDealDamage",
+                "HasPower",
                 "DealDamageCold"
             ],
             "body": "A non-character target next to this card cannot have its current HP increased and cannot deal damage to {Terminus}.",
@@ -71,6 +86,7 @@
             ],
             "icons": [
                 "RemoveTokens",
+                "HasPower",
                 "DealDamageCold",
                 "DestroySelf"
             ],
@@ -150,11 +166,12 @@
             ],
             "icons": [
                 "CounterDamage",
+                "RedirectDamage",
                 "StartOfTurnAction",
                 "RemoveFromGame"
             ],
             "body": [
-                "Whenever {Terminus} is dealt damage by a non-hero target, she deals that target 2 melee damage. If Stained Badge is not in play, redirect damage dealt by non-hero targets to {Terminus}.",
+                "Whenever {Terminus} is dealt damage by a non-hero target, she may deal that target 2 melee damage. If Stained Badge is not in play, you may redirect damage dealt by non-hero targets to {Terminus}.",
                 "At the start of your turn, remove this card from the game."
             ],
             "flavorQuotes": [
@@ -407,7 +424,7 @@
                 "AddTokens"
             ],
             "body": [
-                "This card and {Terminus} are indestructible. If another Memento would enter play, instead remove it from the game. If all other heroes are incapacitated, the heroes lose.",
+                "This card and {Terminus} are indestructible unless all other heros are incapacitated. If another Memento would enter play, instead remove it from the game.",
                 "At the end of your turn, add 1 token to your Wrath pool if {Terminus} has 1 or more HP."
             ],
             "flavorQuotes": [
@@ -518,7 +535,7 @@
             "flavorReference": "Terminus, Guilty Metal #7"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "TerminusCharacter",
             "promoIdentifier": "MinistryOfStrategicScienceTerminusCharacter",
@@ -533,6 +550,15 @@
             "character": true,
             "powers": [
                 "Remove X tokens from your wrath pool (up to 2). {Terminus} deals 1 target X+1 cold damage and regains X+1 HP."
+            ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Terminus's Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
             ],
             "icons": [
                 "HasPower",
@@ -576,6 +602,15 @@
             "character": true,
             "powers": [
                 "Play a card. {Terminus} deals herself 2 cold damage."
+            ],
+            "tokenPools": [
+                {
+                    "identifier": "TerminusWrathPool",
+                    "name": "Terminus's Wrath Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "color": "D1426D"
+                }
             ],
             "icons": [
                 "HasPower",

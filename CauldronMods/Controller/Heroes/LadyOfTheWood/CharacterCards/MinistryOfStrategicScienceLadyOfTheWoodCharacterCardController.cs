@@ -10,10 +10,15 @@ namespace Cauldron.LadyOfTheWood
 {
     public class MinistryOfStrategicScienceLadyOfTheWoodCharacterCardController : HeroCharacterCardController
     {
+        public static readonly string LadyOfTheWoodElementPoolIdentifier = "LadyOfTheWoodElementPool";
+        public readonly string LadyOfTheWoodIdentifier = "LadyOfTheWood";
+
         public MinistryOfStrategicScienceLadyOfTheWoodCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            CardWithoutReplacements.TokenPools.ReorderTokenPool(LadyOfTheWoodElementPoolIdentifier);
+
             AllowFastCoroutinesDuringPretend = false;
-            SpecialString specialString = base.SpecialStringMaker.ShowTokenPool(base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier));
+            SpecialString specialString = base.SpecialStringMaker.ShowTokenPool(GetElementTokenPool());
             specialString.ShowWhileIncapacitated = true;
         }
 
@@ -30,14 +35,16 @@ namespace Cauldron.LadyOfTheWood
 
         private TokenPool GetElementTokenPool()
         {
-            TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (elementPool == null || !base.TurnTaker.IsHero)
+            TokenPool elementPool = CharacterCardWithoutReplacements.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+            if (elementPool is null && TurnTaker.Identifier != LadyOfTheWoodIdentifier)
             {
-                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
-                if (turnTaker != null)
+                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == LadyOfTheWoodIdentifier).FirstOrDefault();
+                if (turnTaker is null)
                 {
-                    elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+                    return null;
                 }
+
+                elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
             }
 
             return elementPool;
@@ -46,6 +53,7 @@ namespace Cauldron.LadyOfTheWood
         private IEnumerator SpendTokenResponse(DealDamageAction dd)
         {
             TokenPool elementPool = GetElementTokenPool();
+
             List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
             IEnumerator coroutine = base.GameController.RemoveTokensFromPool(elementPool, 1, storedResults: storedResults, optional: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -69,15 +77,19 @@ namespace Cauldron.LadyOfTheWood
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                DamageType damageType = GetSelectedDamageType(storedDamageTypeResults).Value;
-                coroutine = GameController.ChangeDamageType(dd, damageType, GetCardSource());
-                if (base.UseUnityCoroutines)
+
+                var damageType = GetSelectedDamageType(storedDamageTypeResults);
+                if (damageType.HasValue)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    coroutine = GameController.ChangeDamageType(dd, damageType.Value, GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;
@@ -88,19 +100,13 @@ namespace Cauldron.LadyOfTheWood
             // Add 2 tokens to your element pool. 
             int tokensToAdd = GetPowerNumeral(0, 2);
             bool otherHeroUsingPower = false;
-            TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (elementPool == null || !base.TurnTaker.IsHero)
+
+            if (TurnTaker.Identifier != LadyOfTheWoodIdentifier)
             {
-                //TODO: Engine limitation currently prevents us from Dynamic pool generation, but once that exists this should
-                //		create a token pool on the other character card, and then allow for spending tokens from their
-                //		own token poool for the second part of the effect
                 otherHeroUsingPower = true;
-                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
-                if (turnTaker != null)
-                {
-                    elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-                }
             }
+            TokenPool elementPool = GetElementTokenPool();
+
             IEnumerator coroutine = base.GameController.AddTokensToPool(elementPool, tokensToAdd, GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -113,7 +119,7 @@ namespace Cauldron.LadyOfTheWood
 
             if (otherHeroUsingPower)
             {
-                OnDealDamageStatusEffect effect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(ChangeDamageTypeResponse), "When " + base.Card.Title + " would deal damage, you may change its type by spending a token", new TriggerType[]
+                OnDealDamageStatusEffect effect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(ChangeDamageTypeResponse), "When " + base.Card.Title + " would deal damage, you may change its type by spending an element token.", new TriggerType[]
                 {
                 TriggerType.ModifyTokens,
                 TriggerType.ChangeDamageType
@@ -122,6 +128,11 @@ namespace Cauldron.LadyOfTheWood
                 effect.UntilTargetLeavesPlay(base.Card);
                 effect.BeforeOrAfter = BeforeOrAfter.Before;
                 effect.CanEffectStack = true;
+
+                if (GameController.StatusEffectManager.StatusEffectControllers.Any(sec => sec.StatusEffect is OnDealDamageStatusEffect removeToken && removeToken.MethodToExecute == nameof(ChangeDamageTypeResponse) && removeToken.Description == "When " + base.Card.Title + " would deal damage, you may change its type by spending an element token."))
+                {
+                    yield break;
+                }
                 coroutine = AddStatusEffect(effect);
                 if (base.UseUnityCoroutines)
                 {
@@ -139,18 +150,26 @@ namespace Cauldron.LadyOfTheWood
         {
             // You may change its type by spending a token
 
-            TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (elementPool == null || !base.TurnTaker.IsHero)
+            TokenPool elementPool = GetElementTokenPool();
+
+            if (elementPool is null || elementPool.CurrentValue == 0)
             {
-                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == "LadyOfTheWood").FirstOrDefault();
-                if (turnTaker != null)
-                {
-                    elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-                }
+                yield break;
+            }
+
+            HeroTurnTakerController httc = FindHeroTurnTakerController(hero.ToHero());
+            CardController cc = null;
+            Dictionary<Card, bool> initialAllowCoroutineDict = new Dictionary<Card, bool>();
+            foreach (Card character in httc.CharacterCards)
+            {
+                cc = FindCardController(character);
+
+                initialAllowCoroutineDict.Add(character, cc.AllowFastCoroutinesDuringPretend);
+                cc.AllowFastCoroutinesDuringPretend = false;
             }
 
             List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
-            IEnumerator coroutine = base.GameController.RemoveTokensFromPool(elementPool, 1, storedResults: storedResults, optional: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = RemoveTokensFromPoolNewDecisionMaker(elementPool, 1, storedResults: storedResults, optional: true, httc: httc, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -159,11 +178,12 @@ namespace Cauldron.LadyOfTheWood
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
             if (DidRemoveTokens(storedResults))
             {
                 //Select a damage type.
                 List<SelectDamageTypeDecision> storedDamageTypeResults = new List<SelectDamageTypeDecision>();
-                coroutine = base.GameController.SelectDamageType(FindHeroTurnTakerController(hero.ToHero()), storedDamageTypeResults, cardSource: GetCardSource());
+                coroutine = base.GameController.SelectDamageType(httc, storedDamageTypeResults, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -173,7 +193,24 @@ namespace Cauldron.LadyOfTheWood
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 DamageType damageType = GetSelectedDamageType(storedDamageTypeResults).Value;
-                dd.DamageType = damageType;
+
+
+                coroutine = GameController.ChangeDamageType(dd, damageType, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
+
+            foreach (Card character in httc.CharacterCards)
+            {
+                cc = FindCardController(character);
+                cc.AllowFastCoroutinesDuringPretend = initialAllowCoroutineDict[character];
             }
             yield break;
         }
@@ -201,7 +238,7 @@ namespace Cauldron.LadyOfTheWood
                 case 1:
                     {
                         // Add 1 token to your element pool.
-                        TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+                        TokenPool elementPool = GetElementTokenPool();
                         IEnumerator coroutine2 = base.GameController.AddTokensToPool(elementPool, 1, GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
@@ -216,7 +253,7 @@ namespace Cauldron.LadyOfTheWood
                 case 2:
                     {
                         // Spend 1 token from your element pool. If you do, 1 hero deals 1 target 3 damage of any type.
-                        TokenPool elementPool = base.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+                        TokenPool elementPool = GetElementTokenPool();
                         List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
                         IEnumerator coroutine = base.GameController.RemoveTokensFromPool(elementPool, 1, storedResults: storedResults, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
@@ -276,8 +313,6 @@ namespace Cauldron.LadyOfTheWood
             }
             yield break;
         }
-
-        public static string LadyOfTheWoodElementPoolIdentifier = "LadyOfTheWoodElementPool";
 
         //override flip response to remove resetting token pools
         public override IEnumerator BeforeFlipCardImmediateResponse(FlipCardAction flip)
@@ -395,8 +430,54 @@ namespace Cauldron.LadyOfTheWood
             {
                 RemoveAllTriggers();
             }
-
         }
 
+        public IEnumerator RemoveTokensFromPoolNewDecisionMaker(TokenPool pool, int numberOfTokens, List<RemoveTokensFromPoolAction> storedResults = null, bool optional = false, GameAction gameAction = null, HeroTurnTakerController httc = null, IEnumerable<Card> associatedCards = null, CardSource cardSource = null)
+        {
+            bool proceed = true;
+
+            if (httc == null)
+            {
+                httc = DecisionMaker;
+            }
+
+            if (optional)
+            {
+                proceed = false;
+                SelectionType type = SelectionType.RemoveTokens;
+                if (pool.CurrentValue < numberOfTokens)
+                {
+                    type = SelectionType.RemoveTokensToNoEffect;
+                }
+                YesNoAmountDecision yesNo = new YesNoAmountDecision(GameController, httc, type, numberOfTokens, upTo: false, requireUnanimous: false, gameAction, associatedCards: associatedCards, cardSource);
+                IEnumerator coroutine = GameController.MakeDecisionAction(yesNo);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                if (yesNo.Answer.HasValue)
+                {
+                    proceed = yesNo.Answer.Value;
+                }
+            }
+            if (proceed)
+            {
+                RemoveTokensFromPoolAction removeTokensFromPoolAction = ((cardSource == null) ? new RemoveTokensFromPoolAction(GameController, pool, numberOfTokens) : new RemoveTokensFromPoolAction(cardSource, pool, numberOfTokens));
+                storedResults?.Add(removeTokensFromPoolAction);
+                IEnumerator coroutine2 = DoAction(removeTokensFromPoolAction);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine2);
+                }
+            }
+        }
     }
 }

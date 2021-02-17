@@ -10,6 +10,7 @@ namespace Cauldron.TheKnight
     {
         protected bool IsCoreCharacterCard = true;
         protected readonly string RoninKey = "WastelandRoninKnightOwnershipKey";
+        private List<string> QualifiedRoninIdentifiers => new List<string> { "Cauldron.TheOldKnightCharacter", "Cauldron.TheYoungKnightCharacter" };
         public TheKnightUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -20,6 +21,33 @@ namespace Cauldron.TheKnight
             {
                 (TurnTakerController as TheKnightTurnTakerController).ManageCharactersOffToTheSide(true);
             }
+        }
+        public override void AddSideTriggers()
+        {
+            base.AddSideTriggers();
+            if (IsCoreCharacterCard)
+            {
+                AddSideTrigger(AddTrigger((MakeDecisionAction md) => IsSwapForOtherCardDecision(md), RemoveSubCharactersFromDecision, TriggerType.Hidden, TriggerTiming.After));
+            }
+        }
+        private bool IsSwapForOtherCardDecision(MakeDecisionAction md)
+        {
+            if (md.Decision is SelectFromBoxDecision sfb && md.CardSource != null && md.CardSource.Card.IsHero)
+            {
+                //Log.Debug($"TurnTakerIdentifier: {sfb.SelectedTurnTakerIdentifier}");
+                return sfb.SelectedTurnTakerIdentifier == "Cauldron.TheKnight";
+            }
+            return false;
+        }
+        private IEnumerator RemoveSubCharactersFromDecision(MakeDecisionAction md)
+        {
+            IEnumerator coroutine = DoNothing();
+            if (md.Decision is SelectFromBoxDecision sfb && QualifiedRoninIdentifiers.Contains(sfb.SelectedIdentifier))
+            {
+                sfb.SelectedIdentifier = null;
+                coroutine = GameController.SendMessageAction($"Sorry, {md.DecisionMaker.Name}, you can't swap in a Wasteland Ronin Knight character - it breaks things!", Priority.Medium, GetCardSource());
+            }
+            return coroutine;
         }
 
         protected Card GetKnightCardUser(Card c)

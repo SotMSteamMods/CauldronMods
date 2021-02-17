@@ -33,7 +33,7 @@ namespace Cauldron.Malichae
             var card = cs.Card;
 
             var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), damages, DamageType.Sonic, targets, false, 0,
-                allowAutoDecide: true,
+                allowAutoDecide: false,
                 cardSource: cs);
             if (base.UseUnityCoroutines)
             {

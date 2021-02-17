@@ -12,6 +12,34 @@ namespace Cauldron.TheInfernalChoir
     {
         public TrueColorsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(VagrantHeartSoulRevealedIdentifier);
+        }
+
+        public override IEnumerator Play()
+        {
+            var coroutine = base.DealDamageToHighestHP(CharacterCard, 1, c => c.IsHero, c => 6, DamageType.Infernal, numberOfTargets: () => 1);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (IsVagrantHeartSoulRevealedInPlay())
+            {
+                coroutine = base.DealDamageToHighestHP(CharacterCard, 1, c => c.IsHero, c => 6, DamageType.Cold, numberOfTargets: () => 1);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
     }
 }

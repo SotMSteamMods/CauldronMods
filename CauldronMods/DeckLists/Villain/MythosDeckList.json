@@ -26,7 +26,7 @@
                 "Search the villain deck for Dangerous Investigations and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
-                "{Mythos} and Dangerous Investigation are indestructible. Activate any {Danger}, {Madness}, {Clue} effects that match the icon on top of the villain deck.",
+                "{Mythos} and Dangerous Investigation are indestructible. Activate any {Danger}, {Madness}, or {Clue} effects that match the icon on top of the villain deck.",
                 "{Danger} {Mythos} is immune to damage.",
                 "At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards."
             ],
@@ -119,7 +119,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Titan",
-                    "text": "Hey, grabby! You don't know when to stop, do you?"
+                    "text": "Keep your hands to yourself."
                 }
             ],
             "flavorReference": "Titan, The Archive #5",
@@ -204,10 +204,10 @@
             "flavorQuotes": [
                 {
                     "identifier": "DirectorWells",
-                    "text": "The first records we{BR}have are from WWII, when The Forgotten Order{BR}started gathering converts. They're still{BR}recruiting."
+                    "text": "The first records we{BR}have are from WWII, when The Order{BR}started gathering converts. They're still{BR}recruiting."
                 }
             ],
-            "flavorReference": "Director Wells, A Field Guide{BR}for the Apocalypse",
+            "flavorReference": "Director Wells, A Field Guide for the Apocalypse",
             "hitpoints": 5
         },
         {
@@ -224,7 +224,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "{Madness}{Danger} When this card enters play, play the top card of the villain deck.",
+                "{Danger}{Madness} When this card enters play, play the top card of the villain deck.",
                 "At the end of the villain turn, this card deals each hero target 2 sonic damage.",
                 "Destroy this card when a hero is dealt damage by another hero target."
             ],
@@ -287,7 +287,7 @@
                     "text": "This world belongs to those{BR}creatures of myth, forgotten by{BR}humanity. They will free it from its pain!"
                 }
             ],
-            "flavorReference": "Academic, A Field Guide{BR}for the Apocalypse",
+            "flavorReference": "Academic, A Field Guide for the Apocalypse",
             "hitpoints": 3
         },
         {
@@ -370,7 +370,7 @@
             ],
             "body": [
                 "Increase damage dealt to hero targets by 1.",
-                "{Madness}{Danger} This card is indestructible and immune to damage."
+                "{Danger}{Madness} This card is indestructible and immune to damage."
             ],
             "flavorQuotes": [
                 {
@@ -423,8 +423,7 @@
             ],
             "body": [
                 "At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP 2 sonic damage.",
-                "{Madness} Heroes gain the following power:",
-                "Power: Shuffle 2 cards from the villain trash into the villain deck."
+                "{Madness} Heroes gain the following power:"
             ],
             "powers": [
                 "Shuffle 2 cards from the villain trash into the villain deck."
@@ -440,7 +439,7 @@
         {
             "identifier": "YourDarkestSecrets",
             "count": 1,
-            "title": "“Your Darkest Secrets”",
+            "title": "\"Your Darkest Secrets\"",
             "keywords": [
                 "one-shot"
             ],

@@ -38,7 +38,8 @@ namespace Cauldron.Drift
 
             if (decision.FirstOrDefault().Answer ?? false)
             {
-                coroutine = base.ShiftRRR();
+                var shiftCounter = new List<bool>();
+                coroutine = base.ShiftRRR(shiftCounter);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -48,7 +49,7 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 //If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
-                if (base.TotalShifts >= 3)
+                if (shiftCounter.Count() >= 3)
                 {
                     coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)

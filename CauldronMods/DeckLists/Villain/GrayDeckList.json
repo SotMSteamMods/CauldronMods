@@ -78,7 +78,7 @@
             ],
             "body": [
                 "Increase damage dealt to hero targets by 1.",
-                "Hero tagets cannot gain HP."
+                "Hero targets cannot gain HP."
             ],
             "flavorQuotes": [
                 {
@@ -179,7 +179,7 @@
             "flavorQuotes": [
                 {
                     "identifier": "Gray",
-                    "text": "I've lost everything.{BR}Let me show you what that feels like!"
+                    "text": "I've lost everything.{BR}Care to see how that feels?"
                 }
             ],
             "flavorReference": "Gray, Meltdown #27"
@@ -367,11 +367,11 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "AlistarWinters",
+                    "identifier": "AlistairWinters",
                     "text": "If we're going to stabilize your{BR}condition, these are the components{BR}they'll need to procure."
                 }
             ],
-            "flavorReference": "Alistar Winters, Rebirth #19",
+            "flavorReference": "Alistair Winters, Rebirth #19",
             "hitpoints": 5
         }
     ]

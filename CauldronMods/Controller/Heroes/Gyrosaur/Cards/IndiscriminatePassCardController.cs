@@ -12,6 +12,48 @@ namespace Cauldron.Gyrosaur
     {
         public IndiscriminatePassCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowCrashInHandCount(true);
+        }
+
+        public override IEnumerator Play()
+        {
+            //"If you have at least 1 Crash card in your hand...",
+            var storedModifier = new List<int>();
+            IEnumerator coroutine = EvaluateCrashInHand(storedModifier, () => TrueCrashInHand <= 1);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            int crashMod = storedModifier.FirstOrDefault();
+            if(TrueCrashInHand + crashMod > 0)
+            {
+                //...{Gyrosaur} deals another hero target 2 melee damage.
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 2, DamageType.Melee, 1, false, 1, additionalCriteria: (Card c) => c.IsHero && c != CharacterCard, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            //"{Gyrosaur} deals 1 non-hero target 4 melee damage."
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 4, DamageType.Melee, 1, false, 1, additionalCriteria: (Card c) => !c.IsHero, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }

@@ -9,6 +9,13 @@ namespace Cauldron.Starlight
     public class StarlightSubCharacterCardController : HeroCharacterCardController
     {
         protected bool IsCoreCharacterCard = true;
+        private List<string> QualifiedNightloreCouncilIdentifiers
+        {
+            get
+            {
+                return new List<string> { "Cauldron.StarlightOfTerraCharacter", "Cauldron.StarlightOfAsheronCharacter", "Cauldron.StarlightOfCryosFourCharacter" };
+            }
+        }
         public StarlightSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -21,6 +28,33 @@ namespace Cauldron.Starlight
             }
         }
 
+        public override void AddSideTriggers()
+        {
+            base.AddSideTriggers();
+            if(IsCoreCharacterCard)
+            {
+                AddSideTrigger(AddTrigger((MakeDecisionAction md) => IsSwapForOtherCardDecision(md), RemoveSubCharactersFromDecision, TriggerType.Hidden, TriggerTiming.After));
+            }
+        }
+        private bool IsSwapForOtherCardDecision(MakeDecisionAction md)
+        {
+            if(md.Decision is SelectFromBoxDecision sfb && md.CardSource != null && md.CardSource.Card.IsHero)
+            {
+                //Log.Debug($"TurnTakerIdentifier: {sfb.SelectedTurnTakerIdentifier}");
+                return sfb.SelectedTurnTakerIdentifier == "Cauldron.Starlight";
+            }
+            return false;
+        }
+        private IEnumerator RemoveSubCharactersFromDecision(MakeDecisionAction md)
+        {
+            IEnumerator coroutine = DoNothing();
+            if(md.Decision is SelectFromBoxDecision sfb && QualifiedNightloreCouncilIdentifiers.Contains(sfb.SelectedIdentifier))
+            {
+                sfb.SelectedIdentifier = null;
+                coroutine = GameController.SendMessageAction($"Sorry, {md.DecisionMaker.Name}, you can't swap in a Nightlore Council character - it breaks things!", Priority.Medium, GetCardSource());
+            }
+            return coroutine;
+        }
         protected bool IsConstellation(Card c)
         {
             return GameController.DoesCardContainKeyword(c, "constellation");

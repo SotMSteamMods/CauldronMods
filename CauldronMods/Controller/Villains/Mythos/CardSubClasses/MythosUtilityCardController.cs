@@ -12,8 +12,13 @@ namespace Cauldron.Mythos
     {
         protected MythosUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => DeckIconList());
+            ShowUniqueSpecialStrings();
             base.SpecialStringMaker.ShowSpecialString(() => ThisCardsIcon());
+            base.SpecialStringMaker.ShowSpecialString(() => DeckIconList());
+        }
+
+        protected virtual void ShowUniqueSpecialStrings()
+        {
         }
 
         protected const string MythosClueDeckIdentifier = "Clue";
@@ -51,6 +56,10 @@ namespace Cauldron.Mythos
             if (base.Game.IsAdvanced && type == MythosDangerDeckIdentifier)
             {
                 return true;
+            }
+            if (TurnTaker.Deck.NumberOfCards == 0)
+            {
+                return false;
             }
             return this.GetIconIdentifier(base.TurnTaker.Deck.TopCard) == type;
         }

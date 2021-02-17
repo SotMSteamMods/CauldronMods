@@ -24,12 +24,33 @@ namespace CauldronTests.Art
             ArtPath = ArtTestBase.GetArtPath();
         }
 
+        private int _numWarnings;
+
+        [NUnit.Framework.SetUp]
+        public void ResetWarnings()
+        {
+            _numWarnings = 0;
+        }
+
+
+        protected void Warn(string message)
+        {
+            Assert.Warn(message);
+            _numWarnings++;
+        }
+
+        protected void AssertNoWarnings()
+        {
+            Assert.AreEqual(0, _numWarnings, $"There were {_numWarnings} warnings.");
+        }
+
         private class Item
         {
             public string Name;
-            public Handelabra.Sentinels.Engine.Model.DeckDefinition.DeckKind Kind;
+            public DeckDefinition.DeckKind Kind;
             public List<string> CardIdentifiers;
             public List<string> CharacterIdentifiers;
+            public List<string> HeroLeadCharacterIdentifiers;
             public List<string> StartEndIdentifiers;
 
             public Item(object[] obj)
@@ -38,7 +59,8 @@ namespace CauldronTests.Art
                 Kind = (DeckDefinition.DeckKind)Enum.Parse(typeof(DeckDefinition.DeckKind), (string)obj[1]);
                 CardIdentifiers = (List<string>)obj[2];
                 CharacterIdentifiers = (List<string>)obj[3];
-                StartEndIdentifiers = (List<string>)obj[4];
+                HeroLeadCharacterIdentifiers = (List<string>)obj[4];
+                StartEndIdentifiers = (List<string>)obj[5];
             }
         }
 
@@ -70,7 +92,7 @@ namespace CauldronTests.Art
             {
                 int removed = files.RemoveAll(s => s.StartsWith(name, StringComparison.OrdinalIgnoreCase));
                 if (removed == 0)
-                    Assert.Warn($"No Atlases found for {name}");
+                    Warn($"No Atlases found for {name}");
             }
 
             files.RemoveAll(s => s.StartsWith("SetupGame"));
@@ -79,8 +101,10 @@ namespace CauldronTests.Art
 
             foreach (var file in files)
             {
-                Assert.Warn($"{file} isn't used by any decks.");
+                Warn($"{file} isn't used by any decks.");
             }
+
+            AssertNoWarnings();
         }
 
         [Test]
@@ -95,7 +119,7 @@ namespace CauldronTests.Art
                         names.Add(item.Name + "DeckBack");
                         break;
                     default:
-                        names.AddRange(item.StartEndIdentifiers);
+                        names.AddRange(item.HeroLeadCharacterIdentifiers);
                         break;
                 }
             }
@@ -113,14 +137,16 @@ namespace CauldronTests.Art
             {
                 if (!atlas.Remove(character))
                 {
-                    Assert.Warn($"{character} - Game Setup Atlas art is missing");
+                    Warn($"{character} - Game Setup Atlas art is missing");
                 }
             }
 
             foreach (var character in atlas)
             {
-                Assert.Warn($"Sprite {character} isn't used by any decks.");
+                Warn($"Sprite {character} isn't used by any decks.");
             }
+
+            AssertNoWarnings();
         }
 
         [Test]
@@ -130,7 +156,7 @@ namespace CauldronTests.Art
             foreach (var item in Items())
             {
                 if (item.Kind == DeckDefinition.DeckKind.Hero)
-                    names.AddRange(item.StartEndIdentifiers);
+                    names.AddRange(item.HeroLeadCharacterIdentifiers);
                 if (item.Name == "Titan")
                     names.AddRange(new[] { "FutureTitanFormCharacter", "MinistryOfStrategicScienceTitanFormCharacter", "OniTitanFormCharacter", "TitanFormCharacter" });
             }
@@ -138,7 +164,7 @@ namespace CauldronTests.Art
             string expectedDirectory = Path.Combine(ArtPath, @"Atlas\");
 
             if (!Directory.Exists(expectedDirectory))
-                Assert.Inconclusive();
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
             var atlas = ArtTestBase.ReadAtlasJson(expectedDirectory, "HeroLogos");
             if (atlas is null)
@@ -148,14 +174,16 @@ namespace CauldronTests.Art
             {
                 if (!atlas.Remove(character))
                 {
-                    Assert.Warn($"{character} - Hero Logo Atlas art is missing");
+                    Warn($"{character} - Hero Logo Atlas art is missing");
                 }
             }
 
             foreach (var character in atlas)
             {
-                Assert.Warn($"Sprite {character} isn't used by any decks.");
+                Warn($"Sprite {character} isn't used by any decks.");
             }
+
+            AssertNoWarnings();
         }
 
 
@@ -178,15 +206,17 @@ namespace CauldronTests.Art
 
             foreach (var id in identifiers)
             {
-                int removed = files.RemoveAll(s => s.StartsWith(id, StringComparison.OrdinalIgnoreCase));
+                int removed = files.RemoveAll(s => s.StartsWith(id + "StartOfGame", StringComparison.OrdinalIgnoreCase));
                 if (removed == 0)
-                    Assert.Warn($"No Start of Game images found for {id}");
+                    Warn($"No Start of Game images found for {id}");
             }
 
             foreach (var file in files)
             {
-                Assert.Warn($"{file} isn't used by any decks.");
+                Warn($"{file} isn't used by any decks.");
             }
+
+            AssertNoWarnings();
         }
 
         [Test]
@@ -210,13 +240,15 @@ namespace CauldronTests.Art
             {
                 int removed = files.RemoveAll(s => s.StartsWith(id, StringComparison.OrdinalIgnoreCase));
                 if (removed == 0)
-                    Assert.Warn($"No Start of Game images found for {id}");
+                    Warn($"No Start of Game images found for {id}");
             }
 
             foreach (var file in files)
             {
-                Assert.Warn($"{file} isn't used by any decks.");
+                Warn($"{file} isn't used by any decks.");
             }
+
+            AssertNoWarnings();
         }
 
         [Test]
@@ -242,13 +274,15 @@ namespace CauldronTests.Art
             {
                 int removed = files.RemoveAll(s => s.StartsWith("YesNoDialog" + id, StringComparison.OrdinalIgnoreCase));
                 if (removed == 0)
-                    Assert.Warn($"No Yes/No Dialog image found for {id}");
+                    Warn($"No Yes/No Dialog image found for {id}");
             }
 
             foreach (var file in files)
             {
-                Assert.Warn($"{file} isn't used by any decks.");
+                Warn($"{file} isn't used by any decks.");
             }
+
+            AssertNoWarnings();
         }
     }
 }

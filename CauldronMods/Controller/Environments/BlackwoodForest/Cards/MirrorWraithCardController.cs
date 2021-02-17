@@ -114,6 +114,10 @@ namespace Cauldron.BlackwoodForest
             {
                 // Gains the text, keywords, and max HP of found target
                 var copiedCard = storedResults.First();
+                if(copiedCard.Identifier == "MirrorWraith")
+                {
+                    copiedCard = (FindCardController(copiedCard) as MirrorWraithCardController).CopiedCard;
+                }
                 Journal.RecordCardProperties(Card, CopiedCardKey, copiedCard);
 
                 // Identify this card controller as one who can modify keyword query answers

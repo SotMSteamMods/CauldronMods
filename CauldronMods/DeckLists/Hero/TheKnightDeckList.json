@@ -381,6 +381,7 @@
 		},
 		{
 			"identifier": "TheOldKnightCharacter",
+			"sharedIdentifier": "TheOldKnightCharacter",
 			"promoIdentifier": "TheOldKnightCharacter",
 			"count": 1,
 			"title": "The Old Knight",
@@ -412,6 +413,7 @@
 		},
 		{
 			"identifier": "TheYoungKnightCharacter",
+			"sharedIdentifier": "TheYoungKnightCharacter",
 			"promoIdentifier": "TheYoungKnightCharacter",
 			"count": 1,
 			"title": "The Young Knight",

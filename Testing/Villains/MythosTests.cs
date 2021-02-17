@@ -439,6 +439,20 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMythosBack_SoftlockWhenNoCardsInDeck()
+        {
+            SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+
+            DiscardTopCards(mythos.TurnTaker.Deck, mythos.TurnTaker.Deck.NumberOfCards);
+            DecisionsYesNo = new bool[] { false, false, false };
+            AddTokensToDangerousInvestigationPool(3);
+
+            GoToEndOfTurn();
+            AssertNotGameOver();
+        }
+
+        [Test()]
         public void TestMythosBack_Madness_SkipPlay()
         {
             SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" });
@@ -610,9 +624,11 @@ namespace CauldronTests
             //Danger
             PutOnDeck(AclastyphWhoPeers);
 
+            QuickHPStorage(legacy, bunker, haka);
             //{MythosClue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.
             GoToEndOfTurn(mythos);
             Assert.IsTrue(FindCardInPlay(DangerousInvestigation).FindTokenPool(DangerousInvestigation + "Pool").CurrentValue == 0);
+            QuickHPCheck(-3, -3, -3);
         }
 
         [Test()]
@@ -625,11 +641,13 @@ namespace CauldronTests
             Card aca = PutOnDeck(PallidAcademic);
 
             DecisionsYesNo = new bool[] { false, true };
-
+            QuickHPStorage(legacy, bunker, haka);
             //{MythosClue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.
             GoToEndOfTurn(mythos);
             Assert.IsTrue(FindCardInPlay(DangerousInvestigation).FindTokenPool(DangerousInvestigation + "Pool").CurrentValue == 1);
             AssertIsInPlay(aca);
+            // 0 plays from Mythos, 1 from Investigation, should hit (3-1) = 2 heroes
+            QuickHPCheck(-3, 0, -3);
         }
 
         [Test()]
@@ -789,6 +807,31 @@ namespace CauldronTests
             Card horror = PlayCard(HallucinatedHorror);
             AssertIsInPlay(topCard);
         }
+        [Test()]
+        public void TestHallucinatedHorror_DidDealDamageAndOther()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card topCard = PutOnDeck(PallidAcademic);
+            Card horror = PlayCard(HallucinatedHorror);
+            AssertOnTopOfDeck(topCard);
+
+            //Destroy this card when a hero is *dealt damage* by *another* hero target.
+
+            PlayCard("TaMoko");
+            DealDamage(legacy, haka, 1, DamageType.Melee);
+            AssertIsInPlay(horror);
+
+            PlayCard("HeroicInterception");
+            AssertIsInPlay(horror);
+
+            DealDamage(legacy, bunker, 2, DamageType.Melee);
+            AssertIsInPlay(horror);
+
+            DealDamage(bunker, legacy, 1, DamageType.Melee);
+            AssertInTrash(horror);
+        }
 
         [Test()]
         public void TestOtherworldlyAlignment_Danger()
@@ -900,6 +943,34 @@ namespace CauldronTests
             //Playing the top card reveals a Madness card
             //{MythosMadness} Move the bottom card of a deck to the top of that deck.
             AssertOnTopOfDeck(bottomCard);
+        }
+
+        [Test()]
+        public void TestPallidAcademic_DidDealDamageAndOther()
+        {
+            SetupGameController("Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card clue = PutOnDeck("RitualSite");
+            Card danger = PutOnDeck("AclastyphWhoPeers");
+            Card academic = PlayCard(PallidAcademic);
+            AssertOnTopOfDeck(danger);
+
+            //When a hero target is *dealt damage* by *another* hero target:
+
+            PlayCard("TaMoko");
+            DealDamage(legacy, haka, 1, DamageType.Melee);
+            AssertNotInPlay(danger);
+
+            PlayCard("HeroicInterception");
+            AssertNotInPlay(danger);
+
+            DealDamage(legacy, bunker, 2, DamageType.Melee);
+            AssertNotInPlay(danger);
+
+            DealDamage(bunker, legacy, 1, DamageType.Melee);
+            AssertIsInPlay(danger);
+            AssertOnTopOfDeck(clue);
         }
 
         [Test()]

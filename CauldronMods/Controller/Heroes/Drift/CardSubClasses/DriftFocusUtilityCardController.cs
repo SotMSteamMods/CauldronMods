@@ -38,7 +38,7 @@ namespace Cauldron.Drift
 
         private bool HasShiftedThisTurn()
         {
-            return !base.Journal.CardPropertiesEntriesThisTurn((CardPropertiesJournalEntry entry) => entry.Key == HasShifted).Any();
+            return base.Journal.CardPropertiesEntriesThisTurn((CardPropertiesJournalEntry entry) => entry.Key == HasShifted).Any();
         }
     }
 }

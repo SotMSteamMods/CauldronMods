@@ -310,15 +310,28 @@ namespace CauldronTests
             QuickHPCheck(-4);
             AssertTokenPoolCount(ElementTokenPool, 1);
 
+            UsePower(ladyWood.CharacterCard);
+            SaveAndLoad();
+
+            DecisionSelectDamageType = DamageType.Radiant;
+            DecisionYesNo = true;
+            AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Radiant, 1);
+            QuickHPStorage(ra);
+            AssertTokenPoolCount(ElementTokenPool, 3);
+            DealDamage(guise, ra, 3, DamageType.Cold);
+            QuickHPCheck(-4);
+            AssertTokenPoolCount(ElementTokenPool, 2);
+
+
             //check that it only applies to guise and lotw
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionYesNo = true;
             AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
             QuickHPStorage(ra);
-            AssertTokenPoolCount(ElementTokenPool, 1);
+            AssertTokenPoolCount(ElementTokenPool, 2);
             DealDamage(ra, ra, 3, DamageType.Cold);
             QuickHPCheck(-3);
-            AssertTokenPoolCount(ElementTokenPool, 1);
+            AssertTokenPoolCount(ElementTokenPool, 2);
 
             //check that it never exprires
             GoToStartOfTurn(guise);
@@ -326,10 +339,28 @@ namespace CauldronTests
             DecisionYesNo = true;
             AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
             QuickHPStorage(ra);
-            AssertTokenPoolCount(ElementTokenPool, 1);
+            AssertTokenPoolCount(ElementTokenPool, 2);
             DealDamage(guise, ra, 3, DamageType.Cold);
             QuickHPCheck(-5); //2 increases have been given up to here
-            AssertTokenPoolCount(ElementTokenPool, 0);
+            AssertTokenPoolCount(ElementTokenPool, 1);
+
+        }
+
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWoodPower_GuiseTests_DoublePowerUse()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Ra", "Guise", "Megalopolis");
+            StartGame();
+
+            GoToStartOfTurn(guise);
+            PlayCard("ICanDoThatToo");
+            GoToNextTurn();
+            int expected = GameController.StatusEffectManager.StatusEffectControllers.Count();
+            PlayCard("ICanDoThatToo");
+            PrintTriggers();
+            int actual = GameController.StatusEffectManager.StatusEffectControllers.Count();
+            Assert.That(actual == expected, $"An additional status effect was added. Expected {expected} status effects, actually {actual} status effects.");
+
 
         }
 
