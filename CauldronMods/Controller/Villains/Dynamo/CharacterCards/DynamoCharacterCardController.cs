@@ -39,6 +39,7 @@ namespace Cauldron.Dynamo
                 //Increase damage dealt by villain targets by 1.
                 base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsVillain(action.DamageSource.Card) && action.DamageSource.Card.IsTarget, 1));
             }
+            base.AddDefeatedIfDestroyedTriggers();
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
