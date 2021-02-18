@@ -333,7 +333,7 @@
                 "If Python is in play, he deals each hero target 1 toxic damage, regains {H} HP, and discards the top card of the villain deck.",
                 "The villain target with the lowest HP deals the hero target with the lowest HP {H - 2} melee damage."
             ],
-            "flavorText": "“Good as new, hissed the{BR}creature,” as the shriveled skin fell away{BR}to reveal an undamaged limb."
+            "flavorText": "“Good as new,” hissed the{BR}creature, as the shriveled skin fell away{BR}to reveal an undamaged limb."
         },
         {
             "identifier": "Stranglehold",
@@ -400,7 +400,7 @@
                 "Destroy",
                 "Discard"
             ],
-            "body": "At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 1} cards were destroyed this way, discard the top card of the villain deck.",
+            "body": "At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 2} cards were destroyed this way, discard the top card of the villain deck.",
             "flavorQuotes": [
                 {
                     "identifier": "Reporter",

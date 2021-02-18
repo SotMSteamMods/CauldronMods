@@ -17,7 +17,7 @@ namespace Cauldron.Dynamo
 
         public override void AddTriggers()
         {
-            //At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 1} cards were destroyed this way, discard the top card of the villain deck.
+            //At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 2} cards were destroyed this way, discard the top card of the villain deck.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DestroyCardsResponse, new TriggerType[] { TriggerType.DestroyCard, TriggerType.DiscardCard });
         }
 
@@ -36,8 +36,8 @@ namespace Cauldron.Dynamo
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //If fewer than {H - 1} cards were destroyed this way...
-            if (destroyCardActions.Count() < base.Game.H - 1)
+            //If fewer than {H - 2} cards were destroyed this way...
+            if (destroyCardActions.Count() < base.Game.H - 2)
             {
                 //...discard the top card of the villain deck.
                 List<MoveCardAction> moveCardActions = new List<MoveCardAction>();
