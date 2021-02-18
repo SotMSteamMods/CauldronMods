@@ -113,8 +113,8 @@
                 "GainHP"
             ],
             "body": [
-                "At the end of the environment turn, each Test Subject regains 1HP.",
-                "Then, If there are no Chemical Triggers in play, the hero with the lowest HP regains 3HP. Otherwise, the villain target with the lowest HP regains 3HP."
+                "At the end of the environment turn, each Test Subject regains 1 HP.",
+                "Then, If there are no Chemical Triggers in play, the hero with the lowest HP regains 3 HP. Otherwise, the villain target with the lowest HP regains 3 HP."
             ],
             "flavorText": "The observing scientists didn't{BR}realize the extent of Mia Volke's{BR}mutation until she had explored{BR}most of the facility.",
             "hitpoints": 8

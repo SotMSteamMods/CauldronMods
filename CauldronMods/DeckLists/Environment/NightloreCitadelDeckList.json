@@ -150,7 +150,7 @@
                 "DealDamageMelee",
                 "GainHP"
             ],
-            "body": "At the end of the environment turn, select the 2 non-environment targets with the lowest HP. This card deals 1 of those targets 2 melee damage, and the other target regains 2HP.",
+            "body": "At the end of the environment turn, select the 2 non-environment targets with the lowest HP. This card deals 1 of those targets 2 melee damage, and the other target regains 2 HP.",
             "flavorText": "The Arborean let out a low, sonorous{BR}“Noooome”, as she walked past. “Even{BR}Nightlore translators have some{BR}trouble with her,” explained Dr. McLear.",
             "hitpoints": 8
         },

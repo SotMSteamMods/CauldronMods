@@ -16,7 +16,7 @@
             "hitpointColor": "feef00",
             "character": true,
             "powers": [
-                "If you have at least 2 crash cards in your had, {Gyrosaur} deals up to 3 targets 1 melee damage each. If not, draw a card."
+                "If you have at least 2 crash cards in your hand, {Gyrosaur} deals up to 3 targets 1 melee damage each. If not, draw a card."
             ],
             "icons": [
                 "HasPower",
@@ -30,12 +30,11 @@
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
                 "One target with more than 10 HP deals itself 3 melee damage.",
-                "Select a non-character target. Increase damage dealt to that target by 1 until the start of your turn."
+                "Select a non-character target. Increase damage dealt to that target by 1 until the start of your next turn."
             ],
             "flippedIcons": [
                 "DrawCardNow",
-                "DealDamageMelee",
-                "IncreaseDamageDealt"
+                "DealDamageMelee"
             ],
             "openingLines": {
                 "default": "We're here to stop you! Although, I usually find stopping to be the hard part.",
@@ -102,7 +101,7 @@
                 "Manipulate"
             ],
             "body": [
-                "When this card enters play, {Gyrosaur} regains 2HP. Then, reveal the top card of the environment deck and place it beneath this card.",
+                "When this card enters play, {Gyrosaur} regains 2 HP. Then, reveal the top card of the environment deck and place it beneath this card.",
                 "Cards beneath this one are not considered in play. When an environment card would enter play, you may first switch it with the card beneath this one."
             ],
             "flavorQuotes": [
@@ -128,7 +127,7 @@
             "body": [
                 "When this card enters play, you may play a card.",
                 "Increase damage dealt by {Gyrosaur} to non-hero targets by 1.",
-                "If you would draw a Crash card, play it instead. Then, destroy all copies of Hyperspin."
+                "If you would draw a Crash card, play it instead. Then, destroy all other copies of Hyperspin and this card."
             ],
             "flavorQuotes": [
                 {
@@ -156,11 +155,10 @@
             "flavorQuotes": [
                 {
                     "identifier": "Gargoyle",
-                    "text": "Gargoyle, This. This is why I work alone."
+                    "text": "This. This is why I work alone."
                 }
             ],
-            "flavorReference": "Shellshocked",
-            "hitpoints": 2
+            "flavorReference": "Gargoyle, Shellshocked"
         },
         {
             "identifier": "Omnivore",
@@ -248,6 +246,7 @@
             ],
             "icons": [
                 "EndOfTurnAction",
+                "DealDamagePsychic",
                 "HasPower",
                 "PlayCardNow",
                 "Manipulate"
@@ -266,6 +265,8 @@
                 "ongoing"
             ],
             "icons": [
+                "Manipulate",
+                "HasPower",
                 "IncreaseDamageDealt"
             ],
             "body": "At the start of your turn, reveal the top card of your deck and replace or discard it.",
@@ -289,8 +290,8 @@
                 "limited"
             ],
             "icons": [
-                "HasPower",
                 "UsePowerNow",
+                "HasPower",
                 "DealDamageMelee"
             ],
             "body": "During your turn, the first time you have more than 3 Crash cards in your hand, immediately use this card's power and then destroy it.",
@@ -356,8 +357,7 @@
                     "text": "Some damage!"
                 }
             ],
-            "flavorReference": "Adrift One-Shot",
-            "hitpoints": 2
+            "flavorReference": "Adrift One-Shot"
         },
         {
             "identifier": "TerrifyingMomentum",
@@ -383,8 +383,7 @@
                     "text": "Wherever I end up, pretend{BR}that's where I was aiming."
                 }
             ],
-            "flavorReference": "Gyrosaur, Crash #14",
-            "hitpoints": 2
+            "flavorReference": "Gyrosaur, Crash #14"
         },
         {
             "identifier": "Wipeout",
@@ -406,8 +405,7 @@
                     "text": "Stopping was{BR}supposed to be the easy part.{BR}Can someone help me up?"
                 }
             ],
-            "flavorReference": "Gyrosaur, Eclipse #6",
-            "hitpoints": 4
+            "flavorReference": "Gyrosaur, Eclipse #6"
         },
         {
             "identifier": "WreckingBall",
@@ -431,11 +429,10 @@
                     "text": "Sorry about your wall.{BR}And ceiling. And your floor."
                 }
             ],
-            "flavorReference": "Gyrosaur, Starlight #21",
-            "hitpoints": 2
+            "flavorReference": "Gyrosaur, Starlight #21"
         }
     ],
-    "notPromoCards": [
+    "promoCards": [
         {
             "identifier": "GyrosaurCharacter",
             "promoIdentifier": "SpeedDemonGyrosaurCharacter",
@@ -449,7 +446,7 @@
             "hitpointColor": "AD97AD",
             "character": true,
             "powers": [
-                "If at least half of the cards in your hand are carsh cards. Draw a card. If not, play a card."
+                "If at least half of the cards in your hand are crash cards, draw a card. If not, play a card."
             ],
             "icons": [
                 "HasPower",
@@ -489,11 +486,12 @@
             "hitpointColor": "EC99C1",
             "character": true,
             "powers": [
-                "Discard a card, if it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card."
+                "Discard a card. If it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card."
             ],
             "icons": [
                 "HasPower",
                 "Discard",
+                "GainHP",
                 "DealDamageMelee",
                 "DrawCardNow"
             ],
@@ -545,7 +543,7 @@
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
                 "One hero may use a power now.",
-                "Select a target. In crease the next damage dealt to it by 2."
+                "Select a target. Increase the next damage dealt to it by 2."
             ],
             "flippedIcons": [
                 "DrawCardNow",

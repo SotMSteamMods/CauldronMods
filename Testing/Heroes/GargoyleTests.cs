@@ -1113,6 +1113,30 @@ namespace CauldronTests
             AssertNumberOfUsablePowers(scholar.CharacterCard, storedScholarPowersCount + 1);
         }
 
+
+        [Test]
+        public void TestIssue813_MarkforExecutionGrantsPowersToNonRealCards()
+        {
+
+            SetupGameController("BaronBlade", "Ra", "Cauldron.Gargoyle", "SkyScraper", "TheSentinels", "Cauldron.VaultFive");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            GoToPlayCardPhase(gargoyle);
+
+            Card mark = PutIntoPlay("MarkForExecution");
+            Card instructions = sentinels.HeroTurnTaker.GetAllCards(realCardsOnly: false).Where(c => !c.IsRealCard).FirstOrDefault();
+            Assert.That(FindCardController(mark).AskIfContributesPowersToCardController(FindCardController(instructions)) == null, "Mark for Execution granted a power to a non-real card!");
+            IEnumerable<Card> offToSideSky = sky.TurnTaker.OffToTheSide.Cards.Where(c => c.IsCharacter);
+            foreach (Card notSky in offToSideSky)
+            {
+                Assert.That(FindCardController(mark).AskIfContributesPowersToCardController(FindCardController(notSky)) == null, "Mark for Execution granted a power to an off to the side card!");
+
+            }
+
+        }
+       
+
+
         [Test]
         public void TestMarkforExecutionPowerUsed()
         {

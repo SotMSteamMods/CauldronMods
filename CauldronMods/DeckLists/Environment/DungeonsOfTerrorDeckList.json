@@ -1,0 +1,279 @@
+{
+    "name": "Dungeons of Terror",
+    "kind": "Environment",
+    "expansionIdentifier": "CauldronUnexpected",
+    "backgroundColor": "87B555",
+    "difficulty": 2,
+    "cards": [
+        {
+            "identifier": "DelayedRockTrap",
+            "count": 1,
+            "title": "Delayed Rock Trap",
+            "keywords": [
+                "trap"
+            ],
+            "icons": [
+                "DealDamageMelee",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play this card next to a hero. When a card enters the environment trash, check that card.",
+                "If it is a fate card, this card deal the hero next to it {H} melee damage. If it is not a fate card, this card deals each other hero target {H-2} melee damage. Then, destroy this card."
+            ],
+            "flavorText": "The flagstone sank into the floor,{BR}generating a series of faint,{BR}mechanical noises that echoed{BR}through the stones of the ceiling."
+        },
+        {
+            "identifier": "DubiousEdibles",
+            "count": 1,
+            "title": "Dubious Edibles",
+            "keywords": [
+                "fate"
+            ],
+            "icons": [
+                "DealDamageToxic",
+                "GainHP",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, check the top card of the environment trash.",
+                "If it is a fate card, this card deals each hero 1 toxic damage. If it is not a fate card, 1 hero target regains 4HP. Then, destroy this card."
+            ],
+            "flavorText": "“I try not to make a habit of eating{BR}things I find while crawling around the{BR}sewers,” said Malichae. Gyrosaur{BR}blinked, then slowly took another bite."
+        },
+        {
+            "identifier": "EnormousPack",
+            "count": 1,
+            "title": "Enormous Pack",
+            "keywords": [
+                "fate"
+            ],
+            "icons": [
+                "PlayCardNow",
+                "DrawCardNow",
+                "UsePowerNow",
+                "Discard"
+            ],
+            "body": [
+                "When this card enters play, check the top card of the environment trash.",
+                "If it is a fate card, 1 hero may play card, draw a card, or use a power. If it is not a fate card, the player with the most cards in hand discards 2 cards. Then, destroy this card."
+            ],
+            "flavorText": "“Alain, give it up,” said Cricket. “No{BR}way,” panted the young knight.{BR}“We're stuck in a cursed book. No{BR}telling what might come in handy.”"
+        },
+        {
+            "identifier": "HighGround",
+            "count": 1,
+            "title": "High Ground",
+            "keywords": [
+                "fate"
+            ],
+            "icons": [
+                "ReduceDamageDealt",
+                "DestroySelf"
+            ],
+            "body": [
+                "While the top card of the environment trash is a fate card, reduce damage dealt by hero targets by 1. While it is not a fate card, reduce damage dealt by villain targets by 1.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "As Gyrosaur scrambled to find cover{BR}from the demonic tattoos, she reflected{BR}on what a surprising combat advantage{BR}a few feet of elevation seemed to offer."
+        },
+        {
+            "identifier": "ImprobableFailure",
+            "count": 1,
+            "title": "Improbable Failure",
+            "keywords": [
+                "fate"
+            ],
+            "icons": [
+                "Manipulate",
+                "SkipTurn",
+                "DestroySelf"
+            ],
+            "body": [
+                "At the start of each player's draw phase, discard and check the top card of the environment deck.",
+                "If it is a fate card, they skip the rest of their draw phase.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "“Zhen de ma?!” exclaimed Terminus,{BR}staring at the broken axe in{BR}disbelief. “Why is the tree winning?{BR}Why was that even an option?!”"
+        },
+        {
+            "identifier": "MagicBlade",
+            "count": 1,
+            "title": "Magic Blade",
+             "keywords": [
+                "treasure",
+                "fate"
+            ],
+            "icons": [
+                "Manipulate",
+                "DealDamageEnergy",
+                "DealDamageInfernal"
+            ],
+            "body": [
+                "Play this card next to a hero. The first time they use a power each turn, discard and check the top card of the environment deck.",
+                "If it is a fate card, that hero deals 1 target 2 energy damage. If it is not a fate card, that hero deals themselves 2 infernal damage."
+            ],
+            "flavorText": "“Take heed, Lady Mormont,” said the{BR}Knight. “On the surface, a garish{BR}yet functional, blade. But I would{BR}not trust any weapon with a voice.”"
+        },
+        {
+            "identifier": "OneInAMillion",
+            "count": 1,
+            "title": "One in a Million",
+             "keywords": [
+                "fate"
+            ],
+            "icons": [
+                "Manipulate",
+                "DrawCardNow",
+                "SkipTurn",
+                "DestroySelf"
+            ],
+            "body": [
+                "When this card enters play, discard and check the top 2 cards of the environment deck.",
+                "If at least 1 is a fate card, each player draws a card. If both are fate cards, skip the next villain turn. Then, destroy this card."
+            ],
+            "flavorText": "Havoc cautiously lifted the blindfold{BR}to consider the inert monstrosity{BR}at his feet. “Huh.” He'd though that{BR}was going to be more difficult."
+        },
+        {
+            "identifier": "RestfulInn",
+            "count": 1,
+            "title": "Restful Inn",
+             "keywords": [
+                "tavern"
+            ],
+            "icons": [
+                "Discard",
+                "GainHP",
+                "DestroySelf"
+            ],
+            "body": [
+                "The first time a hero draws a card during their turn, they may discard it. If they do, that hero regains 2HP. Increase HP regained this way by 1 if the top card of the environment trash is a fate card.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "Many travelers wound up slightly{BR}disappointed, for the sign was{BR}misleading: the bear did not dance. She{BR}preferred reading, and lively debates."
+        },
+        {
+            "identifier": "RingOfForesight",
+            "count": 1,
+            "title": "Ring of Foresight",
+             "keywords": [
+                "treasure"
+            ],
+            "icons": [
+                "GainHP",
+                "DestroySelf"
+            ],
+            "body": [
+                "Play this card next to a hero. At the start of their turn, they regain 1HP.",
+                "When checking a card in the environment trash, the players may first destroy this card, and then check it instead of the original card."
+            ],
+            "flavorText": "Impact put the ring on without{BR}hesitation, and was not at all surprised{BR}when it began glowing. That was what{BR}rings did in situations like this: magic."
+        },
+        {
+            "identifier": "RovingSlime",
+            "count": 1,
+            "title": "Roving Slime",
+             "keywords": [
+                "monster",
+                "fate"
+            ],
+            "icons": [
+                "DealDamageToxic"
+            ],
+            "body": [
+                "At the end of the environment turn, check the top card of the environment trash.",
+                "If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If if is not a fate card, this card deals each non-environment target 1 toxic damage."
+            ],
+            "flavorText": "The Deck of Fate was not the only{BR}enchanted object that she had created{BR}based on a human game of chance: the{BR}Mistress of Fate also liked RPGs.",
+            "hitpoints": 5
+        },
+        {
+            "identifier": "Shopkeeper",
+            "count": 1,
+            "title": "Shopkeeper",
+             "keywords": [
+                "npc"
+            ],
+            "icons": [
+                "Manipulate",
+                "Discard",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "body": [
+                "When this card enters play, reveal the top card of each hero deck, and move it beneath this card. Cards beneath this one are not considered in play.",
+                "At the start of their turn, a player may discard a card to play or draw one of their cards from beneath this."
+            ],
+            "flavorText": "Vanish picked up a familiar-looking{BR}sword. “Hey, uh, Sir George, isn't{BR}this yours? How did our stuff{BR}make it in here ahead of us?”",
+            "hitpoints": 6
+        },
+        {
+            "identifier": "StoneWarden",
+            "count": 1,
+            "title": "Stone Warden",
+             "keywords": [
+                "monster"
+            ],
+            "icons": [
+                "DealDamageMelee"
+            ],
+            "body": [
+                "At the end of the environment turn, check the top card of the environment trash.",
+                "If it is a fate card, this card deals the hero target with the highest HP {H} melee damage. If it is not a fate card, this card deals the non-environment target with the lowest HP 2 melee damage."
+            ],
+            "flavorText": "The field was littered with jagged{BR}shards of rock. No one noticed as the{BR}shards began to assemble themselves{BR}into a vaguely humanoid shape.",
+            "hitpoints": 7
+        },
+        {
+            "identifier": "SuspiciousChest",
+            "count": 1,
+            "title": "Suspicious Chest",
+             "keywords": [
+                "monster"
+            ],
+            "icons": [
+                "DealDamageToxic",
+                "DrawCardNow"
+            ],
+            "body": [
+                "At the end of the environment turn, check the top card of the environment trash.",
+                "If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If it is not a fate card, 1 player draws a card."
+            ],
+            "flavorText": "“Is this normal?” asked Pyre.{BR}Vanish nodded. “In these games{BR}people leave all kinds of stuff{BR}just lying about in chests.”",
+            "hitpoints": 4
+        },
+        {
+            "identifier": "TheresAlwaysABard",
+            "count": 1,
+            "title": "There's Always a Bard",
+             "keywords": [
+                "character class",
+                "fate"
+            ],
+            "icons": [
+                "UsePowerNow",
+                "PlayCardNow",
+                "MakeDamageIrreducible",
+                "IncreaseDamageTaken"
+            ],
+            "body": [
+                "Play this card next to a hero. At the start of their turn, they may use a power, play a card, or destroy this card.",
+                "Damage dealt to the hero next to this card is irreducible and increased by 1."
+            ],
+            "flavorText": "Quicksilver scowled over her lute at{BR}Gargoyle's imposing armor. “Who{BR}picked these classes? Make this{BR}stupid book give me a better one”"
+        },
+        {
+            "identifier": "Underleveled",
+            "count": 1,
+            "title": "Underleveled",
+            "icons": [
+                "IncreaseDamageDealt",
+                "DestroySelf"
+            ],
+            "body": [
+                "While the top card of the environment trash is a fate card, increase damage dealt by villain targets by 1. While it is not a fate card, increase damage dealt by hero targets by 1.",
+                "At the start of the environment turn, destroy this card."
+            ],
+            "flavorText": "Cricket quickly slammed the door{BR} back shut. “You know, on second{BR}thought, this might not be the best{BR}area to start out in, Jai.”"
+        }
+    ]
+}

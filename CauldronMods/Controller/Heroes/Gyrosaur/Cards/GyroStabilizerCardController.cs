@@ -6,12 +6,53 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.Gyrosaur
 {
     public class GyroStabilizerCardController : GyrosaurUtilityCardController
     {
         public GyroStabilizerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            AddThisCardControllerToList(CardControllerListType.ActivatesEffects);
+        }
+
+        public override IEnumerator Play()
+        {
+            //"When this card enters play, discard up to 3 cards. Draw as many cards as you discarded this way.",
+            var discardStorage = new List<DiscardCardAction>();
+            IEnumerator coroutine = SelectAndDiscardCards(DecisionMaker, 3, false, 0, discardStorage);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            int numDiscards = GetNumberOfCardsDiscarded(discardStorage);
+            coroutine = DrawCards(DecisionMaker, numDiscards);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public override bool? AskIfActivatesEffect(TurnTakerController turnTakerController, string effectKey)
+        {
+            //"Whenever you evaluate the number of Crash cards in your hand, you may treat it as being 1 higher or 1 lower than it is."
+            //Log.Debug("Gyro Stabilizer is being asked whether it can activate an effect...");
+            if (turnTakerController == this.TurnTakerController && effectKey == StabilizerKey)
+            {
+                return true;
+            }
+            return null;
         }
     }
 }

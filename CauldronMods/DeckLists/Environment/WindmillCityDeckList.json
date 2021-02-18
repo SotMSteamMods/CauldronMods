@@ -52,10 +52,10 @@
                 "ReduceDamageDealt"
             ],
             "body": [
-                "When this card enters play, it deals 1 Responder 2 melee damage.",
+                "When this card enters play, it deals 1 Responder 2 cold damage.",
                 "Reduce all damage dealt by non-environment cards by 1."
             ],
-            "flavorText": "Whose mascot are you supposed{BR}to be? Dynamo called out.{BR}Gyrosaur, alarmed by the rising{BR}water, curled into her shell."
+            "flavorText": "“Whose mascot are you supposed{BR}to be?” Dynamo called out.{BR}Gyrosaur, alarmed by the rising{BR}water, curled into her shell."
         },
         {
             "identifier": "CrashedTanker",
@@ -89,7 +89,7 @@
             ],
             "body": [
                 "When this card enters play, it deals 1 target 3 projectile damage.",
-                "At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 hero target regains 2HP."
+                "At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 hero target regains 2 HP."
             ],
             "flavorText": "“There's a right way to do things,” said{BR}the detective, blowing on his coffee.{BR}“Most of these vigilantes are hardly{BR}better than criminals themselves.”",
             "hitpoints": 6
@@ -129,7 +129,7 @@
                 "Whenever this card is dealt damage, it deals the source of that damage 3 lightning damage.",
                 "When this card is reduced to 0 HP, play the top card of each hero deck in turn order."
             ],
-            "flavorText": "No one knew where the city's criminal element obtained such advanced tech and weaponry. Not even Echelon had been able to track down the source.",
+            "flavorText": "No one knew where the city's criminal{BR}element obtained such advanced tech{BR}and weaponry. Not even Echelon had{BR}been able to track down the source.",
             "hitpoints": 6
         },
         {

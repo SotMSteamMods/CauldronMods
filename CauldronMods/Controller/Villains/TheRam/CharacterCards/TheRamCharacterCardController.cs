@@ -80,7 +80,7 @@ namespace Cauldron.TheRam
 
         private IEnumerator AskIfMoveUpCloseResponse(PhaseChangeAction pc)
         {
-            Card upClose = FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInTrash && c.Identifier == "UpClose")).FirstOrDefault();
+            Card upClose = FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInTrash && c.Identifier == "UpClose"), GetCardSource()).FirstOrDefault();
             if (upClose == null)
             {
                 IEnumerator message = GameController.SendMessageAction("There were no copies of Up Close in the trash to take.", Priority.High, GetCardSource(), showCardSource: true);
@@ -99,7 +99,7 @@ namespace Cauldron.TheRam
             HeroTurnTakerController player = FindHeroTurnTakerController(activeHero.ToHero());
 
             List<YesNoCardDecision> storedResult = new List<YesNoCardDecision> { };
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.PutIntoPlay, upClose, pc, storedResult, new Card[] { this.Card }, GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.PutIntoPlay, upClose, pc, storedResult, new Card[] { upClose, this.Card }, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

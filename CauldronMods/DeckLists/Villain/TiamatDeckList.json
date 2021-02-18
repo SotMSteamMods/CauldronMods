@@ -594,7 +594,8 @@
             "count": 1,
             "title": "Tiamat: Thunderous Gale Instructions",
             "body": "The Eye of the Storm",
-            "backgroundColor": "FFFFFF",
+            "backgroundColor": "e2e0a7",
+            "flippedBackgroundColor": "d7cde6",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
@@ -633,7 +634,8 @@
             "count": 1,
             "title": "Tiamat: Noxious Fire Instructions",
             "body": "The Mouth of the Inferno",
-            "backgroundColor": "FFFFFF",
+            "backgroundColor": "d79f62",
+            "flippedBackgroundColor": "afc779",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
@@ -673,7 +675,8 @@
             "count": 1,
             "title": "Tiamat: Frigid Earth Instructions",
             "body": "The Jaws of Winter",
-            "backgroundColor": "FFFFFF",
+            "backgroundColor": "81b1e1",
+            "flippedBackgroundColor": "90887d",
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
@@ -690,7 +693,7 @@
                 "StartAndEndOfTurnAction",
                 "Discard"
             ],
-            "flippedBody": "The Noxious Fire",
+            "flippedBody": "The Frigid Earth",
             "flippedGameplay": [
                 "Face down heads are indestructible and have no game text.",
                 "If a head would be destroyed, flip it instead.",
@@ -845,10 +848,7 @@
                 "Dragonscales have X HP, where X = {H - 1}.",
                 "At the start of the villain turn, flip {Tiamat}'s villain character cards."
             ],
-            "advanced": [ 
-                "X = {H + 1} instead.",
-                "At the start of the game, reveal cards from the top of the villain deck until 2 spells are revealed. Discard those spells. Shuffle the other revealed cards back into the villain deck."
-            ],
+            "advanced": "X = {H + 1} instead.{BR}At the start of the game, reveal cards from the top of the villain deck until 2 spells are revealed. Discard those spells. Shuffle the other revealed cards back into the villain deck.",
             "flippedBody": "Cybernetic Wyrms",
             "flippedKeywords": [
                 "villain",
@@ -877,7 +877,7 @@
                 "PastTheKnightCharacter": "BzzzzzrroooOOAAGH!",
                 "WastelandRoninTheKnightCharacter": "BzzzzzrroooOOAAGH!",
                 "DriftCharacter": "BzzzzzrroooOOAAGH.",
-                "SplitDriftCharacter": "BzzzzzrroooOOAAGH.",
+                "DualDriftCharacter": "BzzzzzrroooOOAAGH.",
                 "FutureTerminusCharacter": "BzzzzzrroooOOAAGH!",
                 "FutureGargoyleCharacter": "BzzzzzrroooOOAAGH!",
                 "FutureLadyOfTheWoodCharacter": "BzzzzzrroooOOAAGH!"

@@ -37,7 +37,7 @@ namespace Cauldron.VaultFive
         {
             //Heroes gain the following power:
             //Power: Discard 1 Artifact card. If you do, play a card or destroy 1 environment card. Then destroy this card.
-            if (cardController.Card != null && cardController.Card.IsHeroCharacterCard && !cardController.Card.IsIncapacitatedOrOutOfGame)
+            if (cardController.Card != null && cardController.Card.IsHeroCharacterCard && cardController.Card.IsInPlayAndHasGameText && cardController.Card.IsRealCard && !cardController.Card.IsIncapacitatedOrOutOfGame)
             {
                 return new Power[1]
                 {

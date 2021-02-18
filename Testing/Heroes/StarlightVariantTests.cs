@@ -880,7 +880,7 @@ namespace CauldronTests
 
             DestroyCard("MobileDefensePlatform");
 
-            DiscardAllCards(starlight);
+            MoveAllCardsFromHandToDeck(starlight);
             //load the hand with some stuff
             var c = PutInHand("EventHorizon");
             PutInHand("NightloreArmor");
@@ -891,7 +891,7 @@ namespace CauldronTests
 
             GoToUsePowerPhase(starlight);
 
-            DecisionSelectCards = new[] { c };
+            DecisionSelectCards = new[] { c, pillar1 };
             DecisionSelectFunction = 1;
 
             QuickHandStorage(starlight);

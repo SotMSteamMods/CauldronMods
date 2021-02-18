@@ -18,37 +18,13 @@
 },
 "AttenuationField.png":
 {
-	"frame": {"x":717,"y":259,"w":256,"h":188},
+	"frame": {"x":1258,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"BorrowedTime.png":
-{
-	"frame": {"x":976,"y":259,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"DanceOfTheDragons.png":
-{
-	"frame": {"x":1235,"y":259,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"DestroyersAdagio.png":
-{
-	"frame": {"x":1494,"y":259,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"DriftCharacter.png":
+"BaseShiftTrack1.png":
 {
 	"frame": {"x":358,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -56,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"DriftCharacterBack.png":
+"BaseShiftTrack2.png":
 {
 	"frame": {"x":537,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -64,15 +40,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"DriftDeckBack.jpg":
-{
-	"frame": {"x":537,"y":259,"w":177,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":256},
-	"sourceSize": {"w":177,"h":256}
-},
-"DriftingShadowDriftCharacter.png":
+"BaseShiftTrack3.png":
 {
 	"frame": {"x":716,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -80,7 +48,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"DriftingShadowDriftCharacterBack.png":
+"BaseShiftTrack4.png":
 {
 	"frame": {"x":895,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -88,15 +56,31 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"DriftStep.png":
+"BorrowedTime.png":
 {
-	"frame": {"x":1753,"y":259,"w":256,"h":188},
+	"frame": {"x":1517,"y":518,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"FutureDriftCharacter.png":
+"DanceOfTheDragons.png":
+{
+	"frame": {"x":1776,"y":518,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"DestroyersAdagio.png":
+{
+	"frame": {"x":0,"y":777,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"DriftCharacter.png":
 {
 	"frame": {"x":1074,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -104,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FutureDriftCharacterBack.png":
+"DriftCharacterBack.png":
 {
 	"frame": {"x":1253,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -112,47 +96,15 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"FutureFocus.png":
+"DriftDeckBack.jpg":
 {
-	"frame": {"x":0,"y":518,"w":256,"h":188},
+	"frame": {"x":716,"y":518,"w":177,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":177,"h":256},
+	"sourceSize": {"w":177,"h":256}
 },
-"ImposedSynchronization.png":
-{
-	"frame": {"x":259,"y":518,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"KnightsHeritage.png":
-{
-	"frame": {"x":518,"y":518,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"MakeEverySecondCount.png":
-{
-	"frame": {"x":777,"y":518,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"OutOfSync.png":
-{
-	"frame": {"x":1036,"y":518,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"PastDriftCharacter.png":
+"DriftingShadowDriftCharacter.png":
 {
 	"frame": {"x":1432,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -160,7 +112,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastDriftCharacterBack.png":
+"DriftingShadowDriftCharacterBack.png":
 {
 	"frame": {"x":1611,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -168,31 +120,31 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"PastFocus.png":
+"DriftStep.png":
 {
-	"frame": {"x":1295,"y":518,"w":256,"h":188},
+	"frame": {"x":259,"y":777,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188}
 },
-"ResourcefulDaydreamer.png":
+"DualDriftCharacter.png":
 {
-	"frame": {"x":1554,"y":518,"w":256,"h":188},
+	"frame": {"x":896,"y":518,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"Sabershard.png":
+"DualDriftCharacterBack.png":
 {
-	"frame": {"x":0,"y":709,"w":256,"h":188},
+	"frame": {"x":1077,"y":518,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"TestSubjectHalberdCharacter.png":
+"DualShiftTrack1.png":
 {
 	"frame": {"x":1790,"y":0,"w":176,"h":256},
 	"rotated": false,
@@ -200,7 +152,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"TestSubjectHalberdCharacterBack.png":
+"DualShiftTrack2.png":
 {
 	"frame": {"x":0,"y":259,"w":176,"h":256},
 	"rotated": false,
@@ -208,7 +160,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"ThroughTheBreachDriftCharacter.png":
+"DualShiftTrack3.png":
 {
 	"frame": {"x":179,"y":259,"w":176,"h":256},
 	"rotated": false,
@@ -216,7 +168,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
-"ThroughTheBreachDriftCharacterBack.png":
+"DualShiftTrack4.png":
 {
 	"frame": {"x":358,"y":259,"w":176,"h":256},
 	"rotated": false,
@@ -224,9 +176,169 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256}
 },
+"FutureDriftCharacter.png":
+{
+	"frame": {"x":537,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"FutureDriftCharacterBack.png":
+{
+	"frame": {"x":716,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"FutureFocus.png":
+{
+	"frame": {"x":518,"y":777,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"ImposedSynchronization.png":
+{
+	"frame": {"x":777,"y":777,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"KnightsHeritage.png":
+{
+	"frame": {"x":1036,"y":777,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"MakeEverySecondCount.png":
+{
+	"frame": {"x":1295,"y":777,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"OutOfSync.png":
+{
+	"frame": {"x":1554,"y":777,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"PastDriftCharacter.png":
+{
+	"frame": {"x":895,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"PastDriftCharacterBack.png":
+{
+	"frame": {"x":1074,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"PastFocus.png":
+{
+	"frame": {"x":0,"y":968,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"ResourcefulDaydreamer.png":
+{
+	"frame": {"x":259,"y":968,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"Sabershard.png":
+{
+	"frame": {"x":518,"y":968,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188}
+},
+"TestSubjectHalberdDriftCharacter.png":
+{
+	"frame": {"x":1253,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"TestSubjectHalberdDriftCharacterBack.png":
+{
+	"frame": {"x":1432,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ThroughTheBreachDriftCharacter.png":
+{
+	"frame": {"x":1611,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ThroughTheBreachDriftCharacterBack.png":
+{
+	"frame": {"x":1790,"y":259,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ThroughTheBreachShiftTrack1.png":
+{
+	"frame": {"x":0,"y":518,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ThroughTheBreachShiftTrack2.png":
+{
+	"frame": {"x":179,"y":518,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ThroughTheBreachShiftTrack3.png":
+{
+	"frame": {"x":358,"y":518,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
+"ThroughTheBreachShiftTrack4.png":
+{
+	"frame": {"x":537,"y":518,"w":176,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
+	"sourceSize": {"w":176,"h":256}
+},
 "ThrowingShard.png":
 {
-	"frame": {"x":259,"y":709,"w":256,"h":188},
+	"frame": {"x":777,"y":968,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -234,7 +346,7 @@
 },
 "TransitionShock.png":
 {
-	"frame": {"x":518,"y":709,"w":256,"h":188},
+	"frame": {"x":1036,"y":968,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
@@ -247,6 +359,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1c71be76a35e324144d05e3e9af80ed2:bdadc9a569bc4ab49717b57a289cf53a:fa5de8c0f8bc6d138da9987d1682d33b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:6f14984beb3317422fe551344e7d2b79:3aad4954203ee468a9f5ddd351d2c3ef:fa5de8c0f8bc6d138da9987d1682d33b$"
 }
 }

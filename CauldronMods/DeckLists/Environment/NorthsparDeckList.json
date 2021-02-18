@@ -36,7 +36,7 @@
                 "DealDamageToxic"
             ],
             "body": [
-                "Whenever a Frozen card enters play, this card and Tak Ahab each regain 3HP.",
+                "Whenever a Frozen card enters play, this card and Tak Ahab each regain 3 HP.",
                 "At the end of the environment turn this card deals each hero target 2 toxic damage."
             ],
             "flavorText": "The mercenary's ship brought with it{BR}several spores of a normally harmless{BR}alien fungus which, like Tak Ahab himself,{BR}thrived dangerously in the frigid climate.",

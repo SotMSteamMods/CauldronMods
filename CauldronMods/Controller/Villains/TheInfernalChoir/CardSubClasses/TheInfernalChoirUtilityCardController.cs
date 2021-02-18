@@ -13,5 +13,67 @@ namespace Cauldron.TheInfernalChoir
         protected TheInfernalChoirUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
+        protected string VagrantHeartHiddenHeartIdentifier => "VagrantHeartPhase1";
+        protected string VagrantHeartSoulRevealedIdentifier => "VagrantHeartPhase2";
+
+        protected Card FindVagrantHeartHiddenHeart()
+        {
+            var p1Heart = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
+            return (p1Heart?.IsInPlay ?? false) ? p1Heart : null;
+        }
+
+        protected bool DoesPlayAreaContainHiddenHeart(TurnTaker tt)
+        {
+            var card = FindVagrantHeartHiddenHeart();
+            if (card is null)
+                return false;
+            return tt == card.Location.OwnerTurnTaker;
+        }
+
+        protected Location GetPlayAreaContainingHiddenHeart()
+        {
+            var card = FindVagrantHeartHiddenHeart();
+            if (card is null)
+                return null;
+            return card.Location;
+        }
+
+        protected bool IsVagrantHeartHiddenHeartInPlay()
+        {
+            return FindVagrantHeartHiddenHeart() != null;
+        }
+
+        protected bool IsVagrantHeartSoulRevealedInPlay()
+        {
+            return FindVagrantHeartSoulRevealed() != null;
+        }
+
+        protected Card FindVagrantHeartSoulRevealed()
+        {
+            var p2Heart = TurnTaker.FindCard(VagrantHeartSoulRevealedIdentifier, false);
+            return (p2Heart?.IsInPlay ?? false) ? p2Heart : null;
+        }
+
+        protected void DebugHeartStatus()
+        {
+            var p1Heart = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
+            var p2Heart = TurnTaker.FindCard(VagrantHeartSoulRevealedIdentifier, false);
+
+            Console.WriteLine($"STATUS - Heart1 {p1Heart.Location.GetFriendlyName()}");
+            Console.WriteLine($"STATUS - Heart2 {p2Heart.Location.GetFriendlyName()}");
+
+        }
+
+        protected bool IsGhost(Card c, bool evenIfUnderCard = false, bool evenIfFaceDown = false)
+        {
+            return c != null && (c.DoKeywordsContain("ghost", evenIfUnderCard, evenIfFaceDown) || GameController.DoesCardContainKeyword(c, "ghost", evenIfUnderCard, evenIfFaceDown));
+        }
+
+        protected string BuildHiddenHeartSpecialString()
+        {
+            Card heart = TurnTaker.FindCard(VagrantHeartHiddenHeartIdentifier, false);
+            return $"{heart.Title} is in {GetPlayAreaContainingHiddenHeart().GetFriendlyName()}.";
+        }
     }
 }
