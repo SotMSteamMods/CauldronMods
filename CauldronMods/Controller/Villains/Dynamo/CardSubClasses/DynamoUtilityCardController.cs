@@ -12,6 +12,22 @@ namespace Cauldron.Dynamo
     {
         protected DynamoUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        public bool IsPlot(Card c)
+        {
+            return c.DoKeywordsContain("plot");
+        }
+
+        public Card FindCopperhead()
+        {
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "Copperhead")).FirstOrDefault();
+        }
+
+        public Card FindPython()
+        {
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "Python")).FirstOrDefault();
         }
     }
 }

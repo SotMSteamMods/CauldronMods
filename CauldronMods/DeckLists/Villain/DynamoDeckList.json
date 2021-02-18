@@ -1,7 +1,7 @@
 {
     "name": "Dynamo",
     "kind": "Villain",
-    "expansionIdentifier":"CauldronAdrift",
+    "expansionIdentifier": "CauldronAdrift",
     "initialCardIdentifiers": [
         "DynamoCharacter"
     ],
@@ -23,7 +23,7 @@
             ],
             "setup": [
                 "At the start of the game, put {Dynamo}'s villain character cards into play, 'Notorious Supercriminal' side up.",
-				"Shuffle the villain deck."
+                "Shuffle the villain deck."
             ],
             "gameplay": [
                 "At the start of the villain turn, discard the top card of the villain deck and {Dynamo} deals the hero target with the highest HP {H} energy damage.",
@@ -31,15 +31,23 @@
             ],
             "advanced": "Whenever a villain target enters play, discard the top card of the villain deck.",
             "icons": [
-                "StartOfTurnAction","Discard","DealDamageEnergy","EndOfTurnAction"
+                "StartOfTurnAction",
+                "Discard",
+                "DealDamageEnergy",
+                "EndOfTurnAction"
             ],
             "flippedBody": "Fully Charged",
             "flippedGameplay": [
                 "When Dynamo flips to this side, play the top 2 cards of the villain deck. Then, shuffle the villain trash, put it on the bottom of the villain deck, and flip {Dynamo}'s villain character cards."
             ],
             "flippedAdvanced": "Increase damage dealt by villain targets by 1.",
-            "flippedIcons": ["PlayCardNow","Manipulate"],
-            "flippedAdvancedIcons": ["IncreaseDamageDealt"],
+            "flippedIcons": [
+                "PlayCardNow",
+                "Manipulate"
+            ],
+            "flippedAdvancedIcons": [
+                "IncreaseDamageDealt"
+            ],
             "difficulty": 1,
             "openingLines": {
                 "default": "You interrupted the wrong heist, do-gooders! Prepare for pain!",
@@ -57,7 +65,10 @@
                 "ongoing",
                 "plot"
             ],
-            "icons": ["EndOfTurnAction","Discard"],
+            "icons": [
+                "EndOfTurnAction",
+                "Discard"
+            ],
             "body": "At the end of the villain turn, each player may discard 1 card. If fewer than {H - 1} cards were discarded this way, discard the top card of the villain deck.",
             "flavorQuotes": [
                 {
@@ -74,7 +85,11 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": ["StartOfTurnAction","Destroy","DealDamageEnergy"],
+            "icons": [
+                "StartOfTurnAction",
+                "Destroy",
+                "DealDamageEnergy"
+            ],
             "body": [
                 "At the start of the villain turn, destroy all Plot cards and this card.",
                 "When this card is destroyed, {Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn."
@@ -98,7 +113,11 @@
             "keywords": [
                 "rogue"
             ],
-            "icons": ["IncreaseDamageDealt","EndOfTurnAction","DealDamageMelee"],
+            "icons": [
+                "IncreaseDamageDealt",
+                "EndOfTurnAction",
+                "DealDamageMelee"
+            ],
             "body": [
                 "If this card has 10 or fewer HP, increase damage it deals by 2.",
                 "At the end of the villain turn, this card deals the 2 hero targets with the highest HP {H} melee damage each."
@@ -120,7 +139,12 @@
                 "ongoing",
                 "plot"
             ],
-            "icons": ["EndOfTurnAction","PlayCardNow","Discard","DealDamageEnergy"],
+            "icons": [
+                "EndOfTurnAction",
+                "PlayCardNow",
+                "Discard",
+                "DealDamageEnergy"
+            ],
             "body": "At the end of the villain turn, the players may choose to play the top card of the environment deck. If they do not, discard the top card of the villain deck and {Dynamo} deals each hero target 1 energy damage.",
             "flavorQuotes": [
                 {
@@ -137,7 +161,11 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": ["Discard","DealDamageEnergy","DestroySelf"],
+            "icons": [
+                "Discard",
+                "DealDamageEnergy",
+                "DestroySelf"
+            ],
             "body": [
                 "When this card enters play, discard the top card of the villain deck.",
                 "When {Dynamo} is dealt 4 or more damage from a single source, discard the top card of the villain deck and {Dynamo} deals each hero target {H} energy damage. Then, destroy this card."
@@ -157,7 +185,9 @@
             "keywords": [
                 "ongoing"
             ],
-            "icons": ["ReduceDamageTaken"],
+            "icons": [
+                "ReduceDamageTaken"
+            ],
             "body": "Reduce damage dealt to villain targets by 1.",
             "flavorQuotes": [
                 {
@@ -174,7 +204,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["DealDamageMelee","Search"],
+            "icons": [
+                "DealDamageMelee",
+                "Search"
+            ],
             "body": [
                 "If Copperhead is in play, he deals each hero target 2 melee damage.",
                 "Otherwise, seach the villain deck and trash for Copperhead and put him into play. If you searched the villain deck, shuffle it."
@@ -182,7 +215,9 @@
             "flavorQuotes": [
                 {
                     "identifier": "Copperhead",
-                    "text": "It's been fun, pipsqueak."}],
+                    "text": "It's been fun, pipsqueak."
+                }
+            ],
             "flavorReference": "Copperhead, Windmill City Renegades"
         },
         {
@@ -192,7 +227,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["PlayCardNow","DealDamageMelee"],
+            "icons": [
+                "PlayCardNow",
+                "DealDamageMelee"
+            ],
             "body": [
                 "Reveal cards from the top of the villain deck until a Plot is revealed. Put it into play and shuffle the other revealed cards back into the villain deck.",
                 "The villain target with the highest HP deals each hero target {H - 1} melee damage."
@@ -216,8 +254,14 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["ReduceDamageTaken","DealDamageMelee"],
-            "body": ["If Copperhead is in play, reduce damage dealt to villain targets by 1 until the start of the next villain turn.","The villain target with the highest HP deals the hero target with the second highest HP {H} melee damage."],
+            "icons": [
+                "ReduceDamageTaken",
+                "DealDamageMelee"
+            ],
+            "body": [
+                "If Copperhead is in play, reduce damage dealt to villain targets by 1 until the start of the next villain turn.",
+                "The villain target with the highest HP deals the hero target with the second highest HP {H} melee damage."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Dynamo",
@@ -233,7 +277,10 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["DealDamageEnergy","IncreaseDamageDealt"],
+            "icons": [
+                "DealDamageEnergy",
+                "IncreaseDamageDealt"
+            ],
             "body": [
                 "{Dynamo} deals the hero target with the second highest HP {H} energy damage.",
                 "Increase damage dealt to that target by environment cards by 1 until the start of the next villain turn."
@@ -253,7 +300,10 @@
             "keywords": [
                 "rogue"
             ],
-            "icons": ["ReduceDamageDealt","DealDamageToxic"],
+            "icons": [
+                "ReduceDamageDealt",
+                "DealDamageToxic"
+            ],
             "body": [
                 "The first time a hero target deals damage to this card each turn, reduce damage dealt by that target by 1 until the start of the next villain turn.",
                 "Whenever a One-shot enters the villain trash, this card deals the 2 hero targets with the lowest HP {H - 2} toxic damage each."
@@ -274,12 +324,16 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["DealDamageToxic","Discard","DealDamageMelee"],
+            "icons": [
+                "DealDamageToxic",
+                "Discard",
+                "DealDamageMelee"
+            ],
             "body": [
                 "If Python is in play, he deals each hero target 1 toxic damage, regains {H} HP, and discards the top card of the villain deck.",
                 "The villain target with the lowest HP deals the hero target with the lowest HP {H - 2} melee damage."
             ],
-            "flavorText": "“Good as new, hissed the{BR}creature,” as the shriveled skin fell away{BR}to reveal an undamaged limb."
+            "flavorText": "“Good as new,” hissed the{BR}creature, as the shriveled skin fell away{BR}to reveal an undamaged limb."
         },
         {
             "identifier": "Stranglehold",
@@ -288,7 +342,11 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["DestroyOngoing","DestroyEquipment","Search"],
+            "icons": [
+                "DestroyOngoing",
+                "DestroyEquipment",
+                "Search"
+            ],
             "body": [
                 "If Python is in play, destroy {H} hero ongoing and/or equipment cards.",
                 "Otherwise, search the villain deck and trash for Python and put him into play. If you searched the villain deck, shuffle it."
@@ -312,7 +370,11 @@
             "keywords": [
                 "one-shot"
             ],
-            "icons": ["DealDamageEnergy","DestroyEnvironment","DealDamageSonic"],
+            "icons": [
+                "DealDamageEnergy",
+                "DestroyEnvironment",
+                "DealDamageSonic"
+            ],
             "body": [
                 "{Dynamo} deals the hero target with the highest HP 5 energy damage. If a hero target takes damage this way, destroy 1 environment card.",
                 "{Dynamo} deals each other hero target 1 sonic damage."
@@ -333,15 +395,19 @@
                 "ongoing",
                 "plot"
             ],
-            "icons": ["EndOfTurnAction","Destroy","Discard"],
-            "body": "At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 1} cards were destroyed this way, discard the top card of the villain deck.",
+            "icons": [
+                "EndOfTurnAction",
+                "Destroy",
+                "Discard"
+            ],
+            "body": "At the end of the villain turn, each player may destroy 1 of their non-character cards. If fewer than {H - 2} cards were destroyed this way, discard the top card of the villain deck.",
             "flavorQuotes": [
                 {
                     "identifier": "Reporter",
                     "text": "The police have been unable{BR}to apprehend the criminals, who{BR}appear to be working in tandem."
                 }
             ],
-           "flavorReference": "Reporter, Adventurers #6"
+            "flavorReference": "Reporter, Adventurers #6"
         }
     ]
 }

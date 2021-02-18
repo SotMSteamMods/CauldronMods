@@ -12,6 +12,53 @@ namespace Cauldron.Dynamo
     {
         public PythonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+
+        }
+
+        protected const string OncePerTurn = "OncePerTurn";
+
+        public override void AddTriggers()
+        {
+            //The first time a hero target deals damage to this card each turn, reduce damage dealt by that target by 1 until the start of the next villain turn.
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.Target == this.Card && action.DamageSource.IsHero && action.DamageSource.IsTarget, this.ReduceDamageResponse, TriggerType.ReduceDamage, TriggerTiming.After);
+
+            //Whenever a One-shot enters the villain trash, this card deals the 2 hero targets with the lowest HP {H - 2} toxic damage each.
+            base.AddTrigger<MoveCardAction>((MoveCardAction action) => action.Destination.IsTrash && action.Destination.IsVillain && action.CardToMove.IsOneShot, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+        }
+
+        private IEnumerator ReduceDamageResponse(DealDamageAction action)
+        {
+            //...reduce damage dealt by that target by 1 until the start of the next villain turn.
+            ReduceDamageStatusEffect statusEffect = new ReduceDamageStatusEffect(1);
+            statusEffect.SourceCriteria.IsSpecificCard = action.DamageSource.Card;
+            statusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            statusEffect.UntilCardLeavesPlay(action.DamageSource.Card);
+
+            IEnumerator coroutine = base.AddStatusEffect(statusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        private IEnumerator DealDamageResponse(MoveCardAction action)
+        {
+            //...this card deals the 2 hero targets with the lowest HP {H - 2} toxic damage each.
+            IEnumerator coroutine = base.DealDamageToLowestHP(this.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => base.Game.H - 2, DamageType.Toxic, numberOfTargets: 2);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
         }
     }
 }
