@@ -13,10 +13,14 @@ namespace Cauldron.Pyre
     public abstract class PyreUtilityCharacterCardController : HeroCharacterCardController
     {
         private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
+        public const string IrradiatedMarkerIdentifier = "IrradiatedMarker";
+        public const string CascadeKeyword = "cascade";
+
         protected PyreUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Deck, TurnTaker.Trash }, new LinqCardCriteria((Card c) => GameController.DoesCardContainKeyword(c, "cascade"), "cascade"));
         }
+
 
         public override void AddStartOfGameTriggers()
         {
@@ -47,14 +51,14 @@ namespace Cauldron.Pyre
         {
             if (c != null)
             {
-                return c.NextToLocation.Cards.Any((Card nextTo) => nextTo.Identifier == "IrradiatedMarker");
+                return c.NextToLocation.Cards.Any((Card nextTo) => nextTo.Identifier == IrradiatedMarkerIdentifier);
             }
             return false;
         }
 
         protected bool IsCascade(Card c)
         {
-            return GameController.DoesCardContainKeyword(c, "cascade");
+            return GameController.DoesCardContainKeyword(c, CascadeKeyword);
         }
 
         protected IEnumerator IrradiateCard(Card cardToIrradiate)
@@ -84,19 +88,19 @@ namespace Cauldron.Pyre
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
-                /*
-                if(PyreTTC != null)
-                {
-                    PyreTTC.AddIrradiatedSpecialString(cardToIrradiate);
-                }
-                */
+                
+                //if(PyreTTC != null)
+                //{
+                //    PyreTTC.AddIrradiatedSpecialString(cardToIrradiate);
+                //}
+                
             }
             yield break;
         }
         protected IEnumerator ClearIrradiation(Card card)
         {
             //Log.Debug($"ClearIrradiation called on {card.Title}");
-            var marks = card?.NextToLocation.Cards.Where((Card c) => !c.IsRealCard && c.Identifier == "IrradiatedMarker");
+            var marks = card?.NextToLocation.Cards.Where((Card c) => !c.IsRealCard && c.Identifier == IrradiatedMarkerIdentifier);
             if(marks != null && marks.Any())
             {
                 IEnumerator coroutine = BulkMoveCard(DecisionMaker, marks, TurnTaker.OffToTheSide, false, false, DecisionMaker, false);

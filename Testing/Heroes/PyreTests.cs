@@ -117,6 +117,8 @@ namespace CauldronTests
             UsePower(pyre);
             AssertInHand(punch);
             AssertIrradiated(punch);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
             QuickShuffleCheck(0);
 
             PutInTrash(punch);
