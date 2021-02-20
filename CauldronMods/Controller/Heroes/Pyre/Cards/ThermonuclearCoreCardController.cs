@@ -71,7 +71,7 @@ namespace Cauldron.Pyre
         }
         private IEnumerator SelectHeroToDrawIrradiatedCard(PhaseChangeAction pc)
         {
-            var validHeroes = GameController.AllHeroControllers.Where(httc => !httc.HeroTurnTaker.Hand.Cards.Any((Card c) => IsIrradiated(c)) && GameController.CanDrawCards(httc, GetCardSource())).Select(httc => httc.TurnTaker).ToList();
+            var validHeroes = GameController.AllHeroControllers.Where(httc => GameController.IsTurnTakerVisibleToCardSource(httc.HeroTurnTaker, GetCardSource()) && !httc.HeroTurnTaker.Hand.Cards.Any((Card c) => IsIrradiated(c)) && GameController.CanDrawCards(httc, GetCardSource())).Select(httc => httc.TurnTaker).ToList();
             IEnumerator coroutine;
             if (!validHeroes.Any())
             {
