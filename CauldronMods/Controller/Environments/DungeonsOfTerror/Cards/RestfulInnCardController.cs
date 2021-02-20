@@ -87,7 +87,7 @@ namespace Cauldron.DungeonsOfTerror
                     if(hpGainer != null)
                     {
                         GainHPAction gainHPAction = new GainHPAction(GetCardSource(), hpGainer, 2, () => 2);
-                        if(IsTopCardOfLocationFate(TurnTaker.Trash) != null && IsTopCardOfLocationFate(TurnTaker.Trash).Value)
+                        if(IsTopCardOfLocationFate(TurnTaker.Trash))
                         {
                             IEnumerator message = GameController.SendMessageAction("The top card of the environment trash is a fate card! Increasing HP recovery by 1!", Priority.Medium, GetCardSource(), showCardSource: true);
                             coroutine = GameController.IncreaseHPGain(gainHPAction, 1, GetCardSource());

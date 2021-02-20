@@ -349,14 +349,14 @@ namespace CauldronTests
 
             Card ground = PlayCard("HighGround");
 
-            //when nothing, everything should be normal
+            //when nothing, should be treated like non-fate card
             QuickHPStorage(baron);
             DealDamage(ra, baron, 3, DamageType.Fire);
             QuickHPCheck(-3);
 
             QuickHPStorage(ra);
             DealDamage(baron, ra, 3, DamageType.Fire);
-            QuickHPCheck(-3);
+            QuickHPCheck(-2);
 
             //put fate in trash
             PutInTrash("EnormousPack");
@@ -660,7 +660,7 @@ namespace CauldronTests
 
             QuickHPStorage(baron, ra, legacy, haka);
             GoToEndOfTurn(dungeon);
-            QuickHPCheckZero();
+            QuickHPCheck(-1, -1, -1, -1);
         }
 
         [Test()]
@@ -761,7 +761,7 @@ namespace CauldronTests
 
             QuickHPStorage(baron, ra, legacy, haka);
             GoToEndOfTurn(dungeon);
-            QuickHPCheckZero();
+            QuickHPCheck(0, -2, 0, 0);
         }
 
         [Test()]
@@ -813,11 +813,10 @@ namespace CauldronTests
             Card chest = PlayCard("SuspiciousChest");
             GoToPlayCardPhase(dungeon);
 
-            QuickHPStorage(baron, ra, legacy, haka);
+            DecisionSelectTurnTaker = legacy.TurnTaker;
             QuickHandStorage(ra, legacy, haka);
             GoToEndOfTurn(dungeon);
-            QuickHPCheckZero();
-            QuickHandCheckZero();
+            QuickHandCheck(0, 1, 0);
         }
 
         [Test()]
@@ -909,10 +908,10 @@ namespace CauldronTests
 
             Card underleveled = PlayCard("Underleveled");
 
-            //when nothing, everything should be normal
+            //when nothing, should act like a non=fate card
             QuickHPStorage(baron);
             DealDamage(ra, baron, 3, DamageType.Fire);
-            QuickHPCheck(-3);
+            QuickHPCheck(-4);
 
             QuickHPStorage(ra);
             DealDamage(baron, ra, 3, DamageType.Fire);

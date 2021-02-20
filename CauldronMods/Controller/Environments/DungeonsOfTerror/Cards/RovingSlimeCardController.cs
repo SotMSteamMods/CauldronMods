@@ -13,7 +13,7 @@ namespace Cauldron.DungeonsOfTerror
         public RovingSlimeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(() => BuildTopCardOfLocationSpecialString(TurnTaker.Trash));
-            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => IsTopCardOfLocationFate(TurnTaker.Trash) != null && IsTopCardOfLocationFate(TurnTaker.Trash).Value;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => IsTopCardOfLocationFate(TurnTaker.Trash) == true;
 
         }
 

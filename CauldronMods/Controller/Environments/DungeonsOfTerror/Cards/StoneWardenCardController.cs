@@ -13,8 +13,8 @@ namespace Cauldron.DungeonsOfTerror
         public StoneWardenCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(() => BuildTopCardOfLocationSpecialString(TurnTaker.Trash));
-            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => IsTopCardOfLocationFate(TurnTaker.Trash) != null && IsTopCardOfLocationFate(TurnTaker.Trash).Value;
-            SpecialStringMaker.ShowNonEnvironmentTargetWithLowestHP().Condition = () => IsTopCardOfLocationFate(TurnTaker.Trash) != null && !IsTopCardOfLocationFate(TurnTaker.Trash).Value;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => IsTopCardOfLocationFate(TurnTaker.Trash) == true;
+            SpecialStringMaker.ShowNonEnvironmentTargetWithLowestHP().Condition = () => IsTopCardOfLocationFate(TurnTaker.Trash) == false;
         }
 
         public override void AddTriggers()
