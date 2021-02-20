@@ -11,6 +11,7 @@ namespace Cauldron.Vanish
         public VanishCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+
         public override IEnumerator UsePower(int index = 0)
         {
             int targets = GetPowerNumeral(0, 1);

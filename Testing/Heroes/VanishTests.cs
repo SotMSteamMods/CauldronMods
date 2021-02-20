@@ -473,6 +473,7 @@ namespace CauldronTests
             QuickHPCheck(0, -1, 0, 0, 0);
         }
 
+        #region Test Flash Recon
         [Test]
         public void FlashRecon()
         {
@@ -491,10 +492,11 @@ namespace CauldronTests
                 new LocationChoice(baron.TurnTaker.Deck),
                 new LocationChoice(vanish.TurnTaker.Deck),
                 new LocationChoice(ra.TurnTaker.Deck),
-                new LocationChoice(wraith.TurnTaker.Deck),
+                new LocationChoice(wraith.TurnTaker.Deck)
                 //new LocationChoice(env.TurnTaker.Deck), env deck is selected automatically since it's the last selection, yuck
-                new LocationChoice(baron.TurnTaker.Deck)
             };
+            DecisionSelectCard = played;
+
             var card = PlayCard("FlashRecon");
             AssertInTrash(vanish, card);
 
@@ -530,11 +532,10 @@ namespace CauldronTests
                 new LocationChoice(vanish.TurnTaker.Deck),
                 new LocationChoice(ra.TurnTaker.Deck),
                 new LocationChoice(wraith.TurnTaker.Deck),
-                new LocationChoice(adept.TurnTaker.Deck),
+                new LocationChoice(adept.TurnTaker.Deck)
                 //new LocationChoice(env.TurnTaker.Deck), env deck is selected automatically since it's the last selection, yuck
-                new LocationChoice(baron.TurnTaker.Deck)
             };
-            DecisionSelectCard = adeptPlay;
+            DecisionSelectCards = new Card[] { adeptPlay, played };
 
             UsePower(adept);
             AssertInTrash(vanish, adeptPlay);
@@ -547,6 +548,46 @@ namespace CauldronTests
             AssertNumberOfCardsInRevealed(wraith, 0);
             AssertNumberOfCardsInRevealed(env, 0);
         }
+
+        [Test]
+        public void FlashRecon_Fix942()
+        {
+            Card mobileDefensePlatform;
+            Card focusingGauntlet;
+            Card fleshOfTheSunGod;
+            Card stunBolt;
+            Card policeBackup;
+
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            //stack decks with harmless cards
+            mobileDefensePlatform = StackDeck(baron, "MobileDefensePlatform");
+            focusingGauntlet = StackDeck(vanish, "FocusingGauntlet");
+            fleshOfTheSunGod = StackDeck(ra, "FleshOfTheSunGod");
+            stunBolt = StackDeck(wraith, "StunBolt");
+            policeBackup = StackDeck(env, "PoliceBackup");
+
+            DecisionSelectLocations = new[]
+            {
+                new LocationChoice(baron.TurnTaker.Deck),
+                new LocationChoice(vanish.TurnTaker.Deck),
+                new LocationChoice(ra.TurnTaker.Deck),
+                new LocationChoice(wraith.TurnTaker.Deck)
+                //new LocationChoice(env.TurnTaker.Deck), env deck is selected automatically since it's the last selection, yuck
+            };
+            AssertNextDecisionChoices(DecisionSelectLocations, null);
+            AssertNextDecisionChoices(new Card[] { mobileDefensePlatform, focusingGauntlet, fleshOfTheSunGod, stunBolt, policeBackup }, new Card[] { vanish.CharacterCard, ra.CharacterCard, wraith.CharacterCard });
+            PlayCard("FlashRecon");
+
+            AssertInPlayArea(baron, mobileDefensePlatform);
+            AssertNumberOfCardsInRevealed(baron, 0);
+            AssertNumberOfCardsInRevealed(vanish, 0);
+            AssertNumberOfCardsInRevealed(ra, 0);
+            AssertNumberOfCardsInRevealed(wraith, 0);
+            AssertNumberOfCardsInRevealed(env, 0);
+        }
+        #endregion Test Flash Recon
 
         public void TacticalRelocation_()
         {

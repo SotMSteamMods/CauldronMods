@@ -13,6 +13,10 @@ namespace Cauldron.Vanish
         {
         }
 
+        /* 
+         * Reveal the top card of each deck, then replace it. 
+         * Select a deck and put its top card into play.
+         */
         public override IEnumerator Play()
         {
             var coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, l => l.IsDeck && !l.OwnerTurnTaker.IsIncapacitatedOrOutOfGame, RevealTopCardAndReturn, cardSource: GetCardSource());
@@ -24,8 +28,8 @@ namespace Cauldron.Vanish
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            var sld = new SelectLocationDecision(GameController, HeroTurnTakerController, Game.TurnTakers.Select(tt => new LocationChoice(tt.Deck)), SelectionType.PlayTopCard, false, cardSource: GetCardSource());
-            coroutine = GameController.SelectLocationAndDoAction(sld, loc => GameController.PlayTopCardOfLocation(DecisionMaker, loc, isPutIntoPlay: true, cardSource: GetCardSource(), showMessage: true));
+
+            coroutine = base.GameController.SelectAndPlayCard(DecisionMaker, (Card c) => c.Location.IsDeck && base.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource()) && c == c.Location.TopCard, optional: false, isPutIntoPlay: true, GetCardSource(), "There are no cards in any decks.");
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
