@@ -123,7 +123,7 @@ namespace Cauldron.Drift
             }
             else
             {
-                coroutine = base.GameController.BulkMoveCards(this, base.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), base.TurnTaker.OutOfGame);
+                coroutine = base.GameController.BulkMoveCards(this, base.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), base.TurnTaker.InTheBox);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

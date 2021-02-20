@@ -101,10 +101,13 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            //SaveAndLoad();
             DealDamage(baron, haka, 50, 0);
             DealDamage(baron, bunker, 50, 0);
-            DealDamage(baron, scholar, 50, 0);
             DealDamage(baron, drift, 50, 0);
+            AssertNumberOfCardsAtLocation(drift.TurnTaker.OutOfGame, 40);
+
+            DealDamage(baron, scholar, 50, 0);
             AssertGameOver();
         }
 
