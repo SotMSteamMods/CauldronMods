@@ -36,7 +36,7 @@ namespace Cauldron.Pyre
             }
 
             //Draw 2 cards. 
-            coroutine = DrawCards(DecisionMaker, 2);
+            coroutine = DrawCards(DecisionMaker, numDraws);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -83,7 +83,7 @@ namespace Cauldron.Pyre
                 case 1:
                     {
                         //"Each target regains 1 HP.",
-                        coroutine = GameController.GainHP(DecisionMaker, (Card c) => c.IsTarget, 1, cardSource: GetCardSource());
+                        coroutine = GameController.GainHP(DecisionMaker, (Card c) => c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 1, cardSource: GetCardSource());
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);
