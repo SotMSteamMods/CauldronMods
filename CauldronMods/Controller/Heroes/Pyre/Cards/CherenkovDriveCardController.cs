@@ -65,6 +65,21 @@ namespace Cauldron.Pyre
             var selectedCard = GetSelectedCard(storedCard);
             if (selectedCard.HasPowers)
             {
+
+                if(!GameController.CanUsePowers(heroTTC, GetCardSource()))
+                {
+                    coroutine = GameController.SendMessageAction($"{Card.Title} would allow {tt.Name} to use a power on {selectedCard.Title}, but they cannot currently use powers.", Priority.High, GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    yield break;
+                }
+
                 var controller = FindCardController(selectedCard);
 
                 var powersOnCard = new List<Power>();
