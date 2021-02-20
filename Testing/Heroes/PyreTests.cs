@@ -165,7 +165,7 @@ namespace CauldronTests
             DealDamage(baron, pyre, 50, DTM);
 
             DecisionSelectCards = new Card[] { null, ring, fort };
-
+            PrintSpecialStringsForCard(pyre.CharacterCard);
             //discard-to-do-stuff is optional
             UseIncapacitatedAbility(pyre, 0);
             AssertIrradiated(ring);
