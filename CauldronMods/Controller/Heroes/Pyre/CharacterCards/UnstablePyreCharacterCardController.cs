@@ -17,9 +17,9 @@ namespace Cauldron.Pyre
         {
             int numCards = GetPowerNumeral(0, 1);
             //"{PyreIrradiate} 1 non-{PyreIrradiate} card in a player's hand until it leaves their hand."
-            var viableHeroes = GameController.AllHeroes.Where(htt => htt.Hand.Cards.Any(c => !IsIrradiated(c))).Select(htt => htt as TurnTaker);
+            var viableHeroes = GameController.AllHeroes.Where(htt => GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource()) && htt.Hand.Cards.Any(c => !IsIrradiated(c))).Select(htt => htt as TurnTaker);
             var decision = new SelectTurnTakerDecision(GameController, DecisionMaker, viableHeroes, SelectionType.CardFromHand, cardSource: GetCardSource());
-            IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(decision, tt => SelectAndIrradiateCardsInHand(DecisionMaker, tt, 1, 1));
+            IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(decision, tt => SelectAndIrradiateCardsInHand(DecisionMaker, tt, numCards, numCards));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

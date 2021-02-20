@@ -221,12 +221,15 @@ namespace CauldronTests
             DealDamage(tempest, legacy, 1, DTM);
             QuickHPCheck(-1, -1, 0);
 
+            SaveAndLoad();
             GoToStartOfTurn(base.env);
+            QuickHPStorage(legacy, tempest, scholar);
             DealDamage(legacy, tempest, 1, DTM);
             DealDamage(tempest, legacy, 1, DTM);
             QuickHPCheck(-1, 0, 0);
 
             GoToStartOfTurn(baron);
+            QuickHPUpdate();
             DealDamage(legacy, tempest, 1, DTM);
             DealDamage(tempest, legacy, 1, DTM);
             QuickHPCheck(-1, -1, 0);
