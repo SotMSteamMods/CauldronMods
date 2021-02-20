@@ -36,8 +36,9 @@ namespace Cauldron.DungeonsOfTerror
         protected IEnumerator CheckForNumberOfFates(IEnumerable<Card> cardsToCheck, List<int> storedResults, Location checkingLocation = null, List<bool> suppressMessage = null)
         { 
             int numFates = 0;
-            if(!cardsToCheck.Any(c => c != null))
+            if(cardsToCheck == null || !cardsToCheck.Any(c => c != null))
             {
+                storedResults.Add(numFates);
                 yield break;
             }
             if(checkingLocation != null && checkingLocation == TurnTaker.Trash)
@@ -99,9 +100,6 @@ namespace Cauldron.DungeonsOfTerror
                 }
             }
 
-            
-
-            
             foreach (Card card in cardsToCheck)
             {
                 if(card != null && IsFate(card))
@@ -113,12 +111,12 @@ namespace Cauldron.DungeonsOfTerror
             yield break;
         }
 
-        protected bool? IsTopCardOfLocationFate(Location location)
+        protected bool IsTopCardOfLocationFate(Location location)
         {
             Card card = location.TopCard;
             if (card == null)
             {
-                return null;
+                return false;
             }
 
             return IsFate(card);
@@ -126,21 +124,14 @@ namespace Cauldron.DungeonsOfTerror
 
         protected string BuildTopCardOfLocationSpecialString(Location location)
         {
-            bool? fate = IsTopCardOfLocationFate(location);
-            string special = "";
-            if(fate == null)
+            bool fate = IsTopCardOfLocationFate(location);
+           
+            string special = $"The top card of {location.GetFriendlyName()} is ";
+            if(fate == false)
             {
-                special = $"There are no cards in {location.GetFriendlyName()}.";
-            } else
-
-            {
-                special = $"The top card of {location.GetFriendlyName()} is ";
-                if(fate.Value == false)
-                {
-                    special += "not ";
-                }
-                special += "a fate card.";
+                special += "not ";
             }
+            special += "a fate card.";
 
             return special;
         }
