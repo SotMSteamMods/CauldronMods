@@ -13,7 +13,10 @@ namespace Cauldron.Pyre
         public ParticleColliderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             ShowIrradiatedCardsInHands();
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(ThermonuclearCoreIdentifier);
         }
+
+        public readonly string ThermonuclearCoreIdentifier = "ThermonuclearCore";
         public override IEnumerator UsePower(int index = 0)
         {
             int numPlayers = GetPowerNumeral(0, 1);
@@ -21,7 +24,7 @@ namespace Cauldron.Pyre
             int numDamage = GetPowerNumeral(2, 1);
             int numBoost = GetPowerNumeral(3, 3);
             //"1 player may play a {PyreIrradiate} card now. 
-            var selectHeroes = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt.ToHero().Hand.Cards.Any((Card c) => IsIrradiated(c) && GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay), "hero with irradiated cards in hand"), SelectionType.PlayCard, numPlayers, false, numPlayers, cardSource: GetCardSource());
+            var selectHeroes = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.ToHero().Hand.Cards.Any((Card c) => IsIrradiated(c) && GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay), "hero with irradiated cards in hand"), SelectionType.PlayCard, numPlayers, false, numPlayers, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(selectHeroes, PlayIrradiatedCard, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -39,11 +42,11 @@ namespace Cauldron.Pyre
                 yield break;
             }
 
-            var coreInPlay = GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ThermonuclearCore").FirstOrDefault();
+            var coreInPlay = GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.Identifier == ThermonuclearCoreIdentifier).FirstOrDefault();
             ITrigger previewBoost = null;
             if (coreInPlay != null)
             {
-                previewBoost = AddIncreaseDamageTrigger((DealDamageAction dd) => !IsRealAction() && dd.CardSource != null && dd.CardSource.Card == Card && dd.CardSource.PowerSource != null, dd => 3);
+                previewBoost = AddIncreaseDamageTrigger((DealDamageAction dd) => !IsRealAction() && dd.CardSource != null && dd.CardSource.Card == Card && dd.CardSource.PowerSource != null, dd => numBoost);
             }
 
             //select the targets

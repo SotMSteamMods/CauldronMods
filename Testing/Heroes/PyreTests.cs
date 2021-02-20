@@ -986,9 +986,14 @@ namespace CauldronTests
         [Test]
         public void TestParticleColliderPowerPlayIrradiated()
         {
-            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis" });
             StartGame();
             DestroyNonCharacterVillainCards();
+
+            if(pyre.HeroTurnTaker.Hand.Cards.Any(c => IsIrradiated(c)))
+            {
+                MoveCards(pyre, (Card c) => IsIrradiated(c), pyre.TurnTaker.Trash);
+            }
 
             Card fort = PutOnDeck("Fortitude");
             Card ring = PutOnDeck("TheLegacyRing");
