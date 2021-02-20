@@ -198,8 +198,10 @@ namespace CauldronTests
 
             DecisionsYesNo = new bool[] { true, true, true };
             QuickHandStorage(unity, legacy, haka);
+            QuickHPUpdate();
             DealDamage(legacy.CharacterCard, industriousHulk, 10, DamageType.Melee);
             QuickHandCheck(1, 1, 1);
+            QuickHPCheckZero();
         }
 
         #endregion Test Industrious Hulk

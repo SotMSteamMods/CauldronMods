@@ -22,10 +22,43 @@ namespace Cauldron.OblaskCrater
         public override void AddTriggers()
         {
             base.AddTrigger((DrawCardAction drawCard) => drawCard.IsSuccessful && drawCard.DidDrawCard && drawCard.DrawnCard.IsHero, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-            base.AddWhenDestroyedTrigger((dca) => base.EachPlayerDrawsACard(optional: true), TriggerType.DrawCard);
+            base.AddWhenDestroyedTrigger((dca) => DoActionToEachTurnTakerInTurnOrder(tt => tt.IsHero, MoveTopCardToHandResponse), TriggerType.MoveCard);
         }
 
-		private IEnumerator DealDamageResponse(DrawCardAction drawCard)
+        private IEnumerator MoveTopCardToHandResponse(TurnTakerController ttc)
+        {
+            if(!ttc.TurnTaker.Deck.HasCards)
+            {
+				yield break;
+            }
+
+			//currently this UI text says "Do you want to draw a card?" since I couldn't find a SelectionType that more accurately described what was happening
+			List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(ttc.ToHero(), SelectionType.DrawCard, Card, storedResults: storedResults, cardSource: GetCardSource());
+			if (base.UseUnityCoroutines)
+			{
+				yield return base.GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				base.GameController.ExhaustCoroutine(coroutine);
+			}
+			if (DidPlayerAnswerYes(storedResults))
+			{
+				coroutine = GameController.MoveCard(ttc, ttc.TurnTaker.Deck.TopCard, ttc.ToHero().HeroTurnTaker.Hand, cardSource: GetCardSource());
+				if (base.UseUnityCoroutines)
+				{
+					yield return base.GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					base.GameController.ExhaustCoroutine(coroutine);
+				}
+			}
+			yield break;
+		}
+
+        private IEnumerator DealDamageResponse(DrawCardAction drawCard)
 		{
 			List<Card> storedCharacter = new List<Card>();
 			IEnumerator coroutine = FindCharacterCardToTakeDamage(drawCard.HeroTurnTaker, storedCharacter, base.CharacterCard, 1, DamageType.Melee);
@@ -51,5 +84,8 @@ namespace Cauldron.OblaskCrater
 				}
 			}
 		}
+
+		
+
 	}
 }
