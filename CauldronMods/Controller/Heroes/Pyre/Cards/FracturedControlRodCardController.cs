@@ -44,7 +44,7 @@ namespace Cauldron.Pyre
         {
             //"Whenever a player discards a {PyreIrradiate} card, they may destroy this card to play the discarded card."
 
-            AddTrigger((MoveCardAction mc) => mc.IsDiscard && IsIrradiated(mc.CardToMove) && mc.CanChangeDestination && IsFirstOrOnlyCopyOfThisCardInPlay() && GameController.CanPlayCard(FindCardController(mc.CardToMove)) == CanPlayCardResult.CanPlay, PlayDiscardedCardFromMove, TriggerType.PlayCard, TriggerTiming.Before);
+            AddTrigger((MoveCardAction mc) => mc.IsDiscard && IsIrradiated(mc.CardToMove) && mc.CanChangeDestination && IsFirstOrOnlyCopyOfThisCardInPlay() && GameController.CanPlayCard(FindCardController(mc.CardToMove)) == CanPlayCardResult.CanPlay && GameController.IsTurnTakerVisibleToCardSource(mc.Origin.OwnerTurnTaker, GetCardSource()), PlayDiscardedCardFromMove, TriggerType.PlayCard, TriggerTiming.Before);
         }
 
         private IEnumerator PlayDiscardedCardFromMove(MoveCardAction mc)
