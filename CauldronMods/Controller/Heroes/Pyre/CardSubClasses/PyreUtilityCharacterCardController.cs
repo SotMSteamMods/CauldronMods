@@ -19,8 +19,19 @@ namespace Cauldron.Pyre
         protected PyreUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Deck, TurnTaker.Trash }, new LinqCardCriteria((Card c) => GameController.DoesCardContainKeyword(c, "cascade"), "cascade"));
+            SpecialStringMaker.ShowSpecialString(() => BuildListIrradiatedHeroes()).ShowWhileIncapacitated = true;
         }
 
+        private string BuildListIrradiatedHeroes()
+        {
+            IEnumerable<TurnTaker> irradiatedHeroes = GameController.GetAllCards().Where((Card c) => IsIrradiated(c) && c.Location.IsHand).Select(c => c.Owner).Distinct();
+            if(!irradiatedHeroes.Any())
+            {
+                return "No heroes have irradiated cards in their hand.";
+            }
+
+            return $"Heroes with irradiated cards in hand: {irradiatedHeroes.Select(tt => tt.NameRespectingVariant).ToRecursiveString()}";
+        }
 
         public override void AddStartOfGameTriggers()
         {

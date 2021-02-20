@@ -111,6 +111,7 @@ namespace CauldronTests
             StartGame();
 
             RemoveCascadeFromGame();
+            PrintSpecialStringsForCard(pyre.CharacterCard);
 
             QuickShuffleStorage(pyre);
             Card punch = PutOnDeck("AtomicPunch");
@@ -128,8 +129,11 @@ namespace CauldronTests
             Card ring = PutOnDeck("TheLegacyRing");
             UsePower(pyre);
             AssertIrradiated(ring);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
             PlayCard(ring);
             AssertNotIrradiated(ring);
+
         }
         [Test]
         public void TestPyreInnatePowerShuffleCascadeIntoDeck()
