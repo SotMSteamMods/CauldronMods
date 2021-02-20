@@ -27,7 +27,7 @@ namespace Cauldron.Pyre
         protected void ShowIrradiatedCount(bool reverse = false)
         {
             string descriptor = reverse ? "non-irradiated" : "irradiated";
-            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => GameController.AllHeroes.Select(htt => htt.Hand), new LinqCardCriteria((Card c) => IsIrradiated(c) != reverse, descriptor));
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => GameController.AllHeroes.Where(htt => !htt.IsIncapacitatedOrOutOfGame).Select(htt => htt.Hand), new LinqCardCriteria((Card c) => IsIrradiated(c) != reverse, descriptor));
         }
 
         protected bool IsIrradiated(Card c)
