@@ -18,7 +18,7 @@ namespace Cauldron.Pyre
         {
             //"Select up to 2 non-{PyreIrradiate} cards in 1 player's hand. {PyreIrradiate} those cards until they leave that player's hand.",
             var storedCards = new List<SelectCardDecision>();
-            var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllHeroes.Where(htt => !htt.IsIncapacitatedOrOutOfGame).Select(htt => htt as TurnTaker), SelectionType.CardFromHand, cardSource: GetCardSource());
+            var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllHeroes.Where(htt => !htt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource())).Select(htt => htt as TurnTaker), SelectionType.CardFromHand, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(selectHero, tt => SelectAndIrradiateCardsInHand(DecisionMaker, tt, 2, 0, storedCards));
             if (UseUnityCoroutines)
             {
@@ -34,7 +34,7 @@ namespace Cauldron.Pyre
             {
                 var numCardsIrradiated = storedCards.Where(scd => scd.SelectedCard != null).Count();
                 var hero = selectHero.SelectedTurnTaker;
-                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), numCardsIrradiated, DamageType.Energy, 1, false, 1, additionalCriteria: (Card c) => c.IsHeroCharacterCard && c.Owner == hero, cardSource: GetCardSource());
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), numCardsIrradiated, DamageType.Energy, 1, false, 1, additionalCriteria: (Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && c.Owner == hero, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
