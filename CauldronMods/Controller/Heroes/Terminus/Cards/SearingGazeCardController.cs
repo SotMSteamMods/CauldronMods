@@ -41,7 +41,7 @@ namespace Cauldron.Terminus
 
 			var storedDamage = new List<DealDamageAction>();
 			// {Terminus} deals 6 cold damage to a target that dealt her damage since your last turn.
-			coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 6, DamageType.Infernal, 1, false, 1, storedResultsDamage: storedDamage, additionalCriteria: (Card c) => HasTargetDealtDamageToTerminusSinceHerLastTurn(c), cardSource: GetCardSource());
+			coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 6, DamageType.Cold, 1, false, 1, storedResultsDamage: storedDamage, additionalCriteria: (Card c) => HasTargetDealtDamageToTerminusSinceHerLastTurn(c), cardSource: GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
