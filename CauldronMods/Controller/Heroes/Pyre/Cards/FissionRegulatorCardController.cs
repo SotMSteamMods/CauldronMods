@@ -12,12 +12,15 @@ namespace Cauldron.Pyre
     {
         public FissionRegulatorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(() => TurnTaker.Deck, new LinqCardCriteria((Card c) => IsCascade(c), "cascade"));
         }
+
+        public readonly string RogueFissionCascadeIdentifier = "RogueFissionCascade";
 
         public override void AddTriggers()
         {
             //"When Rogue Fission Cascade would enter play, instead discard it and draw a card. Then put a Cascade card from your trash on top of your deck and destroy this card.",
-            AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && cep.CardEnteringPlay.Identifier == "RogueFissionCascade", PreventCascadeResponse, TriggerType.CancelAction, TriggerTiming.Before);
+            AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && cep.CardEnteringPlay.Identifier == RogueFissionCascadeIdentifier, PreventCascadeResponse, TriggerType.CancelAction, TriggerTiming.Before);
         }
         private IEnumerator PreventCascadeResponse(CardEntersPlayAction cep)
         {
@@ -68,6 +71,15 @@ namespace Cauldron.Pyre
             var cascadeInTrash = FindCardsWhere((Card c) => c.Location == TurnTaker.Trash && IsCascade(c)).FirstOrDefault();
             if(cascadeInTrash != null)
             {
+                coroutine = GameController.SendMessageAction($"{Card.Title} moves {cascadeInTrash.Title} to the top of {TurnTaker.Deck.GetFriendlyName()}.", Priority.Medium, GetCardSource(), new Card[] { cascadeInTrash });
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
                 coroutine = GameController.MoveCard(DecisionMaker, cascadeInTrash, DecisionMaker.TurnTaker.Deck, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
