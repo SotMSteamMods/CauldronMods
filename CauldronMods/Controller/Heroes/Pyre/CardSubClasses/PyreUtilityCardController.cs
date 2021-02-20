@@ -13,6 +13,8 @@ namespace Cauldron.Pyre
     public abstract class PyreUtilityCardController : CardController
     {
         private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
+        public const string CascadeKeyword = "cascade";
+
         protected PyreUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -48,7 +50,7 @@ namespace Cauldron.Pyre
         }
         protected bool IsCascade(Card c)
         {
-            return GameController.DoesCardContainKeyword(c, "cascade");
+            return GameController.DoesCardContainKeyword(c, CascadeKeyword);
         }
 
         protected IEnumerator IrradiateCard(Card cardToIrradiate)
