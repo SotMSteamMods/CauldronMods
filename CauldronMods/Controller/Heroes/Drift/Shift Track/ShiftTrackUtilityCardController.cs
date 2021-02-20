@@ -31,7 +31,7 @@ namespace Cauldron.Drift
 
         private void AddFlipTriggers()
         {
-            AddTrigger((FlipCardAction fc) => fc.CardToFlip != null && fc.CardToFlip.Card == CharacterCard, FlipThisCardResponse, TriggerType.Hidden, TriggerTiming.After);
+            AddTrigger((FlipCardAction fc) => fc.CardToFlip != null && fc.CardToFlip.Card == GetActiveCharacterCard(), FlipThisCardResponse, TriggerType.Hidden, TriggerTiming.After);
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
