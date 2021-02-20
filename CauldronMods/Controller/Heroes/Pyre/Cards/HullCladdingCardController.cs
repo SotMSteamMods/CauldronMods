@@ -14,11 +14,14 @@ namespace Cauldron.Pyre
 
         public HullCladdingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(() => GameController.GetAllCards().Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ContainmentBreach"), () => "Containment Breach is in play", () => "Containment Breach is not in play.");
+            SpecialStringMaker.ShowIfElseSpecialString(() => GameController.GetAllCards().Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == ContainmentBreachIdentifier), () => "Containment Breach is in play", () => "Containment Breach is not in play.");
         }
+
+        public readonly string ContainmentBreachIdentifier = "ContainmentBreach";
+
         public override bool ShouldBeDestroyedNow()
         {
-            return Card.IsInPlayAndHasGameText && FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ContainmentBreach").Any();
+            return Card.IsInPlayAndHasGameText && FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.Identifier == ContainmentBreachIdentifier).Any();
         }
 
         public override void AddTriggers()
@@ -28,12 +31,12 @@ namespace Cauldron.Pyre
             AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(CharacterCard), dd => 1);
 
             //"If Containment Breach is ever in play, destroy it or destroy this card."
-            AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay.Identifier == "ContainmentBreach" || (cep.CardEnteringPlay == Card && GameController.GetAllCards().Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "ContainmentBreach" && GameController.IsCardVisibleToCardSource(c, GetCardSource()))), DestroyCladdingOrBreachResponse, TriggerType.DestroyCard, TriggerTiming.After);
+            AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay.Identifier == ContainmentBreachIdentifier || (cep.CardEnteringPlay == Card && GameController.GetAllCards().Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == ContainmentBreachIdentifier && GameController.IsCardVisibleToCardSource(c, GetCardSource()))), DestroyCladdingOrBreachResponse, TriggerType.DestroyCard, TriggerTiming.After);
         }
 
         private IEnumerator DestroyCladdingOrBreachResponse(CardEntersPlayAction cep)
         {
-            return GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c == Card || c.Identifier == "ContainmentBreach"), false, cardSource: GetCardSource());
+            return GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c == Card || c.Identifier == ContainmentBreachIdentifier), false, cardSource: GetCardSource());
         }
 
         public override IEnumerator UsePower(int index = 0)
