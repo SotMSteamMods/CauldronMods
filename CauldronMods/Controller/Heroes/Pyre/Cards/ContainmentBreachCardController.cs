@@ -22,19 +22,28 @@ namespace Cauldron.Pyre
                 return _recentIrradiatedPlays;
             }
         }
+
+        private readonly string HullCladdingIdentifier = "HullCladding";
+
         public ContainmentBreachCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             ShowIrradiatedCount();
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(() =>TurnTaker.Trash, new LinqCardCriteria((Card c) => IsCascade(c), "cascade"));
+
         }
         public override bool ShouldBeDestroyedNow()
         {
-            return Card.IsInPlayAndHasGameText && FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "HullCladding").Any();
+            return Card.IsInPlayAndHasGameText && FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.Identifier == HullCladdingIdentifier).Any();
         }
         public override void AddTriggers()
         {
             //"Whenever a player plays a {PyreIrradiate} card, increase energy damage dealt by {Pyre} by 1 until the end of your turn. Then shuffle a Cascade card from your trash into your deck.",
             AddTrigger((PlayCardAction pc) => IsIrradiated(pc.CardToPlay) && !pc.IsPutIntoPlay, NoteIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before);
-            AddTrigger((PlayCardAction pc) => RecentIrradiatedCardPlays.Contains(pc.InstanceIdentifier), IrradiatedPlayResponse, TriggerType.DealDamage, TriggerTiming.After, requireActionSuccess: false);
+            AddTrigger((PlayCardAction pc) => RecentIrradiatedCardPlays.Contains(pc.InstanceIdentifier), IrradiatedPlayResponse, new TriggerType[]
+                {
+                    TriggerType.IncreaseDamage,
+                    TriggerType.MoveCard
+                }, TriggerTiming.After, requireActionSuccess: false);
 
         }
         private IEnumerator NoteIrradiatedPlay(PlayCardAction pc)
