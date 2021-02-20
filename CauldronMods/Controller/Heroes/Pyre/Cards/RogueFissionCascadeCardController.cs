@@ -33,7 +33,7 @@ namespace Cauldron.Pyre
         }
         private IEnumerator PlayFromHandResponse()
         {
-            IEnumerator coroutine = GameController.SendMessageAction( Card.Title + " puts itself into play.", Priority.High, GetCardSource(), null, showCardSource: true);
+            IEnumerator coroutine = GameController.SendMessageAction( Card.Title + " puts itself into play.", Priority.High, GetCardSource(), showCardSource: true);
             if ( UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -68,8 +68,8 @@ namespace Cauldron.Pyre
         public override IEnumerator Play()
         {
             //"{Pyre} deals each hero with {PyreIrradiate} cards in their hand X energy damage, where X is the number of {PyreIrradiate} cards in all hands.",
-            Func<int> NumIrradiatedCardsInHand = () => GameController.GetAllCards().Where((Card c) => IsIrradiated(c)).Count();
-            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => c.IsHeroCharacterCard && c.Owner.ToHero().Hand.Cards.Any((Card inHand) => IsIrradiated(inHand)), c => NumIrradiatedCardsInHand(), DamageType.Energy);
+            Func<int> NumIrradiatedCardsInHand = () => GameController.GetAllCards().Where((Card c) => IsIrradiated(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count();
+            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => c.IsHeroCharacterCard && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && c.Owner.ToHero().Hand.Cards.Any((Card inHand) => IsIrradiated(inHand)), c => NumIrradiatedCardsInHand(), DamageType.Energy);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
