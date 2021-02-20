@@ -615,9 +615,14 @@ namespace CauldronTests
         [Test]
         public void TestContainmentBreachCardPlayResponse()
         {
-            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis" });
             StartGame();
             DestroyNonCharacterVillainCards();
+
+            if(pyre.TurnTaker.Trash.HasCards)
+            {
+                ShuffleTrashIntoDeck(pyre);
+            }
 
             Card breach = PlayCard("ContainmentBreach");
             QuickHPStorage(baron);
