@@ -595,6 +595,28 @@ namespace CauldronTests
             QuickHPCheck(-3);
         }
         [Test]
+        public void TestCherenkovDriveCannotUsePowers()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card flak = PutInHand("FlakCannon");
+            DecisionSelectTurnTaker = bunker.TurnTaker;
+            DecisionSelectCard = flak;
+            DecisionYesNo = true;
+
+            PlayCard("PaparazziOnTheScene");
+            PlayCard("CherenkovDrive");
+
+            //turn taker, card to irradiate
+            AssertMaxNumberOfDecisions(2);
+            QuickHPStorage(baron);
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(flak);
+            QuickHPCheckZero();
+        }
+        [Test]
         public void TestChromodynamicsPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
