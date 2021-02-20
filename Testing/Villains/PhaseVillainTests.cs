@@ -201,6 +201,31 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestPhaseFlipNotBreakTriggers()
+        {
+            SetupGameController(new string[] { "Cauldron.PhaseVillain", "Cauldron.Impact", "Legacy", "VoidGuardWrithe", "OmnitronX", "Megalopolis" });
+            StartGame();
+
+            MoveCard(phase, "VaultDoor", phase.TurnTaker.OutOfGame);
+            PlayCard("BlockedSightline");
+
+            QuickHPStorage(impact, legacy);
+            FlipCard(phase);
+
+            //H damage each, plus nemesis bonus from Impact. Should not have the "boost damage" effect.
+            QuickHPCheck(-5, -4);
+
+            PlayCard("TakeDown");
+            GoToStartOfTurn(impact);
+
+            QuickHPUpdate();
+            DealDamage(phase, impact, 1, DamageType.Melee);
+            DealDamage(phase, legacy, 1, DamageType.Melee);
+            //1 from base damage, 2 from RFG'd cards, Impact also takes 1 from nemesis
+            QuickHPCheck(-4, -3);
+        }
+
+        [Test()]
         public void TestAlmostGotHerDamageEffects()
         {
             SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");

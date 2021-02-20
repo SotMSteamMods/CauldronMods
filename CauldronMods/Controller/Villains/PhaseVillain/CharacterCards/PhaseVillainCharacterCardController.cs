@@ -65,6 +65,8 @@ namespace Cauldron.PhaseVillain
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
+            base.RemoveSideTriggers();
+            this.AddSideTriggers();
             IEnumerator coroutine;
             if (base.Card.IsFlipped)
             {
@@ -127,8 +129,7 @@ namespace Cauldron.PhaseVillain
                     }
                 }
             }
-            base.RemoveAllTriggers();
-            this.AddSideTriggers();
+
             yield break;
         }
 
