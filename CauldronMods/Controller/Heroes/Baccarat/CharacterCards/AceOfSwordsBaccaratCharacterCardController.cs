@@ -40,7 +40,7 @@ namespace Cauldron.Baccarat
                 case 1:
                     {
                         //One target deals itself 1 energy damage.
-                        SelectCardDecision selectDecision = new SelectCardDecision(GameController, base.HeroTurnTakerController, SelectionType.DealDamage, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget)), cardSource: base.GetCardSource());
+                        SelectCardDecision selectDecision = new SelectCardDecision(GameController, base.HeroTurnTakerController, SelectionType.DealDamage, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource()))), cardSource: base.GetCardSource());
                         IEnumerator coroutine2 = base.GameController.SelectCardAndDoAction(selectDecision, (SelectCardDecision decision) => base.DealDamage(decision.SelectedCard, decision.SelectedCard, 1, DamageType.Energy, cardSource: base.GetCardSource()));
                         if (base.UseUnityCoroutines)
                         {
