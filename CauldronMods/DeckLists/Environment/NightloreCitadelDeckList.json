@@ -37,7 +37,7 @@
                 "When this card enters play, the villain target with the highest HP regains {H} HP and deals the 2 non-villain targets with the highest HP 3 radiant damage each.",
                 "Then, destroy this card."
             ],
-            "flavorText": "She handed Gyrosaur a glowing green{BR}crystal. 'Aethium seeding brought life to{BR}the universe. But their energies can be{BR}used more nefariously as well.'"
+            "flavorText": "She handed Gyrosaur a glowing green{BR}crystal. “Aethium seeding brought life to{BR}the universe. But their energies can be{BR}used more nefariously as well.”"
         },
         {
             "identifier": "ArtemisVector",
@@ -71,7 +71,7 @@
                 "When this card enters play, reveal cards from the top of the environment deck until a target is revealed, put it into play, and discard the other revealed cards. If Starlight of Oros was put into play this way, she deals each other target 1 psychic damage.",
                 "Then, destroy this card."
             ],
-            "flavorText": "To survey the darkness and guard the{BR}light. This we pledge, intoned the three{BR}simultaneously, under the silent stares{BR}of a hundred Nightlore agents."
+            "flavorText": "“To survey the darkness and guard the{BR}light. This we pledge,” intoned the three{BR}simultaneously, under the silent stares{BR}of a hundred Nightlore agents."
         },
         {
             "identifier": "CitadelGarrison",
@@ -89,7 +89,7 @@
                 "At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.",
                 "Then, if Starlight of Oros and Aethium Cannon are in play, discard 2 cards from beneath Aethium Cannon."
             ],
-            "flavorText": "You rely on this errant religion and{BR}ancient technology without having the{BR}first clue where they come from, said{BR}Oros, as the automaton turned on them.",
+            "flavorText": "“You rely on this errant religion and{BR}ancient technology without having the{BR}first clue where they come from,” said{BR}Oros, as the automaton turned on them.",
             "hitpoints": 9
         },
         {
@@ -229,7 +229,7 @@
                 "Play this card next to the hero with the highest HP. Targets in this play area cannot deal damage and are immune to damage dealt by environment cards.",
                 "At the start of the environment turn, this player draws 2 cards. Then, destroy this card."
             ],
-            "flavorText": "We have located our missing agent,{BR}trapped aboard the ship of an{BR}intergalactic criminal. You three must{BR}rescue her. Time is of the essence."
+            "flavorText": "“We have located our missing agent,{BR}trapped aboard the ship of an{BR}intergalactic criminal. You three must{BR}rescue her. Time is of the essence.”"
         },
         {
             "identifier": "WarpBridge",

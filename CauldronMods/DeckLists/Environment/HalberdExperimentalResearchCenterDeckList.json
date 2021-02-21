@@ -162,7 +162,7 @@
                 "EndOfTurnAction",
                 "DealDamageInfernal"
             ],
-            "body": "At the end of the environment turn, if there are no Chemical Triggers in play, this cards deals each villain target 2 infernal damage. Otherwise, this cards deals each hero target 2 infernal damage.",
+            "body": "At the end of the environment turn, if there are no Chemical Triggers in play, this card deals each villain target 2 infernal damage. Otherwise, this card deals each hero target 2 infernal damage.",
             "flavorText": "“That wing of the complex was a{BR}smoking ruin,” said Havoc. “Whatever{BR}was down there, I don't think we{BR}want to meet it.”",
             "hitpoints": 12
         },

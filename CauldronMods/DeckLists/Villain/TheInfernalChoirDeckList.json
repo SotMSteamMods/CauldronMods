@@ -216,11 +216,11 @@
 					"text": "Whichever way{BR}I shift, it's dark out!"
 				},
 				{
-					"identifier": "LadyOfTheWood",
+					"identifier": "Lady of the Wood",
 					"text": "I fear this night is{BR}far from over."
 				}
 			],
-			"flavorReference": "Department of Secrets #60"
+			"flavorReference": "Department of Secrets #100"
 		},
 		{
 			"identifier": "HauntingNocturne",

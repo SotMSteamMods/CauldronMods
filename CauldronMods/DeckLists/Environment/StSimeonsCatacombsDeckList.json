@@ -133,7 +133,7 @@
                 "At the end of the environment turn, this card deals that hero 2 melee damage.",
                 "This card may not be affected by hero cards unless Cursed Vault is in play."
             ],
-            "flavorText": "“Based on microstress fracture analysis{BR}of your footprints, it seems your weight{BR}has increased by 38%,” Omnitron-X stated.{BR}“Possible spectral phenomena in progress.”",
+            "flavorText": "“Based on microstress fracture analysis{BR}of your footprints, it seems your weight{BR}has increased by 38 percent,” Omnitron-X stated.{BR}“Possible spectral phenomena in progress.”",
             "hitpoints": 4
         },
         {
@@ -180,7 +180,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "Play this next to the hero charcter with the highest HP.",
+                "Play this next to the hero character with the highest HP.",
                 "At the start of that hero's next turn, that hero uses their innate power twice, then immediately end their turn, draw a card, and destroy this card."
             ],
             "flavorText": "An overbearing evil was leeching out of{BR}the walls, screaming in his mind. Rational{BR}thought fled, and Haka could only flail{BR}widly at the approaching Citizens."
