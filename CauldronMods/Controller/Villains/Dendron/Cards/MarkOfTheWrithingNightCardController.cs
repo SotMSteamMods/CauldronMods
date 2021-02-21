@@ -39,7 +39,7 @@ namespace Cauldron.Dendron
         {
             // Find hero with the highest HP
             List<Card> storedHighestHp = new List<Card>();
-            IEnumerator getHighestHpRoutine = this.GameController.FindTargetWithHighestHitPoints(1, card => card.IsHeroCharacterCard && !card.IsIncapacitatedOrOutOfGame, storedHighestHp);
+            IEnumerator getHighestHpRoutine = this.GameController.FindTargetWithHighestHitPoints(1, card => card.IsHeroCharacterCard && !card.IsIncapacitatedOrOutOfGame, storedHighestHp, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(getHighestHpRoutine);
@@ -52,7 +52,7 @@ namespace Cauldron.Dendron
             if (storedHighestHp.Any())
             {
                 // Deal the hero with the highest HP 5 projectile damage
-                IEnumerator dealDamageToHighestHpRoutine = this.DealDamage(CharacterCard, storedHighestHp.First(), DamageToDealHighestHp, DamageType.Projectile);
+                IEnumerator dealDamageToHighestHpRoutine = this.DealDamage(CharacterCard, storedHighestHp.First(), DamageToDealHighestHp, DamageType.Projectile, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(dealDamageToHighestHpRoutine);

@@ -95,7 +95,7 @@ namespace Cauldron.Dendron
             }
 
             // Flip Dendron
-            IEnumerator flipRoutine = base.GameController.FlipCard(this, treatAsPlayed: false, treatAsPutIntoPlay: false, destroyCard.ActionSource, null, GetCardSource());
+            IEnumerator flipRoutine = base.GameController.FlipCard(this, treatAsPlayed: false, treatAsPutIntoPlay: false, actionSource: destroyCard.ActionSource, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(flipRoutine);
@@ -156,7 +156,7 @@ namespace Cauldron.Dendron
             }
 
             // Tattoos in play don't meet the cutoff, play the top card of the villain deck
-            IEnumerator playCardRoutine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck);
+            IEnumerator playCardRoutine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(playCardRoutine);
@@ -169,7 +169,7 @@ namespace Cauldron.Dendron
 
         private IEnumerator PlayCardResponse(PhaseChangeAction pca)
         {
-            IEnumerator playCardRoutine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck);
+            IEnumerator playCardRoutine = base.GameController.PlayTopCardOfLocation(this.TurnTakerController, this.TurnTaker.Deck, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(playCardRoutine);

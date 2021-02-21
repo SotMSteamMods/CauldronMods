@@ -35,7 +35,7 @@ namespace Cauldron.Dendron
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
             List<Card> storedCardResults = new List<Card>();
-            IEnumerator findTargetWithHighestHpRoutine = this.GameController.FindTargetWithHighestHitPoints(1, card => card.IsHero && !card.IsIncapacitatedOrOutOfGame, storedCardResults);
+            IEnumerator findTargetWithHighestHpRoutine = this.GameController.FindTargetWithHighestHitPoints(1, card => card.IsHero && !card.IsIncapacitatedOrOutOfGame, storedCardResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(findTargetWithHighestHpRoutine);
@@ -50,7 +50,7 @@ namespace Cauldron.Dendron
                 yield break;
             }
 
-            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, storedCardResults.First(), DamageToDeal, DamageType.Melee);
+            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, storedCardResults.First(), DamageToDeal, DamageType.Melee, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);

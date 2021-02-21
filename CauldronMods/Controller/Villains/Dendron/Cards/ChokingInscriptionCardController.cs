@@ -180,7 +180,7 @@ namespace Cauldron.Dendron
         private IEnumerator ShuffleTrashResponse(TurnTakerController turnTakerController)
         {
             // Shuffle trash to deck
-            IEnumerator coroutine = base.GameController.ShuffleTrashIntoDeck(turnTakerController);
+            IEnumerator coroutine = base.GameController.ShuffleTrashIntoDeck(turnTakerController, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

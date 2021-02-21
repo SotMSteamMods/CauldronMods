@@ -31,7 +31,7 @@ namespace Cauldron.Dendron
         private IEnumerator EndOfTurnDealDamageResponse(PhaseChangeAction pca)
         {
             List<Card> storedResults = new List<Card>();
-            IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetWithLowestHitPoints(1, c => c.IsHero && !c.IsIncapacitatedOrOutOfGame, storedResults);
+            IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetWithLowestHitPoints(1, c => c.IsHero && !c.IsIncapacitatedOrOutOfGame, storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(findTargetWithLowestHpRoutine);
@@ -50,7 +50,7 @@ namespace Cauldron.Dendron
 
             int damageToDeal = Game.H - 2;
 
-            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, storedResults.First(), damageToDeal, DamageType.Toxic);
+            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, storedResults.First(), damageToDeal, DamageType.Toxic, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);

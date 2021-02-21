@@ -29,7 +29,7 @@ namespace Cauldron.Dendron
 
                 // Discard {H} cards from hand
                 int cardsToDiscard = Game.H;
-                IEnumerator discardCardsRoutine = this.GameController.SelectAndDiscardCards(ttc.ToHero(), cardsToDiscard, false, cardsToDiscard);
+                IEnumerator discardCardsRoutine = this.GameController.SelectAndDiscardCards(ttc.ToHero(), cardsToDiscard, false, cardsToDiscard, cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
                 {
