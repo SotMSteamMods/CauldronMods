@@ -15,8 +15,8 @@ namespace Cauldron.Tiamat
             FirstHead = firstHead;
             SecondHead = secondHead;
             Element = element;
-            
-             SpecialStringMaker.ShowIfElseSpecialString(() => FirstHeadCardController().Card.IsFlipped, () => FirstHeadCardController().Card.Title + " is decapitated.", () => FirstHeadCardController().Card.Title + " is not decapitated.").Condition = () => !base.Card.IsFlipped;
+            IsAddingHead = false;
+            SpecialStringMaker.ShowIfElseSpecialString(() => FirstHeadCardController().Card.IsFlipped, () => FirstHeadCardController().Card.Title + " is decapitated.", () => FirstHeadCardController().Card.Title + " is not decapitated.").Condition = () => !base.Card.IsFlipped;
         }
 
         protected abstract ITrigger[] AddFrontTriggers();
@@ -27,6 +27,8 @@ namespace Cauldron.Tiamat
         public string FirstHead { get; }
         public string SecondHead { get; }
         public string Element { get; }
+
+        public bool IsAddingHead;
 
         public CardController FirstHeadCardController()
         {
@@ -60,6 +62,7 @@ namespace Cauldron.Tiamat
 
         private IEnumerator FlipThisCardResponse(PhaseChangeAction action)
         {
+            this.IsAddingHead = true;
             //At the start of the villain turn, if firstHead is decapitated, flip this card and put secondHead into play with 15 HP.
             IEnumerator coroutine = base.GameController.MoveIntoPlay(base.TurnTakerController, this.SecondHeadCardController().Card, base.TurnTaker, base.GetCardSource());
             IEnumerator coroutine2 = base.GameController.FlipCard(this.SecondHeadCardController(), cardSource: base.GetCardSource()); ;
@@ -76,7 +79,7 @@ namespace Cauldron.Tiamat
                 base.GameController.ExhaustCoroutine(coroutine2);
                 base.GameController.ExhaustCoroutine(coroutine3);
             }
-
+            this.IsAddingHead = false;
             coroutine = base.GameController.FlipCard(this, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
