@@ -18,7 +18,7 @@
             ],
             "body": [
                 "Play this card next to a hero. When a card enters the environment trash, check that card.",
-                "If it is a fate card, this card deal the hero next to it {H} melee damage. If it is not a fate card, this card deals each other hero target {H-2} melee damage. Then, destroy this card."
+                "If it is a fate card, this card deal the hero next to it {H} melee damage. If it is not a fate card, this card deals each other hero target {H - 2} melee damage. Then, destroy this card."
             ],
             "flavorText": "The flagstone sank into the floor,{BR}generating a series of faint,{BR}mechanical noises that echoed{BR}through the stones of the ceiling."
         },
@@ -36,7 +36,7 @@
             ],
             "body": [
                 "When this card enters play, check the top card of the environment trash.",
-                "If it is a fate card, this card deals each hero 1 toxic damage. If it is not a fate card, 1 hero target regains 4HP. Then, destroy this card."
+                "If it is a fate card, this card deals each hero 1 toxic damage. If it is not a fate card, 1 hero target regains 4 HP. Then, destroy this card."
             ],
             "flavorText": "“I try not to make a habit of eating{BR}things I find while crawling around the{BR}sewers,” said Malichae. Gyrosaur{BR}blinked, then slowly took another bite."
         },
@@ -131,7 +131,7 @@
                 "When this card enters play, discard and check the top 2 cards of the environment deck.",
                 "If at least 1 is a fate card, each player draws a card. If both are fate cards, skip the next villain turn. Then, destroy this card."
             ],
-            "flavorText": "Havoc cautiously lifted the blindfold{BR}to consider the inert monstrosity{BR}at his feet. “Huh.” He'd though that{BR}was going to be more difficult."
+            "flavorText": "Havoc cautiously lifted the blindfold{BR}to consider the inert monstrosity{BR}at his feet. “Huh.” He'd thought that{BR}was going to be more difficult."
         },
         {
             "identifier": "RestfulInn",
@@ -146,7 +146,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "The first time a hero draws a card during their turn, they may discard it. If they do, that hero regains 2HP. Increase HP regained this way by 1 if the top card of the environment trash is a fate card.",
+                "The first time a hero draws a card during their turn, they may discard it. If they do, that hero regains 2 HP. Increase HP regained this way by 1 if the top card of the environment trash is a fate card.",
                 "At the start of the environment turn, destroy this card."
             ],
             "flavorText": "Many travelers wound up slightly{BR}disappointed, for the sign was{BR}misleading: the bear did not dance. She{BR}preferred reading, and lively debates."
@@ -163,7 +163,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "Play this card next to a hero. At the start of their turn, they regain 1HP.",
+                "Play this card next to a hero. At the start of their turn, they regain 1 HP.",
                 "When checking a card in the environment trash, the players may first destroy this card, and then check it instead of the original card."
             ],
             "flavorText": "Impact put the ring on without{BR}hesitation, and was not at all surprised{BR}when it began glowing. That was what{BR}rings did in situations like this: magic."
@@ -181,7 +181,7 @@
             ],
             "body": [
                 "At the end of the environment turn, check the top card of the environment trash.",
-                "If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If if is not a fate card, this card deals each non-environment target 1 toxic damage."
+                "If it is a fate card, this card deals the hero target with the highest HP {H - 1} toxic damage. If if is not a fate card, this card deals each non-environment target 1 toxic damage."
             ],
             "flavorText": "The Deck of Fate was not the only{BR}enchanted object that she had created{BR}based on a human game of chance: the{BR}Mistress of Fate also liked RPGs.",
             "hitpoints": 5
@@ -236,7 +236,7 @@
             ],
             "body": [
                 "At the end of the environment turn, check the top card of the environment trash.",
-                "If it is a fate card, this card deals the hero target with the highest HP {H-1} toxic damage. If it is not a fate card, 1 player draws a card."
+                "If it is a fate card, this card deals the hero target with the highest HP {H - 1} toxic damage. If it is not a fate card, 1 player draws a card."
             ],
             "flavorText": "“Is this normal?” asked Pyre.{BR}Vanish nodded. “In these games{BR}people leave all kinds of stuff{BR}just lying about in chests.”",
             "hitpoints": 4
