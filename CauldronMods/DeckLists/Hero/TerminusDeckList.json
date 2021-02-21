@@ -322,7 +322,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TheConductor",
+                    "identifier": "The Conductor",
                     "text": "<Show them no mercy.>"
                 },
                 {
@@ -400,7 +400,7 @@
             ],
             "flavorQuotes": [
                 {
-                    "identifier": "TheKnight",
+                    "identifier": "The Knight",
                     "text": "No mortal should{BR}enjoy being on fire that much."
                 },
                 {
@@ -544,9 +544,9 @@
             "promoTitle": "Ministry Of Strategic Science Terminus",
             "shortPromoTitle": "MOSS Terminus",
             "body": "Ether Link",
-            "backgroundColor": "A7B8C1",
+            "backgroundColor": "F05354",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "A7B8C1",
+            "hitpointColor": "F05354",
             "character": true,
             "powers": [
                 "Remove X tokens from your wrath pool (up to 2). {Terminus} deals 1 target X+1 cold damage and regains X+1 HP."
@@ -596,9 +596,9 @@
             "promoTitle": "Terminus 2199",
             "shortPromoTitle": "Terminus 2199",
             "body": "Corporealize",
-            "backgroundColor": "F05354",
+            "backgroundColor": "A7B8C1",
             "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "F05354",
+            "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
                 "Play a card. {Terminus} deals herself 2 cold damage."
