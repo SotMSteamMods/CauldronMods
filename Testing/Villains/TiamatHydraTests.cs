@@ -1602,6 +1602,27 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHydraTiamatMustTakeDownAllHeads()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" });
+            StartGame();
+
+            DestroyCard(inferno);
+            DestroyCard(winter);
+
+            GoToStartOfTurn(tiamat);
+            foreach(Card head in new Card[] { inferno, winter, storm, decay, wind, earth})
+            {
+                if(head.IsInPlayAndHasGameText && !head.IsFlipped)
+                {
+                    DestroyCard(head);
+                }
+            }
+            GoToStartOfTurn(tiamat);
+            AssertNotGameOver();
+        }
+
+        [Test()]
         public void TestReloadNotLosingInformation()
         {
             SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" });
