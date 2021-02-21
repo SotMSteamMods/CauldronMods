@@ -496,7 +496,7 @@
             ],
             "powers": [
                 "{Past} Draw a card. Shift {R}.",
-                "{Future} {Drift} 1 target 2 radiant damage. Shift {L}."
+                "{Future} {Drift} deals 1 target 2 radiant damage. Shift {L}."
             ],
             "flavorQuotes": [
                 {
