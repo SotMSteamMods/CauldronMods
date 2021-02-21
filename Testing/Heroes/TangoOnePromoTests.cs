@@ -188,7 +188,7 @@ namespace CauldronTests
 
             GoToEndOfTurn(tango);
             QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
-
+            SaveAndLoad();
             GoToEndOfTurn(tango);  // Go back around to Tango's turn
             QuickHPCheck(-3); // Damage should now have been attempted
         }
