@@ -13,6 +13,7 @@ namespace Cauldron.Menagerie
         }
 
         private const string FirstTimeDamageDealt = "FirstTimeDamageDealt";
+        private Card OriginalCardThatDealtDamage = null;
 
         public override void AddTriggers()
         {
@@ -20,7 +21,18 @@ namespace Cauldron.Menagerie
             base.AddReduceDamageTrigger((Card c) => c == base.Card, 1);
 
             //The first time a non-villain target deals damage each turn, this card deals that target 1 irreducible toxic damage.
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && !base.IsVillain(action.DamageSource.Card) && action.DamageSource.IsTarget && action.DidDealDamage && action.Amount > 0, this.StoreCardDealingDamage, TriggerType.FirstTrigger, TriggerTiming.After);
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && !base.IsVillain(action.DamageSource.Card) && action.DamageSource.IsTarget && action.DidDealDamage && action.Amount > 0, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+        }
+
+        private IEnumerator StoreCardDealingDamage(DealDamageAction dd)
+        {
+            if (OriginalCardThatDealtDamage is null)
+            {
+                OriginalCardThatDealtDamage = dd.DamageSource.Card;
+            }
+            yield return null;
+            yield break;
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction action)
@@ -28,7 +40,7 @@ namespace Cauldron.Menagerie
             //The first time a non-villain target deals damage each turn,
             base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealt);
             //...this card deals that target 1 irreducible toxic damage.
-            IEnumerator coroutine = base.DealDamage(base.Card, action.DamageSource.Card, 1, DamageType.Toxic, true, isCounterDamage: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.DealDamage(base.Card, OriginalCardThatDealtDamage, 1, DamageType.Toxic, true, isCounterDamage: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -37,6 +49,8 @@ namespace Cauldron.Menagerie
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
+            OriginalCardThatDealtDamage = null;
             yield break;
         }
     }
