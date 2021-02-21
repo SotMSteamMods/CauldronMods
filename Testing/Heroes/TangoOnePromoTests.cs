@@ -176,7 +176,6 @@ namespace CauldronTests
             StartGame();
 
             QuickHPStorage(legacy);
-
             DecisionSelectTarget = legacy.CharacterCard;
 
             GoToStartOfTurn(tango);
@@ -188,7 +187,16 @@ namespace CauldronTests
 
             GoToEndOfTurn(tango);
             QuickHPCheck(0); // Damage won't trigger until start of Tango's next turn
+
+            //save and load a few times to make sure the status effect sticks around
             SaveAndLoad();
+            GoToNextTurn();
+            SaveAndLoad();
+            GoToNextTurn();
+            SaveAndLoad();
+
+            //regrab the hp value of legaacy
+            QuickHPStorage(legacy);
             GoToEndOfTurn(tango);  // Go back around to Tango's turn
             QuickHPCheck(-3); // Damage should now have been attempted
         }
