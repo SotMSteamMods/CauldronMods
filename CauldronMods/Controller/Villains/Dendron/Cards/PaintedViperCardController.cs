@@ -30,27 +30,9 @@ namespace Cauldron.Dendron
 
         private IEnumerator EndOfTurnDealDamageResponse(PhaseChangeAction pca)
         {
-            List<Card> storedResults = new List<Card>();
-            IEnumerator findTargetWithLowestHpRoutine = base.GameController.FindTargetWithLowestHitPoints(1, c => c.IsHero && !c.IsIncapacitatedOrOutOfGame, storedResults, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(findTargetWithLowestHpRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(findTargetWithLowestHpRoutine);
-            }
-
-            if (!storedResults.Any())
-            {
-                yield break;
-            }
-
             //  At the end of the villain turn, this card deals the hero target with the lowest HP {H - 2} toxic damage.
-
             int damageToDeal = Game.H - 2;
-
-            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, storedResults.First(), damageToDeal, DamageType.Toxic, cardSource: GetCardSource());
+            IEnumerator dealDamageRoutine = DealDamageToLowestHP(Card, 1, (Card c) => c.IsHero, (Card c) => damageToDeal, DamageType.Toxic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);
