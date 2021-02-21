@@ -35,7 +35,7 @@ namespace Cauldron.OblaskCrater
 
             if (lowestHpTargets != null && lowestHpTargets.Count() > 0)
             {
-                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.Card), 2, DamageType.Energy, 1, false, 1, additionalCriteria: (card) => lowestHpTargets.Contains(card), storedResultsDamage: dealDamageActions, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.Card), 2, DamageType.Melee, 1, false, 1, additionalCriteria: (card) => lowestHpTargets.Contains(card), storedResultsDamage: dealDamageActions, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

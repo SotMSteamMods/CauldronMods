@@ -22,7 +22,7 @@ namespace Cauldron.OblaskCrater
         public override void AddTriggers()
         {
             base.AddTrigger((DrawCardAction drawCard) => drawCard.IsSuccessful && drawCard.DidDrawCard && drawCard.DrawnCard.IsHero, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-            base.AddWhenDestroyedTrigger((dca) => base.EachPlayerDrawsACard(optional: true), TriggerType.DrawCard);
+            base.AddWhenDestroyedTrigger((dca) => EachPlayerPutsTopCardInHand(), TriggerType.MoveCard);
         }
 
 		private IEnumerator DealDamageResponse(DrawCardAction drawCard)
@@ -51,5 +51,65 @@ namespace Cauldron.OblaskCrater
 				}
 			}
 		}
+
+		private IEnumerator EachPlayerPutsTopCardInHand()
+        {
+			SelectTurnTakersDecision selectTurnTakersDecision = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.MoveCard, allowAutoDecide: true, cardSource: GetCardSource());
+			selectTurnTakersDecision.BattleZone = this.BattleZone;
+			IEnumerator coroutine2 = GameController.SelectTurnTakersAndDoAction(selectTurnTakersDecision, (TurnTaker hero) => OptionalMoveCardToHand(hero), cardSource: GetCardSource());
+			if (UseUnityCoroutines)
+			{
+				yield return GameController.StartCoroutine(coroutine2);
+			}
+			else
+			{
+				GameController.ExhaustCoroutine(coroutine2);
+			}
+			yield break;
+        }
+
+		private IEnumerator OptionalMoveCardToHand(TurnTaker hero)
+        {
+			IEnumerator coroutine;
+			if(!hero.Deck.HasCards)
+            {
+				coroutine = GameController.SendMessageAction($"{hero.Name} has no cards in their deck.", Priority.Medium, GetCardSource());
+				if (UseUnityCoroutines)
+				{
+					yield return GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					GameController.ExhaustCoroutine(coroutine);
+				}
+				yield break;
+			}
+
+			var heroTTC = FindHeroTurnTakerController(hero.ToHero());
+			var yesNo = new YesNoDecision(GameController, heroTTC, SelectionType.MoveCard, cardSource: GetCardSource());
+			coroutine = GameController.MakeDecisionAction(yesNo);
+			if (UseUnityCoroutines)
+			{
+				yield return GameController.StartCoroutine(coroutine);
+			}
+			else
+			{
+				GameController.ExhaustCoroutine(coroutine);
+			}
+
+			if(DidPlayerAnswerYes(yesNo))
+            {
+				coroutine = GameController.MoveCard(heroTTC, hero.Deck.TopCard, heroTTC.HeroTurnTaker.Hand, cardSource: GetCardSource());
+				if (UseUnityCoroutines)
+				{
+					yield return GameController.StartCoroutine(coroutine);
+				}
+				else
+				{
+					GameController.ExhaustCoroutine(coroutine);
+				}
+			}
+			yield break;
+        }
 	}
 }
