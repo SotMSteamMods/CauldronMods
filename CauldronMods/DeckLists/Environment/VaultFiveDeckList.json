@@ -20,7 +20,7 @@
                 "The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.",
                 "When this card enters play, a hero from its deck deals the 3 targets with the lowest HP 3 melee damage each. Then move this card beneath the top 2 cards of its deck face down."
             ],
-            "flavorText": "Titan considered the worn inscription{BR}on the statue before breaking one of{BR}its stone swords free.“Just going to{BR}borrow this. Don't tell anyone.”"
+            "flavorText": "Titan considered the worn inscription{BR}on the statue before breaking one of{BR}its stone swords free. “Just going to{BR}borrow this. Don't tell anyone.”"
         },
         {
             "identifier": "DeeperIntoTheVault",
