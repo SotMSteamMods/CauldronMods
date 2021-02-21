@@ -36,7 +36,7 @@ namespace Cauldron.Dendron
         private IEnumerator RevealTattooResponse(PhaseChangeAction pca)
         {
             // Shuffle villain trash
-            IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(TurnTaker.Trash);
+            IEnumerator shuffleTrashRoutine = base.GameController.ShuffleLocation(TurnTaker.Trash, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -49,7 +49,7 @@ namespace Cauldron.Dendron
 
             // Reveal cards from trash until tattoo is revealed
             List<RevealCardsAction> revealedCardList = new List<RevealCardsAction>();
-            IEnumerator revealCardRoutine = base.GameController.RevealCards(this.TurnTakerController, this.TurnTaker.Trash, IsTattoo, 1, revealedCardList);
+            IEnumerator revealCardRoutine = base.GameController.RevealCards(this.TurnTakerController, this.TurnTaker.Trash, IsTattoo, 1, revealedCardList, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(revealCardRoutine);

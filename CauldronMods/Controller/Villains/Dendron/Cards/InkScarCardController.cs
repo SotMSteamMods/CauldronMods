@@ -32,7 +32,7 @@ namespace Cauldron.Dendron
                 new MoveCardDestination(base.TurnTaker.Deck)
             };
 
-            IEnumerator coroutine = GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, TurnTaker.Trash, 0, TurnTaker.Trash.NumberOfCards, new LinqCardCriteria(IsTattoo, "tattoo"), moveCardDestination, autoDecideCard: true);
+            IEnumerator coroutine = GameController.SelectCardsFromLocationAndMoveThem(DecisionMaker, TurnTaker.Trash, 0, TurnTaker.Trash.NumberOfCards, new LinqCardCriteria(IsTattoo, "tattoo"), moveCardDestination, autoDecideCard: true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
