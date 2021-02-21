@@ -122,7 +122,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "When this card enters play, place it next to the hero with the lowest HP. That hero must skip either their play or power phase during their turn.",
+                "When this card enters play, place it next to the hero with the lowest HP. That hero must skip either their play or power phase during their turn. Increase cold damage dealt to that hero by 1.",
                 "If that hero is dealt fire damage, destroy this card."
             ],
             "flavorText": "“What's our supply situation?”{BR}asked Bunker. Tango hesitated.{BR}“We've got plenty of water.{BR}Drinking it will be the problem.”"
