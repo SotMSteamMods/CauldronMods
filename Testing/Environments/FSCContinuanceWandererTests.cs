@@ -284,14 +284,14 @@ namespace CauldronTests
         public void TestPrehistoricBehemothEndDamage()
         {
             //This card is immune to damage dealt by targets with less than 10HP.
-            SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Cauldron.FSCContinuanceWanderer");
+            SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Tachyon", "Cauldron.FSCContinuanceWanderer");
             StartGame();
             GoToPlayCardPhase(env);
             PlayCard("PrehistoricBehemoth");
-            //At the end of the environment turn, this card deals the {H - 2} hero target 2 melee damage each.
+            //At the end of the environment turn, this card deals the {H - 2} targets 2 melee damage each.
             QuickHPStorage(haka, parse, guise, capitan);
             GoToEndOfTurn(env);
-            QuickHPCheck(-2, 0, 0, 0);
+            QuickHPCheck(-2, 0, 0, -2);
         }
 
         [Test()]

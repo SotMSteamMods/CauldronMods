@@ -12,7 +12,7 @@ namespace Cauldron.FSCContinuanceWanderer
         public ParadoxIntrusionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowHeroTargetWithHighestHP();
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => c.DoKeywordsContain("vortex"), "vortex"));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash, new LinqCardCriteria(c => c.DoKeywordsContain("time vortex"), "time vortex"));
         }
 
         public override void AddTriggers()

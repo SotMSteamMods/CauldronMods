@@ -19,7 +19,7 @@
             ],
             "body": [
                 "Reduce damage dealt to environment targets by 2.",
-                "At the end of the environment turn, this card deals non-environment the target with the lowest HP {H-2} projectile damage."
+                "At the end of the environment turn, this card deals non-environment the target with the lowest HP {H - 2} projectile damage."
             ],
             "flavorText": "“Now that's my kind of possible future!”{BR}said Unity. Omnitron-X grabbed her wrist{BR}and began retreating. “Please{BR}accompany me if you wish to survive.”",
             "hitpoints": 4
@@ -71,7 +71,7 @@
             ],
             "body": [
                 "This card is immune to damage dealt by targets with less than 10 HP.",
-                "At the end of the environment turn, this card deals the {H - 2} hero target with the highest HP 2 melee damage each."
+                "At the end of the environment turn, this card deals the {H - 2} targets with the highest HP 2 melee damage each."
             ],
             "flavorText": "The timeship attracts everything that{BR}might have been, including denizens{BR}of a potential world whose ice{BR}age never ended.",
             "hitpoints": 8
@@ -220,7 +220,7 @@
                 "Whenever a hero card is drawn, 1 player must discard a card.",
                 "When another environment card enters play, destroy this card."
             ],
-            "flavorText": "I don't know how F.I.L.T.E.R. got their{BR}hands on this, but it could take you{BR}back to your time. If these temporal{BR}fluctuations don't kill us all first."
+            "flavorText": "“I don't know how F.I.L.T.E.R. got their{BR}hands on this, but it could take you{BR}back to your time. If these temporal{BR}fluctuations don't kill us all first.”"
         }
     ]
 }
