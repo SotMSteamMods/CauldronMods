@@ -936,6 +936,27 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMutatedAnt_Issue884()
+        {
+            SetupGameController("Cauldron.Menagerie", "Parse", "Benchmark", "Haka", "TheSentinels", "Megalopolis");
+            DiscardAllCards(haka, parse);
+            StartGame();
+
+            //make all damage irreducible to simplify tests
+            PlayCard("RevealTheFlaws");
+
+            Card ant = PlayCard("MutatedAnt");
+            Card tactics = PlayCard("SentinelTactics");
+            DecisionSelectCards = new Card[] {tactics, ant };
+            DecisionSelectPower = idealist;
+            //The first time a non-villain target deals damage each turn, this card deals that target 1 irreducible toxic damage.
+            QuickHPStorage(parse.CharacterCard, bench.CharacterCard, haka.CharacterCard, mainstay, writhe, idealist, medico, ant);
+            DealDamage(mainstay, ant, 1, DamageType.Melee);
+            QuickHPCheck(0,0,0,-1,0,0,0,-3);
+
+        }
+
+        [Test()]
         public void TestPrizedCatch()
         {
             SetupGameController("Cauldron.Menagerie", "Haka", "Parse", "Benchmark", "Megalopolis");
