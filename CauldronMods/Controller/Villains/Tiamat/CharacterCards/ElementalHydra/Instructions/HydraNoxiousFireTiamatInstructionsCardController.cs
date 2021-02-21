@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Cauldron.Tiamat
 {
@@ -20,6 +21,22 @@ namespace Cauldron.Tiamat
 
         //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
         protected override IEnumerator alternateElementCoroutine => base.DealDamage(base.SecondHeadCardController().Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
+        private List<HydraTiamatInstructionsCardController> AllInstructionCardControllers
+        {
+            get
+            {
+                var controllers = new List<HydraTiamatInstructionsCardController>();
+                var instructionCards = TurnTaker.GetAllCards(false).Where((Card c) => c.IsInPlayAndHasGameText && c.IsCharacter);
+                foreach(Card card in instructionCards)
+                {
+                    if(GameController.FindCardController(card) is HydraTiamatInstructionsCardController instructionController)
+                    {
+                        controllers.Add(instructionController);
+                    }
+                }
+                return controllers;
+            }
+        }
 
         protected override ITrigger[] AddFrontTriggers()
         {
@@ -41,16 +58,49 @@ namespace Cauldron.Tiamat
             };
         }
 
+        private bool IsPotentialGameLoser(GameAction action)
+        {
+            if(action is FlipCardAction fc)
+            {
+                return IsHead(fc.CardToFlip.Card) && !fc.CardToFlip.Card.IsFlipped;
+            }
+            if(action is MoveCardAction mc)
+            {
+                return IsHead(mc.CardToMove) && mc.Destination.IsOutOfGame;
+            }
+            return false;
+        }
         protected override ITrigger[] AddBackTriggers()
         {
             return new ITrigger[]
             {
+                //prevents some game rule from causing a game over when adding the last head
+                base.AddTrigger<GameOverAction>((GameOverAction action) => AllInstructionCardControllers.Any(instruction => instruction.IsAddingHead), (GameOverAction action) => base.CancelAction(action), TriggerType.GameOver, TriggerTiming.Before),
+
                 //The heroes win the game when 6 heads are decapitated.
                 base.AddTrigger<GameAction>(delegate (GameAction action)
                 {
                     if (base.GameController.HasGameStarted && !(action is GameOverAction) && !(action is IncrementAchievementAction))
                     {
-                        return base.FindCardsWhere((Card c) => IsHead(c) && c.IsFlipped).Count() == 6;
+                        if(IsPotentialGameLoser(action))
+                        {
+                            if(TurnTaker.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && IsHead(c)).Count() < 6)
+                            {
+                                return false;
+                            }
+                            bool headsBeingAdded = false;
+                            if(base.FindCardsWhere((Card c) => IsHead(c) && c.IsInPlayAndHasGameText).Count() == 6)
+                            {
+                                foreach(HydraTiamatInstructionsCardController instruction in AllInstructionCardControllers)
+                                {
+                                    headsBeingAdded |= instruction.IsAddingHead;
+                                }
+                            }
+                            if(headsBeingAdded == false)
+                            {
+                                return base.FindCardsWhere((Card c) => IsHead(c) && c.IsFlipped).Count() == 6;
+                            }
+                        }
                     }
                     return false;
                 }, (GameAction action) => this.VictoryResponse(action), new TriggerType[] { TriggerType.GameOver, TriggerType.Hidden }, TriggerTiming.After),
