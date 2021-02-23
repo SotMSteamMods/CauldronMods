@@ -12,14 +12,16 @@ namespace Cauldron.Outlander
     {
         public DimensionalInsinuationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => c.Identifier == "AnchoredFragment", "Anchored Fragment", true));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, new LinqCardCriteria(c => c.Identifier == AnchoredFragmentIdentifier, "Anchored Fragment", true));
         }
+
+        public readonly string AnchoredFragmentIdentifier = "AnchoredFragment";
 
         public override IEnumerator Play()
         {
             IEnumerator coroutine;
             //When this card enters play, Search the villain deck for a copy of Anchored Fragment and put it into play.
-            IEnumerable<Card> deckFragments = base.GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == "AnchoredFragment" && c.Location.IsDeck && c.Location.IsVillain));
+            IEnumerable<Card> deckFragments = base.GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c.Identifier == AnchoredFragmentIdentifier && c.Location.IsDeck && c.Location.IsVillain));
             if (deckFragments.Any())
             {
                 coroutine = base.GameController.PlayCard(TurnTakerController, deckFragments.FirstOrDefault(), isPutIntoPlay: true, cardSource: GetCardSource());
