@@ -12,7 +12,8 @@ namespace Cauldron.Dynamo
     {
         public SlipperyThiefCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowVillainTargetWithLowestHP();
+            SpecialStringMaker.ShowHeroTargetWithLowestHP();
         }
 
         public override IEnumerator Play()

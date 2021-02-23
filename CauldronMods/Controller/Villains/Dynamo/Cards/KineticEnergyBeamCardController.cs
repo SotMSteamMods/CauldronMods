@@ -12,7 +12,7 @@ namespace Cauldron.Dynamo
     {
         public KineticEnergyBeamCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(ranking: 2);
         }
 
         public override IEnumerator Play()

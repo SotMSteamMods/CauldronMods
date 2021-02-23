@@ -12,7 +12,8 @@ namespace Cauldron.Dynamo
     {
         public DynamoCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash).Condition = () => !Card.IsFlipped;
+            SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => !Card.IsFlipped;
         }
 
         public override void AddSideTriggers()

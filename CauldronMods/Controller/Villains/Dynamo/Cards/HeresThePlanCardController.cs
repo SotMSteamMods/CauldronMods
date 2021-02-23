@@ -12,7 +12,8 @@ namespace Cauldron.Dynamo
     {
         public HeresThePlanCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Deck, cardCriteria: new LinqCardCriteria(c => IsPlot(c), "plot"));
+            SpecialStringMaker.ShowVillainTargetWithHighestHP();
         }
 
         public override IEnumerator Play()

@@ -12,7 +12,7 @@ namespace Cauldron.Dynamo
     {
         public CopperheadCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 2);
         }
 
         public override void AddTriggers()
