@@ -200,7 +200,7 @@
                     "text": "No more limits, or warnings.{BR}Let's have a little insanity."
                 }
             ],
-            "flavorReference": "Pyre, The Atomic Pyre:{BR}Ash, Rain, and Snow"
+            "flavorReference": "Pyre, The Atomic Pyre: Ash, Rain, and Snow"
         },
         {
             "identifier": "FissionRegulator",
@@ -220,7 +220,7 @@
             "powers": [
                 "Each player selects 1 non-{Irradiated} card in their hand. {Irradiate} those cards until they leave their hands."
             ],
-            "flavorText": "“Destruction without{BR}profit has no appeal,” said Gray.{BR}Vanish narrowed her eyes. “I'll{BR}pretend that was a 'thank you'”."
+            "flavorText": "“Destruction without{BR}profit has no appeal,” said Gray.{BR}Vanish narrowed her eyes. “I'll{BR}pretend that was a 'thank you'.”"
         },
         {
             "identifier": "FracturedControlRod",
@@ -420,7 +420,7 @@
                     "text": "Oh, no."
                 }
             ],
-            "flavorReference": "Vanish, The Atomic Pyre:{BR}Ash, Rain, and Snow"
+            "flavorReference": "Vanish, The Atomic Pyre: Ash, Rain, and Snow"
         },
         {
             "identifier": "ThermonuclearCore",
@@ -468,7 +468,7 @@
             "title": "Pyre",
             "promoTitle": "Unstable Pyre",
             "shortPromoTitle": "Unstable Pyre",
-            "body": "Impermenant Solution",
+            "body": "Impermanent Solution",
             "backgroundColor": "CDDFB4",
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "CDDFB4",
