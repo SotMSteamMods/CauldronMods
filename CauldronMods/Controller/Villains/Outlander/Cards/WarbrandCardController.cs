@@ -13,7 +13,8 @@ namespace Cauldron.Outlander
         public WarbrandCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowIfElseSpecialString(() => HasBeenSetToTrueThisTurn(OncePerTurn), () => "Outlander has dealt damage this turn.", () => "Outlander has not dealt damage this turn.");
-            SpecialStringMaker.ShowHeroTargetWithLowestHP();
+            SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: 2);
         }
 
         protected const string OncePerTurn = "OutlanderWarbrandOncePerTurn";
