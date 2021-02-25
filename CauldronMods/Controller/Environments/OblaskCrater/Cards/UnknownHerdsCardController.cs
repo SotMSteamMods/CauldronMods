@@ -41,7 +41,7 @@ namespace Cauldron.OblaskCrater
 
             if (totalPredators == 0 || totalPredators == 1)
             {
-                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.UsePower, new LinqCardCriteria((lcc) => lcc.IsHeroCharacterCard && !lcc.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(lcc, GetCardSource())), selectCardDecisions, true, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.UsePower, new LinqCardCriteria((lcc) => lcc.IsHeroCharacterCard && lcc.IsInPlayAndHasGameText && !lcc.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(lcc, GetCardSource())), selectCardDecisions, true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
