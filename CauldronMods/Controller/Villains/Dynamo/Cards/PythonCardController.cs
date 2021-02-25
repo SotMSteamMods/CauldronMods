@@ -20,7 +20,7 @@ namespace Cauldron.Dynamo
         public override void AddTriggers()
         {
             //The first time a hero target deals damage to this card each turn, reduce damage dealt by that target by 1 until the start of the next villain turn.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.Target == this.Card && action.DamageSource.IsHero && action.DamageSource.IsTarget, this.ReduceDamageResponse, TriggerType.ReduceDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(OncePerTurn) && action.Target == this.Card && action.DamageSource.IsHero && action.DamageSource.IsTarget && action.Amount > 0, this.ReduceDamageResponse, TriggerType.ReduceDamage, TriggerTiming.After);
 
             //Whenever a One-shot enters the villain trash, this card deals the 2 hero targets with the lowest HP {H - 2} toxic damage each.
             base.AddTrigger<MoveCardAction>((MoveCardAction action) => action.Destination.IsTrash && action.Destination.IsVillain && action.CardToMove.IsOneShot, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
@@ -28,6 +28,8 @@ namespace Cauldron.Dynamo
 
         private IEnumerator ReduceDamageResponse(DealDamageAction action)
         {
+            SetCardPropertyToTrueIfRealAction(OncePerTurn);
+
             //...reduce damage dealt by that target by 1 until the start of the next villain turn.
             ReduceDamageStatusEffect statusEffect = new ReduceDamageStatusEffect(1);
             statusEffect.SourceCriteria.IsSpecificCard = action.DamageSource.Card;
