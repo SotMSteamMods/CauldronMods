@@ -64,6 +64,7 @@ namespace Cauldron.Titan
                 onDealDamageStatusEffect.TargetCriteria.IsNotSpecificCard = this.CharacterCard;
 
                 onDealDamageStatusEffect.UntilTargetLeavesPlay(dd.Target);
+                onDealDamageStatusEffect.TargetLeavesPlayExpiryCriteria.Card = this.CharacterCard;
                 onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.Before;
                 onDealDamageStatusEffect.CanEffectStack = true;
 
