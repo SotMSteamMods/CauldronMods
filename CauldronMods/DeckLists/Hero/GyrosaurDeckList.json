@@ -248,9 +248,7 @@
                 "EndOfTurnAction",
                 "DealDamagePsychic",
                 "HasPower",
-                "PlayCardNow",
-                "Manipulate"
-            ],
+                "PlayCardNow"            ],
             "body": "At the end of your turn, if you have 0 Crash cards in your hand, {Gyrosaur} deals 1 other hero 2 psychic damage.",
             "powers": [
                 "Play a Crash card, or discard cards from the top of your deck until you discard a Crash card and put it into your hand."
@@ -489,7 +487,6 @@
                 "Discard a card. If it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card."
             ],
             "icons": [
-                "HasPower",
                 "Discard",
                 "GainHP",
                 "DealDamageMelee",
