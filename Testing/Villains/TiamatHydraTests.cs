@@ -908,6 +908,55 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestElementOfLightningCantDrawCards_MultiChar()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "TheSentinels", "Megalopolis");
+            StartGame();
+            DrawCard(sentinels); ;
+            //The hero with most cards in hand cannot draw cards until start of next villain turn
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            GoToStartOfTurn(legacy);
+            QuickHandStorage(legacy, bunker, haka, sentinels);
+            DrawCard(legacy);
+            DrawCard(bunker);
+            DrawCard(haka);
+            DrawCard(sentinels);
+            QuickHandCheck(1, 1, 1, 0);
+            GoToStartOfTurn(tiamat);
+            QuickHandStorage(sentinels);
+            DrawCard(sentinels);
+            QuickHandCheck(1);
+
+            PrintJournal();
+
+        }
+
+        [Test()]
+        public void TestElementOfLightningCantDrawCards_CompletionistGuise()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Guise/CompletionistGuiseCharacter", "Megalopolis");
+            StartGame();
+            DrawCard(bunker); ;
+            //The hero with most cards in hand cannot draw cards until start of next villain turn
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            GoToStartOfTurn(legacy);
+            DecisionSelectCard = bunker.CharacterCard;
+            UsePower(guise);
+            QuickHandStorage(legacy, bunker, haka, guise);
+            DrawCard(legacy);
+            DrawCard(bunker);
+            DrawCard(haka);
+            DrawCard(guise);
+            QuickHandCheck(1, 0, 1, 1);
+            GoToStartOfTurn(tiamat);
+            QuickHandStorage(bunker);
+            DrawCard(bunker);
+            QuickHandCheck(1);
+
+            PrintJournal();
+        }
+
+        [Test()]
         public void TestElementOfLightningCanDrawCardsNextTurn()
         {
             SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
@@ -1621,6 +1670,8 @@ namespace CauldronTests
             GoToStartOfTurn(tiamat);
             AssertNotGameOver();
         }
+
+       
 
         [Test()]
         public void TestReloadNotLosingInformation()

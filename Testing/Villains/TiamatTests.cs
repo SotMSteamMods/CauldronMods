@@ -933,8 +933,63 @@ namespace CauldronTests
             DrawCard(legacy);
             DrawCard(bunker);
             DrawCard(haka);
-            PrintJournal();
             QuickHandCheck(1, 0, 1);
+            GoToStartOfTurn(tiamat);
+            QuickHandStorage(bunker);
+            DrawCard(bunker);
+            QuickHandCheck(1);
+
+            PrintJournal();
+
+        }
+
+        [Test()]
+        public void TestElementOfLightningCantDrawCards_MultiChar()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "TheSentinels/AdamantSentinelsInstructions", "Megalopolis");
+            StartGame();
+            DrawCard(sentinels); ;
+            //The hero with most cards in hand cannot draw cards until start of next villain turn
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            GoToStartOfTurn(legacy);
+            QuickHandStorage(legacy, bunker, haka, sentinels);
+            DrawCard(legacy);
+            DrawCard(bunker);
+            DrawCard(haka);
+            DrawCard(sentinels);
+            QuickHandCheck(1, 1, 1, 0);
+            GoToStartOfTurn(tiamat);
+            QuickHandStorage(sentinels);
+            DrawCard(sentinels);
+            QuickHandCheck(1);
+
+            PrintJournal();
+
+        }
+
+        [Test()]
+        public void TestElementOfLightningCantDrawCards_CompletionistGuise()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka",  "Guise/CompletionistGuise", "Megalopolis");
+            StartGame();
+            DrawCard(bunker); ;
+            //The hero with most cards in hand cannot draw cards until start of next villain turn
+            PlayCard(tiamat, GetCard("ElementOfLightning"));
+            GoToStartOfTurn(legacy);
+            DecisionSelectCard = bunker.CharacterCard;
+            UsePower(guise);
+            QuickHandStorage(legacy, bunker, haka, guise);
+            DrawCard(legacy);
+            DrawCard(bunker);
+            DrawCard(haka);
+            DrawCard(guise);
+            QuickHandCheck(1, 0, 1, 1);
+            GoToStartOfTurn(tiamat);
+            QuickHandStorage(bunker);
+            DrawCard(bunker);
+            QuickHandCheck(1);
+
+            PrintJournal();
         }
 
         [Test()]
