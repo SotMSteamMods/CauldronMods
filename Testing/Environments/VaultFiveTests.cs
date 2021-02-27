@@ -163,6 +163,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestByrgsNail_EmptyDeck()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.VaultFive");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            //move all cards in deck to trash
+            MoveCards(haka, haka.TurnTaker.Deck.Cards, haka.TurnTaker.Trash);
+            //a hero from its deck deals the 3 targets with the lowest HP 3 melee damage each
+            DecisionSelectTurnTaker = haka.TurnTaker;
+            QuickHPStorage(baron.CharacterCard, battalion, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard);
+            Card artifact = PlayCard("ByrgsNail");
+            //lowest target is battalion, ra, legacy
+            QuickHPCheck(0, -3, -3, -3, 0);
+            PrintSpecialStringsForCard(artifact);
+        }
+
+        [Test()]
         public void TestByrgsNail_Sentinels()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "TheSentinels", "Cauldron.VaultFive");
