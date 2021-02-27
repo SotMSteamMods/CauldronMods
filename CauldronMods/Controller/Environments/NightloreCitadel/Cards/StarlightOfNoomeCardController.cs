@@ -40,7 +40,7 @@ namespace Cauldron.NightloreCitadel
             {
 
                 List<SelectCardDecision> storedDecision = new List<SelectCardDecision>() ;
-                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, Card), 2, DamageType.Melee, 1, false, 1, additionalCriteria: (Card c) => storedResult.Contains(c), storedResultsDecisions: storedDecision, cardSource: GetCardSource());
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, Card), 2, DamageType.Melee, 1, false, 1, additionalCriteria: (Card c) => storedResult.Contains(c), storedResultsDecisions: storedDecision, selectTargetsEvenIfCannotDealDamage: true, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
