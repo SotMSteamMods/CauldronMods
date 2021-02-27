@@ -33,26 +33,32 @@ namespace Cauldron.Mythos
             {
                 //{Mythos} deals each hero 1 infernal damage for each card in their hand that shares a keyword with the card discarded from their deck.
                 Card card = cardAction.CardToMove;
-                foreach (Card handCard in card.Owner.ToHero().Hand.Cards)
-                {
-                    if (base.GameController.GetAllKeywords(handCard).Intersect(base.GameController.GetAllKeywords(card)).Any())
-                    {
-                        Card target = card.Owner.CharacterCard;
-                        if (card.Owner.HasMultipleCharacterCards )
-                        {
-                            List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                            coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DealDamage, new LinqCardCriteria((Card c) => c.Owner == card.Owner && c.IsHeroCharacterCard), storedResults, false, cardSource: base.GetCardSource());
-                            if (UseUnityCoroutines)
-                            {
-                                yield return GameController.StartCoroutine(coroutine);
-                            }
-                            else
-                            {
-                                GameController.ExhaustCoroutine(coroutine);
-                            }
-                            target = storedResults.FirstOrDefault().SelectedCard;
-                        }
+                var heroHand = card.Owner.ToHero().Hand.Cards;
+                int consideredCardCount = 0;
 
+                Func<Card, bool> sharesKeywordWithDiscarded = delegate (Card c)
+                {
+                    return base.GameController.GetAllKeywords(c).Intersect(base.GameController.GetAllKeywords(card)).Any();
+                };
+
+                while(consideredCardCount < heroHand.Count((Card handCard) => sharesKeywordWithDiscarded(handCard)))
+                {
+                    consideredCardCount += 1;
+                    Card target;
+                    List<Card> storedResults = new List<Card>();
+                    coroutine = FindCharacterCardToTakeDamage(card.Owner, storedResults, CharacterCard, 1, DamageType.Infernal);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    target = storedResults.FirstOrDefault();
+
+                    if (target != null)
+                    {
                         coroutine = base.DealDamage(base.CharacterCard, target, 1, DamageType.Infernal, cardSource: base.GetCardSource());
                         if (UseUnityCoroutines)
                         {
