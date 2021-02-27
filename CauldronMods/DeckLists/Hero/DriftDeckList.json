@@ -929,6 +929,7 @@
         {
             "identifier": "DriftCharacter",
             "promoIdentifier": "DualDriftCharacter",
+            "promoTitle": "Dual Drift",
             "count": 1,
             "title": "Drift",
             "backgroundColor": "ECCD96",
