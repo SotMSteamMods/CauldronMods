@@ -16,8 +16,7 @@ namespace Cauldron.Quicksilver
         {
             //{Quicksilver} may deal 6 melee damage to a target with more than 8HP, or 3 melee damage to a target with 8 or fewer HP.
             var storedResults = new List<SelectTargetDecision>();
-            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, GameController.FindTargetsInPlay((Card c) => GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults, damageSource: CharacterCard, damageAmount: c => DynamicDamage(c), damageType: DamageType.Melee, cardSource: GetCardSource());
-                //new DamageSource(base.GameController, base.CharacterCard), (Card c) => this.DynamicDamage(c), DamageType.Melee, () => 1, false, 1, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, GameController.FindTargetsInPlay((Card c) => GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults, optional: true, damageSource: CharacterCard, damageAmount: c => DynamicDamage(c), damageType: DamageType.Melee, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
