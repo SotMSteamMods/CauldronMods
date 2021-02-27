@@ -4,6 +4,8 @@ using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CauldronTests
 {
@@ -294,6 +296,20 @@ namespace CauldronTests
             PlayCard("ForestOfNeedles");
             QuickHPCheck(-6);
             QuickTokenPoolCheck(1);
+        }
+        [Test()]
+        public void TestForestOfNeedlesCannotDealDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver", "TheWraith", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectCards = new List<Card> { quicksilver.CharacterCard, baron.CharacterCard };
+
+            QuickHPStorage(baron, quicksilver);
+            PlayCard("ThroatJab");
+            PlayCard("ForestOfNeedles");
+            QuickHPCheck(0, -2);
         }
 
         [Test()]
