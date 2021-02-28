@@ -2,8 +2,6 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Cauldron.Quicksilver
 {
@@ -15,8 +13,7 @@ namespace Cauldron.Quicksilver
         public override IEnumerator Play()
         {
             //{Quicksilver} may deal 6 melee damage to a target with more than 8HP, or 3 melee damage to a target with 8 or fewer HP.
-            var storedResults = new List<SelectTargetDecision>();
-            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, GameController.FindTargetsInPlay((Card c) => GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults, optional: true, damageSource: CharacterCard, damageAmount: c => DynamicDamage(c), damageType: DamageType.Melee, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), (Card c) => this.DynamicDamage(c), DamageType.Melee, () => 1, false, 1, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -25,22 +22,6 @@ namespace Cauldron.Quicksilver
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            var target = storedResults.FirstOrDefault()?.SelectedCard;
-            if(target != null)
-            {
-                int chosenAmount = DynamicDamage(target);
-                coroutine = DealDamage(CharacterCard, target, chosenAmount, DamageType.Melee, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
             yield break;
         }
 

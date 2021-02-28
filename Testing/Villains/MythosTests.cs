@@ -1665,29 +1665,5 @@ namespace CauldronTests
             //Since it is 3 instances of 1 for Haka and he has DR 1, he takes 0
             QuickHPCheck(-2, -3, 0, -4, 0);
         }
-        [Test]
-        public void TestYourDarkestSecrets_HandChangesInMiddle()
-        {
-            SetupGameController("Cauldron.Mythos", "Guise", "Bunker", "Haka", "Megalopolis");
-            StartGame();
-
-            MoveAllCardsFromHandToDeck(bunker);
-            MoveAllCardsFromHandToDeck(haka);
-
-            MoveAllCardsFromHandToDeck(guise);
-            PutInHand("GimmickyCharacter");
-            Card lemmeSee = PutOnDeck("LemmeSeeThat");
-            Card iFound = PutOnDeck("LookWhatIFound");
-            Card bestCard = PutOnDeck("BestCardEver");
-            DecisionYesNo = true;
-            QuickHPStorage(guise);
-
-            PlayCard("GrittyReboot");
-            PlayCard("YourDarkestSecrets");
-            //Guise discards Best Card Ever, gets hit and draws Look What I Found, gets hit and draws Lemme See That, YDS is done.
-            QuickHPCheck(-2);
-            AssertInTrash(bestCard);
-            AssertInHand(iFound, lemmeSee);
-        }
     }
 }
