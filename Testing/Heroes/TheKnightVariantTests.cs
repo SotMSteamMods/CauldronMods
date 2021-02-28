@@ -16,9 +16,6 @@ namespace CauldronTests
         #region HelperFunctions
         protected string HeroNamespace = "Cauldron.TheKnight";
 
-
-        protected Card youngKnight { get { return GetCard("TheYoungKnightCharacter"); } }
-        protected Card oldKnight { get { return GetCard("TheOldKnightCharacter"); } }
         private void SetupIncap(TurnTakerController villain)
         {
             SetHitPoints(knight, 1);

@@ -709,6 +709,60 @@ namespace CauldronTests
         }
 
         [Test]
+        [Description("TheKnight - HeavySwing in Oblivaeon")]
+        public void HeavySwing_OblivaeonSelectingWhoDealsDamage()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DealDamage(oblivaeon, ra, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "TheKnight" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.TheKnight";
+            RunActiveTurnPhase();
+           
+
+            Card heavy = PutInHand(knight, "HeavySwing");
+
+            PrintSeparator("Test");
+            GoToPlayCardPhase(knight);
+            QuickHPStorage(oblivaeon);
+            DecisionSelectTarget = oblivaeon.CharacterCard;
+            AssertNoDecision(SelectionType.HeroToDealDamage);
+            PlayCard(knight, heavy);
+            QuickHPCheck(-3);
+            AssertInTrash(heavy);
+        }
+
+        [Test]
+        [Description("TheKnight - HeavySwing in Oblivaeon")]
+        public void HeavySwing_OblivaeonSelectingWhoDealsDamage_IncappedRonins()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DealDamage(oblivaeon.CharacterCard, youngKnight, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            DealDamage(oblivaeon.CharacterCard, oldKnight, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "TheKnight" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.TheKnight";
+            RunActiveTurnPhase();
+
+
+            Card heavy = PutInHand(knight, "HeavySwing");
+
+            PrintSeparator("Test");
+            GoToPlayCardPhase(knight);
+            QuickHPStorage(oblivaeon);
+            DecisionSelectTarget = oblivaeon.CharacterCard;
+            AssertNoDecision(SelectionType.HeroToDealDamage);
+            PlayCard(knight, heavy);
+            QuickHPCheck(-3);
+            AssertInTrash(heavy);
+        }
+
+        [Test]
         [Description("TheKnight - KnightsHonor")]
         public void KnightsHonor_TestRedirect()
         {
