@@ -4,6 +4,8 @@ using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CauldronTests
 {
@@ -271,6 +273,43 @@ namespace CauldronTests
             QuickHPStorage(mdp);
             PlayCard("ForestOfNeedles");
             QuickHPCheck(-3);
+        }
+
+        [Test()]
+        public void TestForestOfNeedlesDamageNotChangeAfterBeingDealt()
+        {
+            SetupGameController("KaargraWarfang", "Cauldron.Quicksilver", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+
+            var heroFavor = FindTokenPool("CrowdsFavor", "HeroFavorPool");
+            Card dymkharn = GetCard("DymkharnTheFearless");
+            if(!dymkharn.IsInPlay)
+            {
+                PlayCard(dymkharn);
+            }
+
+            QuickTokenPoolStorage(heroFavor);
+            QuickHPStorage(dymkharn);
+            DecisionSelectTarget = dymkharn;
+            //10 max HP, so he should take 6 damage and trigger a favor point for the heroes
+            //however he is left at 4 HP, so the 'damage readout' afterwards might fool it.
+            PlayCard("ForestOfNeedles");
+            QuickHPCheck(-6);
+            QuickTokenPoolCheck(1);
+        }
+        [Test()]
+        public void TestForestOfNeedlesCannotDealDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver", "TheWraith", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectCards = new List<Card> { quicksilver.CharacterCard, baron.CharacterCard };
+
+            QuickHPStorage(baron, quicksilver);
+            PlayCard("ThroatJab");
+            PlayCard("ForestOfNeedles");
+            QuickHPCheck(0, -2);
         }
 
         [Test()]
