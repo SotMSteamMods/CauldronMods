@@ -702,6 +702,38 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestWarpBridge_Issue1016_NonRealCards()
+        {
+            SetupGameController("KaargraWarfang", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            GoToPlayCardPhase(nightlore);
+            DestroyNonCharacterVillainCards();
+            MoveAllCards(warfang, warfang.TurnTaker.FindSubPlayArea("TitleDeck"), warfang.TurnTaker.FindSubDeck("TitleDeck"));
+            Card barrier = PlayCard("FlameBarrier");
+            Card gladiator = PlayCard("AshclawRVelos");
+            Card turret = PlayCard("RegressionTurret");
+            StackDeckAfterShuffle(luminary, new string[] { "BacklashGenerator" });
+
+            //At the end of the environment turn, select 1 non-character card in play other than this one and shuffle it back into its associated deck.
+            //If a card leaves play this way, play the top card of the associated deck. 
+            Card bridge = PlayCard("WarpBridge");
+            QuickShuffleStorage(luminary.TurnTaker.Deck);
+            DecisionSelectCard = turret;
+            //there should be 3 choices - a gladiator, flame barrier, and turret
+            //this should ignore "The Crowd's Favor" which is a non-real, non-Character card
+            AssertNumberOfChoicesInNextDecision(3);
+            GoToEndOfTurn(nightlore);
+            AssertInDeck(turret);
+            QuickShuffleCheck(1);
+            AssertIsInPlay(barrier);
+            AssertIsInPlay(gladiator);
+            AssertIsInPlay("BacklashGenerator");
+            AssertIsInPlay(bridge);
+
+
+        }
+
+        [Test()]
         public void TestWarpBridge_NoRogueConstellation_IndestructibleCard()
         {
             SetupGameController("Cauldron.PhaseVillain", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
