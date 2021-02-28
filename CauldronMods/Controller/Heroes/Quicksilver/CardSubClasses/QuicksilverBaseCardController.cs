@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Quicksilver
 {
@@ -37,12 +38,17 @@ namespace Cauldron.Quicksilver
 
         public IEnumerator ComboOrFinisherResponse()
         {
+            string comboMessage = "Deal yourself 2 melee damage and play a combo";
+            if(!HeroTurnTaker.Hand.Cards.Any(c => c.DoKeywordsContain("combo")))
+            {
+                comboMessage = "Deal yourself 2 melee damage to no effect";
+            }
             //You may play a Finisher, or {Quicksilver} may deal herself 2 melee damage and play a Combo.
             List<Function> functions = new List<Function> {
                 //You may play a Finisher,...
                 new Function(base.HeroTurnTakerController, "Play a finisher", SelectionType.PlayCard, () => base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardCriteria: new LinqCardCriteria((Card c) => c.DoKeywordsContain("finisher"), "finisher"), cardSource: base.GetCardSource())),
                 //...{Quicksilver} may deal herself 2 melee damage and play a Combo.
-                new Function(base.HeroTurnTakerController, "Deal yourself 2 melee damage and play a combo", SelectionType.PlayCard, () => ContinueWithComboResponse())
+                new Function(base.HeroTurnTakerController, comboMessage, SelectionType.PlayCard, () => ContinueWithComboResponse())
             };
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, functions, true);
             if (base.UseUnityCoroutines)
