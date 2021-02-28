@@ -1,7 +1,7 @@
 {
     "name": "Oblask Crater",
     "kind": "Environment",
-    "expansionIdentifier": "Cauldron",
+    "expansionIdentifier": "CauldronUnexpected",
     "backgroundColor": "52453E",
     "difficulty": 2,
     "cards": [
@@ -15,7 +15,7 @@
                 "When this card enters play, reveal{BR}cards from the top of the environment{BR}deck until a target is revealed, place it{BR}beneath this card, and discard the rest.",
                 "Cards beneath this one are not{BR}considered in play. When a target{BR}enters play, the players may destroy{BR}this card to play the card beneath it."
             ],
-            "flavorText": "Drift recognized the tracks; a glimpse{BR}into the recent past confirmed{BR}their owner. ìIf we need a monster, I{BR}suppose we know where to find one.î"
+            "flavorText": "Drift recognized the tracks; a glimpse{BR}into the recent past confirmed{BR}their owner. ‚ÄúIf we need a monster, I{BR}suppose we know where to find one.‚Äù"
         },
         {
             "identifier": "OblaskObjectY3A",
@@ -32,7 +32,8 @@
                 "Play this card next to a hero, then play{BR}the top card of the environment deck.",
                 "When the hero next to this card would{BR}be dealt damage by an environment{BR}target, they may discard a card. If they{BR}do, redirect that damage."
             ],
-            "flavorText": "ìSuch a little thing, to cause so much{BR}trouble,î said Echelon, holding up the{BR}dented object. The nearby biomachines{BR}lifted their heads to follow her hand."
+            "flavorText": "‚ÄúSuch a little thing, to cause so much{BR}trouble,‚Äù said Echelon, holding up the{BR}dented object. The nearby biomachines{BR}lifted their heads to follow her hand."
+
         },
         {
             "identifier": "InscrutableEcology",
@@ -63,7 +64,7 @@
                 "When this card enters play, play the top{BR}card of the environment deck.",
                 "Whenever a predator card destroys{BR}another target, that predator deals{BR}each hero {H - 2} melee damage."
             ],
-            "flavorText": "ìWhat is wrong with this place?î said{BR}Havoc. ìEverything's trying to kill{BR}everything else.î Echelon chuckled.{BR}ìFeels just like back home.î"
+            "flavorText": "‚ÄúWhat is wrong with this place?‚Äù said{BR}Havoc. ‚ÄúEverything's trying to kill{BR}everything else.‚Äù Echelon chuckled.{BR}‚ÄúFeels just like back home.‚Äù"
         },
         {
             "identifier": "OpenGround",
@@ -80,7 +81,7 @@
                 "Once per turn when a hero target{BR}would be dealt damage by a non-hero{BR}target, they may increase that damage{BR}by 1 and play the top card of the{BR}environment deck.",
                 "If that card is a target, redirect that{BR}damage to it."
             ],
-            "flavorText": "As Drift considered the lack of cover,{BR}Gargoyle began crossing the clearing.{BR}ìWe don't need to hide. We just need to{BR}be faster than the other edible things.î"
+            "flavorText": "As Drift considered the lack of cover,{BR}Gargoyle began crossing the clearing.{BR}‚ÄúWe don't need to hide. We just need to{BR}be faster than the other edible things.‚Äù"
         },
         {
             "identifier": "InvasiveGrowth",
@@ -155,7 +156,7 @@
                 "At the end of the environment turn, this{BR}card deals the 3 other targets with the{BR}highest hp {H - 2} cold damage each.",
                 "Until the end of the next environment{BR}turn, this card becomes immune to{BR}damage from targets that were not{BR}damaged this way."
             ],
-            "flavorText": "ìWe tracked the swarm eater here; I'm{BR}betting he wants to assimilate this stuff,î{BR} said Cricket. ìBut why's he going into{BR}the water? No robots in there...î",
+            "flavorText": "‚ÄúWe tracked the swarm eater here; I'm{BR}betting he wants to assimilate this stuff,‚Äù{BR} said Cricket. ‚ÄúBut why's he going into{BR}the water? No robots in there...‚Äù",
             "hitpoints": 4
         },
         {
@@ -228,7 +229,7 @@
                 "At the end of the environment turn,{BR}move this card next to a hero. Then the{BR}predator card with the highest HP deals{BR}each target in this card's play area{BR}{H - 1} melee damage.",
                 "If the hero next to this card plays a{BR}card with a power on it, they may{BR}immediately use a power on that card."
             ],
-            "flavorText": "ìThis is ridiculous. You can teleport,î{BR}said Pyre. Vanish, clinging to the{BR}machine's neck, replied, ìIt's nice to not{BR}be the group transportation, for once.î",
+            "flavorText": "‚ÄúThis is ridiculous. You can teleport,‚Äù{BR}said Pyre. Vanish, clinging to the{BR}machine's neck, replied, ‚ÄúIt's nice to not{BR}be the group transportation, for once.‚Äù",
             "hitpoints": 5
         },
         {
