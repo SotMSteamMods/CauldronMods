@@ -19,13 +19,28 @@
         "ThroughTheBreachShiftTrack1",
         "ThroughTheBreachShiftTrack2",
         "ThroughTheBreachShiftTrack3",
-        "ThroughTheBreachShiftTrack4"
+        "ThroughTheBreachShiftTrack4",
+        "RedDriftCharacter",
+        "BlueDriftCharacter",
+        "BluePastDriftCharacter",
+        "RedPastDriftCharacter",
+        "BlueFutureDriftCharacter",
+        "RedFutureDriftCharacter",
+        "BlueThroughTheBreachDriftCharacter",
+        "RedThroughTheBreachDriftCharacter",
+        "BlueAllInGoodTimeDriftCharacter",
+        "RedAllInGoodTimeDriftCharacter",
+        "BlueDriftingShadowDriftCharacter",
+        "RedDriftingShadowDriftCharacter",
+        "BlueTestSubjectHalberdDriftCharacter",
+        "RedTestSubjectHalberdDriftCharacter"
     ],
     "cards": [
         {
             "identifier": "DriftCharacter",
             "count": 1,
             "title": "Drift",
+            "sharedIdentifier": "Drift",
             "body": "Chronoshift",
             "backgroundColor": "fbf767",
             "foilBackgroundColor": "FEFEFE",
@@ -555,6 +570,7 @@
             "identifier": "PastDriftCharacter",
             "count": 1,
             "title": "Drift",
+            "sharedIdentifier": "PastDrift",
             "keywords": [
                 "1929"
             ],
@@ -601,6 +617,7 @@
             "identifier": "FutureDriftCharacter",
             "count": 1,
             "title": "Drift",
+            "sharedIdentifier": "FutureDrift",
             "keywords": [
                 "2199"
             ],
@@ -882,6 +899,586 @@
 		 		    "color":"fcf8b7"
 		 	    }
             ]
+        },
+        {
+            "identifier": "RedDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "Drift",
+            "body": "Chronoshift",
+            "backgroundColor": "fbf767",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "fbf767",
+            "character": true,
+            "powers": [
+                "Shift {LL}, {L}, {R}, or {RR}. Drift regains 1 HP."
+            ],
+            "icons": [
+                "HasPower",
+                "AddOrRemoveTokens",
+                "GainHP"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may use a power now.",
+                "One target regains 1 HP and deals another target 1 radiant damage.",
+                "One player may discard a one-shot. If they do, they may draw 2 cards."
+            ],
+            "flippedIcons": [
+                "UsePowerNow",
+                "GainHP",
+                "DealDamageRadiant",
+                "DrawCardNow"
+            ],
+            "openingLines": {
+                "default": "It's about time we took care of you!",
+                "OutlanderCharacter": "Bad news; I can already see the future where we defeat you!",
+				"FutureTiamatCharacter": "Who thought it was a good idea to build a cyborg dragon?"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "BlueDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "Drift",
+            "body": "Chronoshift",
+            "backgroundColor": "fbf767",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "fbf767",
+            "character": true,
+            "powers": [
+                "Shift {LL}, {L}, {R}, or {RR}. Drift regains 1 HP."
+            ],
+            "icons": [
+                "HasPower",
+                "AddOrRemoveTokens",
+                "GainHP"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may use a power now.",
+                "One target regains 1 HP and deals another target 1 radiant damage.",
+                "One player may discard a one-shot. If they do, they may draw 2 cards."
+            ],
+            "flippedIcons": [
+                "UsePowerNow",
+                "GainHP",
+                "DealDamageRadiant",
+                "DrawCardNow"
+            ],
+            "openingLines": {
+                "default": "It's about time we took care of you!",
+                "OutlanderCharacter": "Bad news; I can already see the future where we defeat you!",
+				"FutureTiamatCharacter": "Who thought it was a good idea to build a cyborg dragon?"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "RedPastDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "PastDrift",
+            "keywords": [
+                "1929"
+            ],
+            "promoTitle": "1929 Drift",
+            "shortPromoTitle": "1929 Drift",
+            "body": "Omen",
+            "backgroundColor": "ECCD96",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "ECCD96",
+            "character": true,
+            "powers": [
+                "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {LL}."
+            ],
+            "icons": [
+                "HasPower",
+                "RemoveTokens",
+                "Discard"
+            ],
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.",
+                "Destroy an environment card."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "Manipulate",
+                "DestroyEnvironment"
+            ],
+            "openingLines": {
+                "default": "What year is this again?",
+                "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
+                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
+				"FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
+            },
+
+            "complexity": 3
+        },
+        {
+            "identifier": "RedFutureDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "FutureDrift",
+            "keywords": [
+                "2199"
+            ],
+            "promoTitle": "2199 Drift",
+            "shortPromoTitle": "2199 Drift",
+            "body": "Uncertain Future",
+            "backgroundColor": "A7B8C1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "A7B8C1",
+            "character": true,
+            "powers": [
+                "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {RR}."
+            ],
+            "icons": [
+                "HasPower",
+                "PlayCardNow",
+                "AddTokens"
+            ],
+            "hitpoints": 16,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.",
+                "One target regains 2 HP."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "Manipulate",
+                "GainHP"
+            ],
+            "complexity": 3
+        },
+        {
+            "identifier": "BluePastDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "PastDrift",
+            "keywords": [
+                "1929"
+            ],
+            "promoTitle": "1929 Drift",
+            "shortPromoTitle": "1929 Drift",
+            "body": "Omen",
+            "backgroundColor": "ECCD96",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "ECCD96",
+            "character": true,
+            "powers": [
+                "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {LL}."
+            ],
+            "icons": [
+                "HasPower",
+                "RemoveTokens",
+                "Discard"
+            ],
+            "hitpoints": 15,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.",
+                "Destroy an environment card."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "Manipulate",
+                "DestroyEnvironment"
+            ],
+            "openingLines": {
+                "default": "What year is this again?",
+                "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
+                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
+				"FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
+            },
+
+            "complexity": 3
+        },
+        {
+            "identifier": "BlueFutureDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "FutureDrift",
+            "keywords": [
+                "2199"
+            ],
+            "promoTitle": "2199 Drift",
+            "shortPromoTitle": "2199 Drift",
+            "body": "Uncertain Future",
+            "backgroundColor": "A7B8C1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "A7B8C1",
+            "character": true,
+            "powers": [
+                "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {RR}."
+            ],
+            "icons": [
+                "HasPower",
+                "PlayCardNow",
+                "AddTokens"
+            ],
+            "hitpoints": 16,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.",
+                "One target regains 2 HP."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "Manipulate",
+                "GainHP"
+            ],
+            "complexity": 3
+        },
+         {
+            "identifier": "BlueThroughTheBreachDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "ThroughTheBreachDrift",
+            "promoTitle": "Drift: Through the Breach",
+            "shortPromoTitle": "Breach Drift",
+            "body": "Riftwalker",
+            "backgroundColor": "FCB040",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "FCB040",
+            "character": true,
+            "powers": [
+                "Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "hitpoints": 25,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may draw a card now.",
+                "Two heroes may use a power now. If those powers deal damage, reduce that damage by 1.",
+                "Move 1 environment card from play to the top of its deck."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "ReduceDamageDealt",
+                "Manipulate"
+            ],
+            "openingLines": {
+                "default": "Don't worry people, I'll make sure we have plenty of time for this mission!",
+                "OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
+            },
+            "complexity": 3
+        },
+         {
+            "identifier": "RedThroughTheBreachDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "ThroughTheBreachDrift",
+            "promoTitle": "Drift: Through the Breach",
+            "shortPromoTitle": "Breach Drift",
+            "body": "Riftwalker",
+            "backgroundColor": "FCB040",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "FCB040",
+            "character": true,
+            "powers": [
+                "Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate",
+                "PlayCardNow"
+            ],
+            "hitpoints": 25,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may draw a card now.",
+                "Two heroes may use a power now. If those powers deal damage, reduce that damage by 1.",
+                "Move 1 environment card from play to the top of its deck."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "ReduceDamageDealt",
+                "Manipulate"
+            ],
+            "openingLines": {
+                "default": "Don't worry people, I'll make sure we have plenty of time for this mission!",
+                "OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "BlueDriftingShadowDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "DriftingShadowDrift",
+            "promoTitle": "Drift: 1609",
+            "shortPromoTitle": "1609 Drift",
+            "body": "Drifting Shadow",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "At the start of your next turn, shift {L} or {R}, then draw a card or use a power."
+            ],
+            "icons": [
+                "HasPower",
+                "AddOrRemoveTokens",
+                "DrawCardNow",
+                "UsePowerNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may play a card now.",
+                "One hero may use a power now.",
+                "Move up to 3 non-character hero cards from play to their owner' hands."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "UsePowerNow",
+                "Manipulate"
+            ],
+            "openingLines": {
+                "default": "Your time is up.",
+                "OutlanderCharacter": "Well, I figured that was appropriate, given the audience."
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "RedDriftingShadowDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "DriftingShadowDrift",
+            "promoTitle": "Drift: 1609",
+            "shortPromoTitle": "1609 Drift",
+            "body": "Drifting Shadow",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "At the start of your next turn, shift {L} or {R}, then draw a card or use a power."
+            ],
+            "icons": [
+                "HasPower",
+                "AddOrRemoveTokens",
+                "DrawCardNow",
+                "UsePowerNow"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may play a card now.",
+                "One hero may use a power now.",
+                "Move up to 3 non-character hero cards from play to their owner' hands."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "UsePowerNow",
+                "Manipulate"
+            ],
+            "openingLines": {
+                "default": "Your time is up.",
+                "OutlanderCharacter": "Well, I figured that was appropriate, given the audience."
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "BlueAllInGoodTimeDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "AllInGoodTimeDrift",
+            "promoTitle": "Drift: 1789",
+            "shortPromoTitle": "1789 Drift",
+            "body": "All in Good Time",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "Discard cards from the top of your deck until you discard an ongoing. Play or draw it."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may play a card now.",
+                "Destroy 1 ongoing card.",
+                "Select a target. Increase the next damage it deals by 2."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "DestroyOngoing",
+                "IncreaseDamageDealt"
+            ],
+            "openingLines": {
+                "default": "The problem with all this time travel is you start losing track of what's going on.",
+                "OutlanderCharacter": "Just one, but you can't blame me for a little sightseeing!"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "RedAllInGoodTimeDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "AllInGoodTimeDrift",
+            "promoTitle": "Drift: 1789",
+            "shortPromoTitle": "1789 Drift",
+            "body": "All in Good Time",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "Discard cards from the top of your deck until you discard an ongoing. Play or draw it."
+            ],
+            "icons": [
+                "HasPower",
+                "Manipulate",
+                "DrawCardNow",
+                "PlayCardNow"
+            ],
+            "hitpoints": 28,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One hero may play a card now.",
+                "Destroy 1 ongoing card.",
+                "Select a target. Increase the next damage it deals by 2."
+            ],
+            "flippedIcons": [
+                "PlayCardNow",
+                "DestroyOngoing",
+                "IncreaseDamageDealt"
+            ],
+            "openingLines": {
+                "default": "The problem with all this time travel is you start losing track of what's going on.",
+                "OutlanderCharacter": "Just one, but you can't blame me for a little sightseeing!"
+            },
+            "complexity": 3
+        },
+        {
+            "identifier": "BlueTestSubjectHalberdDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "TestSubjectHalberdDrift",
+            "promoTitle": "Drift: Test Subject Halberd-26",
+            "shortPromoTitle": "Test Subject Drift",
+            "body": "Temporal Aperture",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "Discard 1, 2, or 3 cards. For each card discarded this way, shift {L} or {R}. Draw 2 cards."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "DrawCardNow",
+                "AddOrRemoveTokens"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One hero may use a power now.",
+                "Select a target. Prevent the next damage dealt to it."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "CancelledDamageGreen"
+            ],
+            "openingLines": {
+                "default": "Someone's not thinking with temporal anomalies!",
+                "OutlanderCharacter": "Well, it's heavy and it hurts when it hits you in the head!"
+            },
+            "complexity": 3
+        },
+         {
+            "identifier": "RedTestSubjectHalberdDriftCharacter",
+            "count": 1,
+            "title": "Drift",
+            "sharedIdentifier": "TestSubjectHalberdDrift",
+            "promoTitle": "Drift: Test Subject Halberd-26",
+            "shortPromoTitle": "Test Subject Drift",
+            "body": "Temporal Aperture",
+            "backgroundColor": "B1B1B1",
+            "foilBackgroundColor": "FEFEFE",
+            "hitpointColor": "B1B1B1",
+            "character": true,
+            "powers": [
+                "Discard 1, 2, or 3 cards. For each card discarded this way, shift {L} or {R}. Draw 2 cards."
+            ],
+            "icons": [
+                "HasPower",
+                "Discard",
+                "DrawCardNow",
+                "AddOrRemoveTokens"
+            ],
+            "hitpoints": 26,
+            "nemesisIdentifiers": [
+                "Drift"
+            ],
+            "incapacitatedAbilities": [
+                "One player may draw a card now.",
+                "One hero may use a power now.",
+                "Select a target. Prevent the next damage dealt to it."
+            ],
+            "flippedIcons": [
+                "DrawCardNow",
+                "UsePowerNow",
+                "CancelledDamageGreen"
+            ],
+            "openingLines": {
+                "default": "Someone's not thinking with temporal anomalies!",
+                "OutlanderCharacter": "Well, it's heavy and it hurts when it hits you in the head!"
+            },
+            "complexity": 3
         }
     ],
     "promoCards": [
@@ -890,6 +1487,7 @@
             "promoIdentifier": "ThroughTheBreachDriftCharacter",
             "count": 1,
             "title": "Drift",
+            "sharedIdentifier": "ThroughTheBreachDrift",
             "promoTitle": "Drift: Through the Breach",
             "shortPromoTitle": "Breach Drift",
             "body": "Riftwalker",
@@ -952,6 +1550,7 @@
             "promoIdentifier": "DriftingShadowDriftCharacter",
             "count": 1,
             "title": "Drift",
+            "sharedIdentifier": "DriftingShadowDrift",
             "promoTitle": "Drift: 1609",
             "shortPromoTitle": "1609 Drift",
             "body": "Drifting Shadow",
@@ -993,6 +1592,7 @@
             "promoIdentifier": "AllInGoodTimeDriftCharacter",
             "count": 1,
             "title": "Drift",
+            "sharedIdentifier": "AllInGoodTimeDrift",
             "promoTitle": "Drift: 1789",
             "shortPromoTitle": "1789 Drift",
             "body": "All in Good Time",
@@ -1034,6 +1634,7 @@
             "promoIdentifier": "TestSubjectHalberdDriftCharacter",
             "count": 1,
             "title": "Drift",
+            "sharedIdentifier": "TestSubjectHalberdDrift",
             "promoTitle": "Drift: Test Subject Halberd-26",
             "shortPromoTitle": "Test Subject Drift",
             "body": "Temporal Aperture",

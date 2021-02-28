@@ -99,7 +99,7 @@ namespace Cauldron.Drift
                 }
 
                 //3. Switch which character is active.
-                coroutine = base.GameController.SwitchCards(this.GetActiveCharacterCard(), this.GetInactiveCharacterCard(), ignoreHitPoints: true, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SwitchCards(this.GetActiveCharacterCard(), this.GetInactiveCharacterCard(inactivePosition), ignoreHitPoints: true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -112,9 +112,27 @@ namespace Cauldron.Drift
             }
         }
 
-        public Card GetInactiveCharacterCard()
+        public Card GetInactiveCharacterCard(int inactivePosition = 0)
         {
-            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.OffToTheSide && c.Owner == base.TurnTaker && c.HasPowers)).FirstOrDefault();
+            inactivePosition = inactivePosition == 0 ? InactiveCharacterPosition() : inactivePosition;
+            string activeBaseIdentifier = GetActiveCharacterCard().Identifier.Replace("Red", "").Replace("Blue", "");
+            string desiredIdentifier;
+            if(activeBaseIdentifier.Contains("Past"))
+            {
+                desiredIdentifier = activeBaseIdentifier.Replace("Past", "Future");
+            } else
+            {
+                desiredIdentifier = activeBaseIdentifier.Replace("Future", "Past");
+            }
+
+            if(inactivePosition >= 3)
+            {
+                desiredIdentifier = "Red" + desiredIdentifier;
+            } else
+            {
+                desiredIdentifier = "Blue" + desiredIdentifier;
+            }
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location == base.TurnTaker.OffToTheSide && c.Owner == base.TurnTaker && c.Identifier == desiredIdentifier)).FirstOrDefault();
         }
 
         private int InactiveCharacterPosition()

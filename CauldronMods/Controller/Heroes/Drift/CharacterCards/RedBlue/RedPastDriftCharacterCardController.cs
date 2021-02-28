@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Cauldron.Drift
 {
-    public class PastDriftCharacterCardController : DualDriftSubCharacterCardController
+    public class RedPastDriftCharacterCardController : DualDriftSubCharacterCardController
     {
-        public PastDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public RedPastDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -16,7 +16,6 @@ namespace Cauldron.Drift
         public override IEnumerator UsePower(int index = 0)
         {
             _inTheMiddleOfPower = true;
-
             int cardNumeral = base.GetPowerNumeral(0, 2);
             int deckNumeral = base.GetPowerNumeral(1, 1);
 

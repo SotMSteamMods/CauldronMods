@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class ThroughTheBreachDriftCharacterCardController : ThroughTheBreachSubCharacterCardController
+    public class RedThroughTheBreachDriftCharacterCardController : ThroughTheBreachSubCharacterCardController
     {
-        public ThroughTheBreachDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public RedThroughTheBreachDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(1) != null, () => "The card at position 1 is " + this.GetBreachedCard(1).Title, () => "There is no card at position 1");
             base.SpecialStringMaker.ShowIfElseSpecialString(() => this.GetBreachedCard(2) != null, () => "The card at position 2 is " + this.GetBreachedCard(2).Title, () => "There is no card at position 2");

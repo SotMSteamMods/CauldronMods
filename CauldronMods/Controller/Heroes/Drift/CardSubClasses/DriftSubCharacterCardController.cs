@@ -1,4 +1,5 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
+﻿using Handelabra;
+using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
@@ -23,9 +24,22 @@ namespace Cauldron.Drift
 
         protected const string HasShifted = "HasShifted";
         protected const string ShiftTrack = "ShiftTrack";
+        protected const string ShiftPoolIdentifier = "ShiftPool";
+
+        protected bool _inTheMiddleOfPower = false;
+
 
         private int totalShifts = 0;
         public int TotalShifts { get => totalShifts; set => totalShifts = value; }
+
+
+        public override void AddTriggers()
+        {
+            //Whenever you shift from {DriftPast} to {DriftFuture}... 
+            base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 3, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
+            //...or from {DriftFuture} to {DriftPast}...
+            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 2, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
+        }
 
         public int CurrentShiftPosition()
         {
@@ -34,7 +48,7 @@ namespace Cauldron.Drift
 
         public TokenPool GetShiftPool()
         {
-            return this.GetShiftTrack().FindTokenPool("ShiftPool");
+            return this.GetShiftTrack().FindTokenPool(ShiftPoolIdentifier);
         }
 
         public Card GetShiftTrack()
@@ -62,7 +76,7 @@ namespace Cauldron.Drift
             {
                 promoIdentifier = Dual;
             }
-            else if (base.CharacterCardController is ThroughTheBreachDriftCharacterCardController)
+            else if (base.CharacterCardController is ThroughTheBreachSubCharacterCardController)
             {
                 promoIdentifier = ThroughTheBreach;
             }
@@ -212,5 +226,68 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
         }
+
+        public Card GetActiveCharacterCard()
+        {
+            return base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == this.TurnTaker && c.IsRealCard).FirstOrDefault();
+        }
+
+        public Card FindRedBlueDriftCharacterCard()
+        {
+           
+            var characters = base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && c.SharedIdentifier == CharacterCardWithoutReplacements.SharedIdentifier).ToList();
+            string desiredIdentifier;
+            if(CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier.Contains("Red"))
+            {
+                desiredIdentifier = CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier.Replace("Red", "Blue");
+            } else
+            {
+                desiredIdentifier = CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier.Replace("Blue", "Red");
+            }
+
+            var driftCharacter = characters.First(c => c.Identifier == desiredIdentifier);
+            return driftCharacter;
+        }
+
+        private IEnumerator ShiftRedBlue(ModifyTokensAction tpa)
+        {
+            if (GetActiveCharacterCard() == CharacterCardWithoutReplacements && (CharacterCardWithoutReplacements.Identifier.Contains("Blue") || CharacterCardWithoutReplacements.Identifier.Contains("Red")) && !_inTheMiddleOfPower)
+            {
+                var driftCharacter = FindRedBlueDriftCharacterCard();
+                driftCharacter.SetHitPoints(CharacterCardWithoutReplacements.HitPoints.Value);
+
+                Log.Debug($"Switching to {driftCharacter.Identifier}");
+                Log.Debug($"What should happen is \"SwitchCutoutCard: from {CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier} to {driftCharacter.PromoIdentifierOrIdentifier}\"");
+
+                var coroutine = GameController.SwitchCards(CharacterCardWithoutReplacements, driftCharacter, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+
+        protected IEnumerator RetroactiveShiftIfNeeded()
+        {
+            if(!_inTheMiddleOfPower)
+            {
+                yield break;
+            }
+            _inTheMiddleOfPower = false;
+            IEnumerator coroutine = ShiftRedBlue(null);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
     }
 }
