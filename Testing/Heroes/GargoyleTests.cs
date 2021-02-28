@@ -1614,6 +1614,23 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestIssue954_ViolentAssistAndEnhancedSenses()
+        {
+            SetupGameController("Cauldron.Anathema", "Ra", "Cauldron.Gargoyle", "Haka", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card senses = PlayCard("EnhancedSenses");
+            Card violent = PlayCard("ViolentAssist");
+
+            DecisionYesNo = true;
+            QuickHPStorage(anathema, ra, gargoyle, haka);
+            DealDamage(haka, gargoyle, 5, DamageType.Fire);
+            QuickHPCheckZero();
+           
+        }
+
+        [Test]
         public void TestViolentAssistNo()
         {
             StartTestGame();
