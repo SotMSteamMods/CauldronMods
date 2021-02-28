@@ -17,9 +17,9 @@ namespace Cauldron.TheKnight
 
         public override void AddStartOfGameTriggers()
         {
-            if (IsCoreCharacterCard)
+            if (IsCoreCharacterCard && !Card.IsIncapacitatedOrOutOfGame && HeroTurnTakerController is TheKnightTurnTakerController knightTTC)
             {
-                (TurnTakerController as TheKnightTurnTakerController).ManageCharactersOffToTheSide(true);
+                knightTTC.ManageCharactersOffToTheSide(true);
             }
         }
         public override void AddSideTriggers()

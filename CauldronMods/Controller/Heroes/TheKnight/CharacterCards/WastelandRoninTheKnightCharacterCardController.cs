@@ -40,20 +40,28 @@ namespace Cauldron.TheKnight
         }
         public override void AddStartOfGameTriggers()
         {
-            var cards = (HeroTurnTakerController as TheKnightTurnTakerController).ManageCharactersOffToTheSide(false);
+            if (Card.IsIncapacitatedOrOutOfGame)
+            {
+                return;
+            }
 
-            _youngKnight = cards.Where((Card c) => c.Identifier == "TheYoungKnightCharacter").FirstOrDefault();
-            _oldKnight = cards.Where((Card c) => c.Identifier == "TheOldKnightCharacter").FirstOrDefault();
+            if (HeroTurnTakerController is TheKnightTurnTakerController knightTTC)
+            {
+                var cards = knightTTC.ManageCharactersOffToTheSide(false);
+
+                _youngKnight = cards.Where((Card c) => c.Identifier == "TheYoungKnightCharacter").FirstOrDefault();
+                _oldKnight = cards.Where((Card c) => c.Identifier == "TheOldKnightCharacter").FirstOrDefault();
 
 
-            //"If you have no hero character targets in play, flip this card.",
-            //"When 1 of your equipment cards enter play, put it next to 1 of your active knights.",
-            //"When your cards refer to “The Knight”, choose 1 of your active knights. For equipment cards, you must choose the knight they are next to. Stalwart Shield does not reduce damage to the other knight's equipment targets.",
+                //"If you have no hero character targets in play, flip this card.",
+                //"When 1 of your equipment cards enter play, put it next to 1 of your active knights.",
+                //"When your cards refer to “The Knight”, choose 1 of your active knights. For equipment cards, you must choose the knight they are next to. Stalwart Shield does not reduce damage to the other knight's equipment targets.",
 
-            //"Whenever an equipment enters play next to The Young Knight, she deals 1 target 1 toxic damage.",
-            AddTrigger((CardEntersPlayAction cep) => IsEquipment(cep.CardEnteringPlay) && GetKnightCardUser(cep.CardEnteringPlay) == youngKnight, YoungKnightDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-            //"Whenever an equipment card enters play next to The Old Knight, draw a card."
-            AddTrigger((CardEntersPlayAction cep) => IsEquipment(cep.CardEnteringPlay) && GetKnightCardUser(cep.CardEnteringPlay) == oldKnight, OldKnightDrawResponse, TriggerType.DealDamage, TriggerTiming.After);
+                //"Whenever an equipment enters play next to The Young Knight, she deals 1 target 1 toxic damage.",
+                AddTrigger((CardEntersPlayAction cep) => IsEquipment(cep.CardEnteringPlay) && GetKnightCardUser(cep.CardEnteringPlay) == youngKnight, YoungKnightDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+                //"Whenever an equipment card enters play next to The Old Knight, draw a card."
+                AddTrigger((CardEntersPlayAction cep) => IsEquipment(cep.CardEnteringPlay) && GetKnightCardUser(cep.CardEnteringPlay) == oldKnight, OldKnightDrawResponse, TriggerType.DealDamage, TriggerTiming.After);
+            }
         }
 
         private IEnumerator YoungKnightDamageResponse(CardEntersPlayAction cep)
