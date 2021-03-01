@@ -46,7 +46,7 @@ namespace CauldronTests
         {
             var cardsInPlay = ttc.TurnTaker.GetAllCards().Where(c => c.IsInPlay && this.IsHead(c));
             List<Card> listOfHead = new List<Card>();
-            foreach(Card c in cardsInPlay)
+            foreach (Card c in cardsInPlay)
             {
                 listOfHead.Add(c);
             }
@@ -133,7 +133,7 @@ namespace CauldronTests
 
             //check that there is 1 head in play
             AssertNumberOfHeadInPlay(anathema, 1);
-            
+
         }
 
         [Test()]
@@ -193,7 +193,7 @@ namespace CauldronTests
             List<Card> arms = GetListOfArmsInPlay(anathema);
             //have anathema destroy the arm to trigger healing
             DestroyCard(arms[0], anathema.CharacterCard);
-            
+
             QuickHPCheck(2);
         }
 
@@ -299,7 +299,7 @@ namespace CauldronTests
         public void TestAnathemaFlipsWhen0VillainTargets()
         {
             SetupGameController("Cauldron.Anathema", "Ra", "Megalopolis");
-           
+
             StartGame();
             GoToPlayCardPhase(anathema);
 
@@ -314,10 +314,10 @@ namespace CauldronTests
         [Test()]
         public void TestAnathemaAdvancedImmuneWhen3Targets()
         {
-            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Megalopolis" }, advanced: true,advancedIdentifiers: new string[] { "Cauldron.Anathema" });
-            
+            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Megalopolis" }, advanced: true, advancedIdentifiers: new string[] { "Cauldron.Anathema" });
+
             StartGame();
-           
+
             GoToUsePowerPhase(ra);
 
             List<Card> arms = (anathema.TurnTaker.PlayArea.Cards.Where(c => this.IsArm(c))).ToList();
@@ -348,11 +348,11 @@ namespace CauldronTests
             List<Card> arms = GetListOfArmsInPlay(anathema);
 
             //destroy both arms in play to have 2 villain targets left in play
-            foreach(Card c in arms)
+            foreach (Card c in arms)
             {
                 DestroyCard(c, anathema.CharacterCard);
             }
-           
+
 
             //verify that there are no arms in play now
             AssertNumberOfArmsInPlay(anathema, 0);
@@ -445,7 +445,7 @@ namespace CauldronTests
         [Test()]
         public void TestAnathemaAdvancedFlippedStartOfTurnDiscard()
         {
-            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Legacy","Megalopolis" }, true, null, null, new string[] { "Cauldron.Anathema" }, false, null, null, null);
+            SetupGameController(new string[] { "Cauldron.Anathema", "Ra", "Legacy", "Megalopolis" }, true, null, null, new string[] { "Cauldron.Anathema" }, false, null, null, null);
 
 
             StartGame();
@@ -479,7 +479,7 @@ namespace CauldronTests
             StartGame();
             ResetAnathemaDeck();
             GoToPlayCardPhase(anathema);
-           
+
             //Put 2 arms in play
             PutIntoPlay("KnuckleDragger");
             PutIntoPlay("KnuckleDragger");
@@ -543,7 +543,7 @@ namespace CauldronTests
 
             //legacy should be immune to damage, so he should still be able to deal damage 
             QuickHPStorage(anathema);
-            DealDamage(legacy, anathema, 5, DamageType.Melee,true);
+            DealDamage(legacy, anathema, 5, DamageType.Melee, true);
             QuickHPCheck(-5);
         }
 
@@ -595,10 +595,10 @@ namespace CauldronTests
             GoToEndOfTurn(anathema);
             int numCardInPlayAfter = GetNumberOfCardsInPlay(ra) + GetNumberOfCardsInPlay(legacy) + GetNumberOfCardsInPlay(haka);
             int?[] afterHps = { ra.CharacterCard.HitPoints, legacy.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
-            
+
             Assert.True(beforeHps[0] - 2 == afterHps[0] && beforeHps[1] - 2 == afterHps[1] && beforeHps[2] - 2 == afterHps[2], $"Expected hitpoints of {beforeHps[0] - 2}, {beforeHps[1] - 2}, {beforeHps[2] - 2}. Actual: {afterHps[0]}, {afterHps[1]}, {afterHps[2]}");
             //since damage was dealt, each hero should have destroyed their equipment in play, meaning 3 fewer cards in play
-            Assert.AreEqual(numCardInPlayBefore - 3,numCardInPlayAfter);
+            Assert.AreEqual(numCardInPlayBefore - 3, numCardInPlayAfter);
         }
 
         [Test()]
@@ -631,7 +631,7 @@ namespace CauldronTests
             int numCardInPlayAfter = GetNumberOfCardsInPlay(ra) + GetNumberOfCardsInPlay(legacy) + GetNumberOfCardsInPlay(haka);
             int?[] afterHps = { ra.CharacterCard.HitPoints, legacy.CharacterCard.HitPoints, haka.CharacterCard.HitPoints };
 
-            Assert.True(beforeHps[0]  == afterHps[0] && beforeHps[1] == afterHps[1] && beforeHps[2]  == afterHps[2], $"Expected hitpoints of {beforeHps[0]}, {beforeHps[1]}, {beforeHps[2]}. Actual: {afterHps[0]}, {afterHps[1]}, {afterHps[2]}");
+            Assert.True(beforeHps[0] == afterHps[0] && beforeHps[1] == afterHps[1] && beforeHps[2] == afterHps[2], $"Expected hitpoints of {beforeHps[0]}, {beforeHps[1]}, {beforeHps[2]}. Actual: {afterHps[0]}, {afterHps[1]}, {afterHps[2]}");
             //since no damage was dealt, no equipment should have been destroyed
             Assert.AreEqual(numCardInPlayBefore, numCardInPlayAfter);
         }
@@ -1513,7 +1513,26 @@ namespace CauldronTests
             QuickHPCheck(0);
         }
 
+        [Test]
+        public void TestAnathemaChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Anathema", "Tachyon", "TheScholar", "VoidGuardWrithe", "InsulaPrimalis" }, challenge: true);
+            StartGame();
 
+            Card bio = GetCard("Biofeedback");
 
+            //At the start of the game, put Biofeedback into play. 
+            AssertIsInPlay(bio);
+
+            //Biofeedback is indestructible. 
+            DestroyCard(bio);
+            AssertIsInPlay(bio);
+
+            //{Anathema} is immune to villain damage.
+            QuickHPStorage(anathema);
+            DealDamage(anathema, anathema, 2, DamageType.Melee);
+            DealDamage(bio, anathema, 2, DamageType.Melee);
+            QuickHPCheckZero();
+        }
     }
 }
