@@ -49,6 +49,12 @@ namespace Cauldron.Celadroch
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
+            if (base.TurnTaker.IsChallenge)
+            {
+                //At the start of the game, put a token in the storm pool.
+                base.GameController.AddTokensToPool(base.CharacterCard.FindTokenPool("StormPool"), 1, base.CharacterCardController.GetCardSource());
+            }
         }
     }
 }
