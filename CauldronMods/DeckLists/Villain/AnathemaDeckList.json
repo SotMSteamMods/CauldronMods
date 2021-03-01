@@ -53,6 +53,11 @@
                 "Discard"
             ],
             "difficulty": 2,
+            "challengeTitle":"Regenerative Biology",
+		    "challengeText":"At the start of the game, put Biofeedback into play. Biofeedback is indestructible. {Anathema} is immune to villain damage.",
+		    "challengeIcons":[
+		 	   "ImmuneToDamage"
+		    ],
             "openingLines": {
                 "default": "Give it up, heroes - what chance do you have against the pinnacle of evolution?",
                 "TangoOneCharacter": "Sniper girl! I remember you. What say we knock over a town, for old time's sake?",
