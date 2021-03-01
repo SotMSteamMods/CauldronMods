@@ -1331,10 +1331,10 @@ namespace CauldronTests
         public void TestHoursTilDawn_PlayedOnFront()
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
-            
+
             StartGame();
 
-            var card = PlayCard("HoursTilDawn",isPutIntoPlay: true);
+            var card = PlayCard("HoursTilDawn", isPutIntoPlay: true);
             AssertInPlayArea(celadroch, card);
 
             DestroyCard(card);
@@ -1672,6 +1672,16 @@ namespace CauldronTests
             PlayCard(impact, "CrushingRift");
             QuickHPCheck(-10);
             QuickHandCheck(2);
+        }
+
+        [Test]
+        public void TestCeladrochChallenge()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Cauldron.Impact", "Haka", "Legacy", "Megalopolis" }, challenge: true);
+            StartGame();
+            //At the start of the game, put a token in the storm pool.
+            //the start of the villain turn will auto add a token, so there should be two
+            AssertTokenPoolCount(stormPool, 2);
         }
     }
 }
