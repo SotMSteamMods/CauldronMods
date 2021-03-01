@@ -1518,6 +1518,7 @@ namespace CauldronTests
         {
             SetupGameController(new string[] { "Cauldron.Anathema", "Tachyon", "TheScholar", "VoidGuardWrithe", "InsulaPrimalis" }, challenge: true);
             StartGame();
+            MoveCards(anathema, (Card c) => IsArmHeadOrBody(c), anathema.TurnTaker.Deck);
 
             Card bio = GetCard("Biofeedback");
 
@@ -1533,6 +1534,17 @@ namespace CauldronTests
             DealDamage(anathema, anathema, 2, DamageType.Melee);
             DealDamage(bio, anathema, 2, DamageType.Melee);
             QuickHPCheckZero();
+
+            //should not be immune to hero damage
+            QuickHPUpdate();
+            DealDamage(tachyon, anathema, 2, DamageType.Sonic, isIrreducible: true);
+            QuickHPCheck(-2);
+
+            //should not be immune to environment damage
+            Card trex = PlayCard("EnragedTRex");
+            QuickHPUpdate();
+            DealDamage(trex, anathema, 2, DamageType.Melee, isIrreducible: true);
+            QuickHPCheck(-2);
         }
     }
 }
