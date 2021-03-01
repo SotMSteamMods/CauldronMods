@@ -128,6 +128,16 @@ namespace Cauldron.Celadroch
             }
             else
             {
+                coroutine = GameController.SendMessageAction($"{Card.Title} adds a token to his {StormPool.Name}.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
                 coroutine = GameController.AddTokensToPool(StormPool, 1, GetCardSource());
             }
             if (base.UseUnityCoroutines)

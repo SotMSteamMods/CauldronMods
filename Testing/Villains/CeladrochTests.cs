@@ -1680,7 +1680,8 @@ namespace CauldronTests
             SetupGameController(new[] { "Cauldron.Celadroch", "Cauldron.Impact", "Haka", "Legacy", "Megalopolis" }, challenge: true);
             StartGame();
             //At the start of the game, put a token in the storm pool.
-            AssertTokenPoolCount(stormPool, 1);
+            //the start of the villain turn will auto add a token, so there should be two
+            AssertTokenPoolCount(stormPool, 2);
         }
     }
 }
