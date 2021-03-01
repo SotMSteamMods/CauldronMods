@@ -8,13 +8,14 @@ using System.Linq;
 
 namespace Cauldron.Anathema
 {
-	public class BiofeedbackCardController : AnathemaCardController
+    public class BiofeedbackCardController : AnathemaCardController
     {
-		public BiofeedbackCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-		{
-		}
+        public BiofeedbackCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        {
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+        }
 
-		public override void AddTriggers()
+        public override void AddTriggers()
         {
             //Whenever Anathema deals damage to a Hero target, he regains 1 HP.
             Func<DealDamageAction, bool> damageCriteria = (DealDamageAction dd) => dd.DidDealDamage && dd.Target.IsHero && dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard);
@@ -28,7 +29,7 @@ namespace Cauldron.Anathema
         private IEnumerator DestroyCardResponse(DestroyCardAction dca)
         {
             //Anathema deals himself 2 psychic damage.
-            IEnumerator coroutine =  base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Psychic, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, base.CharacterCard, 2, DamageType.Psychic, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -56,7 +57,9 @@ namespace Cauldron.Anathema
 
             yield break;
         }
-
-
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            return base.TurnTaker.IsChallenge && card == base.Card && base.FindCardController(base.CharacterCard) is AnathemaCharacterCardController;
+        }
     }
 }
