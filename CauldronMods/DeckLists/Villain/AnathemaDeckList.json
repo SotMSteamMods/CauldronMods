@@ -480,7 +480,7 @@
             ],
             "difficulty": 3,
             "challengeTitle": "True Evolution",
-            "challengeText": ["Replace both instances of “arm or head card” with “villain target”."],
+            "challengeText": ["Replace both instances of “arm or head card” on this card with “villain target”."],
             "challengeIcons": [],
             "flippedChallengeText": "Body cards are indestructible during the villain turn.",
             "flippedChallengeIcons":[],
