@@ -43,12 +43,12 @@ namespace Cauldron.TheInfernalChoir
 
             //Discards
             AddTrigger<ShuffleTrashIntoDeckAction>(ga => ga.TurnTakerController.IsHero && !ga.TurnTakerController.TurnTaker.Deck.HasCards && !ga.NecessaryToPlayCard, ga => StashCardsForPotentialDiscardAction(ga), TriggerType.Hidden, TriggerTiming.Before);
-            AddTrigger<MoveCardAction>(ga => ga.Origin.IsHero && ga.Origin.IsDeck && ga.Destination.IsHero && ga.Destination.IsTrash && ga.IsDiscard && ga.ShuffledTrashIntoDeck, ga => HeartDiscardCancelReponse(ga), TriggerType.CancelAction, TriggerTiming.Before);
+            AddTrigger<MoveCardAction>(ga => ga.Origin.IsHero && ga.Origin.IsDeck && ga.Destination.IsHero && ga.Destination.IsTrash && _shufflingCardsIntoDeck, ga => HeartDiscardCancelReponse(ga), TriggerType.CancelAction, TriggerTiming.Before);
 
         }
 
         private Dictionary<TurnTaker, List<Card>> _stashedTrashOrder = new Dictionary<TurnTaker, List<Card>>();
-
+        private bool _shufflingCardsIntoDeck = false;
         private IEnumerator StashCardsForPotentialDiscardAction(ShuffleTrashIntoDeckAction action)
         {
             //This can false trigger from cards that trigger a shuffle, but that's ok.
@@ -57,6 +57,7 @@ namespace Cauldron.TheInfernalChoir
             var tt = action.TurnTakerController.TurnTaker;
             var cards = tt.GetCardsAtLocation(tt.Trash).ToList();
             _stashedTrashOrder[tt] = cards;
+            _shufflingCardsIntoDeck = true;
             return DoNothing();
         }
 
@@ -100,6 +101,9 @@ namespace Cauldron.TheInfernalChoir
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+
+            _shufflingCardsIntoDeck = false;
+
         }
 
         private IEnumerator HeartCancelResponse(GameAction ga, string turnTaker, string reportedAction)
