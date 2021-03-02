@@ -479,9 +479,11 @@
                 "GainHP"
             ],
             "difficulty": 3,
-            "challengeTitle": "",
-            "challengeText": [],
+            "challengeTitle": "True Evolution",
+            "challengeText": ["Replace both instances of “arm or head card” with “villain target”."],
             "challengeIcons": [],
+            "flippedChallengeText": "Body cards are indestructible during the villain turn.",
+            "flippedChallengeIcons":[],
             "openingLines": {
                 "default": "I've picked up a few new tricks - and limbs. Care to see?",
                 "TangoOneCharacter": "I should thank you for destroying our masters; now I'm free to eat whoever I want!",
