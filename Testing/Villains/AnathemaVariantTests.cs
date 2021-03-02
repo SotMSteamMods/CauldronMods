@@ -103,7 +103,7 @@ namespace CauldronTests
 
             //check that there is 1 head in play
             AssertNumberOfHeadInPlay(anathema, 1);
-            
+
         }
 
         [Test()]
@@ -430,7 +430,7 @@ namespace CauldronTests
 
         [Test()]
         public void TestAcceleratedEvolutionArmIndestructibilityTest_NonFlippedHeroTurn()
-        {			
+        {
             //Flipped: Arm and head cards are indestructible during the villain turn.
 
             SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
@@ -486,6 +486,50 @@ namespace CauldronTests
             DestroyCard(bodyToDestroy, ra.CharacterCard);
             AssertInTrash(bodyToDestroy);
 
+        }
+
+        [Test]
+        public void TestAcceleratedEvolutionChallenge_Front_AnathemaDestroys()
+        {
+            SetupGameController(new string[] { "Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            //Front Challenge: Replace both instances of “arm or head card” with “villain target”.
+            //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
+            Card bodyToDestroy = GetListOfBodyInPlay(anathema).First();
+            DestroyCard(bodyToDestroy, anathema.CharacterCard);
+            AssertUnderCard(anathema.CharacterCard, bodyToDestroy);
+
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            DestroyCard(headToDestroy, anathema.CharacterCard);
+            AssertUnderCard(anathema.CharacterCard, headToDestroy);
+        }
+
+        [Test]
+        public void TestAcceleratedEvolutionChallenge_Front_EndOfTurnReveal_Body()
+        {
+            SetupGameController(new string[] { "Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            //Front Challenge: Replace both instances of “arm or head card” with “villain target”.
+            //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
+            Card bodyToReveal = StackDeck(anathema, "RazorScales");
+            GoToEndOfTurn(anathema);
+            AssertUnderCard(anathema.CharacterCard, bodyToReveal);
+        }
+
+        [Test]
+        public void TestAcceleratedEvolutionChallenge_Back()
+        {
+            SetupGameController(new string[] { "Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            //Back Challenge: Body cards are indestructible during the villain turn
+            FlipCard(anathema.CharacterCard);
+
+            Card bodyToDestroy = GetListOfBodyInPlay(anathema).First();
+            DestroyCard(bodyToDestroy, anathema.CharacterCard);
+            AssertIsInPlayAndNotUnderCard(bodyToDestroy);
         }
     }
 }
