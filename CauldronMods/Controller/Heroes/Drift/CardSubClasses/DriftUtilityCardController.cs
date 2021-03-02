@@ -233,7 +233,7 @@ namespace Cauldron.Drift
             {
                 promoIdentifier = ThroughTheBreach;
             }
-            IEnumerator coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(promoIdentifier + ShiftTrack + (this.CurrentShiftPosition() + newPositionModifier), false));
+            IEnumerator coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(promoIdentifier + ShiftTrack + (this.CurrentShiftPosition() + newPositionModifier), false), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
