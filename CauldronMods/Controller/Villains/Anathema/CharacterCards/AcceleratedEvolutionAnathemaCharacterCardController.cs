@@ -45,7 +45,7 @@ namespace Cauldron.Anathema
             if (!base.Card.IsFlipped)
             {
                 //Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.
-                this.SideTriggers.Add(AddTrigger((DestroyCardAction destroy) => destroy.CardSource != null && destroy.CardToDestroy.CanBeDestroyed && destroy.WasCardDestroyed && destroy.CardSource.Card.Owner == base.TurnTaker && IsArmOrHead(destroy.CardToDestroy.Card) && destroy.PostDestroyDestinationCanBeChanged, PutUnderThisCardResponse, new TriggerType[2]
+                this.SideTriggers.Add(AddTrigger((DestroyCardAction destroy) => destroy.CardSource != null && destroy.CardToDestroy.CanBeDestroyed && destroy.WasCardDestroyed && destroy.CardSource.Card.Owner == base.TurnTaker && (IsArmOrHead(destroy.CardToDestroy.Card) || (base.Game.IsChallenge && IsBody(destroy.CardToDestroy.Card))) && destroy.PostDestroyDestinationCanBeChanged, PutUnderThisCardResponse, new TriggerType[2]
                         {
                             TriggerType.MoveCard,
                             TriggerType.ChangePostDestroyDestination
@@ -126,7 +126,7 @@ namespace Cauldron.Anathema
             if (storedResults.Count > 0)
             {
                 Card cardToMove = storedResults.First();
-                Location location = IsArmOrHead(cardToMove) ? base.CharacterCard.UnderLocation : base.TurnTaker.Trash;
+                Location location = IsArmOrHead(cardToMove) || (base.Game.IsChallenge && IsBody(cardToMove)) ? base.CharacterCard.UnderLocation : base.TurnTaker.Trash;
                 coroutine = GameController.MoveCard(base.TurnTakerController, cardToMove, location, showMessage: true, cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
