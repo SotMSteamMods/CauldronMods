@@ -193,6 +193,19 @@ namespace CauldronTests
             AssertNumberOfCardsInRevealed(fsc, 0);
         }
 
+        [Test]
+        public void TestHeartOfWandererOblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket", "Legacy", "Haka", "Cauldron.FSCContinuanceWanderer", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            Card expectedMission = oblivaeon.TurnTaker.FindSubDeck("MissionDeck").TopCard;
+            GoToStartOfTurn(envOne);
+            PlayCard("HeartOfTheWanderer");
+            Card actualMission = oblivaeon.TurnTaker.FindSubDeck("MissionDeck").TopCard;
+
+            Assert.AreEqual(expectedMission, actualMission, $"Expected {expectedMission.Title} on the top of the Mission Deck. Instead it was {actualMission.Title}");
+            
+        }
         [Test()]
         public void TestHeartOfTheWandererTeamVillainDiscard()
         {
