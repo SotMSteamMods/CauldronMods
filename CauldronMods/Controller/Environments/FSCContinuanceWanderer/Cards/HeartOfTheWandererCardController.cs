@@ -41,23 +41,13 @@ namespace Cauldron.FSCContinuanceWanderer
             //...reveal the top card of each deck in turn order and either discard it or replace it.
             List<Card> revealedCards = new List<Card>();
             TurnTaker turnTaker = turnTakerController.TurnTaker;
-            IEnumerator coroutine = base.GameController.RevealCards(turnTakerController, turnTaker.Deck, 1, revealedCards, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            List<Location> decks = new List<Location>();
+            decks.Add(turnTaker.Deck);
+            decks = decks.Concat(turnTaker.SubDecks.Where(l => l.BattleZone == Card.BattleZone && l.IsRealDeck)).ToList();
+            IEnumerator coroutine;
+            foreach (Location deck in decks)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            Card revealedCard = revealedCards.FirstOrDefault<Card>();
-            if (revealedCard != null)
-            {
-                coroutine = base.GameController.SelectLocationAndMoveCard(this.DecisionMaker, revealedCard, new MoveCardDestination[]
-                {
-                        new MoveCardDestination(turnTaker.Deck),
-                        new MoveCardDestination(turnTaker.Trash)
-                }, cardSource: base.GetCardSource());
+                coroutine = base.GameController.RevealCards(turnTakerController, deck, 1, revealedCards, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -66,7 +56,25 @@ namespace Cauldron.FSCContinuanceWanderer
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
+                Card revealedCard = revealedCards.FirstOrDefault<Card>();
+                if (revealedCard != null)
+                {
+                    coroutine = base.GameController.SelectLocationAndMoveCard(this.DecisionMaker, revealedCard, new MoveCardDestination[]
+                    {
+                        new MoveCardDestination(deck),
+                        FindCardController(revealedCard).GetTrashDestination()
+                    }, cardSource: base.GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
             }
+            
             yield break;
         }
     }
