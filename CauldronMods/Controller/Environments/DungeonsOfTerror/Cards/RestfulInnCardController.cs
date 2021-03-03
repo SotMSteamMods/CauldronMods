@@ -65,7 +65,7 @@ namespace Cauldron.DungeonsOfTerror
                     if (httc.TurnTaker.HasMultipleCharacterCards)
                     {
                         List<SelectCardDecision> storedSelection = new List<SelectCardDecision>();
-                        coroutine = base.GameController.SelectCardAndStoreResults(httc, SelectionType.CharacterCard, httc.CharacterCards, storedSelection);
+                        coroutine = base.GameController.SelectCardAndStoreResults(httc, SelectionType.CharacterCard, httc.CharacterCards.Where(c => !c.IsIncapacitatedOrOutOfGame && c.IsRealCard), storedSelection);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
