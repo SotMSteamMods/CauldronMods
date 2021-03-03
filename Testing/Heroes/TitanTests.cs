@@ -1146,6 +1146,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestUnbreakableOblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Titan", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card unb = PlayCard("Unbreakable");
+            SwitchBattleZone(oblivaeon);
+            AssertBattleZone(oblivaeon.CharacterCard, bzTwo);
+            AssertBattleZone(titan.CharacterCard, bzOne);
+
+            GoToEndOfTurn(oblivaeon);
+            AssertNumberOfCardsInPlay((Card c) => c.IsAeonMan, 3);
+            
+
+           
+        }
+
+        [Test()]
         public void TestUnbreakableVillainEndOfHeroTurnEffects()
         {
             SetupGameController("Chokepoint", "Haka", "Cauldron.Titan", "TheScholar", "VoidGuardDrMedico", "Megalopolis");
