@@ -26,10 +26,10 @@ namespace Cauldron.CatchwaterHarbor
             IEnumerable<TurnTaker> activeTurnTakers =  FindTurnTakersWhere((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && !tt.IsEnvironment, true);
             foreach(TurnTaker tt in activeTurnTakers)
             {
-                foreach(Location deck in tt.Decks)
+                foreach(Location deck in tt.Decks.Where(deck => deck.IsRealDeck))
                 {
                     var ss = SpecialStringMaker.ShowSpecialString(() => $"The top card of {deck.GetFriendlyName()} is {deck.TopCard.Title}.", relatedCards: () => tt.CharacterCards.Where(c => c.IsInPlayAndHasGameText));
-                    ss.Condition = () => Card.IsInPlayAndHasGameText && deck.HasCards && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource());
+                    ss.Condition = () => Card.IsInPlayAndHasGameText && deck.HasCards && GameController.IsLocationVisibleToSource(deck, GetCardSource());
                 }
             }
         }
