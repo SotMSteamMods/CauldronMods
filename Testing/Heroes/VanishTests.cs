@@ -509,6 +509,18 @@ namespace CauldronTests
         }
 
         [Test]
+        public void FlashReconOblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Vanish", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            GoToStartOfTurn(vanish);
+            AssertNumberOfChoicesInNextDecision(5, SelectionType.RevealTopCardOfDeck);
+            PlayCard("FlashRecon");
+           
+        }
+
+        [Test]
         public void FlashRecon_OnlyCleanUpOwnRevealed()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "TheArgentAdept/DarkConductorArgentAdept", "Megalopolis");
