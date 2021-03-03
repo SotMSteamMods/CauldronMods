@@ -607,6 +607,30 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRestfulInn_MultipleCharsOffToTheSide()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Titan", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(ra, 20);
+            SetHitPoints(titan, 20);
+
+            //The first time a hero draws a card during their turn, they may discard it. 
+            //If they do, that hero regains 2HP. Increase HP regained this way by 1 if the top card of the environment trash is a fate card.
+            Card inn = PlayCard("RestfulInn");
+
+            GoToPlayCardPhase(titan);
+
+            DecisionYesNo = true;
+            AssertNumberOfChoicesInNextDecision(1, SelectionType.CharacterCard);
+            DrawCard(titan);
+
+
+        }
+
+        [Test()]
         public void TestRingOfForesight()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
