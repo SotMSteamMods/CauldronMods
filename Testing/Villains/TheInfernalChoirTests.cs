@@ -596,7 +596,7 @@ namespace CauldronTests
             FlipCard(choir.CharacterCard);
             AssertInPlayArea(legacy, heart2);
 
-            var p1 = DiscardTopCards(legacy, 1);
+            var p1 = DiscardTopCards(legacy, 1, legacy.CharacterCardController.GetCardSource());
             AssertInTrash(p1);
 
             MoveAllCards(legacy, legacy.TurnTaker.Deck, legacy.TurnTaker.Trash);
@@ -612,7 +612,7 @@ namespace CauldronTests
             AssertOnBottomOfLocation(bottom[0], legacy.TurnTaker.Trash, 0);
             AssertOnBottomOfLocation(bottom[1], legacy.TurnTaker.Trash, 1);
 
-            p1 = DiscardTopCards(legacy, 1);
+            p1 = DiscardTopCards(legacy, 1, legacy.CharacterCardController.GetCardSource());
 
             AssertNumberOfCardsInTrash(legacy, count);
             AssertNumberOfCardsInDeck(legacy, 0);
@@ -644,6 +644,9 @@ namespace CauldronTests
             PlayCard(p1);
             AssertInTrash(p1);
             AssertNumberOfCardsInTrash(omnix, 1);
+
+            var p3 = DiscardTopCards(omnix, 1);
+            AssertNumberOfCardsInTrash(omnix, 2);
         }
 
         [Test()]
