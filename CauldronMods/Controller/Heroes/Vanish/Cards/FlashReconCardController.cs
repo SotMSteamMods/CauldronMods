@@ -19,7 +19,7 @@ namespace Cauldron.Vanish
          */
         public override IEnumerator Play()
         {
-            var coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, l => l.IsDeck && !l.OwnerTurnTaker.IsIncapacitatedOrOutOfGame, RevealTopCardAndReturn, cardSource: GetCardSource());
+            var coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, l => l.IsDeck && !l.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && l.IsRealDeck, RevealTopCardAndReturn, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
