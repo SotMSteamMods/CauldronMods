@@ -69,16 +69,15 @@ namespace Cauldron.TangoOne
                         // One player may play a card now.
                         //==============================================================
 
-                        IEnumerator drawCardRoutine = this.GameController.SelectHeroToDrawCard(DecisionMaker,
-                            cardSource: base.GetCardSource());
+                        IEnumerator coroutine = this.GameController.SelectHeroToPlayCard(DecisionMaker, cardSource: GetCardSource());
 
                         if (this.UseUnityCoroutines)
                         {
-                            yield return this.GameController.StartCoroutine(drawCardRoutine);
+                            yield return this.GameController.StartCoroutine(coroutine);
                         }
                         else
                         {
-                            this.GameController.ExhaustCoroutine(drawCardRoutine);
+                            this.GameController.ExhaustCoroutine(coroutine);
                         }
                     }
                     break;
