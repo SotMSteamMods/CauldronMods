@@ -116,9 +116,9 @@ namespace Cauldron.Cricket
             if (DidSelectDeck(storedResults))
             {
                 Location selectedDeck = GetSelectedLocation(storedResults);
-                List<Card> revealedCards = new List<Card>();
+                List<RevealCardsAction> revealedCards = new List<RevealCardsAction>();
                 //Reveal the top card of a hero deck.
-                coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedDeck, 1, revealedCards, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: base.GetCardSource());
+                coroutine = base.GameController.RevealCards(base.TurnTakerController, selectedDeck, 1, null,  revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, storedResultsAction: revealedCards, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -128,15 +128,19 @@ namespace Cauldron.Cricket
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = base.CleanupRevealedCards(selectedDeck.OwnerTurnTaker.Revealed, selectedDeck);
-                if (base.UseUnityCoroutines)
+                if(!revealedCards.Any())
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    yield break;
                 }
-                else
+
+                RevealCardsAction revealAction = revealedCards.First();
+
+                if(!revealAction.RevealedCards.Any() && !revealAction.RemovedFromRevealedCards.Any())
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    yield break;
                 }
+
+                Card revealedCard = revealAction.RevealedCards.Any() ? revealAction.RevealedCards.First() : revealAction.RemovedFromRevealedCards.First();
 
                 List<DiscardCardAction> discardResults = new List<DiscardCardAction>();
                 //You may discard a card...
@@ -153,7 +157,7 @@ namespace Cauldron.Cricket
                 if (DidDiscardCards(discardResults))
                 {
                     //...to put it into play...
-                    coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, selectedDeck, isPutIntoPlay: true, cardSource: base.GetCardSource());
+                    coroutine = GameController.PlayCard(TurnTakerController, revealedCard, isPutIntoPlay: true, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -166,7 +170,7 @@ namespace Cauldron.Cricket
                 else
                 {
                     //...otherwise put it into that player's hand.
-                    coroutine = base.GameController.MoveCard(base.TurnTakerController, selectedDeck.TopCard, selectedDeck.OwnerTurnTaker.ToHero().Hand, cardSource: base.GetCardSource());
+                    coroutine = base.GameController.MoveCard(base.TurnTakerController, revealedCard, revealedCard.Owner.ToHero().Hand, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
