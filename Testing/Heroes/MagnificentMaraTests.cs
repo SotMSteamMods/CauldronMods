@@ -753,13 +753,32 @@ namespace CauldronTests
         public void TestKalpakMakeJournal()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
-
             StartGame();
 
             Card kalpak = PlayCard("KalpakOfMysteries");
             UsePower(kalpak);
 
             PrintJournal();
+        }
+
+        [Test]
+        public void TestKalpak_DarkMind()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.MagnificentMara", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective", scionIdentifiers: new List<string>() { "DarkMindCharacter" });
+            StartGame();
+
+
+            SwitchBattleZone(mara);
+            SwitchBattleZone(legacy);
+
+            AssertBattleZone(mindScion, bzTwo);
+            AssertBattleZone(mara, bzTwo);
+            AssertBattleZone(legacy, bzTwo);
+            Card legacyTop = PutOnDeck("NextEvolution");
+            DecisionSelectCard = legacyTop;
+            Card kalpak = PlayCard("KalpakOfMysteries");
+            UsePower(kalpak);
+            AssertInHand(legacyTop);
         }
         [Test]
         public void TestKalpakDestroysSelf()
