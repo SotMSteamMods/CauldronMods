@@ -32,7 +32,7 @@ namespace Cauldron.Vanish
             bool done = false;
             IEnumerator coroutine;
 
-            var choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlay && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) &&!selected.Contains(c.Owner.ToHero())).ToArray();
+            var choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && c.BattleZone == BattleZone &&!selected.Contains(c.Owner.ToHero())).ToArray();
             while (choices.Length > 0 && !done)
             {
                 var previewDDA = new DealDamageAction(GameController, new DamageSource(GameController, CharacterCard), null, 3, DamageType.Energy);
@@ -80,7 +80,7 @@ namespace Cauldron.Vanish
                         damaged.Add(owner);
                     }
 
-                    choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlay && !c.IsIncapacitatedOrOutOfGame && !selected.Contains(c.Owner.ToHero())).ToArray();
+                    choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && c.BattleZone == BattleZone && !selected.Contains(c.Owner.ToHero())).ToArray();
                 }
             }
 
