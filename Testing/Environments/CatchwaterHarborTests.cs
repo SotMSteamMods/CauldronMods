@@ -655,6 +655,34 @@ namespace CauldronTests
             AssertNextToCard(left, ra.CharacterCard);
 
         }
+        [Test()]
+        public void TestLeftBehind_Next_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.CatchwaterHarbor", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to the hero with the second lowest HP.
+            //since there are no heroes in this battlezone, it should go to the trash
+            Card left = PlayCard("LeftBehind");
+            AssertInTrash(left);
+
+        }
+        [Test()]
+        public void TestLeftBehind_Next_Oblivaeon_1Hero()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.CatchwaterHarbor", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SwitchBattleZone(ra);
+
+            //Play this card next to the hero with the second lowest HP.
+            //since there is 1 hero here, it should go to the trash
+            Card left = PlayCard("LeftBehind");
+            AssertInTrash(left);
+
+        }
+
 
         [Test()]
         public void TestLeftBehind_GameOverChange_OtherTargetKillsVillain()
