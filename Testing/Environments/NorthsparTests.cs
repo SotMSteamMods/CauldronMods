@@ -1056,6 +1056,19 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestFrozenSolid_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.Northspar", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //When this card enters play, place it next to the hero with the lowest HP. 
+            //since there are no heroes in this battlezone, it should go to the trash
+            Card solid = PlayCard("FrozenSolid");
+            AssertInTrash(solid);
+
+        }
+
+        [Test()]
         public void TestFrozenSolid_NoPlayCanPower()
         {
             SetupGameController("BaronBlade", "AbsoluteZero", "Legacy", "Ra", "Cauldron.Northspar");
