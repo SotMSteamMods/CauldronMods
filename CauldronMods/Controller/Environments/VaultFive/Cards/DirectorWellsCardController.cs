@@ -44,6 +44,21 @@ namespace Cauldron.VaultFive
                 //Play this card next to the hero with the lowest HP
                 storedResults.Add(new MoveCardDestination(lowestHero.NextToLocation, false, false, false));
             }
+            else
+            {
+                string message = $"There are no heroes in play to put {Card.Title} next to. Moving it to {TurnTaker.Trash.GetFriendlyName()} instead.";
+
+                storedResults.Add(new MoveCardDestination(TurnTaker.Trash));
+                coroutine = GameController.SendMessageAction(message, Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             yield break;
         }
     }

@@ -243,6 +243,19 @@ namespace CauldronTests
             QuickHPCheck(-2, -1);
         }
 
+
+        [Test()]
+        public void TestDirectorWells_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.VaultFive", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to the hero with the lowest HP
+            //since there are no heroes in this battlezone, it should go to the trash
+            Card wells = PlayCard("DirectorWells");
+            AssertInTrash(wells);
+
+        }
         [Test()]
         public void TestDirectorWells_MoveNextToImmunity()
         {
