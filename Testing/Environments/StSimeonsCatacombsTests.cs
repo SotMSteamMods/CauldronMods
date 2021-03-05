@@ -621,6 +621,22 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestBreathStealer_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.StSimeonsCatacombs", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to a hero.
+            //since there are no heroes in this battlezone, it should go to the trash
+            PlayCard("InjuredWorker");
+
+            GoToEndOfTurn(envTwo);
+            Card breath = PlayCard("BreathStealer");
+            AssertInTrash(breath);
+
+        }
+
+        [Test()]
         public void TestBreathStealNextTo()
         {
 
@@ -1050,6 +1066,38 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDarkPassenger_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.StSimeonsCatacombs", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to a hero.
+            //since there are no heroes in this battlezone, it should go to the trash
+
+            GoToEndOfTurn(envTwo);
+            Card passenger = PlayCard("DarkPassenger");
+            AssertInTrash(passenger);
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_Oblivaeon_1Hero()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.StSimeonsCatacombs", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SwitchBattleZone(ra);
+            //Play this card next to a hero.
+            //since there are no heroes in this battlezone, it should go to the trash
+
+            GoToEndOfTurn(envTwo);
+            Card passenger = PlayCard("DarkPassenger");
+            AssertInTrash(passenger);
+
+        }
+
+        [Test()]
         public void TestDarkPassengerEndOfTurn()
         {
 
@@ -1371,6 +1419,21 @@ namespace CauldronTests
             //legacy is the highest HP
             Card panic = PlayCard("Panic");
             AssertNextToCard(panic, legacy.CharacterCard);
+
+        }
+
+        [Test()]
+        public void TestPanic_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.StSimeonsCatacombs", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to a hero.
+            //since there are no heroes in this battlezone, it should go to the trash
+
+            GoToEndOfTurn(envTwo);
+            Card panic = PlayCard("Panic");
+            AssertInTrash(panic);
 
         }
 
@@ -1813,6 +1876,21 @@ namespace CauldronTests
             QuickHPStorage(targets);
             DealDamage(ra.CharacterCard, (Card c) => c.IsTarget, 3, DamageType.Fire);
             QuickHPCheck(-3, -3, -3, -3, 0);
+
+        }
+
+        [Test()]
+        public void TestPossessor_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.StSimeonsCatacombs", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to the hero with the most cards in hand.
+            //since there are no heroes in this battlezone, it should go to the trash
+
+            GoToEndOfTurn(envTwo);
+            Card possessor = PlayCard("Possessor");
+            AssertInTrash(possessor);
 
         }
 
