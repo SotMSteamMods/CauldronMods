@@ -1135,6 +1135,19 @@ namespace CauldronTests
             AssertIsInPlay(wand);
             AssertInTrash(crystal);
         }
+
+        [Test()]
+        public void TestBootlegMesmerPendant_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.MagnificentMara", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.FSCContinuanceWanderer", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to a non-character target
+            //since there are no non-character targets in this battlezone, it should go to the trash
+            Card pendant = PlayCard("BootlegMesmerPendant");
+            AssertInTrash(pendant);
+
+        }
         [Test]
         public void TestBootlegMesmerPendant()
         {
