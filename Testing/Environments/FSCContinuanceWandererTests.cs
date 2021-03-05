@@ -443,6 +443,19 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSuperimposedRealities_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.FSCContinuanceWanderer", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to a hero.
+            //since there are no heroes in this battlezone, it should go to the trash
+            Card reality = PlayCard("SuperimposedRealities");
+            AssertInTrash(reality);
+
+        }
+
+        [Test()]
         public void TestTemporalAccelerationDestroySelf()
         {
             SetupGameController(new string[] { "Spite", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer" });
@@ -699,6 +712,19 @@ namespace CauldronTests
 
             AssertIsInPlay(takedown);
             Assert.IsTrue(GameController.ActiveTurnTaker.IsEnvironment);
+        }
+
+        [Test()]
+        public void TestTimeFreeze_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.FSCContinuanceWanderer", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to a hero.
+            //since there are no heroes in this battlezone, it should go to the trash
+            Card timeFreeze = PlayCard("TimeFreeze");
+            AssertInTrash(timeFreeze);
+
         }
         [Test()]
         public void TestTimeFreezeWithTurnAndPhaseOrderReversed()
