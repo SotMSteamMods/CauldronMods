@@ -7,6 +7,7 @@ using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 
 using NUnit.Framework;
+using System;
 
 namespace CauldronTests
 {
@@ -26,6 +27,22 @@ namespace CauldronTests
 
             // Assert
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
+        }
+
+        [Test]
+        public void TestFlavorText()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace, "Cauldron.DungeonsOfTerror");
+
+            Card gameTrail = GetCard("GameTrail");
+
+            Console.WriteLine("FLAVOR TEXT: " + gameTrail.Definition.FlavorText);
+            Assert.That(gameTrail.Definition.FlavorText.Contains("“"), "The quote mark is not showing up in the Flavor Text definition for " + gameTrail.Title);
+            Card edibles = GetCard("DubiousEdibles");
+            Console.WriteLine("FLAVOR TEXT: " + edibles.Definition.FlavorText);
+            Assert.That(edibles.Definition.FlavorText.Contains("“"), "The quote mark is not showing up in the Flavor Text definition for " + edibles.Title);
+
+
         }
 
         #region Test Fresh Tracks
