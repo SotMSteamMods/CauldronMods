@@ -18,7 +18,7 @@ namespace Cauldron.Titan
         {
             List<SelectCardDecision> target = new List<SelectCardDecision>();
             //{Titan} deals 1 target 1 infernal damage.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Infernal, 1, false, 1, storedResultsDecisions: target, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Infernal, 1, false, 1, storedResultsDecisions: target, selectTargetsEvenIfCannotDealDamage: true, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
