@@ -672,6 +672,17 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestInfiltrate_Oblivaeon()
+        {
+            // Arrange
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TangoOne", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            AssertNumberOfChoicesInNextDecision(5, SelectionType.RevealTopCardOfDeck);
+            PlayCard("Infiltrate");
+        }
+
+        [Test]
         public void TestLineEmUp_DestroyByDamage()
         {
             // Arrange
@@ -1324,10 +1335,51 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestWetWork_Oblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TangoOne", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+
+            SwitchBattleZone(haka);
+
+            DiscardTopCards(oblivaeon, 1);
+            foreach(Location subdeck in oblivaeon.TurnTaker.SubDecks.Where(d => d.IsRealDeck))
+            {
+                DiscardTopCards(subdeck, 1);
+            }
+            DiscardTopCards(tango, 1);
+            DiscardTopCards(haka, 1);
+            DiscardTopCards(legacy, 1);
+            DiscardTopCards(envOne, 1);
+            DiscardTopCards(envTwo, 1);
+
+            PlayCard("WetWork");
+
+            AssertNumberOfCardsAtLocation(oblivaeon.TurnTaker.Trash, 0);
+            AssertNumberOfCardsAtLocation(tango.TurnTaker.Trash, 1);
+            AssertNumberOfCardsAtLocation(haka.TurnTaker.Trash, 1);
+            AssertNumberOfCardsAtLocation(legacy.TurnTaker.Trash, 0);
+            AssertNumberOfCardsAtLocation(envOne.TurnTaker.Trash, 0);
+            AssertNumberOfCardsAtLocation(envTwo.TurnTaker.Trash, 1);
+
+            foreach (Location subtrash in oblivaeon.TurnTaker.SubTrashes.Where(d => d.IsRealTrash))
+            {
+                AssertNumberOfCardsAtLocation(subtrash, 0);
+
+            }
+
+
+
+        }
+
+
+        [Test]
         public void TestWetWorkEmptyTrashes()
         {
             // Arrange
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+
 
             MakeCustomHeroHand(tango, new List<string>()
             {

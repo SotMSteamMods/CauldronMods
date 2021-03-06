@@ -28,7 +28,7 @@ namespace Cauldron.TangoOne
             // Select deck
             List<SelectLocationDecision> locationResults = new List<SelectLocationDecision>();
             IEnumerator selectDeckRoutine = base.GameController.SelectADeck(this.DecisionMaker, SelectionType.RevealCardsFromDeck,
-                location => location.IsDeck, locationResults);
+                location => location.IsDeck && location.IsRealDeck && GameController.IsLocationVisibleToSource(location, GetCardSource()), locationResults);
 
             if (base.UseUnityCoroutines)
             {
