@@ -77,15 +77,9 @@ namespace CauldronTests
             DealDamage(baron, tango, 2, DamageType.Melee);
 
             DecisionSelectTarget = ra.CharacterCard;
-
+            PutInHand("FlameBarrier");
             // Act
-            GoToUseIncapacitatedAbilityPhase(tango);
-            UseIncapacitatedAbility(tango, 0);
-
-
-            // Assert
-            AssertIncapacitated(tango);
-            QuickHandCheck(1);
+            AssertIncapLetsHeroPlayCard(tango, 0, ra, "FlameBarrier");
 
         }
 
