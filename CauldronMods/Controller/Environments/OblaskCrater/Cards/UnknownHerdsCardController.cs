@@ -54,6 +54,18 @@ namespace Cauldron.OblaskCrater
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+            else
+            {
+                coroutine = GameController.SendMessageAction($"There are {totalPredators} predators in play, so {Card.Title} does not give a power.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
 
             yield break;
         }

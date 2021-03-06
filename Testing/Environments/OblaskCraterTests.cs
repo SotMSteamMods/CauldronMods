@@ -840,6 +840,19 @@ namespace CauldronTests
             GoToEndOfTurn(base.env);
             QuickHPCheck(2, -3);
         }
+        [Test]
+        public void TestUnknownHerdsTooManyPredators()
+        {
+            SetupGameController("BaronBlade", "Legacy", "Ra", "Haka", DeckNamespace);
+            StartGame();
+
+            PlayCard("UnknownHerds");
+            PlayCard("UnseenTerror");
+            PlayCard("ShadowOfOblask");
+
+            GoToEndOfTurn(base.env);
+            AssertNumberOfUsablePowers(legacy, 1);
+        }
 
         [Test]
         public void TestUnknownHerdsDestroyed()
