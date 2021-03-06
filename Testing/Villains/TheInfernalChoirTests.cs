@@ -596,7 +596,7 @@ namespace CauldronTests
             FlipCard(choir.CharacterCard);
             AssertInPlayArea(legacy, heart2);
 
-            var p1 = DiscardTopCards(legacy, 1);
+            var p1 = DiscardTopCards(legacy, 1, legacy.CharacterCardController.GetCardSource());
             AssertInTrash(p1);
 
             MoveAllCards(legacy, legacy.TurnTaker.Deck, legacy.TurnTaker.Trash);
@@ -612,7 +612,7 @@ namespace CauldronTests
             AssertOnBottomOfLocation(bottom[0], legacy.TurnTaker.Trash, 0);
             AssertOnBottomOfLocation(bottom[1], legacy.TurnTaker.Trash, 1);
 
-            p1 = DiscardTopCards(legacy, 1);
+            p1 = DiscardTopCards(legacy, 1, legacy.CharacterCardController.GetCardSource());
 
             AssertNumberOfCardsInTrash(legacy, count);
             AssertNumberOfCardsInDeck(legacy, 0);
@@ -622,6 +622,8 @@ namespace CauldronTests
             AssertOnBottomOfLocation(bottom[0], legacy.TurnTaker.Trash, 0);
             AssertOnBottomOfLocation(bottom[1], legacy.TurnTaker.Trash, 1);
         }
+
+
 
         [Test()]
         public void TestVagrantHeartPhase2_TestOmnitronXReset()
@@ -642,6 +644,9 @@ namespace CauldronTests
             PlayCard(p1);
             AssertInTrash(p1);
             AssertNumberOfCardsInTrash(omnix, 1);
+
+            var p3 = DiscardTopCards(omnix, 1);
+            AssertNumberOfCardsInTrash(omnix, 2);
         }
 
         [Test()]
@@ -1366,6 +1371,38 @@ namespace CauldronTests
             }
         }
 
+
+        [Test()]
+        public void TestMoonEater_SoulRevealed_EmptyDeck([Values(1, 2, 3)] int number)
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis");
+            //choir.DebugForceHeartPlayer = legacy;
+            StartGame();
+            FlipCard(choir.CharacterCard);
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            AddCannotDealDamageTrigger(choir, choir.CharacterCard);
+
+            MoveCards(legacy, FindCardsWhere(c => c.Location.IsDeck && c.IsHero), (Card c) => c.NativeTrash);
+
+            var inDeck = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInDeck(httc));
+            var inTrash = GameController.HeroTurnTakerControllers.ToDictionary(httc => httc, httc => GetNumberOfCardsInTrash(httc));
+
+            DecisionSelectNumber = number;
+            QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, writhe, medico, idealist);
+            var card = PlayCard("MoonEater", 0, true);
+            PrintSpecialStringsForCard(card);
+            AssertInTrash(card);
+            int expectedDamage = Math.Max(5, 0);
+            QuickHPCheck(0, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage, -expectedDamage);
+
+            foreach (var httc in GameController.HeroTurnTakerControllers)
+            {
+                AssertNumberOfCardsInDeck(httc, inDeck[httc]);
+                AssertNumberOfCardsInTrash(httc, inTrash[httc]);
+            }
+        }
 
         [Test()]
         public void TestBeneathTheFlesh_PlayCard([Values(1, 2, 3)] int number)

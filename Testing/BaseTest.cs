@@ -2459,21 +2459,21 @@ namespace Handelabra.Sentinels.UnitTest
             RunCoroutine(this.GameController.ShuffleLocation(location, null));
         }
 
-        protected IEnumerable<Card> DiscardTopCards(TurnTaker tt, int amount)
+        protected IEnumerable<Card> DiscardTopCards(TurnTaker tt, int amount, CardSource cardSource = null)
         {
             var cards = tt.Deck.GetTopCards(amount);
-            RunCoroutine(this.GameController.DiscardTopCards(null, tt.Deck, amount));
+            RunCoroutine(this.GameController.DiscardTopCards(null, tt.Deck, amount, cardSource: cardSource));
             return cards;
         }
 
-        protected void DiscardTopCards(Location location, int amount)
+        protected void DiscardTopCards(Location location, int amount, CardSource cardSource = null)
         {
-            RunCoroutine(this.GameController.DiscardTopCards(null, location, amount));
+            RunCoroutine(this.GameController.DiscardTopCards(null, location, amount, cardSource: cardSource));
         }
 
-        protected IEnumerable<Card> DiscardTopCards(TurnTakerController ttc, int amount)
+        protected IEnumerable<Card> DiscardTopCards(TurnTakerController ttc, int amount, CardSource cardSource=null)
         {
-            return DiscardTopCards(ttc.TurnTaker, amount);
+            return DiscardTopCards(ttc.TurnTaker, amount, cardSource);
         }
 
         protected Card DestroyCard(Card card, Card cardSource = null)
