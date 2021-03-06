@@ -735,9 +735,18 @@ namespace CauldronTests
             DealDamage(bunker, pyt, 2, DamageType.Melee);
             QuickHPCheck(-1, -2, 0, 0, 0);
 
-            QuickHPStorage(dynamo.CharacterCard, pyt, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            QuickHPUpdate();
             DealDamage(bunker, pyt, 2, DamageType.Melee);
-            QuickHPCheck(0, -1, 0, 0, 0);
+            QuickHPCheck(0, -2, 0, 0, 0);
+
+            //should only be the first in a given turn
+            QuickHPUpdate();
+            DealDamage(haka, pyt, 3, DamageType.Melee);
+            QuickHPCheck(0, -2, 0, 0, 0);
+
+            QuickHPUpdate();
+            DealDamage(haka, pyt, 3, DamageType.Melee);
+            QuickHPCheck(0, -2, 0, 0, 0);
 
             //Whenever a One-shot enters the villain trash, this card deals the 2 hero targets with the lowest HP {H - 2} toxic damage each.
             QuickHPStorage(dynamo.CharacterCard, pyt, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
