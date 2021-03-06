@@ -927,6 +927,43 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestReversal_SecondEffectTriggering_ReduceTo0()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //reduce damage being dealt to omni to 0
+            AddReduceDamageTrigger(omnitron, false, true, 1);
+            QuickHPStorage(omnitron);
+            PlayCard("Reversal");
+            QuickHPCheck(0);
+
+            //should still be redirected back
+            QuickHPStorage(omnitron, titan);
+            DealDamage(omnitron, titan, 2, DamageType.Melee, isIrreducible: true);
+            QuickHPCheck(-2, 0);
+
+        }
+
+        [Test()]
+        public void TestReversal_SecondEffectTriggering_CannotDealDamage()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            //titan can't deal damage
+            AddCannotDealNextDamageTrigger(titan, titan.CharacterCard);
+            QuickHPStorage(omnitron);
+            PlayCard("Reversal");
+            QuickHPCheck(0);
+
+            //should still be redirected back
+            QuickHPStorage(omnitron, titan);
+            DealDamage(omnitron, titan, 2, DamageType.Melee, isIrreducible: true);
+            QuickHPCheck(-2, 0);
+        }
+
+            [Test()]
         public void TestReversalToHand()
         {
             SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
