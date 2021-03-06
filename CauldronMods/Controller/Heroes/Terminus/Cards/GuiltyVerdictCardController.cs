@@ -20,16 +20,30 @@ namespace Cauldron.Terminus
             base.SpecialStringMaker.ShowTokenPool(base.WrathPool);
         }
 
+        private bool _wasTargetHeroBeforeDamage = false;
+
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>((dda) => dda.Target.IsHero && dda.Amount >= 3, DealDamageActionResponse, TriggerType.IncreaseDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((dda) => dda.Target.IsHero, StoreIsHero, TriggerType.HiddenLast, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((dda) => _wasTargetHeroBeforeDamage && dda.Amount >= 3, DealDamageActionResponse, TriggerType.IncreaseDamage, TriggerTiming.After);
             base.AddTriggers();
+        }
+
+        private IEnumerator StoreIsHero(DealDamageAction dda)
+        {
+            _wasTargetHeroBeforeDamage = true;
+
+            yield return null;
+            yield break;
         }
 
         private IEnumerator DealDamageActionResponse(DealDamageAction dealDamageAction)
         {
             IEnumerator coroutine;
-
+            if(!dealDamageAction.IsPretend)
+            {
+                _wasTargetHeroBeforeDamage = false;
+            }
             coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(1, 3, removeTokenResponse: RemoveTokensFromPoolResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "nothing happens.", removeEffectDescription: "increase the target's damage", triggerAction: dealDamageAction);
             if (UseUnityCoroutines)
             {

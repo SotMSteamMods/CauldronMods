@@ -1008,6 +1008,29 @@ namespace CauldronTests
             QuickHPCheck(-4, 0, 0, 0, 0);
             QuickTokenPoolCheck(0);
         }
+
+        [Test]
+        public void TestGuiltyVerdict_DontAddTokensOnFlippingNonHeroesIntoHeroes()
+        {
+            TokenPool tokenPool;
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Terminus", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            PutIntoPlay("GuiltyVerdict");
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 2);
+
+            Card red = MoveCard(oblivaeon, "TheRedMenace", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+
+            GoToBeforeStartOfTurn(terminus);
+            RunActiveTurnPhase();
+
+            SetHitPoints(red, 2);
+
+            AssertTokenPoolCount(tokenPool, 2);
+            DealDamage(haka, red, 4, DamageType.Melee);
+            AssertFlipped(red);
+            AssertTokenPoolCount(tokenPool, 2);
+        }
         #endregion Test Guilty Verdict
 
         #region Test Immortal Coils
@@ -1578,6 +1601,8 @@ namespace CauldronTests
             UsePower(coil);
             AssertTokensInWrathPool(1);
         }
+
+
         [Test]
         public void TestRepOfEarthNonTerminus()
         {
