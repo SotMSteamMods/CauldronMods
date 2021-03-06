@@ -62,17 +62,25 @@ namespace Cauldron.Starlight
         }
         public override void AddStartOfGameTriggers()
         {
-            var cards = (HeroTurnTakerController as StarlightTurnTakerController).ManageCharactersOffToTheSide(false);
+            if(Card.IsIncapacitatedOrOutOfGame)
+            {
+                return;
+            }
+            if (HeroTurnTakerController is StarlightTurnTakerController starlightTTC)
+            {
 
-            _terra = cards.Where((Card c) => c.Identifier == "StarlightOfTerraCharacter").FirstOrDefault();
-            _asheron = cards.Where((Card c) => c.Identifier == "StarlightOfAsheronCharacter").FirstOrDefault();
-            _cryos = cards.Where((Card c) => c.Identifier == "StarlightOfCryosFourCharacter").FirstOrDefault();
+                var cards = starlightTTC.ManageCharactersOffToTheSide(false);
 
-            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker && IsNextToConstellation(terra),
-                            (PhaseChangeAction pca) => TerraHealTeamResponse(),
-                            TriggerType.GainHP);
-            AddIncreaseDamageTrigger(AsheronBoostDamageCriteria, 1);
-            AddTrigger<CardEntersPlayAction>(CryosCardDrawCriteria, (CardEntersPlayAction cep) => DrawCard(), new List<TriggerType> { TriggerType.DrawCard }, TriggerTiming.After);
+                _terra = cards.Where((Card c) => c.Identifier == "StarlightOfTerraCharacter").FirstOrDefault();
+                _asheron = cards.Where((Card c) => c.Identifier == "StarlightOfAsheronCharacter").FirstOrDefault();
+                _cryos = cards.Where((Card c) => c.Identifier == "StarlightOfCryosFourCharacter").FirstOrDefault();
+
+                AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker && IsNextToConstellation(terra),
+                                (PhaseChangeAction pca) => TerraHealTeamResponse(),
+                                TriggerType.GainHP);
+                AddIncreaseDamageTrigger(AsheronBoostDamageCriteria, 1);
+                AddTrigger<CardEntersPlayAction>(CryosCardDrawCriteria, (CardEntersPlayAction cep) => DrawCard(), new List<TriggerType> { TriggerType.DrawCard }, TriggerTiming.After);
+            }
         }
 
         public IEnumerator TerraHealTeamResponse()

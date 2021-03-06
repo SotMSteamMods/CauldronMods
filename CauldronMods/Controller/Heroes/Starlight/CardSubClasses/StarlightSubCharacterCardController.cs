@@ -22,9 +22,9 @@ namespace Cauldron.Starlight
 
         public override void AddStartOfGameTriggers()
         {
-            if(IsCoreCharacterCard)
+            if(IsCoreCharacterCard && !Card.IsIncapacitatedOrOutOfGame && HeroTurnTakerController is StarlightTurnTakerController starlightTTC)
             {
-                (TurnTakerController as StarlightTurnTakerController).ManageCharactersOffToTheSide(true);
+                starlightTTC.ManageCharactersOffToTheSide(true);
             }
         }
 

@@ -27,6 +27,9 @@ namespace CauldronTests
         protected HeroTurnTakerController pyre { get { return FindHero("Pyre"); } }
         protected HeroTurnTakerController quicksilver { get { return FindHero("Quicksilver"); } }
         protected HeroTurnTakerController starlight { get { return FindHero("Starlight"); } }
+        protected Card terra { get { return GetCard("StarlightOfTerraCharacter"); } }
+        protected Card asheron { get { return GetCard("StarlightOfAsheronCharacter"); } }
+        protected Card cryos { get { return GetCard("StarlightOfCryosFourCharacter"); } }
         protected HeroTurnTakerController tango { get { return FindHero("TangoOne"); } }
         protected HeroTurnTakerController terminus { get { return FindHero("Terminus"); } }
         protected HeroTurnTakerController knight { get { return FindHero("TheKnight"); } }

@@ -20,10 +20,6 @@ namespace CauldronTests
             DealDamage(villain, starlight, 2, DamageType.Melee);
         }
 
-        protected Card terra { get { return GetCard("StarlightOfTerraCharacter"); } }
-        protected Card asheron { get { return GetCard("StarlightOfAsheronCharacter"); } }
-        protected Card cryos { get { return GetCard("StarlightOfCryosFourCharacter"); } }
-
         protected List<Card> EachStarlight { get { return new List<Card> { terra, asheron, cryos }; } }
         #endregion
         [Test()]

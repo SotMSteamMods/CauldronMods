@@ -454,6 +454,65 @@ namespace CauldronTests
             QuickHPCheck(-1);
             QuickHandCheck(1);
         }
+
+        [Test()]
+        public void TestCelestialAuraPower_Oblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DealDamage(oblivaeon, ra, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "Starlight" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Starlight";
+            RunActiveTurnPhase();
+
+            Card aura = GetCard("CelestialAura");
+            PlayCard(aura);
+
+            DecisionSelectPower = aura;
+            DecisionSelectTarget = oblivaeon.CharacterCard;
+
+            QuickHPStorage(oblivaeon);
+            QuickHandStorage(starlight);
+            UsePower(aura);
+
+            //should deal 1 damage and draw 1 card
+            QuickHPCheck(-1);
+            QuickHandCheck(1);
+        }
+
+        [Test()]
+        public void TestCelestialAuraPower_Oblivaeon_NightloreCouncilReplacement()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Starlight/NightloreCouncilStarlightCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DealDamage(oblivaeon.CharacterCard, terra, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            DealDamage(oblivaeon.CharacterCard, asheron, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            DealDamage(oblivaeon.CharacterCard, cryos, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "Starlight" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Starlight";
+            RunActiveTurnPhase();
+
+            Card aura = GetCard("CelestialAura");
+            PlayCard(aura);
+
+            DecisionSelectPower = aura;
+            DecisionSelectTarget = oblivaeon.CharacterCard;
+
+            QuickHPStorage(oblivaeon);
+            QuickHandStorage(starlight);
+            AssertNoDecision(SelectionType.HeroToDealDamage);
+
+            UsePower(aura);
+
+            //should deal 1 damage and draw 1 card
+            QuickHPCheck(-1);
+            QuickHandCheck(1);
+        }
         [Test()]
         public void TestCelestialAuraDamageToHeal()
         {
