@@ -17,7 +17,7 @@ namespace Cauldron.Titan
         {
             //Skip any effects which would act at the end of the villain turn.
             base.AddInhibitorException((GameAction ga) => true);
-            base.GameController.AddTemporaryTriggerInhibitor<PhaseChangeAction>((ITrigger trigger) => trigger is PhaseChangeTrigger && (trigger as PhaseChangeTrigger).PhaseCriteria(Phase.End) && base.Game.ActiveTurnTaker.IsVillain && (trigger as PhaseChangeTrigger).TurnTakerCriteria(base.Game.ActiveTurnTaker), (PhaseChangeAction action) => !base.Card.Location.IsInPlayAndNotUnderCard, base.GetCardSource());
+            base.GameController.AddTemporaryTriggerInhibitor<PhaseChangeAction>((ITrigger trigger) => trigger is PhaseChangeTrigger && (trigger as PhaseChangeTrigger).PhaseCriteria(Phase.End) && base.Game.ActiveTurnTaker.IsVillain && base.Game.ActiveTurnTaker.BattleZone == Card.BattleZone && (trigger as PhaseChangeTrigger).TurnTakerCriteria(base.Game.ActiveTurnTaker), (PhaseChangeAction action) => !base.Card.Location.IsInPlayAndNotUnderCard, base.GetCardSource());
             //You may not use powers.
             base.CannotUsePowers((TurnTakerController ttc) => ttc == base.HeroTurnTakerController);
             //You may not draw cards.
