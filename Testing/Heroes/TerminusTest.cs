@@ -416,10 +416,13 @@ namespace CauldronTests
 
             StartTestGame();
 
-            PutIntoPlay("FlashBeforeYourEyes");
+            Card flash = GetCard("FlashBeforeYourEyes");
+            PlayCard(flash);
             bladeBattalion = PutInTrash("BladeBattalion");
             plummetingMonorail = PutInTrash("PlummetingMonorail");
             motivationalCharge = PutInTrash("MotivationalCharge");
+
+            PrintSpecialStringsForCard(flash);
 
             DecisionSelectTurnTakers = new TurnTaker[] { baron.TurnTaker, baron.TurnTaker, base.env.TurnTaker, legacy.TurnTaker };
             DecisionSelectCards = new Card[] { bladeBattalion, plummetingMonorail, motivationalCharge };
@@ -428,17 +431,60 @@ namespace CauldronTests
             GoToEndOfTurn(terminus);
             AssertOnTopOfDeck(bladeBattalion);
 
+            PrintSpecialStringsForCard(flash);
+
             // You cannot select that trash pile again
             base.GameController.SkipToTurnTakerTurn(terminus);
             Assert.Catch<Exception>(new TestDelegate(() => GoToEndOfTurn(terminus)));
+
+            PrintSpecialStringsForCard(flash);
 
             base.GameController.SkipToTurnTakerTurn(terminus);
             GoToEndOfTurn(terminus);
             AssertOnTopOfDeck(plummetingMonorail);
 
+            PrintSpecialStringsForCard(flash);
+
             base.GameController.SkipToTurnTakerTurn(terminus);
             GoToEndOfTurn(terminus);
             AssertOnTopOfDeck(motivationalCharge);
+
+            PrintSpecialStringsForCard(flash);
+
+        }
+
+        [Test]
+        public void TestFlashBeforeYourEyes_Oblivaeon()
+        {
+
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Terminus", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card flash = GetCard("FlashBeforeYourEyes");
+            PlayCard(flash);
+
+            PrintSpecialStringsForCard(flash);
+
+
+            GoToEndOfTurn(terminus);
+
+            PrintSpecialStringsForCard(flash);
+
+            // You cannot select that trash pile again
+            base.GameController.SkipToTurnTakerTurn(terminus);
+
+            PrintSpecialStringsForCard(flash);
+
+            base.GameController.SkipToTurnTakerTurn(terminus);
+            GoToEndOfTurn(terminus);
+
+            PrintSpecialStringsForCard(flash);
+
+            base.GameController.SkipToTurnTakerTurn(terminus);
+            GoToEndOfTurn(terminus);
+
+            PrintSpecialStringsForCard(flash);
+
         }
 
         [Test]
