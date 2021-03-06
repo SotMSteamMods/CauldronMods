@@ -240,5 +240,11 @@ namespace CauldronTests
             return GetCard("ThroughTheBreachShiftTrack" + position);
         }
 
+        //OblivAeon
+
+        protected void AssertCardsInBattleZone(BattleZone bz, params Card[] cards)
+        {
+            cards.ForEach(c => AssertBattleZone(c, bz));
+        }
     }
 }

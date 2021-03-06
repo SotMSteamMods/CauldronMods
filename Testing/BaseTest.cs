@@ -3674,7 +3674,7 @@ namespace Handelabra.Sentinels.UnitTest
             }
         }
 
-        protected void AssertNextDecisionChoices(IEnumerable<TurnTaker> included, IEnumerable<TurnTaker> notIncluded)
+        protected void AssertNextDecisionChoices(IEnumerable<TurnTaker> included = null, IEnumerable<TurnTaker> notIncluded = null)
         {
             if (included != null)
             {
