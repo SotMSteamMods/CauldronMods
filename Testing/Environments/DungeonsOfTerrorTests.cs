@@ -584,6 +584,53 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRestfulInn_MultipleCharsWithIncaps()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "TheSentinels", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(ra, 20);
+            //The first time a hero draws a card during their turn, they may discard it. 
+            //If they do, that hero regains 2HP. Increase HP regained this way by 1 if the top card of the environment trash is a fate card.
+            Card inn = PlayCard("RestfulInn");
+
+            DealDamage(baron, idealist, 1000, DamageType.Melee, true);
+            GoToPlayCardPhase(sentinels);
+
+            DecisionYesNo = true;
+            AssertNumberOfChoicesInNextDecision(3, SelectionType.CharacterCard);
+            DrawCard(sentinels);
+
+
+        }
+
+        [Test()]
+        public void TestRestfulInn_MultipleCharsOffToTheSide()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.Titan", "Cauldron.DungeonsOfTerror");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 20);
+            SetHitPoints(ra, 20);
+            SetHitPoints(titan, 20);
+
+            //The first time a hero draws a card during their turn, they may discard it. 
+            //If they do, that hero regains 2HP. Increase HP regained this way by 1 if the top card of the environment trash is a fate card.
+            Card inn = PlayCard("RestfulInn");
+
+            GoToPlayCardPhase(titan);
+
+            DecisionYesNo = true;
+            AssertNumberOfChoicesInNextDecision(1, SelectionType.CharacterCard);
+            DrawCard(titan);
+
+
+        }
+
+        [Test()]
         public void TestRingOfForesight()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
