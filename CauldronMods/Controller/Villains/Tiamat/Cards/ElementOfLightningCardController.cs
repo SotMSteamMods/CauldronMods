@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using Handelabra;
 
 namespace Cauldron.Tiamat
 {
@@ -71,9 +72,14 @@ namespace Cauldron.Tiamat
             {
                 TurnTaker biggestHandTurnTaker = storedResults.First();
                 //...may not draw cards until the start of the next villain turn.
-                //We secretly set a property on the victim's character card to indicate that they can't draw cards.
-                //A CannotDrawCards query on TiamatCharacterCardController actually makes this happen
-                GameController.AddCardPropertyJournalEntry(biggestHandTurnTaker.CharacterCard, PreventDrawPropertyKey, true);
+                //We secretly set a property on all Tiamat character cards with a string of the turnTaker's identifier
+                //this allows for multichars and Completionist Guise Swaps to work correctly
+                //A CannotDrawCards query on TiamatSubCharacterCardController actually makes this happen
+                string ttIdentifier = biggestHandTurnTaker.Identifier;
+                foreach(Card head in CharacterCards)
+                {
+                    GameController.AddCardPropertyJournalEntry(head, PreventDrawPropertyKey, ttIdentifier.ToEnumerable());
+                }
 
                 //This status effect makes them able to draw again at start of next villain
                 OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, nameof(DoNothing), $"{biggestHandTurnTaker.Name} cannot draw cards.", new TriggerType[] { TriggerType.CreateStatusEffect }, base.Card);
@@ -98,10 +104,11 @@ namespace Cauldron.Tiamat
         {
             System.Console.WriteLine("### DEBUG ### - ElementOfLightning.ResumeDrawEffect triggered");
 
+            List<string> empty = new List<string>();
             //Clear the secret property from all Character Cards 
-            foreach (HeroTurnTaker hero in Game.HeroTurnTakers)
+            foreach (Card head in CharacterCards)
             {
-                GameController.AddCardPropertyJournalEntry(hero.CharacterCard, PreventDrawPropertyKey, (bool?)null);
+                GameController.AddCardPropertyJournalEntry(head, PreventDrawPropertyKey, empty);
             }
             yield break;
         }

@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Tiamat
@@ -48,18 +49,17 @@ namespace Cauldron.Tiamat
         {
             if (ttc is HeroTurnTakerController httc)
             {
-                return httc.CharacterCardControllers.Any(chc => chc.GetCardPropertyJournalEntryBoolean(ElementOfLightningCardController.PreventDrawPropertyKey) == true);
+                bool? criteriaMet =  Game.Journal.GetCardPropertiesStringList(Card, ElementOfLightningCardController.PreventDrawPropertyKey)?.Any(id => id == httc.TurnTaker.Identifier);
+                return criteriaMet is null ? false : criteriaMet.Value;
             }
             return false;
         }
 
         protected IEnumerator ClearLightningEffectResponse(PhaseChangeAction action)
         {
-            //Clear the secret property from all Character Cards 
-            foreach (HeroTurnTaker hero in Game.HeroTurnTakers)
-            {
-                GameController.AddCardPropertyJournalEntry(hero.CharacterCard, ElementOfLightningCardController.PreventDrawPropertyKey, (bool?)null);
-            }
+            //Clear the secret property from this Character Card
+            List<string> empty = new List<string>();
+            GameController.AddCardPropertyJournalEntry(Card, ElementOfLightningCardController.PreventDrawPropertyKey, empty);
             yield break;
         }
     }
