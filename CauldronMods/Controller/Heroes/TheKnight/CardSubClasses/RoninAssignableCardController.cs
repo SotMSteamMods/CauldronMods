@@ -19,7 +19,7 @@ namespace Cauldron.TheKnight
             IEnumerator coroutine;
             if(this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards && !_useSpecialAssignment)
             {
-                coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => IsOwnCharacterCard(c), "Knight character"), storedResults, isPutIntoPlay, decisionSources);
+                coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => IsOwnCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "Knight character"), storedResults, isPutIntoPlay, decisionSources);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

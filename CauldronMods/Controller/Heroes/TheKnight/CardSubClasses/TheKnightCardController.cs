@@ -72,7 +72,7 @@ namespace Cauldron.TheKnight
         {
             if (base.HeroTurnTakerController.HasMultipleCharacterCards)
             {
-                var criteria = new LinqCardCriteria(c => IsOwnCharacterCard(c), "hero character cards");
+                var criteria = new LinqCardCriteria(c => IsOwnCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero character cards");
                 var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType, criteria, results, false, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
