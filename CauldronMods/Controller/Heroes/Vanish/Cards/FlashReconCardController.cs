@@ -19,7 +19,8 @@ namespace Cauldron.Vanish
          */
         public override IEnumerator Play()
         {
-            var coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, l => l.IsDeck && !l.OwnerTurnTaker.IsIncapacitatedOrOutOfGame, RevealTopCardAndReturn, cardSource: GetCardSource());
+            List<Card> revealedCards = new List<Card>();
+            var coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, l => l.IsDeck && !l.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && l.IsRealDeck, (Location loc) => RevealTopCardAndReturn(loc, revealedCards), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -29,7 +30,18 @@ namespace Cauldron.Vanish
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = base.GameController.SelectAndPlayCard(DecisionMaker, (Card c) => c.Location.IsDeck && base.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource()) && c == c.Location.TopCard, optional: false, isPutIntoPlay: true, GetCardSource(), "There are no cards in any decks.");
+            IEnumerable<Card> choices = FindCardsWhere((Card c) => c.Location.IsDeck && base.GameController.IsLocationVisibleToSource(c.Location, GetCardSource()) && c == c.Location.TopCard);
+            IEnumerable<CardController> cardsToFlip = choices.Except(revealedCards).Select(c => FindCardController(c));
+            coroutine = GameController.FlipCards(cardsToFlip, GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = SelectAndPlayCardWithFlipBack(DecisionMaker, choices, cardsToFlip);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -41,10 +53,11 @@ namespace Cauldron.Vanish
             yield break;
         }
 
-        private IEnumerator RevealTopCardAndReturn(Location loc)
+        private IEnumerator RevealTopCardAndReturn(Location loc, List<Card> revealedCards)
         {
             List<Card> result = new List<Card>();
-            var coroutine = GameController.RevealCards(this.TurnTakerController, loc, 1, result, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: GetCardSource());
+            List<RevealCardsAction> actionResult = new List<RevealCardsAction>();
+            var coroutine = GameController.RevealCards(this.TurnTakerController, loc, 1, result, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, storedResultsAction: actionResult, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -61,6 +74,73 @@ namespace Cauldron.Vanish
             else
             {
                 base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (!actionResult.Any())
+            {
+                yield break;
+            }
+
+            RevealCardsAction revealAction = actionResult.First();
+
+            if (!revealAction.RevealedCards.Any() && !revealAction.RemovedFromRevealedCards.Any())
+            {
+                yield break;
+            }
+
+            Card revealedCard = revealAction.RevealedCards.Any() ? revealAction.RevealedCards.First() : revealAction.RemovedFromRevealedCards.First();
+            revealedCards.Add(revealedCard);
+
+            yield break;
+        }
+
+        public IEnumerator SelectAndPlayCardWithFlipBack(HeroTurnTakerController hero, IEnumerable<Card> choices, IEnumerable<CardController> cardsToFlip)
+        {
+            if (!choices.Any((Card c) => GameController.CanPlayCard(FindCardController(c), isPutIntoPlay: true) == CanPlayCardResult.CanPlay))
+            {
+                IEnumerator coroutine = GameController.SendMessageAction("None of the cards can be played.", Priority.Medium, GetCardSource(), choices, showCardSource: true);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                yield break;
+            }
+            SelectCardDecision selectCardDecision = new SelectCardDecision(GameController, hero, SelectionType.PutIntoPlay, choices, cardSource: GetCardSource());
+            IEnumerator coroutine2 = GameController.SelectCardAndDoAction(selectCardDecision, (SelectCardDecision d) => FlipAndPlayCard(hero, d.SelectedCard, cardsToFlip));
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine2);
+            }
+        }
+
+        private IEnumerator FlipAndPlayCard(HeroTurnTakerController hero, Card selectedCard, IEnumerable<CardController> cardsToFlip)
+        {
+            IEnumerator coroutine = GameController.FlipCards(cardsToFlip, GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = GameController.PlayCard(hero, selectedCard, isPutIntoPlay: true, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
             }
         }
     }

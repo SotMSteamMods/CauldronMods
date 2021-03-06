@@ -273,6 +273,18 @@ namespace CauldronTests
             AssertOnTopOfDeck(topEnv);
         }
 
+        [Test]
+        public void TestEchonavigationOblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            GoToStartOfTurn(cricket);
+            AssertNumberOfChoicesInNextDecision(5, SelectionType.RevealTopCardOfDeck);
+            PlayCard("Echonavigation");
+
+        }
+
         [Test()]
         public void TestEnhancedHearing()
         {

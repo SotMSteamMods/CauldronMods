@@ -15,7 +15,7 @@ namespace Cauldron.Cricket
         public override IEnumerator Play()
         {
             //Reveal the top card of each deck. You may replace or discard each card.",
-            IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(base.HeroTurnTakerController, new LinqTurnTakerCriteria((TurnTaker tt) => true), SelectionType.RevealTopCardOfDeck, (TurnTaker tt) => this.RevealCard_DiscardItOrPutItOnDeck(base.HeroTurnTakerController, base.FindTurnTakerController(tt), tt.Deck, false), allowAutoDecide: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, l => l.IsDeck && !l.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && l.IsRealDeck, (Location loc) => this.RevealCard_DiscardItOrPutItOnDeck(base.HeroTurnTakerController, base.FindTurnTakerController(loc.OwnerTurnTaker), loc, false), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
