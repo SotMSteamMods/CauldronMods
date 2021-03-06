@@ -192,5 +192,25 @@ namespace Cauldron.Pyre
             }
             yield break;
         }
+
+        public override IEnumerator AfterFlipCardImmediateResponse()
+        {
+            SetOverrideTurnTakerIrradiatedMarkers();
+            return base.AfterFlipCardImmediateResponse();
+        }
+
+        public void SetOverrideTurnTakerIrradiatedMarkers()
+        {
+            if (!GameController.Game.IsOblivAeonMode)
+            {
+                return;
+            }
+
+            var allMarkers = TurnTaker.GetAllCards(false).Where((Card c) => !c.IsRealCard && c.Identifier == "IrradiatedMarker");
+            foreach (Card marker in allMarkers)
+            {
+                GameController.AddCardPropertyJournalEntry(marker, "OverrideTurnTaker", new string[] { "Cauldron.Pyre", marker.Identifier });
+            }
+        }
     }
 }
