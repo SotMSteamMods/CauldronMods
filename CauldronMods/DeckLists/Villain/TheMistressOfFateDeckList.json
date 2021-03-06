@@ -44,11 +44,11 @@
             "flippedGameplay": [
                 "Continue playing if all heroes are incapacitated.",
                 "When {TheMistressOfFate} flips to this side:",
-                "{ Restore all other targets to their maximum HP.",
-                "{ Destroy all environment cards.",
-                "{ Flip all day cards face down.",
-                "{ Remove all cards in the villain trash and the top {H - 1} cards of the villain deck from the game without looking at them.",
-                "{ Flip all incapacitated heroes and restore them to their maximum HP. Cards that were in a hero's deck, hand, or trash when they were incapacitated are returned to those respective locations.",
+                "* Restore all other targets to their maximum HP.",
+                "* Destroy all environment cards.",
+                "* Flip all day cards face down.",
+                "* Remove all cards in the villain trash and the{BR}  top {H - 1} cards of the villain deck from the{BR}  game without looking at them.",
+                "* Flip all incapacitated heroes and restore them to their{BR}  maximum HP. Cards that were in a hero's deck, hand,{BR}  or trash when they were incapacitated are returned{BR}  to those respective locations.",
                 "Then, flip {TheMistressOfFate}'s villain character cards."
             ],
             "flippedAdvanced": "When {TheMistressOfFate} flips to this side, she regains 10 HP.",
