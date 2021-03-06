@@ -30,6 +30,9 @@ namespace Cauldron.OblaskCrater
         {
             base.AddEndOfTurnTrigger((tt)=>tt.IsEnvironment, PhaseChangeActionResponse, TriggerType.UsePower);
             base.AddWhenDestroyedTrigger(DestroyCardActionResponse, TriggerType.GainHP);
+
+            //prevent the damage from powers caused by this card
+            AddTrigger((UsePowerAction up) => up.CardSource != null && up.CardSource.Card == this.Card, PreventDamageFromPowerResponse, TriggerType.Hidden, TriggerTiming.Before);
         }
 
         private IEnumerator PhaseChangeActionResponse(PhaseChangeAction phaseChangeAction)
@@ -41,7 +44,7 @@ namespace Cauldron.OblaskCrater
 
             if (totalPredators == 0 || totalPredators == 1)
             {
-                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.UsePower, new LinqCardCriteria((lcc) => lcc.IsHeroCharacterCard && !lcc.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(lcc, GetCardSource())), selectCardDecisions, true, cardSource: base.GetCardSource());
+                coroutine = GameController.SelectHeroToUsePower(DecisionMaker, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -50,26 +53,39 @@ namespace Cauldron.OblaskCrater
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-
-                if (selectCardDecisions != null && selectCardDecisions.Count() > 0)
+            }
+            else
+            {
+                coroutine = GameController.SendMessageAction($"There are {totalPredators} predators in play, so {Card.Title} does not give a power.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
                 {
-                    base.AddToTemporaryTriggerList(base.AddTrigger<UsePowerAction>((upa) => upa.HeroUsingPower == FindHeroTurnTakerController(selectCardDecisions.FirstOrDefault().SelectedCard.Owner.ToHero()), UsePowerActionResponse, TriggerType.MakeImmuneToDamage, TriggerTiming.Before));
-                    // Select hero to use power.
-                    coroutine = base.SelectAndUsePower(base.FindCardController(selectCardDecisions.FirstOrDefault().SelectedCard));
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
-
-                RemoveTemporaryTriggers();
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             yield break;
+        }
+
+        private IEnumerator PreventDamageFromPowerResponse(UsePowerAction up)
+        {
+            RemoveTemporaryTriggers();
+            AddToTemporaryTriggerList(AddPreventDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && dd.CardSource.PowerSource == up.Power));
+            AddToTemporaryTriggerList(AddTrigger((AddStatusEffectAction se) => se.StatusEffect.DoesDealDamage && se.CardSource != null && se.CardSource.PowerSource == up.Power, PreventDamageFromEffectResponse, TriggerType.Hidden, TriggerTiming.After));
+            yield return null;
+            yield break;
+        }
+
+        private IEnumerator PreventDamageFromEffectResponse(AddStatusEffectAction se)
+        {
+            var preventEffect = new CannotDealDamageStatusEffect();
+            preventEffect.IsPreventEffect = true;
+            preventEffect.StatusEffectCriteria.Effect = se.StatusEffect;
+            preventEffect.UntilEffectExpires(se.StatusEffect);
+            return GameController.AddStatusEffect(preventEffect, true, GetCardSource());
         }
 
         private IEnumerator UsePowerActionResponse(UsePowerAction usePowerAction)
