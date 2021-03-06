@@ -35,12 +35,12 @@ channel with [Weekly Dev. Streams](https://www.youtube.com/playlist?list=PLGPBmj
 
 **What are you working on then?**
 
-So far the team has completed all decks from the Core Cauldron expansion, Experimental Expansion, and Stormfall Expansion.  This includes all promo/variant cards for those decks.
+The team has completed all decks from the Core Cauldron expansion, Experimental Expansion, Stormfall Expansion, Adrift Expansion, and Unexpected Expansion (that's all of them!).  This includes all promo/variant cards for those decks.
 
 The mod includes:
-* 19+ hero decks
-* 13+ Villain decks
-* 11+ environment decks
-* over 50 promo and variants for those decks
-* full card and game art (separate download)
-* music for each environment (separate download)
+* 22 hero decks
+* 17 Villain decks
+* 15 environment decks
+* Over 50 promo and variants for those decks
+* Full card and game art (separate download)
+* Music for each environment (separate download)
