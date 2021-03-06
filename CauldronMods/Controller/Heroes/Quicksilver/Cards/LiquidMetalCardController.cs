@@ -12,6 +12,7 @@ namespace Cauldron.Quicksilver
     {
         public LiquidMetalCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, cardCriteria: new LinqCardCriteria(c => c.DoKeywordsContain("combo"), "combo"));
         }
 
         public override IEnumerator Play()
@@ -56,7 +57,7 @@ namespace Cauldron.Quicksilver
             }
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
             var fake = new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), CharacterCard, 2, DamageType.Melee);
-            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.DealDamageSelf, base.Card, action: fake, storedResults: storedResults);
+            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.DealDamageSelf, base.Card, action: fake, storedResults: storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

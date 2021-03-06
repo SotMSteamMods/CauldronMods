@@ -189,6 +189,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestComboCombo_noCombosInHand()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card storm = GetCard("AlloyStorm", 1);
+            DiscardAllCards(quicksilver);
+            PutInHand(storm);
+
+            DecisionSelectFunction = 1;
+            DecisionSelectCard = storm;
+            //{Quicksilver} may deal herself 2 melee damage and play a Combo.
+            QuickHPStorage(baron, ra, quicksilver, wraith);
+            PlayCard(storm);
+            //Playing Alloy Storm twice pickinmg continue combo twice deals all non-hero -1x2 and Quicksilver -2x2
+            QuickHPCheck(-1, 0, -2, 0);
+        }
+
+        [Test()]
         public void TestComboFinisher()
         {
             SetupGameController("BaronBlade", "Cauldron.Quicksilver", "Ra", "TheWraith", "Megalopolis");
