@@ -363,6 +363,29 @@ namespace CauldronTests
             AssertNotInPlay(bringWhatYouNeed);
 
         }
+
+        [Test]
+        public void TestEtherealArmory_MysticalEnhancement()
+        {
+            SetupGameController("BaronBlade", "Ra", "Cauldron.MagnificentMara", "Cauldron.Terminus", "Megalopolis");
+            StartGame();
+
+            Card enhancement = PutInHand("MysticalEnhancement");
+            Card jailbreaker = PutInHand("Jailbreaker");
+            DiscardAllCards(ra);
+
+            DecisionSelectTurnTakers = new TurnTaker[] { terminus.TurnTaker, mara.TurnTaker };
+            DecisionSelectCards = new Card[] { jailbreaker, enhancement, jailbreaker };
+            PlayCard("EtherealArmory");
+            AssertInPlayArea(terminus, jailbreaker);
+            AssertNextToCard(enhancement, jailbreaker);
+
+            GoToStartOfTurn(terminus);
+            AssertInHand(jailbreaker, enhancement);
+
+
+
+        }
         [Test]
         public void TestEtherealArmoryNotReturnFromNotInPlay()
         {
