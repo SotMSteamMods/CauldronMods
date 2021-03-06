@@ -12,7 +12,8 @@ namespace Cauldron.Dynamo
     {
         public PythonCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowHasBeenUsedThisTurn(OncePerTurn, trueFormat: $"{Card.Title} has been dealt damage by a hero target this turn.", falseFormat: $"{Card.Title} has not been dealt damage by a hero target this turn.").Condition = () => Card.IsInPlayAndHasGameText; ;
+            SpecialStringMaker.ShowHeroTargetWithLowestHP(numberOfTargets: 2);
         }
 
         protected const string OncePerTurn = "OncePerTurn";

@@ -12,8 +12,11 @@ namespace Cauldron.Dynamo
     {
         public HelmetedChargeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(CopperheadIdentifier);
+            SpecialStringMaker.ShowSpecialString(() => $"{FindCopperhead().Title} is in {FindCopperhead().Location.GetFriendlyName()}.").Condition = () => Game.HasGameStarted && !FindCopperhead().Location.IsPlayArea;
         }
+
+        public readonly string CopperheadIdentifier = "Copperhead";
 
         public override IEnumerator Play()
         {

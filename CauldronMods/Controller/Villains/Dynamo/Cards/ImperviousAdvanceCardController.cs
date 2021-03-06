@@ -12,8 +12,12 @@ namespace Cauldron.Dynamo
     {
         public ImperviousAdvanceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(CopperheadIdentifier);
+            SpecialStringMaker.ShowVillainTargetWithHighestHP();
+            SpecialStringMaker.ShowHeroTargetWithHighestHP(ranking: 2);
         }
+
+        public readonly string CopperheadIdentifier = "Copperhead";
 
         public override IEnumerator Play()
         {

@@ -521,7 +521,8 @@ namespace CauldronTests
 
             QuickHPStorage(dynamo, haka, bunker, scholar);
             QuickShuffleStorage(dynamo, haka, bunker, scholar);
-            PlayCard(HelmetedCharge);
+            Card charge = PlayCard(HelmetedCharge);
+            PrintSpecialStringsForCard(charge);
             //If Copperhead is in play, he deals each hero target 2 melee damage.
             QuickHPCheckZero();
             QuickShuffleCheck(1, 0, 0, 0);

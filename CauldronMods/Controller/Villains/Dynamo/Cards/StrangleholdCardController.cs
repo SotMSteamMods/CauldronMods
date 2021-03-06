@@ -12,8 +12,11 @@ namespace Cauldron.Dynamo
     {
         public StrangleholdCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowIfSpecificCardIsInPlay(PythonIdentifier);
+            SpecialStringMaker.ShowSpecialString(() => $"{FindPython().Title} is in {FindPython().Location.GetFriendlyName()}.").Condition = () => Game.HasGameStarted && !FindPython().Location.IsPlayArea;
         }
+
+        public readonly string PythonIdentifier = "Python";
 
         public override IEnumerator Play()
         {
