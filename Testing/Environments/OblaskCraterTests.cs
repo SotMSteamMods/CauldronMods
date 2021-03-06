@@ -824,6 +824,22 @@ namespace CauldronTests
             base.GoToEndOfTurn(base.env);
             QuickHPCheck(0, 0, 1, 1, 1);
         }
+        [Test]
+        public void TestUnknownHerdsUsePowerOnlySpecificPower()
+        {
+            SetupGameController("BaronBlade", "Legacy/AmericasGreatestLegacy", "Ra", "Haka", DeckNamespace);
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, legacy.CharacterCard, baron.CharacterCard };
+            SetHitPoints(legacy, 15);
+            QuickHPStorage(legacy, baron);
+            PlayCard("UnknownHerds");
+            PlayCard("MotivationalCharge");
+
+            GoToEndOfTurn(base.env);
+            QuickHPCheck(2, -3);
+        }
 
         [Test]
         public void TestUnknownHerdsDestroyed()
