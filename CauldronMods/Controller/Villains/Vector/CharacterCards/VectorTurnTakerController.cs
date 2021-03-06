@@ -24,7 +24,7 @@ namespace Cauldron.Vector
             }
 
             // At the start of the game, put {Vector}'s villain character cards into play, "Asymptomatic Carrier" side up, with 40 HP.
-            IEnumerator routine = base.GameController.SetHP(this.CharacterCard, StartingHp);
+            IEnumerator routine = base.GameController.SetHP(this.CharacterCard, StartingHp, cardSource: CharacterCardController.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
