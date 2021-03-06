@@ -480,20 +480,23 @@ namespace CauldronTests
         [Test()]
         public void TestGravityFluctuation_DealDamage()
         {
-            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "TheSentinels", "Cauldron.NightloreCitadel");
+            SetupGameController("BaronBlade", "SkyScraper", "Legacy", "Haka", "TheSentinels", "Cauldron.Titan", "Cauldron.NightloreCitadel");
             StartGame();
             DestroyNonCharacterVillainCards();
 
             DiscardAllCards(haka);
-            DiscardAllCards(ra);
+            DiscardAllCards(titan);
+            DiscardAllCards(sky);
+
             // When this card enters play, it deals each hero with more than 3 cards in their hand 2 irreducible melee damage. 
             //One hero that was dealt no damage this way may deal 1 target 3 melee damage.
-            QuickHPStorage(baron.CharacterCard, ra.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, medico, idealist, writhe);
+            QuickHPStorage(baron.CharacterCard, sky.CharacterCard, legacy.CharacterCard, haka.CharacterCard, mainstay, medico, idealist, writhe, titan.CharacterCard);
             DecisionSelectCards = new Card[] { haka.CharacterCard, baron.CharacterCard };
             DecisionAutoDecideIfAble = true;
+            AssertNumberOfChoicesInNextDecision(3, SelectionType.HeroToDealDamage);
             PlayCard("GravityFluctuation");
             //gravity fluctuation reduces damage dealt by 1
-            QuickHPCheck(-2, 0, -2, 0, -2, -2, -2, -2);
+            QuickHPCheck(-2, 0, -2, 0, -2, -2, -2, -2, 0);
         }
 
         [Test()]

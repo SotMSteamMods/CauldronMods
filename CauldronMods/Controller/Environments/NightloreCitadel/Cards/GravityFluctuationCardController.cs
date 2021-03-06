@@ -70,7 +70,7 @@ namespace Cauldron.NightloreCitadel
             //One hero that was dealt no damage this way may deal 1 target 3 melee damage.
 
             List<SelectCardDecision> storedDecision = new List<SelectCardDecision>();
-            coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, new LinqCardCriteria(c => c.IsHeroCharacterCard &&  !c.IsIncapacitatedOrOutOfGame && !damagedHeroes.Contains(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults: storedDecision, false, cardSource: GetCardSource());
+            coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, new LinqCardCriteria(c => c.IsHeroCharacterCard &&  !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText && !damagedHeroes.Contains(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults: storedDecision, false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
