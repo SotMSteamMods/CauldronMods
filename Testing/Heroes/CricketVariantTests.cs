@@ -134,6 +134,44 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRenegadeCricketInnatePower_DarkMind()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective", scionIdentifiers: new List<string>() { "DarkMindCharacter" });
+            StartGame();
+
+
+            SwitchBattleZone(cricket);
+            SwitchBattleZone(legacy);
+
+            AssertBattleZone(mindScion, bzTwo);
+            AssertBattleZone(cricket, bzTwo);
+            AssertBattleZone(legacy, bzTwo);
+
+
+            Card hearing = PutOnDeck("EnhancedHearing");
+            Card evolution = PutOnDeck("NextEvolution");
+            //Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand.
+            QuickHandStorage(cricket);
+            UsePower(cricket);
+            QuickHandCheck(-1);
+            AssertIsInPlay(hearing);
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            QuickHandStorage(cricket);
+            UsePower(cricket);
+            QuickHandCheck(0);
+            AssertInHand(legacy, evolution);
+
+            ResetDecisions();
+            DecisionSelectLocation = new LocationChoice(cricket.TurnTaker.Deck);
+            MoveAllCards(cricket, cricket.TurnTaker.Deck, cricket.TurnTaker.Trash);
+            UsePower(cricket);
+
+
+        }
+
+        [Test()]
         public void TestRenegadeCricketIncap1()
         {
             SetupGameController("BaronBlade", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Magmaria");
