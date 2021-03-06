@@ -831,6 +831,20 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRadioPlaza_Oblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.CatchwaterHarbor", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SwitchBattleZone(ra);
+            Card radio = PlayCard("RadioPlaza");
+            PrintSpecialStringsForCard(radio);
+            AssertNumberOfCardSpecialStrings(radio, 6);
+
+        }
+
+        [Test()]
         public void TestSmoothCriminal()
         {
             SetupGameController(new string[] { "BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor" });
