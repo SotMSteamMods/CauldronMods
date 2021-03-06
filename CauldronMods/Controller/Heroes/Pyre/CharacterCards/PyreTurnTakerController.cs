@@ -16,7 +16,7 @@ namespace Cauldron.Pyre
 
         public void MoveMarkersToSide()
         {
-            var markersInDeckOrHand = TurnTaker.GetAllCards(false).Where((Card c) => !c.IsRealCard && (c.Location == TurnTaker.Deck || c.Location == HeroTurnTaker.Hand));
+            var markersInDeckOrHand = TurnTaker.GetAllCards(false).Where((Card c) => !c.IsRealCard && c.Identifier == "IrradiatedMarker" && (c.Location == TurnTaker.Deck || c.Location == HeroTurnTaker.Hand));
             if(markersInDeckOrHand.Any())
             {
                 foreach(Card marker in markersInDeckOrHand)

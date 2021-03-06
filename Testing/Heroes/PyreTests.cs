@@ -226,6 +226,17 @@ namespace CauldronTests
             UseIncapacitatedAbility(pyre, 2);
             AssertOnTopOfDeck(iron);
         }
+
+        [Test]
+        public void TestPyreIncaps_OblivaeonSoftlock()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Pyre", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            SetupIncap(oblivaeon);
+            GoToAfterEndOfTurn(oblivaeon);
+            RunActiveTurnPhase();
+        }
         [Test]
         public void TestChromodynamicsDamageTrigger()
         {
