@@ -831,7 +831,7 @@ namespace CauldronTests
             StartGame();
             DestroyNonCharacterVillainCards();
 
-            DecisionSelectCards = new Card[] { legacy.CharacterCard, legacy.CharacterCard, baron.CharacterCard };
+            DecisionSelectCards = new Card[] { legacy.CharacterCard, baron.CharacterCard };
             SetHitPoints(legacy, 15);
             QuickHPStorage(legacy, baron);
             PlayCard("UnknownHerds");
