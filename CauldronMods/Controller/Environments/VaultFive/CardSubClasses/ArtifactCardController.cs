@@ -129,7 +129,22 @@ namespace Cauldron.VaultFive
             }
 
             //Then move this card beneath the top 2 cards of its deck face down.
-            IEnumerator coroutine3 = GameController.MoveCard(TurnTakerController, Card, Card.NativeDeck, offset: 2, showMessage: true, cardSource: GetCardSource());
+            int offset;
+
+            //go under the proper number of cards depending on the number of cards in the deck
+            switch(Card.NativeDeck.NumberOfCards)
+            {
+                case 0:
+                    offset = 0;
+                    break;
+                case 1:
+                    offset = 1;
+                    break;
+                default:
+                    offset = 2;
+                    break;
+            }
+            IEnumerator coroutine3 = GameController.MoveCard(TurnTakerController, Card, Card.NativeDeck, offset: offset, showMessage: true, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine3);
