@@ -672,6 +672,17 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestInfiltrate_Oblivaeon()
+        {
+            // Arrange
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TangoOne", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            AssertNumberOfChoicesInNextDecision(5, SelectionType.RevealTopCardOfDeck);
+            PlayCard("Infiltrate");
+        }
+
+        [Test]
         public void TestLineEmUp_DestroyByDamage()
         {
             // Arrange
