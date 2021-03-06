@@ -165,7 +165,7 @@
             ],
             "body": [
                 "Play this card next to a hero.",
-                "That hero skips their turns, and targets in their play are are immune to damage.",
+                "That hero skips their turns, and targets in their play area are immune to damage.",
                 "At the start of the environment turn, destroy this card."
             ],
             "flavorText": "Blade's minions stared at the giant{BR}golem, which had suddenly stopped{BR}moving. “What are you doing?!{BR}Attack it!” their captain shouted."
