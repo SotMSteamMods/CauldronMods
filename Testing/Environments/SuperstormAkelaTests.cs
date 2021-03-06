@@ -188,8 +188,14 @@ namespace CauldronTests
             StartGame();
             GoToPlayCardPhase(superstorm);
 
+            PlayCard("BladeBattalion");
+
+            DealDamage(baron, ra, 100, DamageType.Fire);
+            PlayCard("Mere");
+            PlayCard("Dominion");
+            PlayCard("InspiringPresence");
+
             //When this card enters play, select the deck with the least number of non-character cards in play. Put the top card of that deck into play.
-            DecisionSelectTurnTaker = legacy.TurnTaker;
             Card topCard = legacy.TurnTaker.Deck.TopCard;
             Card currents = PlayCard("RideTheCurrents");
             AssertNotInDeck(topCard);
