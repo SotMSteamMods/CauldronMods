@@ -19,7 +19,7 @@ namespace Cauldron.Titan
         {
             List<SelectNumberDecision> storedNumber = new List<SelectNumberDecision>();
             //Reveal up to 3 
-            IEnumerator coroutine = base.GameController.SelectNumber(this.DecisionMaker, SelectionType.DealDamage, 0, 3, storedResults: storedNumber, cardSource: base.GetCardSource(null));
+            IEnumerator coroutine = base.GameController.SelectNumber(this.DecisionMaker, SelectionType.Custom, 0, 3, storedResults: storedNumber, cardSource: base.GetCardSource(null));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -52,6 +52,13 @@ namespace Cauldron.Titan
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("How many cards do you want to reveal from your deck?", "How many cards should they reveal from their deck?", "Vote for how many cards they should reveal from their deck?", "number of cards to reveal from the deck");
+
         }
     }
 }
