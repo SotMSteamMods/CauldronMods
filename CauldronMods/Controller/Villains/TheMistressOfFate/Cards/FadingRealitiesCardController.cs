@@ -15,6 +15,9 @@ namespace Cauldron.TheMistressOfFate
             SpecialStringMaker.ShowHeroCharacterCardWithLowestHP(ranking: 2);
         }
 
+        private string _customTextKey = "";
+        private const string HandCustomTextKey = "HAND";
+        private const string PlayCustomTextKey = "PLAY";
         public override IEnumerator Play()
         {
             //"The hero with the second lowest HP...
@@ -51,12 +54,13 @@ namespace Cauldron.TheMistressOfFate
                 }
                 else if(!hero.HasCardsInHand)
                 {
-                    //If there were a more generic "select cards to no effect" I would use it here
-                    coroutine = GameController.MakeYesNoCardDecision(heroTTC, SelectionType.DiscardCardsToNoEffect, Card, storedResults: storedYesNo, cardSource: GetCardSource());
+                    _customTextKey = PlayCustomTextKey;
+                    coroutine = GameController.MakeYesNoCardDecision(heroTTC, SelectionType.Custom, Card, storedResults: storedYesNo, cardSource: GetCardSource());
                 }
                 else //numCardsInPlay == 0
                 {
-                    coroutine = GameController.MakeYesNoCardDecision(heroTTC, SelectionType.DiscardCardsToNoEffect, Card, storedResults: storedYesNo, cardSource: GetCardSource());
+                    _customTextKey = HandCustomTextKey;
+                    coroutine = GameController.MakeYesNoCardDecision(heroTTC, SelectionType.Custom, Card, storedResults: storedYesNo, cardSource: GetCardSource());
                 }
 
                 if (UseUnityCoroutines)
@@ -81,6 +85,7 @@ namespace Cauldron.TheMistressOfFate
             var removedCards = new List<Card>();
             if(!skipSelection)
             {
+
                 //...may select 1 card in their hand and 1 of their cards in play. Remove the selected cards from the game."
                 var fromHandSelection = new SelectCardDecision(GameController, heroTTC, SelectionType.RemoveCardFromGame, hero.Hand.Cards, true, cardSource: GetCardSource());
                 coroutine = GameController.SelectCardAndDoAction(fromHandSelection, scd => RemoveCardFromGame(scd, removedCards));
@@ -145,6 +150,21 @@ namespace Cauldron.TheMistressOfFate
                 }
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            if(_customTextKey == HandCustomTextKey)
+            {
+                return new CustomDecisionText($"You have no cards in play. Do you want to remove a card from your hand from the game?", "They have no cards in play. Should they remove a card from their hand from the game?", "They have no cards in play. Vote for removing a card from their hand from the game", "removing a card from hand from the game");
+            }
+            if(_customTextKey == PlayCustomTextKey)
+            {
+                return new CustomDecisionText($"You have no cards in your hand. Do you want to remove a card in play from from the game?", "They have no cards in their hand. Should they remove a card in play from the game?", "They have no cards in their hand. Vote for removing a card in play from the game", "removing a card in play from the game");
+
+            }
+
+            return null;
         }
     }
 }

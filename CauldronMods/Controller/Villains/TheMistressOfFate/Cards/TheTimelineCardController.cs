@@ -73,7 +73,7 @@ namespace Cauldron.TheMistressOfFate
             {
                 //*"{Bulletpoint} The players choose to flip her.",
                 var storedResults = new List<bool>();
-                coroutine = MakeUnanimousDecision(_ => true, SelectionType.FlipCardFaceDown, storedResults: storedResults, associatedCards: new Card[] { CharacterCard });
+                coroutine = MakeUnanimousDecision(_ => true, SelectionType.Custom, storedResults: storedResults, associatedCards: new Card[] { CharacterCard });
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -157,6 +157,13 @@ namespace Cauldron.TheMistressOfFate
                     break;
             }
             return special;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText($"Do you want to flip {CharacterCard.Title} and reset the timeline?", $"Should they flip {CharacterCard.Title} and reset the timeline?", $"Vote for flipping {CharacterCard.Title} and resetting the timeline?", $"flipping {CharacterCard.Title} and resetting the timeline");
+
         }
     }
 }

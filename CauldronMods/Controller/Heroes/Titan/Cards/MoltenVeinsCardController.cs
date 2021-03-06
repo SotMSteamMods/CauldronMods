@@ -28,7 +28,7 @@ namespace Cauldron.Titan
             }
 
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.SearchLocation, base.GetTitanform(), storedResults: storedResults, cardSource: base.GetCardSource());
+            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, base.GetTitanform(), storedResults: storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -73,6 +73,13 @@ namespace Cauldron.Titan
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to put Titanform in your hand?", "Should they put Titanform in their hand?", "Vote for if they should put Titanform in their hand?", "put Titanform in hand");
+
         }
     }
 }

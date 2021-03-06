@@ -50,7 +50,7 @@ namespace Cauldron.LadyOfTheWood
             //This currently doesn't have any text on the decision other than yes/no, room for improvement
 
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.IncreaseNextDamage, base.Card,
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, base.Card,
                                         action: dd,
                                         storedResults: storedResults,
                                         cardSource: base.GetCardSource());
@@ -77,6 +77,13 @@ namespace Cauldron.LadyOfTheWood
                 }
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to increase this damage by 2?", "Should they increase this damage by 2?", "Vote for increasing this damage by 2?", "increasing this damage by 2");
+
         }
     }
 }
