@@ -112,9 +112,9 @@ namespace Cauldron.Terminus
             var trashes = new List<LocationChoice>();
             foreach(TurnTaker tt in Game.TurnTakers)
             {
-                if(GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()))
+                if(GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.BattleZone == BattleZone)
                 {
-                    if(tt.Trash != null)
+                    if(tt.Trash != null && tt.Trash.IsRealTrash)
                     {
                         trashes.Add(new LocationChoice(tt.Trash));
                     }
