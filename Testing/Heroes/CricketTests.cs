@@ -186,11 +186,12 @@ namespace CauldronTests
             Card phlange = PlayCard("ArborealPhalanges");
             Card bramb = PlayCard("EnsnaringBrambles");
             Card rocks = PlayCard("LivingRockslide");
-
+            Card chirp = PutInTrash("Chirp");
             //Discard up to 3 cards.
             QuickHandStorage(cricket);
             QuickHPStorage(phlange, bramb, rocks, akash.CharacterCard);
-            PlayCard("Chirp");
+            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            PlayCard(chirp);
             QuickHandCheck(0);
             //{Cricket} deals up to 4 targets X sonic damage each, where X is 1 plus the number of cards discarded this way.
             QuickHPCheck(-1, -1, -1, -1);

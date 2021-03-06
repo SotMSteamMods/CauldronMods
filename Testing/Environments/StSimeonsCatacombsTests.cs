@@ -1979,13 +1979,13 @@ namespace CauldronTests
             Card flash1 = PutInHand("FlashFlood");
             Card flash2 = PutInHand("FlashFlood");
 
-            Card torture = GetCard("TortureChamber");
             Card ducts = GetCard("Aqueducts");
+            Card torture = GetCard("TortureChamber");
 
-            if (torture.IsInPlayAndHasGameText)
+            if (!ducts.IsInPlayAndHasGameText)
             {
                 DecisionSelectCard = ducts;
-                DestroyCard(torture);
+                DestroyCard(FindCardsWhere(c => c.IsRoom && c.IsInPlayAndHasGameText).First());
             }
 
             DecisionSelectCard = null;
