@@ -1285,7 +1285,23 @@ namespace CauldronTests
             AssertInTrash(retinal);
             Assert.AreEqual(raCardsInPlay + 1, GetNumberOfCardsInPlay(ra)); // Ra was augmented by Rebuilt and was able to play a card
         }
+        [Test]
+        public void TestRebuiltToSucceedInPlayFirst()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Legacy", "Haka", "Megalopolis");
+            StartGame();
 
+            Card dermal = PutInTrash("DermalAug");
+            Card muscle = PutInTrash("MuscleAug");
+            PutInTrash("VascularAug");
+            Card fort = PutInHand("Fortitude");
+
+            DecisionSelectCards = new Card[] { dermal, muscle, legacy.CharacterCard, fort };
+            DecisionMoveCardDestination = new MoveCardDestination(cypher.HeroTurnTaker.PlayArea);
+            PlayCard("RebuiltToSucceed");
+            AssertNextToCard(dermal, legacy.CharacterCard);
+            AssertIsInPlay(fort);
+        }
         [Test]
         public void TestRetinalAug()
         {
