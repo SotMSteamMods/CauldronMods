@@ -76,14 +76,18 @@ namespace Cauldron.Cypher
                 base.GameController.ExhaustCoroutine(routine);
             }
 
+            HeroTurnTakerController heroToPlayCard = null;
+            if (moveResult.First().Destination.IsInPlay && card.Location.IsNextToCard)
+            {
+                heroToPlayCard = FindHeroTurnTakerController(card.Location.OwnerTurnTaker.ToHero());
+                // The hero you augment this way may play a card now.
+            }
+
             if (cards.Count <= 1)
             {
-                if (moveResult.First().Destination.IsInPlay && card.Location.IsNextToCard)
+                if(heroToPlayCard != null)
                 {
-                    // The hero you augment this way may play a card now.
-                    HeroTurnTakerController httc = FindHeroTurnTakerController(card.Location.OwnerTurnTaker.ToHero());
-
-                    routine = base.SelectAndPlayCardFromHand(httc);
+                    routine = base.SelectAndPlayCardFromHand(heroToPlayCard);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(routine);
@@ -115,20 +119,24 @@ namespace Cauldron.Cypher
 
                 if (destination == base.TurnTaker.PlayArea)
                 {
+                    heroToPlayCard = FindHeroTurnTakerController(card.Location.OwnerTurnTaker.ToHero());
                     // The hero you augment this way may play a card now.
-                    HeroTurnTakerController httc = FindHeroTurnTakerController(card.Location.OwnerTurnTaker.ToHero());
-
-                    routine = base.SelectAndPlayCardFromHand(httc);
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(routine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(routine);
-                    }
                 }
             }
+
+            if (heroToPlayCard != null)
+            {
+                routine = base.SelectAndPlayCardFromHand(heroToPlayCard);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
+            }
+            yield break;
         }
     }
 }
