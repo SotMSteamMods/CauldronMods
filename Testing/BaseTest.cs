@@ -113,7 +113,7 @@ namespace Handelabra.Sentinels.UnitTest
         private int? _numberOfChoicesInNextDecision;
         private SelectionType? _numberOfChoicesInNextDecisionSelectionType;
 
-        private Dictionary<Card, int> _quickHPStorage;
+        protected Dictionary<Card, int> _quickHPStorage;
         private Dictionary<HeroTurnTakerController, int> _quickHandStorage;
         private Dictionary<TurnTakerController, Card> _quickTopCardStorage;
         private Dictionary<TokenPool, int> _quickTokenPoolStorage;

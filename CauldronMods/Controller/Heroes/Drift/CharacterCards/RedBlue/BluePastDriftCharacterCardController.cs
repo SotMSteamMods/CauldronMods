@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Cauldron.Drift
 {
-    public class PastDriftCharacterCardController : DualDriftSubCharacterCardController
+    public class BluePastDriftCharacterCardController : DualDriftSubCharacterCardController
     {
-        public PastDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public BluePastDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }

@@ -314,12 +314,11 @@ namespace CauldronTests
 
             DecisionSelectNumber = numDiscard;
             DecisionSelectFunction = 1;
-
+            Log.Debug($"There are {drift.HeroTurnTaker.Hand.NumberOfCards} cards in Drift's hand.");
             int shiftPosition = CurrentShiftPosition();
-            QuickHandStorage(drift);
             UsePower(drift);
-            QuickHandCheck(2 - numDiscard);
             AssertTrackPosition(shiftPosition + numDiscard);
+            AssertNumberOfCardsInHand(drift, 6 - numDiscard);
         }
 
         [Test, Sequential]
@@ -329,20 +328,19 @@ namespace CauldronTests
             StartGame();
 
             //Discard 1, 2, or 3 cards. For each card discarded this way, shift {DriftL} or {DriftR}. Draw 2 cards.
+            Log.Debug($"There are {drift.HeroTurnTaker.Hand.NumberOfCards} cards in Drift's hand.");
 
             //Get to Position 4
             DecisionSelectNumber = 3;
-            DecisionSelectFunction = 1;
-            UsePower(drift);
+            GoToShiftPosition(4);
 
             //Setup
             DecisionSelectNumber = numDiscard;
             DecisionSelectFunction = 0;
 
             int shiftPosition = CurrentShiftPosition();
-            QuickHandStorage(drift);
-            UsePower(drift);
-            QuickHandCheck(2 - numDiscard);
+            UsePower(drift); 
+            AssertNumberOfCardsInHand(drift, 6 - numDiscard);
             AssertTrackPosition(shiftPosition - numDiscard);
         }
 

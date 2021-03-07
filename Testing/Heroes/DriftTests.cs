@@ -334,7 +334,7 @@ namespace CauldronTests
             //If you shifted at least {DriftL} this way, X targets regain 2 HP each. If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
             QuickHPStorage(baron, drift, haka);
             PlayCard(BorrowedTime);
-            QuickHPCheck(hpChange);
+            QuickHPCheckThroughFormChange(hpChange);
         }
 
         [Test]
@@ -696,7 +696,6 @@ namespace CauldronTests
             SetupGameController("Apostate", "Haka", "Cauldron.Drift", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
-            GoToShiftPosition(2);
             GoToShiftPosition(1);
             Card pFocus = PlayCard(PastFocus);
 
@@ -707,11 +706,11 @@ namespace CauldronTests
             DecisionYesNo = true;
 
             //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
-            int trackPosition = CurrentShiftPosition();
+            int trackPosition = 4;
             QuickHPStorage(apostate);
             DealDamage(apostate, drift, 2, DamageType.Melee);
             AssertTrackPosition(trackPosition);
-            QuickHPCheck(0);
+            QuickHPCheck(-3);
         }
 
         [Test]
@@ -1167,29 +1166,28 @@ namespace CauldronTests
 
             QuickHPStorage(apostate, drift);
             DecisionYesNo = true;
-
             //Whenever you shift from {DriftPast} to {DriftFuture} or from {DriftFuture} to {DrifitFuture}, {Drift} may deal 1 other target and herself 1 psychic damage.
             GoToShiftPosition(2);
-            QuickHPCheckZero();
+            QuickHPCheckZeroThroughFormChange();
 
             GoToShiftPosition(3);
-            QuickHPCheck(-1, -1);
+            QuickHPCheckThroughFormChange(-1, -1);
 
             GoToShiftPosition(4);
-            QuickHPCheckZero();
+            QuickHPCheckZeroThroughFormChange();
 
             GoToShiftPosition(3);
-            QuickHPCheckZero();
+            QuickHPCheckZeroThroughFormChange();
 
             GoToShiftPosition(2);
-            QuickHPCheck(-1, -1);
+            QuickHPCheckThroughFormChange(-1, -1);
 
             GoToShiftPosition(1);
-            QuickHPCheckZero();
+            QuickHPCheckZeroThroughFormChange();
 
             DecisionYesNo = false;
             GoToShiftPosition(3);
-            QuickHPCheckZero();
+            QuickHPCheckZeroThroughFormChange();
         }
         [Test]
         public void TestTransitionShock_OnlyShiftTrack()

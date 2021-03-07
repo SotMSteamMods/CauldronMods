@@ -62,11 +62,11 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             Card track = FindCardsWhere((Card c) => c.Identifier == $"Dual{ShiftTrack}1", false).FirstOrDefault();
             Card character = FindCardsWhere((Card c) => c.Identifier == characterId).FirstOrDefault();
-            Card other = FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Owner == drift.TurnTaker && c.Identifier != characterId).FirstOrDefault();
+            Card other = FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Owner == drift.TurnTaker && c.Identifier != characterId && !c.Identifier.Contains("Red") && !c.Identifier.Contains("Blue")).FirstOrDefault();
             DecisionSelectCards = new Card[] { track, character };
             StartGame(false);
 
-            AssertIsInPlay(other);
+            AssertIsInPlay("Blue" + other.Identifier);
         }
 
         [Test()]
@@ -76,17 +76,18 @@ namespace CauldronTests
             StartGame();
 
             //Start with Future
-            AssertIsInPlay(FutureDriftCharacter);
-            int position1 = CurrentShiftPosition();
+            AssertIsInPlay("Blue" + FutureDriftCharacter);
+            GoToShiftPosition(2);
+
+            int position1 = 1;
 
             PrintSeparator("Preparing to Shift Right");
 
             //Shift Right 1
             DecisionSelectFunction = 1;
             PlayCard(DriftStep);
-            AssertTrackPosition(position1 + 1);
+            AssertTrackPosition(3);
             int position2 = CurrentShiftPosition();
-
             PrintSeparator("Triggering Switch");
             //Trigger switch with phase change
             DecisionYesNo = true;
@@ -94,7 +95,7 @@ namespace CauldronTests
 
             PrintSeparator("Switch completed");
             //Assert that other character and starting position are active
-            AssertIsInPlay(PastDriftCharacter);
+            AssertIsInPlay("Blue" + PastDriftCharacter);
             AssertTrackPosition(position1);
 
             PrintSeparator("Switching Back");
@@ -103,7 +104,7 @@ namespace CauldronTests
 
             PrintSeparator("Switch back successful");
             //Assert in secondary position
-            AssertIsInPlay(FutureDriftCharacter);
+            AssertIsInPlay("Red" + FutureDriftCharacter);
             AssertTrackPosition(position2);
         }
 
@@ -224,7 +225,7 @@ namespace CauldronTests
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
-            AssertIsInPlay(PastDriftCharacter);
+            AssertIsInPlay("Blue" + PastDriftCharacter);
             DestroyCard(drift);
             //One player may draw a card now.
 
@@ -242,7 +243,7 @@ namespace CauldronTests
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
-            AssertIsInPlay(PastDriftCharacter);
+            AssertIsInPlay("Blue" + PastDriftCharacter);
             DestroyCard(drift);
 
             //Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.
@@ -278,7 +279,7 @@ namespace CauldronTests
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
-            AssertIsInPlay(PastDriftCharacter);
+            AssertIsInPlay("Blue" + PastDriftCharacter);
             DestroyCard(drift);
             Card popo = PlayCard("PoliceBackup");
 
@@ -292,7 +293,9 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             Card track = FindCardsWhere((Card c) => c.Identifier.Contains($"Dual{ShiftTrack}{decision}"), false).FirstOrDefault();
-            DecisionSelectCards = new Card[] { track, drift.CharacterCards.FirstOrDefault() };
+            Card character = FindCardsWhere((Card c) => c.Identifier == PastDriftCharacter).FirstOrDefault();
+
+            DecisionSelectCards = new Card[] { track, character };
             StartGame(false);
 
             Assert.AreEqual(decision, CurrentShiftPosition());

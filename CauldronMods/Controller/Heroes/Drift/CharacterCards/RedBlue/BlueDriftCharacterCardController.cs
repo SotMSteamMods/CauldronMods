@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class DriftCharacterCardController : DriftSubCharacterCardController
+    public class BlueDriftCharacterCardController : DriftSubCharacterCardController
     {
-        public DriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public BlueDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -18,7 +18,6 @@ namespace Cauldron.Drift
         public override IEnumerator UsePower(int index = 0)
         {
             _inTheMiddleOfPower = true;
-
             int hpNumeral = base.GetPowerNumeral(0, 1);
 
             //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 

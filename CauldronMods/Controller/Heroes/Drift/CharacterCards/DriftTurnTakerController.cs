@@ -1,4 +1,5 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
+﻿using Handelabra;
+using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
@@ -95,7 +96,7 @@ namespace Cauldron.Drift
             if (base.CharacterCardController is DualDriftCharacterCardController)
             {
                 List<SelectCardDecision> selectDriftDecision = new List<SelectCardDecision>();
-                coroutine = base.GameController.SelectCardAndStoreResults(this, SelectionType.RemoveCardFromGame, new LinqCardCriteria((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), selectDriftDecision, false);
+                coroutine = base.GameController.SelectCardAndStoreResults(this, SelectionType.RemoveCardFromGame, new LinqCardCriteria((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController && !c.Identifier.Contains("Red") && !c.Identifier.Contains("Blue")), selectDriftDecision, false);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -120,10 +121,9 @@ namespace Cauldron.Drift
 
                 //Then place 1 of your 2 character cards (1929 or 2199) next to that same space
                 base.GameController.AddCardPropertyJournalEntry(selectedTrack, "DriftPosition" + tokensToAdd, true);
-            }
-            else
-            {
-                coroutine = base.GameController.BulkMoveCards(this, base.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), base.TurnTaker.InTheBox);
+
+                //move other red/blue promos into box
+                coroutine = base.GameController.BulkMoveCards(this, base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && !(FindCardController(c) is DualDriftSubCharacterCardController)), base.TurnTaker.InTheBox);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -133,7 +133,79 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+            else
+            {
+                //move dual drifts into the box
+                coroutine = base.GameController.BulkMoveCards(this, base.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), base.TurnTaker.InTheBox);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //move other promos red/blues back into the box
+                coroutine = base.GameController.BulkMoveCards(this, base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && c.SharedIdentifier != GetActiveCharacterCard().SharedIdentifier), base.TurnTaker.InTheBox);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            coroutine = ChangeRedBlueForm(selectedTrack.FindTokenPool("ShiftPool").CurrentValue);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
             yield break;
+        }
+
+        private IEnumerator ChangeRedBlueForm(int numTokens)
+        {
+            var driftCharacter = FindRedBlueDriftCharacterCard(numTokens);
+            driftCharacter.SetHitPoints(GetActiveCharacterCard().HitPoints.Value);
+
+            Log.Debug($"Switching to {driftCharacter.Identifier}");
+            Log.Debug($"What should happen is \"SwitchCutoutCard: from {GetActiveCharacterCard().PromoIdentifierOrIdentifier} to {driftCharacter.PromoIdentifierOrIdentifier}\"");
+
+            var coroutine = GameController.SwitchCards(GetActiveCharacterCard(), driftCharacter, cardSource: FindCardController(GetActiveCharacterCard()).GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        public Card FindRedBlueDriftCharacterCard(int numTokens)
+        {
+            Card activeCharacterCard = GetActiveCharacterCard();
+            IEnumerable<Card> characters = base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && c.SharedIdentifier == activeCharacterCard.SharedIdentifier).ToList();
+            string desiredIdentifier;
+            if (numTokens >= 3)
+            {
+                desiredIdentifier = $"Red{activeCharacterCard.PromoIdentifierOrIdentifier}";
+            }
+            else
+            {
+                desiredIdentifier = $"Blue{activeCharacterCard.PromoIdentifierOrIdentifier}";
+            }
+
+            var driftCharacter = characters.First((Card c) => c.Identifier == desiredIdentifier);
+            return driftCharacter;
         }
 
         public override bool IsIncapacitated
@@ -167,5 +239,7 @@ namespace Cauldron.Drift
         {
             return base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == this.TurnTaker).FirstOrDefault();
         }
+
+       
     }
 }

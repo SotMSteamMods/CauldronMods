@@ -8,9 +8,9 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class AllInGoodTimeDriftCharacterCardController : DriftSubCharacterCardController
+    public class BlueAllInGoodTimeDriftCharacterCardController : DriftSubCharacterCardController
     {
-        public AllInGoodTimeDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public BlueAllInGoodTimeDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
@@ -54,6 +54,7 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
             coroutine = RetroactiveShiftIfNeeded();
             if (base.UseUnityCoroutines)
             {

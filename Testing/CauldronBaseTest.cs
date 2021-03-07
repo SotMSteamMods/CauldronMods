@@ -201,6 +201,48 @@ namespace CauldronTests
 
         }
 
+        protected void QuickHPCheckZeroThroughFormChange()
+        {
+            var change = new int?[_quickHPStorage.Count];
+            for (int i = 0; i < _quickHPStorage.Count; i++)
+            {
+                change[i] = 0;
+            }
+
+            QuickHPCheckThroughFormChange(change);
+        }
+        protected void QuickHPCheckThroughFormChange(params int?[] hpChange)
+        {
+            Assert.AreEqual(_quickHPStorage.Count, hpChange.Length, "QuickHPCheck passed {0} values but {1} are stored.", hpChange.Length, _quickHPStorage.Count);
+
+            for (int i = 0; i < hpChange.Count(); i++)
+            {
+                var id = _quickHPStorage.Keys.ElementAt(i).SharedIdentifier;
+
+                var card = id is null ? _quickHPStorage.Keys.ElementAt(i) : FindCardsWhere(c => c.IsInPlayAndHasGameText && c.SharedIdentifier == id).First();
+                var previousHP = _quickHPStorage.Values.ElementAt(i);
+                var changeHP = hpChange.ElementAt(i);
+                if (changeHP.HasValue)
+                {
+                    var expected = previousHP + changeHP.Value;
+                    if (card.HitPoints.HasValue)
+                    {
+                        var actual = card.HitPoints.Value;
+                        Assert.AreEqual(expected, actual, "Expected " + card.Title + "'s HP to be " + expected + ", but it was " + actual + ".");
+                        _quickHPStorage[_quickHPStorage.Keys.ElementAt(i)] = actual;
+                    }
+                    else
+                    {
+                        Assert.Fail("QuickHPCheck: " + card.Title + " isn't a target!");
+                    }
+                }
+                else if (card.IsTarget)
+                {
+                    AssertNotInPlay(card);
+                }
+            }
+        }
+
         protected int CurrentShiftPosition()
         {
             return this.GetShiftPool().CurrentValue;
@@ -228,7 +270,7 @@ namespace CauldronTests
                 DecisionSelectFunction = 2;
                 for (int i = CurrentShiftPosition(); i < position; i++)
                 {
-                    UsePower(drift);
+                    AddTokensToPool(GetShiftPool(), 1);
                 }
             }
             else
@@ -236,7 +278,7 @@ namespace CauldronTests
                 DecisionSelectFunction = 1;
                 for (int i = CurrentShiftPosition(); i > position; i--)
                 {
-                    UsePower(drift);
+                    RemoveTokensFromPool(GetShiftPool(), 1);
                 }
             }
         }
