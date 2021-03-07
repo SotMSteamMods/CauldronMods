@@ -28,7 +28,7 @@ namespace Cauldron.TheRam
 
         private IEnumerator HeroesDiscardResponse(PhaseChangeAction pc)
         {
-            SelectTurnTakersDecision orderDiscard = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && IsUpClose(tt), "Up Close hero"), SelectionType.DiscardCard, cardSource: GetCardSource());
+            SelectTurnTakersDecision orderDiscard = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && IsUpClose(tt), "Up Close hero"), SelectionType.DiscardCard, allowAutoDecide: true, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(orderDiscard,
                                                         (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), cardSource: GetCardSource()),
                                                         cardSource: GetCardSource());
