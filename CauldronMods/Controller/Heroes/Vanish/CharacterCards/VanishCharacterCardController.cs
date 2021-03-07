@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 
 namespace Cauldron.Vanish
 {
@@ -12,13 +13,18 @@ namespace Cauldron.Vanish
         {
         }
 
+        private int _customAmountText = 1;
+        private int _customTargetsText = 1;
         public override IEnumerator UsePower(int index = 0)
         {
             int targets = GetPowerNumeral(0, 1);
             int damages = GetPowerNumeral(1, 1);
 
+            _customAmountText = damages;
+            _customTargetsText = targets;
+
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-            var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.SelectTargetNoDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget, "target to deal damage", false), storedResults, false, cardSource: base.GetCardSource());
+            var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.Custom, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget, "target to deal damage", false), storedResults, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -146,6 +152,13 @@ namespace Cauldron.Vanish
                     }
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText($"Select a target to deal {_customTargetsText} { (_customTargetsText == 1 ? "target" : "targets")} {_customAmountText} projectile damage.", $"Selecting a target to deal {_customTargetsText} { (_customTargetsText == 1 ? "target" : "targets")} {_customAmountText} projectile damage.", $"Vote for a target to deal { _customTargetsText } { (_customTargetsText == 1 ? "target" : "targets")} {_customAmountText} projectile damage.", "target to deal damage");
+
         }
     }
 }
