@@ -273,19 +273,43 @@ namespace Cauldron.Drift
 
         protected IEnumerator RetroactiveShiftIfNeeded()
         {
+            IEnumerator coroutine;
+            bool needsChange = false;
+
             if(!_inTheMiddleOfPower)
             {
                 yield break;
             }
             _inTheMiddleOfPower = false;
-            IEnumerator coroutine = ShiftRedBlue(null);
-            if (UseUnityCoroutines)
+
+            // If needed
+            if (IsTimeMatching(Past) && GetActiveCharacterCard() == CharacterCardWithoutReplacements && CharacterCardWithoutReplacements.Identifier.Contains("Red"))
             {
-                yield return GameController.StartCoroutine(coroutine);
+                needsChange = true;
             }
             else
             {
-                GameController.ExhaustCoroutine(coroutine);
+                if (IsTimeMatching(Future) && GetActiveCharacterCard() == CharacterCardWithoutReplacements && CharacterCardWithoutReplacements.Identifier.Contains("Past"))
+                {
+                    needsChange = true;
+                }
+            }
+
+            if (needsChange)
+            {
+                coroutine = ShiftRedBlue(null);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                yield break;
             }
         }
 
