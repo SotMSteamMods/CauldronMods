@@ -267,7 +267,7 @@ namespace Cauldron.TheRam
             HeroTurnTakerController player = FindHeroTurnTakerController(activeHero.ToHero());
 
             List<YesNoCardDecision> storedResult = new List<YesNoCardDecision> { };
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.PutIntoPlay, upClose, pc, storedResult, new Card[] { this.Card }, GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.Custom, upClose, pc, storedResult, new Card[] { upClose, this.Card }, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -309,6 +309,13 @@ namespace Cauldron.TheRam
             }
             
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to move up close?", "Should they move up close?", "Vote for if they should move up close?", "move up close");
+
         }
     }
 }
