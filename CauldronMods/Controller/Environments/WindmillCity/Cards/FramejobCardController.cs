@@ -35,7 +35,7 @@ namespace Cauldron.WindmillCity
         public override void AddTriggers()
         {
             //Redirect all damage dealt by Responders to the hero target with the highest HP.
-            AddTrigger((DealDamageAction dd) => dd.DamageSource != null && IsResponder(dd.DamageSource.Card), RedirectResponderResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            AddTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && IsResponder(dd.DamageSource.Card), RedirectResponderResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
             //At the start of the environment turn, destroy this card.
             AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
         }

@@ -31,7 +31,7 @@ namespace Cauldron.Oriphel
                 if (Game.IsAdvanced)
                 {
                     //"Increase damage dealt by villain targets by 1.",
-                    AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && IsVillainTarget(dd.DamageSource.Card), 1));
+                    AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && IsVillainTarget(dd.DamageSource.Card), 1));
                 }
             }
             else

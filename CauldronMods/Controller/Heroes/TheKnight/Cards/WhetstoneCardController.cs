@@ -15,7 +15,7 @@ namespace Cauldron.TheKnight
 
         public override void AddTriggers()
         {
-            base.AddIncreaseDamageTrigger(dd => dd.DamageType == DamageType.Melee && IsEquipmentEffectingCard(dd.DamageSource.Card), 1);
+            base.AddIncreaseDamageTrigger(dd => dd.DamageType == DamageType.Melee && dd.DamageSource != null && dd.DamageSource.Card != null && IsEquipmentEffectingCard(dd.DamageSource.Card), 1);
             base.AddTriggers();
         }
     }

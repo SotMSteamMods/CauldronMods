@@ -114,7 +114,7 @@ namespace Cauldron.Pyre
                     }
                     if (DidDestroyCard(destroyStorage))
                     {
-                        boostTrigger = new IncreaseDamageTrigger(GameController, (DealDamageAction dd) => dd.DamageSource.IsCard && dd.DamageSource.Card == CharacterCard && dd.CardSource != null && dd.CardSource.Card == this.Card && dd.CardSource.PowerSource != null, dd => GameController.IncreaseDamage(dd, numBoost, false, GetCardSource()), null, TriggerPriority.Medium, false, GetCardSource());
+                        boostTrigger = new IncreaseDamageTrigger(GameController, (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsCard && dd.DamageSource.Card == CharacterCard && dd.CardSource != null && dd.CardSource.Card == this.Card && dd.CardSource.PowerSource != null, dd => GameController.IncreaseDamage(dd, numBoost, false, GetCardSource()), null, TriggerPriority.Medium, false, GetCardSource());
                         AddToTemporaryTriggerList(AddTrigger(boostTrigger));
                         didDestroyCards = true;
                     }

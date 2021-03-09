@@ -62,7 +62,7 @@ namespace Cauldron.Dendron
                 if (this.IsGameAdvanced)
                 {
                     // Increase damage dealt by tattoos by 1.
-                    base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && IsTattoo(dda.DamageSource.Card), AdvancedTattooDamageIncrease);
+                    base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null && IsTattoo(dda.DamageSource.Card), AdvancedTattooDamageIncrease);
                 }
 
                 base.AddDefeatedIfMovedOutOfGameTriggers();

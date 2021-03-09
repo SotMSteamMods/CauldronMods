@@ -37,7 +37,7 @@ namespace Cauldron.OblaskCrater
         public override void AddTriggers()
         {
             base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => GetCardThisCardIsNextTo() != null && GetCardThisCardIsNextTo() == c, TargetType.All, base.H - 1, DamageType.Melee);
-            base.AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsEnvironmentCard && dd.DamageSource.Card != Card &&  GetCardThisCardIsNextTo() != null && dd.Target == GetCardThisCardIsNextTo());
+            base.AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsEnvironmentCard && dd.DamageSource.Card != Card &&  GetCardThisCardIsNextTo() != null && dd.Target == GetCardThisCardIsNextTo());
         }
         
     }

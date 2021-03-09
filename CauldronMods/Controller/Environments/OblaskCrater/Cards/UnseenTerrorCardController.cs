@@ -40,7 +40,7 @@ namespace Cauldron.OblaskCrater
             }
             if (storedDealDamageActions != null && storedDealDamageActions.Count() > 0)
             {
-                base.AddToTemporaryTriggerList(base.AddImmuneToDamageTrigger((dda) => dda.Target == base.Card && !storedDealDamageActions.Where(item => item.DidDealDamage).Select((item) => item.Target).Contains(dda.DamageSource.Card)));
+                base.AddToTemporaryTriggerList(base.AddImmuneToDamageTrigger((dda) => dda.Target == base.Card && dda.DamageSource != null && dda.DamageSource.Card != null && !storedDealDamageActions.Where(item => item.DidDealDamage).Select((item) => item.Target).Contains(dda.DamageSource.Card)));
 
                 string targets = string.Join(" or ",storedDealDamageActions.Where(dd => dd.DidDealDamage).Select(dd => dd.Target.Title).ToArray());
                 string description = $"Until the end of the next environment turn, {Card.Title} is immune to damage from targets that are not {targets}.";

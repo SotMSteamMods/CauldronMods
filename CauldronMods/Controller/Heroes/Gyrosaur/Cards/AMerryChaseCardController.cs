@@ -19,7 +19,7 @@ namespace Cauldron.Gyrosaur
         public override void AddTriggers()
         {
             //"Whenever a target deals damage to {Gyrosaur}, all other hero targets become immune to damage dealt by that target until this card leaves play.",
-            AddTrigger((DealDamageAction dd) => dd.DamageSource.IsTarget && dd.Target == CharacterCard && dd.DidDealDamage, MakeImmuneToDamageResponse, TriggerType.CreateStatusEffect, TriggerTiming.After);
+            AddTrigger((DealDamageAction dd) =>  dd.DamageSource != null && dd.DamageSource.IsTarget && dd.Target == CharacterCard && dd.DidDealDamage, MakeImmuneToDamageResponse, TriggerType.CreateStatusEffect, TriggerTiming.After);
             //"At the start of your turn, destroy this card."
             AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
         }

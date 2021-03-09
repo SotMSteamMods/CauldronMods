@@ -21,7 +21,7 @@ namespace Cauldron.Menagerie
             //Back: Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.
             base.AddBeforeLeavesPlayAction(this.HandleEnclosureCardsResponse, TriggerType.MoveCard);
             //Back: Heroes with enclosures in their play area may not damage cards in other play areas.
-            base.AddImmuneToDamageTrigger((DealDamageAction action) => base.CharacterCard.IsFlipped && action.DamageSource.Owner == this.GetEnclosedHero() && action.Target.Location.OwnerTurnTaker != action.DamageSource.Card.Location.OwnerTurnTaker);
+            base.AddImmuneToDamageTrigger((DealDamageAction action) => base.CharacterCard.IsFlipped && action.DamageSource.Owner == this.GetEnclosedHero() && action.DamageSource != null && action.DamageSource.Card != null && action.Target.Location.OwnerTurnTaker != action.DamageSource.Card.Location.OwnerTurnTaker);
             base.AddTriggers();
         }
 

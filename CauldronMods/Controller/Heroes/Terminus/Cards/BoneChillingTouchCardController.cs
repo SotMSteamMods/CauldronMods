@@ -63,7 +63,7 @@ namespace Cauldron.Terminus
 
         private bool DealDamageActionCriteria(DealDamageAction dealDamageAction)
         {
-            return !dealDamageAction.DamageSource.Card.IsCharacter && dealDamageAction.DamageSource.Card.NextToLocation.Cards.Contains(base.Card) && dealDamageAction.DamageSource.Card.IsTarget && dealDamageAction.Target == base.CharacterCard;
+            return dealDamageAction.DamageSource != null && dealDamageAction.DamageSource.Card != null && !dealDamageAction.DamageSource.Card.IsCharacter && dealDamageAction.DamageSource.Card.NextToLocation.Cards.Contains(base.Card) && dealDamageAction.DamageSource.Card.IsTarget && dealDamageAction.Target == base.CharacterCard;
         }
 
         private bool GainHPActionCriteria(GainHPAction gainHPAction)

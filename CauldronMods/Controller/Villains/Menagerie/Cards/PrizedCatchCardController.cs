@@ -38,9 +38,9 @@ namespace Cauldron.Menagerie
         public override void AddTriggers()
         {
             //Increase damage dealt by Captured targets to Enclosures by 1. 
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsCaptured(action.DamageSource.Card.Owner) && base.IsEnclosure(action.Target), 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && base.IsCaptured(action.DamageSource.Card.Owner) && base.IsEnclosure(action.Target), 1);
             //Reduce damage dealt by Captured targets to non-Enclosure targets by 1.
-            base.AddReduceDamageTrigger((DealDamageAction action) => base.IsCaptured(action.DamageSource.Card.Owner) && !base.IsEnclosure(action.Target), (DealDamageAction action) => 1);
+            base.AddReduceDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && base.IsCaptured(action.DamageSource.Card.Owner) && !base.IsEnclosure(action.Target), (DealDamageAction action) => 1);
             //Front: The heroes lose if the captured hero is incapacitated.
             base.AddTrigger<FlipCardAction>((FlipCardAction action) => !base.CharacterCard.IsFlipped && base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame).Count() > 0 && !base.IsTurnTakerActiveInThisGame(base.Card.Location.OwnerName) && action.CardToFlip.TurnTaker == base.Card.Location.OwnerTurnTaker && action.CardToFlip.Card.IsCharacter && action.CardToFlip.TurnTaker.CharacterCards.Where((Card c) => !c.IsFlipped).Count() == 0, this.LoseTheGameResponse, new TriggerType[] { TriggerType.GameOver }, TriggerTiming.After);
             base.AddTriggers();

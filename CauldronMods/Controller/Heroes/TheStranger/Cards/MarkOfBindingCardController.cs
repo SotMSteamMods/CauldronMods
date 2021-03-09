@@ -20,7 +20,7 @@ namespace Cauldron.TheStranger
         {
             base.AddTriggers();
             //Reduce damage dealt by that target by 1.
-            base.AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card == base.GetCardThisCardIsNextTo(true), new int?(1), null);
+            base.AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == base.GetCardThisCardIsNextTo(true), new int?(1), null);
 
         }
         #endregion Methods

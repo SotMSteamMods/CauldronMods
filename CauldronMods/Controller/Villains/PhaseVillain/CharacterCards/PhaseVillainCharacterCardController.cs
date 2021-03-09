@@ -40,10 +40,10 @@ namespace Cauldron.PhaseVillain
                 base.AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker && base.FindCardsWhere(new LinqCardCriteria((Card c) => this.IsObstacle(c) && c.IsInPlayAndHasGameText)).Count() >= 3, base.FlipThisCharacterCardResponse, TriggerType.FlipCard));
 
                 //Increase damage dealt by {Phase} by 1 for each obstacle that has been removed from the game.
-                base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, (DealDamageAction action) => ObstaclesRemovedFromGame()));
+                base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard, (DealDamageAction action) => ObstaclesRemovedFromGame()));
 
                 //Phase is immune to damage dealt by environment cards.
-                base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target == base.CharacterCard && action.DamageSource.Card.IsEnvironment));
+                base.AddSideTrigger(base.AddImmuneToDamageTrigger((DealDamageAction action) => action.Target == base.CharacterCard && action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card.IsEnvironment));
 
                 //At the end of the villain turn, play the top card of the villain deck.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard));

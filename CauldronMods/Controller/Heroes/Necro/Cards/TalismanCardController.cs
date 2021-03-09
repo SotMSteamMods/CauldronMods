@@ -30,7 +30,7 @@ namespace Cauldron.Necro
         public override void AddTriggers()
         {
             //That target is immune to damage from undead targets.
-            base.AddImmuneToDamageTrigger((DealDamageAction dd) => this.IsUndead(dd.DamageSource.Card) && base.IsThisCardNextToCard(dd.Target));
+            base.AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && this.IsUndead(dd.DamageSource.Card) && base.IsThisCardNextToCard(dd.Target));
 
             //if the card this is next to leaves, have this card fall off
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);

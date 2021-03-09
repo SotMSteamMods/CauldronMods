@@ -36,7 +36,7 @@ namespace Cauldron.ScreaMachine
 
         protected override void AddFlippedSideTriggers()
         {
-            AddSideTrigger(AddIncreaseDamageTrigger(dda => dda.DamageSource != null && IsVillainTarget(dda.DamageSource.Card), 1));
+            AddSideTrigger(AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null && IsVillainTarget(dda.DamageSource.Card), 1));
             AddSideTrigger(AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => UltimateEndOfTurn(), TriggerType.DealDamage));
         }
 

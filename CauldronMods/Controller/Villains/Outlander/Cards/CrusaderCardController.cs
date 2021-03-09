@@ -18,7 +18,7 @@ namespace Cauldron.Outlander
         public override void AddTriggers()
         {
             //Increase damage dealt by {Outlander} by 1.
-            AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == CharacterCard, 1);
+            AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == CharacterCard, 1);
 
             //At the end of the villain turn, {Outlander} deals the 2 non-villain targets with the highest HP 2 irreducible melee damage each.
             AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DealDamageResponse, TriggerType.DealDamage);

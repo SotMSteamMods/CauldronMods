@@ -14,7 +14,7 @@ namespace Cauldron.Malichae
 
         public override void AddTriggers()
         {
-            base.AddIncreaseDamageTrigger(dda => IsDjinn(dda.DamageSource.Card) && IsThisCardNextToCard(dda.Target), 1);
+            base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null && IsDjinn(dda.DamageSource.Card) && IsThisCardNextToCard(dda.Target), 1);
             base.AddIfTheTargetThatThisCardIsNextToLeavesPlayDestroyThisCardTrigger();
         }
 

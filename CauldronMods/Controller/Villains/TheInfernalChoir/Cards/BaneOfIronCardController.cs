@@ -26,7 +26,7 @@ namespace Cauldron.TheInfernalChoir
 
         private bool ReductionCriteria(DealDamageAction dda)
         {
-            if (dda.DamageSource is null || !dda.DamageSource.Card.IsCharacter || !dda.DamageSource.Card.IsHero)
+            if (dda.DamageSource is null || dda.DamageSource.Card is null  || !dda.DamageSource.Card.IsCharacter || !dda.DamageSource.Card.IsHero)
                 return false;
             //is a hero character card
             return !DoesPlayAreaContainHiddenHeart(dda.DamageSource.Card.Owner);

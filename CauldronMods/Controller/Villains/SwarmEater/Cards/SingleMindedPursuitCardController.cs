@@ -38,7 +38,7 @@ namespace Cauldron.SwarmEater
         public override void AddTriggers()
         {
             //Increase damage dealt by {SwarmEater} by 2.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard, 2);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard, 2);
             //If the Pursued target leaves play, destroy this card.
             base.AddIfTheTargetThatThisCardIsNextToLeavesPlayDestroyThisCardTrigger();
         }

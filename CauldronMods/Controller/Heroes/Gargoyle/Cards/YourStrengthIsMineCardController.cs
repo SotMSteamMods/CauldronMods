@@ -53,7 +53,7 @@ namespace Cauldron.Gargoyle
         public override void AddTriggers()
         {
             // You may destroy this card at any time.
-            base.AddTrigger<DealDamageAction>((dda) => base.IsThisCardNextToCard(dda.DamageSource.Card) || dda.DamageSource.Card == base.CharacterCard, DealDamageActionResponse, new TriggerType[] { TriggerType.ModifyDamageAmount }, TriggerTiming.Before, isConditional: true, isActionOptional:true);
+            base.AddTrigger<DealDamageAction>((dda) => dda.DamageSource != null && dda.DamageSource.Card != null && base.IsThisCardNextToCard(dda.DamageSource.Card) || dda.DamageSource.Card == base.CharacterCard, DealDamageActionResponse, new TriggerType[] { TriggerType.ModifyDamageAmount }, TriggerTiming.Before, isConditional: true, isActionOptional:true);
 
             // When this card is destroyed, reduce the next damage dealt by that target by 2 and increase the next damage dealt by {Gargoyle} by 2.
             SelfDestructTrigger =  base.AddWhenDestroyedTrigger(CardDestroyedResponse, TriggerType.CreateStatusEffect);

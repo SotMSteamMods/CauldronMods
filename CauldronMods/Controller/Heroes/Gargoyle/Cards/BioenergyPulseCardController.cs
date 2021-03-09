@@ -59,7 +59,7 @@ namespace Cauldron.Gargoyle
 
         private bool DealDamageCriteria(DealDamageAction dda)
         {
-            return dda.Target == base.CharacterCard && dda.DamageSource.Card == base.CharacterCard && dda.Amount > 0;
+            return dda.Target == base.CharacterCard && dda.DamageSource != null && dda.DamageSource.Card != null && dda.DamageSource.Card == base.CharacterCard && dda.Amount > 0;
         }
 
         private IEnumerator DealDamageResponse(DealDamageAction action)
