@@ -17,7 +17,7 @@ namespace CauldronTests
 
         protected bool IsConstellation(Card card)
         {
-            return card.DoKeywordsContain("constellation");
+            return card != null && card.DoKeywordsContain("constellation");
         }
 
         #endregion

@@ -200,7 +200,7 @@ namespace Cauldron.Necro
 
         private bool IsUndead(Card card)
         {
-            return card.DoKeywordsContain(NecroCardController.UndeadKeyword);
+            return card != null && card.DoKeywordsContain(NecroCardController.UndeadKeyword);
         }
     }
 }

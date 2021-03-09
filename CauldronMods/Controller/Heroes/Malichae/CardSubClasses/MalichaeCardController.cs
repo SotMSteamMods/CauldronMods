@@ -17,7 +17,7 @@ namespace Cauldron.Malichae
 
         protected bool IsDjinn(Card card)
         {
-            return card.DoKeywordsContain(DjinnKeyword);
+            return card != null && card.DoKeywordsContain(DjinnKeyword);
         }
     }
 }

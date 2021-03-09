@@ -40,7 +40,7 @@ namespace Cauldron.TheKnight
 
         public bool IsSingleHandCard(Card card)
         {
-            return card.DoKeywordsContain(SingleHandKeyword, evenIfUnderCard: true);
+            return card != null && card.DoKeywordsContain(SingleHandKeyword, evenIfUnderCard: true);
         }
 
         protected bool IsEquipmentEffectingCard(Card card)

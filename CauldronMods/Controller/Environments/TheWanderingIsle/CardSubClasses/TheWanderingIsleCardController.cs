@@ -60,7 +60,7 @@ namespace Cauldron.TheWanderingIsle
 
         protected bool IsCreature(Card card)
         {
-            return card.DoKeywordsContain("creature");
+            return card != null && card.DoKeywordsContain("creature");
         }
 
         private IEnumerable<Card> FindTeryxList()

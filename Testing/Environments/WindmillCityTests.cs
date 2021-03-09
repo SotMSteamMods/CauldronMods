@@ -17,11 +17,11 @@ namespace CauldronTests
         protected TurnTakerController windmill { get { return FindEnvironment(); } }
         protected bool IsEmergency(Card card)
         {
-            return card.DoKeywordsContain("emergency");
+            return card != null && card.DoKeywordsContain("emergency");
         }
         protected bool IsResponder(Card card)
         {
-            return card.DoKeywordsContain("responder");
+            return card != null && card.DoKeywordsContain("responder");
         }
 
         #endregion

@@ -19,7 +19,7 @@ namespace Cauldron.TheCybersphere
 
         protected bool IsGridVirus(Card card)
         {
-            return card.DoKeywordsContain(GridVirusKeyword);
+            return card != null && card.DoKeywordsContain(GridVirusKeyword);
         }
 
         protected int GetNumberOfGridVirusesInPlay()

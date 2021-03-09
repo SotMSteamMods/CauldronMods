@@ -184,7 +184,7 @@ namespace Cauldron.LadyOfTheWood
 
         private bool IsSeason(Card card)
         {
-            return card.DoKeywordsContain("season");
+            return card != null && card.DoKeywordsContain("season");
         }
 
         private DamageType? GetDamageTypeFromSeason(Card season)

@@ -20,7 +20,7 @@ namespace Cauldron.DungeonsOfTerror
 
         protected bool IsFate(Card card)
         {
-            return card.DoKeywordsContain(FateKeyword);
+            return card != null && card.DoKeywordsContain(FateKeyword);
         }
 
         private IEnumerable<Card> FindRingOfForesight()

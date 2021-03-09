@@ -18,7 +18,7 @@ namespace Cauldron.OblaskCrater
 
         protected bool IsPredator(Card card)
         {
-            return card.DoKeywordsContain(PredatorKeyword);
+            return card != null && card.DoKeywordsContain(PredatorKeyword);
         }
     }
 }

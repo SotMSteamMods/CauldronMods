@@ -17,7 +17,7 @@ namespace CauldronTests
         protected TurnTakerController vault5 { get { return FindEnvironment(); } }
         protected bool IsArtifact(Card card)
         {
-            return card.DoKeywordsContain("artifact");
+            return card != null && card.DoKeywordsContain("artifact");
         }
 
         #endregion

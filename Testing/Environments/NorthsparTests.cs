@@ -16,7 +16,7 @@ namespace CauldronTests
         protected TurnTakerController northspar { get { return FindEnvironment(); } }
         protected bool IsFrozen(Card card)
         {
-            return card.DoKeywordsContain("frozen");
+            return card != null && card.DoKeywordsContain("frozen");
         }
 
         #endregion

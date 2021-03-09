@@ -15,7 +15,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         protected bool IsGhost(Card card)
         {
-            return card.DoKeywordsContain("ghost");
+            return card != null && card.DoKeywordsContain("ghost");
         }
 
         protected bool IsDefinitionRoom(Card card)

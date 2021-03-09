@@ -21,7 +21,7 @@ namespace Cauldron.NightloreCitadel
 
         protected bool IsConstellation(Card card)
         {
-            return card.DoKeywordsContain(ConstellationKeyword);
+            return card != null && card.DoKeywordsContain(ConstellationKeyword);
         }
         private IEnumerable<Card> FindStarlightOfOros()
         {
