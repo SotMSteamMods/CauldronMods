@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -130,6 +131,12 @@ namespace CauldronTests
             increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
             increaseDamageStatusEffect.NumberOfUses = 1;
             this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
+        }
+
+        protected void AddDamageCannotBeIncreasedTrigger(Func<DealDamageAction, bool> criteria, CardSource cardSource)
+        {
+            Trigger<DealDamageAction> unincreasableDamageTrigger = new Trigger<DealDamageAction>( GameController, criteria, (DealDamageAction dd) => base.GameController.MakeDamageUnincreasable(dd, cardSource), TriggerType.MakeDamageUnincreasable.ToEnumerable(), TriggerTiming.Before, cardSource);
+            this.GameController.AddTrigger(unincreasableDamageTrigger); 
         }
 
         protected void PreventEndOfTurnEffects(TurnTakerController ttc, Card cardToPrevent)

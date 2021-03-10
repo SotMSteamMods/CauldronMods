@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,6 +46,8 @@ namespace Cauldron.Dendron
         {
             // Show the number of tattoos in play
             base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(IsTattoo, "tattoo"));
+            //challenge mode show highest hero target
+            base.SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => Game.IsChallenge;
         }
 
         public override void AddSideTriggers()
@@ -82,6 +85,25 @@ namespace Cauldron.Dendron
                 }
 
                 base.AddDefeatedIfDestroyedTriggers();
+            }
+
+            if(Game.IsChallenge)
+            {
+                base.SideTriggers.Add(base.AddTrigger((CardEntersPlayAction cpa) => cpa.CardEnteringPlay != null && IsTattoo(cpa.CardEnteringPlay), ChallengeTattooEntersPlayResponse, TriggerType.DealDamage, TriggerTiming.After));
+            }
+        }
+
+        private IEnumerator ChallengeTattooEntersPlayResponse(CardEntersPlayAction cpa)
+        {
+            Card newTattoo = cpa.CardEnteringPlay;
+            IEnumerator coroutine = DealDamageToHighestHP(newTattoo, 1, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, FindCardController(newTattoo).GetCardSource()), (Card c) => Game.H - 2, DamageType.Infernal);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
 
