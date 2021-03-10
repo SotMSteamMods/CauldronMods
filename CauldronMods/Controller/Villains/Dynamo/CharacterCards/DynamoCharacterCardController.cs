@@ -14,8 +14,16 @@ namespace Cauldron.Dynamo
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash).Condition = () => !Card.IsFlipped;
             SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => !Card.IsFlipped;
+
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            //CHALLENGE: Dynamo is indestructible as long as there is another villain target in play.
+
+            return Game.IsChallenge && card == base.Card && FindCardsWhere(c => c.IsInPlayAndHasGameText && IsVillainTarget(c) && c != card && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Any();
+        }
         public override void AddSideTriggers()
         {
             if (!base.CharacterCard.IsFlipped)
