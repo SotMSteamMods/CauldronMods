@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-
+using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -37,8 +37,16 @@ namespace Cauldron.Dendron
                  * At the start of the game, put {Dendron}'s villain character cards into play, 'Outside The Lines' side up.
                  * Search the deck for all copies of Painted Viper and Stained Wolf. Place them beneath this card and shuffle the villain deck.
                  */
-                
-                var coroutine = GameController.MoveCards(this, FindCardsWhere(c => c.Identifier == "StainedWolf" || c.Identifier == "PaintedViper"), CharacterCard.UnderLocation, cardSource: CharacterCardController.GetCardSource());
+
+                var cardsToPutUnderDendron = FindCardsWhere(c => c.Identifier == "StainedWolf" || c.Identifier == "PaintedViper");
+
+                if(GameController.Game.IsChallenge)
+                {
+                    // put 6 random tattoos under Dendron instead
+                    cardsToPutUnderDendron = FindCardsWhere(c => c.DoKeywordsContain("tattoo") && c.Owner == TurnTaker).OrderBy(c => GameController.Game.RNG.Next()).Take(6);
+                }
+
+                var coroutine = GameController.MoveCards(this, cardsToPutUnderDendron, CharacterCard.UnderLocation, cardSource: CharacterCardController.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

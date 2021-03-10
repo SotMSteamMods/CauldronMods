@@ -78,6 +78,11 @@ namespace Cauldron.Dendron
                     base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dda => dda.DamageSource.IsCard && dda.DamageSource.Card == CharacterCard && dda.Target.IsHero, H - 2));
                 }
             }
+
+            if(Game.IsChallenge)
+            {
+                base.SideTriggers.Add(base.AddImmuneToDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && IsVillainTarget(dd.DamageSource.Card) && dd.Target == CharacterCard));
+            }
         }
 
         public override void AddTriggers()

@@ -62,6 +62,37 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestWindcolorDendronChallenge()
+        {
+            SetupGameController(new string[] { DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis" }, challenge: true);
+
+            StartGame();
+
+            AssertNumberOfCardsAtLocation(dendron.CharacterCard.UnderLocation, 6);
+
+            IEnumerable<Card> underCards = dendron.CharacterCard.UnderLocation.Cards;
+            
+            foreach(Card under in underCards)
+            {
+                AssertHasKeywordEvenIfUnderOrFaceDown(under, "tattoo");
+            }
+
+            Card tattoo = underCards.First();
+            PlayCard(tattoo);
+
+            QuickHPStorage(dendron);
+            DealDamage(tattoo, dendron, 5, DamageType.Infernal);
+            QuickHPCheckZero();
+
+            FlipCard(dendron);
+
+            QuickHPStorage(dendron);
+            DealDamage(tattoo, dendron, 5, DamageType.Infernal);
+            QuickHPCheckZero();
+
+        }
+
+        [Test]
         public void TestWindcolorDendronFlipWhenNoCardsUnder()
         {
             SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");

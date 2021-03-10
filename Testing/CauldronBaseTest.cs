@@ -179,6 +179,11 @@ namespace CauldronTests
             }
         }
 
+        protected void AssertHasKeywordEvenIfUnderOrFaceDown(Card card, string keyword)
+        {
+            Assert.IsTrue(this.GameController.DoesCardContainKeyword(card, keyword, true, true), "{0} should have keyword: {1}", card.Identifier, keyword);
+        }
+
         protected void AssertHasAbility(string abilityKey, IEnumerable<string> identifiers)
         {
             foreach (var id in identifiers)
