@@ -44,6 +44,13 @@ namespace Cauldron.Gray
                     base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => IsVillain(c), 1));
                 }
             }
+
+            if(Game.IsChallenge)
+            {
+                //At the start of the villain turn, {Gray} deals each target 1 irreducible energy damage.
+                base.AddSideTrigger(base.AddDealDamageAtStartOfTurnTrigger(TurnTaker, Card, (Card c) => GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.All, 1, DamageType.Energy, isIrreducible: true));
+            }
+
             AddDefeatedIfDestroyedTriggers();
         }
 
