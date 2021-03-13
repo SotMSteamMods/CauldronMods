@@ -126,11 +126,17 @@ namespace Cauldron.Tiamat
 
             foreach (Card c in inPlay)
             {
-                TurnTaker.MoveCard(c, TurnTaker.PlayArea);
+                if (!c.Location.IsInPlay && !c.Location.IsInTheBox)
+                {
+                    TurnTaker.MoveCard(c, TurnTaker.PlayArea);
+                }
             }
             foreach (Card c in inBox)
             {
-                TurnTaker.MoveCard(c, TurnTaker.InTheBox);
+                if (!c.Location.IsInPlay && !c.Location.IsInTheBox)
+                {
+                    TurnTaker.MoveCard(c, TurnTaker.InTheBox);
+                }
             }
         }
     }

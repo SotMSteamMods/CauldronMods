@@ -198,5 +198,45 @@ namespace CauldronTests
             //Only card in trash is Element of Ice which means Ice increased Fire
             QuickHPCheck(0, -4, -4, -4);
         }
+
+        [Test()]
+        public void TestTiamatFutureChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/FutureTiamatCharacter", "Legacy", "Bunker", "Haka", "Ra", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card police = PlayCard("PoliceBackup");
+            Card neo = GetCardInPlay("NeoscaleCharacter");
+            Card exo = GetCardInPlay("ExoscaleCharacter");
+
+            QuickHPStorage(tiamat.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, traffic);
+
+            //"Whenever a non-villain target deals damage to a Dragonscale, {Tiamat} deals that target {H - 1} projectile damage.",
+            DealDamage(legacy, neo, 1, DamageType.Melee);
+            QuickHPCheck(0, -3, 0, 0);
+            DealDamage(traffic, exo, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, -3);
+
+            //does not react to Tiamat damage
+            DealDamage(bunker, tiamat, 4, DamageType.Melee);
+            QuickHPCheck(-4, 0, 0, 0);
+
+            //properly handles non-target and non-card damage sources
+            DealDamage(police, neo, 1, DamageType.Melee);
+            var envDamage = GameController.DealDamageToTarget(new DamageSource(GameController, base.env.TurnTaker), exo, 1, DamageType.Melee);
+            GameController.ExhaustCoroutine(envDamage);
+            QuickHPCheckZero();
+
+            //also reacts if it flips the scale
+            DealDamage(legacy, exo, 4, DamageType.Melee);
+            QuickHPCheck(0, -3, 0, 0);
+
+
+            //does not react to villain damage
+            PlayCard("HostageSituation");
+            DealDamage(tiamat, neo, 4, DamageType.Melee);
+            QuickHPCheckZero();
+        }
     }
 }

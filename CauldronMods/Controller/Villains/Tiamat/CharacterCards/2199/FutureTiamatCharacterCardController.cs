@@ -54,6 +54,12 @@ namespace Cauldron.Tiamat
 
                 //At the end of the villain turn, {Tiamat} deals the hero target with the highest HP {H} energy damage. Then, if {Tiamat} deals no damage this turn, each hero target deals itself 3 projectile damage. Then flip all ruined scales and restore them to their max HP.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.EndOfTurnResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.FlipCard }));
+
+                if(this.IsGameChallenge)
+                {
+                    //"Whenever a non-villain target deals damage to a Dragonscale, {Tiamat} deals that target {H - 1} projectile damage.",
+                    base.AddSideTrigger(AddTrigger((DealDamageAction dd) => dd.Target.IsVillainCharacterCard && dd.Target != this.Card && dd.DamageSource.Card != null && dd.DamageSource.IsTarget && !IsVillainTarget(dd.DamageSource.Card), ChallengeCounterDamageResponse, TriggerType.DealDamage, TriggerTiming.After));
+                }
             }
             //When {Tiamat} is destroyed, the heroes win.
             base.AddDefeatedIfDestroyedTriggers();
@@ -119,7 +125,11 @@ namespace Cauldron.Tiamat
             }
             yield break;
         }
-
+        private IEnumerator ChallengeCounterDamageResponse(DealDamageAction dd)
+        {
+            //"Whenever a non-villain target deals damage to a Dragonscale, {Tiamat} deals that target {H - 1} projectile damage.",
+            return DealDamage(this.Card, dd.DamageSource.Card, H - 1, DamageType.Projectile, isCounterDamage: true, cardSource: GetCardSource());
+        }
         private bool IsRuinedScale(Card c)
         {
             return c.DoKeywordsContain("ruined scale");
