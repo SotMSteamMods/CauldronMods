@@ -5,6 +5,20 @@
     "initialCardIdentifiers": [
         "WinterTiamatCharacter"
     ],
+    "initialOffToTheSideCardIdentifiers": [
+        "InfernoTiamatCharacter",
+        "StormTiamatCharacter",
+        "HydraStormTiamatCharacter",
+        "HydraInfernoTiamatCharacter",
+        "HydraFrigidEarthTiamatInstructions",
+        "HydraNoxiousFireTiamatInstructions",
+        "HydraThunderousGaleTiamatInstructions",
+        "HydraEarthTiamatCharacter",
+        "HydraDecayTiamatCharacter",
+        "HydraWindTiamatCharacter",
+        "ExoscaleCharacter",
+        "NeoscaleCharacter"
+    ],
     "cards": [
         {
             "identifier": "InfernoTiamatCharacter",
