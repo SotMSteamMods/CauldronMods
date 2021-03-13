@@ -98,7 +98,7 @@ namespace Cauldron.Vector
             MoveCardDestination underThisCard = new MoveCardDestination(base.Card.UnderLocation);
 
             IEnumerator routine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria(c => c.IsInTrash && IsVirus(c)),
-                underThisCard.ToEnumerable(), optional: true, storedResults: cardsSelected, showOutput: true, cardSource: base.GetCardSource());
+                underThisCard.ToEnumerable(), isPutIntoPlay: true, playIfMovingToPlayArea: false, optional: true, storedResults: cardsSelected, showOutput: true, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
