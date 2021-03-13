@@ -19,9 +19,7 @@ namespace Cauldron.Tiamat
         public override void AddStartOfGameTriggers()
         {
             base.AddStartOfGameTriggers();
-            (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();
-            //Advanced: At the start of the game, reveal cards from the top of the villain deck until 2 spells are revealed. Discard those spells. Shuffle the other revealed cards back into the villain deck.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => base.Game.IsAdvanced && tt == base.TurnTaker, this.Discard2Spells, TriggerType.DiscardCard);
+            (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();            
         }
 
         private IEnumerator Discard2Spells(PhaseChangeAction action)
@@ -44,6 +42,12 @@ namespace Cauldron.Tiamat
         {
             if (!this.Card.IsFlipped)
             {
+                if(Game.IsAdvanced)
+                {
+                    //Advanced: At the start of the game, reveal cards from the top of the villain deck until 2 spells are revealed. Discard those spells. Shuffle the other revealed cards back into the villain deck.
+                    AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker tt) => base.Game.IsAdvanced && tt == base.TurnTaker, this.Discard2Spells, TriggerType.DiscardCard));
+                    //we can let this be a regular start-of-turn trigger because Tiamat will immediately flip
+                }
                 //At the start of the villain turn, flip {Tiamat}'s villain character cards.
                 base.AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, base.FlipThisCharacterCardResponse, TriggerType.FlipCard));
             }

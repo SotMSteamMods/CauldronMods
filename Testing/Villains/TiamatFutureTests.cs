@@ -80,6 +80,16 @@ namespace CauldronTests
                 Assert.IsTrue(IsSpell(c));
             }
         }
+        [Test()]
+        public void TestFutureTiamatAdvancedStartOfGame_OnlyHappensOnce()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/FutureTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
+            StartGame();
+
+            AssertNumberOfCardsInTrash(tiamat, 2);
+            GoToStartOfTurn(tiamat);
+            AssertNumberOfCardsInTrash(tiamat, 2);
+        }
 
         [Test()]
         public void TestFutureTiamatEndOfTurn()
