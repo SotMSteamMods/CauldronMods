@@ -1313,6 +1313,17 @@ namespace CauldronTests
 
 
         [Test]
+        public void SolomonsFire_KEYWORDS()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
+            StartGame();
+
+            var fire = GetCard("SolomonsFire");
+            AssertCardHasKeyword(fire, "limited", false);
+            AssertCardHasKeyword(fire, "ongoing", false);
+        }
+
+        [Test]
         public void SolomonsFire()
         {
             SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Megalopolis");
