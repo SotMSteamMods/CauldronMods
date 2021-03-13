@@ -1418,5 +1418,42 @@ namespace CauldronTests
             AssertInPlayArea(tiamat, card);
             AssertCardHasKeyword(card, "villain", false);
         }
+        [Test]
+        public void TestTiamatChallengeResponse()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat", "Legacy", "Guise", "Parse", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            //check it only responds to its "own" spell
+            DealDamage(legacy, winter, 50, DamageType.Melee);
+            AssertFlipped(winter);
+            PlayCard("ElementOfFire");
+            AssertFlipped(winter);
+
+            //flips to H * 3 HP, can deal damage
+            QuickHPStorage(legacy, guise, parse);
+            PlayCard("ElementOfIce");
+            AssertNotFlipped(winter);
+            AssertHitPoints(winter, 9);
+            QuickHPCheck(-2, -2, -2);
+
+            //inferno reacts to Fire
+            DealDamage(legacy, inferno, 50, DamageType.Melee);
+            AssertFlipped(inferno);
+            PlayCard("ElementOfFire");
+            AssertNotFlipped(inferno);
+
+            //storm reacts to Lightning
+            DealDamage(legacy, storm, 50, DamageType.Melee);
+            AssertFlipped(storm);
+            PlayCard("ElementOfLightning");
+            AssertNotFlipped(storm);
+
+            //check it doesn't interfere with the win condition
+            DestroyCard(winter);
+            DestroyCard(inferno);
+            DestroyCard(storm);
+            AssertGameOver();
+        }
     }
 }

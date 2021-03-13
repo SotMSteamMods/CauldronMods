@@ -66,7 +66,7 @@
                 "ReduceDamageTaken"
             ],
             "challengeTitle": "Undying Rage",
-            "challengeText": "Whenever a villain Spell card is played, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
             "difficulty": 1
         },
         {
@@ -115,7 +115,7 @@
                 "ReduceDamageTaken"
             ],
             "challengeTitle": "Undying Rage",
-            "challengeText": "Whenever a villain Spell card is played, if the head it names is decapitated, flip that head and restore it to {H * 3} HP."
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP."
         },
         {
             "identifier": "WinterTiamatCharacter",
@@ -163,7 +163,7 @@
                 "ReduceDamageTaken"
             ],
             "challengeTitle": "Undying Rage",
-            "challengeText": "Whenever a villain Spell card is played, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
             "difficulty": 1,
             "openingLines": {
                 "default": "Screeee! Raoooargh! Khhhaaazzt!",
