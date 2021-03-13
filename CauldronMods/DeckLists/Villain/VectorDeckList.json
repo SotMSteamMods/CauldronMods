@@ -39,6 +39,8 @@
                 "EndOfTurnAction",
                 "GainHP"
             ],
+            "challengeTitle": "Silent Plague",
+            "challengeText": "At the start of the game, put Supervirus under Vector. It does not count as being in play. When Vector is reduced to 10 or less HP, put Supervirus into play from under him.",
             "flippedBody": "Desperate Assassin",
             "flippedGameplay": [
                 "Whenever {Vector} flips to this side, remove Supervirus from the game. Put all virus cards that were beneath it into the villain trash.",
