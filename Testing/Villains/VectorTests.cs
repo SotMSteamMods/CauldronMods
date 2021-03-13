@@ -1647,5 +1647,24 @@ namespace CauldronTests
             GoToStartOfTurn(vector);
             QuickHPCheck(3);
         }
+        [Test]
+        public void TestVectorChallenge()
+        {
+            SetupGameController(new[] { DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            Card virus = GetCard("Supervirus");
+            AssertUnderCard(vector.CharacterCard, virus);
+            AssertNotInPlay(virus);
+
+            DealDamage(legacy, vector, 30, DamageType.Melee);
+            AssertIsInPlay(virus);
+
+            FlipCard(vector);
+            AssertOutOfGame(virus);
+
+            DealDamage(legacy, vector, 2, DamageType.Melee);
+            AssertNotInPlay(virus);
+        }
     }
 }
