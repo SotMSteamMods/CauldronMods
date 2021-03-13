@@ -16,7 +16,7 @@ namespace CauldronTests
         protected TurnTakerController catchwater { get { return FindEnvironment(); } }
         protected bool IsTransport(Card card)
         {
-            return card.DoKeywordsContain("transport");
+            return card != null && card.DoKeywordsContain("transport");
         }
         private void AddReduceDamageTrigger(TurnTakerController ttc,bool hero, bool villain, int amount)
         {

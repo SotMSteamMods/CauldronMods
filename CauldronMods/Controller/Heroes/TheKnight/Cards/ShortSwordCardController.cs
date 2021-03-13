@@ -51,7 +51,7 @@ namespace Cauldron.TheKnight
         public override void AddTriggers()
         {
             //"Increase damage dealt by {TheKnight} by 1."
-            base.AddIncreaseDamageTrigger(dd => IsEquipmentEffectingCard(dd.DamageSource.Card), 1);
+            base.AddIncreaseDamageTrigger(dd => dd.DamageSource != null && dd.DamageSource.Card != null && IsEquipmentEffectingCard(dd.DamageSource.Card), 1);
             base.AddTriggers();
         }
 

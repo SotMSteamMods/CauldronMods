@@ -28,13 +28,13 @@ namespace Cauldron.SwarmEater
                 base.AddSideTrigger(base.AddDealDamageAtStartOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => this.IsPursued(c), TargetType.All, 3, DamageType.Psychic));
 
                 //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
-                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction dda) => this.IsPursued(dda.DamageSource.Card) && dda.DamageSource.Card.IsHeroCharacterCard && dda.Target != base.Card && dda.Target != dda.DamageSource.Card && dda.Target.IsInPlay && !dda.Target.IsBeingDestroyed,
+                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction dda) => dda.DamageSource != null && dda.DamageSource.Card != null && this.IsPursued(dda.DamageSource.Card) && dda.DamageSource.Card.IsHeroCharacterCard && dda.Target != base.Card && dda.Target != dda.DamageSource.Card && dda.Target.IsInPlay && !dda.Target.IsBeingDestroyed,
                             this.ChangePursuedResponse, TriggerType.MoveCard, TriggerTiming.After));
 
                 if (base.Game.IsAdvanced)
                 {
                     //Increase damage dealt by {SwarmEater} to environment targets by 1.
-                    base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource.Card == base.Card && dda.Target.IsEnvironment, 1));
+                    base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource != null && dda.DamageSource.Card != null && dda.DamageSource.Card == base.Card && dda.Target.IsEnvironment, 1));
                 }
             }
             else

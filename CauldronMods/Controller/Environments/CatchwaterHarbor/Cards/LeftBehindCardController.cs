@@ -55,7 +55,7 @@ namespace Cauldron.CatchwaterHarbor
 
         private bool DestroyCardGameOverCriteria(DestroyCardAction dca)
         {
-            return !GameController.IsGameOver && dca.CardToDestroy != null && dca.CardToDestroy.Card != null && !FindCardsWhere(c => IsVillain(c) && c.IsCharacter && c != dca.CardToDestroy.Card && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Any() && dca.DealDamageAction != null && dca.DealDamageAction is DealDamageAction dd && dd.TargetHitPointsAfterBeingDealtDamage <= 0 && dd.DamageSource != null && GetCardThisCardIsNextTo() != null && dd.DamageSource.Card != GetCardThisCardIsNextTo();
+            return !GameController.IsGameOver && dca.CardToDestroy != null && dca.CardToDestroy.Card != null && !FindCardsWhere(c => IsVillain(c) && c.IsCharacter && c != dca.CardToDestroy.Card && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Any() && dca.DealDamageAction != null && dca.DealDamageAction is DealDamageAction dd && dd.TargetHitPointsAfterBeingDealtDamage <= 0 && dd.DamageSource != null && dd.DamageSource.Card != null && GetCardThisCardIsNextTo() != null && dd.DamageSource.Card != GetCardThisCardIsNextTo();
         }
 
         private IEnumerator GameOverResponse(GameAction ga)

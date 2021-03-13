@@ -16,7 +16,7 @@ namespace Cauldron.Menagerie
         public override void AddTriggers()
         {
             //Increase damage dealt by insects by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsInsect(action.DamageSource.Card), 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && base.IsInsect(action.DamageSource.Card), 1);
 
             //At the end of the villain turn, this card deals the hero target with the lowest HP 2 toxic damage. Then, put all Insects in the villain trash into play.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageAndInsectResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.PutIntoPlay });

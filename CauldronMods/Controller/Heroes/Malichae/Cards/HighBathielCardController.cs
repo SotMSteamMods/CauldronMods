@@ -15,7 +15,7 @@ namespace Cauldron.Malichae
 
         public override void AddTriggers()
         {
-            base.AddIncreaseDamageTrigger(dda => dda.DamageSource.Card == GetCardThisCardIsNextTo(), 1);
+            base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null && dda.DamageSource.Card == GetCardThisCardIsNextTo(), 1);
             base.AddTriggers();
         }
 

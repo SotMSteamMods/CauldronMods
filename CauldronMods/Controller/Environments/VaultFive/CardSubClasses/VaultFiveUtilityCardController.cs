@@ -17,7 +17,7 @@ namespace Cauldron.VaultFive
 
         protected bool IsArtifact(Card card)
         {
-            return card.DoKeywordsContain(ArtifactKeyword);
+            return card != null && card.DoKeywordsContain(ArtifactKeyword);
         }
 
         protected IEnumerable<TurnTaker> GetPlayersWithArtifactsInHand()

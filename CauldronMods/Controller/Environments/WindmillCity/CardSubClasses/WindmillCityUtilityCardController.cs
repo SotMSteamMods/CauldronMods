@@ -18,11 +18,11 @@ namespace Cauldron.WindmillCity
         public static readonly string EmergencyKeyword = "emergency";
         protected bool IsResponder(Card card)
         {
-            return card.DoKeywordsContain(ResponderKeyword);
+            return card != null && card.DoKeywordsContain(ResponderKeyword);
         }
         protected bool IsEmergency(Card card)
         {
-            return card.DoKeywordsContain(EmergencyKeyword);
+            return card != null && card.DoKeywordsContain(EmergencyKeyword);
         }
     }
 }

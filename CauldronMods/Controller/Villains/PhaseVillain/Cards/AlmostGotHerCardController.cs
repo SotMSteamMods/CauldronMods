@@ -22,9 +22,9 @@ namespace Cauldron.PhaseVillain
         public override void AddTriggers()
         {
             //Increase damage dealt to Obstacles by 1 by the first hero target damaged by {Phase} each round.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisRound(FirstTimeDealDamage) && action.DamageSource.Card == base.CharacterCard && action.Target.IsHero, this.FirstTimeDealDamageResponse, TriggerType.IncreaseDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisRound(FirstTimeDealDamage) && action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard && action.Target.IsHero, this.FirstTimeDealDamageResponse, TriggerType.IncreaseDamage, TriggerTiming.After);
             //Damage dealt by {Phase} is irreducible.
-            base.AddMakeDamageIrreducibleTrigger((DealDamageAction action) => action.DamageSource.Card == base.CharacterCard);
+            base.AddMakeDamageIrreducibleTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard);
             //At the start of the villain turn, if there are 1 or 0 Obstacles in play, each player must discard a card. Then, this card is destroyed.
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker && base.FindCardsWhere(new LinqCardCriteria((Card c) => base.IsObstacle(c) && c.IsInPlayAndHasGameText)).Count() <= 1, this.DiscardCardsAndDestroyThisCardResponse, TriggerType.DestroySelf);
 

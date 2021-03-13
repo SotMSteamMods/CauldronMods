@@ -55,7 +55,7 @@ namespace Cauldron.LadyOfTheWood
 		/// <returns></returns>
 		private bool IsSeason(Card card)
 		{
-			return card.DoKeywordsContain("season");
+			return card != null && card.DoKeywordsContain("season");
 		}
 	}
 }

@@ -52,7 +52,7 @@ namespace Cauldron.Echelon
             int numDamage = powerNumerals?[0] ?? 3;
             var player = FindHeroTurnTakerController(hero?.ToHero());
 
-            if (dd.DamageSource.IsCard && dd.DamageSource.IsTarget && player != null && !dd.DamageSource.Card.IsBeingDestroyed && effect.CardMovedExpiryCriteria.Card == null)
+            if (dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsCard && dd.DamageSource.IsTarget && player != null && !dd.DamageSource.Card.IsBeingDestroyed && effect.CardMovedExpiryCriteria.Card == null)
             {
                 var target = dd.DamageSource.Card;
 

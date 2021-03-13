@@ -56,7 +56,7 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         protected bool IsNature(Card card)
         {
-            return card.DoKeywordsContain(NatureKeyword);
+            return card != null && card.DoKeywordsContain(NatureKeyword);
         }
 
         public static readonly string NatureKeyword = "nature";

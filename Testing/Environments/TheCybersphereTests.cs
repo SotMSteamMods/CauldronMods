@@ -16,7 +16,7 @@ namespace CauldronTests
         protected TurnTakerController cybersphere { get { return FindEnvironment(); } }
         protected bool IsGridVirus(Card card)
         {
-            return card.DoKeywordsContain("grid virus");
+            return card != null && card.DoKeywordsContain("grid virus");
         }
         #endregion
 

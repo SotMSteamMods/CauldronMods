@@ -19,7 +19,7 @@ namespace Cauldron.TheRam
         public override void AddTriggers()
         {
             //"This card is immune to damage from heroes that are Up Close.",
-            AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource.IsHero && dd.DamageSource.IsCard && IsUpClose(dd.DamageSource.Card));
+            AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsHero && dd.DamageSource.IsCard && IsUpClose(dd.DamageSource.Card));
 
             //"At the end of the villain turn, this card deals each Up Close hero {H - 1} energy damage and those heroes must each discard a card."
             AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsHero && IsUpClose(c), TargetType.All, H - 1, DamageType.Energy);

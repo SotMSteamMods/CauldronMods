@@ -21,12 +21,12 @@ namespace Cauldron.CatchwaterHarbor
 
         protected bool IsTransport(Card card)
         {
-            return card.DoKeywordsContain(TransportKeyword);
+            return card != null && card.DoKeywordsContain(TransportKeyword);
         }
 
         protected bool IsGangster(Card card)
         {
-            return card.DoKeywordsContain(GangsterKeyword);
+            return card != null && card.DoKeywordsContain(GangsterKeyword);
         }
 
         protected int GetNumberOfTransportsInPlay()

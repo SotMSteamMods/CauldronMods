@@ -48,7 +48,7 @@ namespace Cauldron.Tiamat
             else
             {
                 //Decapitated heads cannot deal damage
-                base.AddSideTrigger(base.AddPreventDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.Card));
+                base.AddSideTrigger(base.AddPreventDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.Card));
             }
         }
 

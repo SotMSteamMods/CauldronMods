@@ -66,7 +66,7 @@ namespace Cauldron.Necro
 
         protected bool IsRitual(Card card)
         {
-            return card.DoKeywordsContain(RitualKeyword);
+            return card != null && card.DoKeywordsContain(RitualKeyword);
         }
 
         protected int GetNumberOfRitualsInPlay()
@@ -76,7 +76,7 @@ namespace Cauldron.Necro
 
         protected bool IsUndead(Card card)
         {
-            return card.DoKeywordsContain(UndeadKeyword);
+            return card != null && card.DoKeywordsContain(UndeadKeyword);
         }
     }
 }

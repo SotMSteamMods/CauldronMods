@@ -33,7 +33,7 @@ namespace Cauldron.WindmillCity
         public override void AddTriggers()
         {
             //Reduce all damage dealt by non-environment cards by 1.
-            AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsCard && !dd.DamageSource.Card.IsEnvironment && GameController.IsCardVisibleToCardSource(dd.DamageSource.Card, GetCardSource()), dd => 1);
+            AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsCard && !dd.DamageSource.Card.IsEnvironment && GameController.IsCardVisibleToCardSource(dd.DamageSource.Card, GetCardSource()), dd => 1);
         }
     }
 }

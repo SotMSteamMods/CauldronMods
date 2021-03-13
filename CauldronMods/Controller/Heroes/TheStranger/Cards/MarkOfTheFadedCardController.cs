@@ -23,7 +23,7 @@ namespace Cauldron.TheStranger
         {
             base.AddTriggers();
             //Play this next to a hero target. When that target would be dealt damage by a non-hero card, you may redirect that damage to a hero with higher HP.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.GetCardThisCardIsNextTo(true) && dd.DamageSource != null && !dd.DamageSource.Card.IsHero && dd.DamageSource.Card.IsTarget, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.GetCardThisCardIsNextTo(true) && dd.DamageSource != null && dd.DamageSource.Card != null && !dd.DamageSource.Card.IsHero && dd.DamageSource.Card.IsTarget, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
         }
 
         private IEnumerator RedirectDamageResponse(DealDamageAction dealDamage)

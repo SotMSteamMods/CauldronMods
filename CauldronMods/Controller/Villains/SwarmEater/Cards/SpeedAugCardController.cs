@@ -15,10 +15,10 @@ namespace Cauldron.SwarmEater
         public override void AddTriggers()
         {
             //Increase damage dealt by villain targets by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && base.Card.IsInPlayAndNotUnderCard && action.DamageSource.IsVillainTarget, 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null  && base.Card.IsInPlayAndNotUnderCard && action.DamageSource.IsVillainTarget, 1);
 
             //Absorb: increase damage dealt by {SwarmEater} by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && CanAbsorbEffectTrigger() && action.DamageSource.Card == this.CardThatAbsorbedThis(), 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null  && CanAbsorbEffectTrigger() && action.DamageSource.Card == this.CardThatAbsorbedThis(), 1);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Cauldron.Anathema
 		public override void AddTriggers()
 		{
 			//The first time a Villain target is dealt damage each turn, this card deals the source of that damage 2 melee damage.
-			Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => !base.IsPropertyTrue(FirstDamageToVillainTargetThisTurn) && dd.DidDealDamage && dd.DamageSource.IsTarget && base.IsVillainTarget(dd.Target);
+			Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => !base.IsPropertyTrue(FirstDamageToVillainTargetThisTurn) && dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsTarget && base.IsVillainTarget(dd.Target);
 			base.AddTrigger<DealDamageAction>(criteria, this.FirstDamageDealtResponse, TriggerType.DealDamage, TriggerTiming.After, ActionDescription.DamageTaken);
 
 			base.AddAfterLeavesPlayAction((GameAction ga) => base.ResetFlagAfterLeavesPlay(FirstDamageToVillainTargetThisTurn), TriggerType.Hidden);

@@ -24,7 +24,7 @@ namespace Cauldron.Celadroch
 
         public override void AddTriggers()
         {
-            AddIncreaseDamageTrigger(dda => dda.DamageSource != null && IsVillainTarget(dda.DamageSource.Card), 1);
+            AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null && IsVillainTarget(dda.DamageSource.Card), 1);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Cauldron.PhaseVillain
         public override void AddTriggers()
         {
             //Reduce damage dealt by that hero by 2.
-            base.AddReduceDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.GetCardThisCardIsNextTo(), (DealDamageAction action) => 2);
+            base.AddReduceDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.GetCardThisCardIsNextTo(), (DealDamageAction action) => 2);
             //At the start of that hero's turn, this card deals them {H} toxic damage.
             base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.GetCardThisCardIsNextTo().Owner, this.DealDamageResponse, TriggerType.DealDamage);
         }

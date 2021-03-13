@@ -31,7 +31,7 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt) && !tt.IsIncapacitatedOrOutOfGame, AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
 
                 //"{AdmiralWinters} is immune to damage from targets that are not up close. 
-                AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource.IsTarget && !IsUpClose(dd.DamageSource.Card));
+                AddImmuneToDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsTarget && !IsUpClose(dd.DamageSource.Card));
 
                 //The first time {AdmiralWinters} would be dealt damage each turn, redirect that damage to {TheRam}.",
                 AddSideTriggers(AddFirstTimePerTurnRedirectTrigger((DealDamageAction dd) => dd.Target == this.Card && ram.IsInPlayAndNotUnderCard, redirectKey, TargetType.HighestHP, (Card c) => c == ram));
@@ -54,7 +54,7 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !IsUpClose(tt) && !tt.IsIncapacitatedOrOutOfGame, AskIfMoveUpCloseResponse, TriggerType.PutIntoPlay));
 
                 //"Increase damage dealt to and by {TheRam} by 1.",
-                AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource.Card == ram, 1));
+                AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dda) => dda.DamageSource != null && dda.DamageSource.Card != null && dda.DamageSource.Card == ram, 1));
                 AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dda) => dda.Target == ram, 1));
 
                 //"Whenever a one-shot is placed under {TheRam}'s character cards, immediately flip {TheRam}'s character cards."

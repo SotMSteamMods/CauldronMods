@@ -26,7 +26,7 @@ namespace Cauldron.LadyOfTheWood
         {
             TokenPool elementPool = GetElementTokenPool();
             //When {LadyOfTheWood} would deal damage, you may change its type by spending a token.
-            AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card == base.CharacterCard && elementPool.CurrentValue > 0, SpendTokenResponse, new TriggerType[]
+            AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == base.CharacterCard && elementPool.CurrentValue > 0, SpendTokenResponse, new TriggerType[]
             {
                 TriggerType.ModifyTokens,
                 TriggerType.ChangeDamageType

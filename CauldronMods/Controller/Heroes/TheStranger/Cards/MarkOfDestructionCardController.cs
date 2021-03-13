@@ -27,7 +27,7 @@ namespace Cauldron.TheStranger
             base.AddWhenDestroyedTrigger((DestroyCardAction destroy) => base.GameController.DestroyCard(this.DecisionMaker, base.GetCardThisCardIsNextTo(true)), TriggerType.DestroyCard);
             base.AddTrigger<DestroyCardAction>((DestroyCardAction destroy) => destroy.CardToDestroy != null && destroy.CardToDestroy.Card == base.GetCardThisCardIsNextTo(true), (DestroyCardAction destroy) => base.DestroyThisCardResponse(destroy), TriggerType.DestroySelf, TriggerTiming.After);
             //Redirect damage dealt to this card by non-hero targets to the hero target with the highest HP.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.Card && dd.DamageSource != null && !dd.DamageSource.Card.IsHero && dd.DamageSource.Card.IsTarget, this.RedirectResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.Card && dd.DamageSource != null && dd.DamageSource.Card != null && !dd.DamageSource.Card.IsHero && dd.DamageSource.Card.IsTarget, this.RedirectResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
         }
 
         private IEnumerator RedirectResponse(DealDamageAction dd)

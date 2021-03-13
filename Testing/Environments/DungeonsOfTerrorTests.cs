@@ -16,7 +16,7 @@ namespace CauldronTests
         protected TurnTakerController dungeon { get { return FindEnvironment(); } }
         protected bool IsFate(Card card)
         {
-            return card.DoKeywordsContain("fate");
+            return card != null && card.DoKeywordsContain("fate");
         }
 
         #endregion

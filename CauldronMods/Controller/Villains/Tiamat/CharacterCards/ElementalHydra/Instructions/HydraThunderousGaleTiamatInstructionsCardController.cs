@@ -35,7 +35,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             {
                 //The first time {StormTiamatCharacter} deals damage each turn, increase that damage by 2.
-                base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.Card == base.FirstHeadCardController().Card && !this.DidDealDamageThisTurn(base.FirstHeadCardController().Card), (DealDamageAction action) => 2)
+                base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.FirstHeadCardController().Card && !this.DidDealDamageThisTurn(base.FirstHeadCardController().Card), (DealDamageAction action) => 2)
             };
         }
 

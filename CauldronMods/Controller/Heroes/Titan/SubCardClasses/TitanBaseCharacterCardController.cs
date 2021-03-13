@@ -18,7 +18,7 @@ namespace Cauldron.Titan
         {
             base.AddTriggers();
 
-            base.AddTrigger<DealDamageAction>(action => action.DamageSource.Card.Owner == TurnTaker && Criteria(action), action => RestoreCharacterCard(), new TriggerType[] { TriggerType.Hidden, TriggerType.FirstTrigger }, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>(action => action.DamageSource != null &&  action.DamageSource.Card != null && action.DamageSource.Card.Owner == TurnTaker && Criteria(action), action => RestoreCharacterCard(), new TriggerType[] { TriggerType.Hidden, TriggerType.FirstTrigger }, TriggerTiming.After);
             base.AddTrigger<DestroyCardAction>(action => action.CardToDestroy.Card.Owner == TurnTaker && Criteria(action), action => RestoreCharacterCard(), new TriggerType[] { TriggerType.Hidden, TriggerType.FirstTrigger }, TriggerTiming.After);
             base.AddTrigger<PhaseChangeAction>(action => Criteria(action), action => RestoreCharacterCard(), new TriggerType[] { TriggerType.Hidden, TriggerType.FirstTrigger }, TriggerTiming.After);
         }

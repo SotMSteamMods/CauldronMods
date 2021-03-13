@@ -22,7 +22,7 @@ namespace Cauldron.Northspar
 
         protected bool IsFrozen(Card card)
         {
-            return card.DoKeywordsContain(FrozenKeyword);
+            return card != null && card.DoKeywordsContain(FrozenKeyword);
         }
 
         private IEnumerable<Card> FindTakAhab()
@@ -37,7 +37,7 @@ namespace Cauldron.Northspar
 
         protected bool IsThirdWaypoint(Card card)
         {
-            return card.DoKeywordsContain(ThirdWaypointKeyword);
+            return card != null && card.DoKeywordsContain(ThirdWaypointKeyword);
         }
 
         protected Card FindTakAhabInPlay()
@@ -57,7 +57,7 @@ namespace Cauldron.Northspar
 
         protected bool IsWaypoint(Card card)
         {
-            return card.DoKeywordsContain(ThirdWaypointKeyword) || card.DoKeywordsContain(SecondWaypointKeyword) || card.DoKeywordsContain(FirstWaypointKeyword);
+            return card != null && card.DoKeywordsContain(ThirdWaypointKeyword) || card.DoKeywordsContain(SecondWaypointKeyword) || card.DoKeywordsContain(FirstWaypointKeyword);
         }
 
         protected IEnumerator SearchForWaypoints()

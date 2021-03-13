@@ -43,7 +43,7 @@ namespace Cauldron.Gargoyle
         private bool DealDamageCritera(DealDamageAction dealDamageAction)
         {
             // "Once per turn, when {Gargoyle} deals or is dealt damage, or when a non-hero target is dealt damage, 
-            return !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && dealDamageAction.Amount > 0 && !dealDamageAction.IsPretend && (dealDamageAction.DamageSource.Card == base.CharacterCard || dealDamageAction.Target == base.CharacterCard || !dealDamageAction.Target.IsHero);
+            return !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && dealDamageAction.Amount > 0 && !dealDamageAction.IsPretend && ((dealDamageAction.DamageSource != null && dealDamageAction.DamageSource.Card != null && dealDamageAction.DamageSource.Card == base.CharacterCard) || dealDamageAction.Target == base.CharacterCard || !dealDamageAction.Target.IsHero);
         }
 
         private bool DealDamageTargetCriteria(Card card)

@@ -33,7 +33,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             { 
 				//Increase damage dealt by {Tiamat}, The Mouth of the Inferno by 1.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource != null && dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1)
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource != null && dealDamage.DamageSource.Card != null && dealDamage.DamageSource.IsCard && dealDamage.DamageSource.Card == base.Card, 1)
             };
         }
 
@@ -42,7 +42,7 @@ namespace Cauldron.Tiamat
             return new ITrigger[]
             {
 				//When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Fire“ card in the villain trash.
-				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.CardSource != null && dealDamage.DamageSource != null && IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfFireInTrash())
+				base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.CardSource != null && dealDamage.DamageSource != null && dealDamage.DamageSource.Card != null && IsSpell(dealDamage.CardSource.Card) && IsHead(dealDamage.DamageSource.Card), GetNumberOfElementOfFireInTrash())
             };
         }
 

@@ -16,11 +16,11 @@ namespace CauldronTests
         protected TurnTakerController chasm { get { return FindEnvironment(); } }
         protected bool IsDjinn(Card card)
         {
-            return card.DoKeywordsContain("djinn");
+            return card != null && card.DoKeywordsContain("djinn");
         }
         protected bool IsNature(Card card)
         {
-            return card.DoKeywordsContain("nature");
+            return card != null && card.DoKeywordsContain("nature");
         }
 
         protected Card chasmCard { get { return FindCardsWhere(c => c.Identifier == "TheChasmOfAThousandNights", realCardsOnly: false).First(); } }
