@@ -33,6 +33,21 @@ namespace Cauldron.Vector
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
+
+            if(GameController.Game.IsChallenge)
+            {
+                //At the start of the game, put Supervirus under Vector. It does not count as being in play.
+                Card virus = TurnTaker.FindCard("Supervirus");
+                routine = GameController.MoveCard(this, virus, CharacterCard.UnderLocation, playCardIfMovingToPlayArea: false, cardSource: CharacterCardController.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(routine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(routine);
+                }
+            }
         }
     }
 }
