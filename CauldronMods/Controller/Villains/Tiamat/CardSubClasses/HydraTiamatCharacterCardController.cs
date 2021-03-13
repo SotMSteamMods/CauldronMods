@@ -11,7 +11,9 @@ namespace Cauldron.Tiamat
     {
         protected HydraTiamatCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            //challenge special string
+            //the actual rule lives on Thunderous Gale instructions
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsHead(c) && c.IsInPlayAndHasGameText && !c.IsFlipped, "non-decapitated head")).Condition = () => Game.IsChallenge;
         }
 
         //Face down heads are indestructible

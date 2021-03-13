@@ -14,6 +14,9 @@ namespace Cauldron.Tiamat
             SpecialStringMaker.ShowSpecialString(() => BuildDecapitatedHeadList());
             SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 1 + NumberOfOngoingsInTrash()).Condition = () => base.Card.IsFlipped && FirstHeadCardController().Card.IsFlipped && !SecondHeadCardController().Card.IsFlipped && SecondHeadCardController().Card.IsInPlayAndNotUnderCard;
             SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => base.Card.IsFlipped && !FirstHeadCardController().Card.IsFlipped;
+
+            //putting the challenge rule logic here for no particular reason
+            AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
         //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
@@ -26,7 +29,9 @@ namespace Cauldron.Tiamat
                 //At the start of the villain turn, flip 1 decapitated head to its active side and restore it to 2 times {H} HP (3 times H if any Instruction is flipped and advanced).
                 base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, this.GrowHeadResponse, TriggerType.FlipCard),
                 //At the end of the villain turn, {StormTiamatCharacter} deals each hero target 1 lightning damage.
-                base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !base.FirstHeadCardController().Card.IsFlipped)
+                base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => !base.FirstHeadCardController().Card.IsFlipped),
+                //Cleans up indestructible cards that need it, once they stop being indestructible
+                AddTrigger((FlipCardAction fc) => IsHead(fc.CardToFlip.Card) && fc.CardToFlip.Card.IsFlipped, fc => GameController.DestroyAnyCardsThatShouldBeDestroyed(cardSource: fc.CardToFlip.GetCardSource()), TriggerType.DestroyCard, TriggerTiming.After)
             };
         }
 
@@ -122,6 +127,16 @@ namespace Cauldron.Tiamat
             return (from card in base.TurnTaker.Trash.Cards
                     where card.IsOngoing
                     select card).Count();
+        }
+
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            //"Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
+            if (Game.IsChallenge && card != null && card.IsVillain && card.IsOngoing)
+            {
+                return TurnTaker.GetCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsHead(c) && !c.IsFlipped).Count() >= 2;
+            }
+            return false;
         }
     }
 }

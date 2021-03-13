@@ -1684,5 +1684,25 @@ namespace CauldronTests
             GoToStartOfTurn(tiamat);
             AssertIsInPlayAndNotUnderCard(wind);
         }
+
+        [Test()]
+        public void TestHydraTiamatChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            Card aspect = PlayCard("ReptilianAspect");
+            DestroyCard(aspect);
+            AssertIsInPlay(aspect);
+
+            DestroyCard(inferno);
+            DestroyCard(aspect);
+            AssertIsInPlay(aspect);
+
+            DestroyCard(winter);
+            DestroyCard(aspect);
+            AssertInTrash(aspect);
+
+        }
     }
 }
