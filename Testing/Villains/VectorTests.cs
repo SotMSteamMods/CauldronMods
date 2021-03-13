@@ -1203,6 +1203,34 @@ namespace CauldronTests
             // Assert
             AssertUnderCard(superVirus, bloodSample);
         }
+        [Test]
+        public void TestSupervirusAllowsPlacingVirusCardsUnderneath_CannotPlayDoesNotPrevent()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis");
+
+            Card bloodSample = GetCard(BloodSampleCardController.Identifier); // Virus
+            Card delayedSymptoms = GetCard(DelayedSymptomsCardController.Identifier); // Virus
+            Card eliteTraining = GetCard(EliteTrainingCardController.Identifier);
+
+            PutInTrash(bloodSample);
+            PutInTrash(delayedSymptoms);
+            PutInTrash(eliteTraining);
+            StartGame();
+
+            GoToStartOfTurn(base.env);
+            Card superVirus = GetCard(SupervirusCardController.Identifier);
+            PlayCard(superVirus);
+            PlayCard("TakeDown");
+
+            DecisionSelectCard = bloodSample;
+
+            GoToStartOfTurn(vector);
+            // Assert
+            AssertUnderCard(superVirus, bloodSample);
+        }
+
+
 
         [Test]
         public void TestSuperVirusDealsHeroesDamageAtVillainTurnStart()
