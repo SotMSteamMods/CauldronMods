@@ -96,9 +96,9 @@ namespace Cauldron.Vector
             // You may put 1 Virus card from the villain trash beneath this card
             List<SelectCardDecision> cardsSelected = new List<SelectCardDecision>();
             MoveCardDestination underThisCard = new MoveCardDestination(base.Card.UnderLocation);
-
+            Log.Debug("Logging works");
             IEnumerator routine = base.GameController.SelectCardFromLocationAndMoveIt(this.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria(c => c.IsInTrash && IsVirus(c)),
-                underThisCard.ToEnumerable(), optional: true, storedResults: cardsSelected, showOutput: true, cardSource: base.GetCardSource());
+                underThisCard.ToEnumerable(), isPutIntoPlay: true, playIfMovingToPlayArea: false, optional: true, storedResults: cardsSelected, showOutput: true, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)
             {
