@@ -15,7 +15,12 @@ namespace Cauldron.LadyOfTheWood
 			this._primed = true;
 		}
 
-        public override void AddStartOfGameTriggers()
+		public override bool ShouldBeDestroyedNow()
+		{
+			return this.Card.IsInPlayAndHasGameText && _primed && this.Card.UnderLocation.IsEmpty;
+		}
+
+		public override void AddStartOfGameTriggers()
         {
 			this._primed = true;
 			base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpa) => cpa.CardEnteringPlay == base.Card, this.MarkNotPrimed, TriggerType.Hidden, TriggerTiming.Before);
@@ -29,7 +34,23 @@ namespace Cauldron.LadyOfTheWood
         }
 		private bool IsPotentialEmptierAction(GameAction ga)
 		{
-			return ga is PlayCardAction || ga is DiscardCardAction || ga is MoveCardAction || ga is DestroyCardAction || ga is BulkMoveCardsAction || ga is CompletedCardPlayAction;
+			if (ga is PlayCardAction pc)
+			{
+				return pc.Origin == this.Card.UnderLocation;
+			}
+			if (ga is MoveCardAction mc)
+			{
+				return mc.Origin == this.Card.UnderLocation;
+			}
+			if (ga is BulkMoveCardsAction bmc)
+			{
+				return bmc.CardsToMove.Any((Card c) => bmc.FindOriginForCard(c) == this.Card.UnderLocation);
+			}
+			if (ga is CompletedCardPlayAction ccp)
+			{
+				return ccp.CardPlayed == this.Card;
+			}
+			return false;
 		}
 
 		public override IEnumerator Play()
