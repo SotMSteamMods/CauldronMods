@@ -27,19 +27,8 @@ namespace Cauldron.Tiamat
 
         public override void AddSideTriggers()
         {
-            //Win Condition
-            base.AddSideTrigger(base.AddTrigger<GameAction>(delegate (GameAction g)
-            {
-                if (base.GameController.HasGameStarted && !(g is GameOverAction) && !(g is IncrementAchievementAction))
-                {
-                    return base.FindCardsWhere((Card c) => c.IsFlipped && IsVillain(c) && c.IsInPlayAndNotUnderCard && IsHead(c)).Count() == 6;
-                }
-                return false;
-            }, (GameAction g) => base.DefeatedResponse(g), new TriggerType[]
-            {
-                TriggerType.GameOver,
-                TriggerType.Hidden
-            }, TriggerTiming.After));
+            //Win Condition handled on Noxious Fire Instructions
+
             //Front Triggers
             if (!base.Card.IsFlipped)
             {
