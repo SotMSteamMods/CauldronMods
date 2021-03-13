@@ -1211,6 +1211,29 @@ namespace CauldronTests
             PlayCard(frenzy);
             AssertInTrash(tiamat, frenzy);
         }
+        [Test()]
+        public void TestElementalFrenzySaveAndLoad()
+        {
+            SetupGameController("Cauldron.Tiamat", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card fire = PutInTrash("ElementOfFire");
+            Card ice = PutInTrash("ElementOfIce");
+            Card lightning = PutInTrash("ElementOfLightning");
+            Card frenzy = PlayCard("ElementalFrenzy");
+
+            GoToEndOfTurn(tiamat);
+            AssertNumberOfCardsAtLocation(frenzy.UnderLocation, 2);
+
+            GoToEndOfTurn(tiamat);
+            AssertNumberOfCardsAtLocation(frenzy.UnderLocation, 1);
+
+            SaveAndLoad();
+            frenzy = GetCardInPlay("ElementalFrenzy");
+            PutOnDeck("ReptilianAspect");
+            GoToEndOfTurn(tiamat);
+            AssertInTrash(frenzy);
+        }
 
         [Test()]
         public void TestHealingMagic0InTrash()
