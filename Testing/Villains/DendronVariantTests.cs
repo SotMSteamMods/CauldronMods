@@ -77,6 +77,11 @@ namespace CauldronTests
                 AssertHasKeywordEvenIfUnderOrFaceDown(under, "tattoo");
             }
 
+            if(underCards.Count((Card c) => c.Identifier == "StainedWolf" || c.Identifier == "PaintedViper") == 6)
+            {
+                Assert.Ignore("All cards under Dendron are Painted Vipers or Stained Wolves. Possible due to randomness, try rerunning the test.");
+            }
+
             Card tattoo = underCards.First();
             PlayCard(tattoo);
 
