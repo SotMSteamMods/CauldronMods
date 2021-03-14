@@ -74,6 +74,23 @@ namespace CauldronTests
             AssertGameOver(EndingResult.VillainDestroyedVictory);
 
         }
+        [Test()]
+        public void TestDynamo_ChallengeWhenNotLastDestroyed()
+        {
+            SetupGameController(new string[] { "Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            AssertIsInPlay("Python", "Copperhead");
+
+            DealDamage(haka, dynamo, 100, DamageType.Melee);
+            AssertNotGameOver();
+
+            DestroyCard("Python");
+            AssertNotGameOver();
+
+            DestroyCard("Copperhead");
+            AssertGameOver();
+        }
 
         [Test()]
         public void TestDynamo_Decklist()

@@ -48,6 +48,12 @@ namespace Cauldron.Dynamo
                 //Increase damage dealt by villain targets by 1.
                 base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsVillain(action.DamageSource.Card) && action.DamageSource.Card.IsTarget, 1));
             }
+
+            if(Game.IsChallenge)
+            {
+                //make sure that if Dynamo's at 0 hp when he loses indestructibility he drops
+                AddSideTrigger(AddTrigger((TargetLeavesPlayAction tlp) => tlp.TargetLeavingPlay != null && tlp.TargetLeavingPlay.IsVillain, _ => GameController.DestroyAnyCardsThatShouldBeDestroyed(cardSource: GetCardSource()), TriggerType.DestroyCard, TriggerTiming.After));
+            }
             base.AddDefeatedIfDestroyedTriggers();
         }
 
