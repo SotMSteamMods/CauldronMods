@@ -33,6 +33,7 @@
             "advanced": "Reduce damage dealt to {Mythos} by 2.",
             "icons": [
                 "Indestructible",
+                "Cauldron.Danger",
                 "ImmuneToDamage",
                 "PlayCardNow"
             ],
@@ -50,8 +51,8 @@
             ],
             "flippedAdvanced": "Activate all {Danger} effects.",
             "flippedIcons": [
+                "Cauldron.ClueDangerMadness",
                 "ReduceDamageTaken",
-                "EndOfTurnAction",
                 "PlayCardNow",
                 "DealDamageInfernal"
             ],
@@ -80,8 +81,8 @@
                 "ancient spawn"
             ],
             "icons": [
+                "Cauldron.ClueDangerMadness",
                 "DealDamageMelee",
-                "Discard",
                 "GainHP",
                 "DealDamagePsychic"
             ],
@@ -108,6 +109,7 @@
                 "minion"
             ],
             "icons": [
+                "Cauldron.Danger",
                 "IncreaseDamageDealt",
                 "EndOfTurnAction",
                 "DealDamageMelee"
@@ -133,10 +135,10 @@
                 "ongoing"
             ],
             "icons": [
-                "EndOfTurnAction",
+                "DealDamageInfernal",
+                "Cauldron.Clue",
                 "PlayCardNow",
-                "AddTokens",
-                "DealDamageInfernal"
+                "AddTokens"
             ],
             "body": [
                 "{Clue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.",
@@ -167,9 +169,9 @@
                 "mad scientist"
             ],
             "icons": [
-                "EndOfTurnAction",
                 "Search",
                 "DealDamageLightning",
+                "Cauldron.Clue",
                 "ReduceDamageTaken"
             ],
             "body": [
@@ -193,6 +195,7 @@
                 "minion"
             ],
             "icons": [
+                "Cauldron.Madness",
                 "DestroyEquipment",
                 "EndOfTurnAction",
                 "DealDamageLightning"
@@ -246,6 +249,7 @@
             ],
             "icons": [
                 "EndOfTurnAction",
+                "Cauldron.ClueDangerMadness",
                 "DealDamageInfernal",
                 "DealDamagePsychic"
             ],
@@ -271,8 +275,9 @@
                 "minion"
             ],
             "icons": [
+                "Cauldron.Danger",
                 "PlayCardNow",
-                "PlayCardNow",
+                "Cauldron.Madness",
                 "Manipulate"
             ],
             "body": [
@@ -298,7 +303,9 @@
                 "one-shot"
             ],
             "icons": [
-                "DestroyOngoing"
+                "DestroyOngoing",
+                "Discard",
+                "DealDamageInfernal"
             ],
             "body": [
                 "Destroy {H - 2} hero ongoing cards.",
@@ -322,7 +329,9 @@
             ],
             "icons": [
                 "GainHP",
-                "ReduceDamageDealt"
+                "Cauldron.Clue",
+                "ReduceDamageDealt",
+                "Cauldron.Madness"
             ],
             "body": [
                 "{Mythos} regains {H} HP for each environment card in play. Move 2 cards from the villain trash to the bottom of the villain deck.",
@@ -339,8 +348,9 @@
                 "structure"
             ],
             "icons": [
+                "Cauldron.Danger",
                 "IncreaseDamageDealt",
-                "EndOfTurnAction",
+                "Cauldron.Madness",
                 "DealDamagePsychic"
             ],
             "body": [
@@ -365,7 +375,8 @@
             ],
             "icons": [
                 "IncreaseDamageTaken",
-                "Indestructible",
+                "Cauldron.Danger",
+                "Cauldron.Madness",
                 "ImmuneToDamage"
             ],
             "body": [
@@ -389,6 +400,7 @@
                 "relic"
             ],
             "icons": [
+                "Cauldron.ClueDangerMadness",
                 "DealDamagePsychic",
                 "DealDamageInfernal"
             ],
@@ -418,8 +430,8 @@
             "icons": [
                 "EndOfTurnAction",
                 "DealDamageSonic",
-                "HasPower",
-                "Manipulate"
+                "Cauldron.Madness",
+                "HasPower"
             ],
             "body": [
                 "At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP 2 sonic damage.",
@@ -480,10 +492,10 @@
                         "ongoing"
                     ],
                     "icons": [
-                        "EndOfTurnAction",
+                        "DealDamageInfernal",
+                        "Cauldron.Clue",
                         "PlayCardNow",
-                        "AddTokens",
-                        "DealDamageInfernal"
+                        "AddTokens"
                     ],
                     "body": [
                         "{Clue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.",
@@ -514,8 +526,9 @@
                         "minion"
                     ],
                     "icons": [
+                        "Cauldron.Danger",
                         "PlayCardNow",
-                        "PlayCardNow",
+                        "Cauldron.Madness",
                         "Manipulate"
                     ],
                     "body": [
@@ -542,7 +555,9 @@
                     ],
                     "icons": [
                         "GainHP",
-                        "ReduceDamageDealt"
+                        "Cauldron.Clue",
+                        "ReduceDamageDealt",
+                        "Cauldron.Madness"
                     ],
                     "body": [
                         "{Mythos} regains {H} HP for each environment card in play. Move 2 cards from the villain trash to the bottom of the villain deck.",
@@ -559,8 +574,9 @@
                         "structure"
                     ],
                     "icons": [
+                        "Cauldron.Danger",
                         "IncreaseDamageDealt",
-                        "EndOfTurnAction",
+                        "Cauldron.Madness",
                         "DealDamagePsychic"
                     ],
                     "body": [
@@ -585,7 +601,8 @@
                     ],
                     "icons": [
                         "IncreaseDamageTaken",
-                        "Indestructible",
+                        "Cauldron.Danger",
+                        "Cauldron.Madness",
                         "ImmuneToDamage"
                     ],
                     "body": [
@@ -609,6 +626,7 @@
                         "relic"
                     ],
                     "icons": [
+                        "Cauldron.ClueDangerMadness",
                         "DealDamagePsychic",
                         "DealDamageInfernal"
                     ],
@@ -645,6 +663,7 @@
                         "minion"
                     ],
                     "icons": [
+                        "Cauldron.Madness",
                         "DestroyEquipment",
                         "EndOfTurnAction",
                         "DealDamageLightning"
@@ -671,6 +690,7 @@
                     ],
                     "icons": [
                         "EndOfTurnAction",
+                        "Cauldron.ClueDangerMadness",
                         "DealDamageInfernal",
                         "DealDamagePsychic"
                     ],
@@ -696,12 +716,14 @@
                         "one-shot"
                     ],
                     "icons": [
-                        "DestroyOngoing"
+                        "DestroyOngoing",
+                        "Discard",
+                        "DealDamageInfernal"
                     ],
                     "body": [
                         "Destroy {H - 2} hero ongoing cards.",
                         "{Madness} Each player discards 1 card.",
-                        "{Danger} {Mythos} deals each hero target 1 psychic damage."
+                        "{Danger} {Mythos} deals each hero target 1 infernal damage."
                     ],
                     "flavorQuotes": [
                         {
@@ -728,8 +750,8 @@
                         "ancient spawn"
                     ],
                     "icons": [
+                        "Cauldron.ClueDangerMadness",
                         "DealDamageMelee",
-                        "Discard",
                         "GainHP",
                         "DealDamagePsychic"
                     ],
@@ -756,6 +778,7 @@
                         "minion"
                     ],
                     "icons": [
+                        "Cauldron.Danger",
                         "IncreaseDamageDealt",
                         "EndOfTurnAction",
                         "DealDamageMelee"
@@ -781,9 +804,9 @@
                         "mad scientist"
                     ],
                     "icons": [
-                        "EndOfTurnAction",
                         "Search",
                         "DealDamageLightning",
+                        "Cauldron.Clue",
                         "ReduceDamageTaken"
                     ],
                     "body": [
@@ -836,6 +859,7 @@
                     "icons": [
                         "EndOfTurnAction",
                         "DealDamageSonic",
+                        "Cauldron.Madness",
                         "HasPower",
                         "Manipulate"
                     ],
