@@ -51,7 +51,7 @@
             ],
             "icons": [
                 "HasPower",
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "GainHP"
             ],
             "hitpoints": 26,
@@ -221,7 +221,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate",
+                "Cauldron.ShiftLR",
                 "GainHP",
                 "DealDamageRadiant"
             ],
@@ -246,7 +246,7 @@
             ],
             "icons": [
                 "DealDamageRadiant",
-                "IncreaseDamageDealt",
+                "Cauldron.ShiftLR",
                 "DrawCardNow",
                 "GainHP"
             ],
@@ -275,7 +275,7 @@
             ],
             "icons": [
                 "PlayCardNow",
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "DealDamageRadiant"
             ],
             "body": [
@@ -298,7 +298,7 @@
                 "one-shot"
             ],
             "icons": [
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "DrawCardNow",
                 "PlayCardNow"
             ],
@@ -324,7 +324,7 @@
                 "focus"
             ],
             "icons": [
-                "AddTokens",
+                "Cauldron.ShiftLR",
                 "DealDamageRadiant"
             ],
             "body": [
@@ -348,8 +348,8 @@
             ],
             "icons": [
                 "DrawCardNow",
+                "Cauldron.ShiftLR",
                 "ReduceDamageTaken",
-                "AddOrRemoveTokens",
                 "IncreaseDamageDealt"
             ],
             "body": [
@@ -375,7 +375,7 @@
             "icons": [
                 "Destroy",
                 "PlayCardNow",
-                "AddOrRemoveTokens"
+                "Cauldron.ShiftLR"
             ],
             "body": [
                 "When this card enters play, destroy all other copies of Knight's Heritage and play up to 2 ongoing cards from your hand.",
@@ -447,7 +447,7 @@
             ],
             "icons": [
                 "Manipulate",
-                "RemoveTokens",
+                "Cauldron.ShiftLR",
                 "PlayCardNow"
             ],
             "body": [
@@ -505,7 +505,7 @@
             ],
             "icons": [
                 "HasPower",
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "DrawCardNow",
                 "DealDamageRadiant"
             ],
@@ -530,8 +530,8 @@
             ],
             "icons": [
                 "HasPower",
+                "Cauldron.ShiftLR",
                 "GainHP",
-                "AddOrRemoveTokens",
                 "DealDamageRadiant"
             ],
             "powers": [
@@ -586,7 +586,7 @@
             ],
             "icons": [
                 "HasPower",
-                "RemoveTokens",
+                "Cauldron.ShiftLR",
                 "Discard"
             ],
             "hitpoints": 15,
@@ -634,7 +634,7 @@
             "icons": [
                 "HasPower",
                 "PlayCardNow",
-                "AddTokens"
+                "Cauldron.ShiftLR"
             ],
             "hitpoints": 16,
             "nemesisIdentifiers": [
@@ -915,7 +915,7 @@
             ],
             "icons": [
                 "HasPower",
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "GainHP"
             ],
             "hitpoints": 26,
@@ -955,7 +955,7 @@
             ],
             "icons": [
                 "HasPower",
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "GainHP"
             ],
             "hitpoints": 26,
@@ -1000,7 +1000,7 @@
             ],
             "icons": [
                 "HasPower",
-                "RemoveTokens",
+                "Cauldron.ShiftLR",
                 "Discard"
             ],
             "hitpoints": 15,
@@ -1048,7 +1048,7 @@
             "icons": [
                 "HasPower",
                 "PlayCardNow",
-                "AddTokens"
+                "Cauldron.ShiftLR"
             ],
             "hitpoints": 16,
             "nemesisIdentifiers": [
@@ -1086,7 +1086,7 @@
             ],
             "icons": [
                 "HasPower",
-                "RemoveTokens",
+                "Cauldron.ShiftLR",
                 "Discard"
             ],
             "hitpoints": 15,
@@ -1134,7 +1134,7 @@
             "icons": [
                 "HasPower",
                 "PlayCardNow",
-                "AddTokens"
+                "Cauldron.ShiftLR"
             ],
             "hitpoints": 16,
             "nemesisIdentifiers": [
@@ -1251,7 +1251,7 @@
             ],
             "icons": [
                 "HasPower",
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "DrawCardNow",
                 "UsePowerNow"
             ],
@@ -1292,7 +1292,7 @@
             ],
             "icons": [
                 "HasPower",
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "DrawCardNow",
                 "UsePowerNow"
             ],
@@ -1416,8 +1416,8 @@
             "icons": [
                 "HasPower",
                 "Discard",
-                "DrawCardNow",
-                "AddOrRemoveTokens"
+                "Cauldron.ShiftLR",
+                "DrawCardNow"
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
@@ -1457,8 +1457,8 @@
             "icons": [
                 "HasPower",
                 "Discard",
-                "DrawCardNow",
-                "AddOrRemoveTokens"
+                "Cauldron.ShiftLR",
+                "DrawCardNow"
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
@@ -1500,7 +1500,7 @@
             ],
             "icons": [
                 "HasPower",
-                "Manipulate",
+                "Cauldron.ShiftLR",
                 "PlayCardNow"
             ],
             "hitpoints": 25,
@@ -1649,8 +1649,8 @@
             "icons": [
                 "HasPower",
                 "Discard",
-                "DrawCardNow",
-                "AddOrRemoveTokens"
+                "Cauldron.ShiftLR",
+                "DrawCardNow"
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
