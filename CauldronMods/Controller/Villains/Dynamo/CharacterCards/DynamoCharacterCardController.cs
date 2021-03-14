@@ -14,8 +14,16 @@ namespace Cauldron.Dynamo
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocation(TurnTaker.Trash).Condition = () => !Card.IsFlipped;
             SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => !Card.IsFlipped;
+
+            base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
         }
 
+        public override bool AskIfCardIsIndestructible(Card card)
+        {
+            //CHALLENGE: Dynamo is indestructible as long as there is another villain target in play.
+
+            return Game.IsChallenge && card == base.Card && FindCardsWhere(c => c.IsInPlayAndHasGameText && IsVillainTarget(c) && c != card && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Any();
+        }
         public override void AddSideTriggers()
         {
             if (!base.CharacterCard.IsFlipped)
@@ -39,6 +47,12 @@ namespace Cauldron.Dynamo
                 //Back-Advanced:
                 //Increase damage dealt by villain targets by 1.
                 base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null &&  base.IsVillain(action.DamageSource.Card) && action.DamageSource.Card.IsTarget, 1));
+            }
+
+            if(Game.IsChallenge)
+            {
+                //make sure that if Dynamo's at 0 hp when he loses indestructibility he drops
+                AddSideTrigger(AddTrigger((TargetLeavesPlayAction tlp) => tlp.TargetLeavingPlay != null && tlp.TargetLeavingPlay.IsVillain, _ => GameController.DestroyAnyCardsThatShouldBeDestroyed(cardSource: GetCardSource()), TriggerType.DestroyCard, TriggerTiming.After));
             }
             base.AddDefeatedIfDestroyedTriggers();
         }

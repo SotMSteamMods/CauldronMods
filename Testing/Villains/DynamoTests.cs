@@ -53,6 +53,46 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDynamo_Challenge()
+        {
+            SetupGameController( new string[] { "Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            AssertIsInPlay("Python", "Copperhead");
+
+            DestroyCard(dynamo.CharacterCard, haka.CharacterCard);
+            AssertInPlayArea(dynamo, dynamo.CharacterCard);
+
+            DestroyCard(GetCard("Python"), haka.CharacterCard);
+
+            DestroyCard(dynamo.CharacterCard, haka.CharacterCard);
+            AssertInPlayArea(dynamo, dynamo.CharacterCard);
+
+            DestroyCard(GetCard("Copperhead"), haka.CharacterCard);
+
+            DestroyCard(dynamo.CharacterCard, haka.CharacterCard);
+            AssertGameOver(EndingResult.VillainDestroyedVictory);
+
+        }
+        [Test()]
+        public void TestDynamo_ChallengeWhenNotLastDestroyed()
+        {
+            SetupGameController(new string[] { "Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            AssertIsInPlay("Python", "Copperhead");
+
+            DealDamage(haka, dynamo, 100, DamageType.Melee);
+            AssertNotGameOver();
+
+            DestroyCard("Python");
+            AssertNotGameOver();
+
+            DestroyCard("Copperhead");
+            AssertGameOver();
+        }
+
+        [Test()]
         public void TestDynamo_Decklist()
         {
             SetupGameController("Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis");
