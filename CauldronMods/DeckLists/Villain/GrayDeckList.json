@@ -53,6 +53,8 @@
                 "ReduceDamageTaken"
             ],
             "difficulty": 4,
+            "challengeTitle": "Decaying World",
+			"challengeText": "At the start of the villain turn, {Gray} deals each target 1 irreducible energy damage.",
             "openingLines": {
                 "default": "I'm already fixing the problem. If you don't like what it takes, that just makes you another problem. ",
                 "VanishCharacter": "You! [b]You[/b] did this to me. Let's see how you like having [b]your[/b] life torn apart!",

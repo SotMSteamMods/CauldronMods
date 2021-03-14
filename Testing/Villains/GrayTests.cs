@@ -118,6 +118,21 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestGrayChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Gray", "Parse", "Haka", "Guise", "Megalopolis" }, challenge: true);
+            StartGame();
+            MoveCards(gray, c => gray.TurnTaker.PlayArea.HasCard(c) && !c.IsCharacter, gray.TurnTaker.Deck);
+            GoToEndOfTurn(env);
+            //At the start of the villain turn, {Gray} deals each target 1 irreducible energy damage.
+            QuickHPStorage(gray, parse, haka, guise);
+            GoToStartOfTurn(gray);
+            QuickHPCheck(-1, -1, -1, -1);
+
+
+        }
+
+        [Test()]
         public void TestGrayFrontRadiationNoCardsToDestroy()
         {
             SetupGameController("Cauldron.Gray", "Legacy", "Haka", "Ra", "Megalopolis");
