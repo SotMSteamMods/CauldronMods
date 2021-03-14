@@ -102,6 +102,47 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TestDendronChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Dendron", "Legacy", "Ra", "Haka", "Megalopolis"}, challenge: true );
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SetAllTargetsToMaxHP();
+
+            Func<DealDamageAction, bool> criteria = dd => dd.DamageSource != null && dd.DamageSource.IsCard && dd.DamageSource.Card.DoKeywordsContain("tattoo");
+            AddDamageCannotBeIncreasedTrigger(criteria, legacy.CharacterCardController.GetCardSource());
+
+            IEnumerable<Card> tattoos = FindCardsWhere(c => c.DoKeywordsContain("tattoo"));
+
+
+            foreach(Card tattoo in tattoos)
+            {
+                QuickHPStorage(legacy, ra, haka);
+                PlayCard(tattoo);
+                QuickHPCheck(0, 0, -1);
+
+                DestroyCard(tattoo, dendron.CharacterCard);
+                SetAllTargetsToMaxHP();
+            }
+
+            //should persist on the back
+
+            FlipCard(dendron.CharacterCard);
+
+            foreach (Card tattoo in tattoos)
+            {
+                QuickHPStorage(legacy, ra, haka);
+                PlayCard(tattoo);
+                QuickHPCheck(0, 0, -1);
+
+                DestroyCard(tattoo, dendron.CharacterCard);
+                SetAllTargetsToMaxHP();
+            }
+
+
+        }
+
 
         [Test]
         public void TestDendronFlipsWhenReducedToZeroHp()

@@ -52,6 +52,8 @@
 				"GainHP"
 			],
 			"difficulty": 2,
+			"challengeTitle": "Infernal Ink",
+			"challengeText": "Whenever a Tattoo enters play, it deals the hero target with the highest HP {H - 2} infernal damage.",
 			"openingLines": {
 				"default": "The world will know the mark of Dendron.",
 				"TheStrangerCharacter": "Those markings...I sense my own hand in your creation. Fitting that I will also be your destruction.",
@@ -383,6 +385,9 @@
 			"IncreaseDamageDealt"
 		],
 		"difficulty": 3,
+		"challengeTitle": "Chaotic Colors",
+		"challengeText": "At the start of the game, put 6 random tattoos under {Dendron} instead. {Dendron} is immune to villain damage.
+",
 		"openingLines": {
 			"default": "Do you feel it coming in the air? My art now knows no boundaries.",
 			"TheStrangerCharacter": "Do you like my new runes?",
