@@ -19,7 +19,7 @@
             "character": true,
             "hitpoints": 80,
             "nemesisIdentifiers": [
-                "Cypher"
+                "Cauldron.Cypher"
             ],
             "setup": [
                 "At the start of the game, put {SwarmEater}'s villain character cards into play, “Power Hungry“ side up.",
@@ -472,7 +472,7 @@
             "character": true,
             "hitpoints": 80,
             "nemesisIdentifiers": [
-                "Cypher"
+                "Cauldron.Cypher"
             ],
             "setup": [
                 "At the start of the game, put {SwarmEater}'s villain character cards into play, 'Distributed Hivemind' side up. Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game. Shuffle the villain deck."

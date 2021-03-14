@@ -25,7 +25,7 @@
             ],
             "hitpoints": 30,
             "nemesisIdentifiers": [
-                "Gyrosaur"
+                "Cauldron.Gyrosaur"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -453,7 +453,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Gyrosaur"
+                "Cauldron.Gyrosaur"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -494,7 +494,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "Gyrosaur"
+                "Cauldron.Gyrosaur"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -535,7 +535,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "Gyrosaur"
+                "Cauldron.Gyrosaur"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",

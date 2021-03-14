@@ -24,7 +24,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Vanish"
+                "Cauldron.Vanish"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -358,7 +358,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Vanish"
+                "Cauldron.Vanish"
             ],
             "incapacitatedAbilities": [
                 "One player use a power now.",
@@ -398,7 +398,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Vanish"
+                "Cauldron.Vanish"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
@@ -440,7 +440,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Vanish"
+                "Cauldron.Vanish"
             ],
             "incapacitatedAbilities": [
                 "One player may use a power now.",

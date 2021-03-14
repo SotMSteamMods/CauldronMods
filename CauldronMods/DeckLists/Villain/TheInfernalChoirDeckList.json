@@ -23,7 +23,7 @@
 			"character": true,
 			"hitpoints": 55,
 			"nemesisIdentifiers": [
-				"Terminus"
+				"Cauldron.Terminus"
 			],
 			"setup": [
 				"At the start of the game, put {TheInfernalChoir}'s villain character cards into play, “Unfinished Business“ side up.",

@@ -19,8 +19,8 @@
             "character": true,
             "hitpoints": 20,
             "nemesisIdentifiers": [
-                "TheKnight",
-                "Drift"
+                "Cauldron.TheKnight",
+                "Cauldron.Drift"
             ],
             "setup": [
                 "At the start of the game, put {Outlander}'s villain character cards into play, “Fragemented Riftwarrior“ side up.",

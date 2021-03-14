@@ -18,7 +18,7 @@
 			"character": true,
 			"hitpoints": 80,
 			"nemesisIdentifiers": [
-				"Malichae"
+				"Cauldron.Malichae"
 			],
 			"setup": [
 				"At the start of the game, put {Jade}'s villain character cards into play, 'Shardwalker' side up.",

@@ -71,7 +71,7 @@
 			"character": true,
 			"hitpoints": 35,
 			"nemesisIdentifiers": [
-				"Gyrosaur"
+				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
 				"If there are ever 3 Drummer cards in play, flip this card.",
@@ -104,7 +104,7 @@
 			"character": true,
 			"hitpoints": 28,
 			"nemesisIdentifiers": [
-				"Gyrosaur"
+				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
 				"If there are ever 3 Guitarist cards in play, flip this card.",
@@ -136,7 +136,7 @@
 			"character": true,
 			"hitpoints": 26,
 			"nemesisIdentifiers": [
-				"Gyrosaur"
+				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
 				"If there are ever 3 Bassist cards in play, flip this card.",
@@ -168,7 +168,7 @@
 			"character": true,
 			"hitpoints": 31,
 			"nemesisIdentifiers": [
-				"Gyrosaur"
+				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
 				"If there are ever 3 Vocalist cards in play, flip this card.",

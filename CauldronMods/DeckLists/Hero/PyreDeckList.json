@@ -25,7 +25,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "Pyre"
+                "Cauldron.Pyre"
             ],
             "incapacitatedAbilities": [
                 "One player may discard an {Irradiated} card to draw a card, play a card, and use a power now.",
@@ -483,7 +483,7 @@
             ],
             "hitpoints": 33,
             "nemesisIdentifiers": [
-                "Pyre"
+                "Cauldron.Pyre"
             ],
             "incapacitatedAbilities": [
                 "One player may discard an {Irradiated} card. If they do, 1 target regains 4 HP.",
@@ -525,7 +525,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Pyre"
+                "Cauldron.Pyre"
             ],
             "incapacitatedAbilities": [
                 "One player may discard an {Irradiated} card. If they do, they deal 3 targets 3 energy damage each.",
@@ -565,7 +565,7 @@
             ],
             "hitpoints": 30,
             "nemesisIdentifiers": [
-                "Pyre"
+                "Cauldron.Pyre"
             ],
             "incapacitatedAbilities": [
                 "One player may discard an {Irradiated} card. If they do, each player may play a card now.",

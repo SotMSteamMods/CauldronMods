@@ -19,7 +19,7 @@
             "character": true,
             "hitpoints": 45,
             "nemesisIdentifiers": [
-                "TangoOne"
+                "Cauldron.TangoOne"
             ],
             "setup": [
                 "At the start of the game, put {Anathema}'s villain character cards into play, 'Shapeshifting Bioform' side up.",
@@ -454,7 +454,7 @@
             "character": true,
             "hitpoints": 70,
             "nemesisIdentifiers": [
-                "TangoOne"
+                "Cauldron.TangoOne"
             ],
             "setup": [
                 "At the start of the game, put {Anathema}'s villain character cards into play, 'Accelerated Evolution' side up. Reveal cards from the top of the villain deck until 2 arms, 1 Body, and 1 Head are revealed. Put those cards into play and shuffle the rest into the villain deck."

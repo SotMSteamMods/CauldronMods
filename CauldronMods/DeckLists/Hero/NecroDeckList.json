@@ -24,7 +24,7 @@
             ],
             "hitpoints": 24,
             "nemesisIdentifiers": [
-                "Necro"
+                "Cauldron.Necro"
             ],
             "incapacitatedAbilities": [
                 "One hero may deal himself 2 toxic damage to draw 2 cards now.",
@@ -402,7 +402,7 @@
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
-                "Necro"
+                "Cauldron.Necro"
             ],
             "incapacitatedAbilities": [
                 "One hero may put a random card from their trash into play.",
@@ -442,7 +442,7 @@
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
-                "Necro"
+                "Cauldron.Necro"
             ],
             "incapacitatedAbilities": [
                 "One hero target deals itself 3 toxic damage.",
@@ -485,7 +485,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Necro"
+                "Cauldron.Necro"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",

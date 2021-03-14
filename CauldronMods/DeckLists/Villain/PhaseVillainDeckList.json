@@ -18,7 +18,7 @@
 			"character": true,
 			"hitpoints": 30,
 			"nemesisIdentifiers": [
-				"Impact"
+				"Cauldron.Impact"
 			],
 			"setup": [
 				"At the start of the game, put {PhaseVillain}'s villain character cards into play, “Intangible Saboteur“ side up.",

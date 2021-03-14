@@ -19,7 +19,7 @@
             "character": true,
             "hitpoints": 48,
             "nemesisIdentifiers": [
-                "Titan"
+                "Cauldron.Titan"
             ],
             "setup": [
                 "At the start of the game, put {Mythos}'s villain character cards into play, 'Insubstantial Rumor' side up.",

@@ -19,7 +19,7 @@
             "character": true,
             "hitpoints": 75,
             "nemesisIdentifiers": [
-                "Vanish"
+                "Cauldron.Vanish"
             ],
             "setup": [
                 "At the start of the game, put {Gray}'s villain character cards into play, 'Walking Nuclear Reactor' side up.",

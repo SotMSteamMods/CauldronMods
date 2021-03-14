@@ -25,7 +25,7 @@
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
-                "Quicksilver"
+                "Cauldron.Quicksilver"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
@@ -417,7 +417,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Quicksilver"
+                "Cauldron.Quicksilver"
             ],
             "incapacitatedAbilities": [
                 "One player may draw until they have 4 cards in hand.",
@@ -458,7 +458,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Quicksilver"
+                "Cauldron.Quicksilver"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -498,7 +498,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Quicksilver"
+                "Cauldron.Quicksilver"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",

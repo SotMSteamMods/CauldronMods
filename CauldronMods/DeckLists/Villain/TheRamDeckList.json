@@ -23,7 +23,7 @@
             "character": true,
             "hitpoints": 80,
             "nemesisIdentifiers": [
-                "Quicksilver"
+                "Cauldron.Quicksilver"
             ],
             "setup": [
                 "At the start of the game, put {TheRam}'s villain character cards into play, “Mechanical Juggernaut” side up.",
@@ -354,9 +354,9 @@
             "character": true,
             "hitpoints": 20,
             "nemesisIdentifiers": [
-                "TheKnight",
-                "MagnificentMara",
-                "Vanish"
+                "Cauldron.TheKnight",
+                "Cauldron.MagnificentMara",
+                "Cauldron.Vanish"
             ],
             "gameplay": [
                 "The heroes cannot win the game. If {AdmiralWintersCharacter} would be destroyed, flip his character cards instead.",
@@ -406,10 +406,10 @@
             "character": true,
             "hitpoints": 75,
             "nemesisIdentifiers": [
-                "TheStranger",
-                "Necro",
-                "TangoOne",
-                "Baccarat"
+                "Cauldron.TheStranger",
+                "Cauldron.Necro",
+                "Cauldron.TangoOne",
+                "Cauldron.Baccarat"
             ],
             "setup": [
                 "At the start of the game, put the villain character cards for {TheRam} and {AdmiralWintersCharacter} into play, “Amphibious Dreadnought” and “Dreadnought Pilot” sides up. Search the villain deck for all copies of Up Close and put them in the trash. Put 2 copies of Remote Mortar into play. Shuffle the villain deck."

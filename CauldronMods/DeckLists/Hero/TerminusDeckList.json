@@ -33,7 +33,7 @@
             ],
             "hitpoints": 31,
             "nemesisIdentifiers": [
-                "Terminus"
+                "Cauldron.Terminus"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
@@ -568,7 +568,7 @@
             ],
             "hitpoints": 30,
             "nemesisIdentifiers": [
-                "Terminus"
+                "Cauldron.Terminus"
             ],
             "incapacitatedAbilities": [
                 "One hero may deal themselves 2 psychic damage to draw 2 cards.",
@@ -619,7 +619,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "Terminus"
+                "Cauldron.Terminus"
             ],
             "incapacitatedAbilities": [
                 "One hero may use a power now.",

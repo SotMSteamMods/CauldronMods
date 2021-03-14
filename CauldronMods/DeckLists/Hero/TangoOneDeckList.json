@@ -23,7 +23,7 @@
             ],
             "hitpoints": 24,
             "nemesisIdentifiers": [
-                "TangoOne"
+                "Cauldron.TangoOne"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -392,7 +392,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "TangoOne"
+                "Cauldron.TangoOne"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
@@ -433,7 +433,7 @@
             ],
             "hitpoints": 24,
             "nemesisIdentifiers": [
-                "TangoOne"
+                "Cauldron.TangoOne"
             ],
             "incapacitatedAbilities": [
                 "Select a player, at the start of your next turn, they may draw 2 cards.",
@@ -476,7 +476,7 @@
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
-                "TangoOne"
+                "Cauldron.TangoOne"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",

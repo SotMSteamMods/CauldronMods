@@ -25,7 +25,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "TheStranger"
+                "Cauldron.TheStranger"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -469,7 +469,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "TheStranger"
+                "Cauldron.TheStranger"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
@@ -511,7 +511,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "TheStranger"
+                "Cauldron.TheStranger"
             ],
             "incapacitatedAbilities": [
                 "One player may use a power now.",
@@ -555,7 +555,7 @@
             ],
             "hitpoints": 24,
             "nemesisIdentifiers": [
-                "TheStranger"
+                "Cauldron.TheStranger"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -597,7 +597,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "TheStranger"
+                "Cauldron.TheStranger"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",

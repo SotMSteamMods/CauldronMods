@@ -30,7 +30,7 @@
             ],
             "hitpoints": 31,
             "nemesisIdentifiers": [
-                "Starlight"
+                "Cauldron.Starlight"
             ],
             "incapacitatedAbilities": [
                 "Until the start of your next turn, prevent all damage that would be dealt to or by the target with the lowest HP.",
@@ -477,7 +477,7 @@
              ],
              "hitpoints": 15,
              "nemesisIdentifiers": [
-                 "Starlight"
+                 "Cauldron.Starlight"
              ],
              "flippedBody": "Incapacitated",
              "complexity": 1
@@ -505,7 +505,7 @@
              ],
              "hitpoints": 12,
              "nemesisIdentifiers": [
-                 "Starlight"
+                 "Cauldron.Starlight"
              ],
              "flippedBody": "Incapacitated",
              "complexity": 1
@@ -533,7 +533,7 @@
             ],
             "hitpoints": 13,
             "nemesisIdentifiers": [
-                "Starlight"
+                "Cauldron.Starlight"
             ],
             "flippedBody": "Incapacitated",
             "complexity": 1
@@ -562,7 +562,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "Starlight"
+                "Cauldron.Starlight"
             ],
             "incapacitatedAbilities": [
                 "One player may put an ongoing card from their trash into their hand.",
@@ -645,7 +645,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "Starlight"
+                "Cauldron.Starlight"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",

@@ -25,7 +25,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Gargoyle"
+                "Cauldron.Gargoyle"
             ],
             "incapacitatedAbilities": [
                 "Increase the next damage dealt by a hero target by 2.",
@@ -432,7 +432,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Gargoyle"
+                "Cauldron.Gargoyle"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
@@ -473,7 +473,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Gargoyle"
+                "Cauldron.Gargoyle"
             ],
             "incapacitatedAbilities": [
                 "Increase the next damage dealt to a non-hero target by 2.",
@@ -513,7 +513,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "Gargoyle"
+                "Cauldron.Gargoyle"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -553,7 +553,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Gargoyle"
+                "Cauldron.Gargoyle"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",

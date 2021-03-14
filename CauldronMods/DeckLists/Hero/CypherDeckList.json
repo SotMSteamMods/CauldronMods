@@ -24,7 +24,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Cypher"
+                "Cauldron.Cypher"
             ],
             "incapacitatedAbilities": [
                 "One player may destroy 1 of their ongoing cards to draw 3 cards.",
@@ -510,7 +510,7 @@
             ],
             "hitpoints": 23,
             "nemesisIdentifiers": [
-                "Cypher"
+                "Cauldron.Cypher"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -551,7 +551,7 @@
             ],
             "hitpoints": 22,
             "nemesisIdentifiers": [
-                "Cypher"
+                "Cauldron.Cypher"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",

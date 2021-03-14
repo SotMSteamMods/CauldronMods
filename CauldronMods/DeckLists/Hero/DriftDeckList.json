@@ -56,7 +56,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may use a power now.",
@@ -591,7 +591,7 @@
             ],
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -638,7 +638,7 @@
             ],
             "hitpoints": 16,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -920,7 +920,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may use a power now.",
@@ -960,7 +960,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may use a power now.",
@@ -1005,7 +1005,7 @@
             ],
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -1052,7 +1052,7 @@
             ],
             "hitpoints": 16,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -1091,7 +1091,7 @@
             ],
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -1138,7 +1138,7 @@
             ],
             "hitpoints": 16,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -1174,7 +1174,7 @@
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may draw a card now.",
@@ -1215,7 +1215,7 @@
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may draw a card now.",
@@ -1257,7 +1257,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may play a card now.",
@@ -1298,7 +1298,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may play a card now.",
@@ -1339,7 +1339,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may play a card now.",
@@ -1380,7 +1380,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may play a card now.",
@@ -1421,7 +1421,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -1462,7 +1462,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -1505,7 +1505,7 @@
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may draw a card now.",
@@ -1536,7 +1536,7 @@
             "character": true,
             "isReal":false,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "openingLines": {
                 "default": "What year is this again?",
@@ -1570,7 +1570,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may play a card now.",
@@ -1612,7 +1612,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One hero may play a card now.",
@@ -1654,7 +1654,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Drift"
+                "Cauldron.Drift"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
