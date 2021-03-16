@@ -25,7 +25,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Baccarat"
+                "Cauldron.Baccarat"
             ],
             "incapacitatedAbilities": [
                 "Put 2 cards from a trash on the bottom of their deck.",
@@ -337,7 +337,7 @@
             ],
             "hitpoints": 30,
             "nemesisIdentifiers": [
-                "Baccarat"
+                "Cauldron.Baccarat"
             ],
             "incapacitatedAbilities": [
                 "Select a card in a trash. Destroy a card in play with the same name.",
@@ -378,7 +378,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Baccarat"
+                "Cauldron.Baccarat"
             ],
             "incapacitatedAbilities": [
                 "One player may shuffle a card from their trash into their deck, then put all cards with the same name from their trash into their hand.",
@@ -419,7 +419,7 @@
             ],
             "hitpoints": 24,
             "nemesisIdentifiers": [
-                "Baccarat"
+                "Cauldron.Baccarat"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",

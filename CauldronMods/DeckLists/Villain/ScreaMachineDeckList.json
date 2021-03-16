@@ -71,14 +71,15 @@
 			"character": true,
 			"hitpoints": 35,
 			"nemesisIdentifiers": [
-				"Gyrosaur"
+				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
 				"If there are ever 3 Drummer cards in play, flip this card.",
 				"{Drum} Select the villain target with the lowest HP.{BR}        Reduce damage dealt to that target by 1 until{BR}        the start of the next villain turn."
 			],
 			"icons": [
-				"ReduceDamageDealt"
+				"Cauldron.Drums",
+				"ReduceDamageTaken"
 			],
 			"flippedBody": "Ultimate Drummer",
 			"flippedGameplay": [
@@ -104,13 +105,14 @@
 			"character": true,
 			"hitpoints": 28,
 			"nemesisIdentifiers": [
-				"Gyrosaur"
+				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
 				"If there are ever 3 Guitarist cards in play, flip this card.",
 				"{Guitar} {SliceCharacter} deals the hero with the second{BR}        lowest HP {H - 1} sonic damage."
 			],
 			"icons": [
+				"Cauldron.Guitar",
 				"DealDamageSonic"
 			],
 			"flippedBody": "Ultimate Guitarist",
@@ -136,13 +138,14 @@
 			"character": true,
 			"hitpoints": 26,
 			"nemesisIdentifiers": [
-				"Gyrosaur"
+				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
 				"If there are ever 3 Bassist cards in play, flip this card.",
 				"{Bass} Each other villain target regains {H - 2} HP."
 			],
 			"icons": [
+				"Cauldron.Bass",
 				"GainHP"
 			],
 			"flippedBody": "Ultimate Bassist",
@@ -168,13 +171,14 @@
 			"character": true,
 			"hitpoints": 31,
 			"nemesisIdentifiers": [
-				"Gyrosaur"
+				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
 				"If there are ever 3 Vocalist cards in play, flip this card.",
 				"{Vocal} {ValentineCharacter} deals the 2 hero targets with{BR}         the highest HP {H - 2} psychic damage."
 			],
 			"icons": [
+				"Cauldron.Vocal",
 				"DealDamagePsychic"
 			],
 			"flippedBody": "Ultimate Vocalist",
@@ -197,6 +201,7 @@
 			],
 			"icons": [
 				"PlayCardNow",
+				"Cauldron.Bass",
 				"IncreaseDamageDealt"
 			],
 			"body": [
@@ -221,6 +226,7 @@
 			],
 			"icons": [
 				"PlayCardNow",
+				"Cauldron.Bass",
 				"GainHP"
 			],
 			"body": [
@@ -240,9 +246,10 @@
 				"one-shot"
 			],
 			"icons": [
-				"DestroyOngoing",
-				"DestroyEquipment",
-				"DealDamagePsychic"
+				"Destroy",
+				"DealDamagePsychic",
+				"Cauldron.Vocal",
+				"Cauldron.Bass"
 			],
 			"body": [
 				"Each hero may destroy 1 of their ongoing or equipment cards.",
@@ -263,7 +270,9 @@
 				"one-shot"
 			],
 			"icons": [
-				"IncreaseDamageDealt"
+				"IncreaseDamageDealt",
+				"Cauldron.Guitar",
+				"Cauldron.Vocal"
 			],
 			"body": [
 				"Increase the next damage dealt by a villain target by {H}.",
@@ -285,6 +294,7 @@
 			"icons": [
 				"PlayCardNow",
 				"ImmuneToDamage",
+				"Cauldron.Vocal",
 				"DealDamageMelee"
 			],
 			"body": [
@@ -315,6 +325,7 @@
 			],
 			"icons": [
 				"PlayCardNow",
+				"Cauldron.Vocal",
 				"DealDamageMelee"
 			],
 			"body": [
@@ -339,7 +350,8 @@
 			],
 			"icons": [
 				"DealDamageMelee",
-				"Discard"
+				"Discard",
+				"Cauldron.AllInstruments"
 			],
 			"body": [
 				"The villain target with the highest HP deals the hero target with the highest HP {H} melee damage.",
@@ -360,6 +372,7 @@
 				"vocalist"
 			],
 			"icons": [
+				"Cauldron.Vocal",
 				"PlayCardNow"
 			],
 			"body": [
@@ -383,7 +396,9 @@
 				"one-shot"
 			],
 			"icons": [
-				"DealDamageProjectile"
+				"DealDamageProjectile",
+				"Cauldron.Vocal",
+				"Cauldron.Drums"
 			],
 			"body": [
 				"Each villain target deals the target with the highest HP 2 projectile damage.",
@@ -403,9 +418,10 @@
 				"ongoing"
 			],
 			"icons": [
+				"ReduceDamageTaken",
 				"StartOfTurnAction",
-				"DestroySelf",
-				"ReduceDamageTaken"
+				"Cauldron.Drums",
+				"Cauldron.Guitar"
 			],
 			"body": [
 				"When this card enters play, activate all {Drum} and {Guitar} effects. At the start of the villain turn, destroy this card.",
@@ -426,6 +442,7 @@
 			],
 			"icons": [
 				"PlayCardNow",
+				"Cauldron.Drums",
 				"DealDamageMelee",
 				"ReduceDamageDealt"
 			],
@@ -450,7 +467,9 @@
 				"one-shot"
 			],
 			"icons": [
-				"DealDamageSonic"
+				"DealDamageSonic",
+				"Cauldron.Guitar",
+				"Cauldron.Bass"
 			],
 			"body": [
 				"Each villain target deals the hero target with the highest HP 2 sonic damage.",
@@ -471,6 +490,7 @@
 			],
 			"icons": [
 				"PlayCardNow",
+				"Cauldron.Guitar",
 				"DealDamageSonic"
 			],
 			"body": [
@@ -495,6 +515,7 @@
 			],
 			"icons": [
 				"PlayCardNow",
+				"Cauldron.Guitar",
 				"DealDamageMelee"
 			],
 			"body": [
@@ -519,6 +540,7 @@
 			],
 			"icons": [
 				"PlayCardNow",
+				"Cauldron.Drums",
 				"ReduceDamageTaken"
 			],
 			"body": [
@@ -544,7 +566,8 @@
 			"icons": [
 				"GainHP",
 				"DealDamageSonic",
-				"PlayCardNow"
+				"Cauldron.Bass",
+				"Cauldron.Drums"
 			],
 			"body": [
 				"The villain target with the lowest HP regains {H - 1} HP. {ValentineCharacter} deals each non-villain target 1 sonic damage.",

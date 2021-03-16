@@ -20,7 +20,7 @@
             "character": true,
             "hitpoints": 40,
             "nemesisIdentifiers": [
-                "TheKnight"
+                "Cauldron.TheKnight"
             ],
             "setup": [
                 "At the start of the game, put {Tiamat}'s villain character cards into play, “The Mouth of the Inferno“ side up."
@@ -67,7 +67,7 @@
             "character": true,
             "hitpoints": 40,
             "nemesisIdentifiers": [
-                "Echelon"
+                "Cauldron.Echelon"
             ],
             "setup": [
                 "At the start of the game, put {Tiamat}'s villain character cards into play, “The Eye of the Storm“ side up."
@@ -113,7 +113,7 @@
             "character": true,
             "hitpoints": 40,
             "nemesisIdentifiers": [
-                "Necro"
+                "Cauldron.Necro"
             ],
             "setup": [
                 "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter“ side up."
@@ -453,7 +453,7 @@
             "character": true,
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "TheKnight"
+                "Cauldron.TheKnight"
             ],
             "gameplay": [
                 "{InfernoTiamatCharacter} is immune to fire damage."
@@ -483,7 +483,7 @@
             "character": true,
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "Echelon"
+                "Cauldron.Echelon"
             ],
             "gameplay": [
                 "{StormTiamatCharacter} is immune to lightning damage."
@@ -513,7 +513,7 @@
             "character": true,
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "Malichae"
+                "Cauldron.Malichae"
             ],
             "gameplay": [
                 "{Tiamat}, The Maw of the Earth is immune to melee damage.",
@@ -544,7 +544,7 @@
             "character": true,
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "TheStranger"
+                "Cauldron.TheStranger"
             ],
             "gameplay": [
                 "{HydraDecayTiamatCharacter} is immune to toxic damage.",
@@ -576,7 +576,7 @@
             "character": true,
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "LadyOfTheWood"
+                "Cauldron.LadyOfTheWood"
             ],
             "gameplay": [
                 "{HydraWindTiamatCharacter} is immune to projectile damage.",
@@ -782,7 +782,7 @@
             "character": true,
             "hitpoints": 15,
             "nemesisIdentifiers": [
-                "Necro"
+                "Cauldron.Necro"
             ],
             "gameplay": [
                 "{WinterTiamatCharacter} is immune to cold damage."
@@ -837,9 +837,9 @@
             "character": true,
             "hitpoints": 120,
             "nemesisIdentifiers": [
-                "Drift",
-                "Terminus",
-                "Gargoyle"
+                "Cauldron.Drift",
+                "Cauldron.Terminus",
+                "Cauldron.Gargoyle"
             ],
             "setup": [
                 "At the start of the game, put {Tiamat}'s villain character cards into play, “The Arrival“ side up. Put both Dragonscale character cards into play. Shuffle the villain deck."

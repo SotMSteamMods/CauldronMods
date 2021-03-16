@@ -25,7 +25,7 @@
 			],
 			"hitpoints": 27,
 			"nemesisIdentifiers": [
-				"Malichae"
+				"Cauldron.Malichae"
 			],
 			"incapacitatedAbilities": [
 				"One player may discard a card to draw 3 cards now.",
@@ -551,7 +551,7 @@
 			],
 			"hitpoints": 26,
 			"nemesisIdentifiers": [
-				"Malichae"
+				"Cauldron.Malichae"
 			],
 			"incapacitatedAbilities": [
 				"One player may reveal the top 2 cards of their deck, discard 1 and replace the other.",
@@ -593,7 +593,7 @@
 			],
 			"hitpoints": 24,
 			"nemesisIdentifiers": [
-				"Malichae"
+				"Cauldron.Malichae"
 			],
 			"incapacitatedAbilities": [
 				"One player may use a power now.",

@@ -20,7 +20,7 @@
             "character": true,
             "hitpoints": 88,
             "nemesisIdentifiers": [
-                "Baccarat"
+                "Cauldron.Baccarat"
             ],
             "setup": [
                 "At the start of the game, put {TheMistressOfFate}'s villain character cards into play, “Endless Cycle“ side up.",

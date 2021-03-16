@@ -24,7 +24,7 @@
             ],
             "hitpoints": 22,
             "nemesisIdentifiers": [
-                "LadyOfTheWood"
+                "Cauldron.LadyOfTheWood"
             ],
             "incapacitatedAbilities": [
                 "Select a damage type. Until the start of your next turn, increase damage dealt of the chosen type by 1.",
@@ -461,7 +461,7 @@
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
-                "LadyOfTheWood"
+                "Cauldron.LadyOfTheWood"
             ],
             "incapacitatedAbilities": [
                 "One target regains 1 HP.",
@@ -503,7 +503,7 @@
             ],
             "hitpoints": 19,
             "nemesisIdentifiers": [
-                "LadyOfTheWood"
+                "Cauldron.LadyOfTheWood"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card.",
@@ -555,7 +555,7 @@
             ],
             "hitpoints": 20,
             "nemesisIdentifiers": [
-                "LadyOfTheWood"
+                "Cauldron.LadyOfTheWood"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card.",

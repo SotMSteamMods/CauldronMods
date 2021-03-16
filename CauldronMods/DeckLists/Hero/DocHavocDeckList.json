@@ -25,7 +25,7 @@
             ],
             "hitpoints": 30,
             "nemesisIdentifiers": [
-                "DocHavoc"
+                "Cauldron.DocHavoc"
             ],
             "incapacitatedAbilities": [
                 "Up to 3 hero targets regain 1 HP each.",
@@ -426,7 +426,7 @@
             ],
             "hitpoints": 32,
             "nemesisIdentifiers": [
-                "DocHavoc"
+                "Cauldron.DocHavoc"
             ],
             "incapacitatedAbilities": [
                 "Until the start of your next turn, reduce damage dealt to targets with fewer than 6 HP by 1.",
@@ -466,7 +466,7 @@
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "DocHavoc"
+                "Cauldron.DocHavoc"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",

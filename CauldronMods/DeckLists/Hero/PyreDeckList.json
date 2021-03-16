@@ -21,11 +21,12 @@
             "icons": [
                 "HasPower",
                 "DrawCardNow",
+                "Cauldron.Irradiate",
                 "Manipulate"
             ],
             "hitpoints": 29,
             "nemesisIdentifiers": [
-                "Pyre"
+                "Cauldron.Pyre"
             ],
             "incapacitatedAbilities": [
                 "One player may discard an {Irradiated} card to draw a card, play a card, and use a power now.",
@@ -78,7 +79,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate",
+                "Cauldron.Irradiate",
                 "IncreaseDamageDealtEnergy",
                 "DealDamageEnergy"
             ],
@@ -135,7 +136,7 @@
             ],
             "icons": [
                 "EndOfTurnAction",
-                "Manipulate",
+                "Cauldron.Irradiate",
                 "UsePowerNow"
             ],
             "body": [
@@ -214,7 +215,7 @@
                 "Discard",
                 "DrawCardNow",
                 "HasPower",
-                "Manipulate"
+                "Cauldron.Irradiate"
             ],
             "body": "When Rogue Fission Cascade would enter play, instead discard it and draw a card. Then put a Cascade card from your trash on top of your deck and destroy this card.",
             "powers": [
@@ -254,7 +255,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate",
+                "Cauldron.Irradiate",
                 "DealDamageEnergy"
             ],
             "body": [
@@ -282,7 +283,7 @@
             ],
             "icons": [
                 "Search",
-                "Manipulate",
+                "Cauldron.Irradiate",
                 "PlayCardNow",
                 "DealDamageEnergy"
             ],
@@ -336,6 +337,7 @@
                 "one-shot"
             ],
             "icons": [
+                "Cauldron.Irradiate",
                 "Manipulate",
                 "DealDamageEnergy"
             ],
@@ -431,7 +433,7 @@
                 "limited"
             ],
             "icons": [
-                "Manipulate",
+                "Cauldron.Irradiate",
                 "EndOfTurnAction",
                 "DrawCardNow"
             ],
@@ -478,12 +480,13 @@
             ],
             "icons": [
                 "HasPower",
-                "Manipulate",
-                "PlayCardNow"
+                "Cauldron.Irradiate",
+                "PlayCardNow",
+                "Manipulate"
             ],
             "hitpoints": 33,
             "nemesisIdentifiers": [
-                "Pyre"
+                "Cauldron.Pyre"
             ],
             "incapacitatedAbilities": [
                 "One player may discard an {Irradiated} card. If they do, 1 target regains 4 HP.",
@@ -525,7 +528,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Pyre"
+                "Cauldron.Pyre"
             ],
             "incapacitatedAbilities": [
                 "One player may discard an {Irradiated} card. If they do, they deal 3 targets 3 energy damage each.",
@@ -561,11 +564,11 @@
             ],
             "icons": [
                 "HasPower",
-                "Manipulate"
+                "Cauldron.Irradiate"
             ],
             "hitpoints": 30,
             "nemesisIdentifiers": [
-                "Pyre"
+                "Cauldron.Pyre"
             ],
             "incapacitatedAbilities": [
                 "One player may discard an {Irradiated} card. If they do, each player may play a card now.",

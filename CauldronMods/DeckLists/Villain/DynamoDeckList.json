@@ -19,7 +19,7 @@
             "character": true,
             "hitpoints": 60,
             "nemesisIdentifiers": [
-                "Cricket"
+                "Cauldron.Cricket"
             ],
             "setup": [
                 "At the start of the game, put {Dynamo}'s villain character cards into play, 'Notorious Supercriminal' side up.",

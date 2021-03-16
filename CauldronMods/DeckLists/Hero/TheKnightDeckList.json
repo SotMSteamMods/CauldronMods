@@ -29,7 +29,7 @@
 			],
 			"hitpoints": 32,
 			"nemesisIdentifiers": [
-				"TheKnight"
+				"Cauldron.TheKnight"
 			],
 			"incapacitatedAbilities": [
 				"One player may play a card now.",
@@ -402,7 +402,7 @@
 			],
 			"hitpoints": 18,
 			"nemesisIdentifiers": [
-				"TheKnight"
+				"Cauldron.TheKnight"
 			],
 			"flippedTitle": "Incapacitated",
 			"flippedBody": "When {TheOldKnightCharacter} flips to this side, destroy all equipment cards next to him.",
@@ -433,7 +433,7 @@
 			],
 			"hitpoints": 15,
 			"nemesisIdentifiers": [
-				"TheKnight"
+				"Cauldron.TheKnight"
 			],
 			"flippedTitle": "Incapacitated",
 			"flippedBody": "When {TheYoungKnightCharacter} flips to this side, destroy all equipment cards next to her.",
@@ -465,7 +465,7 @@
 			],
 			"hitpoints": 25,
 			"nemesisIdentifiers": [
-				"TheKnight"
+				"Cauldron.TheKnight"
 			],
 			"incapacitatedAbilities": [
 				"One player may play a card now.",
@@ -508,7 +508,7 @@
 			],
 			"hitpoints": 27,
 			"nemesisIdentifiers": [
-				"TheKnight"
+				"Cauldron.TheKnight"
 			],
 			"incapacitatedAbilities": [
 				"One player may draw a card now.",
@@ -550,7 +550,7 @@
 			],
 			"hitpoints": 27,
 			"nemesisIdentifiers": [
-				"TheKnight"
+				"Cauldron.TheKnight"
 			],
 			"incapacitatedAbilities": [
 				"One player may draw a card now.",

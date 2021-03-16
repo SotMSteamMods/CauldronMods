@@ -24,7 +24,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Cricket"
+                "Cauldron.Cricket"
             ],
             "incapacitatedAbilities": [
                 "One player may draw a card now.",
@@ -443,7 +443,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Cricket"
+                "Cauldron.Cricket"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
@@ -484,7 +484,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Cricket"
+                "Cauldron.Cricket"
             ],
             "incapacitatedAbilities": [
                 "Select a deck and put its top card into play.",
@@ -524,7 +524,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Cricket"
+                "Cauldron.Cricket"
             ],
             "incapacitatedAbilities": [
                 "One hero may use a power now.",

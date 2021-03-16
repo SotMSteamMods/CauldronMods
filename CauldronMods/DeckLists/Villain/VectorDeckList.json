@@ -19,7 +19,7 @@
             "character": true,
             "hitpoints": 55,
             "nemesisIdentifiers": [
-                "DocHavoc"
+                "Cauldron.DocHavoc"
             ],
             "setup": [
                 "At the start of the game, put {Vector}'s villain character cards into play, “Asymptomatic Carrier“ side up, with 40 HP."

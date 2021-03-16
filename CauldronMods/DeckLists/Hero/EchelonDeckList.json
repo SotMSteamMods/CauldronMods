@@ -24,7 +24,7 @@
             ],
             "hitpoints": 27,
             "nemesisIdentifiers": [
-                "Echelon"
+                "Cauldron.Echelon"
             ],
             "incapacitatedAbilities": [
                 "Destroy 1 ongoing card.",
@@ -502,7 +502,7 @@
             ],
             "hitpoints": 28,
             "nemesisIdentifiers": [
-                "Echelon"
+                "Cauldron.Echelon"
             ],
             "incapacitatedAbilities": [
                 "Up to 2 equipment cards may be played now.",
@@ -542,7 +542,7 @@
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
-                "Echelon"
+                "Cauldron.Echelon"
             ],
             "incapacitatedAbilities": [
                 "One player may play a card now.",
