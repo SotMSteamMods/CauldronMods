@@ -110,7 +110,7 @@ namespace Cauldron.Baccarat
             //Play X copies of Afterlife Euchre from your trash (up to 3). Discard the top 3 - X cards of your deck.
             int X = 0;
             bool skipped = false;
-            List<SelectCardDecision> decisions = new List<SelectCardDecision>();
+            List<PlayCardAction> decisions = new List<PlayCardAction>();
             List<Card> playedCards = new List<Card>();
             int upTo = GetPowerNumeral(0, 3);
             int discardBase = GetPowerNumeral(1, 3);
@@ -138,7 +138,7 @@ namespace Cauldron.Baccarat
             while (X < upTo && !skipped)
             {
                 //Play X copies of Afterlife Euchre from your trash (up to 3).
-                coroutine = base.GameController.SelectAndMoveCard(base.HeroTurnTakerController, (Card c) => c.Identifier == "AfterlifeEuchre" && !playedCards.Contains(c) && c.Location == base.TurnTaker.Trash, base.TurnTaker.PlayArea, optional: true, playIfMovingToPlayArea: true, storedResults: decisions, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndPlayCard(base.HeroTurnTakerController, (Card c) => c.Identifier == "AfterlifeEuchre" && !playedCards.Contains(c) && c.Location == base.TurnTaker.Trash, optional: true, storedResults: decisions, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -147,7 +147,7 @@ namespace Cauldron.Baccarat
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                Card selectedCard = decisions.LastOrDefault<SelectCardDecision>().SelectedCard;
+                Card selectedCard = decisions.LastOrDefault<PlayCardAction>().CardToPlay;
                 if (decisions.Count() > X && selectedCard != null)
                 {
                     playedCards.Add(selectedCard);
