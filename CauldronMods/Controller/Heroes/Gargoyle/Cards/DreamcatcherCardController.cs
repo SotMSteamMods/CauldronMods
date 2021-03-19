@@ -50,7 +50,7 @@ namespace Cauldron.Gargoyle
                 new Function(DecisionMaker, "Reduce the next damage dealt by Gargoyle by 3", SelectionType.None,()=>ReduceDamage(3))
             };
 
-            selectFunction = new SelectFunctionDecision(base.GameController, base.HeroTurnTakerController, functionChoices, true);
+            selectFunction = new SelectFunctionDecision(base.GameController, base.HeroTurnTakerController, functionChoices, false);
             coroutine = base.GameController.SelectAndPerformFunction(selectFunction, storedResults);
             if (base.UseUnityCoroutines)
             {
