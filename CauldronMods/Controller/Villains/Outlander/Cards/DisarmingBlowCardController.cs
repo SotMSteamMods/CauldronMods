@@ -19,7 +19,7 @@ namespace Cauldron.Outlander
         {
             //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
             //Any hero damaged this way discards 1 card.
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 3, DamageType.Melee, numberOfTargets: () => 2, addStatusEffect: (DealDamageAction action) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(action.Target.Owner.ToHero()), additionalCriteria: (Card c) => action.Target.IsCharacter && action.Amount > 0, cardSource: GetCardSource()));
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 3, DamageType.Melee, numberOfTargets: () => 2, addStatusEffect: DiscardCardResponse);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -29,6 +29,18 @@ namespace Cauldron.Outlander
                 GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        private IEnumerator DiscardCardResponse(DealDamageAction dd)
+        {
+            if(dd.DidDealDamage && dd.Target.IsHeroCharacterCard)
+            {
+                return GameController.SelectAndDiscardCard(FindHeroTurnTakerController(dd.Target.Owner.ToHero()), cardSource: GetCardSource());
+            }
+            else
+            {
+                return DoNothing();
+            }
         }
     }
 }
