@@ -180,6 +180,7 @@ namespace CauldronTests
 
             DecisionSelectCards = new Card[] { ra.CharacterCard, tornado, baron.CharacterCard };
             QuickHPStorage(baron.CharacterCard);
+
             PlayCard("CalledToJudgement");
             QuickHPCheck(-3);
 

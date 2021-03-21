@@ -12,7 +12,6 @@ namespace Cauldron.Malichae
         {
         }
 
-        private Card CardUsingPower;
         public override IEnumerator UsePower(int index = 0)
         {
             List<DiscardCardAction> results = new List<DiscardCardAction>();
@@ -76,28 +75,28 @@ namespace Cauldron.Malichae
                     }
 
                     var controller = FindCardController(discarded);
-
-                    var powersOnCard = new List<Power>();
-                    for (int i = 0; i < discarded.NumberOfPowers; i++)
+                    var indexOfPower = 0;
+                    if(discarded.NumberOfPowers > 1)
                     {
-                        powersOnCard.Add(new Power(heroTTC, controller, controller.Card.CurrentPowers.ElementAt(i), controller.UsePower(i), i, null, controller.GetCardSource()));
-                    }
-
-                    //select the power
-                    var powerDecision = new UsePowerDecision(GameController, heroTTC, powersOnCard, true, cardSource: GetCardSource());
-                    coroutine = GameController.MakeDecisionAction(powerDecision);
-                    if (UseUnityCoroutines)
-                    {
-                        yield return GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        GameController.ExhaustCoroutine(coroutine);
-                    }
-
-                    if (powerDecision.SelectedPower == null)
-                    {
-                        yield break;
+                        var powerChoices = new List<Function>();
+                        for(int i = 0; i < discarded.NumberOfPowers; i++)
+                        {
+                            powerChoices.Add(new Function(heroTTC, $"Use power {i + 1}: {controller.Card.CurrentPowers.ElementAt(i)}", SelectionType.UsePower, DoNothing));
+                        }
+                        var selectPower = new SelectFunctionDecision(GameController, heroTTC, powerChoices, false, associatedCards: new List<Card> { discarded }, cardSource: GetCardSource());
+                        coroutine = GameController.SelectAndPerformFunction(selectPower);
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+                        if(selectPower.Index != null)
+                        {
+                            indexOfPower = selectPower.Index.Value;
+                        }
                     }
 
                     //if they picked one, prep the card to do stuff
@@ -107,11 +106,9 @@ namespace Cauldron.Malichae
                     {
                         GameController.AddCardControllerToList(CardControllerListType.CanCauseDamageOutOfPlay, controller);
                     }
-                    CardUsingPower = discarded;
-
 
                     //use the power
-                    coroutine = GameController.UsePower(powerDecision.SelectedPower, heroUsingPower: heroTTC, cardSource: GetCardSource());
+                    coroutine = UsePowerOnOtherCard(discarded, indexOfPower);
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(coroutine);
@@ -120,14 +117,12 @@ namespace Cauldron.Malichae
                     {
                         GameController.ExhaustCoroutine(coroutine);
                     }
-
                     //clean up the prepwork
                     if (!wasOnList)
                     {
                         GameController.RemoveCardControllerFromList(CardControllerListType.CanCauseDamageOutOfPlay, controller);
                     }
                     GameController.RemoveInhibitorException(controller);
-                    CardUsingPower = null;
 
                 }
                
