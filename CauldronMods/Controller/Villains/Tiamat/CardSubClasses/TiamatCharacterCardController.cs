@@ -27,6 +27,7 @@ namespace Cauldron.Tiamat
         protected abstract ITrigger[] AddFrontAdvancedTriggers();
         protected abstract ITrigger[] AddDecapitatedTriggers();
         protected abstract ITrigger[] AddDecapitatedAdvancedTriggers();
+        protected abstract ITrigger[] AddDecapitatedChallengeTriggers();
 
         public override void AddSideTriggers()
         {
@@ -56,10 +57,14 @@ namespace Cauldron.Tiamat
             else
             {
                 base.AddSideTriggers(this.AddDecapitatedTriggers());
-                base.AddSideTrigger(base.AddCannotDealDamageTrigger((Card c) => c == base.Card));
+                base.AddSideTrigger(base.AddPreventDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.Card));
                 if (Game.IsAdvanced)
                 {
                     base.AddSideTriggers(this.AddDecapitatedAdvancedTriggers());
+                }
+                if(Game.IsChallenge)
+                {
+                    base.AddSideTriggers(this.AddDecapitatedChallengeTriggers());
                 }
             };
         }
@@ -91,7 +96,37 @@ namespace Cauldron.Tiamat
             {
                 cardSource = base.GetCardSource(null);
             }
-            IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, cardSource: cardSource);
+            if (!flip.CardToFlip.Card.IsFlipped)
+            {
+                IEnumerator coroutine = base.GameController.RemoveTarget(base.Card, cardSource: cardSource);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            
+            yield break;
+        }
+
+        protected IEnumerator ChallengeRestoreHeadResponse(GameAction ga)
+        {
+            //"Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head... 
+            IEnumerator coroutine = GameController.FlipCard(this, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //and restore it to {H * 3} HP.",
+            coroutine = GameController.MakeTargettable(this.Card, 40, H * 3, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

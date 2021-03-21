@@ -62,7 +62,7 @@ namespace Cauldron.Tiamat
         {
             if(action is FlipCardAction fc)
             {
-                return IsHead(fc.CardToFlip.Card) && !fc.CardToFlip.Card.IsFlipped;
+                return IsHead(fc.CardToFlip.Card) && fc.CardToFlip.Card.IsFlipped;
             }
             if(action is MoveCardAction mc)
             {
@@ -74,33 +74,17 @@ namespace Cauldron.Tiamat
         {
             return new ITrigger[]
             {
-                //prevents some game rule from causing a game over when adding the last head
-                base.AddTrigger<GameOverAction>((GameOverAction action) => AllInstructionCardControllers.Any(instruction => instruction.IsAddingHead), (GameOverAction action) => base.CancelAction(action), TriggerType.GameOver, TriggerTiming.Before),
 
                 //The heroes win the game when 6 heads are decapitated.
                 base.AddTrigger<GameAction>(delegate (GameAction action)
                 {
-                    if (base.GameController.HasGameStarted && !(action is GameOverAction) && !(action is IncrementAchievementAction))
+                    if(IsPotentialGameLoser(action))
                     {
-                        if(IsPotentialGameLoser(action))
-                        {
-                            if(TurnTaker.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && IsHead(c)).Count() < 6)
-                            {
-                                return false;
-                            }
-                            bool headsBeingAdded = false;
-                            if(base.FindCardsWhere((Card c) => IsHead(c) && c.IsInPlayAndHasGameText).Count() == 6)
-                            {
-                                foreach(HydraTiamatInstructionsCardController instruction in AllInstructionCardControllers)
-                                {
-                                    headsBeingAdded |= instruction.IsAddingHead;
-                                }
-                            }
-                            if(headsBeingAdded == false)
-                            {
-                                return base.FindCardsWhere((Card c) => IsHead(c) && c.IsFlipped).Count() == 6;
-                            }
-                        }
+                         if(TurnTaker.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && IsHead(c)).Count() < 6)
+                         {
+                             return false;
+                         }
+                         return base.FindCardsWhere((Card c) => IsHead(c) && c.IsFlipped).Count() == 6;
                     }
                     return false;
                 }, (GameAction action) => this.VictoryResponse(action), new TriggerType[] { TriggerType.GameOver, TriggerType.Hidden }, TriggerTiming.After),

@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Linq;
+using Handelabra;
 
 namespace Cauldron.Tiamat
 {
@@ -21,9 +22,9 @@ namespace Cauldron.Tiamat
                 Card winter = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter");
                 Card hydraStorm = base.TurnTaker.GetCardByIdentifier("HydraStormTiamatCharacter");
                 Card hydraInferno = base.TurnTaker.GetCardByIdentifier("HydraInfernoTiamatCharacter");
-                Card hydraEarth = base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter");
-                Card hydraDecay = base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter");
-                Card hydraWind = base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter");
+                Card hydraEarth = base.TurnTaker.FindCard("HydraEarthTiamatCharacter");
+                Card hydraDecay = base.TurnTaker.FindCard("HydraDecayTiamatCharacter");
+                Card hydraWind = base.TurnTaker.FindCard("HydraWindTiamatCharacter");
                 Card hydraEarthInstructions = base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions");
                 Card hydraDecayInstructions = base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions");
                 Card hydraWindInstructions = base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions");
@@ -74,31 +75,35 @@ namespace Cauldron.Tiamat
         {
             //Winter is in all, just has promoIdentifier differentiating
             Card winter = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter");
+            
             //Regular
             Card[] regular = new Card[] {
-                base.TurnTaker.GetCardByIdentifier("InfernoTiamatCharacter"),
-                base.TurnTaker.GetCardByIdentifier("StormTiamatCharacter")
+                base.TurnTaker.FindCard("InfernoTiamatCharacter"),
+                base.TurnTaker.FindCard("StormTiamatCharacter")
             };
+            
             //Hydra
             Card[] hydra = new Card[] {
-                base.TurnTaker.GetCardByIdentifier("HydraStormTiamatCharacter"),
-                base.TurnTaker.GetCardByIdentifier("HydraInfernoTiamatCharacter"),
-                base.TurnTaker.GetCardByIdentifier("HydraFrigidEarthTiamatInstructions"),
-                base.TurnTaker.GetCardByIdentifier("HydraNoxiousFireTiamatInstructions"),
-                base.TurnTaker.GetCardByIdentifier("HydraThunderousGaleTiamatInstructions")
+                base.TurnTaker.FindCard("HydraStormTiamatCharacter"),
+                base.TurnTaker.FindCard("HydraInfernoTiamatCharacter"),
+                base.TurnTaker.FindCard("HydraFrigidEarthTiamatInstructions", false),
+                base.TurnTaker.FindCard("HydraNoxiousFireTiamatInstructions", false),
+                base.TurnTaker.FindCard("HydraThunderousGaleTiamatInstructions", false)
             };
+            
             //Hydra secondary heads that do not need to be moved into play if Hydra is the variant
             Card[] secondaryHydra = new Card[]
             {
-                base.TurnTaker.GetCardByIdentifier("HydraEarthTiamatCharacter"),
-                base.TurnTaker.GetCardByIdentifier("HydraDecayTiamatCharacter"),
-                base.TurnTaker.GetCardByIdentifier("HydraWindTiamatCharacter")
+                base.TurnTaker.FindCard("HydraEarthTiamatCharacter"),
+                base.TurnTaker.FindCard("HydraDecayTiamatCharacter"),
+                base.TurnTaker.FindCard("HydraWindTiamatCharacter")
             };
+            
             //2199
             Card[] future = new Card[]
             {
-                base.TurnTaker.GetCardByIdentifier("ExoscaleCharacter"),
-                base.TurnTaker.GetCardByIdentifier("NeoscaleCharacter")
+                base.TurnTaker.FindCard("ExoscaleCharacter"),
+                base.TurnTaker.FindCard("NeoscaleCharacter")
             };
 
             Card[] inPlay;
@@ -126,11 +131,17 @@ namespace Cauldron.Tiamat
 
             foreach (Card c in inPlay)
             {
-                TurnTaker.MoveCard(c, TurnTaker.PlayArea);
+                if (c.Location.IsOffToTheSide)
+                {
+                    TurnTaker.MoveCard(c, TurnTaker.PlayArea);
+                }
             }
             foreach (Card c in inBox)
             {
-                TurnTaker.MoveCard(c, TurnTaker.InTheBox);
+                if (c.Location.IsOffToTheSide)
+                {
+                    TurnTaker.MoveCard(c, TurnTaker.InTheBox);
+                }
             }
         }
     }

@@ -55,6 +55,15 @@ namespace Cauldron.Tiamat
             };
         }
 
+        protected override ITrigger[] AddDecapitatedChallengeTriggers()
+        {
+            return new ITrigger[]
+            {
+				//"Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
+				AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && cep.CardEnteringPlay.IsVillain && cep.CardEnteringPlay.Identifier == "ElementOfFire", ChallengeRestoreHeadResponse, TriggerType.FlipCard, TriggerTiming.After)
+            };
+        }
+
         //Deal H-2 Fire damage to highest hero target
         private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
         {

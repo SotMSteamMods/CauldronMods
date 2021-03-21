@@ -18,6 +18,10 @@ namespace Cauldron.Tiamat
 
         private bool _primed;
 
+        public override bool ShouldBeDestroyedNow()
+        {
+            return this.Card.IsInPlayAndHasGameText && _primed && this.Card.UnderLocation.IsEmpty;
+        }
         public override void AddStartOfGameTriggers()
         {
             this._primed = true;
@@ -33,7 +37,23 @@ namespace Cauldron.Tiamat
 
         private bool IsPotentialEmptierAction(GameAction ga)
         {
-            return ga is PlayCardAction || ga is DiscardCardAction || ga is MoveCardAction || ga is DestroyCardAction || ga is BulkMoveCardsAction || ga is CompletedCardPlayAction;
+            if(ga is PlayCardAction pc)
+            {
+                return pc.Origin == this.Card.UnderLocation;
+            }
+            if(ga is MoveCardAction mc)
+            {
+                return mc.Origin == this.Card.UnderLocation;
+            }
+            if(ga is BulkMoveCardsAction bmc)
+            {
+                return bmc.CardsToMove.Any((Card c) => bmc.FindOriginForCard(c) == this.Card.UnderLocation);
+            }
+            if(ga is CompletedCardPlayAction ccp)
+            {
+                return ccp.CardPlayed == this.Card;
+            }
+            return false;
         }
 
         public override IEnumerator Play()
@@ -61,8 +81,8 @@ namespace Cauldron.Tiamat
         public override void AddTriggers()
         {
             //At the end of the villain turn play the top card from this pile. 
-            IEnumerator playTopCard = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, showMessage: true, overrideDeck: base.Card.UnderLocation, cardSource: base.GetCardSource());
-            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, (PhaseChangeAction p) => playTopCard, TriggerType.PlayCard);
+            //IEnumerator playTopCard = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, showMessage: true, overrideDeck: base.Card.UnderLocation, cardSource: base.GetCardSource());
+            base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, PlayTopCardFromUnderResponse, TriggerType.PlayCard);
             //When this pile is depleted, destroy this card.
             base.AddTrigger<GameAction>((GameAction action) => this._primed && base.Card.UnderLocation.Cards.Count() == 0 && IsPotentialEmptierAction(action), new Func<GameAction, IEnumerator>(this.DestroyThisCardResponse), TriggerType.DestroySelf, TriggerTiming.After);
             //If this card is destroyed, move all cards under it into the trash
@@ -99,6 +119,11 @@ namespace Cauldron.Tiamat
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        private IEnumerator PlayTopCardFromUnderResponse(PhaseChangeAction pc)
+        {
+            return base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, showMessage: true, overrideDeck: base.Card.UnderLocation, cardSource: base.GetCardSource());
         }
     }
 }

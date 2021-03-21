@@ -5,6 +5,20 @@
     "initialCardIdentifiers": [
         "WinterTiamatCharacter"
     ],
+    "initialOffToTheSideCardIdentifiers": [
+        "InfernoTiamatCharacter",
+        "StormTiamatCharacter",
+        "HydraStormTiamatCharacter",
+        "HydraInfernoTiamatCharacter",
+        "HydraFrigidEarthTiamatInstructions",
+        "HydraNoxiousFireTiamatInstructions",
+        "HydraThunderousGaleTiamatInstructions",
+        "HydraEarthTiamatCharacter",
+        "HydraDecayTiamatCharacter",
+        "HydraWindTiamatCharacter",
+        "ExoscaleCharacter",
+        "NeoscaleCharacter"
+    ],
     "cards": [
         {
             "identifier": "InfernoTiamatCharacter",
@@ -51,6 +65,8 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
+            "challengeTitle": "Undying Rage",
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
             "difficulty": 1
         },
         {
@@ -97,7 +113,9 @@
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
-            ]
+            ],
+            "challengeTitle": "Undying Rage",
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP."
         },
         {
             "identifier": "WinterTiamatCharacter",
@@ -144,6 +162,8 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
+            "challengeTitle": "Undying Rage",
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
             "difficulty": 1,
             "openingLines": {
                 "default": "Screeee! Raoooargh! Khhhaaazzt!",
@@ -458,6 +478,8 @@
             "gameplay": [
                 "{InfernoTiamatCharacter} is immune to fire damage."
             ],
+            "challengeTitle": "Resilience",
+            "challengeText": "Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
             "flippedShowHitpoints": false,
             "flippedBody": "Inferno, Decapitated",
             "flippedKeywords": [
@@ -488,6 +510,8 @@
             "gameplay": [
                 "{StormTiamatCharacter} is immune to lightning damage."
             ],
+            "challengeTitle": "Resilience",
+            "challengeText": "Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
             "flippedShowHitpoints": false,
             "flippedBody": "Storm, Decapitated",
             "flippedKeywords": [
@@ -519,6 +543,8 @@
                 "{Tiamat}, The Maw of the Earth is immune to melee damage.",
                 "Reduce damage dealt to other villain targets by 1."
             ],
+            "challengeTitle": "Resilience",
+            "challengeText": "Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
             "flippedShowHitpoints": false,
             "flippedBody": "Earth, Decapitated",
             "flippedKeywords": [
@@ -550,6 +576,8 @@
                 "{HydraDecayTiamatCharacter} is immune to toxic damage.",
                 "Increase damage dealt to hero targets by 1."
             ],
+            "challengeTitle": "Resilience",
+            "challengeText": "Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
             "flippedShowHitpoints": false,
             "flippedBody": "Decay, Decapitated",
             "flippedKeywords": [
@@ -582,6 +610,8 @@
                 "{HydraWindTiamatCharacter} is immune to projectile damage.",
                 "At the end of the villain turn, each head regains 2 HP."
             ],
+            "challengeTitle": "Resilience",
+            "challengeText": "Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
             "flippedShowHitpoints": false,
             "flippedBody": "Wind, Decapitated",
             "flippedKeywords": [
@@ -793,6 +823,8 @@
                 "villain",
                 "head"
             ],
+            "challengeTitle": "Resilience",
+            "challengeText": "Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
             "difficulty": 1,
             "openingLines": {
                 "default": "DrooooooHhhhhreaaaAAAAGHH!",
@@ -867,6 +899,11 @@
             ],
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
+            ],
+            "challengeTitle": "Reactive Armor",
+            "challengeText": "Whenever a non-villain target deals damage to a Dragonscale, {Tiamat} deals that target {H - 1} projectile damage.",
+            "flippedChallengeIcons": [
+                "CounterDamage"
             ],
             "difficulty": 1,
             "openingLines": {

@@ -1684,5 +1684,48 @@ namespace CauldronTests
             GoToStartOfTurn(tiamat);
             AssertIsInPlayAndNotUnderCard(wind);
         }
+
+        [Test()]
+        public void TestHydraTiamatChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            Card aspect = PlayCard("ReptilianAspect");
+            DestroyCard(aspect);
+            AssertIsInPlay(aspect);
+
+            DestroyCard(inferno);
+            DestroyCard(aspect);
+            AssertIsInPlay(aspect);
+
+            DestroyCard(winter);
+            DestroyCard(aspect);
+            AssertInTrash(aspect);
+
+        }
+        [Test()]
+        public void TestElementalFrenzyIndestructible()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            Card fire = PutInTrash("ElementOfFire");
+            Card frenzy = PlayCard("ElementalFrenzy");
+
+            GoToEndOfTurn(tiamat);
+            AssertIsInPlay(frenzy);
+
+            Card tamoko = PlayCard("TaMoko");
+            DiscardCard(parse);
+            DestroyCard(tamoko);
+            MoveCard(haka, tamoko, haka.HeroTurnTaker.Hand);
+
+            Card aspect = PutOnDeck("ReptilianAspect");
+            DestroyCard(winter);
+            DestroyCard(inferno);
+            AssertInTrash(frenzy);
+            AssertIsInPlay(aspect);
+        }
     }
 }

@@ -50,6 +50,14 @@ namespace Cauldron.Tiamat
 				base.AddReduceDamageTrigger((Card c) => IsHead(c), 1)
             };
         }
+        protected override ITrigger[] AddDecapitatedChallengeTriggers()
+        {
+            return new ITrigger[]
+            {
+				//"Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
+				AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && cep.CardEnteringPlay.IsVillain && cep.CardEnteringPlay.Identifier == "ElementOfIce", ChallengeRestoreHeadResponse, TriggerType.FlipCard, TriggerTiming.After)
+            };
+        }
 
         protected override ITrigger[] AddDecapitatedTriggers()
         {
