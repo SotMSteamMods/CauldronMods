@@ -20,18 +20,29 @@ namespace Cauldron.Terminus
             base.SpecialStringMaker.ShowTokenPool(base.WrathPool);
         }
 
-        private bool _wasTargetHeroBeforeDamage = false;
+        private List<Guid> _recentDamageIds;
+        private List<Guid> RecentDamageIds 
+        {
+            get
+            {
+                if (_recentDamageIds == null)
+                {
+                    _recentDamageIds = new List<Guid>();
+                }
+                return _recentDamageIds;
+            }
+        }
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>((dda) => dda.Target.IsHero, StoreIsHero, TriggerType.HiddenLast, TriggerTiming.Before);
-            base.AddTrigger<DealDamageAction>((dda) => _wasTargetHeroBeforeDamage && dda.Amount >= 3, DealDamageActionResponse, TriggerType.IncreaseDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((dda) => dda.Target.IsHero && dda.IsSuccessful && dda.Amount >= 3 && !dda.IsPretend, StoreIsHero, TriggerType.HiddenLast, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((dda) => dda.Amount >= 3 && RecentDamageIds.Contains(dda.InstanceIdentifier), DealDamageActionResponse, TriggerType.ModifyTokens, TriggerTiming.After);
             base.AddTriggers();
         }
 
         private IEnumerator StoreIsHero(DealDamageAction dda)
         {
-            _wasTargetHeroBeforeDamage = true;
+            RecentDamageIds.Add(dda.InstanceIdentifier);
 
             yield return null;
             yield break;
@@ -42,7 +53,7 @@ namespace Cauldron.Terminus
             IEnumerator coroutine;
             if(!dealDamageAction.IsPretend)
             {
-                _wasTargetHeroBeforeDamage = false;
+                RecentDamageIds.Remove(dealDamageAction.InstanceIdentifier);
             }
             coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(1, 3, removeTokenResponse: RemoveTokensFromPoolResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "nothing happens.", removeEffectDescription: "increase the target's damage", triggerAction: dealDamageAction);
             if (UseUnityCoroutines)
