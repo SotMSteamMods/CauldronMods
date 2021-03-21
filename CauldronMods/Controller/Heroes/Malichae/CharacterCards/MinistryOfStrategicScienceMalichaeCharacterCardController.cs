@@ -56,16 +56,76 @@ namespace Cauldron.Malichae
                 }
                 else if (discarded.HasPowers && discarded.Owner == TurnTaker)
                 {
-                    coroutine = base.UsePowerOnOtherCard(discarded);
-                    if (base.UseUnityCoroutines)
+                    //stolen from cherenkov drive
+                    //has the same limitations as cherenkov drive
+                    HeroTurnTakerController heroTTC = FindHeroTurnTakerController(discarded.Owner.ToHero());
+                    TurnTaker tt = discarded.Owner;
+                    if (!GameController.CanUsePowers(heroTTC, GetCardSource()))
                     {
-                        yield return base.GameController.StartCoroutine(coroutine);
+                        coroutine = GameController.SendMessageAction($"{Card.Title} would allow {tt.Name} to use a power on {discarded.Title}, but they cannot currently use powers.", Priority.High, GetCardSource());
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+                        yield break;
+                    }
+
+                    var controller = FindCardController(discarded);
+                    var indexOfPower = 0;
+                    if(discarded.NumberOfPowers > 1)
+                    {
+                        var powerChoices = new List<Function>();
+                        for(int i = 0; i < discarded.NumberOfPowers; i++)
+                        {
+                            powerChoices.Add(new Function(heroTTC, $"Use power {i + 1}: {controller.Card.CurrentPowers.ElementAt(i)}", SelectionType.UsePower, DoNothing));
+                        }
+                        var selectPower = new SelectFunctionDecision(GameController, heroTTC, powerChoices, false, associatedCards: new List<Card> { discarded }, cardSource: GetCardSource());
+                        coroutine = GameController.SelectAndPerformFunction(selectPower);
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+                        if(selectPower.Index != null)
+                        {
+                            indexOfPower = selectPower.Index.Value;
+                        }
+                    }
+
+                    //if they picked one, prep the card to do stuff
+                    bool wasOnList = GameController.IsInCardControllerList(discarded, CardControllerListType.CanCauseDamageOutOfPlay);
+                    GameController.AddInhibitorException(controller, (GameAction ga) => ga != null && ga.CardSource != null && ga.CardSource.Card == discarded);
+                    if (!wasOnList)
+                    {
+                        GameController.AddCardControllerToList(CardControllerListType.CanCauseDamageOutOfPlay, controller);
+                    }
+
+                    //use the power
+                    coroutine = UsePowerOnOtherCard(discarded, indexOfPower);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        base.GameController.ExhaustCoroutine(coroutine);
+                        GameController.ExhaustCoroutine(coroutine);
                     }
+                    //clean up the prepwork
+                    if (!wasOnList)
+                    {
+                        GameController.RemoveCardControllerFromList(CardControllerListType.CanCauseDamageOutOfPlay, controller);
+                    }
+                    GameController.RemoveInhibitorException(controller);
+
                 }
+               
                 else if (discarded.HasPowers)
                 {
                     coroutine = GameController.SendMessageAction("Congratulations! You've found a way to discard a card with a power that you don't own! You should open a issue for this!", Priority.High, GetCardSource());
@@ -92,7 +152,7 @@ namespace Cauldron.Malichae
                 }
             }
 
-            coroutine = DrawCard(DecisionMaker.HeroTurnTaker);
+            coroutine = DrawCard();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

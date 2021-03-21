@@ -151,6 +151,42 @@ namespace CauldronTests
             AssertInHand(top);
         }
 
+        [Test()]
+        public void TestMOSSMalichae_RepOfEarth_GreatestLegacy()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Legacy/AmericasGreatestLegacyCharacter", "Ra", "Haka", "TheCelestialTribunal" });
+            StartGame();
+            DecisionSelectFromBoxIdentifiers = new string[] { "Cauldron.MinistryOfStrategicScienceMalichaeCharacter" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Malichae";
+            Card earth = PlayCard("RepresentativeOfEarth");
+
+            Card rep = earth.NextToLocation.Cards.First();
+
+            DecisionSelectCard = rep;
+            UsePower(legacy.CharacterCard);
+
+        }
+
+        [Test()]
+        public void TestMOSSMalichae_RepOfEarth_CallToJudgement()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Legacy/AmericasGreatestLegacyCharacter", "Ra", "Haka", "TheCelestialTribunal" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card tornado = PutInHand("BlazingTornado");
+
+            DecisionSelectFromBoxIdentifiers = new string[] { "Cauldron.MinistryOfStrategicScienceMalichaeCharacter" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Malichae";
+
+            DecisionSelectCards = new Card[] { ra.CharacterCard, tornado, baron.CharacterCard };
+            QuickHPStorage(baron.CharacterCard);
+
+            PlayCard("CalledToJudgement");
+            QuickHPCheck(-3);
+
+
+        }
+
 
         [Test]
         public void Djinn_HighReshiel_UsePower()
