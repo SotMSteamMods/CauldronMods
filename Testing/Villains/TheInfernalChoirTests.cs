@@ -1089,7 +1089,10 @@ namespace CauldronTests
         [Test()]
         public void TestWretchedSymphony_DamageReduction()
         {
+
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "OmnitronX", "TheSentinels", "Megalopolis");
+            Card wretched = GetCard("WretchedSymphony", 0);
+            PrintSpecialStringsForCard(wretched);
             choir.DebugForceHeartPlayer = legacy;
             StartGame();
             FlipCard(choir.CharacterCard);
@@ -1100,7 +1103,7 @@ namespace CauldronTests
 
             GoToStartOfTurn(legacy);
 
-            var card = PlayCard("WretchedSymphony", 0, true);
+            var card = PlayCard(wretched, true);
             AssertInPlayArea(choir, card);
 
             QuickHPStorage(choir.CharacterCard, legacy.CharacterCard, omnix.CharacterCard, mainstay, writhe, medico, idealist, card);

@@ -12,7 +12,7 @@ namespace Cauldron.TheInfernalChoir
     {
         public WretchedSymphonyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(() => FindVagrantHeartHiddenHeart() is null, () => $"{FindVagrantHeartSoulRevealed().Title} is in play.", () => $"{FindVagrantHeartHiddenHeart().Title} is in {FindVagrantHeartHiddenHeart().Location.GetFriendlyName()}.");
+            SpecialStringMaker.ShowIfElseSpecialString(() => FindVagrantHeartHiddenHeart() is null, () => $"{FindVagrantHeartSoulRevealed().Title} is in play.", () => $"{FindVagrantHeartHiddenHeart().Title} is in {FindVagrantHeartHiddenHeart().Location.GetFriendlyName()}.").Condition = () => Game.HasGameStarted;
         }
 
         public override void AddTriggers()
