@@ -778,7 +778,7 @@ namespace CauldronTests
             DecisionSelectCard = legacyTop;
             Card kalpak = PlayCard("KalpakOfMysteries");
             UsePower(kalpak);
-            AssertInHand(legacyTop);
+            AssertUnderCard(mindScion, legacyTop);
         }
         [Test]
         public void TestKalpakDestroysSelf()
