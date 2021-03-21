@@ -795,6 +795,20 @@ namespace CauldronTests
             AssertInTrash(kalpak);
         }
         [Test]
+        public void TestKalpakPlaysNinja()
+        {
+            SetupGameController("BaronBlade", "Legacy", "Cauldron.MagnificentMara", "TheScholar", "TheTempleOfZhuLong");
+            StartGame();
+
+            Card ninja = PlayCard("ShinobiAssassin");
+            DestroyCard(ninja);
+            AssertOnTopOfDeck(legacy, ninja);
+
+            Card kalpak = PlayCard("KalpakOfMysteries");
+            UsePower(kalpak);
+            AssertIsInPlay(ninja);
+        }
+        [Test]
         public void TestLookingForThis()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
