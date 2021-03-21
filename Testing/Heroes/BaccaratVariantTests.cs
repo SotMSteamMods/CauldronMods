@@ -256,7 +256,8 @@ namespace CauldronTests
         {
             SetupGameController("AkashBhuta", "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
-            Card ace = GetCard("AceInTheHole");
+            MoveAllCardsFromHandToDeck(baccarat);
+            Card ace = PutInHand("AceInTheHole");
             //Pick deal damage on Afterlife Euchre
             DecisionSelectFunction = 1;
             PutInTrash("AfterlifeEuchre", 0);
@@ -264,7 +265,6 @@ namespace CauldronTests
             //Ensuring the first card discarded isn't another Afterlife Euchre
             PutOnDeck("AceOfSaints");
             //Don't play card
-            DecisionDoNotSelectCard = SelectionType.PlayCard;
 
             //Play max number of cards
             DecisionSelectNumber = 2;
