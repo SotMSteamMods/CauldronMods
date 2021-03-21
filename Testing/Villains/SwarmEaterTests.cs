@@ -478,6 +478,27 @@ namespace CauldronTests
             GoToStartOfTurn(swarm);
             QuickHandCheck(-1, 0, 0);
         }
+        [Test()]
+        public void TestFireAugAbsorbNotPickIncappedHero()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { stalker, fire, pursuit });
+            StartGame();
+            DestroyCards(new Card[] { stalker });
+
+            DestroyCard(legacy.CharacterCard);
+            MoveAllCardsFromHandToDeck(haka);
+
+            DealDamage(swarm, fire, 75, DamageType.Melee);
+            AssertUnderCard(GetCard("AbsorbedNanites"), fire);
+
+            //Absorb: at the start of the villain turn, {H - 2} players must discard a card.
+            AssertNextDecisionChoices(new List<TurnTaker> { unity.TurnTaker }, new List<TurnTaker> { legacy.TurnTaker, haka.TurnTaker });
+            GoToStartOfTurn(swarm);
+        }
 
         [Test()]
         public void TestFollowTheScreams()
