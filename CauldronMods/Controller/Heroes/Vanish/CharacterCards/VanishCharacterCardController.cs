@@ -36,7 +36,7 @@ namespace Cauldron.Vanish
             if (DidSelectCard(storedResults))
             {
                 Card selectedCard = base.GetSelectedCard(storedResults);
-                coroutine = GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(GameController, selectedCard), damages, DamageType.Projectile, targets, false, targets, cardSource: GetCardSource());
+                coroutine = GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(GameController, selectedCard), damages, DamageType.Projectile, targets, false, targets, additionalCriteria: c => c != selectedCard, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -98,16 +98,28 @@ namespace CauldronTests
             AssertInPlayArea(bunker, mode);
 
             QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, minion);
-            DecisionSelectTargets = new Card[] { haka.CharacterCard, minion };
+            DecisionSelectCards = new Card[] { haka.CharacterCard, minion, bunker.CharacterCard, minion };
             UsePower(vanish);
 
             QuickHPCheck(0, 0, 0, 0, 0, -1);
 
             QuickHPStorage(baron.CharacterCard, vanish.CharacterCard, haka.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, minion);
-            DecisionSelectTargets = new Card[] { bunker.CharacterCard, minion };
             UsePower(vanish);
             //check that bunker dealt the damage, if he did it will be increased by 1
             QuickHPCheck(0, 0, 0, 0, 0, -2);
+        }
+
+
+        [Test]
+        public void VanishInnatePower_CantHitSelf()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SelectCardsForNextDecision(legacy.CharacterCard, legacy.CharacterCard);
+            Assert.Throws<AssertionException>(() => UsePower(vanish), "SelectCardDecision selected \"Legacy\", which is not one of the decision options");
+            
         }
 
         [Test]
