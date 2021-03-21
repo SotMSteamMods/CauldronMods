@@ -16,6 +16,7 @@ namespace Cauldron.MagnificentMara
             //"Reveal the top card of each other hero deck. One player may put their revealed card into their hand or into play. Replace or discard the other revealed cards. If a card is put into play this way, destroy this card."
             var storedMoveActions = new List<MoveCardAction> { };
             var storedSpecialMove = new List<MoveCardAction> { };
+            var storedReveals = new List<RevealCardsAction>();
 
             bool destroyAtEnd = false;
 
@@ -26,7 +27,9 @@ namespace Cauldron.MagnificentMara
                 Card cardToReveal = heroTTC.TurnTaker.Deck.TopCard;
                 if (cardToReveal != null)
                 {
-                    IEnumerator reveal = GameController.MoveCard(DecisionMaker, cardToReveal, heroTTC.TurnTaker.Revealed, storedResults: storedMoveActions, cardSource: GetCardSource());
+                    var cards = new List<Card>();
+                    IEnumerator reveal = GameController.RevealCards(DecisionMaker, heroTTC.TurnTaker.Deck, 1, cards, storedResultsAction: storedReveals, cardSource: GetCardSource());
+                    //IEnumerator reveal = GameController.MoveCard(DecisionMaker, cardToReveal, heroTTC.TurnTaker.Revealed, storedResults: storedMoveActions, cardSource: GetCardSource());
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(reveal);
@@ -50,7 +53,7 @@ namespace Cauldron.MagnificentMara
                 }
             }
 
-            var revealedCards = storedMoveActions.Select((MoveCardAction mc) => mc.CardToMove).ToList();
+            var revealedCards = storedReveals.SelectMany((RevealCardsAction rc) => rc.RevealedCards).ToList();
 
             //One player may put their revealed card into play or into their hand.
             var selectSpecial = new List<SelectCardDecision> { };
@@ -83,18 +86,22 @@ namespace Cauldron.MagnificentMara
             }
 
             //Replace or discard the other revealed cards.
-            foreach (MoveCardAction reveal in storedMoveActions)
+            foreach (RevealCardsAction reveal in storedReveals)
             {
-                if (reveal.CardToMove != null && reveal.CardToMove.Location.IsRevealed)
+                if (reveal.RevealedCards.Count() > 0)
                 {
-                    IEnumerator handleCard = ReplaceOrDiscard(reveal.CardToMove, reveal.Origin);
-                    if (UseUnityCoroutines)
+                    Card revealedCard = reveal.RevealedCards.FirstOrDefault();
+                    if (revealedCard != null && revealedCard.Location.IsRevealed)
                     {
-                        yield return GameController.StartCoroutine(handleCard);
-                    }
-                    else
-                    {
-                        GameController.ExhaustCoroutine(handleCard);
+                        IEnumerator handleCard = ReplaceOrDiscard(revealedCard, reveal.SearchLocation);
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(handleCard);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(handleCard);
+                        }
                     }
                 }
             }
