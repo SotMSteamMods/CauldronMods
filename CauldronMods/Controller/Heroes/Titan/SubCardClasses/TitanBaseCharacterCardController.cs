@@ -57,5 +57,26 @@ namespace Cauldron.Titan
                 GameController.ExhaustCoroutine(coroutine);
             }
         }
+
+        public override void PrepareToUsePower(Power power)
+        {
+            base.PrepareToUsePower(power);
+            if(power.IsInnatePower)
+            {
+                var partnerCard = TurnTaker.GetCardsWhere((Card c) => c.SharedIdentifier == this.CardWithoutReplacements.SharedIdentifier && c != this.CardWithoutReplacements).FirstOrDefault();
+                HeroTurnTaker powerUser = null;
+                if (power.TurnTakerController != null && power.TurnTakerController.TurnTaker.IsHero)
+                {
+                    powerUser = power.TurnTakerController.TurnTaker.ToHero();
+                }
+                if (partnerCard != null)
+                {
+                    //this adds an extra power-use record to the journal, of using the OTHER card's power
+                    //WITHOUT actually ever 'using' a power, so it shouldn't cause extra triggers
+                    //may cause problems with card that want to count how many powers a player has used in a turn, though
+                    GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null);
+                }
+            }
+        }
     }
 }
