@@ -167,6 +167,20 @@ namespace CauldronTests
             QuickHPCheck(1);
             AssertTrackPosition(shiftPosition - 2);
         }
+        [Test()]
+        public void TestDriftCharacter_InnatePowerWithCutoutSwap()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            AssertNumberOfUsablePowers(drift, 1);
+            UsePower(drift);
+            AssertNumberOfUsablePowers(drift, 0);
+            Card shard = PlayCard("ThrowingShard");
+            UsePower(shard, 0);
+            DestroyCard(shard);
+            AssertNumberOfUsablePowers(drift, 0);
+        }
 
         [Test()]
         public void TestDriftCharacter_Incap0()

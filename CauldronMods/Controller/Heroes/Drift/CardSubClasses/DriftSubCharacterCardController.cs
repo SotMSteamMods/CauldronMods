@@ -312,6 +312,27 @@ namespace Cauldron.Drift
                 yield break;
             }
         }
-
+        
+        public override void PrepareToUsePower(Power power)
+        {
+            base.PrepareToUsePower(power);
+            if (power.IsInnatePower)
+            {
+                var partnerCards = TurnTaker.GetCardsWhere((Card c) => c.SharedIdentifier == this.CardWithoutReplacements.SharedIdentifier && c != this.CardWithoutReplacements);
+                HeroTurnTaker powerUser = null;
+                if (power.TurnTakerController != null && power.TurnTakerController.TurnTaker.IsHero)
+                {
+                    powerUser = power.TurnTakerController.TurnTaker.ToHero();
+                }
+                foreach (Card partnerCard in partnerCards)
+                {
+                    //this adds an extra power-use record to the journal, of using the OTHER card's power
+                    //WITHOUT actually ever 'using' a power, so it shouldn't cause extra triggers
+                    //may cause problems with card that want to count how many powers a player has used in a turn, though
+                    GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null);
+                }
+            }
+        }
+        
     }
 }
