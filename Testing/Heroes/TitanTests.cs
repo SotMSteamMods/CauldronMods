@@ -94,7 +94,51 @@ namespace CauldronTests
             UsePower(titan);
             QuickHPCheck(-2);
         }
+        [Test()]
+        public void TestTitanInnatePowerWithCutoutSwapVariants([Values("/FutureTitanCharacter", "/MinistryOfStrategicScienceTitanCharacter", "/OniTitanCharacter")] string promoVersion)
+        {
+            SetupGameController("Apostate", "Cauldron.Titan" + promoVersion, "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
 
+            Card form = MoveCard(titan, "Titanform", titan.TurnTaker.OutOfGame);
+            DiscardAllCards(titan);
+            PutOnDeck("HaplessShield");
+            UsePower(titan);
+            AssertNumberOfUsablePowers(titan, 0);
+            PlayCard("Titanform");
+            AssertNumberOfUsablePowers(titan, 0);
+
+
+            DecisionYesNo = false;
+            GoToStartOfTurn(titan);
+            AssertNumberOfUsablePowers(titan, 1);
+            DiscardAllCards(titan);
+            PutOnDeck("HaplessShield");
+            UsePower(titan);
+            AssertNumberOfUsablePowers(titan, 0);
+            MoveCard(titan, "Titanform", titan.TurnTaker.OutOfGame);
+            AssertNumberOfUsablePowers(titan, 0);
+        }
+        [Test()]
+        public void TestTitanInnatePowerWithCutoutSwap()
+        {
+            SetupGameController("Apostate", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            UsePower(titan);
+            AssertNumberOfUsablePowers(titan, 0);
+            PlayCard("Titanform");
+            AssertNumberOfUsablePowers(titan, 0);
+
+
+            DecisionYesNo = false;
+            GoToStartOfTurn(titan);
+            AssertNumberOfUsablePowers(titan, 1);
+            UsePower(titan);
+            AssertNumberOfUsablePowers(titan, 0);
+            MoveCard(titan, "Titanform", titan.TurnTaker.OutOfGame);
+            AssertNumberOfUsablePowers(titan, 0);
+        }
         [Test()]
         public void TestTitanIncap1()
         {
