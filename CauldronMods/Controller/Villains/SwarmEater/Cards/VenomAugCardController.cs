@@ -40,18 +40,22 @@ namespace Cauldron.SwarmEater
             {
                 yield break;
             }
-
-            Card target = storedResults.FirstOrDefault()?.Target;
-            //...Any target dealt damage this way deals itself 1 toxic damage.
-            coroutine = base.DealDamage(target, target, 1, DamageType.Toxic, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            var damage = storedResults.FirstOrDefault();
+            if (damage != null && damage.DidDealDamage)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                Card target = damage.Target;
+                //...Any target dealt damage this way deals itself 1 toxic damage.
+                coroutine = base.DealDamage(target, target, 1, DamageType.Toxic, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+            yield break;
         }
 
         public IEnumerator AbsorbDealDamageResponse(DealDamageAction action)

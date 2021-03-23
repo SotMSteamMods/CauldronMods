@@ -1033,7 +1033,32 @@ namespace CauldronTests
             //Punish The Weak will reduce the damage Haka deals to himself
             QuickHPCheck(-3);
         }
+        [Test()]
+        public void TestVenomAugMustDealDamage()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "TheWraith", "TheCelestialTribunal");
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
 
+            DestroyCards(new Card[] { stalker, fire });
+
+            Card stun = PlayCard("StunBolt");
+            Card venom = PlayCard("VenomAug");
+            DecisionSelectTarget = venom;
+
+            for(int i = 0; i < 4; i++)
+            {
+                UsePower(stun);
+            }
+
+            //must actually do damage in order to cause the self-damage
+            QuickHPStorage(haka);
+            GoToEndOfTurn(swarm);
+            QuickHPCheck(0);
+        }
         [Test()]
         public void TestAbsorbAbilitiesPersistThroughSaveLoad()
         {

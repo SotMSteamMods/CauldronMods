@@ -478,6 +478,20 @@ namespace CauldronTests
             QuickHPCheck(-3);
             QuickHandCheck(0);
         }
+        [Test]
+        public void TestDisarmingBlow_NoDamageDealt()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            PlayCard("FleshToIron");
+            PlayCard("FleshToIron");
+
+            QuickHandStorage(scholar);
+            PlayCard(DisarmingBlow);
+            QuickHandCheckZero();
+        }
 
         [Test]
         public void TestDragonborn()
