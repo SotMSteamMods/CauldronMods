@@ -82,25 +82,50 @@ namespace Cauldron.Pyre
 
                 var controller = FindCardController(selectedCard);
 
-                var powersOnCard = new List<Power>();
-                for (int i = 0; i < selectedCard.NumberOfPowers; i++)
-                {
-                    powersOnCard.Add(new Power(heroTTC, controller, controller.Card.CurrentPowers.ElementAt(i), controller.UsePower(i), i, null, controller.GetCardSource()));
-                }
 
                 //select the power
-                var powerDecision = new UsePowerDecision(GameController, heroTTC, powersOnCard,true, cardSource: GetCardSource());
-                coroutine = GameController.MakeDecisionAction(powerDecision);
-                if (UseUnityCoroutines)
+                var indexOfPower = -1;
+                if(selectedCard.NumberOfPowers == 1)
                 {
-                    yield return GameController.StartCoroutine(coroutine);
+                    var storedYesNo = new List<YesNoCardDecision>();
+                    coroutine = GameController.MakeYesNoCardDecision(heroTTC, SelectionType.UsePower, selectedCard, storedResults: storedYesNo, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    if(DidPlayerAnswerYes(storedYesNo))
+                    {
+                        indexOfPower = 0;
+                    }
                 }
-                else
+                else if (selectedCard.NumberOfPowers > 1)
                 {
-                    GameController.ExhaustCoroutine(coroutine);
+                    var powerChoices = new List<Function>();
+                    for (int i = 0; i < selectedCard.NumberOfPowers; i++)
+                    {
+                        powerChoices.Add(new Function(heroTTC, $"Use power {i + 1}: {controller.Card.CurrentPowers.ElementAt(i)}", SelectionType.UsePower, DoNothing));
+                    }
+                    var selectPower = new SelectFunctionDecision(GameController, heroTTC, powerChoices, true, associatedCards: new List<Card> { selectedCard }, cardSource: GetCardSource());
+                    coroutine = GameController.SelectAndPerformFunction(selectPower);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    if (selectPower.Index != null)
+                    {
+                        indexOfPower = selectPower.Index.Value;
+                    }
                 }
 
-                if(powerDecision.SelectedPower == null)
+                if (indexOfPower == -1)
                 {
                     yield break;
                 }
@@ -115,21 +140,8 @@ namespace Cauldron.Pyre
                 CardUsingPower = selectedCard;
 
 
-                /*
-                 * slightly simpler way to do this?
-                coroutine = GameController.SelectAndUsePower(heroTTC, true, (Power p) => p.CardController == controller, allowAnyHeroPower: true, allowOutOfPlayPower: true, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-                */
-
                 //use the power
-                coroutine = GameController.UsePower(powerDecision.SelectedPower, heroUsingPower: heroTTC, cardSource: GetCardSource());
+                coroutine = UsePowerOnOtherCard(selectedCard, indexOfPower);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
