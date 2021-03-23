@@ -778,7 +778,7 @@ namespace CauldronTests
             DecisionSelectCard = legacyTop;
             Card kalpak = PlayCard("KalpakOfMysteries");
             UsePower(kalpak);
-            AssertInHand(legacyTop);
+            AssertUnderCard(mindScion, legacyTop);
         }
         [Test]
         public void TestKalpakDestroysSelf()
@@ -793,6 +793,20 @@ namespace CauldronTests
             UsePower(kalpak);
 
             AssertInTrash(kalpak);
+        }
+        [Test]
+        public void TestKalpakPlaysNinja()
+        {
+            SetupGameController("BaronBlade", "Legacy", "Cauldron.MagnificentMara", "TheScholar", "TheTempleOfZhuLong");
+            StartGame();
+
+            Card ninja = PlayCard("ShinobiAssassin");
+            DestroyCard(ninja);
+            AssertOnTopOfDeck(legacy, ninja);
+
+            Card kalpak = PlayCard("KalpakOfMysteries");
+            UsePower(kalpak);
+            AssertIsInPlay(ninja);
         }
         [Test]
         public void TestLookingForThis()
