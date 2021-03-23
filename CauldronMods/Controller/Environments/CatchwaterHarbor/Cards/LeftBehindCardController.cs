@@ -24,6 +24,11 @@ namespace Cauldron.CatchwaterHarbor
         }
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
+            if(storedResults is null)
+            {
+                yield break;
+            }
+
             List<Card> foundTarget = new List<Card>();
             IEnumerator coroutine = base.GameController.FindTargetWithLowestHitPoints(2, (Card c) => c.IsHeroCharacterCard && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -35,10 +40,27 @@ namespace Cauldron.CatchwaterHarbor
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             Card secondHighest = foundTarget.FirstOrDefault();
-            if (secondHighest != null && storedResults != null)
+            if (secondHighest != null)
             {
                 //Play this card next to the hero with the second lowest HP.
                 storedResults.Add(new MoveCardDestination(secondHighest.NextToLocation));
+            } else
+            {
+                string message = $"There are no heroes in play to put {Card.Title} next to. Moving it to {TurnTaker.Trash.GetFriendlyName()} instead.";
+                if (GameController.GetAllCards(battleZone: BattleZone).Where(c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Any())
+                {
+                    message = $"There is only one hero in play to put {Card.Title} next to. Moving it to {TurnTaker.Trash.GetFriendlyName()} instead.";
+                }
+                storedResults.Add(new MoveCardDestination(TurnTaker.Trash));
+                coroutine = GameController.SendMessageAction(message, Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             yield break;
         }

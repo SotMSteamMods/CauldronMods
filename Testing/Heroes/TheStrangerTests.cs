@@ -768,6 +768,20 @@ namespace CauldronTests
             AssertNextToCard(rune, mdp);
         }
 
+        [Test()]
+        public void TestMarkOfBinding_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TheStranger", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.FSCContinuanceWanderer", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SwitchBattleZone(oblivaeon);
+            //Play this next to a non-hero target. Reduce damage dealt by that target by 1. 
+            //since there are no heroes in this battlezone, it should go to the trash
+            Card binding = PlayCard("MarkOfBinding");
+            AssertInTrash(binding);
+
+        }
 
         [Test()]
         public void TestMarkOfBindingReduceDamage()
@@ -1281,6 +1295,22 @@ namespace CauldronTests
             Card rune = GetCardInPlay("MarkOfDestruction");
             AssertNextToCard(rune, mdp);
         }
+
+        [Test()]
+        public void TestMarkOfDestruction_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TheStranger", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.FSCContinuanceWanderer", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SwitchBattleZone(oblivaeon);
+            //Play this next to a non-character card. If either card is destroyed, destroy the other. 
+            //since there are no non-character cards in this battlezone, it should go to the trash
+            Card destruction = PlayCard("MarkOfDestruction");
+            AssertInTrash(destruction);
+
+        }
+
 
         [Test()]
         public void TestMarkOfDestruction_NextToDestroyed()

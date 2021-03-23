@@ -515,6 +515,20 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRogueConstellations_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.NightloreCitadel", "Cauldron.FSCContinuanceWanderer", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            SwitchBattleZone(oblivaeon);
+            //When this card enters play, move it next to the villain target with the highest HP.
+            //since there are no heroes in this battlezone, it should go to the trash
+            Card constellation = PlayCard("RogueConstellation");
+            AssertInTrash(constellation);
+
+        }
+
+        [Test()]
         public void TestRogueConstellation()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.NightloreCitadel");
@@ -696,6 +710,19 @@ namespace CauldronTests
             QuickHandStorage(luminary);
             GoToStartOfTurn(nightlore);
             QuickHandCheck(2);
+            AssertInTrash(mission);
+
+        }
+
+        [Test()]
+        public void TestUrgentMission_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.NightloreCitadel", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Play this card next to a hero.
+            //since there are no heroes in this battlezone, it should go to the trash
+            Card mission = PlayCard("UrgentMission");
             AssertInTrash(mission);
 
         }

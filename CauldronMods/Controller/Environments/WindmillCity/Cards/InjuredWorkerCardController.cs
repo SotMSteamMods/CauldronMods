@@ -42,6 +42,19 @@ namespace Cauldron.WindmillCity
             Card card = storedResults.FirstOrDefault();
             if (card == null)
             {
+
+                string message = $"There are no heroes in play to put {Card.Title} next to.";
+
+                coroutine = GameController.SendMessageAction(message, Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+  
                 yield break;
             }
 

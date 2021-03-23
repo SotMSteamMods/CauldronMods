@@ -396,6 +396,18 @@ namespace CauldronTests
         }
 
 
+        [Test()]
+        public void TestInjuredWorker_Oblivaeon_0Heroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.Northspar", "Cauldron.WindmillCity",  "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Then move this card next to the hero with the highest HP.           
+            //since there are no heroes in this battlezone, it should stay put
+            Card worker = PlayCard("InjuredWorker");
+            AssertInPlayArea(envTwo, worker); ;
+
+        }
 
         [Test()]
         public void TestInjuredWorker()
