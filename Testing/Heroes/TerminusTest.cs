@@ -1031,6 +1031,20 @@ namespace CauldronTests
             AssertFlipped(red);
             AssertTokenPoolCount(tokenPool, 2);
         }
+        [Test]
+        public void TestGuiltyVerdict_NoPrimingCarryover()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Legacy", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("GuiltyVerdict");
+
+            //should only have 1 choice, who to hit with power
+            //Guilty Verdict chould not trigger
+            AssertMaxNumberOfDecisions(1);
+            UsePower(terminus);
+        }
         #endregion Test Guilty Verdict
 
         #region Test Immortal Coils
