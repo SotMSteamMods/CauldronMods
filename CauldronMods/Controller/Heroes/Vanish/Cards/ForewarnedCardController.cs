@@ -62,7 +62,7 @@ namespace Cauldron.Vanish
         private IEnumerator DestroyCardReponse()
         {
             var cardSource = GetCardSource();
-            foreach (var httc in GameController.HeroTurnTakerControllers.Where(httc => GameController.CanDrawCards(httc, cardSource) && httc.HeroTurnTaker.NumberOfCardsInHand < 3))
+            foreach (var httc in GameController.HeroTurnTakerControllers.Where(httc => httc.BattleZone == BattleZone && GameController.CanDrawCards(httc, cardSource) && httc.HeroTurnTaker.NumberOfCardsInHand < 3))
             {
                 var coroutine = DrawCardsUntilHandSizeReached(httc, 3);
                 if (base.UseUnityCoroutines)
