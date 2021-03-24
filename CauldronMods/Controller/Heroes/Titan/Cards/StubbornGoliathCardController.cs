@@ -25,6 +25,8 @@ namespace Cauldron.Titan
 
         }
 
+        private DealDamageAction _customTextDamageReference;
+
         public override IEnumerator UsePower(int index = 0)
         {
             int targetNumeral = base.GetPowerNumeral(0, 2);
@@ -84,8 +86,9 @@ namespace Cauldron.Titan
         public IEnumerator MaybeRedirectDamageResponse(DealDamageAction dd, TurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
         {
             //...you may redirect that damage to Titan.
+            _customTextDamageReference = dd;
             var storedYesNo = new List<YesNoCardDecision> { };
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.RedirectDamage, this.Card, action: dd, storedResults: storedYesNo, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.Custom, this.Card, action: dd, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -107,6 +110,13 @@ namespace Cauldron.Titan
                 }
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            string customDamageString = $"{ _customTextDamageReference.Amount } { _customTextDamageReference.DamageType} aimed at { _customTextDamageReference.Target.AlternateTitleOrTitle} to { CharacterCard.AlternateTitleOrTitle}";
+            return new CustomDecisionText($"Do you want to redirect {customDamageString}?", $"Should they redirect {customDamageString}?", $"Vote for if they should redirect {customDamageString}?", $"redirect {customDamageString}");
+
         }
     }
 }
