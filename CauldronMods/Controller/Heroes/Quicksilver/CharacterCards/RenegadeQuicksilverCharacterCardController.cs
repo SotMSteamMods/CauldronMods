@@ -10,7 +10,11 @@ namespace Cauldron.Quicksilver
     {
         public RenegadeQuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[]
+                    {
+                        TurnTaker.Deck,
+                        TurnTaker.Trash
+                    }, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort", "", useCardsSuffix: false, singular: "Iron Retort", plural: "Iron Retorts"));
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
