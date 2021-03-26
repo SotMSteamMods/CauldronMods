@@ -1713,6 +1713,7 @@ namespace CauldronTests
             Card fire = PutInTrash("ElementOfFire");
             Card frenzy = PlayCard("ElementalFrenzy");
 
+
             GoToEndOfTurn(tiamat);
             AssertIsInPlay(frenzy);
 
@@ -1726,6 +1727,27 @@ namespace CauldronTests
             DestroyCard(inferno);
             AssertInTrash(frenzy);
             AssertIsInPlay(aspect);
+        }
+
+        [Test()]
+        public void TestElementalFrenzyIndestructible_PickingUpExtraCards()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            Card frenzy = PlayCard("ElementalFrenzy");
+
+            PlayCard("SkyBreaker");
+
+            //if bug is occurring, at EoT, frenzy will pick up skybreaker and play it immediately
+            //this would do 5 damage to all heroes
+            //assert only end of turn head damage
+            QuickHPStorage(parse, bunker, haka);
+            GoToEndOfTurn(tiamat);
+            AssertIsInPlay(frenzy);
+            QuickHPCheck(-1,-1,-3);
+
+           
         }
     }
 }
