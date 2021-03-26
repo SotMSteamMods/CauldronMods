@@ -84,8 +84,8 @@ namespace Cauldron.Tiamat
             
             //Hydra
             Card[] hydra = new Card[] {
-                base.TurnTaker.FindCard("HydraStormTiamatCharacter"),
                 base.TurnTaker.FindCard("HydraInfernoTiamatCharacter"),
+                base.TurnTaker.FindCard("HydraStormTiamatCharacter"),
                 base.TurnTaker.FindCard("HydraFrigidEarthTiamatInstructions", false),
                 base.TurnTaker.FindCard("HydraNoxiousFireTiamatInstructions", false),
                 base.TurnTaker.FindCard("HydraThunderousGaleTiamatInstructions", false)
@@ -126,7 +126,10 @@ namespace Cauldron.Tiamat
             }
             else
             {
-                throw new InvalidOperationException("Character Controller is not a Tiamat Character Card Controller");
+                //throw new InvalidOperationException("Character Controller is not a Tiamat Character Card Controller");
+                inPlay = new Card[0];
+                inBox = new Card[0];
+                Log.Debug("Character Controller error");
             }
 
             foreach (Card c in inPlay)
@@ -143,6 +146,17 @@ namespace Cauldron.Tiamat
                     TurnTaker.MoveCard(c, TurnTaker.InTheBox);
                 }
             }
+        }
+
+        public override bool IsGameWinnable()
+        {
+            
+            if(GameController.FindCardController(TurnTaker.FindCard("WinterTiamatCharacter")) is HydraWinterTiamatCharacterCardController)
+            {
+                return TurnTaker.GetCardsWhere((Card c) => c.IsCharacter && c.IsInGame).Count() == 6;
+            }
+            
+            return true;
         }
     }
 }
