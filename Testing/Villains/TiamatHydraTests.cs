@@ -1746,6 +1746,11 @@ namespace CauldronTests
             DealDamage(skunk, storm, 20, DamageType.Melee);
             AssertOutOfGame(tiamat.TurnTaker.FindCard("HydraStormTiamatCharacter"));
 
+            if(GameController.IsGameOver)
+            {
+                Assert.Pass();
+            }
+
             SaveAndLoad();
             Card rfgStorm = tiamat.TurnTaker.FindCard("HydraStormTiamatCharacter");
             Log.Debug($"Storm location: {rfgStorm.Location.GetFriendlyName()}");
