@@ -126,10 +126,7 @@ namespace Cauldron.Tiamat
             }
             else
             {
-                //throw new InvalidOperationException("Character Controller is not a Tiamat Character Card Controller");
-                inPlay = new Card[0];
-                inBox = new Card[0];
-                Log.Debug("Character Controller error");
+                throw new InvalidOperationException("Character Controller is not a Tiamat Character Card Controller");
             }
 
             foreach (Card c in inPlay)
