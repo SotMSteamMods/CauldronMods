@@ -202,14 +202,42 @@ namespace Cauldron.Mythos
             while (cardCount < 5)
             {
                 List<Card> playedCards = new List<Card>();
-                coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, playedCards: playedCards, cardSource: base.GetCardSource());
-                if (UseUnityCoroutines)
+                if (IsTopCardMatching(MythosClueDeckIdentifier))
                 {
-                    yield return GameController.StartCoroutine(coroutine);
+                    var yesNo = new YesNoAmountDecision(GameController, DecisionMaker, SelectionType.Custom, 1, requireUnanimous: true, cardSource: GetCardSource());
+                    coroutine = GameController.MakeDecisionAction(yesNo);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    if(DidPlayerAnswerYes(yesNo))
+                    {
+                        coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, false, 1, playedCards: playedCards, cardSource: base.GetCardSource());
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
                 }
                 else
                 {
-                    GameController.ExhaustCoroutine(coroutine);
+                    coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, playedCards: playedCards, cardSource: base.GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
 
                 cardCount++;
@@ -273,6 +301,14 @@ namespace Cauldron.Mythos
                 return true;
             }
             return this.GetIconIdentifier(base.TurnTaker.Deck.TopCard) == type;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            return new CustomDecisionText("There is a Clue card on top of the villain deck, but playing it this way will not add a token to Dangerous Investigation. Play the top card of the villain deck anyway?",
+                            "Selecting whether to play the top card of the villain deck",
+                            "Vote for whether to play the top card of the villain deck without adding a token to Dangerous Investigation.",
+                            "Play clue cards from villain deck without adding tokens");
         }
     }
 }
