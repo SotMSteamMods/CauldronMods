@@ -28,7 +28,8 @@
             "gameplay": [
                 "{Mythos} and Dangerous Investigation are indestructible. Activate any {Danger}, {Madness}, or {Clue} effects that match the icon on top of the villain deck.",
                 "{Danger} {Mythos} is immune to damage.",
-                "At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards."
+                "At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards.",
+                "You may check the symbols on the backs of all cards in the villain deck to determine the upcoming order."
             ],
             "advanced": "Reduce damage dealt to {Mythos} by 2.",
             "icons": [
@@ -47,7 +48,8 @@
                 "{Danger} Reduce damage dealt to villain targets by 1.",
                 "At the end of the villain turn, the players may play the top card of the villain deck. Then:",
                 "{Clue} Play the top card of the villain deck.",
-                "{Madness} {Mythos} deals each hero target {H} infernal damage."
+                "{Madness} {Mythos} deals each hero target {H} infernal damage.",
+                "You may check the symbols on the backs of all cards in the villain deck to determine the upcoming order."
             ],
             "flippedAdvanced": "Activate all {Danger} effects.",
             "flippedIcons": [
@@ -57,6 +59,8 @@
                 "DealDamageInfernal"
             ],
             "difficulty": 3,
+            "challengeTitle": "Concealed Plots",
+            "challengeText":  "You are only allowed to check the symbol on the top card of the villain deck.",
             "openingLines": {
                 "default": "You can't begin to understand the horrors that have been set in motion - or your part in them. ",
                 "TitanCharacter": "Do you have any idea what your foolhardiness has cost? Rituals are delicate things, you can't just pop down to the corner store for replacements.",
