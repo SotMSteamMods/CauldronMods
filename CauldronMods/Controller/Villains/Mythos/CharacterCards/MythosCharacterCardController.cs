@@ -161,20 +161,20 @@ namespace Cauldron.Mythos
                 if(TurnTaker.Deck.HasCards)
                 {
                     output = "The icon on top of the deck is:{BR}";
-                }
-                switch (this.GetIconIdentifier(TurnTaker.Deck.TopCard))
-                {
-                    case MythosClueDeckIdentifier:
-                        output += "{Clue}";
-                        break;
+                    switch (this.GetIconIdentifier(TurnTaker.Deck.TopCard))
+                    {
+                        case MythosClueDeckIdentifier:
+                            output += "{Clue}";
+                            break;
 
-                    case MythosDangerDeckIdentifier:
-                        output += "{Danger}";
-                        break;
+                        case MythosDangerDeckIdentifier:
+                            output += "{Danger}";
+                            break;
 
-                    case MythosMadnessDeckIdentifier:
-                        output += "{Madness}";
-                        break;
+                        case MythosMadnessDeckIdentifier:
+                            output += "{Madness}";
+                            break;
+                    }
                 }
             }
             else
