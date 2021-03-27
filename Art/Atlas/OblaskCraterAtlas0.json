@@ -9,25 +9,88 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"FreshTracksMicro.png":
+{
+	"frame": {"x":259,"y":0,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "GameTrail.png":
 {
-	"frame": {"x":259,"y":0,"w":256,"h":188},
+	"frame": {"x":370,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"GameTrailMicro.png":
+{
+	"frame": {"x":629,"y":0,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "GentleTransport.png":
 {
-	"frame": {"x":518,"y":0,"w":256,"h":188},
+	"frame": {"x":740,"y":0,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"GentleTransportMicro.png":
+{
+	"frame": {"x":999,"y":0,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "IndustriousHulk.png":
+{
+	"frame": {"x":1110,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"IndustriousHulkMicro.png":
+{
+	"frame": {"x":1369,"y":0,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"InscrutableEcology.png":
+{
+	"frame": {"x":1480,"y":0,"w":256,"h":188},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
+	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"InscrutableEcologyMicro.png":
+{
+	"frame": {"x":1739,"y":0,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"InvasiveGrowth.png":
 {
 	"frame": {"x":0,"y":191,"w":256,"h":188},
 	"rotated": false,
@@ -36,112 +99,193 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"InscrutableEcology.png":
+"InvasiveGrowthMicro.png":
 {
-	"frame": {"x":259,"y":191,"w":256,"h":188},
+	"frame": {"x":259,"y":191,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"InvasiveGrowth.png":
-{
-	"frame": {"x":518,"y":191,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188},
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "MetalScavenger.png":
 {
-	"frame": {"x":0,"y":382,"w":256,"h":188},
+	"frame": {"x":370,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"MetalScavengerMicro.png":
+{
+	"frame": {"x":629,"y":191,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "MoonWatcher.png":
 {
-	"frame": {"x":259,"y":382,"w":256,"h":188},
+	"frame": {"x":740,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"MoonWatcherMicro.png":
+{
+	"frame": {"x":999,"y":191,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "OblaskCraterDeckBack.png":
 {
-	"frame": {"x":518,"y":382,"w":176,"h":256},
+	"frame": {"x":1110,"y":191,"w":176,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"OblaskCraterDeckBackMicro.png":
+{
+	"frame": {"x":1289,"y":191,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "OblaskObjectY3A.png":
 {
-	"frame": {"x":697,"y":382,"w":256,"h":188},
+	"frame": {"x":1400,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"OblaskObjectY3AMicro.png":
+{
+	"frame": {"x":1659,"y":191,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "OpenGround.png":
 {
-	"frame": {"x":0,"y":641,"w":256,"h":188},
+	"frame": {"x":1770,"y":191,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"OpenGroundMicro.png":
+{
+	"frame": {"x":0,"y":450,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "PlatedGiant.png":
 {
-	"frame": {"x":259,"y":641,"w":256,"h":188},
+	"frame": {"x":111,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"PlatedGiantMicro.png":
+{
+	"frame": {"x":370,"y":450,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "ShadowOfOblask.png":
 {
-	"frame": {"x":518,"y":641,"w":256,"h":188},
+	"frame": {"x":481,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"ShadowOfOblaskMicro.png":
+{
+	"frame": {"x":740,"y":450,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "SwarmOfFangs.png":
 {
-	"frame": {"x":0,"y":832,"w":256,"h":188},
+	"frame": {"x":851,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"SwarmOfFangsMicro.png":
+{
+	"frame": {"x":1110,"y":450,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "UnknownHerds.png":
 {
-	"frame": {"x":259,"y":832,"w":256,"h":188},
+	"frame": {"x":1221,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"UnknownHerdsMicro.png":
+{
+	"frame": {"x":1480,"y":450,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "UnseenTerror.png":
 {
-	"frame": {"x":518,"y":832,"w":256,"h":188},
+	"frame": {"x":1591,"y":450,"w":256,"h":188},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
 	"sourceSize": {"w":256,"h":188},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"UnseenTerrorMicro.png":
+{
+	"frame": {"x":1850,"y":450,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
@@ -149,8 +293,8 @@
 	"version": "1.0",
 	"image": "OblaskCraterAtlas0.png",
 	"format": "RGBA8888",
-	"size": {"w":1024,"h":1024},
+	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1f3b172f148c86329f711e1194c24a3f:7ce2ba0746f293cbce311bac0f0fcdcd:6dc6aec214269802e8e908768f5d30bc$"
+	"smartupdate": "$TexturePacker:SmartUpdate:2b3503d4284421b3b63bacb69414bec1:54ecea6bda89663e73bbd8dc3810a046:6dc6aec214269802e8e908768f5d30bc$"
 }
 }
