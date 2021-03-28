@@ -27,7 +27,6 @@ namespace Cauldron.Cricket
         {
             AddImmuneToDamageTrigger(dd => dd.Target == CharacterCard && dd.DamageSource.IsEnvironmentTarget && IsImmuneToEnvironmentDamage) ;
             AddTrigger((PhaseChangeAction pca) => pca.ToPhase.Phase == Phase.Start && pca.ToPhase.TurnTaker == TurnTaker, ResetImmunityProperty, TriggerType.Hidden, TriggerTiming.After);
-            ResetFlagAfterLeavesPlay(IsImmuneToEnvironmentDamageKey);
         }
 
         private IEnumerator ResetImmunityProperty(PhaseChangeAction pca)
