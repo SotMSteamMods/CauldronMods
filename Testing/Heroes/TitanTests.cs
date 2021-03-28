@@ -1029,6 +1029,23 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestReversalRedirectTiming_Issue1136()
+        {
+            SetupGameController("Ambuscade", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card mine = PlayCard("SonicMine");
+
+            QuickHPStorage(ambuscade, titan, haka, bunker, scholar);
+            DecisionSelectTarget = mine;
+            DecisionAutoDecideIfAble = true;
+            PlayCard("Reversal");
+            QuickHPCheckZero();
+
+
+        }
+
+        [Test()]
         public void TestStubbornGoliath()
         {
             SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
