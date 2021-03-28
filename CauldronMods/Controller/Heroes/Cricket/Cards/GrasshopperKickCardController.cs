@@ -9,7 +9,7 @@ namespace Cauldron.Cricket
     {
         public GrasshopperKickCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => StatusEffectMessage, showInEffectsList: () => true).Condition = () => Game.HasGameStarted && Card.IsInPlayAndHasGameText && IsImmuneToEnvironmentDamage;
+            SpecialStringMaker.ShowSpecialString(() => StatusEffectMessage, showInEffectsList: () => true).Condition = () => Game.HasGameStarted && IsImmuneToEnvironmentDamage;
         }
 
         public readonly string IsImmuneToEnvironmentDamageKey = "IsImmuneToEnvironmentDamage";
