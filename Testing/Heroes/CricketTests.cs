@@ -360,6 +360,28 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestGrasshopperKick_EnragedTerrorBird()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Megalopolis", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            MoveCard(oblivaeon, "EnragedTerrorBird", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            DecisionSelectFunction = 0;
+            GoToBeforeStartOfTurn(cricket);
+            RunActiveTurnPhase();
+            Card bird = GetCardInPlay("EnragedTerrorBird");
+            GoToPlayCardPhase(cricket);
+            Card kick = PlayCard("GrasshopperKick");
+            UsePower(kick);
+
+            //cricket should be immune to environment damage
+            QuickHPStorage(cricket);
+            DealDamage(bird, cricket, 3, DamageType.Projectile);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
         public void TestInfrasonicCollapseDestroyOngoing()
         {
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
