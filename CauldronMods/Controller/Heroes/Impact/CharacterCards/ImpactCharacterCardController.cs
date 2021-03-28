@@ -14,6 +14,9 @@ namespace Cauldron.Impact
         {
         }
 
+        private int _customText_numToDestroy;
+        private int _customText_numBoost;
+
         public override IEnumerator UsePower(int index = 0)
         {
             //"{Impact} deals 1 target 1 infernal damage. You may destroy 1 hero ongoing card to increase this damage by 2."
@@ -22,6 +25,8 @@ namespace Cauldron.Impact
             int numToDestroy = GetPowerNumeral(2, 1);
             int numBoost = GetPowerNumeral(3, 2);
 
+            _customText_numBoost = numBoost;
+            _customText_numToDestroy = numToDestroy;
             bool enoughOngoingsInPlay = GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() >= numToDestroy;
 
             if (numTargets < 1)
@@ -32,7 +37,8 @@ namespace Cauldron.Impact
             ITrigger previewBoost = null;
             if(enoughOngoingsInPlay)
             {
-                previewBoost = AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == this.Card && dd.CardSource.Card == this.Card, numBoost);
+                previewBoost = AddTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == this.Card && dd.CardSource.Card == this.Card, IncreaseDamageDecision, TriggerType.IncreaseDamage, TriggerTiming.Before, isActionOptional: false);
+
             }
 
             //select the targets
@@ -76,7 +82,7 @@ namespace Cauldron.Impact
             {
                 var previewAction = new DealDamageAction(GetCardSource(), new DamageSource(GameController, this.Card), selectedTargets.FirstOrDefault(), numDamage, DamageType.Infernal);
                 var storedYesNo = new List<YesNoCardDecision> { };
-                coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.IncreaseDamage, this.Card, action: previewAction, storedResults: storedYesNo, cardSource: GetCardSource());
+                coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, this.Card, action: previewAction, storedResults: storedYesNo, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -201,6 +207,29 @@ namespace Cauldron.Impact
                     }
             }
             yield break;
+        }
+
+        private IEnumerator IncreaseDamageDecision(DealDamageAction dd)
+        {
+        
+            //This is a fake method that just makes a decision to fool the preview into properly showing the question mark
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, base.Card,
+                                        cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            string cardWord = _customText_numToDestroy == 1 ? "card" : "cards";
+            string baseMessage = $"destroy {_customText_numToDestroy} hero ongoing {cardWord} to increase this damage by {_customText_numBoost}";
+            return new CustomDecisionText($"Do you want to {baseMessage}?", $"Should they {baseMessage}?", $"Vote for if they should {baseMessage}", $"{baseMessage}");
         }
     }
 }
