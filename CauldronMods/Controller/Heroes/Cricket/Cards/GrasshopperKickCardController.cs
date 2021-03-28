@@ -9,7 +9,39 @@ namespace Cauldron.Cricket
     {
         public GrasshopperKickCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            SpecialStringMaker.ShowSpecialString(() => StatusEffectMessage, showInEffectsList: () => true).Condition = () => Game.HasGameStarted && Card.IsInPlayAndHasGameText && IsImmuneToEnvironmentDamage;
+        }
 
+        public readonly string IsImmuneToEnvironmentDamageKey = "IsImmuneToEnvironmentDamage";
+        private string StatusEffectMessage => $"{CharacterCard.Title} is immune to damage dealt by environment targets.";
+
+        public bool IsImmuneToEnvironmentDamage 
+        {
+            get
+            {
+                return GetCardPropertyJournalEntryBoolean(IsImmuneToEnvironmentDamageKey).HasValue && GetCardPropertyJournalEntryBoolean(IsImmuneToEnvironmentDamageKey).Value == true;
+            }
+        }
+
+        public override void AddTriggers()
+        {
+            AddImmuneToDamageTrigger(dd => dd.Target == CharacterCard && dd.DamageSource.IsEnvironmentTarget && IsImmuneToEnvironmentDamage) ;
+            AddTrigger((PhaseChangeAction pca) => pca.ToPhase.Phase == Phase.Start && pca.ToPhase.TurnTaker == TurnTaker, ResetImmunityProperty, TriggerType.Hidden, TriggerTiming.After);
+            ResetFlagAfterLeavesPlay(IsImmuneToEnvironmentDamageKey);
+        }
+
+        private IEnumerator ResetImmunityProperty(PhaseChangeAction pca)
+        {
+            SetCardProperty(IsImmuneToEnvironmentDamageKey, false);
+            IEnumerator coroutine = GameController.SendMessageAction($"Expiring: {StatusEffectMessage}", Priority.Medium, GetCardSource(), showCardSource: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -26,24 +58,17 @@ namespace Cauldron.Cricket
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
             //{Cricket} is immune to damage dealt by environment targets until the start of your next turn.
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
-            //{Cricket}...
-            immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = base.CharacterCard;
-            //...is immune to damage dealt by environment targets...
-            immuneToDamageStatusEffect.SourceCriteria.IsEnvironment = true;
-            immuneToDamageStatusEffect.SourceCriteria.IsTarget = true;
-            //...until the start of your next turn.
-            immuneToDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-            immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = base.CharacterCard;
-            IEnumerator coroutine2 = base.AddStatusEffect(immuneToDamageStatusEffect, true);
+            SetCardPropertyToTrueIfRealAction(IsImmuneToEnvironmentDamageKey);
+            coroutine = GameController.SendMessageAction(StatusEffectMessage, Priority.Medium, GetCardSource(), showCardSource: true);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine2);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine2);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
         }
