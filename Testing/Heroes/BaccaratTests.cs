@@ -653,7 +653,7 @@ namespace CauldronTests
             IEnumerable<Card> trashCards = new Card[] { trick1, trick2, saint, toss1, toss2, ace1, ace2 };
             PutInTrash(trashCards);
 
-            DecisionsYesNo = new bool[] { false };
+            DecisionDoNotSelectCard = SelectionType.ShuffleCardFromTrashIntoDeck;
 
             Card house = GetCard("BringDownTheHouse");
             //Shuffle any number of pairs of cards with the same name from your trash into your deck.
