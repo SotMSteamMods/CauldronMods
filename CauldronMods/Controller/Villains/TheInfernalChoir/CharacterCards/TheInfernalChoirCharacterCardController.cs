@@ -129,6 +129,26 @@ namespace Cauldron.TheInfernalChoir
                 GameController.ExhaustCoroutine(coroutine);
             }
 
+            if(Game.IsChallenge)
+            {
+                //CHALLENGE: When {TheInfernalChoir} flips, reduce damage dealt to {TheInfernalChoir} by 2 until the start of the villain turn.
+
+                ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(2);
+                effect.TargetCriteria.IsSpecificCard = CharacterCard;
+                effect.UntilStartOfNextTurn(TurnTaker);
+                coroutine = AddStatusEffect(effect);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
+
+
             coroutine = base.AfterFlipCardImmediateResponse();
             if (UseUnityCoroutines)
             {
