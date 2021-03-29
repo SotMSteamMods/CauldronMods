@@ -325,6 +325,40 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestTheInfernalChoir_Flipped_Challenge()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "TheSentinels", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            DecisionAutoDecideIfAble = true;
+            PlayCard("TakeDown");
+            GetCard("BaneOfIron", 0);
+            GoToEndOfTurn(choir);
+
+            FlipCard(choir);
+
+            AddDamageCannotBeRedirectedTrigger(dd => dd.DamageSource.IsSameCard(legacy.CharacterCard), legacy.CharacterCardController.GetCardSource());
+
+            //When {TheInfernalChoir} flips, reduce damage dealt to {TheInfernalChoir} by 2 until the start of the villain turn.
+            QuickHPStorage(choir);
+            DealDamage(legacy, choir, 3, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            GoToNextTurn();
+            QuickHPStorage(choir);
+            DealDamage(legacy, choir, 3, DamageType.Melee);
+            QuickHPCheck(-1);
+
+            //should expire at the start of the next turn
+            GoToStartOfTurn(choir);
+            QuickHPStorage(choir);
+            DealDamage(legacy, choir, 3, DamageType.Melee);
+            QuickHPCheck(-3);
+
+
+        }
+
+        [Test()]
         public void TestVagrantHeartPhase1_DamagePrevention()
         {
             SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
