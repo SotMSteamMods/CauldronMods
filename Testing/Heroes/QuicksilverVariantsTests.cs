@@ -160,6 +160,7 @@ namespace CauldronTests
             UseIncapacitatedAbility(quicksilver, 1);
             AssertInHand(new Card[] { staff, blaze });
             DealDamage(apostate, ra, 2, DamageType.Melee);
+            PrintSeparator("Second instance of damage");
             DealDamage(apostate, ra, 2, DamageType.Melee);
             AssertIsInPlay(staff);
             AssertInHand(blaze);
