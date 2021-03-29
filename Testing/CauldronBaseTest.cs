@@ -139,6 +139,12 @@ namespace CauldronTests
             this.GameController.AddTrigger(unincreasableDamageTrigger); 
         }
 
+        protected void AddDamageCannotBeRedirectedTrigger(Func<DealDamageAction, bool> criteria, CardSource cardSource)
+        {
+            Trigger<DealDamageAction> unredirectableTrigger = new Trigger<DealDamageAction>(GameController, criteria, (DealDamageAction dd) => base.GameController.MakeDamageNotRedirectable(dd, cardSource), TriggerType.MakeDamageNotRedirectable.ToEnumerable(), TriggerTiming.Before, cardSource);
+            this.GameController.AddTrigger(unredirectableTrigger);
+        }
+
         protected void PreventEndOfTurnEffects(TurnTakerController ttc, Card cardToPrevent)
         {
             PreventPhaseEffectStatusEffect preventPhaseEffectStatusEffect = new PreventPhaseEffectStatusEffect();
