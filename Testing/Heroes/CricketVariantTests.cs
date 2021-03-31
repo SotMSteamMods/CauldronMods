@@ -134,6 +134,30 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRenegadeCricketInnatePower_EnhancedSenses()
+        {
+            SetupGameController("Cauldron.Anathema", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("EnhancedSenses");
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            Card ring = PutOnDeck("TheLegacyRing");
+            //Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand.
+            QuickHandStorage(cricket);
+            QuickHPStorage(cricket, legacy);
+            UsePower(cricket);
+            QuickHandCheck(-1);
+            AssertIsInPlay(ring);
+            QuickHPCheck(0, -1);
+
+           
+
+
+        }
+
+        [Test()]
         public void TestRenegadeCricketInnatePower_DarkMind()
         {
             SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective", scionIdentifiers: new List<string>() { "DarkMindCharacter" });
