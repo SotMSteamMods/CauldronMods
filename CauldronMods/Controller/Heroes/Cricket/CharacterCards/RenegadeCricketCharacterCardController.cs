@@ -157,7 +157,7 @@ namespace Cauldron.Cricket
                 if (DidDiscardCards(discardResults))
                 {
                     //...to put it into play...
-                    coroutine = GameController.PlayCard(TurnTakerController, revealedCard, isPutIntoPlay: true, cardSource: GetCardSource());
+                    coroutine = GameController.MoveCard(TurnTakerController, revealedCard, revealedCard.Owner.PlayArea, isPutIntoPlay: true, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
