@@ -104,7 +104,19 @@ namespace Cauldron.TheMistressOfFate
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
-            IEnumerator coroutine = base.AfterFlipCardImmediateResponse();
+            //immediately discard the top card of the villain deck for each face-down Day card.
+            int faceDownDayCardsCount = GameController.FindCardsWhere((Card c) => c.IsFaceDownNonCharacter && c.Location == TurnTaker.PlayArea && GameController.DoesCardContainKeyword(c, "day", evenIfFaceDown: true)).Count();
+            IEnumerator coroutine = GameController.DiscardTopCards(DecisionMaker, TurnTaker.Deck, faceDownDayCardsCount, showCards: c => true, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.AfterFlipCardImmediateResponse();
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
