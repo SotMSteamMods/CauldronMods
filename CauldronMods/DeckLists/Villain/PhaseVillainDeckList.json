@@ -51,6 +51,8 @@
 				"DestroyOngoing"
 			],
 			"difficulty": 3,
+			"challengeTitle": "Winding Escape Route",
+			"challengeText": "Whenever an Obstacle is destroyed, Obstacles become immune to damage until the end of the turn.",
 			"openingLines": {
 				"default": "Ha! Smell ya later, losers! This girl is outta here!",
 				"ImpactCharacter": "You again! 'Fraid I can't talk now - things to steal, places to go through!",
