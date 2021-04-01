@@ -61,6 +61,8 @@
                 "GainHP"
             ],
             "difficulty": 2,
+            "challengeTitle": "Imperfect Loop",
+			"challengeText": "When {TheMistressOfFate} flips to her “Back to the Beginning side”, immediately discard the top card of the villain deck for each face-down Day card.",
             "openingLines": {
                 "default": "Within this twisted time, my rulership is absolute. Struggle if you wish to. It won't matter.",
                 "BaccaratCharacter": "Return that which you stole from me! You will not cheat Fate a second time.",
