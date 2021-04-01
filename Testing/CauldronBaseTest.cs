@@ -275,6 +275,11 @@ namespace CauldronTests
             Assert.AreEqual(expectedPosition, CurrentShiftPosition(), "Expected position: " + expectedPosition + ", was: " + CurrentShiftPosition());
         }
 
+        protected void AssertNotFlipped(params Card[] cards)
+        {
+            cards.ForEach(c => base.AssertNotFlipped(c));
+        }
+
         protected void GoToShiftPosition(int position)
         {
             if (position > CurrentShiftPosition())
