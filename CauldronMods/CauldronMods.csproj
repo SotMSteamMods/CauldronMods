@@ -13,6 +13,7 @@
 	<PackageProjectUrl>https://github.com/SotMSteamMods/CauldronMods</PackageProjectUrl>
 	<RepositoryUrl></RepositoryUrl>
 	<NeutralLanguage>en</NeutralLanguage>
+	<OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
