@@ -46,7 +46,7 @@ namespace Cauldron.Gyrosaur
                     }
                 }
             }
-            else
+            else // manually choose the order to discard crash cards
             {
                 coroutine = GameController.DiscardCards
                 (
