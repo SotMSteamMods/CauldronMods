@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Cauldron.Necro
 {
@@ -10,12 +11,17 @@ namespace Cauldron.Necro
         public BloodRiteCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
-
+        public override IEnumerator Play()
+        {
+            return FindAndUpdateUndead();
+        }
 
         public override void AddTriggers()
         {
             //When an Undead target is destroyed, all non-undead hero targets regain 2 HP.
             AddUndeadDestroyedTrigger(GainHPResponse, TriggerType.GainHP);
+            // When the ritual leaves play, update undead HPs
+            AddWhenDestroyedTrigger(RitualOnDestroyResponse, new TriggerType[] { TriggerType.PlayCard });
         }
 
         private IEnumerator GainHPResponse(DestroyCardAction dca)

@@ -1,5 +1,6 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System;
@@ -77,6 +78,29 @@ namespace Cauldron.Necro
         protected bool IsUndead(Card card)
         {
             return card != null && card.DoKeywordsContain(UndeadKeyword);
+        }
+
+        protected IEnumerator FindAndUpdateUndead(bool isOnDestruction = false)
+        {
+            IEnumerable<Card> undead = FindCardsWhere(new LinqCardCriteria((Card c) => IsUndead(c) && !c.IsInPlay));
+            foreach (Card card in undead)
+            {
+                UndeadCardController controller = (UndeadCardController)FindCardController(card);
+                IEnumerator coroutine = controller.UpdateUndeadBaseHP(isOnDestruction);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+
+        protected IEnumerator RitualOnDestroyResponse(DestroyCardAction dca)
+        {
+            return FindAndUpdateUndead(true);
         }
     }
 }

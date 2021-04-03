@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Cauldron.Necro
 {
@@ -10,11 +11,17 @@ namespace Cauldron.Necro
         public HellfireCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
+        public override IEnumerator Play()
+        {
+            return FindAndUpdateUndead();
+        }
 
         public override void AddTriggers()
         {
             //When an Undead target is destroyed, Necro deals 1 non-hero target 3 infernal damage.
             AddUndeadDestroyedTrigger(DealDamageResponse, TriggerType.DealDamage);
+            // When the ritual leaves play, update undead HPs
+            AddWhenDestroyedTrigger(RitualOnDestroyResponse, new TriggerType[] { TriggerType.PlayCard });
         }
 
         private IEnumerator DealDamageResponse(DestroyCardAction dca)

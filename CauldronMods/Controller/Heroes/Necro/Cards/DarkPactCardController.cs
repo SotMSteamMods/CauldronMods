@@ -2,6 +2,7 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Cauldron.Necro
 {
@@ -9,6 +10,10 @@ namespace Cauldron.Necro
     {
         public DarkPactCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+        public override IEnumerator Play()
+        {
+            return FindAndUpdateUndead();
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -33,6 +38,8 @@ namespace Cauldron.Necro
         {
             //Whenever an undead target is destroyed, draw a card.
             AddUndeadDestroyedTrigger(DrawCardResponse, TriggerType.DrawCard);
+            // When the ritual leaves play, update undead HPs
+            AddWhenDestroyedTrigger(RitualOnDestroyResponse, new TriggerType[] { TriggerType.PlayCard });
         }
 
         private IEnumerator DrawCardResponse(DestroyCardAction dca)

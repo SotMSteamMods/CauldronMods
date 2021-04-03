@@ -19,17 +19,7 @@ namespace Cauldron.Necro
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
-            IEnumerator coroutine = base.GameController.ChangeMaximumHP(base.Card, BaseHP + GetNumberOfRitualsInPlay(), true, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            coroutine = base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources, overridePlayArea, additionalTurnTakerCriteria);
+            IEnumerator coroutine = base.DeterminePlayLocation(storedResults, isPutIntoPlay, decisionSources, overridePlayArea, additionalTurnTakerCriteria);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -41,6 +31,12 @@ namespace Cauldron.Necro
         }
 
         protected int BaseHP { get; }
+        public IEnumerator UpdateUndeadBaseHP(bool onDestruction = false)
+        {
+            // modifier is for if this is triggered by a ritual leaving play, that ritual will not be counted when determining max HP
+            int modifier = onDestruction ? 1 : 0;
+            return base.GameController.ChangeMaximumHP(base.Card, BaseHP + GetNumberOfRitualsInPlay() - modifier, true, cardSource: base.GetCardSource());
+        }
 
         protected string BuildUndeadSpecialString(bool highestOrLowest, int ranking = 1, Func<int> numberOfTargets = null, LinqCardCriteria cardCriteria = null)
         {
