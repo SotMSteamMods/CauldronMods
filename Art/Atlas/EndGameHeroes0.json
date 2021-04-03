@@ -594,7 +594,7 @@
 	"sourceSize": {"w":400,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"FutureGargoyle.png":
+"FutureGargoyleCharacter.png":
 {
 	"frame": {"x":806,"y":1015,"w":400,"h":200},
 	"rotated": false,
@@ -603,7 +603,7 @@
 	"sourceSize": {"w":400,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"FutureGargoyleFlipped.png":
+"FutureGargoyleCharacterFlipped.png":
 {
 	"frame": {"x":1209,"y":1015,"w":400,"h":200},
 	"rotated": false,
