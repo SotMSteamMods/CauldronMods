@@ -434,7 +434,6 @@
                 "ReduceDamageTaken",
                 "StartOfTurnAction",
                 "GainHP",
-                "ImmuneToDamage"
             ],
             "body": [
                 "Reduce damage dealt to this card by 1.",
