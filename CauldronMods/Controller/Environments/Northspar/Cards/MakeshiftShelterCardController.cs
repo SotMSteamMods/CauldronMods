@@ -27,7 +27,7 @@ namespace Cauldron.Northspar
             //you may shuffle a card from the environment trash into the deck.
             LinqCardCriteria cardCriteria = new LinqCardCriteria((Card c) => c.Location == base.TurnTaker.Trash && GameController.IsLocationVisibleToSource(base.TurnTaker.Trash, GetCardSource()));
             Func<Card, IEnumerator> actionWithCard = (Card c) => base.GameController.ShuffleCardIntoLocation(base.DecisionMaker, c, base.TurnTaker.Deck, false, cardSource: base.GetCardSource());
-            IEnumerator coroutine = base.GameController.SelectCardsAndDoAction(base.DecisionMaker, cardCriteria, SelectionType.ShuffleCardFromTrashIntoDeck, actionWithCard, new int?(1), true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardsAndDoAction(base.DecisionMaker, cardCriteria, SelectionType.Custom, actionWithCard, new int?(1), true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -58,6 +58,13 @@ namespace Cauldron.Northspar
         {
             //This card and Supply Depot are indestructible.
             return card == base.Card || card.Identifier == "SupplyDepot";
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to shuffle a card from the environment trash into the deck?", "Should they shuffle a card from the environment trash into the deck?", "Vote for if they should shuffle a card from the environment trash into the deck?", "whether to shuffle a card from the environment trash into the deck");
+
         }
     }
 }
