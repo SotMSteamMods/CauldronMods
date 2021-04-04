@@ -22,7 +22,7 @@
                 "Cauldron.Cricket"
             ],
             "setup": [
-                "At the start of the game, put {Dynamo}'s villain character cards into play, 'Notorious Supercriminal' side up.",
+                "At the start of the game, {Dynamo} enters play 'Notorious Supercriminal' side up.",
                 "Shuffle the villain deck."
             ],
             "gameplay": [
