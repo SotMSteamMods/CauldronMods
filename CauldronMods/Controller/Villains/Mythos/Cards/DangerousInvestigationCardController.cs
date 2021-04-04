@@ -168,7 +168,7 @@ namespace Cauldron.Mythos
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
-            return new CustomDecisionText("Do you want to add a token to Dengerous Investigation by playing the top card of the villain deck?",
+            return new CustomDecisionText("Do you want to add a token to Dangerous Investigation by playing the top card of the villain deck?",
                             "Selecting whether to play the top card of the villain deck",
                             "Vote for whether to add a token to Dangerous Investigation by playing the top card of the villain deck.",
                             "Add a token to Dangerous Investigation");
