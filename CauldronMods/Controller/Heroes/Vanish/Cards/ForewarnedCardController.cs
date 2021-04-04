@@ -17,7 +17,7 @@ namespace Cauldron.Vanish
             var ss = SpecialStringMaker.ShowNumberOfCardsAtLocations(() => query);
             ss.Condition = () => GameController.HeroTurnTakerControllers.Any(HeroTurnTakerController => HeroTurnTakerController.HeroTurnTaker.NumberOfCardsInHand < 3);
 
-            ss = SpecialStringMaker.ShowSpecialString(() => "No hero has fewer than 3 cards in hard");
+            ss = SpecialStringMaker.ShowSpecialString(() => "No hero has fewer than 3 cards in hand");
             ss.Condition = () => GameController.HeroTurnTakerControllers.All(HeroTurnTakerController => HeroTurnTakerController.HeroTurnTaker.NumberOfCardsInHand >= 3);
         }
 
