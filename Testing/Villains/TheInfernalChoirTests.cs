@@ -207,6 +207,33 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestTheInfernalChoir_Front_SpecialString()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis" }, advanced: true);
+            StartGame();
+
+
+            PrintSpecialStringsForCard(choir.CharacterCard);
+            SaveAndLoad();
+            
+            PrintSpecialStringsForCard(choir.CharacterCard);
+        }
+
+        [Test()]
+        public void TestTheInfernalChoir_Back_SpecialString()
+        {
+            SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis" }, advanced: true);
+            StartGame();
+
+            FlipCard(choir);
+
+            PrintSpecialStringsForCard(choir.CharacterCard);
+            SaveAndLoad();
+
+            PrintSpecialStringsForCard(choir.CharacterCard);
+        }
+
+        [Test()]
         public void TestTheInfernalChoir_Flipped_StartAndEnd()
         {
             SetupGameController(new[] { "Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis" }, advanced: false);
