@@ -629,7 +629,7 @@
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character card into play, “The Eye of the Storm” side up (after putting all other villain character cards into play). Put “{HydraWindTiamatCharacter}”, face down beneath this card."
+                "At the start of the game, {Tiamat} enters play “The Eye of the Storm” side up (after putting all other villain character cards into play). Put “{HydraWindTiamatCharacter}”, face down beneath this card."
             ],
             "gameplay": [
                 "At the start of the villain turn, if {StormTiamatCharacter} is decapitated, flip this card and put {HydraWindTiamatCharacter} into play with 15 HP.",
@@ -669,7 +669,7 @@
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character card into play, “Mouth of the Inferno” side up. Put “{HydraDecayTiamatCharacter}”, face down beneath this card."
+                "At the start of the game, {Tiamat} enters play “Mouth of the Inferno” side up. Put “{HydraDecayTiamatCharacter}”, face down beneath this card."
             ],
             "gameplay": [
                 "The heroes may not win the game.",
@@ -710,7 +710,7 @@
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter” side up. Put “{HydraEarthTiamatCharacter}”, face down beneath this card."
+                "At the start of the game, {Tiamat} enters play “The Jaws of Winter” side up. Put “{HydraEarthTiamatCharacter}”, face down beneath this card."
             ],
             "gameplay": [
                 "Face down heads are indestructible and have no game text.",
@@ -874,7 +874,7 @@
                 "Cauldron.Gargoyle"
             ],
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Arrival“ side up. Put both Dragonscale character cards into play. Shuffle the villain deck."
+                "At the start of the game, {Tiamat} enters play “The Arrival“ side up. Put both Dragonscale character cards into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Dragonscales have X HP, where X = {H - 1}.",
