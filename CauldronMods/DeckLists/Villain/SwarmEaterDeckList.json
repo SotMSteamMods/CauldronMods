@@ -475,7 +475,7 @@
                 "Cauldron.Cypher"
             ],
             "setup": [
-                "At the start of the game, put {SwarmEater}'s villain character cards into play, 'Distributed Hivemind' side up. Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game. Shuffle the villain deck."
+                "At the start of the game, {SwarmEater} enters play 'Distributed Hivemind' side up. Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP. When a villain target enters play, flip {SwarmEater}'s villain character cards.",
