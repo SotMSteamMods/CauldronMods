@@ -1511,6 +1511,29 @@ namespace CauldronTests
             AssertIsInPlay(police);
             AssertInHand(chase);
         }
+
+        [Test]
+        public void TestSphereOfDevastationOblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Gyrosaur", "Legacy", "Haka", "Ra", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            SwitchBattleZone(legacy);
+
+            Card wipeout = PutInHand("Wipeout");
+            Card indiscriminatePass = PutInHand("IndiscriminatePass");
+            Card terrifyingMomentum = PutInHand("TerrifyingMomentum");
+
+            PlayCard("SphereOfDevastation");
+
+            AssertNumberOfCardsInHand(legacy, 4);
+            AssertNumberOfCardsInHand(haka, 3);
+            AssertNumberOfCardsInHand(ra, 3);
+
+
+
+
+        }
         #endregion Test Sphere of Devastation
 
         #region Test Terrifying Momentum

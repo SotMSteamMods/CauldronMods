@@ -97,7 +97,8 @@ namespace Cauldron.Gyrosaur
                 coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
                                                         new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && tt != TurnTaker && !tt.IsIncapacitatedOrOutOfGame),
                                                         SelectionType.DiscardCard,
-                                                        (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), responsibleTurnTaker: TurnTaker, cardSource: GetCardSource()), 
+                                                        (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), responsibleTurnTaker: TurnTaker,  cardSource: GetCardSource()), 
+                                                        allowAutoDecide: true,
                                                         cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
