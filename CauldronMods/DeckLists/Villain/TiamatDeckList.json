@@ -37,7 +37,7 @@
                 "Cauldron.TheKnight"
             ],
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Mouth of the Inferno“ side up."
+                "At the start of the game, {Tiamat} enters play “The Mouth of the Inferno“ side up."
             ],
             "gameplay": [
                 "{InfernoTiamatCharacter} is immune to fire damage.",
@@ -86,7 +86,7 @@
                 "Cauldron.Echelon"
             ],
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Eye of the Storm“ side up."
+                "At the start of the game, {Tiamat} enters play “The Eye of the Storm“ side up."
             ],
             "gameplay": [
                 "{StormTiamatCharacter} is immune to lightnining damage.",
@@ -134,7 +134,7 @@
                 "Cauldron.Necro"
             ],
             "setup": [
-                "At the start of the game, put {Tiamat}'s villain character cards into play, “The Jaws of Winter“ side up."
+                "At the start of the game, {Tiamat} enters play “The Jaws of Winter“ side up."
             ],
             "gameplay": [
                 "{WinterTiamatCharacter} is immune to cold damage.",
