@@ -23,7 +23,7 @@
                 "Cauldron.Drift"
             ],
             "setup": [
-                "At the start of the game, {Outlander} enters play “Fragemented Riftwarrior“ side up.",
+                "At the start of the game, {Outlander} enters play “Fragmented Riftwarrior“ side up.",
                 "Search the villain deck for all Trace cards and put them beneath this card. Put 1 random Trace card from beneath this one into play. Shuffle the villain deck."
             ],
             "gameplay": [
