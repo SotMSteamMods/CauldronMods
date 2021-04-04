@@ -32,7 +32,7 @@ namespace Cauldron.MagnificentMara
             //"When this card is destroyed, [the hero this is next to] hero may use a power.",
             AddWhenDestroyedTrigger(HeroMayUsePower, TriggerType.UsePower);
             //"At the start of your turn you may destroy this card."
-            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, YouMayDestroyThisCardResponse, TriggerType.DestroySelf);
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, YouMayDestroyThisCardWithHeroResponse, TriggerType.DestroySelf);
         }
 
         private IEnumerator HeroMayUsePower(DestroyCardAction dc)
@@ -52,6 +52,24 @@ namespace Cauldron.MagnificentMara
                 }
             }
             yield break;
+        }
+
+        protected IEnumerator YouMayDestroyThisCardWithHeroResponse(PhaseChangeAction action)
+        {
+            List<Card> heroThisCardIsNextTo = new List<Card>();
+            if(GetCardThisCardIsNextTo() != null)
+            {
+                heroThisCardIsNextTo.Add(GetCardThisCardIsNextTo());
+            }
+            IEnumerator coroutine = GameController.DestroyCard(DecisionMaker, Card, optional: true, associatedCards: heroThisCardIsNextTo, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }
