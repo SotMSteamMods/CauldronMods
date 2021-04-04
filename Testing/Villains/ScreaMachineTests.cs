@@ -292,6 +292,36 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestScreaMachineCharacterFlip_Challenge([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            var memberCard = GetCard(member.GetIdentifier());
+            AssertNotFlipped(memberCard);
+            AssertHitPoints(memberCard, memberCard.Definition.HitPoints.Value);
+            AssertMaximumHitPoints(memberCard, memberCard.Definition.HitPoints.Value);
+
+            //should flip after 2 cards rather than 3
+            var cards = FindCardsWhere(c => c.DoKeywordsContain(member.GetKeyword(), true, true)).Take(2);
+            foreach (var card in cards)
+            {
+                if (card.Location == setlist.UnderLocation)
+                {
+                    FlipCard(card);
+                    PlayCard(card);
+                }
+
+                AssertNotFlipped(card);
+                AssertInPlayArea(scream, card);
+            }
+
+            AssertFlipped(memberCard);
+            AssertHitPoints(memberCard, memberCard.Definition.HitPoints.Value);
+            AssertMaximumHitPoints(memberCard, memberCard.Definition.HitPoints.Value);
+        }
+
+        [Test()]
         public void TestSetListCharacterRemovedFromGameDestroy([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
         {
             SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
