@@ -21,7 +21,7 @@
 				"Cauldron.TheStranger"
 			],
 			"setup": [
-				"At the start of the game, put {Dendron}'s villain character cards into play, 'Mural of the Forest' side up.",
+				"At the start of the game, {Dendron} enters play 'Mural of the Forest' side up.",
 				"Search the deck for 1 copy of Stained Wolf and 1 copy of Painted Viper and put them into play."
 			],
 			"gameplay": [
@@ -361,7 +361,7 @@
 			"Cauldron.TheStranger"
 		],
 		"setup": [
-			"At the start of the game, put {Dendron}'s villain character cards into play, 'Outside The Lines' side up. Search the deck for all copies of Painted Viper and Stained Wolf. Place them beneath this card and shuffle the villain deck."
+			"At the start of the game, {Dendron} enters play 'Outside The Lines' side up. Search the deck for all copies of Painted Viper and Stained Wolf. Place them beneath this card and shuffle the villain deck."
 		],
 		"gameplay": [
 			"Cards beneath this one have no game text and are not in play.",

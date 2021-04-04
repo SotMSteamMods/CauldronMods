@@ -20,7 +20,7 @@
 			"backgroundColor": "e4d8c2",
 			"foilBackgroundColor": "CD96C0",
 			"setup": [
-				"At the start of the game, put this card, {SliceCharacter}, {ValentineCharacter}, {BloodlaceCharacter}, and {RickyGCharacter}'s villain character cards into play, “Warming Up” side up.",
+				"At the start of the game, this card, {SliceCharacter}, {ValentineCharacter}, {BloodlaceCharacter}, and {RickyGCharacter} enter play “Warming Up” side up.",
 				"Search the villain deck for all Guitarist, Vocalist, Bassist, and Drummer cards, shuffle them, and place them beneath this card face down. Shuffle the villain deck."
 			],
 			"gameplay": [

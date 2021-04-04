@@ -22,7 +22,7 @@
                 "Cauldron.DocHavoc"
             ],
             "setup": [
-                "At the start of the game, put {Vector}'s villain character cards into play, “Asymptomatic Carrier“ side up, with 40 HP."
+                "At the start of the game, {Vector} enters play “Asymptomatic Carrier“ side up, with 40 HP."
             ],
             "gameplay": [
                 "Whenever {Vector} is dealt damage, play the top card of the villain deck.",

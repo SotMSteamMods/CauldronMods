@@ -13,7 +13,7 @@
             "keywords": [
                 "villain"
             ],
-            "body": "Fragemented Riftwarrior",
+            "body": "Fragmented Riftwarrior",
             "backgroundColor": "e4bc94",
             "foilBackgroundColor": "CD96C0",
             "character": true,
@@ -23,7 +23,7 @@
                 "Cauldron.Drift"
             ],
             "setup": [
-                "At the start of the game, put {Outlander}'s villain character cards into play, “Fragemented Riftwarrior“ side up.",
+                "At the start of the game, {Outlander} enters play “Fragmented Riftwarrior“ side up.",
                 "Search the villain deck for all Trace cards and put them beneath this card. Put 1 random Trace card from beneath this one into play. Shuffle the villain deck."
             ],
             "gameplay": [
