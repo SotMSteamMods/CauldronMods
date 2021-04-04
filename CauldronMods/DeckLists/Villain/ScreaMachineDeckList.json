@@ -83,7 +83,7 @@
 			],
 			"flippedBody": "Ultimate Drummer",
 			"flippedGameplay": [
-				"All other villain targets are indestructible and immune damage.",
+				"All other villain targets are indestructible and immune to damage.",
 				"At the end of the villain turn, discard the top card of the villain deck. If it shows {Drum} on it, {RickyGCharacter} deals each hero target 3 melee damage."
 			],
 			"flippedIcons": [
