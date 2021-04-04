@@ -64,7 +64,7 @@ namespace Cauldron.Titan
                 onDealDamageStatusEffect.TargetCriteria.IsNotSpecificCard = this.CharacterCard;
 
                 onDealDamageStatusEffect.UntilTargetLeavesPlay(dd.Target);
-                onDealDamageStatusEffect.TargetLeavesPlayExpiryCriteria.Card = this.CharacterCard;
+                onDealDamageStatusEffect.UntilTargetLeavesPlay(this.CharacterCard);
                 onDealDamageStatusEffect.BeforeOrAfter = BeforeOrAfter.Before;
                 onDealDamageStatusEffect.CanEffectStack = true;
 
@@ -85,7 +85,8 @@ namespace Cauldron.Titan
         {
             //...you may redirect that damage to Titan.
             var storedYesNo = new List<YesNoCardDecision> { };
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.RedirectDamage, this.Card, action: dd, storedResults: storedYesNo, cardSource: GetCardSource());
+            var toRedirectTo = (effect as OnDealDamageStatusEffect).TargetCriteria.IsNotSpecificCard;
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(FindHeroTurnTakerController(hero.ToHero()), SelectionType.RedirectDamage, toRedirectTo, action: dd, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -96,7 +97,7 @@ namespace Cauldron.Titan
             }
             if (DidPlayerAnswerYes(storedYesNo))
             {
-                coroutine = RedirectDamage(dd, TargetType.SelectTarget, (Card c) => hero.CharacterCards.Contains(c));
+                coroutine = RedirectDamage(dd, TargetType.SelectTarget, (Card c) => c == toRedirectTo);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
