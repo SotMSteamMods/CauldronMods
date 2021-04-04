@@ -50,6 +50,8 @@
 				"Destroy"
 			],
 			"difficulty": 3,
+			"challengeTitle": "Star Power",
+			"challengeText": "Band members flip when 2 cards of their corresponding keyword are in play rather than 3.",
 			"openingLines": {
 				"default": "We are Screamachine! And you lot are out of your league!",
 				"GyrosaurCharacter": "VALENTINE: You wrecked our show! Well, now we'll wreck you! [b]And[/b] rock you!",
@@ -81,6 +83,8 @@
 				"Cauldron.Drums",
 				"ReduceDamageTaken"
 			],
+			"challengeTitle": "Star Power",
+			"challengeText": "{RickyGCharacter} flips when 2 Drummer cards are in play rather than 3.",
 			"flippedBody": "Ultimate Drummer",
 			"flippedGameplay": [
 				"All other villain targets are indestructible and immune to damage.",
@@ -115,6 +119,8 @@
 				"Cauldron.Guitar",
 				"DealDamageSonic"
 			],
+			"challengeTitle": "Star Power",
+			"challengeText": "{SliceCharacter} flips when 2 Guitarist cards are in play rather than 3.",
 			"flippedBody": "Ultimate Guitarist",
 			"flippedGameplay": [
 				"At the end of the villain turn, {SliceCharacter} deals the hero with the second lowest HP {H - 1} sonic damage. Targets in that hero's play area cannot deal damage until the start of the next villain turn."
@@ -148,6 +154,8 @@
 				"Cauldron.Bass",
 				"GainHP"
 			],
+			"challengeTitle": "Star Power",
+			"challengeText": "{BloodlaceCharacter} flips when 2 Bassist cards are in play rather than 3.",
 			"flippedBody": "Ultimate Bassist",
 			"flippedGameplay": [
 				"At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP {H} melee damage and regains {H} HP."
@@ -181,6 +189,8 @@
 				"Cauldron.Vocal",
 				"DealDamagePsychic"
 			],
+			"challengeTitle": "Star Power",
+			"challengeText": "{ValentineCharacter} flips when 2 Vocalist cards are in play rather than 3.",
 			"flippedBody": "Ultimate Vocalist",
 			"flippedGameplay": [
 				"Increase damage dealt by villain targets by 1.",
