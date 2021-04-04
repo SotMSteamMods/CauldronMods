@@ -122,10 +122,28 @@ namespace Cauldron.ScreaMachine
                         switch (count)
                         {
                             case 1: //1 already, revealed card is the second
-                                message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
+                                if (Game.IsChallenge)
+                                {
+                                    //in challenge mode, the second card causes the flip
+                                    message = $"The music [b]surges[/b] and a {firstCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
+                                }
+                                else
+                                {
+                                    message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
+
+                                }
                                 break;
-                            case 2: //2 already, revealed card is the third, will flip
-                                message = $"The music [b]surges[/b] and a {firstCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
+                            case 2: //2 already, revealed card is the third, will flip normally
+                                if (Game.IsChallenge)
+                                {
+                                    //in challenge mode, the band mate will already be flipped
+                                    message = $"The music [b]rages[/b] and a {firstCard.Member.GetKeyword()} card is played! [b]{bandMate.Title}[/b] is going into overdrive!";
+                                }
+                                else
+                                {
+                                    message = $"The music [b]surges[/b] and a {firstCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
+
+                                }
                                 break;
                             default:
                                 message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
@@ -186,10 +204,26 @@ namespace Cauldron.ScreaMachine
                             message += $"[b]{secondCard.GetBandmate().Title}[/b] steps into the limelight and plays a {secondCard.Member.GetKeyword()} card!";
                             break;
                         case 1: //1 already, revealed card is the second
-                            message += $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
+                            if (Game.IsChallenge)
+                            {
+                                //in challenge mode, this will flip the band member
+                                message = $"The music [b]surges[/b] and a {secondCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
+                            }
+                            else
+                            {
+                                message += $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
+                            }
                             break;
                         case 2: //2 already, revealed card is the third, will flip
-                            message = $"The music [b]surges[/b] and a {secondCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
+                            if (Game.IsChallenge)
+                            {
+                                //in challenge mode, the band member will already be flipped
+                                message = $"The music [b]rages[/b] and a {secondCard.Member.GetKeyword()} card is played! [b]{bandMate.Title}[/b] is going into overdrive!";
+                            }
+                            else
+                            {
+                                message = $"The music [b]surges[/b] and a {secondCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
+                            }
                             break;
                         default:
                             message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
