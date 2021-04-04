@@ -22,7 +22,7 @@
                 "Cauldron.Titan"
             ],
             "setup": [
-                "At the start of the game, put {Mythos}'s villain character cards into play, 'Insubstantial Rumor' side up.",
+                "At the start of the game, {Mythos} enters play 'Insubstantial Rumor' side up.",
                 "Search the villain deck for Dangerous Investigations and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
