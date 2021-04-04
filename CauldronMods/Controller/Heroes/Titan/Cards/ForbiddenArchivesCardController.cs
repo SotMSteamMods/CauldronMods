@@ -56,7 +56,7 @@ namespace Cauldron.Titan
 
         private YesNoDecision YesNoDecisionMaker(HeroTurnTakerController hero)
         {
-            return new YesNoDecision(base.GameController, hero, SelectionType.DrawExtraCard, cardSource: base.GetCardSource());
+            return new YesNoDecision(base.GameController, hero, SelectionType.Custom, cardSource: base.GetCardSource());
         }
 
         private IEnumerator YesAction(HeroTurnTakerController hero, YesNoDecision decision, List<DrawCardAction> storedDraw)
@@ -71,6 +71,13 @@ namespace Cauldron.Titan
                 this.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Would you like to draw 2 cards?", "Should they draw 2 cards?", "Vote for if they should draw 2 cards?", "whether to draw 2 cards");
+
         }
     }
 }
