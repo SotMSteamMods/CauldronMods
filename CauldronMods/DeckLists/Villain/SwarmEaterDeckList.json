@@ -22,7 +22,7 @@
                 "Cauldron.Cypher"
             ],
             "setup": [
-                "At the start of the game, put {SwarmEater}'s villain character cards into play, “Power Hungry“ side up.",
+                "At the start of the game, {SwarmEater} enters play “Power Hungry“ side up.",
                 "Reveal cards from the top of the villain deck until {H - 1} targets, 2 traits, and Single-Minded Pursuit are revealed. Put them into play, and shuffle the rest of the revealed cards back into the villain deck."
             ],
             "gameplay": [
