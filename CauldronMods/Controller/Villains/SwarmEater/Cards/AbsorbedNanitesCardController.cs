@@ -41,8 +41,11 @@ namespace Cauldron.SwarmEater
         {
             CardController absorbed = base.FindCardController(action.CardToMove);
             absorbed.RemoveAllTriggers();
-            base.GameController.RemoveInhibitor(absorbed);
-            absorbed.AddAllTriggers();
+            if (absorbed is AugCardController augController)
+            {
+                base.GameController.RemoveInhibitor(absorbed);
+                augController.AddAbsorbTriggers();
+            }
             yield break;
         }
     }

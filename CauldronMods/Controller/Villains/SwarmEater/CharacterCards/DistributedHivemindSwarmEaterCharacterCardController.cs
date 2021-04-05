@@ -147,8 +147,11 @@ namespace Cauldron.SwarmEater
         {
             CardController absorbedCC = base.FindCardController(absorbedCard);
             absorbedCC?.RemoveAllTriggers();
-            base.GameController.RemoveInhibitor(absorbedCC);
-            absorbedCC?.AddAllTriggers();
+            if (absorbedCC != null && absorbedCC is AugCardController augCC)
+            {
+                base.GameController.RemoveInhibitor(absorbedCC);
+                augCC.AddAbsorbTriggers();
+            }
         }
     }
 }

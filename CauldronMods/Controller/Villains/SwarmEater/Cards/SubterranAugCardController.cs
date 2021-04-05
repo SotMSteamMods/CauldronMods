@@ -22,11 +22,13 @@ namespace Cauldron.SwarmEater
         {
             //At the start of the villain turn, put a random target from the villain trash into play.
             base.AddStartOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.PlayVillainTargetResponse, TriggerType.PlayCard);
-
+        }
+        public override void AddAbsorbTriggers(Card absorbingCard)
+        {
             //Absorb: The first time {SwarmEater} would be dealt damage each turn, reduce that damage by 1.
-            this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => action.Amount > 0 && CanAbsorbEffectTrigger() && !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt), this.ReduceDamageResponse, (Card c) => c == this.CardThatAbsorbedThis(), true);
+            this._reduceDamage = base.AddReduceDamageTrigger((DealDamageAction action) => action.Amount > 0 && CanAbsorbEffectTrigger() && !base.HasBeenSetToTrueThisTurn(GeneratePerTargetKey(FirstTimeDamageDealt, absorbingCard)), dda => this.ReduceDamageResponse(dda, absorbingCard), (Card c) => c == absorbingCard, true);
 
-            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt), TriggerType.Hidden);
+            AddAfterLeavesPlayAction((GameAction ga) => ResetFlagsAfterLeavesPlay(FirstTimeDamageDealt), TriggerType.Hidden);
         }
 
         private IEnumerator PlayVillainTargetResponse(PhaseChangeAction p)
@@ -77,9 +79,9 @@ namespace Cauldron.SwarmEater
             }
         }
 
-        private IEnumerator ReduceDamageResponse(DealDamageAction action)
+        private IEnumerator ReduceDamageResponse(DealDamageAction action, Card absorbingCard)
         {
-            base.SetCardPropertyToTrueIfRealAction(FirstTimeDamageDealt);
+            base.SetCardPropertyToTrueIfRealAction(GeneratePerTargetKey(FirstTimeDamageDealt, absorbingCard));
             IEnumerator coroutine = base.GameController.ReduceDamage(action, 1, this._reduceDamage, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
