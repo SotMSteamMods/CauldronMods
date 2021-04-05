@@ -14,6 +14,8 @@ namespace Cauldron.Oriphel
             SpecialStringMaker.ShowHeroTargetWithHighestHP(numberOfTargets: 2).Condition = () => Card.Title == "Oriphel";
         }
 
+        private int NumberOfRelicsInTrashToFlip => Game.IsChallenge ? 3 : 2;
+
         public override void AddSideTriggers()
         {
             if (!Card.IsFlipped)
@@ -53,6 +55,13 @@ namespace Cauldron.Oriphel
                 //"When there are 2 villain relics in the villain trash, flip {Oriphel}'s villain character cards."
                 AddSideTrigger(AddTrigger<GameAction>(CheckCardsInTrashCriteria, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));
             }
+
+            if(Game.IsChallenge)
+            {
+                //Reduce damage dealt to villain relics by 2.
+                AddSideTrigger(AddReduceDamageTrigger((Card c) => IsVillain(c) && c.IsRelic, 2));
+            }
+
             AddDefeatedIfDestroyedTriggers();
         }
 
@@ -81,7 +90,7 @@ namespace Cauldron.Oriphel
         {
             if (ga is MoveCardAction || ga is BulkMoveCardsAction || ga is DestroyCardAction)
             {
-                return FindCardsWhere((Card c) => c.Location == TurnTaker.Trash && c.IsRelic, true, GetCardSource()).Count() >= 2;
+                return FindCardsWhere((Card c) => c.Location == TurnTaker.Trash && c.IsRelic, true, GetCardSource()).Count() >= NumberOfRelicsInTrashToFlip;
             }
             return false;
         }
