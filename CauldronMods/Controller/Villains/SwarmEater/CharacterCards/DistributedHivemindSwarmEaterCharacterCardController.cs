@@ -23,6 +23,25 @@ namespace Cauldron.SwarmEater
             return c.DoKeywordsContain("nanomutant");
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            //needed so that the challenge double-effect persists through save/load
+            base.AddStartOfGameTriggers();
+            if (IsGameChallenge)
+            {
+                foreach (Card c in TurnTaker.GetAllCards())
+                {
+                    if (c.IsUnderCard && IsNanomutant(c.Location.OwnerCard))
+                    {
+                        var controller = FindCardController(c);
+                        if (controller is AugCardController augCC)
+                        {
+                            augCC.AddAbsorbTriggers(this.Card);
+                        }
+                    }
+                }
+            }
+        }
         public override void AddSideTriggers()
         {
             if (!base.Card.IsFlipped)
@@ -150,6 +169,11 @@ namespace Cauldron.SwarmEater
             if (absorbedCC != null && absorbedCC is AugCardController augCC)
             {
                 base.GameController.RemoveInhibitor(absorbedCC);
+                if(IsGameChallenge)
+                {
+                    //Challenge: Activated absorb texts also apply to Swarm Eater.
+                    augCC.AddAbsorbTriggers(this.Card);
+                }
                 augCC.AddAbsorbTriggers();
             }
         }
