@@ -52,6 +52,9 @@
 			"flippedAdvancedIcons": [
 				"ReduceDamageTaken"
 			],
+			"challengeTitle": "Rigid Rituals",
+            "challengeText": "Reduce damage dealt to villain relics by 2.",
+            "flippedChallengeText": ["Reduce damage dealt to villain relics by 2.","{Oriphel} does not flip back until there are 3 villain relics in the villain trash."],
 			"difficulty": 2,
 			"openingLines": {
 				"default": "You're too late, heroes! Soon I will break the veil between our worlds, and rule over both!",
