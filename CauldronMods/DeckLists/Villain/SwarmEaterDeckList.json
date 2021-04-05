@@ -50,7 +50,7 @@
             ],
             "flippedAdvancedIcons": [],
             "challengeTitle": "Inescapable Hunter",
-            "challengeText":  "Whenever Swarm Eater reduces a target to 2 or lower HP, Swarm Eater destroys that target.",
+            "challengeText":  "Whenever {SwarmEater} reduces a target to 2 or lower HP, {SwarmEater} destroys that target.",
             "difficulty": 4,
             "openingLines": {
                 "default": "Obstruction analysis complete. Assigned secondary priority. Primary priority unchanged: incorporate targets, enhance self.",
@@ -507,7 +507,7 @@
                 "GainHP"
             ],
             "challengeTitle": "Shared Code",
-            "challengeText": "Activated absorb texts also apply to Swarm Eater.",
+            "challengeText": "Activated absorb texts also apply to {SwarmEater}.",
             "difficulty": 2,
             "openingLines": {
                 "default": "We are legion. Soon all will join the hive mind.",
