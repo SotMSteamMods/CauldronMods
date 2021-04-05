@@ -31,6 +31,9 @@ namespace Cauldron.Quicksilver
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
+
+                        if (selection.FirstOrDefault() is null || selection.FirstOrDefault().SelectedTurnTaker is null) break;
+                        
                         coroutine = base.DrawCardsUntilHandSizeReached(base.FindHeroTurnTakerController(selection.FirstOrDefault().SelectedTurnTaker.ToHero()), 4);
                         if (base.UseUnityCoroutines)
                         {
