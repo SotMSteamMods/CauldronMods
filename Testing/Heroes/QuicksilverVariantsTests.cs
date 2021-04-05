@@ -57,6 +57,25 @@ namespace CauldronTests
             QuickHandCheck(4);
         }
 
+
+        [Test]
+        public void TestUncannyQuicksilverIncap1_SoftLock()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/UncannyQuicksilverCharacter", "Ra", "NightMist", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron, quicksilver.CharacterCard);
+            SetupIncap(baron, ra.CharacterCard);
+            PlayCard("MistForm");
+
+            DrawCard(mist, 3);
+
+            //One player may draw until they have 4 cards in hand.
+            QuickHandStorage(mist);
+            UseIncapacitatedAbility(quicksilver, 0);
+            QuickHandCheck(0);
+        }
+
         [Test]
         public void TestUncannyQuicksilverIncap2()
         {
