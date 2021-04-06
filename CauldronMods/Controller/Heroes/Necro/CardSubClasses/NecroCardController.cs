@@ -82,7 +82,7 @@ namespace Cauldron.Necro
 
         protected IEnumerator FindAndUpdateUndead(bool isOnDestruction = false)
         {
-            IEnumerable<Card> undead = FindCardsWhere(new LinqCardCriteria((Card c) => IsUndead(c) && !c.IsInPlay));
+            IEnumerable<Card> undead = FindCardsWhere(new LinqCardCriteria((Card c) => IsUndead(c) && c.IsInHand && c.IsInTrash));
             foreach (Card card in undead)
             {
                 UndeadCardController controller = (UndeadCardController)FindCardController(card);
