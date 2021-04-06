@@ -20,7 +20,7 @@ namespace Cauldron.Gyrosaur
         public override void AddTriggers()
         {
             //"At the start of your turn, reveal the top card of your deck and replace or discard it.",
-            AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, _ => RevealTopCard_PutItBackOrDiscardIt(DecisionMaker, DecisionMaker, DecisionMaker.TurnTaker.Deck), TriggerType.RevealCard);
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, RevealTopCard_PutItBackOrDiscardIt_Response, TriggerType.RevealCard);
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -127,6 +127,77 @@ namespace Cauldron.Gyrosaur
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        protected IEnumerator RevealTopCard_PutItBackOrDiscardIt_Response(PhaseChangeAction pca)
+        {
+            List<Card> cards = new List<Card>();
+            IEnumerator coroutine = GameController.RevealCards(HeroTurnTakerController, TurnTaker.Deck, 1, cards, cardSource: GetCardSource());
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            Card revealedCard = GetRevealedCard(cards);
+            if (revealedCard != null)
+            {
+                YesNoDecision yesNo = new YesNoCardDecision(GameController, DecisionMaker, SelectionType.DiscardCard, revealedCard, cardSource: GetCardSource());
+                List<IDecision> decisionSources = new List<IDecision>
+                {
+                    yesNo
+                };
+                IEnumerator coroutine2 = GameController.MakeDecisionAction(yesNo);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine2);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine2);
+                }
+                if (DidPlayerAnswerYes(yesNo))
+                {
+                    IEnumerator coroutine3 = GameController.DiscardCard(DecisionMaker, revealedCard, decisionSources, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine3);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine3);
+                    }
+                }
+                if (yesNo != null && yesNo.Completed && yesNo.Answer.HasValue)
+                {
+                    decisionSources.Add(yesNo);
+                    if (!yesNo.Answer.Value)
+                    {
+                        IEnumerator coroutine4 = GameController.MoveCard(TurnTakerController, revealedCard, TurnTaker.Deck, cardSource: GetCardSource());
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine4);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine4);
+                        }
+                    }
+                }
+            }
+            List<Location> list = new List<Location>();
+            list.Add(TurnTaker.Revealed);
+            IEnumerator coroutine5 = CleanupCardsAtLocations(list, TurnTaker.Deck, cardsInList: cards);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine5);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine5);
+            }
         }
     }
 }
