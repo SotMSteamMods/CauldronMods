@@ -416,7 +416,7 @@
             ],
             "gameplay": [
                 "If {TheRam} is destroyed remove this card from the game.",
-                "Whenever a villain one-shot would enter play, put it beneath this card instard. Cards beneath this one are not considered in play.",
+                "Whenever a villain one-shot would enter play, put it beneath this card instead. Cards beneath this one are not considered in play.",
                 "At the start of the villain turn, if there are 3 or more cards beneath this one, flip {TheRam}'s character cards."
             ],
             "advanced": "Reduce damage dealt to {TheRam} by 1",
