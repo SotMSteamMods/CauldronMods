@@ -75,7 +75,57 @@ namespace Cauldron.TheRam
                 }
             }
 
+            if(Game.IsChallenge)
+            {
+                //When {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play. Put all cards other than Close Up from the villain trash into the villain deck, then shuffle the villain deck.
+                AddSideTrigger(AddTrigger((DealDamageAction dd) => dd.Target == CharacterCard && dd.TargetHitPointsAfterBeingDealtDamage <= 40 && !dd.Target.IsBeingDestroyed, ChallengeResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After));
+                AddSideTrigger(AddTrigger((SetHPAction sha) => sha.HpGainer == CharacterCard && sha.HpGainer.HitPoints <= 40 && !sha.HpGainer.IsBeingDestroyed, ChallengeResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After));
+
+            }
+
             AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator ChallengeResponse(GameAction action)
+        {
+            //When {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play. 
+            var locations = new Location[]
+            {
+                base.TurnTaker.Deck,
+                base.TurnTaker.Trash
+            };
+            IEnumerator coroutine = PlayCardFromLocations(locations, "FallBack", isPutIntoPlay: true, showMessageIfFailed: false, shuffleAfterwardsIfDeck: false);
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //Put all cards other than Close Up from the villain trash into the villain deck, then shuffle the villain deck.
+            IEnumerable<Card> cardsToMove = TurnTaker.Trash.Cards.Where(c => c.Identifier != "UpClose");
+            coroutine = GameController.MoveCards(TurnTakerController, cardsToMove, TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            yield break;
         }
 
         private IEnumerator AskIfMoveUpCloseResponse(PhaseChangeAction pc)
