@@ -249,6 +249,39 @@ namespace CauldronTests
             DestroyCard("UpClose");
             AssertNotFlipped(ram);
         }
+
+        [Test]
+        public void TestRam_Challenge()
+        {
+            SetupGameController(new string[] { "Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis" }, challenge: true);
+
+            StartGame();
+            DiscardTopCards(ram.TurnTaker.Deck, 14);
+            Card claw = GetCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            Card fallback = PlayCard("FallBack");
+
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+
+            AssertNotFlipped(ram);
+            PlayCard("UpClose");
+
+            AssertFlipped(ram);
+            AssertNotInPlay(fallback);
+            AssertIsInPlay(claw);
+
+            //"When {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play. Put all cards other than Close Up from the villain trash into the villain deck, then shuffle the villain deck."
+            QuickShuffleStorage(ram);
+            DealDamage(legacy, ram, 42, DamageType.Melee, isIrreducible: true);
+            AssertIsInPlay("FallBack");
+            QuickShuffleCheck(1);
+            AssertNumberOfCardsInTrash(ram, 5, (Card c) => c.Identifier == "UpClose");
+
+
+        }
         [Test]
         public void TestRamGetUpCloseTrigger()
         {
