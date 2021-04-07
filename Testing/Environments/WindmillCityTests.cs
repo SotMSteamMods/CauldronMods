@@ -244,6 +244,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDetectiveSedrick_InPlayHeroesOnly()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/TestSubjectHalberdDriftCharacter", "Legacy", "Haka", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card emergency = PlayCard("BridgeDisaster");
+            //When this card enters play, it deals 1 target 3 projectile damage.
+            QuickHPStorage(baron, drift, legacy, haka);
+            DecisionSelectCards = new Card[] { haka.CharacterCard, emergency, haka.CharacterCard };
+            Card sedrick = PlayCard("DetectiveSedrick");
+            QuickHPCheck(0, 0, 0, -3);
+            //At the start of the environment turn, the players may destroy 1 Emergency card. If a card is destroyed this way, 1 hero target regains 2HP.
+            QuickHPUpdate();
+            AssertNumberOfChoicesInNextDecision(3, SelectionType.GainHP);
+            GoToStartOfTurn(windmill);
+            AssertInTrash(emergency);
+            QuickHPCheck(0, 0, 0, 2);
+        }
+
+        [Test()]
         public void TestDetectiveSedrick_OptionalDestroy()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.WindmillCity");
