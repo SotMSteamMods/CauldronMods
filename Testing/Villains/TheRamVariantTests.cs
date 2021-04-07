@@ -224,6 +224,27 @@ namespace CauldronTests
             GoToStartOfTurn(ram);
             AssertFlipped(ram);
         }
+
+        [Test]
+        public void TestPastRamChallenge_EOT()
+        {
+            SetupGameController(new string[] { "Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+            CleanupStartingCards();
+
+            PreventEndOfTurnEffects(ram, winters);
+
+            Card ring = PlayCard("TheLegacyRing");
+            Card mere = PlayCard("Mere");
+            Card topCard = ram.TurnTaker.Deck.TopCard;
+            //At the end of the villain turn, if this card is in play, destroy an equipment card, then put the top card of the villain deck under {TheRam}.
+            DecisionSelectCard = mere;
+            GoToEndOfTurn(ram);
+            AssertInTrash(mere);
+            AssertInPlayArea(legacy, ring);
+            AssertUnderCard(ram.CharacterCards.Where(c => c.Identifier == "TheRamCharacter").FirstOrDefault(), topCard);
+            
+        }
         [Test]
         public void TestPastRamFrontFlipOnlyWithEnough()
         {
@@ -250,6 +271,33 @@ namespace CauldronTests
             DestroyCard(ram.CharacterCard);
             AssertNotInTrash(ram.CharacterCard);
             AssertOutOfGame(ram.CharacterCard);
+        }
+
+        [Test]
+        public void TestWintersChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.TheRam/PastTheRamCharacter", "TheWraith", "Legacy", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+            CleanupStartingCards();
+
+            DecisionSelectCard = legacy.CharacterCard;
+            PlayCard("UpClose");
+
+            //throw away damage to get rid of redirect
+            DealDamage(legacy, winters, 3, DamageType.Melee);
+
+            PlayCard("ForcefieldNode");
+
+            QuickHPStorage(winters);
+            DealDamage(legacy, winters, 4, DamageType.Melee);
+            QuickHPCheck(-4);
+
+            DestroyCard(ram.CharacterCard);
+
+            //If {TheRam} isn’t in play, other villain cards treat {AdmiralWintersCharacter} as {TheRam}.
+            QuickHPStorage(winters);
+            DealDamage(legacy, winters, 4, DamageType.Melee);
+            QuickHPCheck(-2);
         }
         [Test]
         public void TestPastRamHealOnFlipH3()
