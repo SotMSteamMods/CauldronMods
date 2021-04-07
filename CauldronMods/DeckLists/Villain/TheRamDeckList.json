@@ -58,6 +58,8 @@
                 "PlayCardNow"
             ],
             "difficulty": 2,
+            "challengeTitle": "Tactical Retreat",
+			"challengeText": "When {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play. Put all cards other than Close Up from the villain trash into the villain deck, then shuffle the villain deck.",
             "openingLines": {
                 "default": "Target Aquired//Status//Hostile//Initiate Neutralization Protocol",
                 "QuicksilverCharacter": "Primary target identified//Halberd-19//Initiate R43 combat retrieval",
