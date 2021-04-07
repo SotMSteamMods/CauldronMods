@@ -389,6 +389,8 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
+             "challengeTitle": "Reverse Engineering",
+			"challengeText": "If {TheRam} isn’t in play, other villain cards treat {AdmiralWintersCharacter} as {TheRam}.",
             "difficulty": 3
         }
     ],
@@ -444,6 +446,8 @@
                 "IncreaseDamageDealtProjectile"
             ],
             "difficulty": 1,
+            "challengeTitle": "Reverse Engineering",
+			"challengeText": "At the end of the villain turn, if this card is in play, destroy an equipment card, then put the top card of the villain deck under {TheRam}.",
             "openingLines": {
                 "default": "ADMIRAL WINTERS: I'll blast you all back to whatever time you came from, even if I have to destroy this whole place!",
                 "PyreCharacter": "ADMIRAL WINTERS: Once I've reduced that fancy metal suit to pieces, I'm sure it will prove fascinating to study!",
