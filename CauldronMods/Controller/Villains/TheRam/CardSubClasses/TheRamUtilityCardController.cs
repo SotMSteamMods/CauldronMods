@@ -21,7 +21,14 @@ namespace Cauldron.TheRam
             {
                 if(TurnTaker.HasMultipleCharacterCards)
                 {
-                    return TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "TheRamCharacter").FirstOrDefault();
+                    Card ram = TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "TheRamCharacter").FirstOrDefault();
+                    if (Game.IsChallenge && ram != null && !ram.IsInPlay)
+                    {
+                        //If {TheRam} isn’t in play, other villain cards treat {AdmiralWintersCharacter} as {TheRam}.
+                        return TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "AdmiralWintersCharacter").FirstOrDefault();
+                    }
+                    return ram;
+
                 }
                 else
                 {
