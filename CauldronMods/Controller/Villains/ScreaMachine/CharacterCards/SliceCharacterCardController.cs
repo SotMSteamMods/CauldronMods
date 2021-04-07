@@ -52,6 +52,9 @@ namespace Cauldron.ScreaMachine
                 GameController.ExhaustCoroutine(coroutine);
             }
 
+            if (!results.Any() || results.First() is null)
+                yield break;
+
             var effect = new CannotDealDamageStatusEffect();
             effect.SourceCriteria.IsAtLocation = results.First().Target.Owner.PlayArea;
             effect.UntilStartOfNextTurn(TurnTaker);
