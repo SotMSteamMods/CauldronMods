@@ -384,15 +384,13 @@ namespace CauldronTests
         [Test()]
         public void TestGrasshopperKick_Destroyed()
         {
-            SetupGameController(new string[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 
             Card kick = PlayCard("GrasshopperKick");
             Card cramped = GetCard("CrampedQuartersCombat");
             //{Cricket} deals 1 target 2 melee damage. {Cricket} is immune to damage dealt by environment targets until the start of your next turn.
-            QuickHPStorage(akash);
             UsePower(kick);
-            QuickHPCheck(-2);
 
             Card rail = PlayCard("PlummetingMonorail");
             DestroyCard(kick);
@@ -405,15 +403,13 @@ namespace CauldronTests
         [Test()]
         public void TestGrasshopperKick_ReEnterPlay()
         {
-            SetupGameController(new string[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 
             Card kick = PlayCard("GrasshopperKick");
             Card cramped = GetCard("CrampedQuartersCombat");
             //{Cricket} deals 1 target 2 melee damage. {Cricket} is immune to damage dealt by environment targets until the start of your next turn.
-            QuickHPStorage(akash);
             UsePower(kick);
-            QuickHPCheck(-2);
 
             Card rail = PlayCard("PlummetingMonorail");
             DestroyCard(kick);

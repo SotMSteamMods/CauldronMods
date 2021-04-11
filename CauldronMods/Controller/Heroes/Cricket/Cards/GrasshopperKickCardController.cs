@@ -9,38 +9,6 @@ namespace Cauldron.Cricket
     {
         public GrasshopperKickCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowSpecialString(() => StatusEffectMessage, showInEffectsList: () => true).Condition = () => Game.HasGameStarted && IsImmuneToEnvironmentDamage;
-        }
-
-        public readonly string IsImmuneToEnvironmentDamageKey = "IsImmuneToEnvironmentDamage";
-        private string StatusEffectMessage => $"{CharacterCard.Title} is immune to damage dealt by environment targets.";
-
-        public bool IsImmuneToEnvironmentDamage 
-        {
-            get
-            {
-                return GetCardPropertyJournalEntryBoolean(IsImmuneToEnvironmentDamageKey).HasValue && GetCardPropertyJournalEntryBoolean(IsImmuneToEnvironmentDamageKey).Value == true;
-            }
-        }
-
-        public override void AddTriggers()
-        {
-            AddImmuneToDamageTrigger(dd => dd.Target == CharacterCard && dd.DamageSource.IsEnvironmentTarget && IsImmuneToEnvironmentDamage) ;
-            AddTrigger((PhaseChangeAction pca) => pca.ToPhase.Phase == Phase.Start && pca.ToPhase.TurnTaker == TurnTaker, ResetImmunityProperty, TriggerType.Hidden, TriggerTiming.After);
-        }
-
-        private IEnumerator ResetImmunityProperty(PhaseChangeAction pca)
-        {
-            SetCardProperty(IsImmuneToEnvironmentDamageKey, false);
-            IEnumerator coroutine = GameController.SendMessageAction($"Expiring: {StatusEffectMessage}", Priority.Medium, GetCardSource(), showCardSource: true);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -59,8 +27,43 @@ namespace Cauldron.Cricket
             }
 
             //{Cricket} is immune to damage dealt by environment targets until the start of your next turn.
-            SetCardPropertyToTrueIfRealAction(IsImmuneToEnvironmentDamageKey);
-            coroutine = GameController.SendMessageAction(StatusEffectMessage, Priority.Medium, GetCardSource(), showCardSource: true);
+            OnDealDamageStatusEffect immuneToDamageStatusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements,
+                                                                                nameof(ImmuneToEnvironmentDamageEffect),
+                                                                                $"{CharacterCard.Title} is immune to damage from environment targets.",
+                                                                                new TriggerType[] { TriggerType.ImmuneToDamage },
+                                                                                DecisionMaker.TurnTaker,
+                                                                                this.Card);
+            //{Cricket}...
+            immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = base.CharacterCard;
+            //...is immune to damage dealt by environment targets...
+            immuneToDamageStatusEffect.SourceCriteria.IsTarget = true;
+            //...until the start of your next turn.
+            immuneToDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            immuneToDamageStatusEffect.TargetLeavesPlayExpiryCriteria.Card = base.CharacterCard;
+            coroutine = base.AddStatusEffect(immuneToDamageStatusEffect, true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield break;
+        }
+
+        public IEnumerator ImmuneToEnvironmentDamageEffect(DealDamageAction dd, TurnTaker hero, StatusEffect effect, int[] powerNumerals = null)
+        {
+            IEnumerator coroutine;
+            if(dd.DamageSource.IsEnvironmentTarget)
+            {
+                coroutine = CancelAction(dd, isPreventEffect: true);
+            }
+            else
+            {
+                coroutine = DoNothing();
+            }
+
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
