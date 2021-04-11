@@ -59,6 +59,10 @@
 				"RemoveFromGame"
 			],
 			"difficulty": 4,
+			"challengeTitle": "Concealed Soul",
+			"challengeText": "When {TheInfernalChoir} flips, reduce damage dealt to {TheInfernalChoir} by 2 until the start of the villain turn.",
+			"flippedChallengeTitle": "Concealed Soul",
+			"flippedChallengeText": "When {TheInfernalChoir} flips to this side, reduce damage dealt to {TheInfernalChoir} by 2 until the start of the villain turn.",
 			"openingLines": {
 				"default": "You're surprised there are ghosts in organized crime? Let us show why it's called the “criminal underworld“...",
 				"TerminusCharacter": "Your talent is wasted, working for the Conductor. Join me, Daiyu.",
