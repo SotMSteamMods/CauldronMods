@@ -57,6 +57,18 @@ namespace CauldronTests
             }
         }
 
+        private void CleanUpSetup()
+        {
+            foreach (var card in FindCardsWhere(c => c.Location == scream.TurnTaker.PlayArea && !c.IsCharacter))
+            {
+                MoveCard(scream, card, setlist.UnderLocation, true, false, true);
+                if (!card.IsFlipped)
+                {
+                    FlipCard(card);
+                }
+            }
+        }
+
 
         #endregion
 
@@ -1182,6 +1194,166 @@ namespace CauldronTests
             DestroyCard(rickyg, legacy.CharacterCard);
 
             AssertGameOver(EndingResult.VillainDestroyedVictory);
+        }
+        [Test()]
+        public void TestMusicianCardMessages_NonChallenge_SecondCard()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            CleanUpSetup();
+
+            var vocal1 = GetCard("IrresistibleVoice");
+            var vocal2 = GetCard("HypnotizeTheCrowd");
+            var vocal3 = GetCard("MentalLink");
+            var axe = GetCard("SlicesAxe");
+
+            var sliceMessage = $"Slice is keeping it mellow since there aren't any guitarist cards in play!";
+            var flipMessage = "[b]Valentine - The Set List[/b]                                               \n[i]“The world's a stage, and I want the brightest spot.”[/i]";
+
+            var messages = new string[] {
+                sliceMessage,
+               $"[b]Valentine[/b] steps into the limelight and plays a vocalist card!",
+               sliceMessage,
+               $"[b]Valentine[/b] is ramping it up and plays a vocalist card!",
+               sliceMessage,
+               $"The music [b]surges[/b] and a vocalist card is played! This is [b]Valentine[/b] moment!",
+               flipMessage
+            };
+
+            AssertNextMessages(messages);
+
+            MoveCard(scream, vocal1, setlist.UnderLocation);
+            MoveCard(scream, vocal2, setlist.UnderLocation);
+            MoveCard(scream, vocal3, setlist.UnderLocation);
+
+            for (int i = 0; i < 3; i++)
+            {
+                MoveCard(scream, "SlicesAxe", setlist.UnderLocation);
+                var reveal = GameController.RevealCards(scream, setlist.UnderLocation, 1, new List<Card> { });
+                GameController.ExhaustCoroutine(reveal);
+            }
+        }
+        [Test()]
+        public void TestMusicianCardMessages_NonChallenge_FirstCard()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            CleanUpSetup();
+
+            var vocal1 = GetCard("IrresistibleVoice");
+            var vocal2 = GetCard("HypnotizeTheCrowd");
+            var vocal3 = GetCard("MentalLink");
+            var axe = GetCard("SlicesAxe");
+
+            var sliceMessage = $"Slice is keeping it mellow since there aren't any guitarist cards in play!";
+            var flipMessage = "[b]Valentine - The Set List[/b]                                               \n[i]“The world's a stage, and I want the brightest spot.”[/i]";
+
+            var messages = new string[] {
+               $"[b]Valentine[/b] is starting to feel it and plays a vocalist card!",
+               $"[b]Valentine[/b] is ramping it up and plays a vocalist card!",
+               $"The music [b]surges[/b] and a vocalist card is played! This is [b]Valentine[/b] moment!",
+               flipMessage
+            };
+
+            AssertNextMessages(messages);
+
+            MoveCard(scream, vocal2, setlist.UnderLocation);
+            MoveCard(scream, vocal1, setlist.UnderLocation);
+            MoveCard(scream, vocal3, setlist.UnderLocation);
+
+            for (int i = 0; i < 3; i++)
+            {
+                var reveal = GameController.RevealCards(scream, setlist.UnderLocation, 1, new List<Card> { });
+                GameController.ExhaustCoroutine(reveal);
+                if(i == 0)
+                {
+                    MoveCard(scream, vocal2, setlist.UnderLocation);
+                }
+                if(i == 1)
+                {
+                    MoveCard(scream, vocal3, setlist.UnderLocation);
+                }
+            }
+        }
+        [Test()]
+        public void TestMusicianCardMessages_Challenge_SecondCard()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, challenge: true);
+            StartGame();
+            CleanUpSetup();
+
+            var vocal1 = GetCard("IrresistibleVoice");
+            var vocal2 = GetCard("HypnotizeTheCrowd");
+            var vocal3 = GetCard("MentalLink");
+            var axe = GetCard("SlicesAxe");
+
+            var sliceMessage = $"Slice is keeping it mellow since there aren't any guitarist cards in play!";
+            var flipMessage = "[b]Valentine - The Set List[/b]                                               \n[i]“The world's a stage, and I want the brightest spot.”[/i]";
+
+            var messages = new string[] {
+                sliceMessage,
+               $"[b]Valentine[/b] steps into the limelight and plays a vocalist card!",
+               sliceMessage,
+               $"The music [b]surges[/b] and a vocalist card is played! This is [b]Valentine[/b] moment!",
+               flipMessage,
+               sliceMessage,
+               $"The music [b]rages[/b] and a vocalist card is played! [b]Valentine[/b] is going into overdrive!"
+            };
+
+            AssertNextMessages(messages);
+
+            MoveCard(scream, vocal1, setlist.UnderLocation);
+            MoveCard(scream, vocal2, setlist.UnderLocation);
+            MoveCard(scream, vocal3, setlist.UnderLocation);
+
+            for (int i = 0; i < 3; i++)
+            {
+                MoveCard(scream, "SlicesAxe", setlist.UnderLocation);
+                var reveal = GameController.RevealCards(scream, setlist.UnderLocation, 1, new List<Card> { });
+                GameController.ExhaustCoroutine(reveal);
+            }
+        }
+        [Test()]
+        public void TestMusicianCardMessages_Challenge_FirstCard()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, challenge: true);
+            StartGame();
+            CleanUpSetup();
+
+            var vocal1 = GetCard("IrresistibleVoice");
+            var vocal2 = GetCard("HypnotizeTheCrowd");
+            var vocal3 = GetCard("MentalLink");
+            var axe = GetCard("SlicesAxe");
+
+            var sliceMessage = $"Slice is keeping it mellow since there aren't any guitarist cards in play!";
+            var flipMessage = "[b]Valentine - The Set List[/b]                                               \n[i]“The world's a stage, and I want the brightest spot.”[/i]";
+
+            var messages = new string[] {
+               $"[b]Valentine[/b] is starting to feel it and plays a vocalist card!",
+               $"The music [b]surges[/b] and a vocalist card is played! This is [b]Valentine[/b] moment!",
+               flipMessage,
+               $"The music [b]rages[/b] and a vocalist card is played! [b]Valentine[/b] is going into overdrive!"
+            };
+
+            AssertNextMessages(messages);
+
+            MoveCard(scream, vocal2, setlist.UnderLocation);
+            MoveCard(scream, vocal1, setlist.UnderLocation);
+            MoveCard(scream, vocal3, setlist.UnderLocation);
+
+            for (int i = 0; i < 3; i++)
+            {
+                var reveal = GameController.RevealCards(scream, setlist.UnderLocation, 1, new List<Card> { });
+                GameController.ExhaustCoroutine(reveal);
+                if (i == 0)
+                {
+                    MoveCard(scream, vocal2, setlist.UnderLocation);
+                }
+                if (i == 1)
+                {
+                    MoveCard(scream, vocal3, setlist.UnderLocation);
+                }
+            }
         }
     }
 }
