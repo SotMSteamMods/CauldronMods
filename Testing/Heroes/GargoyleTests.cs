@@ -308,6 +308,7 @@ namespace CauldronTests
             //Gargoyle hits Baron for 0 + 1, himself for 2 + 1, Baron, Legacy, and Bunker for 3 + 1 each, and runs out before Scholar
             QuickHPCheck(-5, -3, -4, -4, 0);
         }
+
         [Test]
         public void TestAbsorbAndUnleashNoHeroDamage()
         {
@@ -321,6 +322,23 @@ namespace CauldronTests
 
             //Gargoyle hits Baron for 1, the damage to himself is prevented, and he doesn't get to hit again.
             QuickHPCheck(-1, 0, 0, 0, 0);
+        }
+
+        [Test]
+        public void TestAbsorbAndUnleash_RedirectedHeroDamage()
+        {
+            StartTestGame("BaronBlade", "Cauldron.Gargoyle", "Legacy", "Bunker", "Tachyon", "Megalopolis");
+
+            UsePower(legacy);
+            DecisionSelectCards = new Card[] { baron.CharacterCard, tachyon.CharacterCard, baron.CharacterCard, baron.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, tachyon.CharacterCard };
+            QuickHPStorage(baron, gargoyle, legacy, bunker, tachyon);
+
+            DecisionYesNo = true;
+            PlayCard("SynapticInterruption");
+            PlayCard("AbsorbAndUnleash");
+
+            //Gargoyle hits Baron for 1, the damage to tachyon is redirected, so X is 0
+            QuickHPCheck(-4, 0, 0, 0, 0);
         }
 
         #endregion Test Absorb and Unleash
