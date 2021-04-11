@@ -279,8 +279,40 @@ namespace CauldronTests
             AssertIsInPlay("FallBack");
             QuickShuffleCheck(1);
             AssertNumberOfCardsInTrash(ram, 5, (Card c) => c.Identifier == "UpClose");
+            AssertNumberOfCardsInTrash(ram, 0, (Card c) => c.Identifier != "UpClose" && c.Identifier != "GrapplingClaw");
+        }
+        [Test]
+        public void TestRam_ChallengeOncePerGame()
+        {
+            SetupGameController(new string[] { "Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis" }, challenge: true);
+            StartGame();
+            DiscardTopCards(ram.TurnTaker.Deck, 14);
 
+            //only to 40 or less
+            DealDamage(legacy, ram, 30, DamageType.Melee);
+            AssertNumberOfCardsInPlay(ram, 2); //character, grappling claw
 
+            DealDamage(legacy, ram, 30, DamageType.Melee);
+            AssertNumberOfCardsInPlay(ram, 3); //character, grappling claw, fall back
+            DestroyCard("FallBack");
+
+            DealDamage(legacy, ram, 5, DamageType.Melee);
+            AssertNumberOfCardsInPlay(ram, 2); //character, grappling claw
+
+            AssertNumberOfCardsInTrash(ram, 6); //the Up Closes and one Fall Back
+        }
+        [Test]
+        public void TestRam_ChallengeLeavesGrapplingClaw()
+        {
+            SetupGameController(new string[] { "Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis" }, challenge: true);
+            StartGame();
+            DiscardTopCards(ram.TurnTaker.Deck, 14);
+
+            Card claw = FindCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            DealDamage(legacy, ram, 45, DamageType.Melee);
+            AssertAtLocation(claw, ram.TurnTaker.Trash);
         }
         [Test]
         public void TestRamGetUpCloseTrigger()
