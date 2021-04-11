@@ -382,6 +382,51 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestGrasshopperKick_Destroyed()
+        {
+            SetupGameController(new string[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            Card kick = PlayCard("GrasshopperKick");
+            Card cramped = GetCard("CrampedQuartersCombat");
+            //{Cricket} deals 1 target 2 melee damage. {Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+            QuickHPStorage(akash);
+            UsePower(kick);
+            QuickHPCheck(-2);
+
+            Card rail = PlayCard("PlummetingMonorail");
+            DestroyCard(kick);
+            //{Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+            QuickHPStorage(cricket);
+            DealDamage(rail, cricket, 2, DamageType.Melee);
+            QuickHPCheck(0);
+        }
+
+        [Test()]
+        public void TestGrasshopperKick_ReEnterPlay()
+        {
+            SetupGameController(new string[] { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            Card kick = PlayCard("GrasshopperKick");
+            Card cramped = GetCard("CrampedQuartersCombat");
+            //{Cricket} deals 1 target 2 melee damage. {Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+            QuickHPStorage(akash);
+            UsePower(kick);
+            QuickHPCheck(-2);
+
+            Card rail = PlayCard("PlummetingMonorail");
+            DestroyCard(kick);
+            //{Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+
+            GoToEndOfTurn(cricket);
+            PlayCard(kick);
+            QuickHPStorage(cricket);
+            DealDamage(rail, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
         public void TestInfrasonicCollapseDestroyOngoing()
         {
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
