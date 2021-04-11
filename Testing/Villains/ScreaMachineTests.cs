@@ -487,6 +487,23 @@ namespace CauldronTests
             QuickHPCheck(0, -3, 0, 0, 0, 0, 0, 0);
         }
 
+        [Test()]
+        public void TestSliceUltimate_Freeze()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "TheVisionary", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            PlayCard("TelekineticCocoon");
+            DealDamage(slice, c => c.IsHeroCharacterCard, 999, DamageType.Energy);
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Slice);
+
+            FlipCard(slice);
+
+            GoToEndOfTurn(scream);
+
+        }
+
 
         [Test()]
         public void TestValentineAbility()
