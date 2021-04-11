@@ -292,12 +292,20 @@ namespace CauldronTests
             DealDamage(legacy, ram, 30, DamageType.Melee);
             AssertNumberOfCardsInPlay(ram, 2); //character, grappling claw
 
+            SaveAndLoad();
+
             DealDamage(legacy, ram, 30, DamageType.Melee);
             AssertNumberOfCardsInPlay(ram, 3); //character, grappling claw, fall back
             DestroyCard("FallBack");
 
             DealDamage(legacy, ram, 5, DamageType.Melee);
             AssertNumberOfCardsInPlay(ram, 2); //character, grappling claw
+
+            SaveAndLoad();
+
+            //check once-per-game preserves through save-load
+            DealDamage(legacy, ram, 5, DamageType.Melee);
+            AssertNumberOfCardsInPlay(ram, 2);
 
             AssertNumberOfCardsInTrash(ram, 6); //the Up Closes and one Fall Back
         }
@@ -311,8 +319,12 @@ namespace CauldronTests
             Card claw = FindCardInPlay("GrapplingClaw");
             DestroyCard(claw);
 
+            PrintSpecialStringsForCard(ram.CharacterCard);
+
             DealDamage(legacy, ram, 45, DamageType.Melee);
             AssertAtLocation(claw, ram.TurnTaker.Trash);
+
+            PrintSpecialStringsForCard(ram.CharacterCard);
         }
         [Test]
         public void TestRamGetUpCloseTrigger()
