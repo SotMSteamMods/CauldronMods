@@ -93,7 +93,7 @@ namespace Cauldron.ScreaMachine
                 }
             }
         }
-
+        private int ExistingCardsNeededToFlip => Game.IsChallenge ? 1 : 2;
         private IEnumerator TheSetListFlavorMessage(ScreaMachineBandCardController firstCard, ScreaMachineBandCardController secondCard)
         {
             if (firstCard != null && secondCard != null)
@@ -119,17 +119,25 @@ namespace Cauldron.ScreaMachine
                         //revealed card bandmate has cards already in play   
                         int count = FindCardsWhere(c => c.IsInPlayAndHasGameText && c.DoKeywordsContain(firstCard.Member.GetKeyword())).Count();
                         card = firstCard.Card;
-                        switch (count)
+                        if(count == ExistingCardsNeededToFlip)
                         {
-                            case 1: //1 already, revealed card is the second
-                                message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
-                                break;
-                            case 2: //2 already, revealed card is the third, will flip
-                                message = $"The music [b]surges[/b] and a {firstCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
-                                break;
-                            default:
-                                message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
-                                break;
+                            //we have reached the number needed to flip
+                            message = $"The music [b]surges[/b] and a {firstCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
+                        }
+                        else
+                        { 
+                            switch (count)
+                            {
+                                case 1: //1 already, revealed card is the second, is not challenge mode
+                                    message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
+                                    break;
+                                case 2: //must be in challenge mode and already flipped to get here
+                                    message = $"The music [b]rages[/b] and a {firstCard.Member.GetKeyword()} card is played! [b]{bandMate.Title}[/b] is going into overdrive!";
+                                    break;
+                                default:
+                                    message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {firstCard.Member.GetKeyword()} card!";
+                                    break;
+                            }
                         }
                     }
                 }
@@ -137,7 +145,9 @@ namespace Cauldron.ScreaMachine
                 {
                     //first card doesn't have any cards already in play, playing second card.
                     if (secondCard.IsBandmateInPlay)
+                    {
                         sendMessage = true;
+                    }
 
                     card = secondCard.Card;
                     var bandMate = secondCard.GetBandmate();
@@ -179,21 +189,28 @@ namespace Cauldron.ScreaMachine
                     }
                     
                     message = "";
-                    
-                    switch (count)
+                    if (count == ExistingCardsNeededToFlip)
                     {
-                        case 0: //0 already, play card is the first
-                            message += $"[b]{secondCard.GetBandmate().Title}[/b] steps into the limelight and plays a {secondCard.Member.GetKeyword()} card!";
-                            break;
-                        case 1: //1 already, revealed card is the second
-                            message += $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
-                            break;
-                        case 2: //2 already, revealed card is the third, will flip
-                            message = $"The music [b]surges[/b] and a {secondCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
-                            break;
-                        default:
-                            message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
-                            break;
+                        //we have reached the number needed to flip
+                        message = $"The music [b]surges[/b] and a {secondCard.Member.GetKeyword()} card is played! This is [b]{bandMate.Title}[/b] moment!";
+                    }
+                    else
+                    {
+                        switch (count)
+                        {
+                            case 0: //0 already, play card is the first
+                                message += $"[b]{secondCard.GetBandmate().Title}[/b] steps into the limelight and plays a {secondCard.Member.GetKeyword()} card!";
+                                break;
+                            case 1: //1 already, revealed card is the second, is not challenge
+                                message += $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
+                                break;
+                            case 2: //2 in play, but is challenge so already flipped
+                                message = $"The music [b]rages[/b] and a {secondCard.Member.GetKeyword()} card is played! [b]{bandMate.Title}[/b] is going into overdrive!";
+                                break;
+                            default:
+                                message = $"[b]{bandMate.Title}[/b] is ramping it up and plays a {secondCard.Member.GetKeyword()} card!";
+                                break;
+                        }
                     }
                 }
 

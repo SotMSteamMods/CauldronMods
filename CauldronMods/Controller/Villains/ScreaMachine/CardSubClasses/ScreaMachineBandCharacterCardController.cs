@@ -13,6 +13,7 @@ namespace Cauldron.ScreaMachine
         public ScreaMachineBandmate.Value Member { get; }
         private readonly string _memberKeyword;
         private readonly string _memberAbilityKey;
+        private int NumberOfCardsNeededToFlip => Game.IsChallenge ? 2 : 3;
 
         protected ScreaMachineBandCharacterCardController(Card card, TurnTakerController turnTakerController, ScreaMachineBandmate.Value member) : base(card, turnTakerController)
         {
@@ -92,7 +93,7 @@ namespace Cauldron.ScreaMachine
             {
                 var cards = GameController.FindCardsWhere(c => c.IsInPlayAndNotUnderCard && c.DoKeywordsContain(_memberKeyword, true, true), true, GetCardSource()).ToList();
                 Console.WriteLine($"DEBUG - {Card.Title} has {cards.Count} {_memberKeyword} cards in play.");
-                return cards.Count >= 3;
+                return cards.Count >= NumberOfCardsNeededToFlip;
             }
 
             return false;
