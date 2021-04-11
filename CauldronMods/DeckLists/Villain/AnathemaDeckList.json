@@ -36,9 +36,6 @@
                 "ImmuneToDamage",
                 "GainHP"
             ],
-            "advancedIcons": [
-                "ImmuneToDamage"
-            ],
             "flippedBody": "Exposed Mutant",
             "flippedGameplay": [
                 "At the start of the villain turn, play the top card of the villain deck.",
@@ -47,7 +44,6 @@
             ],
             "flippedAdvanced": "At the start of the villain turn, each player discards a card from their hand.",
             "flippedIcons": [
-                "StartOfTurnAction",
                 "PlayCardNow",
                 "EndOfTurnAction",
                 "Discard"
@@ -55,7 +51,7 @@
             "difficulty": 2,
             "challengeTitle":"Regenerative Biology",
 		    "challengeText":"At the start of the game, put Biofeedback into play. Biofeedback is indestructible. {Anathema} is immune to villain damage.",
-		    "challengeIcons":[
+		    "flippedChallengeIcons":[
 		 	   "ImmuneToDamage"
 		    ],
             "openingLines": {

@@ -893,7 +893,6 @@
             ],
             "flippedAdvanced": "X = {H + 1} instead.",
             "flippedIcons": [
-                "EndOfTurnAction",
                 "DealDamageEnergy",
                 "DealDamageProjectile"
             ],

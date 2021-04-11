@@ -98,6 +98,8 @@ namespace CauldronTests.Art
             files.RemoveAll(s => s.StartsWith("SetupGame"));
             files.RemoveAll(s => s.StartsWith("EndGameHeroes"));
             files.RemoveAll(s => s.StartsWith("HeroLogos"));
+            files.RemoveAll(s => s.StartsWith("Icons"));
+
 
             foreach (var file in files)
             {
