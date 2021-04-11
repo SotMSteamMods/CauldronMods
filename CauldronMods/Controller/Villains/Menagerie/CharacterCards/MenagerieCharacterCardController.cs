@@ -28,7 +28,7 @@ namespace Cauldron.Menagerie
         public bool IsCaptured(TurnTaker tt)
         {
             Card prize = FindCard("PrizedCatch");
-            return prize != null && prize.Location.IsNextToCard && tt.GetAllCards().Contains(base.GetCardThisCardIsNextTo());
+            return prize != null && prize.Location.IsNextToCard && tt.GetAllCards().Contains(prize.Location.OwnerCard);
         }
 
         public bool HasEnclosure(TurnTaker tt)
@@ -76,7 +76,28 @@ namespace Cauldron.Menagerie
                     base.AddSideTrigger(base.AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.MaybeGameOverResponse, TriggerType.GameOver));
                 }
             }
+
+            if(Game.IsChallenge)
+            {
+                //At the end of the villain turn, the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.
+                base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.ChallengeEndOfTurnResponse, new TriggerType[] { TriggerType.DealDamage }));
+            }
             base.AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator ChallengeEndOfTurnResponse(PhaseChangeAction arg)
+        {
+            //the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.
+            int X = FindCardsWhere(c => IsEnclosure(c) && c.IsInPlayAndHasGameText).Count();
+            IEnumerator coroutine = GameController.DealDamageToSelf(DecisionMaker, (Card c) => c.Owner.IsHero  && c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && (IsCaptured(c.Owner) || HasEnclosure(c.Owner)), X, DamageType.Psychic, isIrreducible: true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
         private IEnumerator PutUnderThisCardResponse(DestroyCardAction action)
