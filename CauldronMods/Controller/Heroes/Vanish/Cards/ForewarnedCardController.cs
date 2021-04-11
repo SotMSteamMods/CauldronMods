@@ -17,7 +17,7 @@ namespace Cauldron.Vanish
             var ss = SpecialStringMaker.ShowNumberOfCardsAtLocations(() => query);
             ss.Condition = () => GameController.HeroTurnTakerControllers.Any(HeroTurnTakerController => HeroTurnTakerController.HeroTurnTaker.NumberOfCardsInHand < 3);
 
-            ss = SpecialStringMaker.ShowSpecialString(() => "No hero has fewer than 3 cards in hard");
+            ss = SpecialStringMaker.ShowSpecialString(() => "No hero has fewer than 3 cards in hand");
             ss.Condition = () => GameController.HeroTurnTakerControllers.All(HeroTurnTakerController => HeroTurnTakerController.HeroTurnTaker.NumberOfCardsInHand >= 3);
         }
 
@@ -62,7 +62,7 @@ namespace Cauldron.Vanish
         private IEnumerator DestroyCardReponse()
         {
             var cardSource = GetCardSource();
-            foreach (var httc in GameController.HeroTurnTakerControllers.Where(httc => GameController.CanDrawCards(httc, cardSource) && httc.HeroTurnTaker.NumberOfCardsInHand < 3))
+            foreach (var httc in GameController.HeroTurnTakerControllers.Where(httc => httc.BattleZone == BattleZone && GameController.CanDrawCards(httc, cardSource) && httc.HeroTurnTaker.NumberOfCardsInHand < 3))
             {
                 var coroutine = DrawCardsUntilHandSizeReached(httc, 3);
                 if (base.UseUnityCoroutines)

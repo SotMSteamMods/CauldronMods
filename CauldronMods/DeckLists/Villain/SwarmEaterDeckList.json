@@ -22,7 +22,7 @@
                 "Cauldron.Cypher"
             ],
             "setup": [
-                "At the start of the game, put {SwarmEater}'s villain character cards into play, “Power Hungry“ side up.",
+                "At the start of the game, {SwarmEater} enters play “Power Hungry“ side up.",
                 "Reveal cards from the top of the villain deck until {H - 1} targets, 2 traits, and Single-Minded Pursuit are revealed. Put them into play, and shuffle the rest of the revealed cards back into the villain deck."
             ],
             "gameplay": [
@@ -49,6 +49,8 @@
                 "DealDamageMelee"
             ],
             "flippedAdvancedIcons": [],
+            "challengeTitle": "Inescapable Hunter",
+            "challengeText":  "Whenever {SwarmEater} reduces a target to 2 or lower HP, {SwarmEater} destroys that target.",
             "difficulty": 4,
             "openingLines": {
                 "default": "Obstruction analysis complete. Assigned secondary priority. Primary priority unchanged: incorporate targets, enhance self.",
@@ -475,7 +477,7 @@
                 "Cauldron.Cypher"
             ],
             "setup": [
-                "At the start of the game, put {SwarmEater}'s villain character cards into play, 'Distributed Hivemind' side up. Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game. Shuffle the villain deck."
+                "At the start of the game, {SwarmEater} enters play 'Distributed Hivemind' side up. Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP. When a villain target enters play, flip {SwarmEater}'s villain character cards.",
@@ -504,6 +506,8 @@
             "flippedAdvancedIcons": [
                 "GainHP"
             ],
+            "challengeTitle": "Shared Code",
+            "challengeText": "Activated absorb texts also apply to {SwarmEater}.",
             "difficulty": 2,
             "openingLines": {
                 "default": "We are legion. Soon all will join the hive mind.",

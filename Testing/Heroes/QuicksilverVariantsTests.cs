@@ -118,7 +118,11 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
-            Card retort = PutOnDeck("IronRetort");
+            DiscardAllCards(quicksilver);
+
+            PrintSpecialStringsForCard(quicksilver.CharacterCard);
+
+            Card retort = PutInDeck("IronRetort");
             Card needle = PutInHand("ForestOfNeedles");
 
             DecisionSelectCard = retort;
@@ -130,6 +134,9 @@ namespace CauldronTests
             QuickHandCheckZero();
             AssertInHand(retort);
             AssertInTrash(needle);
+
+            PrintSpecialStringsForCard(quicksilver.CharacterCard);
+
         }
 
         [Test]

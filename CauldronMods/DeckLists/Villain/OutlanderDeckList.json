@@ -13,7 +13,7 @@
             "keywords": [
                 "villain"
             ],
-            "body": "Fragemented Riftwarrior",
+            "body": "Fragmented Riftwarrior",
             "backgroundColor": "e4bc94",
             "foilBackgroundColor": "CD96C0",
             "character": true,
@@ -23,7 +23,7 @@
                 "Cauldron.Drift"
             ],
             "setup": [
-                "At the start of the game, put {Outlander}'s villain character cards into play, “Fragemented Riftwarrior“ side up.",
+                "At the start of the game, {Outlander} enters play “Fragmented Riftwarrior“ side up.",
                 "Search the villain deck for all Trace cards and put them beneath this card. Put 1 random Trace card from beneath this one into play. Shuffle the villain deck."
             ],
             "gameplay": [
@@ -111,7 +111,7 @@
             ],
             "body": [
                 "The first time {Outlander} is dealt 4 or more damage from a single source each turn, play the top card of the villain deck.",
-                "At the end of the villain turn, {Outlander} deals each non-villain target irreducible 1 projectile damage."
+                "At the end of the villain turn, {Outlander} deals each non-villain target 1 irreducible projectile damage."
             ],
             "flavorText": "In many realities, Sir George{BR}of Mormoth had reawakened into{BR}considerably more advanced futures."
         },

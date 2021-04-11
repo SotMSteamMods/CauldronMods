@@ -53,6 +53,12 @@ namespace Cauldron.SwarmEater
                     base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => dca.ResponsibleCard == base.Card && dca.WasCardDestroyed && IsVillain(dca.CardToDestroy.Card), base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
                 }
             }
+
+            if(IsGameChallenge)
+            {
+                //Whenever Swarm Eater reduces a target to 2 or lower HP, Swarm Eater destroys that target.
+                AddSideTrigger(AddTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(this.Card) && dd.DidDealDamage && dd.TargetHitPointsAfterBeingDealtDamage <= 2, ChallengeDestroyResponse, TriggerType.DestroyCard, TriggerTiming.After));
+            }
             base.AddDefeatedIfDestroyedTriggers();
         }
 
@@ -101,6 +107,19 @@ namespace Cauldron.SwarmEater
         {
             //...{SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage.
             IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c != base.Card && !c.IsHero, (Card c) => 3, DamageType.Melee);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        private IEnumerator ChallengeDestroyResponse(DealDamageAction dd)
+        {
+            IEnumerator coroutine = GameController.DestroyCard(DecisionMaker, dd.Target, responsibleCard: this.Card, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

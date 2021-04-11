@@ -20,7 +20,7 @@
 			"backgroundColor": "e4d8c2",
 			"foilBackgroundColor": "CD96C0",
 			"setup": [
-				"At the start of the game, put this card, {SliceCharacter}, {ValentineCharacter}, {BloodlaceCharacter}, and {RickyGCharacter}'s villain character cards into play, “Warming Up” side up.",
+				"At the start of the game, this card, {SliceCharacter}, {ValentineCharacter}, {BloodlaceCharacter}, and {RickyGCharacter} enter play “Warming Up” side up.",
 				"Search the villain deck for all Guitarist, Vocalist, Bassist, and Drummer cards, shuffle them, and place them beneath this card face down. Shuffle the villain deck."
 			],
 			"gameplay": [
@@ -83,7 +83,7 @@
 			],
 			"flippedBody": "Ultimate Drummer",
 			"flippedGameplay": [
-				"All other villain targets are indestructible and immune damage.",
+				"All other villain targets are indestructible and immune to damage.",
 				"At the end of the villain turn, discard the top card of the villain deck. If it shows {Drum} on it, {RickyGCharacter} deals each hero target 3 melee damage."
 			],
 			"flippedIcons": [

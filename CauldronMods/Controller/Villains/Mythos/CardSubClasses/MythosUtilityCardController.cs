@@ -83,30 +83,54 @@ namespace Cauldron.Mythos
             //For special string describing the order of icons in the deck top(1) to bottom
             string output = null;
             int place = 0;
-            foreach (Card c in base.TurnTaker.Deck.Cards.ToArray().Reverse())
+            if (IsGameChallenge)
             {
-                place++;
-                if (output == null)
+                if (TurnTaker.Deck.HasCards)
                 {
-                    output = "Starting at the top, the order of the deck icons is:{BR}";
-                }
-                switch (this.GetIconIdentifier(c))
-                {
-                    case MythosClueDeckIdentifier:
-                        output += place + ": {Clue}";
-                        break;
+                    output = "The icon on top of the deck is:{BR}";
+                    switch (this.GetIconIdentifier(TurnTaker.Deck.TopCard))
+                    {
+                        case MythosClueDeckIdentifier:
+                            output += "{Clue}";
+                            break;
 
-                    case MythosDangerDeckIdentifier:
-                        output += place + ": {Danger}";
-                        break;
+                        case MythosDangerDeckIdentifier:
+                            output += "{Danger}";
+                            break;
 
-                    case MythosMadnessDeckIdentifier:
-                        output += place + ": {Madness}";
-                        break;
+                        case MythosMadnessDeckIdentifier:
+                            output += "{Madness}";
+                            break;
+                    }
                 }
-                if (base.TurnTaker.Deck.Cards.Count() != place)
+            }
+            else
+            {
+                foreach (Card c in base.TurnTaker.Deck.Cards.ToArray().Reverse())
                 {
-                    output += ",{BR}";
+                    place++;
+                    if (output == null)
+                    {
+                        output = "Starting at the top, the order of the deck icons is:{BR}";
+                    }
+                    switch (this.GetIconIdentifier(c))
+                    {
+                        case MythosClueDeckIdentifier:
+                            output += place + ": {Clue}";
+                            break;
+
+                        case MythosDangerDeckIdentifier:
+                            output += place + ": {Danger}";
+                            break;
+
+                        case MythosMadnessDeckIdentifier:
+                            output += place + ": {Madness}";
+                            break;
+                    }
+                    if (base.TurnTaker.Deck.Cards.Count() != place)
+                    {
+                        output += ",{BR}";
+                    }
                 }
             }
 
