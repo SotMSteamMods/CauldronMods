@@ -249,6 +249,83 @@ namespace CauldronTests
             DestroyCard("UpClose");
             AssertNotFlipped(ram);
         }
+
+        [Test]
+        public void TestRam_Challenge()
+        {
+            SetupGameController(new string[] { "Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis" }, challenge: true);
+
+            StartGame();
+            DiscardTopCards(ram.TurnTaker.Deck, 14);
+            Card claw = GetCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            Card fallback = PlayCard("FallBack");
+
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+            PlayCard("UpClose");
+
+            AssertNotFlipped(ram);
+            PlayCard("UpClose");
+
+            AssertFlipped(ram);
+            AssertNotInPlay(fallback);
+            AssertIsInPlay(claw);
+
+            //"When {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play. Put all cards other than Close Up from the villain trash into the villain deck, then shuffle the villain deck."
+            QuickShuffleStorage(ram);
+            DealDamage(legacy, ram, 42, DamageType.Melee, isIrreducible: true);
+            AssertIsInPlay("FallBack");
+            QuickShuffleCheck(1);
+            AssertNumberOfCardsInTrash(ram, 5, (Card c) => c.Identifier == "UpClose");
+            AssertNumberOfCardsInTrash(ram, 0, (Card c) => c.Identifier != "UpClose" && c.Identifier != "GrapplingClaw");
+        }
+        [Test]
+        public void TestRam_ChallengeOncePerGame()
+        {
+            SetupGameController(new string[] { "Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis" }, challenge: true);
+            StartGame();
+            DiscardTopCards(ram.TurnTaker.Deck, 14);
+
+            //only to 40 or less
+            DealDamage(legacy, ram, 30, DamageType.Melee);
+            AssertNumberOfCardsInPlay(ram, 2); //character, grappling claw
+
+            SaveAndLoad();
+
+            DealDamage(legacy, ram, 30, DamageType.Melee);
+            AssertNumberOfCardsInPlay(ram, 3); //character, grappling claw, fall back
+            DestroyCard("FallBack");
+
+            DealDamage(legacy, ram, 5, DamageType.Melee);
+            AssertNumberOfCardsInPlay(ram, 2); //character, grappling claw
+
+            SaveAndLoad();
+
+            //check once-per-game preserves through save-load
+            DealDamage(legacy, ram, 5, DamageType.Melee);
+            AssertNumberOfCardsInPlay(ram, 2);
+
+            AssertNumberOfCardsInTrash(ram, 6); //the Up Closes and one Fall Back
+        }
+        [Test]
+        public void TestRam_ChallengeLeavesGrapplingClaw()
+        {
+            SetupGameController(new string[] { "Cauldron.TheRam", "Legacy", "Haka", "TheWraith", "Unity", "Megalopolis" }, challenge: true);
+            StartGame();
+            DiscardTopCards(ram.TurnTaker.Deck, 14);
+
+            Card claw = FindCardInPlay("GrapplingClaw");
+            DestroyCard(claw);
+
+            PrintSpecialStringsForCard(ram.CharacterCard);
+
+            DealDamage(legacy, ram, 45, DamageType.Melee);
+            AssertAtLocation(claw, ram.TurnTaker.Trash);
+
+            PrintSpecialStringsForCard(ram.CharacterCard);
+        }
         [Test]
         public void TestRamGetUpCloseTrigger()
         {
