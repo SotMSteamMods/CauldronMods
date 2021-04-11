@@ -13,7 +13,10 @@ namespace Cauldron.TheRam
         {
             AddUpCloseTrackers();
             SpecialStringMaker.ShowHeroTargetWithHighestHP();
-            SpecialStringMaker.ShowIfElseSpecialString(() => HasBeenSetToTrueThisGame(ChallengeRetreatKey), () => "The Ram has been reduced to 40 HP this game.", () => "The Ram has not yet been reduced to 40 HP.").Condition = () => IsGameChallenge;
+            if (TurnTaker.IsChallenge)
+            {
+                SpecialStringMaker.ShowIfElseSpecialString(() => HasBeenSetToTrueThisGame(ChallengeRetreatKey), () => "The Ram has been reduced to 40 HP this game.", () => "The Ram has not yet been reduced to 40 HP.");
+            }
         }
 
         public override void AddStartOfGameTriggers()
