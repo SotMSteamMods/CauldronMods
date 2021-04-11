@@ -16,11 +16,9 @@ namespace Cauldron.Outlander
             Card.UnderLocation.OverrideIsInPlay = false;
             SpecialStringMaker.ShowIfElseSpecialString(() => HasBeenSetToTrueThisTurn(OncePerTurn), () => "Outlander has been dealt damage this turn.", () => "Outlander has not been dealt damage this turn.").Condition = () => Card.IsFlipped;
             SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsTrace(c), "trace"));
-            SpecialStringMaker.ShowSpecialString(() => ChallengeMessage, showInEffectsList: () => true).Condition = () => Game.HasGameStarted && Game.IsChallenge && WasOngoingDestroyedInLastTurn;
         }
 
         protected const string OncePerTurn = "OutlanderFlippedOncePerTurn";
-        private const string ChallengeMessage = "Villain ongoings are indestructible until the end of the villain turn.";
         private ITrigger ReduceDamageTrigger;
 
         public override void AddSideTriggers()
@@ -43,38 +41,20 @@ namespace Cauldron.Outlander
             if(Game.IsChallenge)
             {
                 //CHALLENGE: Whenever a villain Ongoing is destroyed, other villain Ongoings are indestructible until the end of the villain turn.
-                base.AddSideTrigger(AddTrigger((DestroyCardAction dca) => dca.WasCardDestroyed && dca.CardToDestroy != null && dca.CardToDestroy.Card.IsOngoing && IsVillain(dca.CardToDestroy.Card), ChallengeOngoingDestroyedHelperResponse, TriggerType.Other, TriggerTiming.After));
-                base.AddSideTrigger(AddTrigger((PhaseChangeAction pca) => pca.ToPhase.Phase == Phase.End && pca.ToPhase.TurnTaker == TurnTaker, ChallengeExpireIndestructibility, TriggerType.Hidden, TriggerTiming.After));
+                base.AddSideTrigger(AddTrigger((DestroyCardAction dca) => dca.WasCardDestroyed && dca.CardToDestroy != null && dca.CardToDestroy.Card.IsOngoing && IsVillain(dca.CardToDestroy.Card), ChallengeOngoingDestroyedResponse, TriggerType.CreateStatusEffect, TriggerTiming.After));
             }
 
 
         }
 
-        private IEnumerator ChallengeExpireIndestructibility(PhaseChangeAction pca)
+        private IEnumerator ChallengeOngoingDestroyedResponse(DestroyCardAction dca)
         {
-            SetCardProperty(OngoingDestroyedLastTurnKey, false);
-            IEnumerator coroutine = GameController.SendMessageAction($"Expired: {ChallengeMessage}", Priority.Medium, GetCardSource(), showCardSource: true);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield return null;
-        }
-
-        private IEnumerator ChallengeOngoingDestroyedHelperResponse(DestroyCardAction dca)
-        {
-            dca.AddAfterDestroyedAction(ChallengeOngoingDestroyedResponse, this);
-            yield return null;
-        }
-
-        private IEnumerator ChallengeOngoingDestroyedResponse()
-        {
-            SetCardPropertyToTrueIfRealAction(OngoingDestroyedLastTurnKey);
-            IEnumerator coroutine = GameController.SendMessageAction(ChallengeMessage, Priority.Medium, GetCardSource(), showCardSource: true);
+            var challengeStatusEffect = new MakeIndestructibleStatusEffect();
+            challengeStatusEffect.CardsToMakeIndestructible.IsVillain = true;
+            challengeStatusEffect.CardsToMakeIndestructible.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
+            challengeStatusEffect.ToTurnPhaseExpiryCriteria.Phase = Phase.End;
+            challengeStatusEffect.ToTurnPhaseExpiryCriteria.TurnTaker = this.TurnTaker;
+            IEnumerator coroutine = AddStatusEffect(challengeStatusEffect);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -197,28 +177,12 @@ namespace Cauldron.Outlander
             {
                 return true;
             }
-
-            if(Game.IsChallenge)
-            {
-                //CHALLENGE: Whenever a villain Ongoing is destroyed, other villain Ongoings are indestructible until the end of the villain turn.
-                if(IsVillain(card) && card.IsOngoing && WasOngoingDestroyedInLastTurn)
-                {
-                    return true;
-                }
-            }
             return false;
         }
 
         public override bool CanBeDestroyed => Card.IsFlipped;
         public readonly string OngoingDestroyedLastTurnKey = "OngoingDestroyedLastTurn";
 
-        public bool WasOngoingDestroyedInLastTurn
-        {
-            get
-            {
-                return GetCardPropertyJournalEntryBoolean(OngoingDestroyedLastTurnKey).HasValue && GetCardPropertyJournalEntryBoolean(OngoingDestroyedLastTurnKey) == true;
-            }
-        }
 
         public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
         {
