@@ -46,9 +46,18 @@ namespace Cauldron.TheRam
                 {
                     return ram;
                 }
+                if(Game.IsChallenge && (ram == null || !ram.IsInPlay))
+                {
+                    var winters = TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "AdmiralWintersCharacter").FirstOrDefault();
+                    if (winters != null && winters.IsInPlay)
+                    {
+                        return winters;
+                    }
+                }
                 return null;
             }
-        }protected IEnumerator MessageNoRamToAct(CardSource actingCard, string missingAction = "act")
+        }
+        protected IEnumerator MessageNoRamToAct(CardSource actingCard, string missingAction = "act")
         {
             IEnumerator coroutine = GameController.SendMessageAction($"The Ram is not in play, so it does not {missingAction}.", Priority.Medium, actingCard);
             if (base.UseUnityCoroutines)
