@@ -298,6 +298,10 @@ namespace CauldronTests
             QuickHPStorage(winters);
             DealDamage(legacy, winters, 4, DamageType.Melee);
             QuickHPCheck(-2);
+
+            QuickHPStorage(wraith, legacy, haka);
+            PlayCard("BarrierBuster");
+            QuickHPCheck(-3, -3, -3);
         }
         [Test]
         public void TestPastRamHealOnFlipH3()
