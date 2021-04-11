@@ -53,6 +53,8 @@
                 "DestroyEquipment"
             ],
             "difficulty": 3,
+            "challengeTitle": "Lingering Influence",
+			"challengeText": "Whenever a villain Ongoing is destroyed, other villain Ongoings are indestructible until the end of the villain turn.",
             "openingLines": {
                 "default": "The blight of your “powers“ will be wiped clean from this Earth - and every other.",
                 "TheKnightCharacter": "You and I are but two traces of the same life. When yours ends, mine will grow stronger!",
