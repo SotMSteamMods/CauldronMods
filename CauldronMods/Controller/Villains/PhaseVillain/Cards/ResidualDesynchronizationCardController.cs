@@ -23,7 +23,7 @@ namespace Cauldron.PhaseVillain
             base.AddReduceDamageTrigger((Card c) => base.IsObstacle(c), 1);
             //The first time a villain target is dealt damage each turn, it deals the source of that damage 2 energy damage.
             //per @Tosx, this is once per turn, NOT once per turn per target.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt") && base.IsVillainTarget(action.Target),
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && !base.HasBeenSetToTrueThisTurn("FirstTimeDamageDealt") && base.IsVillainTarget(action.Target) && !action.Target.IsBeingDestroyed,
                     this.DealDamageResponse,
                     TriggerType.DealDamage,
                     TriggerTiming.After,
