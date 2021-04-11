@@ -21,7 +21,7 @@
 				"Cauldron.Malichae"
 			],
 			"setup": [
-				"At the start of the game, {Jade} enters play, 'Shardwalker' side up.",
+				"At the start of the game, {OriphelCharacter} enters play, 'Shardwalker' side up.",
 				"Reveal cards from the top of the villain deck until {H - 2} guardians are revealed and put them into play. Shuffle the villain deck."
 			],
 			"gameplay": [
@@ -53,8 +53,7 @@
 				"ReduceDamageTaken"
 			],
 			"challengeTitle": "Rigid Rituals",
-            "challengeText": "Reduce damage dealt to villain relics by 2.",
-            "flippedChallengeText": ["Reduce damage dealt to villain relics by 2.","{Oriphel} does not flip back until there are 3 villain relics in the villain trash."],
+			"challengeText": [ "Reduce damage dealt to villain relics by 2.", "{Oriphel} does not flip back to {OriphelCharacter} until there are 3 villain relics in the villain trash." ],
 			"difficulty": 2,
 			"openingLines": {
 				"default": "You're too late, heroes! Soon I will break the veil between our worlds, and rule over both!",
@@ -349,7 +348,7 @@
 			],
 			"body": [
 				"If {Oriphel} is in play, he deals each hero target 1 infernal and 1 projectile damage.",
-				"If Jade is in play, flip her villain character cards."
+				"If {OriphelCharacter} is in play, flip her villain character cards."
 			],
 			"flavorQuotes": [{
 				"identifier": "TheScholar",
@@ -394,7 +393,7 @@
 				"PlayCardNow"
 			],
 			"body": [
-				"If Jade is in play, reveal the top {H} cards of the villain deck. Put any revealed Goons and Guardians into play and discard the rest.",
+				"If {OriphelCharacter} is in play, reveal the top {H} cards of the villain deck. Put any revealed Goons and Guardians into play and discard the rest.",
 				"If {Oriphel} is in play, destroy {H} hero ongoing and/or equipment cards. Play the top card of the villain deck."
 			],
 			"flavorQuotes": [{
