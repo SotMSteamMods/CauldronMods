@@ -31,6 +31,9 @@ namespace Cauldron.Quicksilver
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
+
+                        if (selection.FirstOrDefault() is null || selection.FirstOrDefault().SelectedTurnTaker is null) break;
+                        
                         coroutine = base.DrawCardsUntilHandSizeReached(base.FindHeroTurnTakerController(selection.FirstOrDefault().SelectedTurnTaker.ToHero()), 4);
                         if (base.UseUnityCoroutines)
                         {
@@ -60,7 +63,7 @@ namespace Cauldron.Quicksilver
                     {
                         //One player may discard any number of cards to regain X HP, where X is the number of cards discarded.
                         List<SelectTurnTakerDecision> selection = new List<SelectTurnTakerDecision>();
-                        IEnumerator coroutine = base.GameController.SelectHeroTurnTaker(base.HeroTurnTakerController, SelectionType.DrawCard, true, false, selection, new LinqTurnTakerCriteria((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && base.FindHeroTurnTakerController(tt.ToHero()).NumberOfCardsInHand > 0));
+                        IEnumerator coroutine = base.GameController.SelectHeroTurnTaker(base.HeroTurnTakerController, SelectionType.DiscardCard, true, false, selection, new LinqTurnTakerCriteria((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && base.FindHeroTurnTakerController(tt.ToHero()).NumberOfCardsInHand > 0));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -71,7 +74,7 @@ namespace Cauldron.Quicksilver
                         }
                         HeroTurnTakerController selectedHero = base.FindHeroTurnTakerController(selection.FirstOrDefault().SelectedTurnTaker.ToHero());
                         List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
-                        coroutine = base.GameController.SelectAndDiscardCards(selectedHero, selectedHero.NumberOfCardsInHand, true, 0, storedResults, true, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.SelectAndDiscardCards(selectedHero, selectedHero.NumberOfCardsInHand, false, 0, storedResults, true, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
