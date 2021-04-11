@@ -180,7 +180,7 @@ namespace Cauldron.Cricket
 
             var statusEffects = Game.StatusEffects
                                     .OfType<OnPhaseChangeStatusEffect>()
-                                    .Where(effect => effect.CardSource == CharacterCard &&
+                                    .Where(effect => (effect.CardSource == CharacterCard || (Game.IsOblivAeonMode && effect.CardSource.Location == CharacterCard.Location)) &&
                                             effect.CardDestroyedExpiryCriteria.Card == keyCard)
                                     .ToArray();
 
@@ -216,7 +216,7 @@ namespace Cauldron.Cricket
             //last check that we are actually going to trigger the power again
             if (statusEffects.Any())
             {
-                var coroutine = GameController.SendMessageAction($"{CharacterCard.Title} allows {action.HeroUsingPower.Name} to use the power again!", Priority.High, GetCardSource());
+                var coroutine = GameController.SendMessageAction($"{CharacterCard.Title} allows {action.Power.Title} to be used again!", Priority.High, GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
