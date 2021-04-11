@@ -336,16 +336,17 @@ namespace CauldronTests
             DealDamage(rail, cricket, 2, DamageType.Melee);
             QuickHPCheck(0);
 
-            //Non targets deal damage
+            //Non targets and non-environment deal damage
             Card hostage = PlayCard("HostageSituation");
             DealDamage(hostage, cricket, 2, DamageType.Melee);
+            DealDamage(akash, cricket, 2, DamageType.Melee);
             if (cramped.IsInPlayAndHasGameText)
             {
-                QuickHPCheck(-3);
+                QuickHPCheck(-6);
             }
             else
             {
-                QuickHPCheck(-2);
+                QuickHPCheck(-4);
             }
 
             GoToStartOfTurn(cricket);
