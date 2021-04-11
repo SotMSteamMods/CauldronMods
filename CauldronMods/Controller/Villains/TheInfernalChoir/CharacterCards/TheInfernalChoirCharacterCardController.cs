@@ -32,7 +32,7 @@ namespace Cauldron.TheInfernalChoir
 
         public TheInfernalChoirCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfSpecificCardIsInPlay(() => !Card.IsFlipped ? FindCard("VagrantHeartPhase1") : FindCard("VagrantHeartPhase2"));
+            ShowIfSpecificCardIsInPlayUsingTitle(() => !Card.IsFlipped ? FindCard("VagrantHeartPhase1") : FindCard("VagrantHeartPhase2"));
             SpecialStringMaker.ShowSpecialString(() => "This card is indestructible.").Condition = () => !Card.IsFlipped;
             SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => Card.IsFlipped;
 
@@ -297,6 +297,16 @@ namespace Cauldron.TheInfernalChoir
                     base.GameController.ExhaustCoroutine(coroutine3);
                 }
             }
+        }
+
+        public void ShowIfSpecificCardIsInPlayUsingTitle(Func<Card> card)
+        {
+            Func<string> output = delegate
+            {
+                string text = (card().IsInPlayAndHasGameText ? "" : "not ");
+                return card().Title + " is " + text + "in play.";
+            };
+            SpecialStringMaker.ShowSpecialString(output);
         }
     }
 }
