@@ -25,8 +25,12 @@ namespace Cauldron.Cypher
         public override void AddTriggers()
         {
             // When a non-hero card enters play, you may destroy this card.
-            base.AddTrigger<CardEntersPlayAction>(p => !p.CardEnteringPlay.IsHero && GameController.IsCardVisibleToCardSource(p.CardEnteringPlay, GetCardSource()),
-                DestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>(
+                p => !p.CardEnteringPlay.IsHero && GameController.IsCardVisibleToCardSource(p.CardEnteringPlay, GetCardSource()),
+                DestroySelfResponse,
+                TriggerType.DestroySelf,
+                TriggerTiming.After
+                );
 
             base.AddTriggers();
         }
@@ -40,7 +44,7 @@ namespace Cauldron.Cypher
                 // Ask player if they want to destroy this card
                 List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
                 routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                    SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: GetCardSource());
+                    SelectionType.DestroyCard, base.Card, storedResults: storedResults, cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
                 {
