@@ -18,7 +18,7 @@ namespace Cauldron.Titan
         {
             List<SelectCardDecision> target = new List<SelectCardDecision>();
             //{Titan} deals 1 target 1 infernal damage.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Infernal, 1, false, 1, storedResultsDecisions: target, selectTargetsEvenIfCannotDealDamage: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Infernal, 1, false, 1, storedResultsDecisions: target, addStatusEffect: AddRedirectStatusEffect, selectTargetsEvenIfCannotDealDamage: true, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -28,26 +28,6 @@ namespace Cauldron.Titan
                 GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (target.FirstOrDefault() != null && target.FirstOrDefault().SelectedCard != null)
-            {
-                //Redirect the next damage dealt by that target back to itself.
-                RedirectDamageStatusEffect statusEffect = new RedirectDamageStatusEffect()
-                {
-                    NumberOfUses = 1,
-                    RedirectTarget = target.FirstOrDefault().SelectedCard,
-                    SourceCriteria = { IsSpecificCard = target.FirstOrDefault().SelectedCard }
-                };
-                statusEffect.UntilCardLeavesPlay(target.FirstOrDefault().SelectedCard);
-                coroutine = base.AddStatusEffect(statusEffect);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-            }
             //If Titanform is in your trash, you may put it into play or into your hand.
             if (base.GetTitanform().Location.IsTrash)
             {
@@ -67,6 +47,27 @@ namespace Cauldron.Titan
                 }
             }
             yield break;
+        }
+
+        private IEnumerator AddRedirectStatusEffect(DealDamageAction action)
+        {
+            Card target = action.Target;
+            RedirectDamageStatusEffect statusEffect = new RedirectDamageStatusEffect()
+            {
+                NumberOfUses = 1,
+                RedirectTarget = target,
+                SourceCriteria = { IsSpecificCard = target }
+            };
+            statusEffect.UntilCardLeavesPlay(target);
+            IEnumerator coroutine = base.AddStatusEffect(statusEffect);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }

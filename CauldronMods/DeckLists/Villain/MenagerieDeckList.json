@@ -21,7 +21,7 @@
                 "Cauldron.Starlight"
             ],
             "setup": [
-                "At the start of the game, {Menagerie} enters play, 'Intergalactic Collector' side up.",
+                "At the start of the game, {Menagerie} enters play 'Intergalactic Collector' side up.",
 				"Search the villain deck for the card Prized Catch and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
@@ -54,6 +54,8 @@
                 "DealDamageProjectile"
             ],
             "difficulty": 2,
+            "challengeTitle": "Stressful Containment",
+			"challengeText": "At the end of the villain turn, the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.",
             "openingLines": {
                 "default": "Oh, hello, guests! Care to see my latest catch?",
                 "StarlightCharacter": "Why, you are simply exquisite, my dear. I'll have to make your accomodations especially fortified.",

@@ -50,7 +50,7 @@ namespace Cauldron.Gargoyle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (DidDealDamage(storedResults))
+            if (DidDealDamage(storedResults) && storedResults.FirstOrDefault().Target == storedResults.FirstOrDefault().OriginalTarget)
             {
                 totalTargets = storedResults.FirstOrDefault().Amount;
                 // {Gargoyle} deals up to X targets 3 toxic damage each, where X is the amount of damage that was dealt to that hero target.

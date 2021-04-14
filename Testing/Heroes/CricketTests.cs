@@ -336,16 +336,17 @@ namespace CauldronTests
             DealDamage(rail, cricket, 2, DamageType.Melee);
             QuickHPCheck(0);
 
-            //Non targets deal damage
+            //Non targets and non-environment deal damage
             Card hostage = PlayCard("HostageSituation");
             DealDamage(hostage, cricket, 2, DamageType.Melee);
+            DealDamage(akash, cricket, 2, DamageType.Melee);
             if (cramped.IsInPlayAndHasGameText)
             {
-                QuickHPCheck(-3);
+                QuickHPCheck(-6);
             }
             else
             {
-                QuickHPCheck(-2);
+                QuickHPCheck(-4);
             }
 
             GoToStartOfTurn(cricket);
@@ -355,6 +356,69 @@ namespace CauldronTests
             {
                 PlayCard(rail);
             }
+            DealDamage(rail, cricket, 2, DamageType.Melee);
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestGrasshopperKick_EnragedTerrorBird()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Megalopolis", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            MoveCard(oblivaeon, "EnragedTerrorBird", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            DecisionSelectFunction = 0;
+            GoToBeforeStartOfTurn(cricket);
+            RunActiveTurnPhase();
+            Card bird = GetCardInPlay("EnragedTerrorBird");
+            GoToPlayCardPhase(cricket);
+            Card kick = PlayCard("GrasshopperKick");
+            UsePower(kick);
+
+            //cricket should be immune to environment damage
+            QuickHPStorage(cricket);
+            DealDamage(bird, cricket, 3, DamageType.Projectile);
+            QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestGrasshopperKick_Destroyed()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            Card kick = PlayCard("GrasshopperKick");
+            Card cramped = GetCard("CrampedQuartersCombat");
+            //{Cricket} deals 1 target 2 melee damage. {Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+            UsePower(kick);
+
+            Card rail = PlayCard("PlummetingMonorail");
+            DestroyCard(kick);
+            //{Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+            QuickHPStorage(cricket);
+            DealDamage(rail, cricket, 2, DamageType.Melee);
+            QuickHPCheck(0);
+        }
+
+        [Test()]
+        public void TestGrasshopperKick_ReEnterPlay()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            Card kick = PlayCard("GrasshopperKick");
+            Card cramped = GetCard("CrampedQuartersCombat");
+            //{Cricket} deals 1 target 2 melee damage. {Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+            UsePower(kick);
+
+            Card rail = PlayCard("PlummetingMonorail");
+            DestroyCard(kick);
+            //{Cricket} is immune to damage dealt by environment targets until the start of your next turn.
+
+            GoToEndOfTurn(cricket);
+            PlayCard(kick);
+            QuickHPStorage(cricket);
             DealDamage(rail, cricket, 2, DamageType.Melee);
             QuickHPCheck(-2);
         }

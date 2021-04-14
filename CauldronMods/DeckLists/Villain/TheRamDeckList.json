@@ -26,7 +26,7 @@
                 "Cauldron.Quicksilver"
             ],
             "setup": [
-                "At the start of the game, {TheRam} enters play, “Mechanical Juggernaut” side up.",
+                "At the start of the game, {TheRam} enters play “Mechanical Juggernaut” side up.",
                 "Search the villain deck for all copies of Up Close and put them in the trash. Put Grappling Claw into play. Shuffle the villain deck."
             ],
             "gameplay": [
@@ -58,6 +58,8 @@
                 "PlayCardNow"
             ],
             "difficulty": 2,
+            "challengeTitle": "Tactical Retreat",
+			"challengeText": "The first time in the game that {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play, then shuffle all cards other than Up Close and Grappling Claw from the villain trash into the villain deck.",
             "openingLines": {
                 "default": "Target Aquired//Status//Hostile//Initiate Neutralization Protocol",
                 "QuicksilverCharacter": "Primary target identified//Halberd-19//Initiate R43 combat retrieval",
@@ -387,6 +389,8 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
+             "challengeTitle": "Reverse Engineering",
+			"challengeText": "If {TheRam} isn’t in play, other villain cards treat {AdmiralWintersCharacter} as {TheRam}.",
             "difficulty": 3
         }
     ],
@@ -412,11 +416,11 @@
                 "Cauldron.Baccarat"
             ],
             "setup": [
-                "At the start of the game, {TheRam} and {AdmiralWintersCharacter} enter play, “Amphibious Dreadnought” and “Dreadnought Pilot” sides up. Search the villain deck for all copies of Up Close and put them in the trash. Put 2 copies of Remote Mortar into play. Shuffle the villain deck."
+                "At the start of the game, {TheRam} enters play “Amphibious Dreadnought“ side up and {AdmiralWintersCharacter} enters play “Dreadnought Pilot“ side up. Search the villain deck for all copies of Up Close and put them in the trash. Put 2 copies of Remote Mortar into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "If {TheRam} is destroyed remove this card from the game.",
-                "Whenever a villain one-shot would enter play, put it beneath this card instard. Cards beneath this one are not considered in play.",
+                "Whenever a villain one-shot would enter play, put it beneath this card instead. Cards beneath this one are not considered in play.",
                 "At the start of the villain turn, if there are 3 or more cards beneath this one, {TheRam} flips."
             ],
             "advanced": "Reduce damage dealt to {TheRam} by 1",
@@ -442,6 +446,8 @@
                 "IncreaseDamageDealtProjectile"
             ],
             "difficulty": 1,
+            "challengeTitle": "Reverse Engineering",
+			"challengeText": "At the end of the villain turn, if this card is in play, destroy an equipment card, then put the top card of the villain deck under {TheRam}.",
             "openingLines": {
                 "default": "ADMIRAL WINTERS: I'll blast you all back to whatever time you came from, even if I have to destroy this whole place!",
                 "PyreCharacter": "ADMIRAL WINTERS: Once I've reduced that fancy metal suit to pieces, I'm sure it will prove fascinating to study!",

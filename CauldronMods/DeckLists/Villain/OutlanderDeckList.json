@@ -13,7 +13,7 @@
             "keywords": [
                 "villain"
             ],
-            "body": "Fragemented Riftwarrior",
+            "body": "Fragmented Riftwarrior",
             "backgroundColor": "e4bc94",
             "foilBackgroundColor": "CD96C0",
             "character": true,
@@ -23,7 +23,7 @@
                 "Cauldron.Drift"
             ],
             "setup": [
-                "At the start of the game, {Outlander} enters play, “Fragemented Riftwarrior“ side up.",
+                "At the start of the game, {Outlander} enters play “Fragmented Riftwarrior“ side up.",
                 "Search the villain deck for all Trace cards and put them beneath this card. Put 1 random Trace card from beneath this one into play. Shuffle the villain deck."
             ],
             "gameplay": [
@@ -53,6 +53,8 @@
                 "DestroyEquipment"
             ],
             "difficulty": 3,
+            "challengeTitle": "Lingering Influence",
+			"challengeText": "Whenever a villain Ongoing is destroyed, other villain Ongoings are indestructible until the end of the villain turn.",
             "openingLines": {
                 "default": "The blight of your “powers“ will be wiped clean from this Earth - and every other.",
                 "TheKnightCharacter": "You and I are but two traces of the same life. When yours ends, mine will grow stronger!",
@@ -111,7 +113,7 @@
             ],
             "body": [
                 "The first time {Outlander} is dealt 4 or more damage from a single source each turn, play the top card of the villain deck.",
-                "At the end of the villain turn, {Outlander} deals each non-villain target irreducible 1 projectile damage."
+                "At the end of the villain turn, {Outlander} deals each non-villain target 1 irreducible projectile damage."
             ],
             "flavorText": "In many realities, Sir George{BR}of Mormoth had reawakened into{BR}considerably more advanced futures."
         },

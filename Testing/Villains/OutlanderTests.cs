@@ -132,6 +132,62 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestOutlander_Challenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            //Whenever a villain Ongoing is destroyed, other villain Ongoings are indestructible until the end of the villain turn.
+            Card ongoing1 = PlayCard("DimensionalInsinuation");
+            Card ongoing2 = PlayCard("AnchoredFragment");
+
+            DestroyCard(ongoing1, bunker.CharacterCard);
+            AssertInTrash(ongoing1);
+
+            DestroyCard(ongoing2, bunker.CharacterCard);
+            AssertInPlayArea(outlander, ongoing2);
+
+            GoToStartOfTurn(haka);
+            DestroyCard(ongoing2, bunker.CharacterCard);
+            AssertInTrash(ongoing2);
+
+        }
+
+        [Test]
+        public void TestOutlander_Challenge_EdgeCase()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "VoidGuardDrMedico", "Luminary", "TheScholar", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            IEnumerable<Card> ongoings = FindCardsWhere(c => outlander.TurnTaker.Deck.HasCard(c) && c.IsOngoing).Take(4);
+            PlayCards(ongoings);
+
+            SetHitPoints(luminary.CharacterCard, 10);
+            SetHitPoints(scholar.CharacterCard, 5);
+            DecisionSelectCard = luminary.CharacterCard;
+            DecisionAutoDecideIfAble = true;
+            UsePower(voidMedico);
+
+            Card donor = PlayCard("UniversalDonor");
+            Card second = PlayCard("SecondOpinion");
+
+            DiscardAllCards(luminary);
+            MoveAllCards(luminary, luminary.TurnTaker.Deck, luminary.TurnTaker.Trash);
+
+            Card terralunar = PlayCard("TerralunarTranslocator");
+            DecisionSelectPower = terralunar;
+            DecisionYesNo = true;
+
+
+
+            Card crusader = PlayCard("Crusader");
+
+            DecisionSelectCards = luminary.CharacterCards.Concat(ongoings);
+            GoToEndOfTurn(outlander);
+            RunActiveTurnPhase();
+        }
+
+        [Test]
         public void TestOutlander_Back()
         {
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Bunker", "TheScholar", "Unity", "Legacy", "Megalopolis" });

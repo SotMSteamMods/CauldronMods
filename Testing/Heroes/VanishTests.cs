@@ -1105,6 +1105,29 @@ namespace CauldronTests
             AssertInPlayArea(vanish, card);
         }
 
+        [Test]
+        public void ForewarnedOblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Vanish", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+
+            //prep - all heroes now have 0 cards in hand
+            DiscardAllCards(vanish, legacy, haka);
+
+            //move legacy to other battlezone
+            SwitchBattleZone(legacy);
+
+            PlayCard("Forewarned");
+
+            //go to start of turn to trigger draws
+            DecisionYesNo = true;
+            GoToStartOfTurn(vanish);
+
+            AssertNumberOfCardsInHand(vanish, 3);
+            AssertNumberOfCardsInHand(legacy, 0);
+            AssertNumberOfCardsInHand(haka, 3);
+        }
 
         [Test]
         public void BlindsideJump()

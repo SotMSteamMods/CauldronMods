@@ -134,6 +134,30 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRenegadeCricketInnatePower_EnhancedSenses()
+        {
+            SetupGameController("Cauldron.Anathema", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("EnhancedSenses");
+
+            DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
+            Card ring = PutOnDeck("TheLegacyRing");
+            //Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand.
+            QuickHandStorage(cricket);
+            QuickHPStorage(cricket, legacy);
+            UsePower(cricket);
+            QuickHandCheck(-1);
+            AssertIsInPlay(ring);
+            QuickHPCheck(0, -1);
+
+           
+
+
+        }
+
+        [Test()]
         public void TestRenegadeCricketInnatePower_DarkMind()
         {
             SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket/RenegadeCricketCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective", scionIdentifiers: new List<string>() { "DarkMindCharacter" });
@@ -392,6 +416,235 @@ namespace CauldronTests
             UsePower(bunker);
             QuickHandCheck(2);
         }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_EdgeCase4()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Bunker", "Legacy", "MrFixer", "TombOfAnubis");
+            StartGame();
+            SetupIncap(apostate);
+
+            SetHitPoints(bunker.CharacterCard, 10);
+
+            Card idol = PlayCard("IdolOfAnput");
+            Card trial = PlayCard("SpikeTrap");
+            DestroyCard(trial, legacy.CharacterCard);
+
+            DecisionSelectCard = idol;
+            UseIncapacitatedAbility(cricket, 1);
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+            QuickHPStorage(bunker);
+            UsePower(idol);
+            QuickHPCheck(4);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_EdgeCase3()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Ra", "VoidGuardDrMedico", "MrFixer", "TombOfAnubis");
+            StartGame();
+            SetupIncap(apostate);
+
+            SetHitPoints(ra.CharacterCard, 10);
+            SetHitPoints(fixer.CharacterCard, 10);
+
+            PlayCard("SecondOpinion");
+
+            Card idol = PlayCard("IdolOfAnput");
+            Card trial = PlayCard("SpikeTrap");
+            Card trial2 = PlayCard("SwarmOfScarabs");
+
+            SetHitPoints(trial2, 1);
+            DecisionSelectCards = new Card[] { ra.CharacterCard, idol, trial2 };
+            DecisionSelectTurnTakers = new TurnTaker[] { ra.TurnTaker, fixer.TurnTaker };
+            DecisionYesNo = true;
+            DestroyCard(trial, fixer.CharacterCard);
+
+            UsePower(voidMedico);
+
+            UseIncapacitatedAbility(cricket, 1);
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+
+            QuickHPStorage(ra, fixer);
+            UsePower(idol);
+            QuickHPCheck(0, 2);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_EdgeCase5()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "AbsoluteZero", "Legacy", "MrFixer", "TombOfAnubis");
+            StartGame();
+            SetupIncap(apostate);
+
+            SetHitPoints(az.CharacterCard, 1);
+
+            DecisionSelectCard = az.CharacterCard;
+            UseIncapacitatedAbility(cricket, 1);
+
+            UsePower(az);
+            AssertIncapacitated(az);
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_EdgeCase6()
+        {
+            SetupGameController("Apostate", "Cauldron.Cricket/WastelandRoninCricketCharacter", "AbsoluteZero", "Luminary", "MrFixer", "TombOfAnubis");
+            StartGame();
+            SetupIncap(apostate);
+
+            Card turret = PlayCard("RegressionTurret");
+            DecisionSelectCard = turret;
+            UseIncapacitatedAbility(cricket, 1);
+
+            DestroyCard(turret, luminary.CharacterCard);
+            PlayCard(turret);
+
+            DecisionSelectTargets = new Card[] { fixer.CharacterCard, null, fixer.CharacterCard, null };
+            QuickHPStorage(fixer);
+            UsePower(turret);
+            QuickHPCheck(-1);
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_Oblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+
+            StartGame();
+            SetupIncap(oblivaeon);
+
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "Bunker" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Bunker";
+            RunActiveTurnPhase();
+
+            GoToBeforeStartOfTurn(bunker);
+            DecisionSelectFunction = 2;
+            DecisionIncapacitatedAbilityIndex = 1;
+            DecisionSelectCard = bunker.CharacterCard;
+            RunActiveTurnPhase();
+
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+            QuickHandStorage(bunker);
+            UsePower(bunker);
+            QuickHandCheck(2);
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_Oblivaeon_EdgeCase1()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+
+            StartGame();
+            SetupIncap(oblivaeon);
+
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "Bunker" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Bunker";
+            RunActiveTurnPhase();
+
+            Card flakCannon = PlayCard("FlakCannon");
+
+            GoToBeforeStartOfTurn(bunker);
+            DecisionSelectFunction = 2;
+            DecisionIncapacitatedAbilityIndex = 1;
+            DecisionSelectCard = flakCannon;
+            RunActiveTurnPhase();
+
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+            DecisionSelectTarget = legacy.CharacterCard;
+            QuickHPStorage(legacy);
+            UsePower(flakCannon);
+            QuickHPCheck(-6);
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_Oblivaeon_EdgeCase2()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+
+            StartGame();
+            SetupIncap(oblivaeon);
+
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "Bunker" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Bunker";
+            RunActiveTurnPhase();
+
+            MoveCard(oblivaeon, "CreateContraption", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            GoToBeforeStartOfTurn(bunker);
+            DecisionSelectFunction = 0;
+            RunActiveTurnPhase();
+            Card hairdryer = GetCardInPlay("CreateContraption");
+            FlipCard(hairdryer);
+            
+
+            GoToBeforeStartOfTurn(bunker);
+            DecisionSelectFunction = 2;
+            DecisionIncapacitatedAbilityIndex = 1;
+            DecisionSelectCard = hairdryer;
+            RunActiveTurnPhase();
+
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+            DecisionSelectTargets = new Card[] { legacy.CharacterCard, haka.CharacterCard, legacy.CharacterCard, haka.CharacterCard };
+            QuickHPStorage(legacy, haka);
+            UsePower(hairdryer);
+            QuickHPCheck(-12, -12);
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_Oblivaeon_EdgeCase6()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+
+            StartGame();
+            SetupIncap(oblivaeon);
+
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "Bunker" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Bunker";
+            RunActiveTurnPhase();
+
+            MoveCard(oblivaeon, "CreateContraption", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            GoToBeforeStartOfTurn(bunker);
+            DecisionSelectFunction = 0;
+            RunActiveTurnPhase();
+            Card hairdryer = GetCardInPlay("CreateContraption");
+            FlipCard(hairdryer);
+
+
+            GoToBeforeStartOfTurn(bunker);
+            DecisionSelectFunction = 2;
+            DecisionIncapacitatedAbilityIndex = 1;
+            DecisionSelectCard = hairdryer;
+            RunActiveTurnPhase();
+
+            DealDamage(oblivaeon, bunker, 10000, DamageType.Fire, isIrreducible: true);
+
+            GoToAfterEndOfTurn();
+            DecisionSelectFromBoxIdentifiers = new string[] { "AbsoluteZero" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "AbsoluteZero";
+            RunActiveTurnPhase();
+
+            GoToBeforeStartOfTurn(az);
+            DecisionSelectFunction = 3;
+            RunActiveTurnPhase();
+
+            PlayCard(hairdryer);
+            //Select a power on a card in play. The next time a hero uses it. They may immediately use it again.
+            DecisionSelectTargets = new Card[] { legacy.CharacterCard, haka.CharacterCard, legacy.CharacterCard, haka.CharacterCard };
+            QuickHPStorage(legacy, haka);
+            UsePower(hairdryer);
+            QuickHPCheck(-12, -12);
+
+        }
+
+
 
         [Test()]
         public void TestWastelandRoninCricketIncap2CosmicWeapon()

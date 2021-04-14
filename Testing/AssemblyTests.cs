@@ -110,6 +110,17 @@ namespace CauldronTests
                 "MoveCountdownTokenUp",
                 "RemoveDevastation",
                 "AddDevastation",
+                "Cauldron.ShiftLR",
+                "Cauldron.Bass",
+                "Cauldron.Drums",
+                "Cauldron.Guitar",
+                "Cauldron.Vocal",
+                "Cauldron.AllInstruments",
+                "Cauldron.Irradiate",
+                "Cauldron.Clue",
+                "Cauldron.Danger",
+                "Cauldron.Madness",
+                "Cauldron.ClueDangerMadness"
             };
 
             var damageTypes = Enum.GetNames(typeof(DamageType));

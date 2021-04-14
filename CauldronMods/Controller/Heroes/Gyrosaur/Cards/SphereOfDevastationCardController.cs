@@ -21,14 +21,48 @@ namespace Cauldron.Gyrosaur
 
             //"Discard all Crash cards in your hand. 
             var discardStorage = new List<DiscardCardAction>();
-            IEnumerator coroutine = GameController.DiscardCards(DecisionMaker, new LinqCardCriteria((Card c) => c.Location == HeroTurnTaker.Hand && IsCrash(c), "crash"), discardStorage, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            IEnumerator coroutine;
+            // If user setting to auto discard is set to true, automatically choose order of crash card discarding
+            if (GameController.ShouldAutoDiscardHand())
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                // While there is a crash card in hand, discard the first crash card found
+                while (HeroTurnTaker.Hand.Cards.Where((Card c) => IsCrash(c)).Count() > 0)
+                {
+                    coroutine = GameController.DiscardCard(
+                        DecisionMaker,
+                        HeroTurnTaker.Hand.Cards.First((Card c) => IsCrash(c)),
+                        null,
+                        HeroTurnTaker,
+                        discardStorage,
+                        GetCardSource()
+                    );
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
             }
-            else
+            else // manually choose the order to discard crash cards
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = GameController.DiscardCards
+                (
+                    DecisionMaker,
+                    new LinqCardCriteria((Card c) => c.Location == HeroTurnTaker.Hand && IsCrash(c), "crash"),
+                    discardStorage,
+                    cardSource: GetCardSource()
+                );
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             //{Gyrosaur} deals 1 target X + 4 melee damage, where X is 4 times the number of cards discarded this way.",
@@ -63,7 +97,8 @@ namespace Cauldron.Gyrosaur
                 coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
                                                         new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && tt != TurnTaker && !tt.IsIncapacitatedOrOutOfGame),
                                                         SelectionType.DiscardCard,
-                                                        (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), responsibleTurnTaker: TurnTaker, cardSource: GetCardSource()), 
+                                                        (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), responsibleTurnTaker: TurnTaker,  cardSource: GetCardSource()), 
+                                                        allowAutoDecide: true,
                                                         cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {

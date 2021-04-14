@@ -27,7 +27,7 @@
 				"Cauldron.LadyOfTheWood"
 			],
 			"setup": [
-				"At the start of the game, {Celadroch} enters play, 'Black Wind Rising' side up.",
+				"At the start of the game, {Celadroch} enters play 'Black Wind Rising' side up.",
 				"Search the villain deck for 3 relic cards and put them into play. Shuffle the villain deck. Flip the top card of the villain deck face up."
 			],
 			"gameplay": [

@@ -45,6 +45,15 @@ namespace Cauldron.Vector
         private const int AdvancedHpGain = 2;
         private const int AdvancedDamageIncrease = 2;
         private const string EndingMessage = "Vector regained all of his health!  He escapes and the Heroes lose!";
+        public readonly string HasSupervirusBeenPlayedKey = "HasSupervirusBeenPlayed";
+
+        public bool HasSupervirusBeenPlayed
+        { 
+            get
+            {
+                return GetCardPropertyJournalEntryBoolean(HasSupervirusBeenPlayedKey).HasValue && GetCardPropertyJournalEntryBoolean(HasSupervirusBeenPlayedKey).Value == true;
+            }
+        }
 
         public VectorCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -80,13 +89,6 @@ namespace Cauldron.Vector
                     base.SideTriggers.Add(base.AddEndOfTurnTrigger(tt => tt == this.TurnTaker,
                         AdvancedEndOfTurnResponse, TriggerType.GainHP));
                 }
-
-                if(this.IsGameChallenge)
-                {
-                    //When Vector is reduced to 10 or less HP, put Supervirus into play from under him.
-                    AddSideTrigger(AddTrigger((DealDamageAction dd) => dd.Target == this.Card && this.Card.HitPoints <= 10 && GetSuperVirusCardNotInPlay()?.Location == this.Card.UnderLocation, ChallengeMoveSupervirusResponse, TriggerType.MoveCard, TriggerTiming.After));
-                    AddSideTrigger(AddTrigger((SetHPAction shp) => shp.HpGainer == this.Card && this.Card.HitPoints <= 10 && GetSuperVirusCardNotInPlay()?.Location == this.Card.UnderLocation, ChallengeMoveSupervirusResponse, TriggerType.MoveCard, TriggerTiming.After));
-                }
             }
             else
             {
@@ -108,6 +110,55 @@ namespace Cauldron.Vector
                 }
             }
             AddVectorDefeatedIfDestroyedTriggers();
+        }
+
+        public override bool CanBeDestroyed
+        {
+            get
+            {
+                if(Game.IsChallenge && !HasSupervirusBeenPlayed)
+                {
+                    return false;
+                }
+                return base.CanBeDestroyed;
+            }
+        }
+
+        public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
+        {
+            if (!base.Card.IsFlipped && Game.IsChallenge)
+            {
+                //The first time {Vector} would be destroyed each game, instead set him to 10 HP and put Supervirus from under him into play.
+                SetCardPropertyToTrueIfRealAction(HasSupervirusBeenPlayedKey);
+                IEnumerator coroutine = CancelAction(destroyCard);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = GameController.SetHP(Card, 10, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = GameController.MoveCard(TurnTakerController, GetSuperVirusCardNotInPlay(), TurnTaker.PlayArea, isPutIntoPlay: true, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()
@@ -207,11 +258,6 @@ namespace Cauldron.Vector
             }
         }
 
-        private IEnumerator ChallengeMoveSupervirusResponse(GameAction ga)
-        {
-            return GameController.MoveCard(TurnTakerController, GetSuperVirusCardNotInPlay(), TurnTaker.PlayArea, isPutIntoPlay: true, cardSource: GetCardSource());
-        }
-
         protected void AddVectorDefeatedIfDestroyedTriggers(bool canBeMoved = false)
         {
            
@@ -226,7 +272,7 @@ namespace Cauldron.Vector
 
         protected void AddVectorTriggerGameOver()
         {
-            SideTriggers.Add(AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => destroyCard.CardToDestroy == this && !IsSuperVirusInPlay(), DefeatedResponse, TriggerType.GameOver, TriggerTiming.Before));
+            SideTriggers.Add(AddTrigger<DestroyCardAction>((DestroyCardAction destroyCard) => destroyCard.CardToDestroy == this && !IsSuperVirusInPlay() && (!Game.IsChallenge || HasSupervirusBeenPlayed), DefeatedResponse, TriggerType.GameOver, TriggerTiming.Before));
         }
 
         protected void AddVectorDefeatedIfMovedOutOfGameTriggers()

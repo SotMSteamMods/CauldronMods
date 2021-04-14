@@ -48,7 +48,7 @@ namespace Cauldron.Quicksilver
             }
 
             List<YesNoCardDecision> didRedirect = new List<YesNoCardDecision> { };
-            IEnumerator askForRedirect = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.RedirectDamage, this.Card, action: action, storedResults: didRedirect, cardSource: GetCardSource());
+            IEnumerator askForRedirect = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.RedirectDamage, this.CharacterCard, action: action, storedResults: didRedirect, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(askForRedirect);

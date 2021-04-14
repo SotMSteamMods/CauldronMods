@@ -18,9 +18,11 @@ namespace Cauldron.SwarmEater
             base.AddReduceDamageTrigger((DealDamageAction action) => base.Card.IsInPlayAndNotUnderCard && action.Target == base.Card && !action.DamageSource.IsVillain, (DealDamageAction action) => 1);
             //At the end of the villain turn this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each.
             base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage);
-
+        }
+        public override void AddAbsorbTriggers(Card absorbingCard)
+        {
             //Absorb: reduce damage dealt to {SwarmEater} by 1.
-            base.AddReduceDamageTrigger((Card c) => CanAbsorbEffectTrigger() && c == this.CardThatAbsorbedThis(), 1);
+            base.AddReduceDamageTrigger((Card c) => CanAbsorbEffectTrigger() && c == absorbingCard, 1);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)

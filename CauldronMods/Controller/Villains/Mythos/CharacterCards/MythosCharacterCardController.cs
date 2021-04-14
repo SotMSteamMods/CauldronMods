@@ -156,30 +156,54 @@ namespace Cauldron.Mythos
             //For special string describing the order of icons in the deck top(1) to bottom
             string output = null;
             int place = 0;
-            foreach (Card c in base.TurnTaker.Deck.Cards.ToArray().Reverse())
+            if (IsGameChallenge)
             {
-                place++;
-                if (output == null)
+                if(TurnTaker.Deck.HasCards)
                 {
-                    output = "Starting at the top, the order of the deck icons is:{BR}";
-                }
-                switch (this.GetIconIdentifier(c))
-                {
-                    case MythosClueDeckIdentifier:
-                        output += place + ": {Clue}";
-                        break;
+                    output = "The icon on top of the deck is:{BR}";
+                    switch (this.GetIconIdentifier(TurnTaker.Deck.TopCard))
+                    {
+                        case MythosClueDeckIdentifier:
+                            output += "{Clue}";
+                            break;
 
-                    case MythosDangerDeckIdentifier:
-                        output += place + ": {Danger}";
-                        break;
+                        case MythosDangerDeckIdentifier:
+                            output += "{Danger}";
+                            break;
 
-                    case MythosMadnessDeckIdentifier:
-                        output += place + ": {Madness}";
-                        break;
+                        case MythosMadnessDeckIdentifier:
+                            output += "{Madness}";
+                            break;
+                    }
                 }
-                if (base.TurnTaker.Deck.Cards.Count() != place)
+            }
+            else
+            {
+                foreach (Card c in base.TurnTaker.Deck.Cards.ToArray().Reverse())
                 {
-                    output += ",{BR}";
+                    place++;
+                    if (output == null)
+                    {
+                        output = "Starting at the top, the order of the deck icons is:{BR}";
+                    }
+                    switch (this.GetIconIdentifier(c))
+                    {
+                        case MythosClueDeckIdentifier:
+                            output += place + ": {Clue}";
+                            break;
+
+                        case MythosDangerDeckIdentifier:
+                            output += place + ": {Danger}";
+                            break;
+
+                        case MythosMadnessDeckIdentifier:
+                            output += place + ": {Madness}";
+                            break;
+                    }
+                    if (base.TurnTaker.Deck.Cards.Count() != place)
+                    {
+                        output += ",{BR}";
+                    }
                 }
             }
 
@@ -202,14 +226,42 @@ namespace Cauldron.Mythos
             while (cardCount < 5)
             {
                 List<Card> playedCards = new List<Card>();
-                coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, playedCards: playedCards, cardSource: base.GetCardSource());
-                if (UseUnityCoroutines)
+                if (IsTopCardMatching(MythosClueDeckIdentifier))
                 {
-                    yield return GameController.StartCoroutine(coroutine);
+                    var yesNo = new YesNoAmountDecision(GameController, DecisionMaker, SelectionType.Custom, 1, requireUnanimous: true, cardSource: GetCardSource());
+                    coroutine = GameController.MakeDecisionAction(yesNo);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    if(DidPlayerAnswerYes(yesNo))
+                    {
+                        coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, false, 1, playedCards: playedCards, cardSource: base.GetCardSource());
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
                 }
                 else
                 {
-                    GameController.ExhaustCoroutine(coroutine);
+                    coroutine = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck, true, 1, playedCards: playedCards, cardSource: base.GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
 
                 cardCount++;
@@ -273,6 +325,14 @@ namespace Cauldron.Mythos
                 return true;
             }
             return this.GetIconIdentifier(base.TurnTaker.Deck.TopCard) == type;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            return new CustomDecisionText("There is a Clue card on top of the villain deck, but playing it this way will not add a token to Dangerous Investigation. Play the top card of the villain deck anyway?",
+                            "Selecting whether to play the top card of the villain deck",
+                            "Vote for whether to play the top card of the villain deck without adding a token to Dangerous Investigation.",
+                            "Play clue cards from villain deck without adding tokens");
         }
     }
 }

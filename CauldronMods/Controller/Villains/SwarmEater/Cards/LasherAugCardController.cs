@@ -15,9 +15,11 @@ namespace Cauldron.SwarmEater
         {
             //At the end of the villain turn this card deals the hero target with the highest HP {H} projectile damage and destroys {H - 2} hero ongoing and/or equipment cards.
             base.AddEndOfTurnTrigger(tt => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageAndDestroyResponse, new[] { TriggerType.DealDamage, TriggerType.DestroyCard });
-
+        }
+        public override void AddAbsorbTriggers(Card absorbingCard)
+        {
             //Absorb: at the start of the villain turn, destroy 1 hero ongoing or equipment card.
-            base.AddStartOfTurnTrigger(tt => CanAbsorbEffectTrigger() && tt == base.TurnTaker, this.AbsorbDestroyResponse, TriggerType.DestroyCard);
+            base.AddStartOfTurnTrigger(tt => CanAbsorbEffectTrigger() && tt == base.TurnTaker, pca => this.AbsorbDestroyResponse(pca, absorbingCard), TriggerType.DestroyCard);
         }
 
         private IEnumerator DealDamageAndDestroyResponse(PhaseChangeAction action)
@@ -44,10 +46,10 @@ namespace Cauldron.SwarmEater
             }
         }
 
-        private IEnumerator AbsorbDestroyResponse(PhaseChangeAction action)
+        private IEnumerator AbsorbDestroyResponse(PhaseChangeAction action, Card absorbingCard)
         {
             //...destroy 1 hero ongoing or equipment card.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria(c => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), 1, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria(c => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), 1, responsibleCard: absorbingCard, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

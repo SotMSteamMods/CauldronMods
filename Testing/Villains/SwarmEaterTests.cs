@@ -1113,5 +1113,36 @@ namespace CauldronTests
             DealDamage(swarm, legacy, 1, DamageType.Melee);
             QuickHPCheck(-2);
         }
+        [Test()]
+        public void TestSwarmEaterChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "Megalopolis" }, challenge: true);
+            Card pursuit = GetCard("SingleMindedPursuit");
+            Card stalker = GetCard("StalkerAug");
+            Card fire = GetCard("FireAug");
+            PutOnDeck(swarm, new Card[] { pursuit, stalker, fire });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //Inescapable Hunter: Whenever Swarm Eater reduces a target to 2 or lower HP, Swarm Eater destroys that target.
+            PlayCard(pursuit);
+            Card blade = PlayCard("BladeAug");
+            DestroyCard(pursuit);
+            DealDamage(swarm, blade, 1, DamageType.Melee);
+            AssertIsInPlayAndNotUnderCard(blade);
+            AssertHitPoints(blade, 3);
+            DealDamage(swarm, blade, 1, DamageType.Melee);
+            AssertUnderCard(GetCardInPlay("AbsorbedNanites"), blade);
+
+            Card traffic = PlayCard("TrafficPileup");
+            DealDamage(legacy, traffic, 8, DamageType.Melee);
+            AssertIsInPlayAndNotUnderCard(traffic);
+            DealDamage(swarm, traffic, 1, DamageType.Melee);
+            AssertUnderCard(GetCardInPlay("ConvertedBiomass"), traffic);
+
+            SetHitPoints(haka, 5);
+            DealDamage(swarm, haka, 3, DamageType.Melee);
+            AssertIncapacitated(haka);
+        }
     }
 }

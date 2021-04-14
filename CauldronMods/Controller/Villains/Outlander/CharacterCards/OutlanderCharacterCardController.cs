@@ -37,6 +37,32 @@ namespace Cauldron.Outlander
                 }
                 base.AddDefeatedIfDestroyedTriggers();
             }
+
+            if(Game.IsChallenge)
+            {
+                //CHALLENGE: Whenever a villain Ongoing is destroyed, other villain Ongoings are indestructible until the end of the villain turn.
+                base.AddSideTrigger(AddTrigger((DestroyCardAction dca) => dca.WasCardDestroyed && dca.CardToDestroy != null && dca.CardToDestroy.Card.IsOngoing && IsVillain(dca.CardToDestroy.Card), ChallengeOngoingDestroyedResponse, TriggerType.CreateStatusEffect, TriggerTiming.After));
+            }
+
+
+        }
+
+        private IEnumerator ChallengeOngoingDestroyedResponse(DestroyCardAction dca)
+        {
+            var challengeStatusEffect = new MakeIndestructibleStatusEffect();
+            challengeStatusEffect.CardsToMakeIndestructible.IsVillain = true;
+            challengeStatusEffect.CardsToMakeIndestructible.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
+            challengeStatusEffect.ToTurnPhaseExpiryCriteria.Phase = Phase.End;
+            challengeStatusEffect.ToTurnPhaseExpiryCriteria.TurnTaker = this.TurnTaker;
+            IEnumerator coroutine = AddStatusEffect(challengeStatusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
 
         private IEnumerator ReduceDamageResponse(DealDamageAction action)
@@ -147,10 +173,16 @@ namespace Cauldron.Outlander
         public override bool AskIfCardIsIndestructible(Card card)
         {
             //Cards beneath this one are not considered in play. Trace cards are indestructible.
-            return IsTrace(card);
+            if(IsTrace(card))
+            {
+                return true;
+            }
+            return false;
         }
 
         public override bool CanBeDestroyed => Card.IsFlipped;
+        public readonly string OngoingDestroyedLastTurnKey = "OngoingDestroyedLastTurn";
+
 
         public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
         {
