@@ -61,6 +61,41 @@ namespace Cauldron.TheRam
                     AddSideTrigger(AddEndOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, PlayTheTopCardOfTheVillainDeckWithMessageResponse, TriggerType.PlayCard));
                 }
             }
+
+            if(Game.IsChallenge)
+            {
+                //At the end of the villain turn, if this card is in play, destroy an equipment card, then put the top card of the villain deck under {TheRam}.
+                AddSideTrigger(AddEndOfTurnTrigger((TurnTaker tt) => tt == this.TurnTaker, ChallengeEndOfTurnResponse, new TriggerType[] { TriggerType.DestroyCard, TriggerType.MoveCard }));
+            }
+        }
+
+        private IEnumerator ChallengeEndOfTurnResponse(PhaseChangeAction pca)
+        {
+            //At the end of the villain turn, if this card is in play, destroy an equipment card
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => IsEquipment(c), "equipment"), optional: false, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (TurnTaker.Deck.IsEmpty) yield break;
+
+            //then put the top card of the villain deck under {TheRam}.
+            coroutine = GameController.MoveCard(TurnTakerController, TurnTaker.Deck.TopCard, Card.UnderLocation, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            yield break;
         }
 
         private IEnumerator FlipIfWasNotFlippedThisTurn(PhaseChangeAction pca)

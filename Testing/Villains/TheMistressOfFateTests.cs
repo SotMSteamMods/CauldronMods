@@ -255,6 +255,61 @@ namespace CauldronTests
             //flips back
             AssertNotFlipped(fate);
         }
+
+        [Test]
+        public void TestMistressOfFateFlipRoutine_Challenge()
+        {
+            SetupGameController(new string[] { "Cauldron.TheMistressOfFate", "Legacy", "Ra", "TheVisionary", "Megalopolis" }, challenge: true);
+            StartGame();
+            ResetDays();
+
+            Card malus = PutOnDeck("WarpedMalus");
+            Card sorrows = GetCard("DayOfSorrows");
+            FlipCard(sorrows);
+
+            Card decoy = PlayCard("DecoyProjection");
+            SetHitPoints(decoy, 1);
+            SetHitPoints(legacy, 15);
+            DealDamage(fate, ra, 50, DTM);
+
+            Card future = PutInTrash("StolenFuture");
+            Card butterfly = PutOnDeck("ChaosButterfly");
+            Card timePlace = PutOnDeck("SameTimeAndPlace");
+
+            Card traffic = PlayCard("TrafficPileup");
+            Card police = PlayCard("PoliceBackup");
+
+            SetHitPoints(fate, 50);
+
+            // there are 3 face down day cards
+            // there are 3 Heroes
+            // the top 5 cards of the deck should be remove from the game
+            IEnumerable<Card> topCardsToRemove = fate.TurnTaker.Deck.GetTopCards(5);
+            IEnumerable<Card> cardsThatShouldBeFlipped = topCardsToRemove.ToList().GetRange(3, 2);
+            IEnumerable<Card> cardsThatShouldNotBeFlipped = topCardsToRemove.ToList().GetRange(0, 3);
+            FlipCard(fate);
+
+            AssertOutOfGame(topCardsToRemove);
+
+            //days reclaim their cards
+            AssertUnderCard(sorrows, malus);
+            //everything gets set to full HP, except Mistress
+            AssertHitPoints(decoy, 5);
+            AssertHitPoints(legacy, legacy.CharacterCard.MaximumHitPoints ?? 0);
+            AssertHitPoints(fate, 50);
+            //environment is destroyed
+            AssertInTrash(traffic, police);
+            //day cards are flipped face down
+            AssertFlipped(sorrows);
+            //trash and top H-1 cards of deck are RFG, deck cards face-down
+            AssertOutOfGame(future, butterfly, timePlace);
+            AssertFlipped(cardsThatShouldBeFlipped.ToArray());
+            AssertNotFlipped(cardsThatShouldNotBeFlipped.ToArray());
+            //incapped heroes are restored
+            AssertNotIncapacitatedOrOutOfGame(ra);
+            //flips back
+            AssertNotFlipped(fate);
+        }
         [Test]
         public void TestMistressOfFateAdvancedEndOfTurnDamage()
         {

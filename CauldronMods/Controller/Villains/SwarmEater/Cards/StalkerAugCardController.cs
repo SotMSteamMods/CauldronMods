@@ -17,9 +17,11 @@ namespace Cauldron.SwarmEater
         {
             //At the end of the villain turn this card deals each hero target except the hero with the lowest HP {H - 2} irreducible energy damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => base.Card.IsInPlayAndNotUnderCard && tt == base.TurnTaker, this.DealDamageExceptLowestResponse, TriggerType.DealDamage);
-
+        }
+        public override void AddAbsorbTriggers(Card absorbingCard)
+        {
             //At the end of the villain turn, {SwarmEater} deals each other target 1 irreducible energy damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => CanAbsorbEffectTrigger() && tt == base.TurnTaker, this.AbsorbDealDamageResponse, TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => CanAbsorbEffectTrigger() && tt == base.TurnTaker, pca => this.AbsorbDealDamageResponse(pca, absorbingCard), TriggerType.DealDamage);
         }
 
         private IEnumerator DealDamageExceptLowestResponse(PhaseChangeAction action)
@@ -48,10 +50,10 @@ namespace Cauldron.SwarmEater
             yield break;
         }
 
-        private IEnumerator AbsorbDealDamageResponse(PhaseChangeAction action)
+        private IEnumerator AbsorbDealDamageResponse(PhaseChangeAction action, Card absorbingCard)
         {
             //...{SwarmEater} deals each other target 1 irreducible energy damage.
-            IEnumerator coroutine = base.DealDamage(this.CardThatAbsorbedThis(), (Card c) => c != this.CardThatAbsorbedThis(), (Card c) => 1, DamageType.Energy, true);
+            IEnumerator coroutine = base.DealDamage(absorbingCard, (Card c) => c != absorbingCard, (Card c) => 1, DamageType.Energy, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -60,7 +60,32 @@ namespace Cauldron.PhaseVillain
                 //At the end of the villain turn, {Phase} deals each hero target {H} radiant damage. Then, flip {Phase}'s villain character cards.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealDamageResponse, TriggerType.DealDamage));
             }
+
+            if(Game.IsChallenge)
+            {
+                //Whenever an Obstacle is destroyed, Obstacles become immune to damage until the end of the turn.
+                base.AddSideTrigger(base.AddTrigger((DestroyCardAction dca) => dca.WasCardDestroyed && dca.CardToDestroy != null && IsObstacle(dca.CardToDestroy.Card), ChallengeImmuneToDamageResponse, TriggerType.ImmuneToDamage, TriggerTiming.After));
+            }
+
             base.AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator ChallengeImmuneToDamageResponse(DestroyCardAction dca)
+        {
+            ImmuneToDamageStatusEffect effect = new ImmuneToDamageStatusEffect();
+            effect.TargetCriteria.HasAnyOfTheseKeywords = new List<string>() { "obstacle" };
+            effect.UntilThisTurnIsOver(Game);
+
+            IEnumerator coroutine = AddStatusEffect(effect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()

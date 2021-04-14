@@ -49,7 +49,7 @@ namespace Cauldron.Drift
         private IEnumerator TrackResponse(GameAction action)
         {
             List<YesNoCardDecision> switchDecision = new List<YesNoCardDecision>();
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.SwitchToHero, base.Card, storedResults: switchDecision, associatedCards: this.GetInactiveCharacterCard().ToEnumerable(), cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, base.Card, storedResults: switchDecision, associatedCards: this.GetInactiveCharacterCard().ToEnumerable(), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -165,6 +165,13 @@ namespace Cauldron.Drift
                 inactivePosition = 4;
             }
             return inactivePosition;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to switch character cards?", "Should they switch character cards?", "Vote for if they should switch character cards?", "switching character cards");
+
         }
     }
 }

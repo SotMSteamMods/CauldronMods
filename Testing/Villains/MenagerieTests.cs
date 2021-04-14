@@ -227,6 +227,54 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestMenagerieFrontChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "TheSentinels", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
+            DiscardAllCards(sentinels, bunker);
+
+            StartGame();
+
+            PutOnDeck("ReinforcedSphere");
+
+
+            //At the end of the villain turn, the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.
+            QuickHPStorage(writhe, mainstay, medico, idealist, bunker.CharacterCard, scholar.CharacterCard);
+            GoToEndOfTurn(menagerie);
+
+            //only the captured hero takes damage
+            //1 enclosure in play, so 1 damage
+
+            QuickHPCheck(0, 0, 0, 0, 0, -1);
+
+        }
+
+        [Test()]
+        public void TestMenagerieBackChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Menagerie", "TheSentinels", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            MoveCards(menagerie, new string[] { "AquaticSphere", "ArborealSphere", "ExoticSphere" }, menagerie.CharacterCard.UnderLocation);
+            GoToEndOfTurn(menagerie);
+            AssertFlipped(menagerie);
+            GoToEndOfTurn(env);
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectCards = new Card[] { bunker.CharacterCard, scholar.CharacterCard };
+            PlayCard("ReinforcedSphere");
+            PutOnDeck("AquaticSphere");
+            //At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure.
+            //At the end of the villain turn, the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.
+            GoToPlayCardPhase(menagerie);
+            AddCannotDealDamageTrigger(menagerie, menagerie.CharacterCard);
+            QuickHPStorage(writhe, mainstay, medico, idealist, bunker.CharacterCard, scholar.CharacterCard);
+            GoToEndOfTurn(menagerie);
+            QuickHPCheck(0,0,0,0,-2,-2);
+
+
+        }
+
+        [Test()]
         public void TestMenagerieFlip()
         {
             SetupGameController(new string[] { "Cauldron.Menagerie", "Legacy", "Ra", "Haka", "Bunker", "TheScholar", "Megalopolis" });

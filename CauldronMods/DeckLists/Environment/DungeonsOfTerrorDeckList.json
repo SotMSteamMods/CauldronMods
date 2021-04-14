@@ -55,7 +55,7 @@
             ],
             "body": [
                 "When this card enters play, check the top card of the environment trash.",
-                "If it is a fate card, 1 hero may play card, draw a card, or use a power. If it is not a fate card, the player with the most cards in hand discards 2 cards. Then, destroy this card."
+                "If it is a fate card, 1 hero may play a card, draw a card, or use a power. If it is not a fate card, the player with the most cards in hand discards 2 cards. Then, destroy this card."
             ],
             "flavorText": "“Alain, give it up,” said Cricket. “No{BR}way,” panted the young knight.{BR}“We're stuck in a cursed book. No{BR}telling what might come in handy.”"
         },
@@ -181,7 +181,7 @@
             ],
             "body": [
                 "At the end of the environment turn, check the top card of the environment trash.",
-                "If it is a fate card, this card deals the hero target with the highest HP {H - 1} toxic damage. If if is not a fate card, this card deals each non-environment target 1 toxic damage."
+                "If it is a fate card, this card deals the hero target with the highest HP {H - 1} toxic damage. If it is not a fate card, this card deals each non-environment target 1 toxic damage."
             ],
             "flavorText": "The Deck of Fate was not the only{BR}enchanted object that she had created{BR}based on a human game of chance: the{BR}Mistress of Fate also liked RPGs.",
             "hitpoints": 5

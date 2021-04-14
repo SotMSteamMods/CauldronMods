@@ -22,7 +22,7 @@
                 "Cauldron.TangoOne"
             ],
             "setup": [
-                "At the start of the game, {Anathema} enters play, 'Shapeshifting Bioform' side up.",
+                "At the start of the game, {Anathema} enters play 'Shapeshifting Bioform' side up.",
 				"Reveal cards from the top of the villain deck until 2 arms, 1 Body, and 1 Head are revealed. Put those cards into play and shuffle the rest into the villain deck."
             ],
             "gameplay": [
@@ -36,9 +36,6 @@
                 "ImmuneToDamage",
                 "GainHP"
             ],
-            "advancedIcons": [
-                "ImmuneToDamage"
-            ],
             "flippedBody": "Exposed Mutant",
             "flippedGameplay": [
                 "At the start of the villain turn, play the top card of the villain deck.",
@@ -47,7 +44,6 @@
             ],
             "flippedAdvanced": "At the start of the villain turn, each player discards a card from their hand.",
             "flippedIcons": [
-                "StartOfTurnAction",
                 "PlayCardNow",
                 "EndOfTurnAction",
                 "Discard"
@@ -55,7 +51,7 @@
             "difficulty": 2,
             "challengeTitle":"Regenerative Biology",
 		    "challengeText":"At the start of the game, put Biofeedback into play. Biofeedback is indestructible. {Anathema} is immune to villain damage.",
-		    "challengeIcons":[
+		    "flippedChallengeIcons":[
 		 	   "ImmuneToDamage"
 		    ],
             "openingLines": {
@@ -457,7 +453,7 @@
                 "Cauldron.TangoOne"
             ],
             "setup": [
-                "At the start of the game, {Anathema} enters play, 'Accelerated Evolution' side up. Reveal cards from the top of the villain deck until 2 arms, 1 Body, and 1 Head are revealed. Put those cards into play and shuffle the rest into the villain deck."
+                "At the start of the game, {Anathema} enters play 'Accelerated Evolution' side up. Reveal cards from the top of the villain deck until 2 arms, 1 Body, and 1 Head are revealed. Put those cards into play and shuffle the rest into the villain deck."
             ],
             "gameplay": [
                 "Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.",
@@ -480,7 +476,7 @@
             ],
             "difficulty": 3,
             "challengeTitle": "True Evolution",
-            "challengeText": ["Replace both instances of “arm or head card” on this card with “villain target”."],
+            "challengeText": ["Replace both instances of Â“arm or head cardÂ” on this card with Â“villain targetÂ”."],
             "challengeIcons": [],
             "flippedChallengeText": "Body cards are indestructible during the villain turn.",
             "flippedChallengeIcons":[],

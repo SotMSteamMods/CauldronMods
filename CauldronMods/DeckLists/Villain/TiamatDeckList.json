@@ -37,7 +37,7 @@
                 "Cauldron.TheKnight"
             ],
             "setup": [
-                "At the start of the game, {Tiamat} enters play, “The Mouth of the Inferno“ side up."
+                "At the start of the game, {Tiamat} enters play “The Mouth of the Inferno“ side up."
             ],
             "gameplay": [
                 "{InfernoTiamatCharacter} is immune to fire damage.",
@@ -86,7 +86,7 @@
                 "Cauldron.Echelon"
             ],
             "setup": [
-                "At the start of the game, {Tiamat} enters into play, “The Eye of the Storm“ side up."
+                "At the start of the game, {Tiamat} enters play “The Eye of the Storm“ side up."
             ],
             "gameplay": [
                 "{StormTiamatCharacter} is immune to lightnining damage.",
@@ -134,7 +134,7 @@
                 "Cauldron.Necro"
             ],
             "setup": [
-                "At the start of the game, {Tiamat} enters play, “The Jaws of Winter“ side up."
+                "At the start of the game, {Tiamat} enters play “The Jaws of Winter“ side up."
             ],
             "gameplay": [
                 "{WinterTiamatCharacter} is immune to cold damage.",
@@ -629,7 +629,7 @@
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
-                "At the start of the game, {Tiamat} enters play, “The Eye of the Storm” side up (after all other villain character cards enter play). Put “{HydraWindTiamatCharacter}”, face down beneath this card."
+                "At the start of the game, {Tiamat} enters play “The Eye of the Storm” side up (after all other villain character cards enter play). Put “{HydraWindTiamatCharacter}”, face down beneath this card."
             ],
             "gameplay": [
                 "At the start of the villain turn, if {StormTiamatCharacter} is decapitated, she flips and {HydraWindTiamatCharacter} enters play with 15 HP.",
@@ -669,7 +669,7 @@
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
-                "At the start of the game, {Tiamat} etners play, “Mouth of the Inferno” side up. Put “{HydraDecayTiamatCharacter}”, face down beneath this card."
+                "At the start of the game, {Tiamat} enters play “Mouth of the Inferno” side up. Put “{HydraDecayTiamatCharacter}”, face down beneath this card."
             ],
             "gameplay": [
                 "The heroes may not win the game.",
@@ -710,7 +710,7 @@
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
-                "At the start of the game, {Tiamat} enters play, “The Jaws of Winter” side up. Put “{HydraEarthTiamatCharacter}”, face down beneath this card."
+                "At the start of the game, {Tiamat} enters play “The Jaws of Winter” side up. Put “{HydraEarthTiamatCharacter}”, face down beneath this card."
             ],
             "gameplay": [
                 "Face down heads are indestructible and have no game text.",
@@ -874,7 +874,7 @@
                 "Cauldron.Gargoyle"
             ],
             "setup": [
-                "At the start of the game, {Tiamat} enters play, “The Arrival“ side up. Both Dragonscale character cards enter play. Shuffle the villain deck."
+                "At the start of the game, {Tiamat} enters play “The Arrival“ side up. Both Dragonscale character cards enter play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Dragonscales have X HP, where X = {H - 1}.",
@@ -893,7 +893,6 @@
             ],
             "flippedAdvanced": "X = {H + 1} instead.",
             "flippedIcons": [
-                "EndOfTurnAction",
                 "DealDamageEnergy",
                 "DealDamageProjectile"
             ],

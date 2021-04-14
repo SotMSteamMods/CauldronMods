@@ -291,5 +291,61 @@ namespace CauldronTests
             DealDamage(jumper, legacy, 1, DamageType.Melee);
             QuickHPCheck(-2);
         }
+        [Test()]
+        public void TestChallengeMode()
+        {
+            SetupGameController(new string[] { "Cauldron.SwarmEater/DistributedHivemindSwarmEaterCharacter", "Legacy", "Haka", "Ra", "Megalopolis" }, challenge: true);
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            //Challenge: Shared Code: Activated absorb texts also apply to Swarm Eater.
+
+            Card subterran = PutOnDeck("SubterranAug");
+            Card jumper = PlayCard("JumperAug");
+            AssertUnderCard(jumper, subterran);
+            //Check that Subterran Aug's first time each turn is once-per-target-per-turn
+            QuickHPStorage(swarm.CharacterCard, jumper);
+            DealDamage(legacy, swarm, 2, DamageType.Melee);
+            QuickHPCheck(-1, 0);
+            DealDamage(legacy, swarm, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0);
+
+            DealDamage(legacy, jumper, 2, DamageType.Melee);
+            QuickHPCheck(0, 0);
+            DealDamage(legacy, jumper, 2, DamageType.Melee);
+            QuickHPCheck(0, -1);
+
+            DestroyCard(jumper);
+
+            Card speed = PutOnDeck("SpeedAug");
+            Card lasher = PlayCard("LasherAug");
+
+            Card fire = PutOnDeck("FireAug");
+            Card blade = PlayCard("BladeAug");
+
+            SetHitPoints(legacy, 30);
+            SetHitPoints(haka, 10);
+            SetHitPoints(ra, 10);
+
+            //check that reloading doesn't break the challenge triggers
+            SaveAndLoad();
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            QuickHPStorage(legacy);
+            QuickHandStorage(legacy);
+
+            
+            //Lasher should deal 3 + 1 damage at EOT, Blade should deal 2
+
+            GoToEndOfTurn();
+            QuickHPCheck(-6);
+
+            //Also Swarm Eater's damage should be boosted by the Speed Aug absorb
+            DealDamage(swarm, legacy, 1, DamageType.Melee);
+            QuickHPCheck(-2);
+
+            //Fire Aug's absorb should go off twice, causing Legacy to discard two cards
+            GoToStartOfTurn(swarm);
+            QuickHandCheck(-2);
+        }
     }
 }

@@ -158,6 +158,38 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestPhaseChallenge()
+        {
+            SetupGameController(new string[] { "Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            //Whenever an Obstacle is destroyed, Obstacles become immune to damage until the end of the turn.
+            Card wall = GetCardInPlay("ReinforcedWall");
+            Card sightline = PlayCard("BlockedSightline");
+            Card vault = PlayCard("VaultDoor");
+
+
+            DealDamage(haka.CharacterCard, wall, 15, DamageType.Fire, isIrreducible: true);
+
+            //now all obstacles should be immune to damage
+
+            QuickHPStorage(sightline, vault);
+            DealDamage(haka.CharacterCard, sightline, 15, DamageType.Melee, isIrreducible: true);
+            DealDamage(haka.CharacterCard, vault, 15, DamageType.Melee, isIrreducible: true);
+            QuickHPCheckZero();
+
+            //should expire by next turn
+
+            GoToNextTurn();
+
+            QuickHPUpdate();
+            DealDamage(haka.CharacterCard, sightline, 4, DamageType.Melee, isIrreducible: true);
+            DealDamage(haka.CharacterCard, vault, 4, DamageType.Melee, isIrreducible: true);
+            QuickHPCheck(-4,-4);
+
+        }
+
+        [Test()]
         public void TestPhaseBack()
         {
             SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -617,6 +649,24 @@ namespace CauldronTests
             QuickHPStorage(haka.CharacterCard, wall);
             DealDamage(haka, wall, 2, DamageType.Melee);
             QuickHPCheck(-2, -1);
+        }
+
+        [Test()]
+        public void TestResidualDesynchronization_DestroysTarget()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card wall = GetCardInPlay("ReinforcedWall");
+            PlayCard("ResidualDesynchronization");
+
+            //Reduce damage dealt to Obstacles by 1.
+            //The first time a villain target is dealt damage each turn, it deals the source of that damage 2 energy damage.
+            //if the target is destroyed no damage should be dealt
+            QuickHPStorage(haka.CharacterCard);
+            DealDamage(haka.CharacterCard, wall, 20, DamageType.Melee, isIrreducible: true);
+            QuickHPCheck(0);
+            AssertInTrash(wall);
         }
 
 

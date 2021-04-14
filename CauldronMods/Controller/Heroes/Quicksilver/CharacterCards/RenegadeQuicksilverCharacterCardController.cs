@@ -10,7 +10,11 @@ namespace Cauldron.Quicksilver
     {
         public RenegadeQuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[]
+                    {
+                        TurnTaker.Deck,
+                        TurnTaker.Trash
+                    }, new LinqCardCriteria((Card c) => c.Identifier == "IronRetort", "", useCardsSuffix: false, singular: "Iron Retort", plural: "Iron Retorts"));
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
@@ -36,6 +40,7 @@ namespace Cauldron.Quicksilver
                         //The next time a hero is dealt damage, they may play a card.
                         OnDealDamageStatusEffect statusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(PlayCardResponse), "The next time a hero is dealt damage, they may play a card.", new TriggerType[] { TriggerType.PlayCard }, base.TurnTaker, base.Card);
                         statusEffect.NumberOfUses = 1;
+                        statusEffect.BeforeOrAfter = BeforeOrAfter.After;
                         statusEffect.CanEffectStack = true;
 
                         if (IsRealAction())

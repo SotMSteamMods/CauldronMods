@@ -21,7 +21,14 @@ namespace Cauldron.TheRam
             {
                 if(TurnTaker.HasMultipleCharacterCards)
                 {
-                    return TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "TheRamCharacter").FirstOrDefault();
+                    Card ram = TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "TheRamCharacter").FirstOrDefault();
+                    if (Game.IsChallenge && ram != null && !ram.IsInPlay)
+                    {
+                        //If {TheRam} isn’t in play, other villain cards treat {AdmiralWintersCharacter} as {TheRam}.
+                        return TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "AdmiralWintersCharacter").FirstOrDefault();
+                    }
+                    return ram;
+
                 }
                 else
                 {
@@ -39,9 +46,18 @@ namespace Cauldron.TheRam
                 {
                     return ram;
                 }
+                if(Game.IsChallenge && (ram == null || !ram.IsInPlay))
+                {
+                    var winters = TurnTaker.CharacterCards.Where((Card c) => c.Identifier == "AdmiralWintersCharacter").FirstOrDefault();
+                    if (winters != null && winters.IsInPlay)
+                    {
+                        return winters;
+                    }
+                }
                 return null;
             }
-        }protected IEnumerator MessageNoRamToAct(CardSource actingCard, string missingAction = "act")
+        }
+        protected IEnumerator MessageNoRamToAct(CardSource actingCard, string missingAction = "act")
         {
             IEnumerator coroutine = GameController.SendMessageAction($"The Ram is not in play, so it does not {missingAction}.", Priority.Medium, actingCard);
             if (base.UseUnityCoroutines)

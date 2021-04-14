@@ -13,6 +13,10 @@ namespace Cauldron.TheRam
         {
             AddUpCloseTrackers();
             SpecialStringMaker.ShowHeroTargetWithHighestHP();
+            if (TurnTaker.IsChallenge)
+            {
+                SpecialStringMaker.ShowIfElseSpecialString(() => HasBeenSetToTrueThisGame(ChallengeRetreatKey), () => "The Ram has been reduced to 40 HP this game.", () => "The Ram has not yet been reduced to 40 HP.");
+            }
         }
 
         public override void AddStartOfGameTriggers()
@@ -20,6 +24,8 @@ namespace Cauldron.TheRam
             base.AddStartOfGameTriggers();
             (TurnTakerController as TheRamTurnTakerController).HandleWintersEarly(true);
         }
+
+        private readonly string ChallengeRetreatKey = "TheRamChallengeTacticalRetreatKey";
 
         public override void AddSideTriggers()
         {
@@ -75,7 +81,74 @@ namespace Cauldron.TheRam
                 }
             }
 
+            if(Game.IsChallenge && !HasBeenSetToTrueThisGame(ChallengeRetreatKey))
+            {
+                //"The first time in the game that {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play, then shuffle all cards other than Up Close and Grappling Claw from the villain trash into the villain deck."
+                AddSideTrigger(AddTrigger((DealDamageAction dd) => dd.Target == CharacterCard && dd.TargetHitPointsAfterBeingDealtDamage <= 40 && !dd.Target.IsBeingDestroyed && !HasBeenSetToTrueThisGame(ChallengeRetreatKey), ChallengeResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After));
+                AddSideTrigger(AddTrigger((SetHPAction sha) => sha.HpGainer == CharacterCard && sha.HpGainer.HitPoints <= 40 && !sha.HpGainer.IsBeingDestroyed && !HasBeenSetToTrueThisGame(ChallengeRetreatKey), ChallengeResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.ShuffleTrashIntoDeck }, TriggerTiming.After));
+
+            }
+
             AddDefeatedIfDestroyedTriggers();
+        }
+
+        private IEnumerator ChallengeResponse(GameAction action)
+        {
+            SetCardPropertyToTrueIfRealAction(ChallengeRetreatKey);
+            IEnumerator coroutine;
+            //When {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play. 
+
+            var fallBacks = TurnTaker.GetCardsWhere((Card c) => c.Identifier == "FallBack" && (c.Location == TurnTaker.Deck || c.Location == TurnTaker.Trash));
+            if (fallBacks.Any())
+            {
+                //PlayCardFromLocations will play *one* copy from *each* location, if possible.
+                //So, we'll just pick the first one we can find and play it
+                //(They should both end up either in play or in the deck afterwards, so it shouldn't matter)
+                coroutine = GameController.PlayCard(DecisionMaker, fallBacks.FirstOrDefault(), isPutIntoPlay: true, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                coroutine = GameController.SendMessageAction("There were no copies of Fall Back in the villain deck or trash.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            //Put all cards other than UpClose and Grappling Claw from the villain trash into the villain deck, then shuffle the villain deck.
+            IEnumerable<Card> cardsToMove = TurnTaker.Trash.Cards.Where(c => c.Identifier != "UpClose" && c.Identifier != "GrapplingClaw");
+            coroutine = GameController.BulkMoveCards(TurnTakerController, cardsToMove, TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            yield break;
         }
 
         private IEnumerator AskIfMoveUpCloseResponse(PhaseChangeAction pc)

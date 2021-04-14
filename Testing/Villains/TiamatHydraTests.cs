@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Handelabra;
 
 namespace CauldronTests
 {
@@ -1713,6 +1714,7 @@ namespace CauldronTests
             Card fire = PutInTrash("ElementOfFire");
             Card frenzy = PlayCard("ElementalFrenzy");
 
+
             GoToEndOfTurn(tiamat);
             AssertIsInPlay(frenzy);
 
@@ -1726,6 +1728,69 @@ namespace CauldronTests
             DestroyCard(inferno);
             AssertInTrash(frenzy);
             AssertIsInPlay(aspect);
+        }
+        [Test()]
+        public void TestElementalFrenzyIndestructible_PickingUpExtraCards()
+        {
+            SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "Megalopolis" }, challenge: true);
+            StartGame();
+
+            Card frenzy = PlayCard("ElementalFrenzy");
+
+            PlayCard("SkyBreaker");
+
+            //if bug is occurring, at EoT, frenzy will pick up skybreaker and play it immediately
+            //this would do 5 damage to all heroes
+            //assert only end of turn head damage
+            QuickHPStorage(parse, bunker, haka);
+            GoToEndOfTurn(tiamat);
+            AssertIsInPlay(frenzy);
+            QuickHPCheck(-1,-1,-3);
+
+         }  
+        [Test()]
+        public void TestHydraTiamatHeadsRemovedFromGame()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Parse", "Bunker", "Haka", "TheFinalWasteland");
+            StartGame();
+
+            DestroyCard(inferno);
+            DestroyCard(winter);
+            DestroyCard(storm);
+            GoToStartOfTurn(tiamat);
+            GoToStartOfTurn(tiamat);
+            GoToStartOfTurn(tiamat);
+
+            PlayCard("UnforgivingWasteland");
+            Card skunk = PlayCard("HorridSkunkApe");
+            DealDamage(skunk, storm, 20, DamageType.Melee);
+            AssertOutOfGame(tiamat.TurnTaker.FindCard("HydraStormTiamatCharacter"));
+
+            if(GameController.IsGameOver)
+            {
+                Assert.Pass();
+            }
+
+            SaveAndLoad();
+            Card rfgStorm = tiamat.TurnTaker.FindCard("HydraStormTiamatCharacter");
+            Log.Debug($"Storm location: {rfgStorm.Location.GetFriendlyName()}");
+            AssertOutOfGame(rfgStorm);
+
+            skunk = GetCardInPlay("HorridSkunkApe");
+            DealDamage(skunk, inferno, 20, DamageType.Melee);
+            AssertOutOfGame(tiamat.TurnTaker.FindCard("HydraInfernoTiamatCharacter"));
+
+            DealDamage(skunk, winter, 20, DamageType.Melee);
+            AssertOutOfGame(tiamat.TurnTaker.FindCard("WinterTiamatCharacter"));
+
+            DealDamage(skunk, wind, 20, DamageType.Melee);
+            AssertOutOfGame(tiamat.TurnTaker.FindCard("HydraWindTiamatCharacter"));
+            DealDamage(skunk, decay, 20, DamageType.Melee);
+            AssertOutOfGame(tiamat.TurnTaker.FindCard("HydraDecayTiamatCharacter"));
+            DealDamage(skunk, earth, 20, DamageType.Fire);
+            AssertOutOfGame(tiamat.TurnTaker.FindCard("HydraEarthTiamatCharacter"));
+
+            AssertGameOver();
         }
     }
 }

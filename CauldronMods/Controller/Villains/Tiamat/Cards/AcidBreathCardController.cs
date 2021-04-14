@@ -37,13 +37,9 @@ namespace Cauldron.Tiamat
             List<TurnTaker> heroesWithDestroyed = new List<TurnTaker>();
             if (storedResultsAction.Count<DestroyCardAction>() > 0)
             {
-                using (List<DestroyCardAction>.Enumerator enumerator = storedResultsAction.GetEnumerator())
+                foreach(DestroyCardAction destroy in storedResultsAction)
                 {
-                    while (enumerator.MoveNext())
-                    {
-                        DestroyCardAction destroy = enumerator.Current;
-                        heroesWithDestroyed.Add(destroy.CardToDestroy.TurnTaker);
-                    }
+                    heroesWithDestroyed.Add(destroy.CardToDestroy.TurnTaker);
                 }
             }
             coroutine = base.DealDamage(null, (Card c) => c.IsHeroCharacterCard && !heroesWithDestroyed.Any(tt => c.Owner == tt), base.H, DamageType.Toxic, damageSourceInfo: new TargetInfo(HighestLowestHP.HighestHP, 1, 1, new LinqCardCriteria((Card c) => c.DoKeywordsContain("head"), "the head with the highest HP")));

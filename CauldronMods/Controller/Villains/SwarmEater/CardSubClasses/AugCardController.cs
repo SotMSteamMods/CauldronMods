@@ -9,14 +9,24 @@ namespace Cauldron.SwarmEater
         {
 
         }
+        public virtual void AddAbsorbTriggers()
+        {
+            if(this.CardThatAbsorbedThis() != null)
+            {
+                AddAbsorbTriggers(CardThatAbsorbedThis());
+            }
+        }
+        public virtual void AddAbsorbTriggers(Card absorbingCard)
+        {
 
+        }
         public override void AddStartOfGameTriggers()
         {
             if(CanAbsorbEffectTrigger())
             {
                 RemoveAllTriggers();
                 GameController.RemoveInhibitor(this);
-                AddAllTriggers();
+                AddAbsorbTriggers();
             }
         }
         public Card CardThatAbsorbedThis()

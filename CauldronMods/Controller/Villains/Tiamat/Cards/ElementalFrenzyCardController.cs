@@ -123,7 +123,19 @@ namespace Cauldron.Tiamat
 
         private IEnumerator PlayTopCardFromUnderResponse(PhaseChangeAction pc)
         {
-            return base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, showMessage: true, overrideDeck: base.Card.UnderLocation, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, showMessage: true, overrideDeck: base.Card.UnderLocation, cardSource: base.GetCardSource());
+            if(!Card.UnderLocation.HasCards)
+            {
+                coroutine = DoNothing();
+            }
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }

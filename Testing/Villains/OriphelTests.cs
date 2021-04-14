@@ -312,6 +312,44 @@ namespace CauldronTests
             PlayCard("WreckingUppercut");
             AssertNotFlipped(oriphel);
         }
+
+        [Test]
+        public void TestOriphelFlipCondition_Requires3_Challenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Knyfe", "Megalopolis" }, challenge: true);
+            StartGame();
+            CleanupStartingCards();
+
+            FlipCard(oriphel);
+            PutInTrash("MoonShardkey");
+            PutInTrash("SunShardkey");
+            AssertFlipped(oriphel);
+
+            PutInTrash("WorldShardkey");
+
+            AssertNotFlipped(oriphel);
+        }
+
+        [Test]
+        public void TestRelicsReduceDamage_Challenge()
+        {
+            SetupGameController(new string[] { "Cauldron.Oriphel", "Legacy", "Ra", "Tempest", "Knyfe", "Megalopolis" }, challenge: true);
+            StartGame();
+            CleanupStartingCards();
+
+            //Reduce damage dealt to villain relics by 2.
+            Card relic = PlayCard("MoonShardkey");
+
+            QuickHPStorage(relic);
+            DealDamage(ra, relic, 4, DamageType.Fire);
+            QuickHPCheck(-2);
+
+            FlipCard(oriphel);
+            QuickHPStorage(relic);
+            DealDamage(ra, relic, 3, DamageType.Fire);
+            QuickHPCheck(-1);
+
+        }
         [Test]
         public void TestGrandOriphelDestroyCondition()
         {

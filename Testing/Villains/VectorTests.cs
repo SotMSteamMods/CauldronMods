@@ -1686,13 +1686,14 @@ namespace CauldronTests
             AssertNotInPlay(virus);
 
             DealDamage(legacy, vector, 30, DamageType.Melee);
+            AssertNotInPlay(virus);
+            DealDamage(legacy, vector, 15, DamageType.Fire);
             AssertIsInPlay(virus);
+            AssertHitPoints(vector.CharacterCard, 10);
 
             FlipCard(vector);
             AssertOutOfGame(virus);
 
-            DealDamage(legacy, vector, 2, DamageType.Melee);
-            AssertNotInPlay(virus);
         }
     }
 }

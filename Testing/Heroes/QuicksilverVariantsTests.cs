@@ -57,6 +57,25 @@ namespace CauldronTests
             QuickHandCheck(4);
         }
 
+
+        [Test]
+        public void TestUncannyQuicksilverIncap1_SoftLock()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Quicksilver/UncannyQuicksilverCharacter", "Ra", "NightMist", "Megalopolis");
+            StartGame();
+
+            SetupIncap(baron, quicksilver.CharacterCard);
+            SetupIncap(baron, ra.CharacterCard);
+            PlayCard("MistForm");
+
+            DrawCard(mist, 3);
+
+            //One player may draw until they have 4 cards in hand.
+            QuickHandStorage(mist);
+            UseIncapacitatedAbility(quicksilver, 0);
+            QuickHandCheck(0);
+        }
+
         [Test]
         public void TestUncannyQuicksilverIncap2()
         {
@@ -118,7 +137,11 @@ namespace CauldronTests
             SetupGameController("Apostate", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
             StartGame();
 
-            Card retort = PutOnDeck("IronRetort");
+            DiscardAllCards(quicksilver);
+
+            PrintSpecialStringsForCard(quicksilver.CharacterCard);
+
+            Card retort = PutInDeck("IronRetort");
             Card needle = PutInHand("ForestOfNeedles");
 
             DecisionSelectCard = retort;
@@ -130,6 +153,9 @@ namespace CauldronTests
             QuickHandCheckZero();
             AssertInHand(retort);
             AssertInTrash(needle);
+
+            PrintSpecialStringsForCard(quicksilver.CharacterCard);
+
         }
 
         [Test]
@@ -160,6 +186,7 @@ namespace CauldronTests
             UseIncapacitatedAbility(quicksilver, 1);
             AssertInHand(new Card[] { staff, blaze });
             DealDamage(apostate, ra, 2, DamageType.Melee);
+            PrintSeparator("Second instance of damage");
             DealDamage(apostate, ra, 2, DamageType.Melee);
             AssertIsInPlay(staff);
             AssertInHand(blaze);
