@@ -22,7 +22,7 @@
                 "Cauldron.Cricket"
             ],
             "setup": [
-                "At the start of the game, put {Dynamo}'s villain character cards into play, 'Notorious Supercriminal' side up.",
+                "At the start of the game, {Dynamo} enters play, 'Notorious Supercriminal' side up.",
                 "Shuffle the villain deck."
             ],
             "gameplay": [
@@ -38,7 +38,7 @@
             ],
             "flippedBody": "Fully Charged",
             "flippedGameplay": [
-                "When Dynamo flips to this side, play the top 2 cards of the villain deck. Then, shuffle the villain trash, put it on the bottom of the villain deck, and flip {Dynamo}'s villain character cards."
+                "When Dynamo flips to this side, play the top 2 cards of the villain deck. Then, shuffle the villain trash, put it on the bottom of the villain deck, and flip {Dynamo}'s villain character card."
             ],
             "flippedAdvanced": "Increase damage dealt by villain targets by 1.",
             "flippedIcons": [

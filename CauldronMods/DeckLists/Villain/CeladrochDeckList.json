@@ -27,12 +27,12 @@
 				"Cauldron.LadyOfTheWood"
 			],
 			"setup": [
-				"At the start of the game, put {Celadroch}'s villain character cards into play, 'Black Wind Rising' side up.",
+				"At the start of the game, {Celadroch} enters play, 'Black Wind Rising' side up.",
 				"Search the villain deck for 3 relic cards and put them into play. Shuffle the villain deck. Flip the top card of the villain deck face up."
 			],
 			"gameplay": [
 				"Villain cards cannot be played.",
-				"At the start of the villain turn, if the storm pool has 3 or more tokens, flip {Celadroch}'s character card.",
+				"At the start of the villain turn, if the storm pool has 3 or more tokens, {Celadroch} flips.",
 				"Otherwise, add 1 token to the storm pool."
 			],
 			"advanced": "Reduce damage dealt to relics by 1.",

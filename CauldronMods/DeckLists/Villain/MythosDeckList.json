@@ -22,13 +22,13 @@
                 "Cauldron.Titan"
             ],
             "setup": [
-                "At the start of the game, put {Mythos}'s villain character cards into play, 'Insubstantial Rumor' side up.",
+                "At the start of the game, {Mythos} enters play, 'Insubstantial Rumor' side up.",
                 "Search the villain deck for Dangerous Investigations and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "{Mythos} and Dangerous Investigation are indestructible. Activate any {Danger}, {Madness}, or {Clue} effects that match the icon on top of the villain deck.",
                 "{Danger} {Mythos} is immune to damage.",
-                "At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, flip {Mythos}' villain character cards."
+                "At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, {Mythos} flips."
             ],
             "advanced": "Reduce damage dealt to {Mythos} by 2.",
             "icons": [

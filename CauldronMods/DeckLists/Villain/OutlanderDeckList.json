@@ -23,12 +23,12 @@
                 "Cauldron.Drift"
             ],
             "setup": [
-                "At the start of the game, put {Outlander}'s villain character cards into play, “Fragemented Riftwarrior“ side up.",
+                "At the start of the game, {Outlander} enters play, “Fragemented Riftwarrior“ side up.",
                 "Search the villain deck for all Trace cards and put them beneath this card. Put 1 random Trace card from beneath this one into play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Cards beneath this one are not considered in play. Trace cards are indestructible.",
-                "When {Outlander} would be destroyed instead flip his villain character cards."
+                "When {Outlander} would be destroyed, his villain character card flips instead."
             ],
             "advanced": "Whenever {Outlander} flips to this side, he becomes immune to damage until the start of the next villain turn.",
             "icons": [
@@ -39,7 +39,7 @@
             ],
             "flippedBody": "Union of the Lost",
             "flippedGameplay": [
-                "When {Outlander} flips to this side, restore him to 20 HP, destroy all copies of Anchored Fragment, and put a random Trace into play. Then, if there are fewer than {H} Trace cards in play, flip {Outlander}'s villain character cards.",
+                "When {Outlander} flips to this side, restore him to 20 HP, destroy all copies of Anchored Fragment, and put a random Trace into play. Then, if there are fewer than {H} Trace cards in play, {Outlander} flips.",
                 "Cards beneath this one are not considered in play. Trace cards are indestructible.",
                 "Reduce the first damage dealt to {Outlander} each turn by {H}."
             ],

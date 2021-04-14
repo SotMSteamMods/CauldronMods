@@ -22,11 +22,11 @@
                 "Cauldron.Cypher"
             ],
             "setup": [
-                "At the start of the game, put {SwarmEater}'s villain character cards into play, “Power Hungry“ side up.",
+                "At the start of the game, {SwarmEater} enters play, “Power Hungry“ side up.",
                 "Reveal cards from the top of the villain deck until {H - 1} targets, 2 traits, and Single-Minded Pursuit are revealed. Put them into play, and shuffle the rest of the revealed cards back into the villain deck."
             ],
             "gameplay": [
-                "If Single-Minded Pursuit leaves play, flip {SwarmEater}'s villain character cards.",
+                "If Single-Minded Pursuit leaves play, {SwarmEater} flips.",
                 "At the start of the villain turn, {SwarmEater} deals the pursued target 3 psychic damage.",
                 "Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target."
             ],
@@ -40,7 +40,7 @@
             "flippedBody": "Assimiliating Nanoswarm",
             "flippedGameplay": [
                 "At the start of the villain turn, {SwarmEater} deals the target other than itself with the lowest HP 2 melee damage.",
-                "Whenever Single-Minded Pursuit enters play, flip {SwarmEater}'s villain character cards.",
+                "Whenever Single-Minded Pursuit enters play, {SwarmEater} flips.",
                 "Whenever a villain card is played, {SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage."
             ],
             "flippedAdvanced": "Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.",
@@ -475,10 +475,10 @@
                 "Cauldron.Cypher"
             ],
             "setup": [
-                "At the start of the game, put {SwarmEater}'s villain character cards into play, 'Distributed Hivemind' side up. Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game. Shuffle the villain deck."
+                "At the start of the game, {SwarmEater} enters play, 'Distributed Hivemind' side up. Search the villain deck for Converted Biomass and Absorbed Nanites and remove them from the game. Shuffle the villain deck."
             ],
             "gameplay": [
-                "Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP. When a villain target enters play, flip {SwarmEater}'s villain character cards.",
+                "Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP. When a villain target enters play, {SwarmEater} flips.",
                 "Activate the Absorb text of all cards beneath villain targets, treating {SwarmEater}'s name as the name of that target. Ignore all other game text on those cards and destroy them when that target leaves play.",
                 "At then end of the villain turn, if there are no nanomutants in play, play the top card of the villain deck."
             ],
@@ -494,7 +494,7 @@
             "flippedBody": "Colony Upgrades",
             "flippedGameplay": [
                 "When {SwarmEater} flips to this side, discard cards from the top of the villain deck until a target is discarded.",
-                "Put the discarded target beneath the villain target that just entered play. Then flip {SwarmEater}'s character cards."
+                "Put the discarded target beneath the villain target that just entered play. Then {SwarmEater} flips."
             ],
             "flippedAdvanced": "When {SwarmEater} flips to this side he regains {H - 2} HP.",
             "flippedIcons": [
