@@ -26,7 +26,7 @@
 				"Search the villain deck for 1 copy of Chain Reaction and put it into play. Shuffle the villain deck."
             ],
             "gameplay": [
-                "At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cardh and destroy 1 environment card.",
+                "At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cards and destroy 1 environment card.",
                 "At the end of the villain turn, {Gray} deals the hero target with the highest HP {H - 1} energy damage.",
                 "Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and {Gray} deals each non-villain target {H - 1} energy damage."
             ],

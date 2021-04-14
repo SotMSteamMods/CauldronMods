@@ -28,7 +28,8 @@
             "gameplay": [
                 "{Mythos} and Dangerous Investigation are indestructible. Activate any {Danger}, {Madness}, or {Clue} effects that match the icon on top of the villain deck.",
                 "{Danger} {Mythos} is immune to damage.",
-                "At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, {Mythos} flips."
+                "At the end of the villain turn, the players may play up to 5 cards from the top of the villain deck. Then if there are {H} tokens on Dangerous Investigation, {Mythos} flips.",
+                "You may check the symbols on the backs of all cards in the villain deck to determine the upcoming order."
             ],
             "advanced": "Reduce damage dealt to {Mythos} by 2.",
             "icons": [

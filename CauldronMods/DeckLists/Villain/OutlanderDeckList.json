@@ -28,7 +28,7 @@
             ],
             "gameplay": [
                 "Cards beneath this one are not considered in play. Trace cards are indestructible.",
-                "When {Outlander} would be destroyed, his villain character card flips instead."
+                "When {Outlander} would be destroyed, he flips instead."
             ],
             "advanced": "Whenever {Outlander} flips to this side, he becomes immune to damage until the start of the next villain turn.",
             "icons": [
