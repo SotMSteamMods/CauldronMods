@@ -493,6 +493,43 @@ namespace CauldronTests
             AssertInTrash(crystal);
         }
         [Test]
+        public void TestDowsingCrystalDoesRemoveTarget()
+        {
+            SetupGameController("TheEnnead", "Cauldron.MagnificentMara", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card firstDemigod = FindCardsWhere((Card c) => c.IsActiveEnneadCharacter && c.IsInPlayAndHasGameText).FirstOrDefault();
+            Card crystal = PlayCard("DowsingCrystal");
+            UsePower(crystal);
+            DestroyCard(crystal);
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { ra.CharacterCard, firstDemigod };
+            SetHitPoints(firstDemigod, 2);
+            PlayCard("PoliceBackup");
+            AssertFlipped(firstDemigod);
+            Assert.IsFalse(firstDemigod.IsTarget);
+        }
+        [Test]
+        public void TestDowsingCrystalDoesRemoveTargetWhenDestroyingSelf()
+        {
+            SetupGameController("TheEnnead", "Cauldron.MagnificentMara", "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card firstDemigod = FindCardsWhere((Card c) => c.IsActiveEnneadCharacter && c.IsInPlayAndHasGameText).FirstOrDefault();
+            Card crystal = PlayCard("DowsingCrystal");
+            UsePower(crystal);
+
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { ra.CharacterCard, firstDemigod };
+            SetHitPoints(firstDemigod, 4);
+            PlayCard("PoliceBackup");
+            AssertFlipped(firstDemigod);
+            Assert.IsFalse(firstDemigod.IsTarget);
+        }
+        [Test]
         public void TestGlimpse()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
