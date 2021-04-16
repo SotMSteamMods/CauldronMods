@@ -84,7 +84,7 @@
                 "DealDamageEnergy"
             ],
             "body": [
-                "Select 2 non-{Irradiated} cards in 1 player's hand. {Irradiate} those cards until they leave that player's hand. If 2 of your cards were {Irradiate} this way, increase energy damage dealt by {Pyre} by 1 until the end of your turn.",
+                "Select 2 non-{Irradiated} cards in 1 player's hand. {Irradiate} those cards until they leave that player's hand. If 2 of your cards were {Irradiated} this way, increase energy damage dealt by {Pyre} by 1 until the end of your turn.",
                 "{Pyre} deals 1 target 2 energy damage."
             ],
             "flavorQuotes": [
