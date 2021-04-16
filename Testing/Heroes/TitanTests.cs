@@ -677,7 +677,7 @@ namespace CauldronTests
             Card chap = PutInHand("TheChaplain");
             SetHitPoints(titan, 17);
             DecisionYesNo = true;
-            DecisionSelectCard = chap;
+            DecisionSelectCards = new Card[] { tform,  chap };
 
             QuickHPStorage(titan);
             PlayCard("MoltenVeins");
@@ -699,7 +699,7 @@ namespace CauldronTests
             Card chap = PutInHand("TheChaplain");
             SetHitPoints(titan, 17);
             DecisionYesNo = true;
-            DecisionSelectCard = chap;
+            DecisionSelectCards = new Card[] {tform, chap };
 
             QuickHPStorage(titan);
             PlayCard("MoltenVeins");
@@ -720,8 +720,7 @@ namespace CauldronTests
             Card tform = PutInTrash("Titanform");
             Card veins = PutOnDeck("MoltenVeins");
             SetHitPoints(titan, 17);
-            DecisionYesNo = false;
-            DecisionDoNotSelectCard = SelectionType.PlayCard;
+            DecisionSelectCards = new Card[] { null, null };
 
             QuickHPStorage(titan);
             QuickHandStorage(titan);
