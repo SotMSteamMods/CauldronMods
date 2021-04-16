@@ -51,7 +51,7 @@ namespace Cauldron.Echelon
                 yield break;
             }
 
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.IncreaseDamage, this.Card, dd, storedYesNo, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(player, SelectionType.Custom, this.Card, dd, storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -75,6 +75,13 @@ namespace Cauldron.Echelon
                 }
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to increase this damage by 2?", "Should they increase this damage by 2?", "Vote for increasing this damage by 2?", "increasing this damage by 2");
+
         }
     }
 }
