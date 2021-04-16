@@ -28,7 +28,7 @@ namespace Cauldron.Drift
         {
             //...{Drift} may deal 1 other target...
             List<SelectCardDecision> targetDecision = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 1, DamageType.Psychic, 1, true, 1, storedResultsDecisions: targetDecision, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 1, DamageType.Psychic, 1, true, 1, additionalCriteria: (Card c) => c != base.GetActiveCharacterCard(), storedResultsDecisions: targetDecision, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
