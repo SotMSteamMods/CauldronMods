@@ -113,6 +113,7 @@
             "count": 1,
             "title": "Temporal Reset",
             "icons": [
+                "DestroyEnvironment",
                 "Manipulate",
                 "EndOfTurnAction",
                 "DestroySelf"
@@ -143,7 +144,8 @@
             "count": 1,
             "title": "Temporal Slipstream",
             "icons": [
-                "SkipTurn",
+                "Discard",
+                "DrawCardNow",
                 "EndOfTurnAction",
                 "DestroySelf"
             ],
@@ -158,9 +160,8 @@
             "count": 1,
             "title": "Time Freeze",
             "icons": [
-                "Discard",
-                "DrawCardNow",
-                "StartOfTurnAction",
+                "SkipTurn",
+                "EndOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
