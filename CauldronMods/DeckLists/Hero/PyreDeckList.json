@@ -260,7 +260,7 @@
             ],
             "body": [
                 "Select up to 2 non-{Irradiated} cards in 1 player's hand. {Irradiate} those cards until they leave that player's hand.",
-                "{Pyre} deals that hero and each non-hero target X energy damage, where X is the number of cards {Irradiate} this way."
+                "{Pyre} deals that hero and each non-hero target X energy damage, where X is the number of cards {Irradiated} this way."
             ],
             "flavorQuotes": [
                 {
