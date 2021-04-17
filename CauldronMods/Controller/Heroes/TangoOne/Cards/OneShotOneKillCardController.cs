@@ -21,7 +21,7 @@ namespace Cauldron.TangoOne
 
         public OneShotOneKillCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.HeroTurnTaker.Hand);
+            this.SpecialStringMaker.ShowSpecialString(() => BuildNumberOfCardsInHandSpecialString());
         }
 
         public override IEnumerator Play()
@@ -78,6 +78,20 @@ namespace Cauldron.TangoOne
             {
                 base.GameController.ExhaustCoroutine(drawCardRoutine);
             }
+        }
+
+        private string BuildNumberOfCardsInHandSpecialString()
+        {
+            int numCardsInHand = HeroTurnTaker.Hand.Cards.Count(c => c != Card);
+            string cardText = "cards";
+
+            string numText = numCardsInHand > 0 ? numCardsInHand.ToString() : "no";
+            if (numCardsInHand == 1)
+            {
+                cardText = "card";
+            }
+            return $"{HeroTurnTaker.Hand.GetFriendlyName()} has {numText} other {cardText} in it.";
+            
         }
     }
 }
