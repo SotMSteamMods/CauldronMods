@@ -104,17 +104,7 @@ namespace Cauldron.TheMistressOfFate
 
         public override IEnumerator AfterFlipCardImmediateResponse()
         {
-            //immediately discard the top card of the villain deck for each face-down Day card.
-            int faceDownDayCardsCount = GameController.FindCardsWhere((Card c) => c.IsFaceDownNonCharacter && c.Location == TurnTaker.PlayArea && GameController.DoesCardContainKeyword(c, "day", evenIfFaceDown: true)).Count();
-            IEnumerator coroutine = GameController.DiscardTopCards(DecisionMaker, TurnTaker.Deck, faceDownDayCardsCount, showCards: c => true, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
+            IEnumerator coroutine;
 
             coroutine = base.AfterFlipCardImmediateResponse();
             if (UseUnityCoroutines)
@@ -148,6 +138,21 @@ namespace Cauldron.TheMistressOfFate
                 {
                     //"flippedAdvanced": "When {TheMistressOfFate} flips to this side, she regains 10 HP.",
                     coroutine = GameController.GainHP(this.Card, 10, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+
+                if (IsGameChallenge)
+                {
+                    //Challenge: immediately discard the top card of the villain deck for each face-down Day card.
+                    int faceDownDayCardsCount = GameController.FindCardsWhere((Card c) => c.IsFaceDownNonCharacter && c.Location == TurnTaker.PlayArea && GameController.DoesCardContainKeyword(c, "day", evenIfFaceDown: true)).Count();
+                    coroutine = GameController.DiscardTopCards(DecisionMaker, TurnTaker.Deck, faceDownDayCardsCount, showCards: c => true, cardSource: GetCardSource());
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(coroutine);

@@ -254,6 +254,8 @@ namespace CauldronTests
             AssertNotIncapacitatedOrOutOfGame(ra);
             //flips back
             AssertNotFlipped(fate);
+
+            AssertNumberOfCardsInTrash(fate, 0);
         }
 
         [Test]
@@ -309,6 +311,9 @@ namespace CauldronTests
             AssertNotIncapacitatedOrOutOfGame(ra);
             //flips back
             AssertNotFlipped(fate);
+
+            //trash should be empty
+            AssertNumberOfCardsInTrash(fate, 0);
         }
         [Test]
         public void TestMistressOfFateAdvancedEndOfTurnDamage()
