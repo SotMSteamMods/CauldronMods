@@ -1294,7 +1294,7 @@ namespace CauldronTests
 
             //one for gyro stabilizer, one for who to damage
             AssertMaxNumberOfDecisions(2);
-            DecisionSelectFunction = 2;
+            DecisionSelectWord = "5 crash cards";
             UsePower(rart);
             AssertInTrash(rart);
             QuickHPCheck(-6, 0, 0, 0);
@@ -1317,7 +1317,7 @@ namespace CauldronTests
             PutInHand("WreckingBall"); // Crash
             PutInHand("IndiscriminatePass"); // Crash
 
-            DecisionDoNotSelectFunction = true;
+            DecisionSelectWord = "4 crash cards";
 
             AssertMaxNumberOfDecisions(2);
             GoToPlayCardPhase(gyrosaur);
@@ -1342,10 +1342,11 @@ namespace CauldronTests
             PutInHand("SphereOfDevastation"); // Crash
             PutInHand("WreckingBall"); // Crash
             PutInHand("IndiscriminatePass"); // Crash
-            DecisionSelectFunction = 0;
+            DecisionSelectWord = "3 crash cards";
 
             GoToPlayCardPhase(gyrosaur);
-            DecisionDoNotSelectFunction = true;
+            DecisionSelectWord = "4 crash cards";
+
             UsePower(rart);
             AssertInTrash(rart);
             QuickHPCheck(-5, 0, 0, 0);
