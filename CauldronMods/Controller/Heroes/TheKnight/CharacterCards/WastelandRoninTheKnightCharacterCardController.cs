@@ -95,7 +95,7 @@ namespace Cauldron.TheKnight
         {
             if (!base.Card.IsFlipped)
             {
-                AddSideTrigger(AddTrigger(FlipCriteria, (GameAction ga) => base.GameController.FlipCard(FindCardController(base.Card), treatAsPlayed: false, treatAsPutIntoPlay: false, null, null, GetCardSource()), TriggerType.FlipCard, TriggerTiming.After));
+                AddSideTrigger(AddTrigger(FlipCriteria, (GameAction ga) => base.GameController.FlipCard(FindCardController(base.Card), cardSource: GetCardSource()), TriggerType.FlipCard, TriggerTiming.After));
             }
             else
             {
