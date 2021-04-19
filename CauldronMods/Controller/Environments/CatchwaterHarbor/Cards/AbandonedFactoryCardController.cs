@@ -60,7 +60,7 @@ namespace Cauldron.CatchwaterHarbor
 			// Ask player if they want to destroy this card
 			List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
 			IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker,
-				SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: GetCardSource());
+				SelectionType.DestroyCard, base.Card, storedResults: storedResults, cardSource: GetCardSource());
 
 			if (base.UseUnityCoroutines)
 			{
