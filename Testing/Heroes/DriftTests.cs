@@ -1184,6 +1184,7 @@ namespace CauldronTests
             GoToShiftPosition(2);
             QuickHPCheckZeroThroughFormChange();
 
+            AssertNextDecisionChoices(notIncluded: drift.CharacterCard.ToEnumerable());
             GoToShiftPosition(3);
             QuickHPCheckThroughFormChange(-1, -1);
 
@@ -1193,6 +1194,7 @@ namespace CauldronTests
             GoToShiftPosition(3);
             QuickHPCheckZeroThroughFormChange();
 
+            AssertNextDecisionChoices(notIncluded: drift.CharacterCard.ToEnumerable());
             GoToShiftPosition(2);
             QuickHPCheckThroughFormChange(-1, -1);
 
