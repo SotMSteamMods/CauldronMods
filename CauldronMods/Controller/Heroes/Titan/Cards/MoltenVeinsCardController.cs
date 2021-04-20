@@ -28,14 +28,18 @@ namespace Cauldron.Titan
             }
 
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, base.GetTitanform(), storedResults: storedResults, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
+            var titanform = GetTitanform();
+            if (titanform != null && !(titanform.Location.IsInPlay || titanform.Location.IsHand))
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, base.GetTitanform(), storedResults: storedResults, cardSource: base.GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             if (base.DidPlayerAnswerYes(storedResults))
             {
