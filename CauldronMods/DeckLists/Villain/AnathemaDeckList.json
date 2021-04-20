@@ -26,7 +26,7 @@
 				"Reveal cards from the top of the villain deck until 2 arms, 1 Body, and 1 Head are revealed. Put those cards into play and shuffle the rest into the villain deck."
             ],
             "gameplay": [
-                "At the start of the villain turn, if there are no other villain targets in play, flip {Anathema}'s Character Cards.",
+                "At the start of the villain turn, if there are no other villain targets in play, {Anathema} flips.",
                 "If there are 4 other villain targets in play, {Anathema} is immune to damage.",
                 "Whenever a villain card destroys an arm, Body, or Head, {Anathema} regains 2 HP."
             ],
@@ -39,7 +39,7 @@
             "flippedBody": "Exposed Mutant",
             "flippedGameplay": [
                 "At the start of the villain turn, play the top card of the villain deck.",
-                "At the end of the villain turn, if there are any other villain targets in play, flip {Anathema}'s character cards.",
+                "At the end of the villain turn, if there are any other villain targets in play, {Anathema} flips.",
                 "At the end of the villain turn, each player discards a card from their hand."
             ],
             "flippedAdvanced": "At the start of the villain turn, each player discards a card from their hand.",
@@ -457,14 +457,14 @@
             ],
             "gameplay": [
                 "Whenever {Anathema} destroys an arm or head card, put that under {Anathema}'s villain character card.",
-                "At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. Then if there are {H} or more cards under {Anathema}, flip his villain character card."
+                "At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. Then if there are {H} or more cards under {Anathema}, he flips."
             ],
             "advanced": "At the end of the villain turn, {Anathema} regains {H - 2} HP.",
             "flippedBody": "Malformed Nightmare",
             "flippedGameplay": [
                 "Arm and head cards are indestructible during the villain turn.",
                 "When {Anathema} flips to this side, put all cards from underneath him into play. Shuffle all copies of explosive transformation from the villain trash into the villain deck.",
-                "When explosive transformation enters play, flip {Anathema}'s character cards."
+                "When explosive transformation enters play, {Anathema} flips."
             ],
             "flippedAdvanced": "At the end of the villain turn {Anathema} regains 1 HP for each villain target in play.",
             "flippedIcons": [
@@ -476,7 +476,7 @@
             ],
             "difficulty": 3,
             "challengeTitle": "True Evolution",
-            "challengeText": ["Replace both instances of “arm or head card” on this card with “villain target”."],
+            "challengeText": ["Replace both instances of Â“arm or head cardÂ” on this card with Â“villain targetÂ”."],
             "challengeIcons": [],
             "flippedChallengeText": "Body cards are indestructible during the villain turn.",
             "flippedChallengeIcons":[],

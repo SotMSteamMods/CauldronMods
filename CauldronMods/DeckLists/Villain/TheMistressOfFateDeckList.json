@@ -49,7 +49,7 @@
                 "* Flip all day cards face down.",
                 "* Remove all cards in the villain trash and the{BR}  top {H - 1} cards of the villain deck from the{BR}  game without looking at them.",
                 "* Flip all incapacitated heroes and restore them to their{BR}  maximum HP. Cards that were in a hero's deck, hand,{BR}  or trash when they were incapacitated are returned{BR}  to those respective locations.",
-                "Then, flip {TheMistressOfFate}'s villain character cards."
+                "Then, {TheMistressOfFate} flips."
             ],
             "flippedAdvanced": "When {TheMistressOfFate} flips to this side, she regains 10 HP.",
             "flippedIcons": [
@@ -237,7 +237,7 @@
             ],
             "body": [
                 "When this card enters play, {TheMistressOfFate} deals the {H - 1} hero targets with the highest HP 10 psychic damage each.",
-                "At the end of the environment turn, if there are at least 5 cards remaining in the villain deck, destroy this card and flip {TheMistressOfFate}'s villain character cards."
+                "At the end of the environment turn, if there are at least 5 cards remaining in the villain deck, destroy this card and {TheMistressOfFate} flips."
             ],
             "flavorQuotes": [
                 {
@@ -422,7 +422,7 @@
                    "gameplay": [
                        "This card is indestructible.",
                        "Day cards cannot be affected by non-villain cards. Cards beneath villain cards are not considered in play.",
-                       "Immediately after the environment turn, flip {TheMistressOfFate}'s villain character cards if one of these things occurs:",
+                       "Immediately after the environment turn, {TheMistressOfFate} flips if one of these things occurs:",
                        "{The players choose to flip her.",
                        "{All heroes are incapacitated.",
                        "{All Day cards are face up."

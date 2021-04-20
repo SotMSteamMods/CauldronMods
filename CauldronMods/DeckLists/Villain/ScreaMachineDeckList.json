@@ -24,7 +24,7 @@
 				"Search the villain deck for all Guitarist, Vocalist, Bassist, and Drummer cards, shuffle them, and place them beneath this card face down. Shuffle the villain deck."
 			],
 			"gameplay": [
-				"At the start of the villain turn, flip this card."
+				"At the start of the villain turn, this card flips."
 			],
 			"advanced": "At the start of the game, reveal cards from beneath this one until {H - 2} cards with different keywords are revealed. Play those cards. Shuffle the rest and replace them face down beneath this card.",
 			"icons": [
@@ -76,7 +76,7 @@
 				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
-				"If there are ever 3 Drummer cards in play, flip this card.",
+				"If there are ever 3 Drummer cards in play, Ricky G flips.",
 				"{Drum} Select the villain target with the lowest HP.{BR}        Reduce damage dealt to that target by 1 until{BR}        the start of the next villain turn."
 			],
 			"icons": [
@@ -112,7 +112,7 @@
 				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
-				"If there are ever 3 Guitarist cards in play, flip this card.",
+				"If there are ever 3 Guitarist cards in play, Slice flips.",
 				"{Guitar} {SliceCharacter} deals the hero with the second{BR}        lowest HP {H - 1} sonic damage."
 			],
 			"icons": [
@@ -147,7 +147,7 @@
 				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
-				"If there are ever 3 Bassist cards in play, flip this card.",
+				"If there are ever 3 Bassist cards in play, Bloodlace flips.",
 				"{Bass} Each other villain target regains {H - 2} HP."
 			],
 			"icons": [
@@ -182,7 +182,7 @@
 				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
-				"If there are ever 3 Vocalist cards in play, flip this card.",
+				"If there are ever 3 Vocalist cards in play, Valentine flips.",
 				"{Vocal} {ValentineCharacter} deals the 2 hero targets with{BR}         the highest HP {H - 2} psychic damage."
 			],
 			"icons": [

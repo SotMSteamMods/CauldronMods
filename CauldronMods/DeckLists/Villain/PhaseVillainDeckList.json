@@ -25,7 +25,7 @@
 				"Search the villain deck for the card Reinforced Wall and put it into play. Shuffle the villain deck."
 			],
 			"gameplay": [
-				"At the start of the villain turn, if there are 3 or more obstacles in play, flip {PhaseVillain}'s villain character cards.",
+				"At the start of the villain turn, if there are 3 or more obstacles in play, {PhaseVillain} flips.",
 				"Increase damage dealt by {PhaseVillain} by 1 for each obstacle that has been removed from the game.",
 				"Phase is immune to damage dealt by environment cards.",
 				"At the end of the villain turn, play the top card of the villain deck."
@@ -39,7 +39,7 @@
 			"flippedBody": "New Job, New Gear",
 			"flippedGameplay": [
 				"When {PhaseVillain} flips to this side, destroy the obstacle with the lowest HP and remove it from the game. If the card Insubstantial Matador is in play, destroy it.",
-				"At the end of the villain turn, {PhaseVillain} deals each hero target {H} radiant damage. Then, flip {PhaseVillain}'s villain character cards."
+				"At the end of the villain turn, {PhaseVillain} deals each hero target {H} radiant damage. Then, {PhaseVillain} flips."
 			],
 			"flippedAdvanced": "When {PhaseVillain} flips to this side, destroy {H - 2} hero ongoing cards.",
 			"flippedIcons": [

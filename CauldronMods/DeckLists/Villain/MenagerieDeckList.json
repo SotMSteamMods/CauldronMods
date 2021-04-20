@@ -26,7 +26,7 @@
             ],
             "gameplay": [
                 "Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under this card, discarding all cards beneath it. Put any discarded targets into play.",
-                "At the end of the villain turn, reveal cards from the top of the villain deck until an enclosure is revealed, play it, and shuffle the other revealed cards back into the deck. Then if {H} enclosures are beneath this card, flip {Menagerie}'s character cards.",
+                "At the end of the villain turn, reveal cards from the top of the villain deck until an enclosure is revealed, play it, and shuffle the other revealed cards back into the deck. Then if {H} enclosures are beneath this card, {Menagerie} flips.",
                 "Prized Catch is Indestructible. The heroes lose if the captured hero is incapacitated."
             ],
             "advanced": "When an enclosure enters play, put the top card of the villain deck beneath it.",

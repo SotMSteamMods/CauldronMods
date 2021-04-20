@@ -41,7 +41,7 @@
 				"When {Oriphel} is flipped to this side, shuffle all relics in the villain trash into the villain deck.",
 				"Reduce damage dealt to {Oriphel} by 1.",
 				"At the end of the villain turn, {Oriphel} deals the 2 hero targets with the highest HP {H - 1} infernal damage each.",
-				"When there are 2 villain relics in the villain trash, flip {Oriphel}'s villain character cards."
+				"When there are 2 villain relics in the villain trash, {Oriphel} flips."
 			],
 			"flippedAdvanced": "Reduce damage dealt to {Oriphel} by 1.",
 			"flippedIcons": [
@@ -348,7 +348,7 @@
 			],
 			"body": [
 				"If {Oriphel} is in play, he deals each hero target 1 infernal and 1 projectile damage.",
-				"If {OriphelCharacter} is in play, flip her villain character cards."
+				"If {OriphelCharacter} is in play, she flips."
 			],
 			"flavorQuotes": [{
 				"identifier": "TheScholar",

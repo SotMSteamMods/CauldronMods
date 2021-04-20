@@ -32,7 +32,7 @@
 			],
 			"gameplay": [
 				"Villain cards cannot be played.",
-				"At the start of the villain turn, if the storm pool has 3 or more tokens, flip {Celadroch}'s character card.",
+				"At the start of the villain turn, if the storm pool has 3 or more tokens, {Celadroch} flips.",
 				"Otherwise, add 1 token to the storm pool."
 			],
 			"advanced": "Reduce damage dealt to relics by 1.",

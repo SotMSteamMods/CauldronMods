@@ -42,7 +42,7 @@
             "gameplay": [
                 "{InfernoTiamatCharacter} is immune to fire damage.",
                 "At the end of the villain turn, if {InfernoTiamatCharacter} dealt no damage this turn, she deals the hero target with the highest HP {H - 2} fire damage.",
-                "When {InfernoTiamatCharacter} is destroyed, flip her."
+                "When {InfernoTiamatCharacter} is destroyed, she flips."
             ],
             "advanced": "Increase damage dealt by {InfernoTiamatCharacter} by 1.",
             "icons": [
@@ -66,7 +66,7 @@
                 "ReduceDamageTaken"
             ],
             "challengeTitle": "Undying Rage",
-            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, that head flips and is restored to {H * 3} HP.",
             "difficulty": 1
         },
         {
@@ -91,7 +91,7 @@
             "gameplay": [
                 "{StormTiamatCharacter} is immune to lightnining damage.",
                 "At the end of the villain turn, if {StormTiamatCharacter} dealt no damage this turn, she deals the hero target with the highest HP {H - 2} lightning damage.",
-                "When {StormTiamatCharacter} is destroyed, flip her."
+                "When {StormTiamatCharacter} is destroyed, she flips."
             ],
             "advanced": "Increase damage dealt by {StormTiamatCharacter} by 1.",
             "icons": [
@@ -115,7 +115,7 @@
                 "ReduceDamageTaken"
             ],
             "challengeTitle": "Undying Rage",
-            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP."
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, that head flips and is restored to {H * 3} HP."
         },
         {
             "identifier": "WinterTiamatCharacter",
@@ -163,7 +163,7 @@
                 "ReduceDamageTaken"
             ],
             "challengeTitle": "Undying Rage",
-            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, flip that head and restore it to {H * 3} HP.",
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, that head flips and is restored to {H * 3} HP.",
             "difficulty": 1,
             "openingLines": {
                 "default": "Screeee! Raoooargh! Khhhaaazzt!",
@@ -629,11 +629,11 @@
             "foilBackgroundColor": "CD96C0",
             "character": true,
             "setup": [
-                "At the start of the game, {Tiamat} enters play “The Eye of the Storm” side up (after putting all other villain character cards into play). Put “{HydraWindTiamatCharacter}”, face down beneath this card."
+                "At the start of the game, {Tiamat} enters play “The Eye of the Storm” side up (after all other villain character cards enter play). Put “{HydraWindTiamatCharacter}”, face down beneath this card."
             ],
             "gameplay": [
-                "At the start of the villain turn, if {StormTiamatCharacter} is decapitated, flip this card and put {HydraWindTiamatCharacter} into play with 15 HP.",
-                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to {H * 2} HP.",
+                "At the start of the villain turn, if {StormTiamatCharacter} is decapitated, she flips and {HydraWindTiamatCharacter} enters play with 15 HP.",
+                "At the start of the villain turn, 1 decapitated head flips to its active side and is restored to {H * 2} HP.",
                 "At the end of the villain turn, {StormTiamatCharacter} deals each hero target 1 lightning damage."
             ],
             "advanced": "The first time {StormTiamatCharacter} deals damage each turn, increase that damage by 2.",
@@ -646,7 +646,7 @@
             ],
             "flippedBody": "The Thunderous Gale",
             "flippedGameplay": [
-                "At the start of the villain turn, flip 1 decapitated head to its active side and restore it to {H * 2} HP.",
+                "At the start of the villain turn, 1 decapitated head flips to its active side and is restored to {H * 2} HP.",
                 "Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {HydraWindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.",
                 "At the end of the villain turn, if {StormTiamatCharacter} is active, she deals the hero target with the highest HP 1 lightning damage."
             ],
@@ -673,7 +673,7 @@
             ],
             "gameplay": [
                 "The heroes may not win the game.",
-                "At the start of the villain turn, if {InfernoTiamatCharacter} is decapitated, flip this card and put {HydraDecayTiamatCharacter} into play with 15 HP.",
+                "At the start of the villain turn, if {InfernoTiamatCharacter} is decapitated, she flips and {HydraDecayTiamatCharacter} enters play with 15 HP.",
                 "At the end of the villain turn, {InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage."
             ],
             "advanced": "The first time {InfernoTiamatCharacter} deals damage each turn, increase that damage by 2.",
@@ -714,8 +714,8 @@
             ],
             "gameplay": [
                 "Face down heads are indestructible and have no game text.",
-                "If a head would be destroyed, flip it instead.",
-                "At the start of the villain turn, if {WinterTiamatCharacter} is decapitated, flip this card and put {HydraEarthTiamatCharacter} into play with 15 HP.",
+                "If a head would be destroyed, it flips instead.",
+                "At the start of the villain turn, if {WinterTiamatCharacter} is decapitated, she flips and {HydraEarthTiamatCharacter} enters play with 15 HP.",
                 "At the end of the villain turn, 1 player must discard 1 card."
             ],
             "advanced": "At the end of the villain turn, 1 player must discard 1 card.",
@@ -726,7 +726,7 @@
             "flippedBody": "The Frigid Earth",
             "flippedGameplay": [
                 "Face down heads are indestructible and have no game text.",
-                "If a head would be destroyed, flip it instead.",
+                "If a head would be destroyed, it flips instead.",
                 "Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {HydraEarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.",
                 "At the end of the villain turn, if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage."
             ],
@@ -752,7 +752,7 @@
                 "dragonscale"
             ],
             "body": [
-                "When this card is destroyed, 1{BR}hero may draw a card or use a{BR}power. Then, flip this card."
+                "When this card is destroyed, 1{BR}hero may draw a card or use a{BR}power. Then, this card flips."
             ],
             "icons": [
                 "DrawCardNow",
@@ -778,7 +778,7 @@
                 "dragonscale"
             ],
             "body": [
-                "When this card is destroyed, 1{BR}hero may draw a card or play a{BR}card. Then, flip this card."
+                "When this card is destroyed, 1{BR}hero may draw a card or play a{BR}card. Then, this card flips."
             ],
             "icons": [
                 "DrawCardNow",
@@ -874,11 +874,11 @@
                 "Cauldron.Gargoyle"
             ],
             "setup": [
-                "At the start of the game, {Tiamat} enters play “The Arrival“ side up. Put both Dragonscale character cards into play. Shuffle the villain deck."
+                "At the start of the game, {Tiamat} enters play “The Arrival“ side up. Both Dragonscale character cards enter play. Shuffle the villain deck."
             ],
             "gameplay": [
                 "Dragonscales have X HP, where X = {H - 1}.",
-                "At the start of the villain turn, flip {Tiamat}'s villain character cards."
+                "At the start of the villain turn, {Tiamat} flips."
             ],
             "advanced": "X = {H + 1} instead.{BR}At the start of the game, reveal cards from the top of the villain deck until 2 spells are revealed. Discard those spells. Shuffle the other revealed cards back into the villain deck.",
             "flippedBody": "Cybernetic Wyrms",
@@ -889,7 +889,7 @@
             "flippedGameplay": [
                 "Dragonscales have X HP where X = {H - 1}. When {Tiamat} is destroyed, the heroes win.",
                 "{Tiamat} counts as The Jaws of Winter, The Mouth of the Inferno, and The Eye of the Storm. Each spell card in the villain trash counts as Element of Ice, Element of Fire, and Element of Lightining.",
-                "At the end of the villain turn, {Tiamat} deals the hero target with the highest HP {H} energy damage. Then, if {Tiamat} deals no damage this turn, each hero target deals itself 3 projectile damage. Then flip all ruined scales and restore them to their max HP."
+                "At the end of the villain turn, {Tiamat} deals the hero target with the highest HP {H} energy damage. Then, if {Tiamat} deals no damage this turn, each hero target deals itself 3 projectile damage. Then all ruined scales flip and are restored to their max HP."
             ],
             "flippedAdvanced": "X = {H + 1} instead.",
             "flippedIcons": [

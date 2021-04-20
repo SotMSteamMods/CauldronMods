@@ -38,7 +38,7 @@
             ],
             "flippedBody": "Catastrophic Meltdown",
             "flippedGameplay": [
-                "At the start of the villain turn, if there are 1 or 0 radiation cards in play, flip {Gray}'s character cards.",
+                "At the start of the villain turn, if there are 1 or 0 radiation cards in play, {Gray} flips.",
                 "At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. {Gray} deals each hero target {H * 2} energy damage. Play the top card of the villain deck.",
                 "Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.",
                 "Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage."
