@@ -59,7 +59,7 @@ namespace Cauldron.DungeonsOfTerror
 
             //op3: destroy this card
             var response3 = DestroyThisCardResponse(pca);
-            var op3 = new Function(httc, "Destroy this card", SelectionType.DestroySelf, () => response3);
+            var op3 = new Function(httc, "Destroy this card", SelectionType.DestroyCard, () => response3);
 
             //Execute
             var options = new Function[] { op1, op2, op3 };

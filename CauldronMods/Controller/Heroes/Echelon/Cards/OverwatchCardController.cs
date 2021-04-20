@@ -17,7 +17,7 @@ namespace Cauldron.Echelon
 
         public OverwatchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            AddThisCardControllerToList(CardControllerListType.CanCauseDamageOutOfPlay);
         }
 
         public override IEnumerator UsePower(int index = 0)

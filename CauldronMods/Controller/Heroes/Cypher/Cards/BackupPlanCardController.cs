@@ -40,7 +40,7 @@ namespace Cauldron.Cypher
                 // Ask player if they want to destroy this card
                 List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
                 routine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController,
-                    SelectionType.DestroySelf, base.Card, storedResults: storedResults, cardSource: GetCardSource());
+                    SelectionType.DestroyCard, base.Card, storedResults: storedResults, cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)
                 {

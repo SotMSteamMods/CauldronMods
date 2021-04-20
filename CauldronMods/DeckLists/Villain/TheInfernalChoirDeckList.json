@@ -32,7 +32,7 @@
 			],
 			"gameplay": [
 				"{TheInfernalChoir} is indestructible.",
-				"If the Hero with the “Vagrant Heart: Hidden Heart“ in it's play area has no cards in it's deck, shuffle all cards under “Vagrant Heart: Hidden Heart“ back into the hero's deck, replace “Vagrant Heart: Hidden Heart“ with “Vagrant Heart: Soul Revealed“, and {TheInfernalChoir} flips.",
+				"If the Hero with the “Vagrant Heart: Hidden Heart“ in its play area has no cards in its deck, shuffle all cards under “Vagrant Heart: Hidden Heart“ back into the hero's deck, flip {TheInfernalChoir}'s villain character cards and replace “Vagrant Heart: Hidden Heart“ with “Vagrant Heart: Soul Revealed“.",
 				"At the end of the villain turn, play the top card of the villain deck. Then {TheInfernalChoir} deals each non-ghost, non-villain target 1 infernal damage."
 			],
 			"advanced": "Increase all damage dealt by 1.",

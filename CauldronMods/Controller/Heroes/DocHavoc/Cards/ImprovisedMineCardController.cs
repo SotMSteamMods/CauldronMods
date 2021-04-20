@@ -62,7 +62,7 @@ namespace Cauldron.DocHavoc
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
 
             //ask player if they want to destroy this card
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroySelf, Card,
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, Card,
                                     storedResults: storedResults,
                                     cardSource: GetCardSource());
             if (base.UseUnityCoroutines)

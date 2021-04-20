@@ -89,9 +89,9 @@ namespace Cauldron.MagnificentMara
                             {
                                 GameController.ExhaustCoroutine(coroutine);
                             }
+                            GameController.RemoveInhibitor(FindCardController(sourceCrystal));
                         }
 
-                        //GameController.RemoveInhibitor(FindCardController(sourceCrystal));
                         int numBoost = powerNumerals?[1] ?? 2;
                         coroutine = GameController.IncreaseDamage(dd, numBoost, false, dd.CardSource);
                         if (UseUnityCoroutines)

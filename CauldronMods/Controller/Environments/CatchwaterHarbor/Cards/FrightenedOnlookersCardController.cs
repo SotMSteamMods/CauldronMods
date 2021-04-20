@@ -20,7 +20,7 @@ namespace Cauldron.CatchwaterHarbor
             AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DidDealDamage && dd.Amount >= 4, DealSelfDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             //At the start of the environment turn, 1 player may play a card.
-            AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, (PhaseChangeAction pca) => SelectHeroToPlayCard(DecisionMaker), TriggerType.PlayCard);
+            AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, (PhaseChangeAction pca) => SelectHeroToPlayCard(DecisionMaker, true), TriggerType.PlayCard);
         }
 
         private IEnumerator DealSelfDamageResponse(DealDamageAction arg)

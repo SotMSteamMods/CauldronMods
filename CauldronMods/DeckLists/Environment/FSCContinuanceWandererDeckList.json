@@ -19,7 +19,7 @@
             ],
             "body": [
                 "Reduce damage dealt to environment targets by 2.",
-                "At the end of the environment turn, this card deals non-environment the target with the lowest HP {H - 2} projectile damage."
+                "At the end of the environment turn, this card deals the non-environment target with the lowest HP {H - 2} projectile damage."
             ],
             "flavorText": "“Now that's my kind of possible future!”{BR}said Unity. Omnitron-X grabbed her wrist{BR}and began retreating. “Please{BR}accompany me if you wish to survive.”",
             "hitpoints": 4
@@ -88,7 +88,7 @@
             ],
             "body": [
                 "Play this card next to a hero.",
-                "Whenever another hero would play a card, use a power, or draw a card, instead the hero next to this card does that respective action",
+                "Whenever another hero would play a card, use a power, or draw a card, instead the hero next to this card does that respective action.",
                 "At the start of the environment turn, destroy this card."
             ],
             "flavorText": "As the ship crashed through the shards of{BR}multiple realities, the Stranger felt each{BR}version of himself pass, and knew the{BR}choices that had cost each of them dearly."
@@ -113,6 +113,7 @@
             "count": 1,
             "title": "Temporal Reset",
             "icons": [
+                "DestroyEnvironment",
                 "Manipulate",
                 "EndOfTurnAction",
                 "DestroySelf"
@@ -143,7 +144,8 @@
             "count": 1,
             "title": "Temporal Slipstream",
             "icons": [
-                "SkipTurn",
+                "Discard",
+                "DrawCardNow",
                 "EndOfTurnAction",
                 "DestroySelf"
             ],
@@ -158,9 +160,8 @@
             "count": 1,
             "title": "Time Freeze",
             "icons": [
-                "Discard",
-                "DrawCardNow",
-                "StartOfTurnAction",
+                "SkipTurn",
+                "EndOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
