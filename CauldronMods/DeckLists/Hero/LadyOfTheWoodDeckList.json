@@ -31,7 +31,12 @@
                 "1 hero may discard a card to regain 3 HP.",
                 "Destroy an environment card."
             ],
-            "flippedIcons": [],
+            "flippedIcons": [
+                "IncreaseDamageDealt",
+                "Discard",
+                "GainHP",
+                "DestroyEnvironment"
+            ],
             "openingLines": {
                 "default": "Will you frolic with us?",
                 "CeladrochCharacter": "I haven't felt this presence in many years. Beware, my friends. This wind carries the scent of death.",
