@@ -23,7 +23,7 @@ namespace Cauldron.Gyrosaur
             var discardStorage = new List<DiscardCardAction>();
             IEnumerator coroutine;
             // If user setting to auto discard is set to true, automatically choose order of crash card discarding
-            if (GameController.ShouldAutoDiscardHand())
+            if (false)//GameController.ShouldAutoDiscardHand())
             {
                 // While there is a crash card in hand, discard the first crash card found
                 while (HeroTurnTaker.Hand.Cards.Where((Card c) => IsCrash(c)).Count() > 0)
