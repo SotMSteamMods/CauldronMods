@@ -63,8 +63,7 @@ namespace Cauldron.Titan
                 IEnumerable<Card> choices = TurnTaker.Deck.Cards.Concat(TurnTaker.Trash.Cards);
                 LinqCardCriteria criteria = new LinqCardCriteria((Card c) => c.Identifier == TitanformIdentifier, "titanform", useCardsSuffix: false);
                 List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                //once MigrantP adjusts the GameController.SelectAndMoveCard function to use the optional parameter, can switch to that
-                IEnumerator coroutine = SelectAndMoveCardWithOptionalParameter(base.DecisionMaker, (Card c) =>  choices.Contains(c) && c.Identifier == TitanformIdentifier, toLocation: HeroTurnTaker.Hand, optional: true, storedResults: storedResults, cardSource: GetCardSource());
+                IEnumerator coroutine = GameController.SelectAndMoveCard(base.DecisionMaker, (Card c) =>  choices.Contains(c) && c.Identifier == TitanformIdentifier, toLocation: HeroTurnTaker.Hand, optional: true, storedResults: storedResults, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -107,27 +106,6 @@ namespace Cauldron.Titan
             }
 
             yield break;
-        }
-
-        public IEnumerator SelectAndMoveCardWithOptionalParameter(HeroTurnTakerController hero, Func<Card, bool> criteria, Location toLocation, bool optional = false, List<SelectCardDecision> storedResults = null, CardSource cardSource = null)
-        {
-            BattleZone battleZone = null;
-            if (cardSource != null)
-            {
-                battleZone = cardSource.BattleZone;
-            }
-            SelectCardDecision selectCardDecision = new SelectCardDecision(GameController, hero, SelectionType.MoveCard, GameController.FindCardsWhere(criteria, realCardsOnly: true, battleZone: battleZone), isOptional: optional, cardSource: cardSource);
-            selectCardDecision.BattleZone = battleZone;
-            storedResults?.Add(selectCardDecision);
-            IEnumerator coroutine = GameController.SelectCardAndDoAction(selectCardDecision, (SelectCardDecision d) => GameController.MoveCard(hero, d.SelectedCard, toLocation,cardSource: cardSource));
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
         }
     }
 }
