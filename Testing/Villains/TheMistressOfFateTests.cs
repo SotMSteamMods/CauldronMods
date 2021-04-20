@@ -1408,6 +1408,62 @@ namespace CauldronTests
             AssertInTrash(chains);
             AssertNotFlipped(idealist);
         }
+
+        [Test]
+        public void TestHeroPreservation_RoninKnight()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Ra", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+            ResetRFGCards();
+
+            DestroyCard(youngKnight);
+            DestroyCard(oldKnight);
+
+            AssertIncapacitated(knight);
+
+            FlipCard(fate);
+
+            AssertNotFlipped(youngKnight);
+            AssertNotFlipped(oldKnight);
+
+            AssertNumberOfCardsInHand(knight, 4);
+            AssertNumberOfCardsInDeck(knight, 36);
+            AssertNumberOfCardsInTrash(knight, 0);
+
+
+        }
+
+        [Test]
+        public void TestHeroPreservation_NightloreStarlight()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Cauldron.Starlight/NightloreCouncilStarlightCharacter", "Ra", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+            ResetRFGCards();
+
+            DestroyCard(cryos);
+            DestroyCard(asheron);
+            DestroyCard(terra);
+
+
+            AssertIncapacitated(starlight);
+
+            FlipCard(fate);
+
+            AssertNotFlipped(cryos);
+            AssertNotFlipped(asheron);
+            AssertNotFlipped(terra);
+
+
+            AssertNumberOfCardsInHand(starlight, 4);
+            AssertNumberOfCardsInDeck(starlight, 36);
+            AssertNumberOfCardsInTrash(starlight, 0);
+
+
+        }
         [Test]
         public void TestHeroPreservationCaptainCosmicRequital()
         {
