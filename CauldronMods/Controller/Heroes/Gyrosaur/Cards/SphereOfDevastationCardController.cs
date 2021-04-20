@@ -23,7 +23,7 @@ namespace Cauldron.Gyrosaur
             var discardStorage = new List<DiscardCardAction>();
             IEnumerator coroutine;
             // If user setting to auto discard is set to true, automatically choose order of crash card discarding
-            if (GameController.ShouldAutoDiscardHand())
+            if (this.ShouldAutoDiscardHand())
             {
                 // While there is a crash card in hand, discard the first crash card found
                 while (HeroTurnTaker.Hand.Cards.Where((Card c) => IsCrash(c)).Count() > 0)
@@ -110,6 +110,15 @@ namespace Cauldron.Gyrosaur
                 }
             }
             yield break;
+        }
+
+        private bool ShouldAutoDiscardHand()
+        {
+            if (GameController.PlayerPolicies.AutoDecideHandDiscardOrder != 0)
+            {
+                return GameController.PlayerPolicies.AutoDecideHandDiscardOrder == AlwaysSmartNever.Smart;
+            }
+            return true;
         }
     }
 }
