@@ -139,7 +139,7 @@
             "gameplay": [
                 "{WinterTiamatCharacter} is immune to cold damage.",
                 "At the end of the villain turn, if {WinterTiamatCharacter} dealt no damage this turn, she deals the hero target with the highest HP {H - 2} cold damage.",
-                "When {WinterTiamatCharacter} is destroyed, her she."
+                "When {WinterTiamatCharacter} is destroyed, flip her."
             ],
             "advanced": "Increase damage dealt by {WinterTiamatCharacter} by 1.",
             "icons": [
