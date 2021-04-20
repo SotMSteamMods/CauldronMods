@@ -75,413 +75,11 @@
                 "MinistryOfStrategicScienceMalichaeCharacter": "Ah, the summoner. Your djinn will not stop what is coming.",
                 "MinistryOfStrategicScienceTerminusCharacter": "Well, well. It seems you serve many masters, ghost. But so do I, and they will soon be free!"
             }
-        },
-        {
-            "identifier": "AclastyphWhoPeers",
-            "count": 1,
-            "title": "Aclastyph, Who Peers",
-            "keywords": [
-                "ancient spawn"
-            ],
-            "icons": [
-                "Cauldron.ClueDangerMadness",
-                "DealDamageMelee",
-                "GainHP",
-                "DealDamagePsychic"
-            ],
-            "body": [
-                "At the end of the villain turn:",
-                "{Danger} This card deals the hero target with the highest HP 2 melee damage. Discard the top card of the villain deck.",
-                "{Clue} This card regains 2 HP. Discard the top card of the villain deck.",
-                "{Madness} This card deals each other target 1 psychic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "DirectorWells",
-                    "text": "Try not to make eye contact."
-                }
-            ],
-            "flavorReference": "Director Wells, Paranormal Squad #10",
-            "hitpoints": 6
-        },
-        {
-            "identifier": "ClockworkRevenant",
-            "count": 2,
-            "title": "Clockwork Revenant",
-            "keywords": [
-                "minion"
-            ],
-            "icons": [
-                "Cauldron.Danger",
-                "IncreaseDamageDealt",
-                "EndOfTurnAction",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "{Danger} Increase damage dealt by this card by X, where X is 10 minus its current HP.",
-                "At the end of the villain turn, this card deals the hero target with the highest HP 2 melee damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "Keep your hands to yourself."
-                }
-            ],
-            "flavorReference": "Titan, The Archive #5",
-            "hitpoints": 10
-        },
-        {
-            "identifier": "DangerousInvestigation",
-            "count": 1,
-            "title": "Dangerous Investigation",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "DealDamageInfernal",
-                "Cauldron.Clue",
-                "PlayCardNow",
-                "AddTokens"
-            ],
-            "body": [
-                "{Clue} At the end of the villain turn, the players may play the top card of the villain deck to add a token to this card.",
-                "At the end of the villain turn, {Mythos} deals the X hero targets with the highest HP 3 infernal damage each, where X is {H} minus the number of villain cards the players chose to play this turn."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Zevach",
-                    "text": "The Ministry agents are{BR}right behind me, as planned."
-                }
-            ],
-            "flavorReference": "Zevach, The Consultant #3",
-		    "tokenPools":[
-		 	    {
-		 		    "identifier": "DangerousInvestigationPool",
-		 		    "name": "Dangerous Investigation Pool",
-		 		    "initialValue": 0,
-		 		    "minimumValue": 0,
-		 		    "color": "50CCE5"
-		 	    }
-		    ]
-        },
-        {
-            "identifier": "DoktorVonFaust",
-            "count": 1,
-            "title": "Doktor Von Faust",
-            "keywords": [
-                "mad scientist"
-            ],
-            "icons": [
-                "Search",
-                "DealDamageLightning",
-                "Cauldron.Clue",
-                "ReduceDamageTaken"
-            ],
-            "body": [
-                "At the end of the villain turn, search the villain deck for a Clockwork Revenant and put it into play. Shuffle the villain deck. If no card was put into play this way, this card deals each non-villain target 3 lightning damage.",
-                "{Clue} Reduce damage dealt to this card by 2."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "DoktorVonFaust",
-                    "text": "I do not require magic.{BR}Ze principles of electrodynamics are{BR}quite compatible with deceased organics."
-                }
-            ],
-            "flavorReference": "Doktor Von Faust, Department of Secrets #9",
-            "hitpoints": 12
-        },
-        {
-            "identifier": "FaithfulProselyte",
-            "count": 3,
-            "title": "Faithful Proselyte",
-            "keywords": [
-                "minion"
-            ],
-            "icons": [
-                "Cauldron.Madness",
-                "DestroyEquipment",
-                "EndOfTurnAction",
-                "DealDamageLightning"
-            ],
-            "body": [
-                "{Madness} When this card enters play, destroy {H - 2} equipment cards.",
-                "At the end of the villain turn, this card deals the hero target with the second highest HP {H - 1} lightning damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "DirectorWells",
-                    "text": "The first records we{BR}have are from WWII, when The Order{BR}started gathering converts. They're still{BR}recruiting."
-                }
-            ],
-            "flavorReference": "Director Wells, A Field Guide for the Apocalypse",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "HallucinatedHorror",
-            "count": 2,
-            "title": "Hallucinated Horror",
-            "keywords": [
-                "distortion"
-            ],
-            "icons": [
-                "PlayCardNow",
-                "EndOfTurnAction",
-                "DealDamageSonic",
-                "DestroySelf"
-            ],
-            "body": [
-                "{Danger}{Madness} When this card enters play, play the top card of the villain deck.",
-                "At the end of the villain turn, this card deals each hero target 2 sonic damage.",
-                "Destroy this card when a hero is dealt damage by another hero target."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "DocHavoc",
-                    "text": "What a...strange head you have.{BR}Do you want something for that?"
-                }
-            ],
-            "flavorReference": "Doc Havoc, Paranormal Squad #10",
-            "hitpoints": 15
-        },
-        {
-            "identifier": "OtherworldlyAlignment",
-            "count": 2,
-            "title": "Otherworldly Alignment",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "Cauldron.ClueDangerMadness",
-                "DealDamageInfernal",
-                "DealDamagePsychic"
-            ],
-            "body": [
-                "At the end of the villain turn:",
-                "{Danger} {Mythos} deals the hero target with the highest HP {H} infernal damage.",
-                "{Madness} {Mythos} deals each non-villain target 1 infernal damage.",
-                "{Clue} {Mythos} deals the hero target with the lowest HP {H} psychic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Mythos",
-                    "text": "I struck a bargain, in{BR}order to return. There was some{BR}sacrifice. But also some gain."
-                }
-            ],
-            "flavorReference": "Mythos, The Archive #30"
-        },
-        {
-            "identifier": "PallidAcademic",
-            "count": 2,
-            "title": "Pallid Academic",
-            "keywords": [
-                "minion"
-            ],
-            "icons": [
-                "Cauldron.Danger",
-                "PlayCardNow",
-                "Cauldron.Madness",
-                "Manipulate"
-            ],
-            "body": [
-                "When this card enters play, put all ongoing cards in the villain trash into play.",
-                "When a hero target is dealt damage by another hero target:",
-                "{Danger} Play the top card of the villain deck.",
-                "{Madness} Move the bottom card of a deck to the top of that deck."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Academic",
-                    "text": "This world belongs to those{BR}creatures of myth, forgotten by{BR}humanity. They will free it from its pain!"
-                }
-            ],
-            "flavorReference": "Academic, A Field Guide for the Apocalypse",
-            "hitpoints": 3
-        },
-        {
-            "identifier": "PreyUponTheMind",
-            "count": 2,
-            "title": "Prey Upon the Mind",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DestroyOngoing",
-                "Discard",
-                "DealDamageInfernal"
-            ],
-            "body": [
-                "Destroy {H - 2} hero ongoing cards.",
-                "{Madness} Each player discards 1 card.",
-                "{Danger} {Mythos} deals each hero target 1 infernal damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Mythos",
-                    "text": "How many more friends{BR}are you prepared to lose?"
-                }
-            ],
-            "flavorReference": "Mythos, Dark Design #10"
-        },
-        {
-            "identifier": "Revelations",
-            "count": 2,
-            "title": "Revelations",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "GainHP",
-                "Cauldron.Clue",
-                "ReduceDamageDealt",
-                "Cauldron.Madness"
-            ],
-            "body": [
-                "{Mythos} regains {H} HP for each environment card in play. Move 2 cards from the villain trash to the bottom of the villain deck.",
-                "{Clue} Reduce damage dealt by hero targets by 1 until the start of the villain turn.",
-                "{Madness} Each Minion regains {H} HP."
-            ],
-            "flavorText": "“Thank you, for leading me{BR}here,” Mythos said, turning to Mara.{BR}“I have no further use for you. Your{BR}trinket, on the other hand...”"
-        },
-        {
-            "identifier": "RitualSite",
-            "count": 1,
-            "title": "Ritual Site",
-            "keywords": [
-                "structure"
-            ],
-            "icons": [
-                "Cauldron.Danger",
-                "IncreaseDamageDealt",
-                "Cauldron.Madness",
-                "DealDamagePsychic"
-            ],
-            "body": [
-                "{Danger} Increase damage dealt by environment cards to hero targets by 1.",
-                "{Madness} At the end of the villain turn, this card deals each hero target 1 psychic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "This is where it all started for me."
-                }
-            ],
-            "flavorReference": "Titan, The Archive #18",
-            "hitpoints": 10
-        },
-        {
-            "identifier": "RustedArtifact",
-            "count": 1,
-            "title": "Rusted Artifact",
-            "keywords": [
-                "relic"
-            ],
-            "icons": [
-                "IncreaseDamageTaken",
-                "Cauldron.Danger",
-                "Cauldron.Madness",
-                "ImmuneToDamage"
-            ],
-            "body": [
-                "Increase damage dealt to hero targets by 1.",
-                "{Danger}{Madness} This card is indestructible and immune to damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "Do you mind, luv? It's hard to{BR}look for clues under all these leaves."
-                }
-            ],
-            "flavorReference": "Titan, The Archive #64",
-            "hitpoints": 1
-        },
-        {
-            "identifier": "TornPage",
-            "count": 2,
-            "title": "Torn Page",
-            "keywords": [
-                "relic"
-            ],
-            "icons": [
-                "Cauldron.ClueDangerMadness",
-                "DealDamagePsychic",
-                "DealDamageInfernal"
-            ],
-            "body": [
-                "The first time each turn that:",
-                "{Danger} a hero card is drawn...",
-                "{Madness} a hero card enters play...",
-                "{Clue} a power is used...",
-                "...this card deals that hero 2 infernal damage and 2 psychic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Echelon",
-                    "text": "This is not exactly my area of{BR}expertise. Where's that comedian?{BR}Magician, whatever."
-                }
-            ],
-            "flavorReference": "Echelon, The Consultant #3",
-            "hitpoints": 1
-        },
-        {
-            "identifier": "WhispersAndLies",
-            "count": 2,
-            "title": "Whispers and Lies",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageSonic",
-                "Cauldron.Madness",
-                "HasPower"
-            ],
-            "body": [
-                "At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP 2 sonic damage.",
-                "{Madness} Heroes gain the following power:"
-            ],
-            "powers": [
-                "Shuffle 2 cards from the villain trash into the villain deck."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "LadyOfTheWood",
-                    "text": "Truth does not disappear just{BR}because it cannot be seen."
-                }
-            ],
-            "flavorReference": "Lady of the Wood, Fall of Titan One-shot"
-        },
-        {
-            "identifier": "YourDarkestSecrets",
-            "count": 1,
-            "title": "\"Your Darkest Secrets\"",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Discard",
-                "DealDamageInfernal"
-            ],
-            "body": [
-                "Discard the top card of each hero deck.",
-                "{Mythos} deals each hero 1 infernal damage for each card in their hand that shares a keyword with the card discarded from their deck."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Mythos",
-                    "text": "I know everything."
-                },
-                {
-                    "identifier": "Terminus",
-                    "text": "Then you know what{BR}comes next."
-                }
-            ],
-            "flavorReference": "Department of Secrets #49"
         }
     ],
-    "futureSubdecks": [
+    "subdecks": [
         {
-            "identifier": "Clue",
+            "identifier": "MythosClue",
             "name": "Eye Deck",
             "expansionIdentifier": "CauldronAdrift",
             "kind": "Villain",
@@ -652,12 +250,40 @@
             ]
         },
         {
-            "identifier": "Danger",
+            "identifier": "MythosDanger",
             "name": "Fear Deck",
             "expansionIdentifier": "CauldronAdrift",
             "kind": "Villain",
             "isReal": "false",
             "cards":[
+                {
+                    "identifier": "AclastyphWhoPeers",
+                    "count": 1,
+                    "title": "Aclastyph, Who Peers",
+                    "keywords": [
+                        "ancient spawn"
+                    ],
+                    "icons": [
+                        "Cauldron.ClueDangerMadness",
+                        "DealDamageMelee",
+                        "GainHP",
+                        "DealDamagePsychic"
+                    ],
+                    "body": [
+                        "At the end of the villain turn:",
+                        "{Danger} This card deals the hero target with the highest HP 2 melee damage. Discard the top card of the villain deck.",
+                        "{Clue} This card regains 2 HP. Discard the top card of the villain deck.",
+                        "{Madness} This card deals each other target 1 psychic damage."
+                    ],
+                    "flavorQuotes": [
+                        {
+                            "identifier": "DirectorWells",
+                            "text": "Try not to make eye contact."
+                        }
+                    ],
+                    "flavorReference": "Director Wells, Paranormal Squad #10",
+                    "hitpoints": 6
+                },
                 {
                     "identifier": "FaithfulProselyte",
                     "count": 3,
@@ -739,40 +365,12 @@
             ]
         },
         {
-            "identifier": "Madness",
+            "identifier": "MythosMadness",
             "name": "Mind Deck",
             "expansionIdentifier": "CauldronAdrift",
             "kind": "Villain",
             "isReal": "false",
             "cards":[
-                {
-                    "identifier": "AclastyphWhoPeers",
-                    "count": 1,
-                    "title": "Aclastyph, Who Peers",
-                    "keywords": [
-                        "ancient spawn"
-                    ],
-                    "icons": [
-                        "Cauldron.ClueDangerMadness",
-                        "DealDamageMelee",
-                        "GainHP",
-                        "DealDamagePsychic"
-                    ],
-                    "body": [
-                        "At the end of the villain turn:",
-                        "{Danger} This card deals the hero target with the highest HP 2 melee damage. Discard the top card of the villain deck.",
-                        "{Clue} This card regains 2 HP. Discard the top card of the villain deck.",
-                        "{Madness} This card deals each other target 1 psychic damage."
-                    ],
-                    "flavorQuotes": [
-                        {
-                            "identifier": "DirectorWells",
-                            "text": "Try not to make eye contact."
-                        }
-                    ],
-                    "flavorReference": "Director Wells, Paranormal Squad #10",
-                    "hitpoints": 6
-                },
                 {
                     "identifier": "ClockworkRevenant",
                     "count": 2,
@@ -868,9 +466,7 @@
                     ],
                     "body": [
                         "At the end of the villain turn, the villain target with the lowest HP deals the hero target with the highest HP 2 sonic damage.",
-                        "{Madness} Heroes gain the following power:",
-                        "Power: Shuffle 2 cards from the villain trash into the villain deck."
-                    ],
+                        "{Madness} Heroes gain the following power:"                    ],
                     "powers": [
                         "Shuffle 2 cards from the villain trash into the villain deck."
                     ],
