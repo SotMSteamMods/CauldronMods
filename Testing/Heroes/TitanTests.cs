@@ -730,6 +730,32 @@ namespace CauldronTests
             QuickHPCheck(2);
             QuickHandCheck(0);
         }
+        [Test()]
+        public void TestMoltenVeinsNotAskForSearchIfAlreadyInPlay()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            PlayCard("Titanform");
+            DiscardAllCards(titan);
+            MoveCard(titan, "PaybackTime", titan.HeroTurnTaker.Hand);
+            AssertMaxNumberOfDecisions(1);
+
+            PlayCard("MoltenVeins");
+        }
+        [Test()]
+        public void TestMoltenVeinsNotAskForSearchIfAlreadyInHand()
+        {
+            SetupGameController("Omnitron", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DiscardAllCards(titan);
+            MoveCard(titan, "PaybackTime", titan.HeroTurnTaker.Hand);
+            MoveCard(titan, "Titanform", titan.HeroTurnTaker.Hand);
+            AssertMaxNumberOfDecisions(1);
+
+            PlayCard("MoltenVeins");
+        }
 
         [Test()]
         public void TestMs5DemolitionCharge0Environment()
