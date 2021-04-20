@@ -22,7 +22,7 @@ namespace Cauldron.Gyrosaur
         public override void AddTriggers()
         {
             //"During your turn, the first time you have more than 3 Crash cards in your hand, immediately use this card's power and then destroy it.",
-            AddTrigger((MakeDecisionAction md) => Game.ActiveTurnTaker == TurnTaker && md.Decision is SelectFunctionDecision sf && (IsCrashEvaluation(sf) && CrashCountEvaluation(sf) > 3) && !HasBeenSetToTrueThisTurn(RARTUsedKey), ExcessCrashEvaluationResponse, new TriggerType[] { TriggerType.UsePower, TriggerType.DestroySelf }, TriggerTiming.After);
+            AddTrigger((MakeDecisionAction md) => Game.ActiveTurnTaker == TurnTaker && md.Decision is SelectWordDecision sw && (IsCrashEvaluation(sw) && CrashCountEvaluation(sw) > 3) && !HasBeenSetToTrueThisTurn(RARTUsedKey), ExcessCrashEvaluationResponse, new TriggerType[] { TriggerType.UsePower, TriggerType.DestroySelf }, TriggerTiming.After);
 
             AddTrigger((PhaseChangeAction pc) => pc.ToPhase.TurnTaker == TurnTaker && !HasBeenSetToTrueThisTurn(RARTUsedKey), EvaluateCrashForSelf, new TriggerType[] { TriggerType.UsePower, TriggerType.DestroySelf }, TriggerTiming.After);
             AddTrigger((GameAction ga) => Game.ActiveTurnTaker == TurnTaker && IsCrashInHandIncreaser(ga) && !HasBeenSetToTrueThisTurn(RARTUsedKey), EvaluateCrashForSelf, new TriggerType[] { TriggerType.UsePower, TriggerType.DestroySelf }, TriggerTiming.After);
@@ -67,12 +67,11 @@ namespace Cauldron.Gyrosaur
             }
             yield break;
         }
-        private bool IsCrashEvaluation(SelectFunctionDecision sf)
+        private bool IsCrashEvaluation(SelectWordDecision sw)
         {
-            if(sf.CardSource.Card.Owner == TurnTaker && sf.AssociatedCards.Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "GyroStabilizer"))
+            if(sw.CardSource.Card.Owner == TurnTaker && sw.AssociatedCards.Any((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "GyroStabilizer"))
             {
-                var type = sf.SelectedFunction?.SelectionType;
-                return type == SelectionType.RemoveTokens || type == SelectionType.AddTokens || type == SelectionType.None || type == null;
+                return sw.Choices.Any(s => s.Contains("crash card"));
             }
             return false;
         }
@@ -88,9 +87,9 @@ namespace Cauldron.Gyrosaur
             }
             return false;
         }
-        private int CrashCountEvaluation(SelectFunctionDecision sf)
+        private int CrashCountEvaluation(SelectWordDecision sw)
         {
-            return TrueCrashInHand + CrashModifierFromDecision(sf);
+            return TrueCrashInHand + CrashModifierFromDecision(sw);
         }
         private IEnumerator ExcessCrashEvaluationResponse(GameAction ga)
         {
@@ -99,9 +98,9 @@ namespace Cauldron.Gyrosaur
             IEnumerator coroutine;
             int detectedCrashCount;
             //Immediately use this card's power and then destroy it.
-            if(ga is MakeDecisionAction md && md.Decision is SelectFunctionDecision sf)
+            if(ga is MakeDecisionAction md && md.Decision is SelectWordDecision sw)
             {
-                detectedCrashCount = CrashCountEvaluation(sf);
+                detectedCrashCount = CrashCountEvaluation(sw);
                 OverrideCrashCount = detectedCrashCount;
             }
             else
