@@ -592,6 +592,24 @@ namespace CauldronTests
             QuickHPCheck(-1, 0, 0);
         }
         [Test]
+        public void TestOverwatch_DamageWhileDestroyed()
+        {
+            SetupGameController("TheEnnead", DeckNamespace, "Ra", "Legacy", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card firstDemigod = FindCardsWhere((Card c) => c.IsActiveEnneadCharacter && c.IsInPlayAndHasGameText).FirstOrDefault();
+            Card overwatch = PlayCard("Overwatch");
+            UsePower(overwatch);
+            DestroyCard(overwatch);
+
+            DecisionYesNo = true;
+            SetHitPoints(firstDemigod, 2);
+            DealDamage(firstDemigod, echelon, 1, DamageType.Melee);
+            AssertFlipped(firstDemigod);
+            Assert.IsFalse(firstDemigod.IsTarget);
+        }
+        [Test]
         public void TestPracticedTeamwork()
         {
             SetupGameController("BaronBlade", DeckNamespace, "Ra", "Haka", "Megalopolis");
