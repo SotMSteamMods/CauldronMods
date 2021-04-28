@@ -312,7 +312,7 @@ namespace CauldronTests
 
             //Discard 1, 2, or 3 cards. For each card discarded this way, shift {DriftL} or {DriftR}. Draw 2 cards.
 
-            DecisionSelectNumber = numDiscard;
+            DecisionSelectWord = numDiscard.ToString();
             DecisionSelectFunction = 1;
             Log.Debug($"There are {drift.HeroTurnTaker.Hand.NumberOfCards} cards in Drift's hand.");
             int shiftPosition = CurrentShiftPosition();
@@ -331,11 +331,11 @@ namespace CauldronTests
             Log.Debug($"There are {drift.HeroTurnTaker.Hand.NumberOfCards} cards in Drift's hand.");
 
             //Get to Position 4
-            DecisionSelectNumber = 3;
+            DecisionSelectWord = 3.ToString(); ;
             GoToShiftPosition(4);
 
             //Setup
-            DecisionSelectNumber = numDiscard;
+            DecisionSelectWord = numDiscard.ToString();
             DecisionSelectFunction = 0;
 
             int shiftPosition = CurrentShiftPosition();
@@ -353,7 +353,7 @@ namespace CauldronTests
             //Discard 1, 2, or 3 cards. For each card discarded this way, shift {DriftL} or {DriftR}. Draw 2 cards.
 
             //Setup
-            DecisionSelectNumber = 3;
+            DecisionSelectWord = 3.ToString();
             //Right, Left, Right
             DecisionSelectFunctions = new int?[] { 1, 0, 1 };
 

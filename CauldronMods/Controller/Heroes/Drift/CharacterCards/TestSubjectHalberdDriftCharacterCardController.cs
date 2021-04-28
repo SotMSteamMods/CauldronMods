@@ -22,12 +22,12 @@ namespace Cauldron.Drift
             int discard1Numeral = base.GetPowerNumeral(0, 1);
             int discard2Numeral = base.GetPowerNumeral(1, 2);
             int discard3Numeral = base.GetPowerNumeral(2, 3);
-            int[] discardNumerals = new int[] { discard1Numeral, discard2Numeral, discard3Numeral };
+            string[] discardNumerals = new string[] { discard1Numeral.ToString(), discard2Numeral.ToString(), discard3Numeral.ToString() };
 
             int drawNumeral = base.GetPowerNumeral(3, 2);
 
             //Discard 1, 2, or 3 cards.
-            List<SelectNumberDecision> numberDecision = new List<SelectNumberDecision>();
+            List<SelectWordDecision> numberDecision = new List<SelectWordDecision>();
             IEnumerator coroutine = PickDiscards(discardNumerals, numberDecision);
             if (base.UseUnityCoroutines)
             {
@@ -38,7 +38,7 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             List<DiscardCardAction> discardActions = new List<DiscardCardAction>();
-            coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, numberDecision.FirstOrDefault().SelectedNumber, storedResults: discardActions);
+            coroutine = base.SelectAndDiscardCards(base.HeroTurnTakerController, Convert.ToInt32(numberDecision.FirstOrDefault().SelectedWord), storedResults: discardActions);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -88,9 +88,9 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        private IEnumerator PickDiscards(int[] discardNumerals, List<SelectNumberDecision> numberDecision)
+        private IEnumerator PickDiscards(string[] discardNumerals, List<SelectWordDecision> numberDecision)
         {
-            IEnumerator coroutine = base.GameController.SelectNumber(base.HeroTurnTakerController, SelectionType.DiscardCard, 0, 4, additionalCriteria: (int i) => discardNumerals.Contains(i), storedResults: numberDecision, cardSource: base.GetCardSource());
+            IEnumerator coroutine = GameController.SelectWord(HeroTurnTakerController, discardNumerals, SelectionType.Custom, storedResults: numberDecision, optional: false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -99,33 +99,6 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            if(!discardNumerals.Any(i => i ==numberDecision.FirstOrDefault().SelectedNumber))
-            {
-                numberDecision.Clear();
-                coroutine = GameController.SendMessageAction("Please pick a valid position!", Priority.High, GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                coroutine = PickDiscards(discardNumerals, numberDecision);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-            }
-
-            yield break;
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
@@ -194,6 +167,13 @@ namespace Cauldron.Drift
                     }
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("How many cards do you want to discard?", "How many cards should they discard?", "Vote for the number of cards they should discard?", "number of cards to discard");
+
         }
     }
 }
