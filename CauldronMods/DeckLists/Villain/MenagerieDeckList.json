@@ -41,7 +41,7 @@
             "flippedHitpoints": 50,
             "flippedBody": "Catch 'Em All",
             "flippedGameplay": [
-                "When Menagerie flips to this side, shuffle the villain trash and all enclosures beneath this card into the villain deck. Remove Prized Catch from the game.",
+                "When Menagerie flips to this side, shuffle the villain trash and all enclosurese beneath this card into the villain deck. Remove Prized Catch from the game.",
                 "When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. Heroes with enclosures in their play area may not damage cards in other play areas.",
                 "Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.",
                 "At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure."
