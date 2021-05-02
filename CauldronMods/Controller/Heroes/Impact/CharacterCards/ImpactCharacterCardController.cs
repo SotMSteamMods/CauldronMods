@@ -37,7 +37,7 @@ namespace Cauldron.Impact
             ITrigger previewBoost = null;
             if(enoughOngoingsInPlay)
             {
-                previewBoost = AddTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == this.Card && dd.CardSource.Card == this.Card, IncreaseDamageDecision, TriggerType.IncreaseDamage, TriggerTiming.Before, isActionOptional: false);
+                previewBoost = AddTrigger((DealDamageAction dd) => !IsRealAction(dd) && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == this.Card && dd.CardSource.Card == this.Card, IncreaseDamageDecision, TriggerType.IncreaseDamage, TriggerTiming.Before, isActionOptional: false);
 
             }
 
