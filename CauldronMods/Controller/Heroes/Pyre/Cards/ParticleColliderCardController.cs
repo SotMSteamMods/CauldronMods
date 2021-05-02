@@ -13,7 +13,7 @@ namespace Cauldron.Pyre
         public ParticleColliderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             ShowIrradiatedCardsInHands();
-            SpecialStringMaker.ShowIfSpecificCardIsInPlay(ThermonuclearCoreIdentifier);
+            SpecialStringMaker.ShowIfElseSpecialString(() => FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == ThermonuclearCoreIdentifier).Any(), () => "Thermonuclear Core is in play.", () => "Thermonuclear Core is not in play.");
         }
 
         public readonly string ThermonuclearCoreIdentifier = "ThermonuclearCore";
@@ -44,9 +44,10 @@ namespace Cauldron.Pyre
 
             var coreInPlay = GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.Identifier == ThermonuclearCoreIdentifier).FirstOrDefault();
             ITrigger previewBoost = null;
+            CardSource cardSource = GetCardSource();
             if (coreInPlay != null)
             {
-                previewBoost = AddIncreaseDamageTrigger((DealDamageAction dd) => !IsRealAction() && dd.CardSource != null && dd.CardSource.Card == Card && dd.CardSource.PowerSource != null, dd => numBoost);
+                previewBoost = AddTrigger((DealDamageAction dd) => !IsRealAction(dd) && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == CharacterCard && dd.CardSource == cardSource, IncreaseDamageDecision, TriggerType.IncreaseDamage, TriggerTiming.Before, isActionOptional: false);
             }
 
             //select the targets
@@ -61,7 +62,7 @@ namespace Cauldron.Pyre
                                             numDamage,
                                             DamageType.Energy,
                                             selectTargetsEvenIfCannotPerformAction: false,
-                                            cardSource: GetCardSource());
+                                            cardSource: cardSource);
             coroutine = GameController.SelectCardsAndDoAction(targetDecision, _ => DoNothing());
             if (base.UseUnityCoroutines)
             {
@@ -166,5 +167,22 @@ namespace Cauldron.Pyre
             }
             yield break;
         }
+
+        private IEnumerator IncreaseDamageDecision(DealDamageAction dd)
+        {
+
+            //This is a fake method that just makes a decision to fool the preview into properly showing the question mark
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, base.Card,
+                                        cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
     }
 }
