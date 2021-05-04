@@ -58,9 +58,9 @@ namespace Cauldron.Cypher
                     new Function(base.HeroTurnTakerController, $"Put {aug.Title} in trash", SelectionType.MoveCardToTrash, () => base.GameController.MoveCard(this.HeroTurnTakerController, augmentCards.First(), base.HeroTurnTaker.Trash, cardSource: GetCardSource()))
                 };
 
-                SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, base.HeroTurnTakerController, functionChoices, false);
+                SelectFunctionDecision selectFunction = new SelectFunctionDecision(base.GameController, base.HeroTurnTakerController, functionChoices, false, associatedCards: augmentCards, cardSource: GetCardSource());
                 
-                routine = base.GameController.SelectAndPerformFunction(selectFunction, associatedCards: augmentCards);
+                routine = base.GameController.SelectAndPerformFunction(selectFunction);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(routine);
