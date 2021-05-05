@@ -41,6 +41,7 @@ namespace Cauldron.OblaskCrater
 
             makeIndestructibleStatusEffect = new MakeIndestructibleStatusEffect();
             makeIndestructibleStatusEffect.CardsToMakeIndestructible.IsEnvironment = true;
+            makeIndestructibleStatusEffect.CardsToMakeIndestructible.IsNotSpecificCard = destroyCardAction.CardToDestroy.Card;
             makeIndestructibleStatusEffect.UntilStartOfNextTurn(base.FindNextTurnTaker());
 
             coroutine = base.AddStatusEffect(makeIndestructibleStatusEffect);
