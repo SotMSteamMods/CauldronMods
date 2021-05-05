@@ -17,7 +17,7 @@ namespace Cauldron.TheKnight
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             IEnumerator coroutine;
-            if(this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards && !_useSpecialAssignment)
+            if(this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards && CharacterCardController is WastelandRoninTheKnightCharacterCardController && !_useSpecialAssignment)
             {
                 coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => IsOwnCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "Knight character"), storedResults, isPutIntoPlay, decisionSources);
                 if (base.UseUnityCoroutines)
