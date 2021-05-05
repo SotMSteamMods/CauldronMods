@@ -38,14 +38,10 @@
                 "1 hero target regains 2 HP."
             ],
             "flippedIcons": [
-                "DrawCardNow",
-                "Manipulate",
-                "PlayCardNow"
+                "ImmuneToDamage",
+                "UsePowerNow",
+                "GainHP"
             ],
-            "openingLines": {
-                "default": "Your defeat is written in the stars!",
-                "MenagerieCharacter": "Menagerie placeholder"
-            },
             "complexity": 3,
             "openingLines": {
                 "default": "Your defeat is written in the stars!",
