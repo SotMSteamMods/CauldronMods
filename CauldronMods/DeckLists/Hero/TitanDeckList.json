@@ -544,7 +544,7 @@
             "hitpointColor": "e68078",
             "character": true,
             "powers": [
-                "Titan regains 1HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
+                "Titan regains 1 HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
             ],
             "icons": [
                 "HasPower",

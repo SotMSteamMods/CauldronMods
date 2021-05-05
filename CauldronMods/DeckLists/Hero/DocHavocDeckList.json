@@ -391,7 +391,7 @@
                 "DestroySelf"
             ],
             "body": [
-                "When this card enters play, 1 target regains 2HP.",
+                "When this card enters play, 1 target regains 2 HP.",
                 "At the end of your turn, you may destroy 1 ongoing or environment card. If you do, destroy this card."
             ],
             "flavorQuotes": [
