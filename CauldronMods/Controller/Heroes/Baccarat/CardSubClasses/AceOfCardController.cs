@@ -31,7 +31,7 @@ namespace Cauldron.Baccarat
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
 
             //...shuffle 2 cards with the same name from your trash into your deck...
-            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ShuffleCardIntoDeck, new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c) && c.IsInTrash, "two cards with the same name"), storedResults, true);
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ShuffleCardIntoDeck, new LinqCardCriteria((Card c) => TwoOrMoreCopiesInTrash(c) && c.IsInTrash, "two cards with the same name"), storedResults, true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -44,7 +44,7 @@ namespace Cauldron.Baccarat
             if (selectCardDecision != null && selectCardDecision.SelectedCard != null)
             {
                 //Move second card
-                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ShuffleCardIntoDeck, new LinqCardCriteria((Card c) => c.Identifier == selectCardDecision.SelectedCard.Identifier && c.InstanceIndex != selectCardDecision.SelectedCard.InstanceIndex && c.IsInTrash, "two cards with the same name"), storedResults, false);
+                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ShuffleCardIntoDeck, new LinqCardCriteria((Card c) => c.Identifier == selectCardDecision.SelectedCard.Identifier && c.InstanceIndex != selectCardDecision.SelectedCard.InstanceIndex && c.IsInTrash, "two cards with the same name"), storedResults, false, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -55,7 +55,7 @@ namespace Cauldron.Baccarat
                 }
                 //actually shuffle cards into deck
                 IEnumerable<Card> cards = new Card[] { storedResults.FirstOrDefault().SelectedCard, storedResults.LastOrDefault().SelectedCard };
-                coroutine = base.GameController.ShuffleLocation(this.TurnTaker.Deck);
+                coroutine = base.GameController.ShuffleLocation(this.TurnTaker.Deck, cardSource: GetCardSource());
                 coroutine = base.GameController.ShuffleCardsIntoLocation(HeroTurnTakerController, cards, base.TurnTaker.Deck, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
@@ -68,7 +68,7 @@ namespace Cauldron.Baccarat
             }//...or this card is destroyed.
             else
             {
-                coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card);
+                coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
