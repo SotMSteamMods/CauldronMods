@@ -33,23 +33,31 @@ namespace Cauldron.SuperstormAkela
 
         private IEnumerator ShuffleResponse(PhaseChangeAction pca)
         {
-            Log.Debug("Hitting the shuffle response");
             //shuffle all non-character villain cards from the villain play area and replace them in a random order
-            List<TurnTakerController> storedResults = new List<TurnTakerController>();
-            IEnumerator coroutine = GameController.FindVillainTurnTakerController(DecisionMaker, SelectionType.MoveCard, storedResults, null, GetCardSource());
-            if (base.UseUnityCoroutines)
+            IEnumerator coroutine;
+            IEnumerable<TurnTaker> villainTurnTakers = FindTurnTakersWhere(tt => IsVillain(tt) && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.PlayArea.Cards.Any(c => !c.IsCharacter && IsVillain(c) && c.IsRealCard));
+            if (villainTurnTakers.Any())
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+                TurnTakerController selectedVillainTurnTakerController = FindTurnTakerController(villainTurnTakers.FirstOrDefault());
+                if (villainTurnTakers.Count() > 1)
+                {
+                    List<TurnTakerController> storedResults = new List<TurnTakerController>();
+                    coroutine = GameController.FindVillainTurnTakerController(DecisionMaker, SelectionType.MoveCard, storedResults, additionalCriteria: tt => tt.PlayArea.Cards.Any(c => !c.IsCharacter && IsVillain(c) && c.IsRealCard), GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
 
-            if(storedResults.Any())
-            {
-                TurnTakerController selectedVillainTurnTakerController = storedResults.First();
-                coroutine = GameController.ShuffleCardsInPlayArea(selectedVillainTurnTakerController, new LinqCardCriteria((Card c) => !c.IsCharacter && IsVillain(c), "non-character villain card"), cardSource: GetCardSource());
+                    if (storedResults.Any())
+                    {
+                        selectedVillainTurnTakerController = storedResults.First();
+                    }
+                }
+                coroutine = GameController.ShuffleCardsInPlayArea(selectedVillainTurnTakerController, new LinqCardCriteria((Card c) => !c.IsCharacter && IsVillain(c) && c.IsRealCard, "non-character villain card"), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -61,7 +69,7 @@ namespace Cauldron.SuperstormAkela
             }
 
             //Do the same for environment cards in the environment play area.
-            coroutine = GameController.ShuffleCardsInPlayArea(base.TurnTakerController, new LinqCardCriteria((Card c) => c.IsEnvironment, "environment card"), cardSource: GetCardSource());
+            coroutine = GameController.ShuffleCardsInPlayArea(base.TurnTakerController, new LinqCardCriteria((Card c) => c.IsEnvironment && c.IsRealCard, "environment card"), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
