@@ -30,13 +30,8 @@ namespace Cauldron.Terminus
         {
             IEnumerator coroutine;
             List<Function> list = new List<Function>();
-            // SelectFunctionDecision selectFunction;
-
-            coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(1, 3, removeTokenResponse: RemoveTokenResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "no damage was dealt.", removeEffectDescription: "deal counter damage", triggerAction: dealDamageAction);
-            //list.Add(new Function(DecisionMaker, $"Add 1 token to {WrathPool.Name}", SelectionType.AddTokens, () => base.GameController.AddTokensToPool(WrathPool, 1, base.GetCardSource())));
-            //list.Add(new Function(DecisionMaker, $"Remove 3 tokens from  {WrathPool.Name}", SelectionType.RemoveTokens, () => RemoveTokenResponse(dealDamageAction)));
-            //selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, list, false, null, null, null, base.GetCardSource());
-            //coroutine = GameController.SelectAndPerformFunction(selectFunction);
+            string removeEffectDescription = dealDamageAction.DamageSource.IsTarget ? "deal counter damage" : "no effect";
+            coroutine = base.AddOrRemoveWrathTokens<GameAction, DealDamageAction>(1, 3, removeTokenResponse: RemoveTokenResponse, removeTokenGameAction: dealDamageAction, insufficientTokenMessage: "no damage was dealt.", removeEffectDescription: removeEffectDescription, triggerAction: dealDamageAction);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -50,23 +45,10 @@ namespace Cauldron.Terminus
         }
 
         private IEnumerator RemoveTokenResponse(DealDamageAction dealDamageAction, List<RemoveTokensFromPoolAction> removeTokensFromPoolActions)
-        {
-            IEnumerator coroutine;
-            //List<RemoveTokensFromPoolAction> storedResults = new List<RemoveTokensFromPoolAction>();
-
-            //coroutine = base.GameController.RemoveTokensFromPool(WrathPool, 3, storedResults, optional: false, null, base.GetCardSource());
-            //if (UseUnityCoroutines)
-            //{
-            //    yield return GameController.StartCoroutine(coroutine);
-            //}
-            //else
-            //{
-            //    GameController.ExhaustCoroutine(coroutine);
-            //}
-
+        {          
             if (base.GetNumberOfTokensRemoved(removeTokensFromPoolActions) >= 3)
             {
-                coroutine = base.GameController.DealDamageToTarget(new DamageSource(base.GameController, base.CharacterCard), dealDamageAction.DamageSource.Card, 3, DamageType.Cold, cardSource: base.GetCardSource());
+                IEnumerator coroutine = base.GameController.DealDamageToTarget(new DamageSource(base.GameController, base.CharacterCard), dealDamageAction.DamageSource.Card, 3, DamageType.Cold, cardSource: base.GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
