@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -104,6 +104,15 @@ namespace Cauldron.Terminus
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
+            coroutine = GameController.SendMessageAction($"{Card.Title} returns {effect.CardMovedExpiryCriteria.Card.Title} to {originalCardController.TurnTaker.ToHero().Hand.GetFriendlyName()}.", Priority.Medium, GetCardSource(), associatedCards: effect.CardMovedExpiryCriteria.Card.ToEnumerable(), showCardSource: true);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
             yield break;
         }
     }
