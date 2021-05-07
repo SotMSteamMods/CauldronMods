@@ -97,6 +97,7 @@
             ],
             "icons": [
                 "ReduceDamageTaken",
+                "StartOfTurnAction",
                 "Manipulate",
                 "DestroySelf"
             ],
@@ -122,6 +123,7 @@
             ],
             "icons": [
                 "IncreaseDamageDealt",
+                "StartOfTurnAction",
                 "Manipulate",
                 "DestroySelf"
             ],
