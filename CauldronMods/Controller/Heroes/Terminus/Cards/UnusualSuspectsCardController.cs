@@ -60,11 +60,20 @@ namespace Cauldron.Terminus
 
         private bool HasKeywordInAnyTrash(Card target)
         {
+            List<Location> trashes = new List<Location>();
+            foreach (TurnTaker tt in Game.TurnTakers)
+            {
+                if (tt.IsIncapacitatedOrOutOfGame) continue;
+                if (tt.Trash.BattleZone == Card.BattleZone && tt.Trash.IsRealTrash && GameController.IsLocationVisibleToSource(tt.Trash, GetCardSource()))
+                {
+                    trashes.Add(tt.Trash);
+                }
+                trashes = trashes.Concat(tt.SubTrashes.Where(l => l.BattleZone == Card.BattleZone && l.IsRealTrash && GameController.IsLocationVisibleToSource(l, GetCardSource()))).ToList();
+            }
             List<string> cardKeywords = target.GetKeywords().ToList();
-            List<Location> allTrash = base.GameController.AllTurnTakers.Where((tt) => !tt.IsIncapacitatedOrOutOfGame && tt.Trash.HasCards).Select((tt) => tt.Trash).ToList();
             bool matchesKeyword = false;
 
-            foreach (Location trash in allTrash)
+            foreach (Location trash in trashes)
             {
                 if (trash.Cards.Any(card => card.DoKeywordsContain(cardKeywords)))
                 {
