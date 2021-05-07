@@ -1340,12 +1340,14 @@ namespace CauldronTests
             SetupGameController(new string[] { "OblivAeon", "Cauldron.TangoOne", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
             StartGame();
 
+            Dictionary<Location, Card> topCardsOfSubDecks = new Dictionary<Location, Card>();
 
             SwitchBattleZone(haka);
 
             DiscardTopCards(oblivaeon, 1);
             foreach(Location subdeck in oblivaeon.TurnTaker.SubDecks.Where(d => d.IsRealDeck))
             {
+                topCardsOfSubDecks.Add(subdeck, subdeck.TopCard);
                 DiscardTopCards(subdeck, 1);
             }
             DiscardTopCards(tango, 1);
@@ -1366,10 +1368,12 @@ namespace CauldronTests
             foreach (Location subtrash in oblivaeon.TurnTaker.SubTrashes.Where(d => d.IsRealTrash))
             {
                 AssertNumberOfCardsAtLocation(subtrash, 0);
-
             }
 
-
+            foreach (Location subdeck in oblivaeon.TurnTaker.SubDecks.Where(d => d.IsRealDeck))
+            {
+                AssertAtLocation(topCardsOfSubDecks[subdeck], subdeck);
+            }
 
         }
 
