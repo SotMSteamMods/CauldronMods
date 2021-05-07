@@ -524,7 +524,7 @@
             "openingLines": {
                 "default": "We have formed a most excellent team to deal with your misdeeds.",
                 "CeladrochCharacter": "Adventure, discovery, life - all will exist after this. All but you, Celadroch.",
-                "MythosCharacter": "Your voice is almost familiar to me, but…its owner was lost, long ago.",
+                "MythosCharacter": "Your voice is almost familiar to me, but...its owner was lost, long ago.",
                 "HydraWinterTiamatCharacter": "Come, friends. We must deal with a dragon."
             },
             "complexity": 3,
