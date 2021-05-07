@@ -19,8 +19,19 @@ namespace Cauldron.Vanish
          */
         public override IEnumerator Play()
         {
+            List<Location> decks = new List<Location>();
+            foreach (TurnTaker tt in Game.TurnTakers)
+            {
+                if (tt.IsIncapacitatedOrOutOfGame) continue;
+                if (tt.Deck.BattleZone == Card.BattleZone && tt.Deck.IsRealDeck && GameController.IsLocationVisibleToSource(tt.Deck, GetCardSource()))
+                {
+                    decks.Add(tt.Deck);
+                }
+                decks = decks.Concat(tt.SubDecks.Where(l => l.BattleZone == Card.BattleZone && l.IsRealDeck && GameController.IsLocationVisibleToSource(l, GetCardSource()))).ToList();
+            }
+
             List<Card> revealedCards = new List<Card>();
-            var coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, l => l.IsDeck && !l.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && l.IsRealDeck, (Location loc) => RevealTopCardAndReturn(loc, revealedCards), cardSource: GetCardSource());
+            var coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.RevealTopCardOfDeck, l => decks.Contains(l) && l.NumberOfCards > 0, (Location loc) => RevealTopCardAndReturn(loc, revealedCards), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -30,7 +41,8 @@ namespace Cauldron.Vanish
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            IEnumerable<Card> choices = FindCardsWhere((Card c) => c.Location.IsDeck && base.GameController.IsLocationVisibleToSource(c.Location, GetCardSource()) && c == c.Location.TopCard);
+
+            IEnumerable<Card> choices = decks.Where(deck => deck.NumberOfCards > 0).Select(deck => deck.TopCard);
             IEnumerable<CardController> cardsToFlip = choices.Except(revealedCards).Select(c => FindCardController(c));
             coroutine = GameController.FlipCards(cardsToFlip, GetCardSource());
             if (base.UseUnityCoroutines)
@@ -145,3 +157,4 @@ namespace Cauldron.Vanish
         }
     }
 }
+        
