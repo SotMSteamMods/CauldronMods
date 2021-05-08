@@ -28,7 +28,7 @@ namespace Cauldron.Cypher
             int augsToMove = GetPowerNumeral(0, 1);
             customTextPowerNumeral = augsToMove;
             // You may move 1 Augment in play next to a new hero.
-            var scd = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => IsInPlayAugment(c), SelectionType.MoveCardNextToCard,
+            var scd = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => IsInPlayAugment(c), SelectionType.Custom,
                             numberOfCards: augsToMove,
                             isOptional: false,
                             requiredDecisions: 0,
