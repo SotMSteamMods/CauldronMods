@@ -22,11 +22,13 @@ namespace Cauldron.Cypher
             ShowSpecialStringAugmentsInPlay();
         }
 
+        private int customTextPowerNumeral = 1;
         public override IEnumerator UsePower(int index = 0)
         {
             int augsToMove = GetPowerNumeral(0, 1);
+            customTextPowerNumeral = augsToMove;
             // You may move 1 Augment in play next to a new hero.
-            var scd = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => IsInPlayAugment(c), SelectionType.MoveCardNextToCard,
+            var scd = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => IsInPlayAugment(c), SelectionType.Custom,
                             numberOfCards: augsToMove,
                             isOptional: false,
                             requiredDecisions: 0,
@@ -67,6 +69,15 @@ namespace Cauldron.Cypher
             {
                 base.GameController.ExhaustCoroutine(routine);
             }
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            string augment = customTextPowerNumeral == 1 ? "an Augment" : customTextPowerNumeral + " Augments";
+            string heroes = customTextPowerNumeral == 1 ? "a new hero" : "new heroes";
+
+            return new CustomDecisionText($"Select {augment} in play to move next to {heroes}.", $"Selecting {augment} in play to move next to {heroes}.", $"Vote for {augment} in play to move next to {heroes}.", $"move {augment} in play next to {heroes}");
+
         }
     }
 }

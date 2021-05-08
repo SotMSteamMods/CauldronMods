@@ -98,7 +98,7 @@ namespace Cauldron.Cypher
 
             // If you do, select any number of Augments in play and move each one next to a new hero. 
 
-            var augmentsToMove = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => IsInPlayAugment(c), SelectionType.MoveCard,  null, false, 0, eliminateOptions: true, cardSource: GetCardSource());
+            var augmentsToMove = new SelectCardsDecision(GameController, DecisionMaker, (Card c) => IsInPlayAugment(c), SelectionType.Custom,  null, false, 0, eliminateOptions: true, cardSource: GetCardSource());
             routine = GameController.SelectCardsAndDoAction(augmentsToMove, MoveInPlayAugment, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
@@ -122,6 +122,13 @@ namespace Cauldron.Cypher
                 base.GameController.ExhaustCoroutine(routine);
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Select Augments in play to move next to new heroes.", "Selecting Augments in play to move next to new heroes.", "Vote for Augments in play to move next to new heroes.", "move Augments in play next to new heroes");
+
         }
     }
 }
