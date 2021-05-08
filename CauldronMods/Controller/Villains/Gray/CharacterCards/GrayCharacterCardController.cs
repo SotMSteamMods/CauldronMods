@@ -126,7 +126,12 @@ namespace Cauldron.Gray
             return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && CanBeDestroyedByGray(c)).Count());
         }
 
-        private int? FindNumberOHeroOngoingAndEquipmentInPlay()
+        private int? FindNumberOfIndestructibleHeroOngoingAndEquipmentInPlay()
+        {
+            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && !CanBeDestroyedByGray(c)).Count());
+        }
+
+        private int? FindNumberOfHeroOngoingAndEquipmentInPlay()
         {
             return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c))).Count());
         }
@@ -147,7 +152,7 @@ namespace Cauldron.Gray
         {
             //...destroy all but 2 hero ongoing or equipment cards. 
             IEnumerator coroutine;
-            while (this.FindNumberOfDestructibleHeroOngoingAndEquipmentInPlay() > 2)
+            while (FindNumberOfHeroOngoingAndEquipmentInPlay() > 2 && FindNumberOfHeroOngoingAndEquipmentInPlay() != this.FindNumberOfIndestructibleHeroOngoingAndEquipmentInPlay())
             {
                 coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
                 if (base.UseUnityCoroutines)
@@ -161,9 +166,9 @@ namespace Cauldron.Gray
             }
 
             //add message if ended because of indestructible
-            if(FindNumberOHeroOngoingAndEquipmentInPlay() > 2)
+            if(FindNumberOfHeroOngoingAndEquipmentInPlay() > 2)
             {
-                coroutine = GameController.SendMessageAction($"Some hero ongoing or equipment cards are indestructible, so there are more than 2 of them still in play.", Priority.Medium, GetCardSource(), showCardSource: true);
+                coroutine = GameController.SendMessageAction($"Some hero ongoing or equipment cards are indestructible.", Priority.Medium, GetCardSource(), showCardSource: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
