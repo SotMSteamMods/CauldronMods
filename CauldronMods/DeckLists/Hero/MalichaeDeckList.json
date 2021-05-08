@@ -284,9 +284,9 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Ezael. If Ezael is ever not in play, destroy this card.",
-				"At the end of your turn, each Djinn regains 1HP."
+				"At the end of your turn, each Djinn regains 1 HP."
 			],
-			"powers": "All Djinn regain 2HP. All other hero targets regain 1HP. Destroy this card.",
+			"powers": "All Djinn regain 2 HP. All other hero targets regain 1 HP. Destroy this card.",
 			"flavorQuotes": [
 				{
 					"identifier": "DocHavoc",
