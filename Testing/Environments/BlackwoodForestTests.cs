@@ -28,6 +28,19 @@ namespace CauldronTests
             Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
         }
 
+        [Test()]
+        public void TestBlackForestLoadsInOblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            Assert.AreEqual(8, this.GameController.TurnTakerControllers.Count());
+            AssertBattleZone(BlackwoodForest, bzOne);
+
+            Card spirit = PlayCard("VengefulSpirits");
+            PrintSpecialStringsForCard(spirit);
+
+        }
+
 
         [Test]
         public void TestOldBonesEmptyTrashPiles()

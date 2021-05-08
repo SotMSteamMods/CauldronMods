@@ -27,7 +27,12 @@ namespace Cauldron.BlackwoodForest
 
         public VengefulSpiritsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCardsAtLocation(FindLocationsWhere(location => location.IsRealTrash && location.IsVillain && GameController.IsLocationVisibleToSource(location, GetCardSource())).First(), new LinqCardCriteria(c => c.IsTarget, "target", useCardsSuffix: false, singular: "target", plural: "targets"));       
+            IEnumerable<Location> villainTrashes = FindLocationsWhere(location => location.IsRealTrash && location.IsVillain && GameController.IsLocationVisibleToSource(location, GetCardSource()));
+            foreach(Location loc in villainTrashes)
+            {
+                base.SpecialStringMaker.ShowListOfCardsAtLocation(loc, new LinqCardCriteria(c => c.IsTarget, "target", useCardsSuffix: false, singular: "target", plural: "targets"));
+
+            }
         }
 
         public override void AddTriggers()
@@ -141,5 +146,7 @@ namespace Cauldron.BlackwoodForest
                 base.GameController.ExhaustCoroutine(destroyRoutine);
             }
         }
+
+       
     }
 }
