@@ -86,7 +86,7 @@ namespace Cauldron.OblaskCrater
 			}
 
 			var heroTTC = FindHeroTurnTakerController(hero.ToHero());
-			var yesNo = new YesNoDecision(GameController, heroTTC, SelectionType.MoveCard, cardSource: GetCardSource());
+			var yesNo = new YesNoDecision(GameController, heroTTC, SelectionType.Custom, cardSource: GetCardSource());
 			coroutine = GameController.MakeDecisionAction(yesNo);
 			if (UseUnityCoroutines)
 			{
@@ -111,5 +111,12 @@ namespace Cauldron.OblaskCrater
 			}
 			yield break;
         }
+
+		public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+		{
+
+			return new CustomDecisionText("Do you want to put the top card of your deck into your hand?", "Should they put the top card of their deck into their hand?", "Vote for if they should put the top card of their deck into their hand?", "put the top card of their deck into their hand");
+
+		}
 	}
 }
