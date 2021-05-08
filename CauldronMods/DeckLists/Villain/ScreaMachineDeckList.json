@@ -411,7 +411,7 @@
 				"Cauldron.Drums"
 			],
 			"body": [
-				"Each villain target deals the target with the highest HP 2 projectile damage.",
+				"Each villain target deals the hero target with the highest HP 2 projectile damage.",
 				"Activate all {Vocal} and {Drum} effects."
 			],
 			"flavorQuotes": [{
