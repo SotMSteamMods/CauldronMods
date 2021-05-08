@@ -241,6 +241,7 @@ namespace CauldronTests
 
             // Arrange & Act
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+            StartGame();
             inscrutableEcology = base.GetCard("InscrutableEcology");
             oblaskObjectY3A = base.GetCard("OblaskObjectY3A");
             shadowOfOblask = base.GetCard("ShadowOfOblask");

@@ -29,57 +29,16 @@ namespace Cauldron.OblaskCrater
 
         public override IEnumerator Play()
         {
-            Location environmentDeck = FindLocationsWhere(location => location.IsRealDeck && location.IsEnvironment && GameController.IsLocationVisibleToSource(location, GetCardSource())).First();
-            Location environmentTrash = FindLocationsWhere(location => location.IsRealTrash && location.IsEnvironment && GameController.IsLocationVisibleToSource(location, GetCardSource())).First();
-            List<RevealCardsAction> revealedCards = new List<RevealCardsAction>();
-            IEnumerator revealCardsRoutine;
-            IEnumerator returnCardsRoutine;
-            IEnumerator coroutine;
-            List<Card> matchedCards;
-            List<Card> otherCards;
-            ReduceDamageStatusEffect reduceDamageStatusEffect;
-
-            // reveal cards from the top of the environmnet deck until {H - 1} targets are  revealed
-            revealCardsRoutine = base.GameController.RevealCards(TurnTakerController, environmentDeck, card => card.IsTarget, base.H - 1, revealedCards, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            IEnumerator coroutine = RevealCards_PutSomeIntoPlay_DiscardRemaining(TurnTakerController, TurnTaker.Deck, numberOfCardToReveal: null, cardCriteria: new LinqCardCriteria(c => c.IsTarget), revealUntilNumberOfMatchingCards: Game.H - 1);
+            if (UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(revealCardsRoutine);
+                yield return GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(revealCardsRoutine);
+                GameController.ExhaustCoroutine(coroutine);
             }
-
-            matchedCards = GetRevealedCards(revealedCards).Where(c => c.IsTarget).ToList();
-            otherCards = GetRevealedCards(revealedCards).Where(c => !c.IsTarget).ToList();
-            if (otherCards.Any())
-            {
-                // Put non matching revealed cards back in the trash
-                returnCardsRoutine = GameController.MoveCards(DecisionMaker, otherCards, environmentTrash, cardSource: GetCardSource());
-                if (this.UseUnityCoroutines)
-                {
-                    yield return this.GameController.StartCoroutine(returnCardsRoutine);
-                }
-                else
-                {
-                    this.GameController.ExhaustCoroutine(returnCardsRoutine);
-                }
-            }
-
-            if (matchedCards != null && matchedCards.Count() > 0)
-            {
-                coroutine = base.GameController.PlayCards(base.DecisionMaker, (card) => matchedCards.Contains(card), false, true, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
+     
         }
     }
 }
