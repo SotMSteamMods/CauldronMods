@@ -169,7 +169,7 @@ namespace Cauldron.Necro
             HeroTurnTakerController heroTurnTakerController = base.FindHeroTurnTakerController(turnTaker.ToHero());
 
             //ask the selected player if they want to discard and draw
-            YesNoDecision yesNo = new YesNoDecision(base.GameController, heroTurnTakerController, SelectionType.DiscardAndDrawCard, cardSource: GetCardSource());
+            YesNoDecision yesNo = new YesNoDecision(base.GameController, heroTurnTakerController, SelectionType.Custom, cardSource: GetCardSource());
             IEnumerator coroutine = base.GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
             {
@@ -215,6 +215,13 @@ namespace Cauldron.Necro
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to discard your hand and draw that many cards?", "Should they discard their hand and draw that many cards?", "Vote for if they should discard their hand and draw that many cards?", "discard hand and draw that many cards");
+
         }
     }
 }
