@@ -1414,6 +1414,38 @@ namespace CauldronTests
             AssertInTrash(envCard);
         }
 
+        [Test]
+        public void ZephaerensCompass_ChasmDjinn()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Malichae", "Ra", "Fanatic", "Cauldron.TheChasmOfAThousandNights");
+            StartGame();
+
+            var ongoing = PlayCard("BacklashField");
+
+            GoToPlayCardPhase(malichae);
+
+            var card = PlayCard("ZephaerensCompass");
+            AssertInPlayArea(malichae, card);
+
+            string djinn = "Axion";
+
+            var target = PlayCard(djinn);
+            DecisionMoveCard = target;
+
+            GoToUsePowerPhase(malichae);
+
+            QuickHandStorage(malichae, ra, fanatic);
+
+            DecisionMoveCard = target;
+            DecisionDestroyCards = new Card[] { ongoing, null };
+
+            UsePower(card);
+
+            QuickHandCheck(1, 0, 0);
+            AssertInHand(malichae, target);
+            AssertInTrash(ongoing);
+        }
+
 
         [Test]
         public void PrismaticVision()

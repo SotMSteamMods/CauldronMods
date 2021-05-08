@@ -15,8 +15,8 @@ namespace Cauldron.Malichae
 
         public override IEnumerator UsePower(int index = 0)
         {
-            var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.MoveCardToHand, DecisionMaker.HeroTurnTaker.PlayArea.Cards,
-                            additionalCriteria: c => c.IsTarget && c.IsInPlayAndHasGameText && IsDjinn(c),
+            IEnumerable<Card> choices = FindCardsWhere(c => c.IsTarget && c.IsInPlayAndHasGameText && IsDjinn(c), visibleToCard: GetCardSource());
+            var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.MoveCardToHand, choices,
                             cardSource: GetCardSource());
             var coroutine = base.GameController.SelectCardAndDoAction(scd, CompassPowerResponse);
             if (base.UseUnityCoroutines)
