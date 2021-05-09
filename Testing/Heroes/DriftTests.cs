@@ -1217,5 +1217,22 @@ namespace CauldronTests
             AssertMaxNumberOfDecisions(1);
             UsePower(lookingUp);
         }
+
+        [Test()]
+        public void TestDriftAndProgeny()
+        {
+            SetupGameController("Progeny", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetHitPoints(drift, 8);
+            StartGame();
+
+            GoToShiftPosition(4);
+            DealDamage(progeny, drift, 8, DamageType.Radiant);
+            AssertIncapacitated(drift);
+
+            GoToStartOfTurn(progeny);
+
+            AssertNotFlipped(progeny);
+
+        }
     }
 }
