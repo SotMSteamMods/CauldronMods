@@ -40,6 +40,8 @@ namespace Cauldron.BlackwoodForest
         private static readonly IEnumerable<string> BaseKeywords = new[] { "creature" };
         private static bool AllowReflectionSelfModification = true;
 
+        private SelfDestructTrigger _removeCardSourceWhenDestroyedTrigger;
+
         public Card CopiedCard => GetCardPropertyJournalEntryCard(CopiedCardKey);
         public IEnumerable<string> CopiedKeywords => CopiedCard?.Definition.Keywords ?? Enumerable.Empty<string>();
 
@@ -120,26 +122,7 @@ namespace Cauldron.BlackwoodForest
                 }
                 Journal.RecordCardProperties(Card, CopiedCardKey, copiedCard);
 
-                // Identify this card controller as one who can modify keyword query answers
-                base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
-
-                // Identify this card controller as one who can modify card query answers
-                base.AddThisCardControllerToList(CardControllerListType.ReplacesCards);
-
-                // Identify this card controller as one who can modify card source query answers
-                base.AddThisCardControllerToList(CardControllerListType.ReplacesCardSource);
-
-                // Identify this card controller as one who can potentially be indestructible
-                if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.MakesIndestructible))
-                {
-                    base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-                }
-
-                //identify this card as one that could potentially increase phase actions
-                if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.IncreasePhaseActionCount))
-                {
-                    base.RemoveThisCardControllerFromList(CardControllerListType.IncreasePhaseActionCount);
-                }
+                AddToControllerLists(copiedCard);
 
                 // Set HP
                 IEnumerator makeTargetRoutine = this.GameController.MakeTargettable(CardWithoutReplacements, copiedCard.MaximumHitPoints.Value, copiedCard.MaximumHitPoints.Value,
@@ -152,6 +135,32 @@ namespace Cauldron.BlackwoodForest
                 else
                 {
                     base.GameController.ExhaustCoroutine(makeTargetRoutine);
+                }
+
+                var copiedController = FindCardController(copiedCard);
+                var destinations = new List<MoveCardDestination>();
+                IEnumerator selectLocation = copiedController.DeterminePlayLocation(destinations, true, new List<IDecision>());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(selectLocation);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(selectLocation);
+                }
+
+                MoveCardDestination moveTo = destinations.Any() ? destinations.First() : new MoveCardDestination(this.TurnTaker.PlayArea);
+                if(moveTo.Location != copiedCard.Owner.PlayArea && moveTo.Location != this.TurnTaker.PlayArea && moveTo.Location.OwnerCard != this.Card)
+                {
+                    IEnumerator moveCard = GameController.MoveCard(TurnTakerController, this.Card, moveTo.Location, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(moveCard);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(moveCard);
+                    }
                 }
 
                 // Set card text
@@ -178,6 +187,57 @@ namespace Cauldron.BlackwoodForest
                     base.GameController.ExhaustCoroutine(playRoutine);
                 }
             }
+        }
+
+        public override void AddLastTriggers()
+        {
+            Card copiedCard = CopiedCard;
+            if(copiedCard is null)
+            {
+                //this will be handled by the Play()
+                return;
+            }
+            var copiedFromOutOfPlay = false;
+            var copiedController = FindCardController(copiedCard);
+            if(!copiedCard.IsInPlayAndHasGameText)
+            {
+                copiedFromOutOfPlay = true;
+                copiedController.AddAllTriggers();
+            }
+
+            AddToControllerLists(copiedCard);
+            CopyGameText(copiedCard);
+
+            if(copiedFromOutOfPlay)
+            {
+                copiedController.RemoveAllTriggers(false);
+            }
+
+        }
+
+        private IEnumerator ReplaceCardSourceWhenDestroyed(DestroyCardAction dc)
+        {
+            var copiedCard = CopiedCard;
+            if(copiedCard != null)
+            { 
+                CardController cardController = FindCardController(copiedCard);
+                CardSource cardSource = GetCardSource();
+                cardSource.SourceLimitation = CardSource.Limitation.WhenDestroyed;
+                cardController.AddAssociatedCardSource(cardSource);
+            }
+            yield return null;
+        }
+        private IEnumerator RemoveCardSourceWhenDestroyed(DestroyCardAction dc)
+        {
+            var copiedCard = CopiedCard;
+            if (copiedCard != null)
+            {
+                CardController cardController = FindCardController(copiedCard);
+                CardSource cardSource = GetCardSource();
+                cardSource.SourceLimitation = CardSource.Limitation.WhenDestroyed;
+                cardController.RemoveAssociatedCardSource(cardSource);
+            }
+            yield return null;
         }
 
         private IEnumerator DupliPlayCopiedCard(Card card)
@@ -396,7 +456,7 @@ namespace Cauldron.BlackwoodForest
         {
             IEnumerable<ITrigger> triggers =
                 FindTriggersWhere(t => t.CardSource.CardController.CardWithoutReplacements == sourceCard);
-
+            var hasWhenDestroyedTriggers = false;
             foreach (ITrigger trigger in triggers)
             {
                 if (trigger.IsStatusEffect)
@@ -404,13 +464,30 @@ namespace Cauldron.BlackwoodForest
                     continue;
                 }
 
-                ITrigger clonedTrigger = (ITrigger)trigger.Clone();
-                clonedTrigger.CardSource = base.FindCardController(sourceCard).GetCardSource();
-                clonedTrigger.CardSource.AddAssociatedCardSource(base.GetCardSource());
-                clonedTrigger.SetCopyingCardController(this);
+                if (trigger is SelfDestructTrigger sdt)
+                {
+                    hasWhenDestroyedTriggers = true;
+                    CardController originalController = GameController.FindCardController(sourceCard);
+                    SelfDestructTrigger destroyTrigger = trigger as SelfDestructTrigger;
+                    base.AddWhenDestroyedTrigger(dc => this.SetCardSourceLimitationsWhenDestroy(dc, destroyTrigger), 
+                         destroyTrigger.Types.ToArray(), null, null).CardSource.AddAssociatedCardSource(originalController.GetCardSource());
+                }
+                else
+                {
+                    ITrigger clonedTrigger = (ITrigger)trigger.Clone();
+                    clonedTrigger.CardSource = base.FindCardController(sourceCard).GetCardSource();
+                    clonedTrigger.CardSource.AddAssociatedCardSource(base.GetCardSource());
+                    clonedTrigger.SetCopyingCardController(this);
 
-                base.AddTrigger(clonedTrigger);
-                this._copiedTriggers.Add(clonedTrigger);
+                    base.AddTrigger(clonedTrigger);
+                    this._copiedTriggers.Add(clonedTrigger);
+                }
+            }
+
+            if(hasWhenDestroyedTriggers)
+            {
+                AddWhenDestroyedTrigger(ReplaceCardSourceWhenDestroyed, TriggerType.Hidden);
+                _removeCardSourceWhenDestroyedTrigger = AddWhenDestroyedTrigger(RemoveCardSourceWhenDestroyed, TriggerType.HiddenLast);
             }
         }
 
@@ -452,7 +529,31 @@ namespace Cauldron.BlackwoodForest
             return false;
         }
 
-        /*
+        private void AddToControllerLists(Card copiedCard)
+        {
+            // Identify this card controller as one who can modify keyword query answers
+            base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
+
+            // Identify this card controller as one who can modify card query answers
+            base.AddThisCardControllerToList(CardControllerListType.ReplacesCards);
+
+            // Identify this card controller as one who can modify card source query answers
+            base.AddThisCardControllerToList(CardControllerListType.ReplacesCardSource);
+
+            // Identify this card controller as one who can potentially be indestructible
+            if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.MakesIndestructible))
+            {
+                base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            }
+
+            //identify this card as one that could potentially increase phase actions
+            if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.IncreasePhaseActionCount))
+            {
+                base.AddThisCardControllerToList(CardControllerListType.IncreasePhaseActionCount);
+            }
+        }
+
+        
         private IEnumerator SetCardSourceLimitationsWhenDestroy(DestroyCardAction dc, SelfDestructTrigger destroyTrigger)
         {
             destroyTrigger.CardSource?.CardController?.SetCardSourceLimitation(this, CardSource.Limitation.WhenDestroyed);
@@ -471,7 +572,7 @@ namespace Cauldron.BlackwoodForest
 
             yield break;
         }
-
+        /*
         private void CopyWhenDestroyedTriggers(CardController cc)
         {
             //foreach (ITrigger trigger in cc.GetWhenDestroyedTriggers())
