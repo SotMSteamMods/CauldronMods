@@ -1104,5 +1104,52 @@ namespace CauldronTests
             //3 for real pompadour, 3, for the wraith
             Assert.AreEqual(4, mirror.HitPoints);
         }
+        [Test]
+        public void TestMirrorWraithWorksThroughSaveLoad()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+            StartGame();
+
+            PlayCard("PlatformBot");
+            PlayCard("MirrorWraith");
+
+            SaveAndLoad();
+            Card mirror = GetCardInPlay("MirrorWraith");
+            QuickHPStorage(mirror);
+            DealDamage(unity, mirror, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
+        [Test]
+        public void TestMirrorWraithWorksChainCopyingOutOfPlayTarget()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+            StartGame();
+
+            Card bot = PlayCard("PlatformBot");
+            Card mirror1 = PlayCard("MirrorWraith");
+            DestroyCard(bot);
+            Card mirror2 = PlayCard("MirrorWraith");
+            AssertMaximumHitPoints(mirror2, 3);
+            QuickHPStorage(mirror2);
+            DealDamage(unity, mirror2, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
+        [Test]
+        public void TestMirrorWraithWorksThroughSaveLoadWhenTargetOutOfPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+            StartGame();
+
+            Card bot = PlayCard("PlatformBot");
+            PlayCard("MirrorWraith");
+
+            DestroyCard(bot);
+
+            SaveAndLoad();
+            Card mirror = GetCardInPlay("MirrorWraith");
+            QuickHPStorage(mirror);
+            DealDamage(unity, mirror, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
     }
 }
