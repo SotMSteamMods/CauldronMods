@@ -120,26 +120,7 @@ namespace Cauldron.BlackwoodForest
                 }
                 Journal.RecordCardProperties(Card, CopiedCardKey, copiedCard);
 
-                // Identify this card controller as one who can modify keyword query answers
-                base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
-
-                // Identify this card controller as one who can modify card query answers
-                base.AddThisCardControllerToList(CardControllerListType.ReplacesCards);
-
-                // Identify this card controller as one who can modify card source query answers
-                base.AddThisCardControllerToList(CardControllerListType.ReplacesCardSource);
-
-                // Identify this card controller as one who can potentially be indestructible
-                if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.MakesIndestructible))
-                {
-                    base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
-                }
-
-                //identify this card as one that could potentially increase phase actions
-                if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.IncreasePhaseActionCount))
-                {
-                    base.RemoveThisCardControllerFromList(CardControllerListType.IncreasePhaseActionCount);
-                }
+                AddToControllerLists(copiedCard);
 
                 // Set HP
                 IEnumerator makeTargetRoutine = this.GameController.MakeTargettable(CardWithoutReplacements, copiedCard.MaximumHitPoints.Value, copiedCard.MaximumHitPoints.Value,
@@ -178,6 +159,20 @@ namespace Cauldron.BlackwoodForest
                     base.GameController.ExhaustCoroutine(playRoutine);
                 }
             }
+        }
+
+        public override void AddLastTriggers()
+        {
+            Card copiedCard = CopiedCard;
+            if(copiedCard is null)
+            {
+                //this will be handled by the Play()
+                return;
+            }
+
+            AddToControllerLists(copiedCard);
+            CopyGameText(copiedCard);
+
         }
 
         private IEnumerator DupliPlayCopiedCard(Card card)
@@ -450,6 +445,30 @@ namespace Cauldron.BlackwoodForest
                 }
             }
             return false;
+        }
+
+        private void AddToControllerLists(Card copiedCard)
+        {
+            // Identify this card controller as one who can modify keyword query answers
+            base.AddThisCardControllerToList(CardControllerListType.ModifiesKeywords);
+
+            // Identify this card controller as one who can modify card query answers
+            base.AddThisCardControllerToList(CardControllerListType.ReplacesCards);
+
+            // Identify this card controller as one who can modify card source query answers
+            base.AddThisCardControllerToList(CardControllerListType.ReplacesCardSource);
+
+            // Identify this card controller as one who can potentially be indestructible
+            if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.MakesIndestructible))
+            {
+                base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+            }
+
+            //identify this card as one that could potentially increase phase actions
+            if (GameController.IsInCardControllerList(copiedCard, CardControllerListType.IncreasePhaseActionCount))
+            {
+                base.AddThisCardControllerToList(CardControllerListType.IncreasePhaseActionCount);
+            }
         }
 
         /*
