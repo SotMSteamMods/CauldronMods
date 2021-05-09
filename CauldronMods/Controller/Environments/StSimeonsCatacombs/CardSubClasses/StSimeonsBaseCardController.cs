@@ -13,6 +13,8 @@ namespace Cauldron.StSimeonsCatacombs
 
         }
 
+        protected Card catacombs => TurnTaker.FindCard(StSimeonsCatacombsCardController.Identifier);
+
         protected bool IsGhost(Card card)
         {
             return card != null && card.DoKeywordsContain("ghost");
