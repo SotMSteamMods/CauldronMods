@@ -18,8 +18,15 @@ namespace Cauldron.Echelon
 
         public static string Identifier = "FindAWayIn";
 
-        public FindAWayInCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, SelectionType.PlayExtraCard, Phase.PlayCard, Phase.UsePower)
+        public FindAWayInCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, Phase.PlayCard, Phase.UsePower)
         {
+
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to skip your Power phase to play an additional card in your Play phase?", "Should they skip their Power phase to play an additional card in their Play phase", "Vote for if they should skip their Power phase to play an additional card in their Play phase?", "skip power for extra play");
 
         }
 

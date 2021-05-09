@@ -23,7 +23,7 @@ namespace Cauldron.Cricket
         {
             //...you may put the top card of your deck beneath this one.
             List<YesNoDecision> storedResults = new List<YesNoDecision>();
-            var yesNo = new YesNoDecision(GameController, DecisionMaker, SelectionType.MoveUnderThisCard,
+            var yesNo = new YesNoDecision(GameController, DecisionMaker, SelectionType.Custom,
                             cardSource: GetCardSource());
             IEnumerator coroutine = GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
@@ -67,6 +67,13 @@ namespace Cauldron.Cricket
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText($"Do you want to put the top card of your deck beneath {Card.Title}?", $"Should they put the top card of their deck beneath {Card.Title}?", $"Vote for if they should put the top card of their deck beneath {Card.Title}?", $"put the top card of the deck beneath {Card.Title}");
+
         }
     }
 }
