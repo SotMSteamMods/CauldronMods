@@ -1151,5 +1151,18 @@ namespace CauldronTests
             DealDamage(unity, mirror, 1, DamageType.Melee);
             QuickHPCheckZero();
         }
+        [Test]
+        public void TestMirrorWraithWorksWithDestructionTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "AkashThriya", DeckNamespace);
+            StartGame();
+
+            Card seed = PlayCard("HealingPollen");
+            Card mirror = PlayCard("MirrorWraith");
+
+            QuickHandStorage(thriya);
+            DestroyCard(mirror);
+            QuickHandCheck(1);
+        }
     }
 }
