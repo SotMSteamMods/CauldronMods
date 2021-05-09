@@ -427,7 +427,15 @@
                        "{All heroes are incapacitated.",
                        "{All Day cards are face up."
                    ]
-               },
+               }
+    ],
+    "subdecks": [
+        {
+            "identifier": "TheMistressOfFateDay",
+            "title": "The Day Deck",
+            "kind": "Villain",
+            "isReal": false,
+            "cards":[
                {
                    "identifier": "DayOfSaints",
                    "count": 1,
@@ -515,15 +523,6 @@
                     ],
                     "flavorReference": "Unity, Abstract Tales Annual #4"
                 }
-    ],
-    "subdecks": [
-        {
-            "identifier": "DayDeck",
-            "title": "The Day Deck",
-            "kind": "Other",
-            "isReal": false,
-            "cards":[
-                
             ]
         }
     ]
