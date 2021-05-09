@@ -18,7 +18,7 @@
             ],
             "body": [
                 "Play this card next to a hero. When a card enters the environment trash, check that card.",
-                "If it is a fate card, this card deal the hero next to it {H} melee damage. If it is not a fate card, this card deals each other hero target {H - 2} melee damage. Then, destroy this card."
+                "If it is a fate card, this card deals the hero next to it {H} melee damage. If it is not a fate card, this card deals each other hero target {H - 2} melee damage. Then, destroy this card."
             ],
             "flavorText": "The flagstone sank into the floor,{BR}generating a series of faint,{BR}mechanical noises that echoed{BR}through the stones of the ceiling."
         },
