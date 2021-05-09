@@ -137,6 +137,32 @@ namespace Cauldron.BlackwoodForest
                     base.GameController.ExhaustCoroutine(makeTargetRoutine);
                 }
 
+                var copiedController = FindCardController(copiedCard);
+                var destinations = new List<MoveCardDestination>();
+                IEnumerator selectLocation = copiedController.DeterminePlayLocation(destinations, true, new List<IDecision>());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(selectLocation);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(selectLocation);
+                }
+
+                MoveCardDestination moveTo = destinations.Any() ? destinations.First() : new MoveCardDestination(this.TurnTaker.PlayArea);
+                if(moveTo.Location != copiedCard.Owner.PlayArea && moveTo.Location != this.TurnTaker.PlayArea)
+                {
+                    IEnumerator moveCard = GameController.MoveCard(TurnTakerController, this.Card, moveTo.Location, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(moveCard);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(moveCard);
+                    }
+                }
+
                 // Set card text
                 CopyGameText(copiedCard);
                 ModifyDefinitionKeywords(BaseKeywords.Concat(copiedCard.Definition.Keywords));

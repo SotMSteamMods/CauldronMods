@@ -785,7 +785,7 @@ namespace CauldronTests
 
 
         [Test]
-        [Ignore("Current implementation cannot handle cards that Move Next to other cards.")]
+        //[Ignore("Current implementation cannot handle cards that Move Next to other cards.")]
         public void TestMirrorWraithEligibleTargets_ClonePin()
         {
             // Arrange
