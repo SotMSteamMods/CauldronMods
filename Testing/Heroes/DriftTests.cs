@@ -900,6 +900,20 @@ namespace CauldronTests
             AssertTrackPosition(trackPosition);
         }
         [Test]
+        public void TestKnightsHeritage_DamageTracksAcrossRedBlue()
+        {
+            SetupGameController(new string[] { "Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            DiscardAllCards(drift);
+            PlayCard("FutureFocus");
+            PlayCard("KnightsHeritage");
+            DecisionYesNo = true;
+            DealDamage(apostate, drift, 1, DamageType.Melee);
+
+            AssertTrackPosition(3);
+        }
+        [Test]
         public void TestMakeEverySecondCount()
         {
             SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");

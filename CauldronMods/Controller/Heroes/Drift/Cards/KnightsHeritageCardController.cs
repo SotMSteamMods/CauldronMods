@@ -46,7 +46,7 @@ namespace Cauldron.Drift
         public override void AddTriggers()
         {
             //The first time {Drift} is dealt damage each turn, you may shift {DriftL} or {DriftR}.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.GetActiveCharacterCard() && action.Amount > 0 && !base.HasBeenSetToTrueThisTurn(DamageTakenThisTurn), this.ShiftResponse, new TriggerType[] { TriggerType.ModifyTokens }, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => IsTargetSelf(action) && action.Amount > 0 && !base.HasBeenSetToTrueThisTurn(DamageTakenThisTurn), this.ShiftResponse, new TriggerType[] { TriggerType.ModifyTokens }, TriggerTiming.After);
         }
 
         private IEnumerator ShiftResponse(DealDamageAction action)
