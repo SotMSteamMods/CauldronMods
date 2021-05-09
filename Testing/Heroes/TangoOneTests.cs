@@ -814,8 +814,25 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(-3);
         }
+        [Test]
+        public void TestLineEmUp_CharacterCardSelection()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TangoOne/PastTangoOneCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
 
+            DealDamage(oblivaeon, tango, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "TangoOne" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.TangoOne";
+            RunActiveTurnPhase();
 
+            PlayCard("LineEmUp");
+            Card wasp = PlayCard("IronWasp");
+            Card reporter = PlayCard("IntrepidReporter");
+
+            AssertMaxNumberOfDecisions(1);
+            DealDamage(tango, wasp, 10, DamageType.Melee);
+        }
 
         [Test]
         public void TestOneShotShotOneKillSuccessfulDestruction()
@@ -847,7 +864,7 @@ namespace CauldronTests
 
             // Act
 
-            AssertCardSpecialString(GetCardFromHand(OneShotOneKillCardController.Identifier), 0, $"Tango One's hand has {GetNumberOfCardsInHand(tango)} cards.");
+            AssertCardSpecialString(GetCardFromHand(OneShotOneKillCardController.Identifier), 0, $"Tango One's hand has {GetNumberOfCardsInHand(tango) - 1} other cards in it.");
             GoToStartOfTurn(tango);
             PlayCardFromHand(tango, OneShotOneKillCardController.Identifier);
 
