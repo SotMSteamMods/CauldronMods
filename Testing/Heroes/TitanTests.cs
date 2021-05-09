@@ -264,7 +264,7 @@ namespace CauldronTests
             StartGame();
 
             Card arch = PutInHand("ForbiddenArchives");
-            DecisionsYesNo = new Boolean[] { true, true, true, true };
+            DecisionsYesNo = new Boolean[] { true, true, true};
 
             //Each player may draw 2 cards now.
             QuickHandStorage(titan, haka, bunker, scholar);
@@ -282,13 +282,13 @@ namespace CauldronTests
             StartGame();
 
             Card arch = PutInHand("ForbiddenArchives");
-            DecisionsYesNo = new Boolean[] { true, true, false, false };
+            DecisionsYesNo = new Boolean[] { true, true, false};
 
             //Each player may draw 2 cards now.
             QuickHandStorage(titan, haka, bunker, scholar);
             QuickHPStorage(titan);
             PlayCard(arch);
-            QuickHandCheck(-1, 2, 2, 0);
+            QuickHandCheck(1, 2, 2, 0);
             //For each other player that draws cards this way, {Titan} deals himself 2 psychic damage.
             QuickHPCheck(-4);
         }
@@ -306,7 +306,7 @@ namespace CauldronTests
             QuickHandStorage(titan, haka, bunker, scholar);
             QuickHPStorage(titan);
             PlayCard(arch);
-            QuickHandCheck(-1, 0, 0, 0);
+            QuickHandCheck(1, 0, 0, 0);
             //For each other player that draws cards this way, {Titan} deals himself 2 psychic damage.
             QuickHPCheckZero();
         }
@@ -317,20 +317,20 @@ namespace CauldronTests
             StartGame();
 
             Card arch = PutInHand("ForbiddenArchives");
-            DecisionsYesNo = new Boolean[] { true, true, false, false };
+            DecisionsYesNo = new Boolean[] { true, true, false };
 
             //Each player may draw 2 cards now.
             QuickHandStorage(titan, haka, bunker, scholar);
             QuickHPStorage(titan);
             PlayCard(arch);
-            QuickHandCheck(-1, 2, 2, 0);
+            QuickHandCheck(1, 2, 2, 0);
             //For each other player that draws cards this way, {Titan} deals himself 2 psychic damage.
             QuickHPCheck(-4);
 
             DecisionsYesNoIndex = 0;
 
             PlayCard(arch);
-            QuickHandCheck(0, 2, 2, 0);
+            QuickHandCheck(2, 2, 2, 0);
             QuickHPCheck(-4);
         }
 

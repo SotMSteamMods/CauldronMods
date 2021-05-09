@@ -14,11 +14,13 @@ namespace Cauldron.Titan
 
         }
 
+        private List<DrawCardAction> _storedResults;
+
         public override IEnumerator Play()
         {
-            List<DrawCardAction> storedResults = new List<DrawCardAction>();
+            _storedResults = new List<DrawCardAction>();
             //Each player may draw 2 cards now.
-            IEnumerator coroutine = base.GameController.YesNoDoAction_ManyPlayers((HeroTurnTakerController hero) => !hero.IsIncapacitatedOrOutOfGame, (HeroTurnTakerController hero) => this.YesNoDecisionMaker(hero), (HeroTurnTakerController hero, YesNoDecision decision) => YesAction(hero, decision, storedResults), selectionType: SelectionType.DrawCard, cardSource: base.GetCardSource());
+            IEnumerator coroutine = SelectTurnTakersToDrawCards();
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);
@@ -29,7 +31,7 @@ namespace Cauldron.Titan
             }
 
             var otherDrawingHeroes = new List<HeroTurnTaker> { };
-            foreach (DrawCardAction draw in storedResults)
+            foreach (DrawCardAction draw in _storedResults)
             {
                 if (draw.HeroTurnTaker != this.HeroTurnTaker && !otherDrawingHeroes.Contains(draw.HeroTurnTaker))
                 {
@@ -54,14 +56,46 @@ namespace Cauldron.Titan
             yield break;
         }
 
-        private YesNoDecision YesNoDecisionMaker(HeroTurnTakerController hero)
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
-            return new YesNoDecision(base.GameController, hero, SelectionType.Custom, cardSource: base.GetCardSource());
+
+            return new CustomDecisionText("Would you like to draw 2 cards?", "Should they draw 2 cards?", "Vote for if they should draw 2 cards?", "whether to draw 2 cards");
+
         }
 
-        private IEnumerator YesAction(HeroTurnTakerController hero, YesNoDecision decision, List<DrawCardAction> storedDraw)
+        private IEnumerator SelectTurnTakersToDrawCards()
         {
-            IEnumerator coroutine = base.DrawCards(hero, 2, storedResults: storedDraw);
+            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => !tt.IsIncapacitatedOrOutOfGame && tt.IsHero && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.DrawCard, YesNoResponse, cardSource: GetCardSource()) ;
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        private IEnumerator YesNoResponse(TurnTaker tt)
+        {
+            IEnumerator coroutine;
+            if(tt == TurnTaker)
+            {
+                coroutine = DrawCards(HeroTurnTakerController, 2, optional: true, storedResults: _storedResults);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                yield break;
+            }
+            HeroTurnTakerController httc = FindHeroTurnTakerController(tt.ToHero());
+            List<YesNoCardDecision> yesNoStored = new List<YesNoCardDecision>() ;
+            coroutine = GameController.MakeYesNoCardDecision(httc, SelectionType.Custom, Card, storedResults: yesNoStored, cardSource: GetCardSource());
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);
@@ -70,14 +104,22 @@ namespace Cauldron.Titan
             {
                 this.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
-        }
 
-        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
-        {
+            if(!DidPlayerAnswerYes(yesNoStored))
+            {
+                yield break;
+            }
 
-            return new CustomDecisionText("Would you like to draw 2 cards?", "Should they draw 2 cards?", "Vote for if they should draw 2 cards?", "whether to draw 2 cards");
-
+            coroutine = DrawCards(httc, 2, storedResults: _storedResults);
+            if (this.UseUnityCoroutines)
+            {
+                yield return this.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                this.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
+
 }
