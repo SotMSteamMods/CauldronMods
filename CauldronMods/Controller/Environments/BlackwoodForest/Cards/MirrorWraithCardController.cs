@@ -150,7 +150,7 @@ namespace Cauldron.BlackwoodForest
                 }
 
                 MoveCardDestination moveTo = destinations.Any() ? destinations.First() : new MoveCardDestination(this.TurnTaker.PlayArea);
-                if(moveTo.Location != copiedCard.Owner.PlayArea && moveTo.Location != this.TurnTaker.PlayArea)
+                if(moveTo.Location != copiedCard.Owner.PlayArea && moveTo.Location != this.TurnTaker.PlayArea && moveTo.Location.OwnerCard != this.Card)
                 {
                     IEnumerator moveCard = GameController.MoveCard(TurnTakerController, this.Card, moveTo.Location, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
