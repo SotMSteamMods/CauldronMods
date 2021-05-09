@@ -171,9 +171,21 @@ namespace Cauldron.BlackwoodForest
                 //this will be handled by the Play()
                 return;
             }
+            var copiedFromOutOfPlay = false;
+            var copiedController = FindCardController(copiedCard);
+            if(!copiedCard.IsInPlayAndHasGameText)
+            {
+                copiedFromOutOfPlay = true;
+                copiedController.AddAllTriggers();
+            }
 
             AddToControllerLists(copiedCard);
             CopyGameText(copiedCard);
+
+            if(copiedFromOutOfPlay)
+            {
+                copiedController.RemoveAllTriggers(false);
+            }
 
         }
 
