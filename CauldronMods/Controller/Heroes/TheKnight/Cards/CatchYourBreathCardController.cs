@@ -25,7 +25,7 @@ namespace Cauldron.TheKnight
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if (base.HeroTurnTaker.HasMultipleCharacterCards)
+            if (IsMultiCharPromo())
             {
                 coroutine = base.GameController.SelectAndGainHP(this.DecisionMaker, 2, additionalCriteria: c => IsOwnCharacterCard(c), numberOfTargets: 1, requiredDecisions: 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)

@@ -22,7 +22,7 @@ namespace Cauldron.TheKnight
 
         private bool IsOwnEquipment(Card c)
         {
-            if(this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            if(IsMultiCharPromo())
             {
                 if(c.Owner != this.TurnTaker || !IsEquipment(c))
                 {

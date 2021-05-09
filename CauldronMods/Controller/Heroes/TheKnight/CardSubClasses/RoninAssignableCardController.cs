@@ -17,7 +17,7 @@ namespace Cauldron.TheKnight
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             IEnumerator coroutine;
-            if(this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards && CharacterCardController is WastelandRoninTheKnightCharacterCardController && !_useSpecialAssignment)
+            if(IsMultiCharPromo() && !_useSpecialAssignment)
             {
                 coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => IsOwnCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "Knight character"), storedResults, isPutIntoPlay, decisionSources);
                 if (base.UseUnityCoroutines)
@@ -54,7 +54,7 @@ namespace Cauldron.TheKnight
 
         private IEnumerator ClearRoninOwner(GameAction ga)
         {
-            if (this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            if (IsMultiCharPromo())
             {
                 AddCardPropertyJournalEntry(RoninKey, (Card)null);
             }
