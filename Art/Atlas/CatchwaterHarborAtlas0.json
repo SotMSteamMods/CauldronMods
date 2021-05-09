@@ -1,6 +1,6 @@
 {
   "frames": {
-    "Small/AbandonedFactory.jpg": {
+    "AbandonedFactory.jpg": {
       "frame": {
         "x": 1,
         "y": 1,
@@ -24,9 +24,129 @@
         "y": 0.5
       }
     },
-    "Small/UnmooredZeppelin.jpg": {
+    "CatchwaterHarborDeckBack.jpg": {
       "frame": {
         "x": 1,
+        "y": 191,
+        "w": 176,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 176,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 176,
+        "h": 256
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "AllAboard.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "AlteringHistory.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 449,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "FrightenedOnlookers.jpg": {
+      "frame": {
+        "x": 517,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "HarborCrane.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 639,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "HarkinParishJr.jpg": {
+      "frame": {
+        "x": 179,
         "y": 191,
         "w": 256,
         "h": 188
@@ -48,9 +168,9 @@
         "y": 0.5
       }
     },
-    "Small/ToOverbrook.jpg": {
+    "LeftBehind.jpg": {
       "frame": {
-        "x": 259,
+        "x": 775,
         "y": 1,
         "w": 256,
         "h": 188
@@ -72,9 +192,129 @@
         "y": 0.5
       }
     },
-    "Small/ThisJustIn.jpg": {
+    "OminousLoop.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 829,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "RadioPlaza.jpg": {
       "frame": {
         "x": 259,
+        "y": 381,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "SSEscape.jpg": {
+      "frame": {
+        "x": 1033,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "SmoothCriminal.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1019,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "TheCervantesClub.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 571,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ThisJustIn.jpg": {
+      "frame": {
+        "x": 437,
         "y": 191,
         "w": 256,
         "h": 188
@@ -96,57 +336,9 @@
         "y": 0.5
       }
     },
-    "Small/TheCervantesClub.jpg": {
+    "ToOverbrook.jpg": {
       "frame": {
-        "x": 1,
-        "y": 381,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/SmoothCriminal.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 381,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/SSEscape.jpg": {
-      "frame": {
-        "x": 517,
+        "x": 1291,
         "y": 1,
         "w": 256,
         "h": 188
@@ -168,226 +360,106 @@
         "y": 0.5
       }
     },
-    "Small/RadioPlaza.jpg": {
+    "UnmooredZeppelin.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1209,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "AbandonedFactoryMicro.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 761,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "AllAboardMicro.jpg": {
       "frame": {
         "x": 517,
+        "y": 381,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "AlteringHistoryMicro.jpg": {
+      "frame": {
+        "x": 695,
         "y": 191,
-        "w": 256,
-        "h": 188
+        "w": 108,
+        "h": 108
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 256,
-        "h": 188
+        "w": 108,
+        "h": 108
       },
       "sourceSize": {
-        "w": 256,
-        "h": 188
+        "w": 108,
+        "h": 108
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Small/OminousLoop.jpg": {
+    "CatchwaterHarborDeckBackMicro.jpg": {
       "frame": {
-        "x": 517,
-        "y": 381,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/LeftBehind.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 571,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/HarkinParishJr.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 571,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/HarborCrane.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 571,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/FrightenedOnlookers.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 761,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/CatchwaterHarborDeckBack.jpg": {
-      "frame": {
-        "x": 775,
+        "x": 1549,
         "y": 1,
-        "w": 176,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 176,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 176,
-        "h": 256
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/AlteringHistory.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 761,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Small/AllAboard.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 761,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/OminousLoopMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 259,
         "w": 108,
         "h": 108
       },
@@ -408,130 +480,10 @@
         "y": 0.5
       }
     },
-    "Micro/AllAboardMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 369,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/ToOverbrookMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 479,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/ThisJustInMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 589,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/TheCervantesClubMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 699,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/SmoothCriminalMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 809,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/SSEscapeMicro.jpg": {
+    "FrightenedOnlookersMicro.jpg": {
       "frame": {
         "x": 1,
-        "y": 951,
+        "y": 1399,
         "w": 108,
         "h": 108
       },
@@ -552,10 +504,202 @@
         "y": 0.5
       }
     },
-    "Micro/RadioPlazaMicro.jpg": {
+    "HarborCraneMicro.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 871,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "HarkinParishJrMicro.jpg": {
+      "frame": {
+        "x": 369,
+        "y": 761,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "LeftBehindMicro.jpg": {
+      "frame": {
+        "x": 517,
+        "y": 491,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "OminousLoopMicro.jpg": {
+      "frame": {
+        "x": 627,
+        "y": 381,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "RadioPlazaMicro.jpg": {
+      "frame": {
+        "x": 805,
+        "y": 191,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "SSEscapeMicro.jpg": {
+      "frame": {
+        "x": 1549,
+        "y": 111,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "SmoothCriminalMicro.jpg": {
+      "frame": {
+        "x": 1659,
+        "y": 1,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "TheCervantesClubMicro.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1509,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ThisJustInMicro.jpg": {
       "frame": {
         "x": 111,
-        "y": 951,
+        "y": 1399,
         "w": 108,
         "h": 108
       },
@@ -576,10 +720,10 @@
         "y": 0.5
       }
     },
-    "Micro/UnmooredZeppelinMicro.jpg": {
+    "ToOverbrookMicro.jpg": {
       "frame": {
-        "x": 221,
-        "y": 951,
+        "x": 259,
+        "y": 981,
         "w": 108,
         "h": 108
       },
@@ -600,154 +744,10 @@
         "y": 0.5
       }
     },
-    "Micro/LeftBehindMicro.jpg": {
+    "UnmooredZeppelinMicro.jpg": {
       "frame": {
-        "x": 331,
-        "y": 951,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/HarkinParishJrMicro.jpg": {
-      "frame": {
-        "x": 441,
-        "y": 951,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/HarborCraneMicro.jpg": {
-      "frame": {
-        "x": 551,
-        "y": 951,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/FrightenedOnlookersMicro.jpg": {
-      "frame": {
-        "x": 661,
-        "y": 951,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/CatchwaterHarborDeckBackMicro.jpg": {
-      "frame": {
-        "x": 771,
-        "y": 951,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/AlteringHistoryMicro.jpg": {
-      "frame": {
-        "x": 953,
-        "y": 1,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Micro/AbandonedFactoryMicro.jpg": {
-      "frame": {
-        "x": 953,
-        "y": 111,
+        "x": 369,
+        "y": 871,
         "w": 108,
         "h": 108
       },
@@ -772,7 +772,7 @@
   "meta": {
     "app": "http://free-tex-packer.com",
     "version": "0.6.7",
-    "image": "CatchwaterHarborAtlas0.png",
+    "image": "WindmillCityAtlas0.png",
     "format": "RGBA8888",
     "size": {
       "w": 2048,

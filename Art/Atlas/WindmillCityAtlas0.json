@@ -1,6 +1,6 @@
 {
   "frames": {
-    "small/BridgeDisaster.jpg": {
+    "BridgeDisaster.jpg": {
       "frame": {
         "x": 1,
         "y": 1,
@@ -24,7 +24,7 @@
         "y": 0.5
       }
     },
-    "small/WindmillCityDeckBack.jpg": {
+    "WindmillCityDeckBack.jpg": {
       "frame": {
         "x": 1,
         "y": 191,
@@ -48,7 +48,7 @@
         "y": 0.5
       }
     },
-    "small/WCPDSquad.jpg": {
+    "CitywideCarnage.jpg": {
       "frame": {
         "x": 259,
         "y": 1,
@@ -72,31 +72,7 @@
         "y": 0.5
       }
     },
-    "small/WCPDChariot.jpg": {
-      "frame": {
-        "x": 179,
-        "y": 191,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "small/SaveTheDay.jpg": {
+    "CrackedWaterMain.jpg": {
       "frame": {
         "x": 1,
         "y": 449,
@@ -120,55 +96,7 @@
         "y": 0.5
       }
     },
-    "small/RainOfDebris.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 381,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "small/IronWasp.jpg": {
-      "frame": {
-        "x": 437,
-        "y": 191,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "small/IntrepidReporter.jpg": {
+    "CrashedTanker.jpg": {
       "frame": {
         "x": 517,
         "y": 1,
@@ -192,31 +120,7 @@
         "y": 0.5
       }
     },
-    "small/InjuredWorker.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 381,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "small/GrayPharmaceuticalBuilding.jpg": {
+    "DetectiveSedrick.jpg": {
       "frame": {
         "x": 1,
         "y": 639,
@@ -240,57 +144,9 @@
         "y": 0.5
       }
     },
-    "small/Gearlock.jpg": {
+    "FrameJob.jpg": {
       "frame": {
-        "x": 259,
-        "y": 571,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "small/FrameJob.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 571,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "small/DetectiveSedrick.jpg": {
-      "frame": {
-        "x": 695,
+        "x": 179,
         "y": 191,
         "w": 256,
         "h": 188
@@ -312,7 +168,7 @@
         "y": 0.5
       }
     },
-    "small/CrashedTanker.jpg": {
+    "Gearlock.jpg": {
       "frame": {
         "x": 775,
         "y": 1,
@@ -336,9 +192,33 @@
         "y": 0.5
       }
     },
-    "small/CrackedWaterMain.jpg": {
+    "GrayPharmaceuticalBuilding.jpg": {
       "frame": {
-        "x": 775,
+        "x": 1,
+        "y": 829,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "InjuredWorker.jpg": {
+      "frame": {
+        "x": 259,
         "y": 381,
         "w": 256,
         "h": 188
@@ -360,9 +240,57 @@
         "y": 0.5
       }
     },
-    "small/CitywideCarnage.jpg": {
+    "IntrepidReporter.jpg": {
       "frame": {
-        "x": 775,
+        "x": 1033,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "IronWasp.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1019,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "RainOfDebris.jpg": {
+      "frame": {
+        "x": 259,
         "y": 571,
         "w": 256,
         "h": 188
@@ -384,81 +312,81 @@
         "y": 0.5
       }
     },
-    "micro/InjuredWorkerMicro.jpg": {
+    "SaveTheDay.jpg": {
+      "frame": {
+        "x": 437,
+        "y": 191,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "WCPDChariot.jpg": {
+      "frame": {
+        "x": 1291,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "WCPDSquad.jpg": {
       "frame": {
         "x": 1,
-        "y": 829,
-        "w": 108,
-        "h": 108
+        "y": 1209,
+        "w": 256,
+        "h": 188
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 108,
-        "h": 108
+        "w": 256,
+        "h": 188
       },
       "sourceSize": {
-        "w": 108,
-        "h": 108
+        "w": 256,
+        "h": 188
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "micro/CitywideCarnageMicro.jpg": {
+    "BridgeDisasterMicro.jpg": {
       "frame": {
-        "x": 111,
-        "y": 829,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "micro/WCPDSquadMicro.jpg": {
-      "frame": {
-        "x": 221,
-        "y": 829,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "micro/WCPDChariotMicro.jpg": {
-      "frame": {
-        "x": 331,
+        "x": 259,
         "y": 761,
         "w": 108,
         "h": 108
@@ -480,10 +408,10 @@
         "y": 0.5
       }
     },
-    "micro/SaveTheDayMicro.jpg": {
+    "CitywideCarnageMicro.jpg": {
       "frame": {
-        "x": 441,
-        "y": 761,
+        "x": 517,
+        "y": 381,
         "w": 108,
         "h": 108
       },
@@ -504,10 +432,10 @@
         "y": 0.5
       }
     },
-    "micro/RainOfDebrisMicro.jpg": {
+    "CrackedWaterMainMicro.jpg": {
       "frame": {
-        "x": 551,
-        "y": 761,
+        "x": 695,
+        "y": 191,
         "w": 108,
         "h": 108
       },
@@ -528,10 +456,10 @@
         "y": 0.5
       }
     },
-    "micro/IronWaspMicro.jpg": {
+    "CrashedTankerMicro.jpg": {
       "frame": {
-        "x": 661,
-        "y": 761,
+        "x": 1549,
+        "y": 1,
         "w": 108,
         "h": 108
       },
@@ -552,58 +480,10 @@
         "y": 0.5
       }
     },
-    "micro/IntrepidReporterMicro.jpg": {
-      "frame": {
-        "x": 771,
-        "y": 761,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "micro/WindmillCityDeckBackMicro.jpg": {
-      "frame": {
-        "x": 881,
-        "y": 761,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "micro/GrayPharmaceuticalBuildingMicro.jpg": {
+    "DetectiveSedrickMicro.jpg": {
       "frame": {
         "x": 1,
-        "y": 939,
+        "y": 1399,
         "w": 108,
         "h": 108
       },
@@ -624,10 +504,202 @@
         "y": 0.5
       }
     },
-    "micro/GearlockMicro.jpg": {
+    "FrameJobMicro.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 871,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "GearlockMicro.jpg": {
+      "frame": {
+        "x": 369,
+        "y": 761,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "GrayPharmaceuticalBuildingMicro.jpg": {
+      "frame": {
+        "x": 517,
+        "y": 491,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "InjuredWorkerMicro.jpg": {
+      "frame": {
+        "x": 627,
+        "y": 381,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "IntrepidReporterMicro.jpg": {
+      "frame": {
+        "x": 805,
+        "y": 191,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "IronWaspMicro.jpg": {
+      "frame": {
+        "x": 1549,
+        "y": 111,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "RainOfDebrisMicro.jpg": {
+      "frame": {
+        "x": 1659,
+        "y": 1,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "SaveTheDayMicro.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1509,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "WCPDChariotMicro.jpg": {
       "frame": {
         "x": 111,
-        "y": 939,
+        "y": 1399,
         "w": 108,
         "h": 108
       },
@@ -648,10 +720,10 @@
         "y": 0.5
       }
     },
-    "micro/FrameJobMicro.jpg": {
+    "WCPDSquadMicro.jpg": {
       "frame": {
-        "x": 221,
-        "y": 939,
+        "x": 259,
+        "y": 981,
         "w": 108,
         "h": 108
       },
@@ -672,81 +744,9 @@
         "y": 0.5
       }
     },
-    "micro/DetectiveSedrickMicro.jpg": {
+    "WindmillCityDeckBackMicro.jpg": {
       "frame": {
-        "x": 331,
-        "y": 871,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "micro/CrashedTankerMicro.jpg": {
-      "frame": {
-        "x": 441,
-        "y": 871,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "micro/CrackedWaterMainMicro.jpg": {
-      "frame": {
-        "x": 551,
-        "y": 871,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "micro/BridgeDisasterMicro.jpg": {
-      "frame": {
-        "x": 661,
+        "x": 369,
         "y": 871,
         "w": 108,
         "h": 108

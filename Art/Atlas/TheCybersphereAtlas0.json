@@ -1,140 +1,783 @@
-{"frames": {
-
-"B3h3mth.png":
 {
-	"frame": {"x":0,"y":0,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"Dr3Dnt.png":
-{
-	"frame": {"x":259,"y":0,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"Fo551l.png":
-{
-	"frame": {"x":518,"y":0,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"Gho5t.png":
-{
-	"frame": {"x":0,"y":191,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"Glitch.png":
-{
-	"frame": {"x":259,"y":191,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"H3l1x.png":
-{
-	"frame": {"x":518,"y":191,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"HolocycleRace.png":
-{
-	"frame": {"x":0,"y":382,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"HologameArena.png":
-{
-	"frame": {"x":259,"y":382,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"InfectedFirewall.png":
-{
-	"frame": {"x":518,"y":382,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"InfectedHoloweapon.png":
-{
-	"frame": {"x":0,"y":573,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"N1nj4.png":
-{
-	"frame": {"x":259,"y":573,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"Replication.png":
-{
-	"frame": {"x":518,"y":573,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"Sp4rk.png":
-{
-	"frame": {"x":0,"y":764,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"SystemCrash.png":
-{
-	"frame": {"x":259,"y":764,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-},
-"TheCybersphereDeckBack.png":
-{
-	"frame": {"x":518,"y":764,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"YourMindMakesItReal.png":
-{
-	"frame": {"x":697,"y":764,"w":256,"h":188},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
-}},
-"meta": {
-	"app": "https://www.codeandweb.com/texturepacker",
-	"version": "1.0",
-	"image": "TheCybersphereAtlas0.png",
-	"format": "RGBA8888",
-	"size": {"w":1024,"h":1024},
-	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:998d9e939dc38c84c53fb4b350011d1b:327b946ae85246573a5883818701f00d:ad9251e9cd1ff3948d950dd91a1c94a1$"
-}
+  "frames": {
+    "Dr3Dnt.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "TheCyberSphereDeckBack.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 191,
+        "w": 176,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 176,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 176,
+        "h": 256
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Fo551l.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Gho5t.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 449,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Glitch.jpg": {
+      "frame": {
+        "x": 517,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "H3l1x.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 639,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "HolocycleRace.jpg": {
+      "frame": {
+        "x": 179,
+        "y": 191,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "HologameArena.jpg": {
+      "frame": {
+        "x": 775,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "InfectedFirewall.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 829,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "InfectedHoloweapon.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 381,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "N1nj4.jpg": {
+      "frame": {
+        "x": 1033,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Replication.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1019,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Sp4rk.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 571,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "SystemCrash.jpg": {
+      "frame": {
+        "x": 437,
+        "y": 191,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "B3h3mth.jpg": {
+      "frame": {
+        "x": 1291,
+        "y": 1,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "YourMindMakesItReal.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1209,
+        "w": 256,
+        "h": 188
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 188
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 188
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Dr3DntMicro.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 761,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Fo551lMicro.jpg": {
+      "frame": {
+        "x": 517,
+        "y": 381,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Gho5tMicro.jpg": {
+      "frame": {
+        "x": 695,
+        "y": 191,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "GlitchMicro.jpg": {
+      "frame": {
+        "x": 1549,
+        "y": 1,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "H3l1xMicro.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1399,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "HolocycleRaceMicro.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 871,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "HologameArenaMicro.jpg": {
+      "frame": {
+        "x": 369,
+        "y": 761,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "InfectedFirewallMicro.jpg": {
+      "frame": {
+        "x": 517,
+        "y": 491,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "InfectedHoloweaponMicro.jpg": {
+      "frame": {
+        "x": 627,
+        "y": 381,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "N1nj4Micro.jpg": {
+      "frame": {
+        "x": 805,
+        "y": 191,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ReplicationMicro.jpg": {
+      "frame": {
+        "x": 1549,
+        "y": 111,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Sp4rkMicro.jpg": {
+      "frame": {
+        "x": 1659,
+        "y": 1,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "SystemCrashMicro.jpg": {
+      "frame": {
+        "x": 1,
+        "y": 1509,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "TheCyberSphereDeckBackMicro.jpg": {
+      "frame": {
+        "x": 111,
+        "y": 1399,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "B3h3mthMicro.jpg": {
+      "frame": {
+        "x": 259,
+        "y": 981,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "YourMindMakesItRealMicro.jpg": {
+      "frame": {
+        "x": 369,
+        "y": 871,
+        "w": 108,
+        "h": 108
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108
+      },
+      "sourceSize": {
+        "w": 108,
+        "h": 108
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "TheCybersphereAtlas0.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 2048,
+      "h": 2048
+    },
+    "scale": 1
+  }
 }
