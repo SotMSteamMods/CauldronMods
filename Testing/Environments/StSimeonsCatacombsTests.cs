@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cauldron.StSimeonsCatacombs;
 using System;
+using System.Collections;
 
 namespace CauldronTests
 {
@@ -2520,5 +2521,322 @@ namespace CauldronTests
             AssertNotGameOver();
 
         }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultNotInPlay_NotAffectedByMassLevitation()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "TheVisionary", "Ra", "NightMist", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not cursed vault in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToUsePowerPhase(visionary);
+            Card levitation = PlayCard("MassLevitation");
+            UsePower(levitation);
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card passenger = PlayCard("DarkPassenger");
+
+            PrintSeparator("Check if the damage dealt by Dark Passenger can be reduced by mass levitation");
+            //This card may not be affected by hero cards unless Cursed Vault is in play.
+            QuickHPStorage(ra);
+            DealDamage(passenger, ra, 4, DamageType.Infernal);
+            QuickHPCheck(-4);
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultNotInPlay_AffectedByTaMoko()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "TheVisionary", "Ra", "NightMist", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not cursed vault in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToPlayCardPhase(haka);
+            Card taMoko = PlayCard("TaMoko");
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card passenger = PlayCard("DarkPassenger");
+
+            PrintSeparator("Check if the damage dealt by Dark Passenger can be reduced by Ta Moko");
+            //This card may not be affected by hero cards unless Cursed Vault is in play.
+            QuickHPStorage(haka);
+            DealDamage(passenger, haka, 4, DamageType.Infernal);
+            QuickHPCheck(-3);
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultNotInPlay_AffectedByMistform()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "TheVisionary", "Ra", "NightMist", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not cursed vault in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, haka.CharacterCard);
+            }
+
+            GoToPlayCardPhase(mist);
+            Card mistform = PlayCard("Mistform");
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card passenger = PlayCard("DarkPassenger");
+
+            PrintSeparator("Check if the damage dealt by Dark Passenger can be prevented by Mistform");
+            //This card may not be affected by hero cards unless Cursed Vault is in play.
+            QuickHPStorage(mist);
+            DealDamage(passenger, mist, 4, DamageType.Infernal);
+            QuickHPCheck(0);
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultNotInPlay_UnaffectedAfterStunbolt()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "TheVisionary", "TheWraith", "NightMist", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+            Card passenger = GetCard("DarkPassenger");
+            Card vault = GetCard("CursedVault");
+            Card aqueduct = GetCard("Aqueducts");
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            List<Card> selectedCards = new List<Card>() { passenger, vault, aqueduct };
+            DecisionSelectCards = selectedCards.ToArray();
+            //make sure it is not cursed vault in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "CursedVault")
+            {
+                selectedCards.Insert(0, vault);
+                DecisionSelectCards = selectedCards.ToArray();
+                DestroyCard(playedRoom, haka.CharacterCard);
+            }
+
+            GoToUsePowerPhase(wraith);
+            PlayCard(passenger);
+            Card bolt = PlayCard("StunBolt");
+            UsePower(bolt);
+
+            GoToEndOfTurn(catacombs);
+            PrintSeparator("Check if the damage dealt by Dark Passenger can be reduced by stun bolt effect");
+            //This card may not be affected by hero cards unless Cursed Vault is in play.
+            QuickHPStorage(mist);
+            DealDamage(passenger, mist, 4, DamageType.Infernal);
+            QuickHPCheck(-4);
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultNotInPlay_AffectedByAZModules()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "AbsoluteZero", "Ra", "NightMist", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not cursed vault in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, haka.CharacterCard);
+            }
+
+            GoToPlayCardPhase(az);
+            Card nullPoint = PlayCard("NullPointCalibrationUnit");
+            Card transducer = PlayCard("IsothermicTransducer");
+
+            SetHitPoints(az, 20);
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card passenger = PlayCard("DarkPassenger");
+
+            PrintSeparator("Check if the damage dealt by Dark Passenger can be responded to by each module");
+            //This card may not be affected by hero cards unless Cursed Vault is in play.
+            QuickHPStorage(az);
+            DealDamage(passenger, az, 4, DamageType.Cold);
+            QuickHPCheck(4);
+
+            DecisionSelectTarget = baron.CharacterCard;
+            QuickHPStorage(az, baron);
+            DealDamage(passenger, az, 4, DamageType.Fire);
+            QuickHPCheck(-4, -4);
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultNotInPlay_AffectedByTwistingPassages()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "AbsoluteZero", "Ra", "NightMist", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not cursed vault in play
+            //putting twisting passages in play
+            if (playedRoom.Identifier != "TwistingPassages")
+            {
+                DecisionSelectCard = GetCard("TwistingPassages");
+                DestroyCard(playedRoom, haka.CharacterCard);
+            }
+
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            Card passenger = PlayCard("DarkPassenger");
+
+            PrintSeparator("Check if the damage dealt by Dark Passenger can be increased by twisting passages");
+            //This card may not be affected by hero cards unless Cursed Vault is in play.
+            QuickHPStorage(az);
+            DealDamage(passenger, az, 4, DamageType.Infernal);
+            QuickHPCheck(-5);
+
+        }
+
+        [Test()]
+        public void TestDarkPassenger_CursedVaultNotInPlay_AffectedByVillainStunBoltEffect()
+        {
+
+            SetupGameController(new string[] { "BaronBlade", "TheVisionary", "Ra", "NightMist", "Haka", "Cauldron.StSimeonsCatacombs" });
+            StartGame();
+
+            //change villain targets in play to make baron blade vulnerable
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            DestroyCard(mdp, baron.CharacterCard);
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(catacombs);
+            playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not cursed vault in play
+            //putting torture chamber in play to simplify
+            if (playedRoom.Identifier != "TortureChamber")
+            {
+                DecisionSelectCard = GetCard("TortureChamber");
+                DestroyCard(playedRoom, haka.CharacterCard);
+            }
+
+            GoToPlayCardPhase(mist);
+            Card passenger = PlayCard("DarkPassenger");
+            //create a stun bolt effect with a cardSource of the villain
+            IEnumerator coroutine = GameController.DealDamageToTarget(new DamageSource(GameController, baron.CharacterCard), passenger, 2, DamageType.Infernal, addStatusEffect: dd => ReduceDamageDealtByThatTargetUntilTheStartOfYourNextTurnResponse(dd, 1, baron.TurnTaker, baron.CharacterCardController.GetCardSource()), cardSource: baron.CharacterCardController.GetCardSource());
+            RunCoroutine(coroutine);
+            GoToPlayCardPhase(catacombs);
+            //don't mess with the room in play
+            DecisionDoNotSelectCard = SelectionType.DestroyCard;
+
+            
+
+            PrintSeparator("Check if the damage dealt by Dark Passenger can be reduced by effect");
+            //This card may not be affected by hero cards unless Cursed Vault is in play.
+            QuickHPStorage(mist);
+            DealDamage(passenger, mist, 4, DamageType.Infernal);
+            QuickHPCheck(-3);
+
+        }
+
+        protected IEnumerator ReduceDamageDealtByThatTargetUntilTheStartOfYourNextTurnResponse(DealDamageAction action, int amount, TurnTaker tt, CardSource cardSource)
+        {
+            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(amount);
+            reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = action.Target;
+            reduceDamageStatusEffect.UntilStartOfNextTurn(tt);
+            reduceDamageStatusEffect.UntilTargetLeavesPlay(action.Target);
+            return GameController.AddStatusEffect(reduceDamageStatusEffect, true, cardSource);
+        }
+
+
     }
 }
