@@ -40,6 +40,8 @@ namespace Cauldron.BlackwoodForest
         private static readonly IEnumerable<string> BaseKeywords = new[] { "creature" };
         private static bool AllowReflectionSelfModification = true;
 
+        private SelfDestructTrigger _removeCardSourceWhenDestroyedTrigger;
+
         public Card CopiedCard => GetCardPropertyJournalEntryCard(CopiedCardKey);
         public IEnumerable<string> CopiedKeywords => CopiedCard?.Definition.Keywords ?? Enumerable.Empty<string>();
 
@@ -173,6 +175,31 @@ namespace Cauldron.BlackwoodForest
             AddToControllerLists(copiedCard);
             CopyGameText(copiedCard);
 
+        }
+
+        private IEnumerator ReplaceCardSourceWhenDestroyed(DestroyCardAction dc)
+        {
+            var copiedCard = CopiedCard;
+            if(copiedCard != null)
+            { 
+                CardController cardController = FindCardController(copiedCard);
+                CardSource cardSource = GetCardSource();
+                cardSource.SourceLimitation = CardSource.Limitation.WhenDestroyed;
+                cardController.AddAssociatedCardSource(cardSource);
+            }
+            yield return null;
+        }
+        private IEnumerator RemoveCardSourceWhenDestroyed(DestroyCardAction dc)
+        {
+            var copiedCard = CopiedCard;
+            if (copiedCard != null)
+            {
+                CardController cardController = FindCardController(copiedCard);
+                CardSource cardSource = GetCardSource();
+                cardSource.SourceLimitation = CardSource.Limitation.WhenDestroyed;
+                cardController.RemoveAssociatedCardSource(cardSource);
+            }
+            yield return null;
         }
 
         private IEnumerator DupliPlayCopiedCard(Card card)
@@ -391,7 +418,7 @@ namespace Cauldron.BlackwoodForest
         {
             IEnumerable<ITrigger> triggers =
                 FindTriggersWhere(t => t.CardSource.CardController.CardWithoutReplacements == sourceCard);
-
+            var hasWhenDestroyedTriggers = false;
             foreach (ITrigger trigger in triggers)
             {
                 if (trigger.IsStatusEffect)
@@ -399,13 +426,30 @@ namespace Cauldron.BlackwoodForest
                     continue;
                 }
 
-                ITrigger clonedTrigger = (ITrigger)trigger.Clone();
-                clonedTrigger.CardSource = base.FindCardController(sourceCard).GetCardSource();
-                clonedTrigger.CardSource.AddAssociatedCardSource(base.GetCardSource());
-                clonedTrigger.SetCopyingCardController(this);
+                if (trigger is SelfDestructTrigger sdt)
+                {
+                    hasWhenDestroyedTriggers = true;
+                    CardController originalController = GameController.FindCardController(sourceCard);
+                    SelfDestructTrigger destroyTrigger = trigger as SelfDestructTrigger;
+                    base.AddWhenDestroyedTrigger(dc => this.SetCardSourceLimitationsWhenDestroy(dc, destroyTrigger), 
+                         destroyTrigger.Types.ToArray(), null, null).CardSource.AddAssociatedCardSource(originalController.GetCardSource());
+                }
+                else
+                {
+                    ITrigger clonedTrigger = (ITrigger)trigger.Clone();
+                    clonedTrigger.CardSource = base.FindCardController(sourceCard).GetCardSource();
+                    clonedTrigger.CardSource.AddAssociatedCardSource(base.GetCardSource());
+                    clonedTrigger.SetCopyingCardController(this);
 
-                base.AddTrigger(clonedTrigger);
-                this._copiedTriggers.Add(clonedTrigger);
+                    base.AddTrigger(clonedTrigger);
+                    this._copiedTriggers.Add(clonedTrigger);
+                }
+            }
+
+            if(hasWhenDestroyedTriggers)
+            {
+                AddWhenDestroyedTrigger(ReplaceCardSourceWhenDestroyed, TriggerType.Hidden);
+                _removeCardSourceWhenDestroyedTrigger = AddWhenDestroyedTrigger(RemoveCardSourceWhenDestroyed, TriggerType.HiddenLast);
             }
         }
 
@@ -471,7 +515,7 @@ namespace Cauldron.BlackwoodForest
             }
         }
 
-        /*
+        
         private IEnumerator SetCardSourceLimitationsWhenDestroy(DestroyCardAction dc, SelfDestructTrigger destroyTrigger)
         {
             destroyTrigger.CardSource?.CardController?.SetCardSourceLimitation(this, CardSource.Limitation.WhenDestroyed);
@@ -490,7 +534,7 @@ namespace Cauldron.BlackwoodForest
 
             yield break;
         }
-
+        /*
         private void CopyWhenDestroyedTriggers(CardController cc)
         {
             //foreach (ITrigger trigger in cc.GetWhenDestroyedTriggers())
