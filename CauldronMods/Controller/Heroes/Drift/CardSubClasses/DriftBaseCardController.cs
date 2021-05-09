@@ -68,5 +68,18 @@ namespace Cauldron.Drift
             }
             return false;
         }
+
+        public bool IsTargetSelf(DealDamageAction dd)
+        {
+            if(dd.Target != null && dd.Target.SharedIdentifier != null && dd.Target.SharedIdentifier == GetActiveCharacterCard().SharedIdentifier)
+            {
+                return true;
+            }
+            else if (dd.Target != null && dd.Target == GetActiveCharacterCard())
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
