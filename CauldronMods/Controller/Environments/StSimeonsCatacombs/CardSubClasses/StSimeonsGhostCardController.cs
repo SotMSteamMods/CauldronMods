@@ -21,6 +21,15 @@ namespace Cauldron.StSimeonsCatacombs
         {
             //This card may not be affected by hero cards unless AffectedCard is in play.
             base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => !this.IsAffectedCardInPlay() && md.CardSource != null && md.CardSource.Card.IsHero, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
+
+            //if affected card is in play cancel the damage by the ghost and have catacombs deal the damage
+            base.AddTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(Card) && !IsAffectedCardInPlay(), ChangeDamageSourceResponse, TriggerType.FirstTrigger, TriggerTiming.Before);
+        }
+
+        private IEnumerator ChangeDamageSourceResponse(DealDamageAction originalDealDamageAction)
+        {
+            originalDealDamageAction.DamageSource = new DamageSource(GameController, catacombs);
+            yield return null;
         }
 
         private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
