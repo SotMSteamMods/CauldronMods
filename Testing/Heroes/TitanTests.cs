@@ -1362,5 +1362,26 @@ namespace CauldronTests
             //+2 each for Bunker and Scholar's turns
             QuickHPCheck(4);
         }
+
+        [Test()]
+        public void TestTitanAndProgeny()
+        {
+            SetupGameController("Progeny", "Cauldron.Titan", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetHitPoints(titan, 8);
+            Card tform = PlayCard("Titanform");
+            StartGame();
+
+            DecisionYesNo = true;
+            DealDamage(titan, progeny, 3, DamageType.Infernal);
+            DealDamage(progeny, titan, 8, DamageType.Radiant);
+            AssertIncapacitated(titan);
+
+            GoToStartOfTurn(progeny);
+
+            AssertNotFlipped(progeny);
+
+
+            
+        }
     }
 }
