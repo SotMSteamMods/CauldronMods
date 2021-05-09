@@ -2636,7 +2636,7 @@ namespace CauldronTests
             }
 
             GoToPlayCardPhase(mist);
-            Card mistform = PlayCard("Mistform");
+            Card mistform = PlayCard("MistForm");
 
             GoToPlayCardPhase(catacombs);
             //don't mess with the room in play
