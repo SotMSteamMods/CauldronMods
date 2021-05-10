@@ -199,9 +199,33 @@ namespace CauldronTests
             Card topCard = legacy.TurnTaker.Deck.TopCard;
             Card currents = PlayCard("RideTheCurrents");
             AssertNotInDeck(topCard);
-           
+
 
         }
+
+        [Test()]
+        public void TestRideTheCurrents_Play_Oblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            GoToPlayCardPhase(superstorm);
+            Card topCard = ra.TurnTaker.Deck.TopCard;
+            Card secondEnvTopCard = envTwo.TurnTaker.Deck.TopCard;
+
+            //When this card enters play, select the deck with the least number of non-character cards in play. Put the top card of that deck into play.
+
+            // valid targets: 3 heroes & 1st battle zone scion
+            List<TurnTakerController> validControllers = new List<TurnTakerController>() { ra, legacy, haka, scionOne };
+            List<TurnTakerController> inValidControllers = new List<TurnTakerController>() { oblivaeon, envOne, envTwo, scionTwo };
+            AssertNumberOfChoicesInNextDecision(4);
+            AssertNextDecisionChoices(validControllers, inValidControllers);
+            PlayCard("RideTheCurrents");
+
+            // The top card of a deck in Akela's battle zone should be played, the top card in the other battle zone should now
+            AssertNotInDeck(topCard);
+            AssertInDeck(secondEnvTopCard);
+        }
+
 
         [Test()]
         public void TestFlailingWires_EndOfTurn()
