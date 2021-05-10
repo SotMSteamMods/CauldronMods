@@ -215,7 +215,10 @@ namespace CauldronTests
             //When this card enters play, select the deck with the least number of non-character cards in play. Put the top card of that deck into play.
 
             // valid targets: 3 heroes & 1st battle zone scion
+            List<TurnTakerController> validControllers = new List<TurnTakerController>() { ra, legacy, haka, scionOne };
+            List<TurnTakerController> inValidControllers = new List<TurnTakerController>() { oblivaeon, envOne, envTwo, scionTwo };
             AssertNumberOfChoicesInNextDecision(4);
+            AssertNextDecisionChoices(validControllers, inValidControllers);
             PlayCard("RideTheCurrents");
 
             // The top card of a deck in Akela's battle zone should be played, the top card in the other battle zone should now
