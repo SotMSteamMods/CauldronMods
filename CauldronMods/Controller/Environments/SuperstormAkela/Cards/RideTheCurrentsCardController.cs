@@ -35,7 +35,7 @@ namespace Cauldron.SuperstormAkela
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(DidSelectCard(storedResults))
+            if (DidSelectCard(storedResults))
             {
                 Card cardToMove = GetSelectedCard(storedResults);
 
@@ -51,7 +51,7 @@ namespace Cauldron.SuperstormAkela
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                if(DidSelectCard(storedResults2))
+                if (DidSelectCard(storedResults2))
                 {
                     Card cardToMoveInRelationTo = GetSelectedCard(storedResults2);
 
@@ -86,8 +86,8 @@ namespace Cauldron.SuperstormAkela
         public override IEnumerator Play()
         {
             //When this card enters play, select the deck with the least number of non-character cards in play...
-            List<TurnTaker> storedResults = new List<TurnTaker>() ;
-            IEnumerator coroutine = GameController.DetermineTurnTakersWithMostOrFewest(false, 1, 1, (TurnTaker tt) =>!tt.IsIncapacitatedOrOutOfGame, tt => GameController.FindCardsWhere((Card c) => c.IsInPlay && !c.IsCharacter && c.Owner == tt).Count(), SelectionType.PlayTopCard, storedResults);
+            List<TurnTaker> storedResults = new List<TurnTaker>();
+            IEnumerator coroutine = GameController.DetermineTurnTakersWithMostOrFewest(false, 1, 1, (TurnTaker tt) => (!tt.IsIncapacitatedOrOutOfGame && tt.BattleZone == base.BattleZone), tt => GameController.FindCardsWhere((Card c) => c.IsInPlay && !c.IsCharacter && c.Owner == tt && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count(), SelectionType.PlayTopCard, storedResults, cardSource: GetCardSource(), battleZone: base.BattleZone);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -97,7 +97,7 @@ namespace Cauldron.SuperstormAkela
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(storedResults != null)
+            if (storedResults != null)
             {
                 TurnTaker tt = storedResults.First();
                 Location deck = tt.Decks.First();
@@ -114,14 +114,14 @@ namespace Cauldron.SuperstormAkela
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    if(DidSelectLocation(storedDeck))
+                    if (DidSelectLocation(storedDeck))
                     {
                         deck = GetSelectedLocation(storedDeck);
                     }
                 }
 
                 //... Put the top card of that deck into play.
-                coroutine = GameController.PlayTopCardOfLocation(base.DecisionMaker, deck,isPutIntoPlay: true, cardSource: GetCardSource(), showMessage: true);
+                coroutine = GameController.PlayTopCardOfLocation(base.DecisionMaker, deck, isPutIntoPlay: true, cardSource: GetCardSource(), showMessage: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
