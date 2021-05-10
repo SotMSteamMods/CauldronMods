@@ -26,7 +26,7 @@ namespace Cauldron.SuperstormAkela
             //Select a card and store it
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
             IEnumerator coroutine = GameController.SelectCardAndStoreResults(base.DecisionMaker, SelectionType.MoveCard, new LinqCardCriteria((Card c) => c.IsEnvironment && c.IsInPlayAndNotUnderCard && TurnTaker.PlayArea.HasCard(c), "environment card in environment play area"), storedResults, true, cardSource: GetCardSource());
-            if(base.UseUnityCoroutines)
+            if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
             }
@@ -42,7 +42,7 @@ namespace Cauldron.SuperstormAkela
                 //Select a card to move next to
                 List<SelectCardDecision> storedResults2 = new List<SelectCardDecision>();
                 coroutine = GameController.SelectCardAndStoreResults(base.DecisionMaker, SelectionType.MoveCardNextToCard, new LinqCardCriteria((Card c) => c.IsEnvironment && c.IsInPlayAndNotUnderCard && TurnTaker.PlayArea.HasCard(c) && c != cardToMove, "environment card in environment play area"), storedResults2, false, cardSource: GetCardSource());
-                if(base.UseUnityCoroutines)
+                if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
                 }
@@ -68,7 +68,7 @@ namespace Cauldron.SuperstormAkela
                     var options = new Function[] { op1, op2 };
                     var selectFunctionDecision = new SelectFunctionDecision(base.GameController, this.DecisionMaker, options, false, cardSource: GetCardSource());
                     coroutine = base.GameController.SelectAndPerformFunction(selectFunctionDecision);
-                    if(base.UseUnityCoroutines)
+                    if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
                     }
@@ -88,7 +88,7 @@ namespace Cauldron.SuperstormAkela
             //When this card enters play, select the deck with the least number of non-character cards in play...
             List<TurnTaker> storedResults = new List<TurnTaker>();
             IEnumerator coroutine = GameController.DetermineTurnTakersWithMostOrFewest(false, 1, 1, (TurnTaker tt) => (!tt.IsIncapacitatedOrOutOfGame && tt.BattleZone == base.BattleZone), tt => GameController.FindCardsWhere((Card c) => c.IsInPlay && !c.IsCharacter && c.Owner == tt && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count(), SelectionType.PlayTopCard, storedResults, cardSource: GetCardSource(), battleZone: base.BattleZone);
-            if(base.UseUnityCoroutines)
+            if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
             }
@@ -101,11 +101,11 @@ namespace Cauldron.SuperstormAkela
             {
                 TurnTaker tt = storedResults.First();
                 Location deck = tt.Decks.First();
-                if(tt.Decks.Count > 1)
+                if (tt.Decks.Count > 1)
                 {
                     List<SelectLocationDecision> storedDeck = new List<SelectLocationDecision>();
                     coroutine = GameController.SelectADeck(DecisionMaker, SelectionType.PlayTopCard, (Location l) => l.OwnerTurnTaker == tt, storedDeck, cardSource: GetCardSource());
-                    if(base.UseUnityCoroutines)
+                    if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
                     }
@@ -122,7 +122,7 @@ namespace Cauldron.SuperstormAkela
 
                 //... Put the top card of that deck into play.
                 coroutine = GameController.PlayTopCardOfLocation(base.DecisionMaker, deck, isPutIntoPlay: true, cardSource: GetCardSource(), showMessage: true);
-                if(base.UseUnityCoroutines)
+                if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
                 }
