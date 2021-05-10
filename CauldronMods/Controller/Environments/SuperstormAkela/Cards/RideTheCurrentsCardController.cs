@@ -86,8 +86,8 @@ namespace Cauldron.SuperstormAkela
         public override IEnumerator Play()
         {
             //When this card enters play, select the deck with the least number of non-character cards in play...
-            List<TurnTaker> storedResults = new List<TurnTaker>();
-            IEnumerator coroutine = GameController.DetermineTurnTakersWithMostOrFewest(false, 1, 1, (TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame, tt => GameController.FindCardsWhere((Card c) => c.IsInPlay && !c.IsCharacter && c.Owner == tt && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count(), SelectionType.PlayTopCard, storedResults, cardSource: GetCardSource(), battleZone: base.BattleZone);
+            List<TurnTaker> storedResults = new List<TurnTaker>() ;
+            IEnumerator coroutine = GameController.DetermineTurnTakersWithMostOrFewest(false, 1, 1, (TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame, tt => GameController.FindCardsWhere((Card c) => c.IsInPlay && !c.IsCharacter && c.Owner == tt).Count(), SelectionType.PlayTopCard, storedResults, cardSource: GetCardSource(), battleZone: base.BattleZone);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -121,7 +121,7 @@ namespace Cauldron.SuperstormAkela
                 }
 
                 //... Put the top card of that deck into play.
-                coroutine = GameController.PlayTopCardOfLocation(base.DecisionMaker, deck, isPutIntoPlay: true, cardSource: GetCardSource(), showMessage: true);
+                coroutine = GameController.PlayTopCardOfLocation(base.DecisionMaker, deck,isPutIntoPlay: true, cardSource: GetCardSource(), showMessage: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
