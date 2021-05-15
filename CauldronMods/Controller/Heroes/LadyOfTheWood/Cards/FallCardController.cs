@@ -14,31 +14,26 @@ namespace Cauldron.LadyOfTheWood
 		{
 			//Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
 			Func<DealDamageAction,bool> criteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Lightning;
-			base.AddTrigger<DealDamageAction>(criteria, new Func<DealDamageAction, IEnumerator>(this.ReduceDamageResponse), new TriggerType[]
+			base.AddTrigger<DealDamageAction>(criteria,
+				(DealDamageAction dd) => AddStatusEffectResponseToDamage(dd, (DealDamageAction damage) =>
+					ReduceDamageDealtByThatTargetUntilTheStartOfYourNextTurnResponse(damage, 1), requireDamageToBeDealt: true
+				), new TriggerType[]
 			{
 				TriggerType.ReduceDamage
-			}, TriggerTiming.After);
+			}, TriggerTiming.Before);
 		}
-
-		private IEnumerator ReduceDamageResponse(DealDamageAction dd)
+		protected IEnumerator AddStatusEffectResponseToDamage(DealDamageAction dd, Func<DealDamageAction, IEnumerator> statusEffectResponse, bool requireDamageToBeDealt = false)
 		{
-			//Reduce damage dealt by that target by 1 until the start of your next turn.
-			if (dd.DidDealDamage)
+			if (requireDamageToBeDealt)
 			{
-				ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
-				reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = dd.Target;
-				reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-				IEnumerator coroutine = base.AddStatusEffect(reduceDamageStatusEffect);
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
+				Func<DealDamageAction, IEnumerator> statusEffectResponse2 = (DealDamageAction dd2) => dd2.DidDealDamage ? statusEffectResponse(dd2) : DoNothing();
+				dd.AddStatusEffectResponse(statusEffectResponse2);
 			}
-			yield break;
+			else
+			{
+				dd.AddStatusEffectResponse(statusEffectResponse);
+			}
+			yield return null;
 		}
 	}
 }
