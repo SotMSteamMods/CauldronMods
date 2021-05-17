@@ -330,7 +330,7 @@ namespace Cauldron.Drift
                     //this adds an extra power-use record to the journal, of using the OTHER card's power
                     //WITHOUT actually ever 'using' a power, so it shouldn't cause extra triggers
                     //may cause problems with card that want to count how many powers a player has used in a turn, though
-                    GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null);
+                    GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null, this.CardWithoutReplacements);
                 }
             }
         }
