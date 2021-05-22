@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Tiamat
@@ -25,7 +26,30 @@ namespace Cauldron.Tiamat
             }
         }
 
+        public override bool CanBeMovedOutOfGame => false;
         protected abstract ITrigger[] AddFrontTriggers();
+
+        public override void AddTriggers()
+        {
+            // After any action, if there are fewer than 6 heads in the game, game over.
+            AddTrigger((GameAction a) => !(a is MessageAction) && !base.TurnTakerController.IsGameWinnable(), UnwinnableGameOver, TriggerType.Hidden, TriggerTiming.After);
+        }
+
+        private IEnumerator UnwinnableGameOver(GameAction a)
+        {
+            IEnumerator coroutine = base.GameController.SendMessageAction("Victory is now impossible for the heroes.", Priority.Critical, GetCardSource());
+            IEnumerator e = base.GameController.GameOver(EndingResult.AlternateDefeat, "The heroes are defeated!", showEndingTextAsMessage: false, null, null);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(e);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(e);
+            }
+        }
 
         public override void AddSideTriggers()
         {

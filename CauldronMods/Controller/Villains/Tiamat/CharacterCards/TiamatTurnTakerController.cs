@@ -147,12 +147,10 @@ namespace Cauldron.Tiamat
 
         public override bool IsGameWinnable()
         {
-            
             if(GameController.FindCardController(TurnTaker.FindCard("WinterTiamatCharacter")) is HydraWinterTiamatCharacterCardController)
             {
-                return TurnTaker.GetCardsWhere((Card c) => c.IsCharacter && c.IsInGame).Count() == 6;
+                return TurnTaker.GetCardsWhere((Card c) => c.IsCharacter && c.IsInGame).Count() < 6;
             }
-            
             return true;
         }
     }
