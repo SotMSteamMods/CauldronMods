@@ -14,25 +14,26 @@ namespace Cauldron.LadyOfTheWood
 		{
 			//Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
 			Func<DealDamageAction,bool> criteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Lightning;
-			base.AddTrigger<DealDamageAction>(criteria,
-				(DealDamageAction dd) => AddStatusEffectResponseToDamage(dd, (DealDamageAction damage) =>
-					ReduceDamageDealtByThatTargetUntilTheStartOfYourNextTurnResponse(damage, 1), requireDamageToBeDealt: true
-				), new TriggerType[]
-			{
-				TriggerType.ReduceDamage
-			}, TriggerTiming.Before);
+			AddTrigger(criteria, AddReduceDamageResponse, TriggerType.AddStatusEffectToDamage, TriggerTiming.Before);
 		}
-		protected IEnumerator AddStatusEffectResponseToDamage(DealDamageAction dd, Func<DealDamageAction, IEnumerator> statusEffectResponse, bool requireDamageToBeDealt = false)
+
+		private IEnumerator AddReduceDamageResponse(DealDamageAction dd)
 		{
-			if (requireDamageToBeDealt)
+			Func<DealDamageAction, IEnumerator> statusEffectResponse = delegate (DealDamageAction dd2)
 			{
-				Func<DealDamageAction, IEnumerator> statusEffectResponse2 = (DealDamageAction dd2) => dd2.DidDealDamage ? statusEffectResponse(dd2) : DoNothing();
-				dd.AddStatusEffectResponse(statusEffectResponse2);
-			}
-			else
-			{
-				dd.AddStatusEffectResponse(statusEffectResponse);
-			}
+				if (dd2.DidDealDamage)
+				{
+					IEnumerator enumerator = ReduceDamageDealtByThatTargetUntilTheStartOfYourNextTurnResponse(dd2, 1);
+					if (base.UseUnityCoroutines)
+					{
+						return enumerator;
+					}
+					base.GameController.ExhaustCoroutine(enumerator);
+					return DoNothing();
+				}
+				return DoNothing();
+			};
+			dd.AddStatusEffectResponse(statusEffectResponse);
 			yield return null;
 		}
 	}
