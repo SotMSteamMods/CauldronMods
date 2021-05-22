@@ -95,7 +95,7 @@ namespace Cauldron.TheKnight
 
         protected bool IsMultiCharPromo()
         {
-            return this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards && CharacterCardController is WastelandRoninTheKnightCharacterCardController;
+            return this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards && TurnTakerControllerWithoutReplacements is TheKnightTurnTakerController kttc && kttc.InstructionCardController != null;
         }
 
         protected Card GetKnightCardUser(Card c)
