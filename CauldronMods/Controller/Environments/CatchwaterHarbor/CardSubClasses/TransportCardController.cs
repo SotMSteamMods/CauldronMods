@@ -68,26 +68,14 @@ namespace Cauldron.CatchwaterHarbor
 
         public virtual IEnumerator UniqueOnPlayEffect() { return null; }
 
-        public override IEnumerator ActivateAbility(string abilityKey)
-		{
-			IEnumerator enumerator = null;
-			if (abilityKey == "travel")
-			{
-				enumerator = ActivateTravel();
-			}
-			
-			if (enumerator != null)
-			{
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(enumerator);
-				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(enumerator);
-				}
-			}
-		}
+        public override IEnumerator ActivateAbilityEx(CardDefinition.ActivatableAbilityDefinition definition)
+        {
+            if(definition.Name == "travel")
+            {
+                return ActivateTravel();
+            }
+            return base.ActivateAbilityEx(definition);
+        }
 
         public override void AddTriggers()
         {

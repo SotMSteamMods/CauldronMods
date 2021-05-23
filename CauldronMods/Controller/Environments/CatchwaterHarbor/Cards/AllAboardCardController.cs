@@ -49,24 +49,32 @@ namespace Cauldron.CatchwaterHarbor
             if(DidSelectCard(storedResults))
             {
                 Card transport = GetSelectedCard(storedResults);
-                SetCardPropertyToTrueIfRealAction(DestroyNextTurnKey, transport);
-                coroutine = FindCardController(transport).ActivateAbility("travel");
-                if (base.UseUnityCoroutines)
+                CardController transportController = FindCardController(transport);
+                var abilities = transport.Definition.ActivatableAbilities.Where(def => def.Name == "travel");
+                if (abilities.Any())
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                coroutine = GameController.SendMessageAction($"{transport.Title} will be destroyed at the start of the next environment turn!", Priority.High, GetCardSource(), showCardSource: true);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    
+                    SetCardPropertyToTrueIfRealAction(DestroyNextTurnKey, transport);
+                    coroutine = transportController.ActivateAbilityEx(abilities.FirstOrDefault());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    coroutine = GameController.SendMessageAction($"{transport.Title} will be destroyed at the start of the next environment turn!", Priority.High, GetCardSource(), showCardSource: true);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                    
                 }
             }
             yield break;
