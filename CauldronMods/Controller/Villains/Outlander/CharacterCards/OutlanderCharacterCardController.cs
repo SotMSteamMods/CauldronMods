@@ -52,6 +52,8 @@ namespace Cauldron.Outlander
             var challengeStatusEffect = new MakeIndestructibleStatusEffect();
             challengeStatusEffect.CardsToMakeIndestructible.IsVillain = true;
             challengeStatusEffect.CardsToMakeIndestructible.HasAnyOfTheseKeywords = new List<string> { "ongoing" };
+            challengeStatusEffect.CardsToMakeIndestructible.IsNotSpecificCard = dca.CardToDestroy.Card;
+            challengeStatusEffect.CardsToMakeIndestructible.OutputString = "Villain ongoing cards";
             challengeStatusEffect.ToTurnPhaseExpiryCriteria.Phase = Phase.End;
             challengeStatusEffect.ToTurnPhaseExpiryCriteria.TurnTaker = this.TurnTaker;
             IEnumerator coroutine = AddStatusEffect(challengeStatusEffect);
