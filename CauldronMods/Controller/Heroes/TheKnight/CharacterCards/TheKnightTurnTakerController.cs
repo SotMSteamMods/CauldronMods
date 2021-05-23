@@ -54,7 +54,7 @@ namespace Cauldron.TheKnight
             }
             return characterCards;
         }
-        private CharacterCardController InstructionCardController
+        public CharacterCardController InstructionCardController
         {
             get
             {
