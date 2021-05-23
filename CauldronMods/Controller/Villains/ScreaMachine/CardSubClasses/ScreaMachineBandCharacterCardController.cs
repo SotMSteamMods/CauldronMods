@@ -28,13 +28,13 @@ namespace Cauldron.ScreaMachine
         protected abstract string AbilityDescription { get; }
 
         protected abstract IEnumerator ActivateBandAbility();
-
-        public override IEnumerator ActivateAbility(string abilityKey)
+        public override IEnumerator ActivateAbilityEx(CardDefinition.ActivatableAbilityDefinition definition)
         {
-            if (!Card.IsFlipped && abilityKey == _memberAbilityKey)
+            if (!Card.IsFlipped && definition.Name == _memberAbilityKey)
+            {
                 return ActivateBandAbility();
-
-            return base.ActivateAbility(abilityKey);
+            }
+            return base.ActivateAbilityEx(definition);
         }
 
         public override IEnumerable<ActivatableAbility> GetActivatableAbilities(string key = null, TurnTakerController activatingTurnTaker = null)
@@ -42,9 +42,19 @@ namespace Cauldron.ScreaMachine
             var abilities = new List<ActivatableAbility>();
             if (!Card.IsFlipped && (key is null || key == _memberAbilityKey))
             {
-                abilities.Add(new ActivatableAbility(TurnTakerController, this, Card.Definition.ActivatableAbilities[0], ActivateAbility(_memberAbilityKey), 0, null, activatingTurnTaker, GetCardSource()));
+                var abilityDef = CustomAbilityDefinition();
+                abilities.Add(new ActivatableAbility(TurnTakerController, this, abilityDef, ActivateAbilityEx(abilityDef), 0, null, activatingTurnTaker, GetCardSource()));
             }
             return abilities;
+        }
+
+        protected CardDefinition.ActivatableAbilityDefinition CustomAbilityDefinition()
+        {
+            var activatable = new CardDefinition.ActivatableAbilityDefinition();
+            activatable.Name = _memberAbilityKey;
+            activatable.Text = AbilityDescription;
+            activatable.Number = 0;
+            return activatable;
         }
 
         public override void AddSideTriggers()
