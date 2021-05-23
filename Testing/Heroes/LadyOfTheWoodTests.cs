@@ -610,6 +610,27 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestFallDealLightningDamageTypeChange()
+        {
+            SetupGameController("Ambuscade", "Ra", "Cauldron.LadyOfTheWood", "Haka", "Megalopolis");
+            StartGame();
+            GoToPlayCardPhase(ambuscade);
+            Card sonicMine = PlayCard("SonicMine");
+
+            GoToPlayCardPhase(ra);
+            PlayCard("ImbuedFire");
+
+            GoToPlayCardPhase(ladyWood);
+            PlayCard("Fall");
+
+            QuickHPStorage(ladyWood);
+            DealDamage(ladyWood, sonicMine, 1, DamageType.Lightning);
+
+            // Lady's damage should have been fire, so no damage reduction on the mine
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
         public void TestFallDealLightningNoDamage()
         {
             SetupGameController("Ambuscade", "Ra", "Cauldron.LadyOfTheWood", "Haka", "Megalopolis");
