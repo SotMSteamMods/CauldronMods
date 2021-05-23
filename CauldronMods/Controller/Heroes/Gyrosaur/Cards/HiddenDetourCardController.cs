@@ -11,7 +11,6 @@ namespace Cauldron.Gyrosaur
     public class HiddenDetourCardController : GyrosaurUtilityCardController
     {
         public List<Card> OwnSwappingCards { get; set; }
-        public Card CardEnteringPlay { get; set; }
 
         private List<Card> AllDetourSwapCards
         {
@@ -118,20 +117,20 @@ namespace Cauldron.Gyrosaur
         {
             //IsReplacingPlay = true;
 
-            Card CardEnteringPlay = null;
+            Card cardEnteringPlay = null;
             Card cardBeingSwapped = null;
 
             if(ga is PlayCardAction pc)
             {
-                CardEnteringPlay = pc.CardToPlay;
+                cardEnteringPlay = pc.CardToPlay;
             }
             if(ga is MoveCardAction mc)
             {
-                CardEnteringPlay = mc.CardToMove;
+                cardEnteringPlay = mc.CardToMove;
             }
 
             var storedYesNo = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, CardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, cardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -144,7 +143,7 @@ namespace Cauldron.Gyrosaur
             if(DidPlayerAnswerYes(storedYesNo))
             {
                 cardBeingSwapped = this.Card.UnderLocation.TopCard;
-                OwnSwappingCards.Add(CardEnteringPlay);
+                OwnSwappingCards.Add(cardEnteringPlay);
                 OwnSwappingCards.Add(cardBeingSwapped);
                 if(ga is PlayCardAction pc2)
                 {
@@ -165,7 +164,7 @@ namespace Cauldron.Gyrosaur
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                OwnSwappingCards.Remove(CardEnteringPlay);
+                OwnSwappingCards.Remove(cardEnteringPlay);
                 OwnSwappingCards.Remove(cardBeingSwapped);
             }
 
