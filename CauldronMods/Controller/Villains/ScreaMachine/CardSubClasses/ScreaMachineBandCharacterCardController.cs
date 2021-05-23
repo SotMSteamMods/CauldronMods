@@ -39,10 +39,12 @@ namespace Cauldron.ScreaMachine
 
         public override IEnumerable<ActivatableAbility> GetActivatableAbilities(string key = null, TurnTakerController activatingTurnTaker = null)
         {
+            var abilities = new List<ActivatableAbility>();
             if (!Card.IsFlipped && (key is null || key == _memberAbilityKey))
             {
-                yield return new ActivatableAbility(TurnTakerController, this, _memberAbilityKey, AbilityDescription, ActivateAbility(_memberAbilityKey), 0, null, activatingTurnTaker, GetCardSource());
+                abilities.Add(new ActivatableAbility(TurnTakerController, this, Card.Definition.ActivatableAbilities[0], ActivateAbility(_memberAbilityKey), 0, null, activatingTurnTaker, GetCardSource()));
             }
+            return abilities;
         }
 
         public override void AddSideTriggers()
