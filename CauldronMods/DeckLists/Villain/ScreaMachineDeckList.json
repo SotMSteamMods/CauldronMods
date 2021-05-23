@@ -76,13 +76,8 @@
 				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
-				"If there are ever 3 Drummer cards in play, Ricky G flips."
-			],
-			"activatableAbilities": [
-				{
-					"name": "{Drum}",
-					"text": "Select the villain target with the lowest HP. Reduce damage dealt to that target by 1 until the start of the next villain turn."
-				}
+				"If there are ever 3 Drummer cards in play, Ricky G flips.",
+				"{Drum} Select the villain target with the lowest HP.{BR}        Reduce damage dealt to that target by 1 until{BR}        the start of the next villain turn."
 			],
 			"icons": [
 				"Cauldron.Drums",
@@ -117,13 +112,8 @@
 				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
-				"If there are ever 3 Guitarist cards in play, Slice flips."
-			],
-			"activatableAbilities": [
-				{
-					"name": "{Guitar}",
-					"text": "{SliceCharacter} deals the hero with the second lowest HP {H - 1} sonic damage."
-				}
+				"If there are ever 3 Guitarist cards in play, Slice flips.",
+				"{Guitar} {SliceCharacter} deals the hero with the second{BR}        lowest HP {H - 1} sonic damage."
 			],
 			"icons": [
 				"Cauldron.Guitar",
@@ -157,14 +147,8 @@
 				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
-				"If there are ever 3 Bassist cards in play, Bloodlace flips."
-
-			],
-			"activatableAbilities": [
-				{
-					"name":  "{Bass}",
-					"text": "Each other villain target regains {H - 2} HP."
-				}
+				"If there are ever 3 Bassist cards in play, Bloodlace flips.",
+				"{Bass} Each other villain target regains {H - 2} HP."
 			],
 			"icons": [
 				"Cauldron.Bass",
@@ -198,13 +182,8 @@
 				"Cauldron.Gyrosaur"
 			],
 			"gameplay": [
-				"If there are ever 3 Vocalist cards in play, Valentine flips."
-			],
-			"activatableAbilities": [
-				{
-					"name":  "{Vocal}",
-					"text": "{ValentineCharacter} deals the 2 hero targets with the highest HP {H - 2} psychic damage."
-				}
+				"If there are ever 3 Vocalist cards in play, Valentine flips.",
+				"{Vocal} {ValentineCharacter} deals the 2 hero targets with{BR}         the highest HP {H - 2} psychic damage."
 			],
 			"icons": [
 				"Cauldron.Vocal",
@@ -360,7 +339,7 @@
 				"DealDamageMelee"
 			],
 			"body": [
-				"When this card enters play, if {ValentineCharacter} is not in play, reveal the top card beneath The Set List"
+				"When this card enters play, if {ValentineCharacter} is not in play, reveal the top card beneath The Set List",
 			],
 			"activatableAbilities": [{
 				"name": "{Vocal}",
@@ -550,7 +529,7 @@
 				"DealDamageMelee"
 			],
 			"body": [
-				"When this card enters play, if {SliceCharacter} is not in play, reveal the top card beneath The Set List"
+				"When this card enters play, if {SliceCharacter} is not in play, reveal the top card beneath The Set List",
 			],
 			"activatableAbilities": [{
 				"name": "{Guitar}",
