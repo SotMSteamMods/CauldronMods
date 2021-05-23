@@ -12,7 +12,7 @@ namespace Cauldron.Echelon
     {
         public FutureEchelonCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsDestroyedThisTurn(new LinqCardCriteria((Card c) => IsTactic(c), "tactic"));
+            SpecialStringMaker.ShowNumberOfCardsDestroyedThisTurnEx(new LinqCardCriteria((Card c) => IsTactic(c), "tactic"));
         }
         public override IEnumerator UsePower(int index = 0)
         {

@@ -12,7 +12,7 @@ namespace Cauldron.Dynamo
     {
         public CatharticDemolitionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsDestroyedThisTurn(new LinqCardCriteria(c => IsVillain(c), "villain"));
+            SpecialStringMaker.ShowNumberOfCardsDestroyedThisTurnEx(new LinqCardCriteria(c => IsVillain(c), "villain"));
         }
 
         public override void AddTriggers()
