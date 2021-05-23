@@ -11,6 +11,7 @@ namespace Cauldron.Gyrosaur
     public class HiddenDetourCardController : GyrosaurUtilityCardController
     {
         public List<Card> OwnSwappingCards { get; set; }
+        public Card CardEnteringPlay { get; set; }
 
         private List<Card> AllDetourSwapCards
         {
@@ -117,20 +118,20 @@ namespace Cauldron.Gyrosaur
         {
             //IsReplacingPlay = true;
 
-            Card cardEnteringPlay = null;
+            Card CardEnteringPlay = null;
             Card cardBeingSwapped = null;
 
             if(ga is PlayCardAction pc)
             {
-                cardEnteringPlay = pc.CardToPlay;
+                CardEnteringPlay = pc.CardToPlay;
             }
             if(ga is MoveCardAction mc)
             {
-                cardEnteringPlay = mc.CardToMove;
+                CardEnteringPlay = mc.CardToMove;
             }
 
             var storedYesNo = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardToUnderCard, cardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, CardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -143,7 +144,7 @@ namespace Cauldron.Gyrosaur
             if(DidPlayerAnswerYes(storedYesNo))
             {
                 cardBeingSwapped = this.Card.UnderLocation.TopCard;
-                OwnSwappingCards.Add(cardEnteringPlay);
+                OwnSwappingCards.Add(CardEnteringPlay);
                 OwnSwappingCards.Add(cardBeingSwapped);
                 if(ga is PlayCardAction pc2)
                 {
@@ -164,7 +165,7 @@ namespace Cauldron.Gyrosaur
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                OwnSwappingCards.Remove(cardEnteringPlay);
+                OwnSwappingCards.Remove(CardEnteringPlay);
                 OwnSwappingCards.Remove(cardBeingSwapped);
             }
 
@@ -337,6 +338,16 @@ namespace Cauldron.Gyrosaur
         private bool IsCardUnder(Card card)
         {
             return Card.UnderLocation.HasCard(card); // AllDetourUnderCards.Contains(card);
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            return new CustomDecisionText(
+                $"Do you want to put this card beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"Should they put this card beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"Vote for if they should put this card beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"whether to put this card beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play"
+            );
         }
     }
 }
