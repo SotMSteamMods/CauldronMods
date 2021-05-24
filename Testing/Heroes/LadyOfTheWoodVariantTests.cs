@@ -472,6 +472,7 @@ namespace CauldronTests
             StartGame();
 
             UsePower(ladyWood);
+            Card mossLady = ladyWood.CharacterCard;
             DealDamage(oblivaeon, ladyWood, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
             GoToAfterEndOfTurn(oblivaeon);
             DecisionSelectFromBoxIdentifiers = new string[] { "TheKnight" };
@@ -480,6 +481,7 @@ namespace CauldronTests
 
             GoToPlayCardPhase(knight);
             DealDamage(knight, haka, 1, DamageType.Melee);
+            PrintSpecialStringsForCard(mossLady);
         }
 
 
