@@ -465,6 +465,22 @@ namespace CauldronTests
             QuickHPCheck(0);
             AssertTokenPoolCount(ElementTokenPool, 0);
         }
+        [Test()]
+        public void TestMinistryOfStrategicScienceLadyOfTheWood_OblivaeonIncap()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.LadyOfTheWood/MinistryOfStrategicScienceLadyOfTheWoodCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            UsePower(ladyWood);
+            DealDamage(oblivaeon, ladyWood, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "TheKnight" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.TheKnight";
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(knight);
+            DealDamage(knight, haka, 1, DamageType.Melee);
+        }
 
 
         [Test()]
