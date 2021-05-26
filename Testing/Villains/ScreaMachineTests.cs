@@ -903,7 +903,40 @@ namespace CauldronTests
             ActivateAbility(key, card);
             AssertNumberOfCardsInDeck(scream, deck - 3);
         }
+        [Test()]
+        public void TestMentalLink_OtherVillainCardPlayDuringMentalLinkPlay()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Stuntman", "Mordengrad" }, advanced: false);
+            StartGame();
 
+            var card = SetupBandCard("MentalLink");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            //prevent 
+            SetHitPoints(valentine, 20);
+            SetHitPoints(bloodlace, 10);
+
+            QuickHPStorage(valentine, bloodlace);
+            Card tank = PlayCard("RemoteWalkingTank");
+            SetHitPoints(tank, 3);
+            Card steal = PlayCard("StealTheScene");
+            PlayCard("Fortitude");
+            PlayCard("TheStaffOfRa");
+            PlayCard("TaMoko");
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectTarget = tank;
+            Card wave = PutOnDeck("PercussiveWave");
+            Card metal = PutOnDeck("DeathMetal");
+            int deck = GetNumberOfCardsInDeck(scream);
+            ActivateAbility(key, card);
+
+            AssertIsInPlay(wave);
+            QuickHPCheck(0, 0);
+            DealDamage(legacy, bloodlace, 2, DamageType.Melee);
+            QuickHPCheck(0, -1);
+        }
         [Test()]
         public void TestIrresistibleVoice()
         {
