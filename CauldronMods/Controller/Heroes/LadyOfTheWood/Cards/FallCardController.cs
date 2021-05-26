@@ -13,32 +13,28 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
-			Func<DealDamageAction,bool> criteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Lightning;
-			base.AddTrigger<DealDamageAction>(criteria, new Func<DealDamageAction, IEnumerator>(this.ReduceDamageResponse), new TriggerType[]
-			{
-				TriggerType.ReduceDamage
-			}, TriggerTiming.After);
+			Func<DealDamageAction,bool> criteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard);
+			AddTrigger(criteria, AddReduceDamageResponse, TriggerType.AddStatusEffectToDamage, TriggerTiming.Before);
 		}
 
-		private IEnumerator ReduceDamageResponse(DealDamageAction dd)
+		private IEnumerator AddReduceDamageResponse(DealDamageAction dd)
 		{
-			//Reduce damage dealt by that target by 1 until the start of your next turn.
-			if (dd.DidDealDamage)
+			Func<DealDamageAction, IEnumerator> statusEffectResponse = delegate (DealDamageAction dd2)
 			{
-				ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
-				reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = dd.Target;
-				reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
-				IEnumerator coroutine = base.AddStatusEffect(reduceDamageStatusEffect);
-				if (base.UseUnityCoroutines)
+				if (dd2.DidDealDamage && dd2.DamageType == DamageType.Lightning)
 				{
-					yield return base.GameController.StartCoroutine(coroutine);
+					IEnumerator enumerator = ReduceDamageDealtByThatTargetUntilTheStartOfYourNextTurnResponse(dd2, 1);
+					if (base.UseUnityCoroutines)
+					{
+						return enumerator;
+					}
+					base.GameController.ExhaustCoroutine(enumerator);
+					return DoNothing();
 				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine);
-				}
-			}
-			yield break;
+				return DoNothing();
+			};
+			dd.AddStatusEffectResponse(statusEffectResponse);
+			yield return null;
 		}
 	}
 }
