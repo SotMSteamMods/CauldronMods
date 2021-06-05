@@ -18,9 +18,9 @@ namespace Cauldron.Mythos
         }
 
 
-        protected const string MythosClueDeckIdentifier = "Clue";
-        protected const string MythosDangerDeckIdentifier = "Danger";
-        protected const string MythosMadnessDeckIdentifier = "Madness";
+        protected const string MythosClueDeckIdentifier = "{Clue}";
+        protected const string MythosDangerDeckIdentifier = "{Danger}";
+        protected const string MythosMadnessDeckIdentifier = "{Madness}";
         protected const string DangerousInvestigationPool = "DangerousInvestigationPool";
         protected const string DangerousInvestigationIdentifier = "DangerousInvestigation";
 
@@ -329,10 +329,10 @@ namespace Cauldron.Mythos
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
-            return new CustomDecisionText("There is a Clue card on top of the villain deck, but playing it this way will not add a token to Dangerous Investigation. Play the top card of the villain deck anyway?",
+            return new CustomDecisionText($"There is a {MythosClueDeckIdentifier} card on top of the villain deck, but playing it this way will not add a token to Dangerous Investigation. Play the top card of the villain deck anyway?",
                             "Selecting whether to play the top card of the villain deck",
                             "Vote for whether to play the top card of the villain deck without adding a token to Dangerous Investigation.",
-                            "Play clue cards from villain deck without adding tokens");
+                            $"Play {MythosClueDeckIdentifier} cards from villain deck without adding tokens");
         }
     }
 }
