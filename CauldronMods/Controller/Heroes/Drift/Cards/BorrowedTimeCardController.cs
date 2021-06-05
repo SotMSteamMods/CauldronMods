@@ -20,8 +20,8 @@ namespace Cauldron.Drift
             //Select {DriftL} or {DriftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.
             //If you shifted at least {DriftL} this way, X targets regain 2 HP each. If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Shift Left", SelectionType.RemoveTokens, () => this.ShiftResponse(0)),
-                    new Function(base.HeroTurnTakerController, "Shift Right", SelectionType.AddTokens, () => this.ShiftResponse(1))
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.RemoveTokens, () => this.ShiftResponse(0)),
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.AddTokens, () => this.ShiftResponse(1))
             }, associatedCards: GetShiftTrack().ToEnumerable());
             if (base.UseUnityCoroutines)
             {

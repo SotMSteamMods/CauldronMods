@@ -68,7 +68,7 @@ namespace Cauldron.Drift
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
 
-            return new CustomDecisionText("Do you want to shift RRR?", "Should they shift RRR?", "Vote for if they should shift RRR", "shifting RRR");
+            return new CustomDecisionText("Do you want to shift {ShiftRRR}?", "Should they shift {ShiftRRR}?", "Vote for if they should shift {ShiftRRR}", "shifting {ShiftRRR}", hasFormatStrings: false);
 
         }
     }
