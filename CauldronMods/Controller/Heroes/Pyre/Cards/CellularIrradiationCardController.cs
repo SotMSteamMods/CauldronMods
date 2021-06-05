@@ -51,7 +51,7 @@ namespace Cauldron.Pyre
             
             if(irradiatedCardsInHand() == 0)
             {
-                coroutine = GameController.SendMessageAction($"{heroTTC.Name} has no irradiated cards in hand, so nothing happens.", Priority.Medium, GetCardSource());
+                coroutine = GameController.SendMessageAction($"{heroTTC.Name} has no {Irradiated} cards in hand, so nothing happens.", Priority.Medium, GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

@@ -12,6 +12,7 @@ namespace Cauldron.Pyre
     {
         public IonTraceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+            ShowIrradiatedCount();
         }
 
         public override IEnumerator Play()

@@ -44,7 +44,7 @@ namespace Cauldron.Pyre
         private IEnumerator EntersHandResponse()
         {
             //"When this card enters your hand, select 1 non-{PyreIrradiate} card in your hand. {PyreIrradiate} that card until it leaves your hand.",
-            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} irradiates a card in {Card.Location.GetFriendlyName()}", Priority.Medium, GetCardSource(), showCardSource: true);
+            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} {Irradiated} a card in {Card.Location.GetFriendlyName()}", Priority.Medium, GetCardSource(), showCardSource: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

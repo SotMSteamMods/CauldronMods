@@ -14,6 +14,7 @@ namespace Cauldron.Pyre
     {
         private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
         public const string CascadeKeyword = "cascade";
+        public const string Irradiated = "{Rad}";
 
         protected PyreUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -23,12 +24,12 @@ namespace Cauldron.Pyre
         {
             foreach (HeroTurnTaker hero in Game.HeroTurnTakers)
             {
-                SpecialStringMaker.ShowListOfCardsAtLocation(hero.Hand, new LinqCardCriteria((Card c) => IsIrradiated(c), "irradiated"));
+                SpecialStringMaker.ShowListOfCardsAtLocation(hero.Hand, new LinqCardCriteria((Card c) => IsIrradiated(c), Irradiated));
             }
         }
         protected void ShowIrradiatedCount(bool reverse = false)
         {
-            string descriptor = reverse ? "non-irradiated" : "irradiated";
+            string descriptor = reverse ? $"non-{Irradiated}" : Irradiated;
             SpecialStringMaker.ShowNumberOfCardsAtLocations(() => GameController.AllHeroes.Where(htt => !htt.IsIncapacitatedOrOutOfGame).Select(htt => htt.Hand), new LinqCardCriteria((Card c) => IsIrradiated(c) != reverse, descriptor));
         }
 
@@ -72,7 +73,7 @@ namespace Cauldron.Pyre
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
-                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, IrradiationEffectFunction, $"{cardToIrradiate.Title} is irradiated until it leaves {cardToIrradiate.Location.GetFriendlyName()}.", new TriggerType[] { TriggerType.Hidden }, cardToIrradiate);
+                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, IrradiationEffectFunction, $"{cardToIrradiate.Title} is {Irradiated} until it leaves {cardToIrradiate.Location.GetFriendlyName()}.", new TriggerType[] { TriggerType.Hidden }, cardToIrradiate);
                 irradiateEffect.CardMovedExpiryCriteria.Card = cardToIrradiate;
 
                 coroutine = AddStatusEffect(irradiateEffect, true);
@@ -107,7 +108,7 @@ namespace Cauldron.Pyre
                 handCriteria = (Card c) => c != null && c.Location == playerWithHand.ToHero().Hand;
             }
 
-            var fullCriteria = new LinqCardCriteria((Card c) => handCriteria(c) && !IsIrradiated(c) && additionalCriteria(c), "non-irradiated");
+            var fullCriteria = new LinqCardCriteria((Card c) => handCriteria(c) && !IsIrradiated(c) && additionalCriteria(c), $"non-{Irradiated}");
             if(storedResults == null)
             {
                 storedResults = new List<SelectCardDecision>();
