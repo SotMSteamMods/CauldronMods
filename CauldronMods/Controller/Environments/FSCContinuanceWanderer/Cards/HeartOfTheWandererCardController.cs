@@ -39,14 +39,19 @@ namespace Cauldron.FSCContinuanceWanderer
         private IEnumerator EachTurnTakerResponse(TurnTakerController turnTakerController)
         {
             //...reveal the top card of each deck in turn order and either discard it or replace it.
-            List<Card> revealedCards = new List<Card>();
             TurnTaker turnTaker = turnTakerController.TurnTaker;
             List<Location> decks = new List<Location>();
-            decks.Add(turnTaker.Deck);
-            decks = decks.Concat(turnTaker.SubDecks.Where(l => l.BattleZone == Card.BattleZone && l.IsRealDeck)).ToList();
+            if (GameController.IsLocationVisibleToSource(TurnTaker.Deck, GetCardSource()))
+            {
+                decks.Add(turnTaker.Deck);
+            }
+            decks = decks.Concat(turnTaker.SubDecks.Where(l => l.BattleZone == Card.BattleZone && l.IsRealDeck && GameController.IsLocationVisibleToSource(l, GetCardSource()))).ToList();
             IEnumerator coroutine;
+            Location trash;
             foreach (Location deck in decks)
             {
+                trash = deck.IsSubDeck ? turnTaker.FindSubTrash(deck.Identifier) : turnTaker.Trash;
+                List<Card> revealedCards = new List<Card>();
                 coroutine = base.GameController.RevealCards(turnTakerController, deck, 1, revealedCards, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
@@ -62,7 +67,7 @@ namespace Cauldron.FSCContinuanceWanderer
                     coroutine = base.GameController.SelectLocationAndMoveCard(this.DecisionMaker, revealedCard, new MoveCardDestination[]
                     {
                         new MoveCardDestination(deck),
-                        FindCardController(revealedCard).GetTrashDestination()
+                        new MoveCardDestination(trash)
                     }, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
@@ -73,6 +78,8 @@ namespace Cauldron.FSCContinuanceWanderer
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
+
+
             }
             
             yield break;

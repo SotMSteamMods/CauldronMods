@@ -1366,5 +1366,49 @@ namespace CauldronTests
             DealDamage(knight, baron, 1, DamageType.Melee);
             QuickHPCheck(-1);
         }
+
+        [Test]
+        [Description("TheKnight - Whetstone in Oblivaeon")]
+        public void Whetstone_OblivaeonPlayingInPlayArea()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DealDamage(oblivaeon, ra, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "TheKnight" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.TheKnight";
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(knight);
+
+            Card stone = PlayCard("Whetstone");
+            AssertNotNextToCard(stone, knight.CharacterCard);
+            AssertInPlayArea(knight, stone);
+            
+        }
+
+        [Test]
+        [Description("TheKnight - Whetstone in Oblivaeon")]
+        public void Whetstone_OblivaeonPlayInPlayArea_IncappedRonins()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TheKnight/WastelandRoninTheKnightCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DealDamage(oblivaeon.CharacterCard, youngKnight, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            DealDamage(oblivaeon.CharacterCard, oldKnight, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "TheKnight" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.TheKnight";
+            RunActiveTurnPhase();
+
+
+            GoToPlayCardPhase(knight);
+
+            Card stone = PlayCard("Whetstone");
+            AssertNotNextToCard(stone, knight.CharacterCard);
+            AssertInPlayArea(knight, stone);
+        }
     }
 }

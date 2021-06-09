@@ -21,11 +21,16 @@ namespace Cauldron.TangoOne
 
         protected bool IsOwnCharacterCard(Card card)
         {
-            return card.IsHeroCharacterCard && card.ParentDeck == this.Card.ParentDeck;
+            return card == CharacterCard;
         }
 
         protected IEnumerator SelectOwnCharacterCard(List<SelectCardDecision> results, SelectionType selectionType)
         {
+            /*
+             * Tango One doesn't have any multi-card promos, so this should never be necessary
+             * (whatever card-replacement effect is happening should handle the swap automatically)
+             * but I'm leaving it in for the sake of not disturbing too much.
+             * */
             if (base.HeroTurnTakerController.HasMultipleCharacterCards)
             {
                 LinqCardCriteria criteria = new LinqCardCriteria(IsOwnCharacterCard, "hero character cards");
@@ -49,7 +54,6 @@ namespace Cauldron.TangoOne
                 result.AutoDecide();
                 results.Add(result);
             }
-
             yield break;
         }
     }

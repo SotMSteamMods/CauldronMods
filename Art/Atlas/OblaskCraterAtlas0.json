@@ -1,6 +1,6 @@
 {"frames": {
 
-"FreshTracks.png":
+"FreshTracks.jpg":
 {
 	"frame": {"x":0,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"FreshTracksMicro.png":
+"FreshTracksMicro.jpg":
 {
 	"frame": {"x":259,"y":0,"w":108,"h":108},
 	"rotated": false,
@@ -18,7 +18,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"GameTrail.png":
+"GameTrail.jpg":
 {
 	"frame": {"x":370,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -27,7 +27,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"GameTrailMicro.png":
+"GameTrailMicro.jpg":
 {
 	"frame": {"x":629,"y":0,"w":108,"h":108},
 	"rotated": false,
@@ -36,7 +36,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"GentleTransport.png":
+"GentleTransport.jpg":
 {
 	"frame": {"x":740,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -45,7 +45,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"GentleTransportMicro.png":
+"GentleTransportMicro.jpg":
 {
 	"frame": {"x":999,"y":0,"w":108,"h":108},
 	"rotated": false,
@@ -54,7 +54,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"IndustriousHulk.png":
+"IndustriousHulk.jpg":
 {
 	"frame": {"x":1110,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -63,7 +63,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"IndustriousHulkMicro.png":
+"IndustriousHulkMicro.jpg":
 {
 	"frame": {"x":1369,"y":0,"w":108,"h":108},
 	"rotated": false,
@@ -72,7 +72,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"InscrutableEcology.png":
+"InscrutableEcology.jpg":
 {
 	"frame": {"x":1480,"y":0,"w":256,"h":188},
 	"rotated": false,
@@ -81,7 +81,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"InscrutableEcologyMicro.png":
+"InscrutableEcologyMicro.jpg":
 {
 	"frame": {"x":1739,"y":0,"w":108,"h":108},
 	"rotated": false,
@@ -90,7 +90,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"InvasiveGrowth.png":
+"InvasiveGrowth.jpg":
 {
 	"frame": {"x":0,"y":191,"w":256,"h":188},
 	"rotated": false,
@@ -99,7 +99,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"InvasiveGrowthMicro.png":
+"InvasiveGrowthMicro.jpg":
 {
 	"frame": {"x":259,"y":191,"w":108,"h":108},
 	"rotated": false,
@@ -108,7 +108,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MetalScavenger.png":
+"MetalScavenger.jpg":
 {
 	"frame": {"x":370,"y":191,"w":256,"h":188},
 	"rotated": false,
@@ -117,7 +117,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MetalScavengerMicro.png":
+"MetalScavengerMicro.jpg":
 {
 	"frame": {"x":629,"y":191,"w":108,"h":108},
 	"rotated": false,
@@ -126,7 +126,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MoonWatcher.png":
+"MoonWatcher.jpg":
 {
 	"frame": {"x":740,"y":191,"w":256,"h":188},
 	"rotated": false,
@@ -135,7 +135,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"MoonWatcherMicro.png":
+"MoonWatcherMicro.jpg":
 {
 	"frame": {"x":999,"y":191,"w":108,"h":108},
 	"rotated": false,
@@ -144,7 +144,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OblaskCraterDeckBack.png":
+"OblaskCraterDeckBack.jpg":
 {
 	"frame": {"x":1110,"y":191,"w":176,"h":256},
 	"rotated": false,
@@ -153,7 +153,7 @@
 	"sourceSize": {"w":176,"h":256},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OblaskCraterDeckBackMicro.png":
+"OblaskCraterDeckBackMicro.jpg":
 {
 	"frame": {"x":1289,"y":191,"w":108,"h":108},
 	"rotated": false,
@@ -162,7 +162,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OblaskObjectY3A.png":
+"OblaskObjectY3A.jpg":
 {
 	"frame": {"x":1400,"y":191,"w":256,"h":188},
 	"rotated": false,
@@ -171,7 +171,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OblaskObjectY3AMicro.png":
+"OblaskObjectY3AMicro.jpg":
 {
 	"frame": {"x":1659,"y":191,"w":108,"h":108},
 	"rotated": false,
@@ -180,7 +180,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OpenGround.png":
+"OpenGround.jpg":
 {
 	"frame": {"x":1770,"y":191,"w":256,"h":188},
 	"rotated": false,
@@ -189,7 +189,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"OpenGroundMicro.png":
+"OpenGroundMicro.jpg":
 {
 	"frame": {"x":0,"y":450,"w":108,"h":108},
 	"rotated": false,
@@ -198,7 +198,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"PlatedGiant.png":
+"PlatedGiant.jpg":
 {
 	"frame": {"x":111,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -207,7 +207,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"PlatedGiantMicro.png":
+"PlatedGiantMicro.jpg":
 {
 	"frame": {"x":370,"y":450,"w":108,"h":108},
 	"rotated": false,
@@ -216,7 +216,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"ShadowOfOblask.png":
+"ShadowOfOblask.jpg":
 {
 	"frame": {"x":481,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -225,7 +225,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"ShadowOfOblaskMicro.png":
+"ShadowOfOblaskMicro.jpg":
 {
 	"frame": {"x":740,"y":450,"w":108,"h":108},
 	"rotated": false,
@@ -234,7 +234,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"SwarmOfFangs.png":
+"SwarmOfFangs.jpg":
 {
 	"frame": {"x":851,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -243,7 +243,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"SwarmOfFangsMicro.png":
+"SwarmOfFangsMicro.jpg":
 {
 	"frame": {"x":1110,"y":450,"w":108,"h":108},
 	"rotated": false,
@@ -252,7 +252,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"UnknownHerds.png":
+"UnknownHerds.jpg":
 {
 	"frame": {"x":1221,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -261,7 +261,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"UnknownHerdsMicro.png":
+"UnknownHerdsMicro.jpg":
 {
 	"frame": {"x":1480,"y":450,"w":108,"h":108},
 	"rotated": false,
@@ -270,7 +270,7 @@
 	"sourceSize": {"w":108,"h":108},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"UnseenTerror.png":
+"UnseenTerror.jpg":
 {
 	"frame": {"x":1591,"y":450,"w":256,"h":188},
 	"rotated": false,
@@ -279,7 +279,7 @@
 	"sourceSize": {"w":256,"h":188},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"UnseenTerrorMicro.png":
+"UnseenTerrorMicro.jpg":
 {
 	"frame": {"x":1850,"y":450,"w":108,"h":108},
 	"rotated": false,
@@ -295,6 +295,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2b3503d4284421b3b63bacb69414bec1:54ecea6bda89663e73bbd8dc3810a046:6dc6aec214269802e8e908768f5d30bc$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ddf9fe120ca0c67c54d248d157fa3903:4eb563527ba0e7b1a01b0b34a9cff9b9:6dc6aec214269802e8e908768f5d30bc$"
 }
 }

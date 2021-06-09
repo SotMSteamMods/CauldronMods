@@ -70,11 +70,18 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
-        protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard)
+        protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard, bool untilEnd = false)
         {
             CannotDealDamageStatusEffect cannotDealDamageEffect = new CannotDealDamageStatusEffect();
             cannotDealDamageEffect.SourceCriteria.IsSpecificCard = specificCard;
-            cannotDealDamageEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            if(!untilEnd)
+            {
+                cannotDealDamageEffect.UntilStartOfNextTurn(ttc.TurnTaker);
+            }
+            else
+            {
+                cannotDealDamageEffect.UntilEndOfNextTurn(ttc.TurnTaker);
+            }
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
@@ -86,7 +93,7 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
         }
 
-        protected void AddCannotPlayCardsStatusEffect(TurnTakerController source, bool heroesCannotPlay, bool villainsCannotPlay, bool envCardsCannotPlay = false)
+        protected void AddCannotPlayCardsStatusEffect(TurnTakerController source, bool heroesCannotPlay, bool villainsCannotPlay, bool envCardsCannotPlay = false, bool untilEnd = false)
         {
             CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
             if (heroesCannotPlay)
@@ -95,7 +102,15 @@ namespace CauldronTests
                 effect.CardCriteria.IsVillain = true;
             if (envCardsCannotPlay)
                 effect.CardCriteria.IsEnvironment = true;
-            effect.UntilStartOfNextTurn(source.TurnTaker);
+
+            if(!untilEnd)
+            {
+                effect.UntilStartOfNextTurn(source.TurnTaker);
+
+            } else
+            {
+                effect.UntilEndOfNextTurn(source.TurnTaker);
+            }
             this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(source.CharacterCardController)));
         }
 

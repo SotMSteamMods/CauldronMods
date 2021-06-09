@@ -63,7 +63,7 @@ namespace Cauldron.TheMistressOfFate
             }
 
             var storedYesNo = new List<YesNoCardDecision>();
-            coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCard, this.Card, storedResults: storedYesNo, associatedCards: faceUpDayCards, cardSource: GetCardSource());
+            coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, this.Card, storedResults: storedYesNo, associatedCards: faceUpDayCards, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -151,6 +151,13 @@ namespace Cauldron.TheMistressOfFate
                 GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Do you want to swap the position of 2 face up Day cards?", "Should they swap the position of 2 face up Day cards?", "Vote for if they should swap the position of 2 face up Day cards?", "swap position of 2 face up day cards");
+
         }
     }
 }

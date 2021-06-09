@@ -9,37 +9,35 @@
     ],
     "cards": [
         {
-            "identifier": "StSimeonsCatacombsInstructions",
-            "count": 1,
-            "title": "St. Simeon's Catacombs Instructions",
-            "body":"The Catacombs",
-            "backgroundColor":"B6DB9F",
-            "foilBackgroundColor":"DAA465",
-            "character": true,
-            "setup": "At the start of the game search the environment deck for all room cards and put them face up beneath this card. Shuffle the environment deck.",
-            "gameplay": [
-                "The environment deck may not play cards.",
-                "Cards beneath this one are indestructible and have no game text.",
-                "At the end of the environment turn, put a random room card from beneath this one into play and flip this card."
-            ],
-           "icons": [
-                "CannotPlayCards",
-                "PlayCardNow"
-            ],
-           "flippedGameplay": [
-                "Cards beneath St. Simeon's Catacombs are indestructible and have no game text.",
-                "Whenever a room card would leave play, instead place it face up beneath St. Simeon's Catacombs. Then choose a different room beneath St. Simeon's Catacombs and put it into play.",
-                "If you change rooms this way three times in a turn, room cards become indestructible until the end of the turn.",
-                "At the end of the environment turn, if no room cards have entered play this turn, you may destroy a room card."
-            ],
-           "flippedIcons": [
-                "PlayCardNow",
-                "Indestructible",
-                "EndOfTurnAction",
-                "Destroy"
-            ],
-            "isReal": false
-        },
+			"identifier": "StSimeonsCatacombsInstructions",
+			"count": 1,
+			"title": "St. Simeon's Catacombs Instructions",
+			"body":"The Catacombs",
+			"backgroundColor":"B6DB9F",
+			"foilBackgroundColor":"DAA465",
+			"character": true,
+			"setup": "At the start of the game search the environment deck for all room cards and put them face up beneath St. Simeon's Catacombs. Shuffle the environment deck.",
+			"gameplay": [
+				"The environment deck may not play cards.",
+				"At the end of the environment turn, put a random room card from beneath St. Simeon's Catacombs into play and flip this card."
+			],
+		   "icons": [
+				"CannotPlayCards",
+				"PlayCardNow"
+			],
+		   "flippedGameplay": [
+				"Whenever a room card would leave play, instead place it face up beneath St. Simeon's Catacombs. Then choose a different room beneath St. Simeon's Catacombs and put it into play.",
+				"If you change rooms this way three times in a turn, room cards become indestructible until the end of the turn.",
+				"At the end of the environment turn, if no room cards have entered play this turn, you may destroy a room card."
+			],
+		   "flippedIcons": [
+				"PlayCardNow",
+				"Indestructible",
+				"EndOfTurnAction",
+				"Destroy"
+			],
+			"isReal": false
+		},
         {
          "identifier":"StSimeonsCatacombs",
          "count":1,

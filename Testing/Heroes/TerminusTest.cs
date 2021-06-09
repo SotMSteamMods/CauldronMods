@@ -14,9 +14,6 @@ namespace CauldronTests
     [TestFixture()]
     public class TerminusTest : CauldronBaseTest
     {
-        protected Card terra { get { return GetCard("StarlightOfTerraCharacter"); } }
-        protected Card asheron { get { return GetCard("StarlightOfAsheronCharacter"); } }
-        protected Card cryos { get { return GetCard("StarlightOfCryosFourCharacter"); } }
 
         #region Terminus Utilities
         private string[] gameDecks => new string[] { "BaronBlade", "Cauldron.Terminus", "Legacy", "Bunker", "TheScholar", "Megalopolis" };
@@ -1596,6 +1593,25 @@ namespace CauldronTests
             PlayCard("UnusualSuspects");
             QuickTokenPoolCheck(2);
             QuickHPCheck(-2, 0, 0, 0, 0, -4);
+
+        }
+
+        [Test]
+        public void UnusualSuspectsOblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Terminus", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DiscardTopCards(oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"), 3, oblivaeon.CharacterCardController.GetCardSource());
+
+            Card aeonWarrior = GetCard("AeonWarrior");
+            PlayCard(oblivaeon, aeonWarrior, overridePlayLocation: terminus.BattleZone.FindScion().PlayArea);
+
+            DecisionSelectTargets = new Card[] { aeonWarrior, null };
+            QuickHPStorage(aeonWarrior);
+            PlayCard("UnusualSuspects");
+            QuickHPCheck(-4);
+
 
         }
         #endregion Test Unusual Suspects

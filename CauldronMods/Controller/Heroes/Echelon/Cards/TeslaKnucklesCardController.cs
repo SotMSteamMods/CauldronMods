@@ -18,7 +18,7 @@ namespace Cauldron.Echelon
 
         public TeslaKnucklesCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsDestroyedThisTurn(new LinqCardCriteria(IsTactic, "tactic")).Condition = () => GameController.ActiveTurnTaker == TurnTaker;
+            SpecialStringMaker.ShowNumberOfCardsDestroyedThisTurnEx(new LinqCardCriteria(IsTactic, "tactic")).Condition = () => GameController.ActiveTurnTaker == TurnTaker;
         }
 
         public override void AddTriggers()

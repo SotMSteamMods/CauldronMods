@@ -74,13 +74,15 @@ namespace Cauldron.TangoOne
             Location deck;
             foreach(Location trash in allTrashes)
             {
-               scsd = new SelectCardsDecision(GameController, decisionMaker, c => c.Location == trash, SelectionType.ShuffleCardFromTrashIntoDeck,
-               numberOfCards: CardsToMoveFromTrash,
-               isOptional: false,
-               requiredDecisions: CardsToMoveFromTrash,
-               cardSource: GetCardSource());
-                
-                coroutine = GameController.SelectCardsAndDoAction(scsd, scd => GameController.MoveCard(decisionMaker, scd.SelectedCard, turnTaker.Deck, cardSource: GetCardSource()), cardSource: GetCardSource());
+                   scsd = new SelectCardsDecision(GameController, decisionMaker, c => c.Location == trash, SelectionType.ShuffleCardFromTrashIntoDeck,
+                   numberOfCards: CardsToMoveFromTrash,
+                   isOptional: false,
+                   requiredDecisions: CardsToMoveFromTrash,
+                   cardSource: GetCardSource());
+
+                   deck = trash.IsSubTrash ? turnTaker.FindSubDeck(trash.Identifier) : turnTaker.Deck;
+
+                coroutine = GameController.SelectCardsAndDoAction(scsd, scd => GameController.MoveCard(decisionMaker, scd.SelectedCard, deck, cardSource: GetCardSource()), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -90,7 +92,6 @@ namespace Cauldron.TangoOne
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                deck = trash.IsSubTrash ? turnTaker.FindSubDeck(trash.Identifier) : turnTaker.Deck;
                 coroutine = base.GameController.ShuffleLocation(deck, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {

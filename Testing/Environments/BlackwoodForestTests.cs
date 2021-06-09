@@ -785,7 +785,7 @@ namespace CauldronTests
 
 
         [Test]
-        [Ignore("Current implementation cannot handle cards that Move Next to other cards.")]
+        //[Ignore("Current implementation cannot handle cards that Move Next to other cards.")]
         public void TestMirrorWraithEligibleTargets_ClonePin()
         {
             // Arrange
@@ -1103,6 +1103,66 @@ namespace CauldronTests
             QuickHPCheck(0, -6);
             //3 for real pompadour, 3, for the wraith
             Assert.AreEqual(4, mirror.HitPoints);
+        }
+        [Test]
+        public void TestMirrorWraithWorksThroughSaveLoad()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+            StartGame();
+
+            PlayCard("PlatformBot");
+            PlayCard("MirrorWraith");
+
+            SaveAndLoad();
+            Card mirror = GetCardInPlay("MirrorWraith");
+            QuickHPStorage(mirror);
+            DealDamage(unity, mirror, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
+        [Test]
+        public void TestMirrorWraithWorksChainCopyingOutOfPlayTarget()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+            StartGame();
+
+            Card bot = PlayCard("PlatformBot");
+            Card mirror1 = PlayCard("MirrorWraith");
+            DestroyCard(bot);
+            Card mirror2 = PlayCard("MirrorWraith");
+            AssertMaximumHitPoints(mirror2, 3);
+            QuickHPStorage(mirror2);
+            DealDamage(unity, mirror2, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
+        [Test]
+        public void TestMirrorWraithWorksThroughSaveLoadWhenTargetOutOfPlay()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Unity", DeckNamespace);
+            StartGame();
+
+            Card bot = PlayCard("PlatformBot");
+            PlayCard("MirrorWraith");
+
+            DestroyCard(bot);
+
+            SaveAndLoad();
+            Card mirror = GetCardInPlay("MirrorWraith");
+            QuickHPStorage(mirror);
+            DealDamage(unity, mirror, 1, DamageType.Melee);
+            QuickHPCheckZero();
+        }
+        [Test]
+        public void TestMirrorWraithWorksWithDestructionTriggers()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "AkashThriya", DeckNamespace);
+            StartGame();
+
+            Card seed = PlayCard("HealingPollen");
+            Card mirror = PlayCard("MirrorWraith");
+
+            QuickHandStorage(thriya);
+            DestroyCard(mirror);
+            QuickHandCheck(1);
         }
     }
 }

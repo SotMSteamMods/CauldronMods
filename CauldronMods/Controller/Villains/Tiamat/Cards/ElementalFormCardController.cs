@@ -44,7 +44,7 @@ namespace Cauldron.Tiamat
         {
             if (base.IsFirstOrOnlyCopyOfThisCardInPlay())
             {
-                IEnumerator coroutine = base.GameController.SendMessageAction("Tiamat used Elemental Form to become immune to " + dealDamage.DamageType.ToString() + " damage.", Priority.High, base.GetCardSource());
+                IEnumerator coroutine = base.GameController.SendMessageAction($"{dealDamage.Target.AlternateTitleOrTitle} used Elemental Form to become immune to {dealDamage.DamageType} damage.", Priority.High, base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -53,7 +53,7 @@ namespace Cauldron.Tiamat
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                Log.Debug("Tiamat used Elemental Form to become immune to " + dealDamage.DamageType.ToString() + " damage. ");
+                Log.Debug($"{dealDamage.Target.AlternateTitleOrTitle} used Elemental Form to become immune to {dealDamage.DamageType} damage. ");
             }
             yield return null;
             yield break;
@@ -68,7 +68,7 @@ namespace Cauldron.Tiamat
             immuneToDamageStatusEffect.TargetCriteria.IsSpecificCard = dealDamage.Target;
             immuneToDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
             immuneToDamageStatusEffect.CardDestroyedExpiryCriteria.Card = dealDamage.Target;
-            IEnumerator coroutine2 = base.AddStatusEffect(immuneToDamageStatusEffect);
+            IEnumerator coroutine2 = base.AddStatusEffect(immuneToDamageStatusEffect, showMessage: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);

@@ -5,6 +5,7 @@ using Cauldron.Gray;
 using System.Linq;
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections.Generic;
+using System;
 
 namespace CauldronTests
 {
@@ -233,6 +234,35 @@ namespace CauldronTests
             AssertInTrash(trash);
             AssertIsInPlay(play);
             AssertIsInPlay(ali);
+        }
+
+        [Test()]
+        public void TestGrayBackStartOfTurn_FixedPoint()
+        {
+            SetupGameController("Cauldron.Gray", "Legacy", "Haka", "Ra", "TimeCataclysm");
+            StartGame();
+
+            PlayCards(GetCard("BlightTheLand", 0), GetCard("BlightTheLand", 1));
+            GoToEndOfTurn(env);
+            AddCannotDealDamageTrigger(gray, gray.CharacterCard, untilEnd: true);
+            AddCannotPlayCardsStatusEffect(gray, false, true, untilEnd: true);
+            IEnumerable<Card> trash = GetCards("Fortitude", "Mere");
+            IEnumerable<Card> play = GetCards("TaMoko", "BlazingTornado");
+            PlayCards(play);
+            PlayCards(trash);
+            Card fixedPoint = PlayCard("FixedPoint");
+            //At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. 
+            GoToStartOfTurn(gray);
+            //CardController fixedCC = FindCardController(fixedPoint);
+            //bool indestructible;
+            //foreach(Card c in trash.Concat(play))
+            //{
+            //    indestructible = fixedCC.AskIfCardIsIndestructible(c);
+            //    string not = indestructible ? "" : "not ";
+            //    Console.WriteLine($"{c.Title} is {not}indestructible.");
+            //}
+            AssertIsInPlay(trash);
+            AssertIsInPlay(play);
         }
 
         [Test()]

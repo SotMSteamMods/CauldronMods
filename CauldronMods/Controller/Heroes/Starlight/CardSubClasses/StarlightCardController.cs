@@ -72,7 +72,7 @@ namespace Cauldron.Starlight
         {
             if (!allowReplacements)
             {
-                return HeroTurnTakerControllerWithoutReplacements.HasMultipleCharacterCards;
+                return HeroTurnTakerControllerWithoutReplacements.HasMultipleCharacterCards && TurnTakerControllerWithoutReplacements is StarlightTurnTakerController sttc && sttc.InstructionCardController != null;
             }
             return HeroTurnTakerController.HasMultipleCharacterCards;
         }

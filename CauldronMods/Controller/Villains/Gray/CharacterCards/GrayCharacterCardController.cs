@@ -90,7 +90,7 @@ namespace Cauldron.Gray
         {
             IEnumerator coroutine;
             //...destroy 1 hero ongoing or equipment card and {Gray} deals each non-villain target {H - 1} energy damage
-            if (FindNumberOfHeroOngoingAndEquipmentInPlay() > 0)
+            if (FindNumberOfDestructibleHeroOngoingAndEquipmentInPlay() > 0)
             {
                 int? numberOfCards = new int?(1);
                 if (Game.IsAdvanced)
@@ -121,9 +121,26 @@ namespace Cauldron.Gray
             yield break;
         }
 
+        private int? FindNumberOfDestructibleHeroOngoingAndEquipmentInPlay()
+        {
+            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && CanBeDestroyedByGray(c)).Count());
+        }
+
+        private int? FindNumberOfIndestructibleHeroOngoingAndEquipmentInPlay()
+        {
+            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && !CanBeDestroyedByGray(c)).Count());
+        }
+
         private int? FindNumberOfHeroOngoingAndEquipmentInPlay()
         {
-            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)), false, null, false).Count<Card>());
+            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c))).Count());
+        }
+
+        private bool CanBeDestroyedByGray(Card c)
+        {
+            CardController controller = GameController.DoesAnyCardControllerMakeAnotherCardIndestructible(c);
+            Card card = DoesAnyStatusEffectControllerMakeACardIndestructible(c);
+            return controller is null && card is null;
         }
 
         private int? FindNumberOfEnvironmentInPlay()
@@ -135,7 +152,7 @@ namespace Cauldron.Gray
         {
             //...destroy all but 2 hero ongoing or equipment cards. 
             IEnumerator coroutine;
-            while (this.FindNumberOfHeroOngoingAndEquipmentInPlay() > 2)
+            while (FindNumberOfHeroOngoingAndEquipmentInPlay() > 2 && FindNumberOfHeroOngoingAndEquipmentInPlay() != this.FindNumberOfIndestructibleHeroOngoingAndEquipmentInPlay())
             {
                 coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
                 if (base.UseUnityCoroutines)
@@ -147,6 +164,21 @@ namespace Cauldron.Gray
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+
+            //add message if ended because of indestructible
+            if(FindNumberOfHeroOngoingAndEquipmentInPlay() > 2)
+            {
+                coroutine = GameController.SendMessageAction($"Some hero ongoing or equipment cards are indestructible.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
             //...{Gray} deals each hero target {H x 2} energy damage.
             coroutine = base.GameController.DealDamage(this.DecisionMaker, base.Card, (Card c) => c.IsHero, Game.H * 2, DamageType.Energy, cardSource: base.GetCardSource());
             //...Play the top card of the villain deck.
@@ -210,5 +242,19 @@ namespace Cauldron.Gray
             }
             yield break;
         }
+
+        private Card DoesAnyStatusEffectControllerMakeACardIndestructible(Card card)
+        {
+            foreach (StatusEffectController statusEffectController in GameController.StatusEffectManager.StatusEffectControllers)
+            {
+                Card card2 = statusEffectController.AskIfCardIsIndestructible(card);
+                if (card2 != null)
+                {
+                    return card2;
+                }
+            }
+            return null;
+        }
+
     }
 }
