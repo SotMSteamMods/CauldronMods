@@ -338,5 +338,17 @@ namespace Cauldron.Gyrosaur
         {
             return Card.UnderLocation.HasCard(card); // AllDetourUnderCards.Contains(card);
         }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            string cardEnteringPlay = "this card";
+            if (decision is YesNoCardDecision yncd) { cardEnteringPlay = yncd.Card.Title; }
+            return new CustomDecisionText(
+                $"Do you want to put {cardEnteringPlay} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"Should they put {cardEnteringPlay} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"Vote for if they should put {cardEnteringPlay} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"whether to put {cardEnteringPlay} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play"
+            );
+        }
     }
 }
