@@ -130,7 +130,7 @@ namespace Cauldron.Gyrosaur
             }
 
             var storedYesNo = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardToUnderCard, cardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, cardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
