@@ -19,7 +19,7 @@ namespace Cauldron.Gyrosaur
                 List<Card> detourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText).ToList();
                 List<Card> swappingCards = new List<Card>();
 
-                foreach (Card detourCard in detourCards)
+                foreach(Card detourCard in detourCards)
                 {
                     var cardController = base.HeroTurnTakerController.FindCardController(detourCard);
 
@@ -87,7 +87,7 @@ namespace Cauldron.Gyrosaur
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             var card = revealStorage.FirstOrDefault();
-            if (card != null)
+            if(card != null)
             {
                 coroutine = GameController.MoveCard(DecisionMaker, card, this.Card.UnderLocation, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -120,11 +120,11 @@ namespace Cauldron.Gyrosaur
             Card cardEnteringPlay = null;
             Card cardBeingSwapped = null;
 
-            if (ga is PlayCardAction pc)
+            if(ga is PlayCardAction pc)
             {
                 cardEnteringPlay = pc.CardToPlay;
             }
-            if (ga is MoveCardAction mc)
+            if(ga is MoveCardAction mc)
             {
                 cardEnteringPlay = mc.CardToMove;
             }
@@ -167,11 +167,11 @@ namespace Cauldron.Gyrosaur
                 cardBeingSwapped = this.Card.UnderLocation.TopCard;
                 OwnSwappingCards.Add(cardEnteringPlay);
                 OwnSwappingCards.Add(cardBeingSwapped);
-                if (ga is PlayCardAction pc2)
+                if(ga is PlayCardAction pc2)
                 {
                     coroutine = ReplaceWithPlayCardUnder(pc2);
                 }
-                if (ga is MoveCardAction mc2)
+                if(ga is MoveCardAction mc2)
                 {
                     coroutine = ReplaceWithPutIntoPlayUnder(mc2);
                 }
@@ -217,7 +217,7 @@ namespace Cauldron.Gyrosaur
             {
                 swappedPlay = new PlayCardAction(pc.GameController, pc.TurnTakerController, cardUnder, pc.IsPutIntoPlay, pc.ResponsibleTurnTaker, pc.OverridePlayLocation, pc.ReassignPlayIndex, pc.ActionSource, pc.FromBottom, pc.CanBeCancelled);
             }
-            if (pc.IsPutIntoPlay)
+            if(pc.IsPutIntoPlay)
             {
                 pc.AllowPutIntoPlayCancel = true;
             }
@@ -338,7 +338,7 @@ namespace Cauldron.Gyrosaur
             //if (moveCardAction.Destination.IsRealTrash && moveCardAction.Destination.IsEnvironment)
             if (moveCardAction.CardSource.Card != base.Card)
             {
-                coroutine = CancelAction(moveCardAction);
+                coroutine = CancelAction(moveCardAction); 
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
