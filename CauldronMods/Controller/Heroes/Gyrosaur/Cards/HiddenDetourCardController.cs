@@ -362,11 +362,16 @@ namespace Cauldron.Gyrosaur
         }
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
+            string cardEntering = "this card";
+            if (decision is YesNoCardDecision yncd)
+            {
+                cardEntering = yncd.Card.Title;
+            }
             return new CustomDecisionText(
-                $"Do you want to put this card beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
-                $"Should they put this card beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
-                $"Vote for if they should put this card beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
-                $"whether to put this card beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play"
+                $"Do you want to put {cardEntering} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"Should they put {cardEntering} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"Vote for if they should put {cardEntering} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"whether to put {cardEntering} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play"
             );
         }
     }
