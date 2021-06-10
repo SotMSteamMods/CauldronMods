@@ -19,7 +19,7 @@ namespace Cauldron.Gyrosaur
                 List<Card> detourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText).ToList();
                 List<Card> swappingCards = new List<Card>();
 
-                foreach(Card detourCard in detourCards)
+                foreach (Card detourCard in detourCards)
                 {
                     var cardController = base.HeroTurnTakerController.FindCardController(detourCard);
 
@@ -87,7 +87,7 @@ namespace Cauldron.Gyrosaur
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             var card = revealStorage.FirstOrDefault();
-            if(card != null)
+            if (card != null)
             {
                 coroutine = GameController.MoveCard(DecisionMaker, card, this.Card.UnderLocation, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -120,17 +120,39 @@ namespace Cauldron.Gyrosaur
             Card cardEnteringPlay = null;
             Card cardBeingSwapped = null;
 
-            if(ga is PlayCardAction pc)
+            if (ga is PlayCardAction pc)
             {
                 cardEnteringPlay = pc.CardToPlay;
             }
-            if(ga is MoveCardAction mc)
+            if (ga is MoveCardAction mc)
             {
                 cardEnteringPlay = mc.CardToMove;
             }
 
-            var storedYesNo = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, cardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
+            Func<string> extraInfo;
+            List<Card> otherDetourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText && card != this.Card).ToList();
+            if (otherDetourCards.Count > 0)
+            {
+                string cardsUnder = "";
+                foreach (Card detour in otherDetourCards)
+                {
+                    if (detour.UnderLocation.Cards.Count() > 0)
+                    {
+                        cardsUnder += $"{detour.UnderLocation.Cards.First().Title}, ";
+                    }
+                }
+
+                extraInfo = () => $"Cards underneath other Hidden Detours: {cardsUnder.Remove(cardsUnder.Length - 2, 2)}";
+            }
+            else
+            {
+                extraInfo = null;
+            }
+            YesNoCardDecision yesNo = new YesNoCardDecision(GameController, HeroTurnTakerController, SelectionType.Custom, cardEnteringPlay, cardSource: GetCardSource())
+            {
+                ExtraInfo = extraInfo
+            };
+            var coroutine = GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -140,16 +162,16 @@ namespace Cauldron.Gyrosaur
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(DidPlayerAnswerYes(storedYesNo))
+            if (DidPlayerAnswerYes(yesNo))
             {
                 cardBeingSwapped = this.Card.UnderLocation.TopCard;
                 OwnSwappingCards.Add(cardEnteringPlay);
                 OwnSwappingCards.Add(cardBeingSwapped);
-                if(ga is PlayCardAction pc2)
+                if (ga is PlayCardAction pc2)
                 {
                     coroutine = ReplaceWithPlayCardUnder(pc2);
                 }
-                if(ga is MoveCardAction mc2)
+                if (ga is MoveCardAction mc2)
                 {
                     coroutine = ReplaceWithPutIntoPlayUnder(mc2);
                 }
@@ -195,7 +217,7 @@ namespace Cauldron.Gyrosaur
             {
                 swappedPlay = new PlayCardAction(pc.GameController, pc.TurnTakerController, cardUnder, pc.IsPutIntoPlay, pc.ResponsibleTurnTaker, pc.OverridePlayLocation, pc.ReassignPlayIndex, pc.ActionSource, pc.FromBottom, pc.CanBeCancelled);
             }
-            if(pc.IsPutIntoPlay)
+            if (pc.IsPutIntoPlay)
             {
                 pc.AllowPutIntoPlayCancel = true;
             }
@@ -312,11 +334,11 @@ namespace Cauldron.Gyrosaur
         private IEnumerator PreventUnderCardRemoval(MoveCardAction moveCardAction)
         {
             IEnumerator coroutine;
-            
+
             //if (moveCardAction.Destination.IsRealTrash && moveCardAction.Destination.IsEnvironment)
             if (moveCardAction.CardSource.Card != base.Card)
             {
-                coroutine = CancelAction(moveCardAction); 
+                coroutine = CancelAction(moveCardAction);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -338,7 +360,6 @@ namespace Cauldron.Gyrosaur
         {
             return Card.UnderLocation.HasCard(card); // AllDetourUnderCards.Contains(card);
         }
-
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
             return new CustomDecisionText(
