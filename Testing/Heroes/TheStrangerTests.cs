@@ -495,6 +495,27 @@ namespace CauldronTests
             QuickHPCheck(-1);
 
         }
+        [Test()]
+        public void TestCorruption_CannotDraw()
+        {
+            SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
+            StartGame();
+
+            PlayCard("TrafficPileup");
+            GoToPlayCardPhase(stranger);
+
+            Card corruption = PutOnDeck("Corruption");
+            AssertNoDecision();
+            //Draw up to 4 cards.
+            QuickHPStorage(stranger);
+            QuickHandStorage(stranger);
+            DecisionYesNo = true;
+            PlayCard(corruption);
+
+            //For each card drawn this way, TheStranger deals himself 1 toxic damage.
+            QuickHPCheck(0);
+            QuickHandCheckZero();
+        }
 
         [Test()]
         public void TestFlickeringWeb_Play3()
