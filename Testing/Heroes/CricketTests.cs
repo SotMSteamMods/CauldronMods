@@ -675,7 +675,9 @@ namespace CauldronTests
             Card amp = PlayCard("SonicAmplifier");
             DecisionYesNo = true;
             DealDamage(cricket, baron, 1, DamageType.Sonic);
+            DealDamage(cricket, baron, 1, DamageType.Sonic);
 
+            //if Sonic Amplifier destroys the cards under it, Anubis will notice and hit Legacy
             PlayCard("Anubis");
             QuickHPStorage(legacy);
 
