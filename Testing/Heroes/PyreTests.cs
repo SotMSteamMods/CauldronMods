@@ -106,9 +106,28 @@ namespace CauldronTests
         [Test]
         public void TestPyreCascadeSpecialStrings()
         {
+            //just to check them in the log, doesn't do any verification
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            Card cascade0 = GetCard("RogueFissionCascade", 0);
+            Card cascade1 = GetCard("RogueFissionCascade", 1);
+
+            MoveCard(pyre, cascade0, pyre.TurnTaker.Trash);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            MoveCard(pyre, cascade1, pyre.TurnTaker.Trash);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            MoveCard(pyre, cascade1, pyre.TurnTaker.Deck);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            MoveCard(pyre, cascade0, pyre.TurnTaker.Deck, toBottom: true);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            ShuffleLocation(pyre.TurnTaker.Deck);
             PrintSpecialStringsForCard(pyre.CharacterCard);
         }
         [Test]

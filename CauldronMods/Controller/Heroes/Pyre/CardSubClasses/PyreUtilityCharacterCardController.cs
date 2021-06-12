@@ -15,11 +15,14 @@ namespace Cauldron.Pyre
         private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
         public const string IrradiatedMarkerIdentifier = "IrradiatedMarker";
         public const string CascadeKeyword = "cascade";
+        private const string LocationKnown = "CascadeLocationKnownKey";
 
         protected PyreUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Deck, TurnTaker.Trash }, new LinqCardCriteria((Card c) => IsCascade(c), "cascade"));
+            //SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Deck, TurnTaker.Trash }, new LinqCardCriteria((Card c) => IsCascade(c), "cascade"));
+            SpecialStringMaker.ShowSpecialString(() => BuildCascadeLocationString()).Condition = () => TurnTakerController is PyreTurnTakerController;
             SpecialStringMaker.ShowSpecialString(() => BuildListIrradiatedHeroes()).ShowWhileIncapacitated = true;
+
         }
 
         private string BuildListIrradiatedHeroes()
@@ -211,6 +214,82 @@ namespace Cauldron.Pyre
             {
                 GameController.AddCardPropertyJournalEntry(marker, "OverrideTurnTaker", new string[] { "Cauldron.Pyre", marker.Identifier });
             }
+        }
+
+        private string BuildCascadeLocationString()
+        {
+            var cascades = TurnTaker.GetAllCards().Where((Card c) => c.Identifier == "RogueFissionCascade").ToList();
+            if(cascades.Count() != 2)
+            {
+                return "Something strange happened with the number of Cascades.";
+            }
+
+            var descriptor1 = CascadeDescriptor(cascades[0]);
+            var descriptor2 = CascadeDescriptor(cascades[1]);
+
+            string start;
+            if(descriptor1 == descriptor2)
+            {
+                start = "Both Rogue Fission Cascades are ";
+                if(descriptor1 == "in an unknown location.")
+                {
+                    return start + "in unknown locations.";
+                }
+                return start + descriptor1;
+            }
+
+            start = "One Rogue Fission Cascade is ";
+            return start + descriptor1 + "\n" + start + descriptor2;
+        }
+
+        private string CascadeDescriptor(Card c)
+        {
+            if(GameController.GetCardPropertyJournalEntryBoolean(c, LocationKnown) != true)
+            {
+                return "in an unknown location.";
+            }
+
+            if(c.Location.IsRevealed)
+            {
+                return "being revealed";
+            }
+            if(c.Location.IsOutOfGame)
+            {
+                return "removed from the game";
+            }
+            if(!c.Location.IsDeck)
+            {
+                return $"in {c.Location.GetFriendlyName()}";
+            }
+            else
+            {
+                int position = c.Location.Cards.Reverse().ToList().IndexOf(c) + 1;
+                string positionString = "the ";
+                if (position == 1)
+                {
+                    positionString += "top ";
+                }
+                else
+                {
+                    positionString += position.ToString();
+                    if (position == 2)
+                    {
+                        positionString += "nd ";
+                    }
+                    else if (position == 3)
+                    {
+                        positionString += "rd ";
+                    }
+                    else
+                    {
+                        positionString += "th ";
+                    }
+                }
+
+                positionString += $"card of {c.Location.GetFriendlyName()}.";
+                return positionString;
+            }
+            return "Not complete yet";
         }
     }
 }
