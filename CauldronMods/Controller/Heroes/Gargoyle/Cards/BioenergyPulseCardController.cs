@@ -67,7 +67,7 @@ namespace Cauldron.Gargoyle
             IEnumerator coroutine;
 
             // he may also deal that to 1 other target.
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), action.Amount, action.DamageType, 1, false, 0, additionalCriteria: (Card c) => c != CharacterCard, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), action.Amount, action.DamageType, 1, false, 0, additionalCriteria: (Card c) => c != CharacterCard, cardSource: GetNonPowerCardSource());
 
             if (base.UseUnityCoroutines)
             {
@@ -79,6 +79,24 @@ namespace Cauldron.Gargoyle
             }
 
             yield break;
+        }
+
+        private CardSource GetNonPowerCardSource(StatusEffect statusEffectSource = null)
+        {
+            bool? isFlipped = CardWithoutReplacements.IsFlipped;
+            if (AllowActionsFromOtherSide)
+            {
+                isFlipped = null;
+            }
+            Power powerSource = null;
+            List<string> villainCharacterIdentifiers = new List<string>();
+            CardSource cardSource = new CardSource(this, isFlipped, canPerformActionsFromOtherSide: false, AssociatedCardSources, powerSource, CardSourceLimitation, AssociatedTriggers, null, villainCharacterIdentifiers, ActionSources, statusEffectSource);
+            CardSource cardSource2 = GameController.DoesCardSourceGetReplaced(cardSource);
+            if (cardSource2 != null)
+            {
+                return cardSource2;
+            }
+            return cardSource;
         }
     }
 }
