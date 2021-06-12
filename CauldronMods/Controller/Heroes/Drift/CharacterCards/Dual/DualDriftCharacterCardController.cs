@@ -14,5 +14,7 @@ namespace Cauldron.Drift
         {
 
         }
+
+        protected override bool shouldRunSetUp => true;
     }
 }

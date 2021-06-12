@@ -1248,5 +1248,21 @@ namespace CauldronTests
             AssertNotFlipped(progeny);
 
         }
+
+        [Test()]
+        public void TestDriftComingInWithOblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DealDamage(oblivaeon, legacy, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "AllInGoodTimeDriftCharacter" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Drift";
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(drift);
+            DealDamage(drift, haka, 1, DamageType.Melee);
+        }
     }
 }

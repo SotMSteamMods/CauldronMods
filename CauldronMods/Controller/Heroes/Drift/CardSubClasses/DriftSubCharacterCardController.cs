@@ -14,8 +14,14 @@ namespace Cauldron.Drift
         {
             var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}, this is in the {Past}", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}, this is in the {Future}");
             positionString.Condition = () => GetShiftTrack() != null;
+
+            if(shouldRunSetUp)
+            {
+                AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
+            }
         }
 
+        protected virtual bool shouldRunSetUp => true;
         protected const string Past = "Past";
         protected const string Future = "Future";
 
@@ -33,13 +39,31 @@ namespace Cauldron.Drift
         private int totalShifts = 0;
         public int TotalShifts { get => totalShifts; set => totalShifts = value; }
 
+        public override IEnumerator PerformEnteringGameResponse()
+        {
+            if (TurnTakerController is DriftTurnTakerController)
+            {
+                DriftTurnTakerController dttc = ((DriftTurnTakerController)HeroTurnTakerController);
+                IEnumerator coroutine = dttc.SetupDrift();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+
+        }
 
         public override void AddTriggers()
         {
-            //Whenever you shift from {DriftPast} to {DriftFuture}... 
-            base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 3, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
-            //...or from {DriftFuture} to {DriftPast}...
-            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 2, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
+            ////Whenever you shift from {DriftPast} to {DriftFuture}... 
+            //base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 3, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
+            ////...or from {DriftFuture} to {DriftPast}...
+            //base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 2, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
         }
 
         public int CurrentShiftPosition()
@@ -49,7 +73,19 @@ namespace Cauldron.Drift
 
         public TokenPool GetShiftPool()
         {
-            return this.GetShiftTrack().FindTokenPool(ShiftPoolIdentifier);
+            if (TurnTakerController is DriftTurnTakerController)
+            {
+                return this.GetShiftTrack().FindTokenPool(ShiftPoolIdentifier);
+            }
+            
+            if (GameController.AllTurnTakers.Select(tt => FindTurnTakerController(tt)).Any(ttc => ttc is DriftTurnTakerController))
+            {
+                DriftTurnTakerController dttc = (DriftTurnTakerController) GameController.AllTurnTakers.Select(tt => FindTurnTakerController(tt)).First(ttc => ttc is DriftTurnTakerController);
+                DriftSubCharacterCardController drift_cc = FindCardController(dttc.GetActiveCharacterCard()) as DriftSubCharacterCardController;
+                return drift_cc.GetShiftPool();
+            }
+
+            return null;
         }
 
         public Card GetShiftTrack()
@@ -86,6 +122,20 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftL()
         {
+            if(this.GetShiftPool() is null)
+            {
+                IEnumerator coroutine = GameController.SendMessageAction("There is no shift track in play! No shifting will occur.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                yield break;
+            }
             //Ensures not shifting off track
             if (this.CurrentShiftPosition() > 1)
             {
@@ -147,6 +197,20 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftR()
         {
+            if (this.GetShiftPool() is null)
+            {
+                IEnumerator coroutine = GameController.SendMessageAction("There is no shift track in play! No shifting will occur.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                yield break;
+            }
             //Ensures not shifting off track
             if (this.CurrentShiftPosition() < 4)
             {

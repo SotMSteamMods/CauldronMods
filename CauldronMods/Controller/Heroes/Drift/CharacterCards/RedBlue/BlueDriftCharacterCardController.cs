@@ -12,7 +12,8 @@ namespace Cauldron.Drift
     {
         public BlueDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
         }
+
+        protected override bool shouldRunSetUp => false;
     }
 }

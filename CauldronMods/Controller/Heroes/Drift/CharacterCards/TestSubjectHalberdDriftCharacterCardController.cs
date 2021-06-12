@@ -17,7 +17,6 @@ namespace Cauldron.Drift
 
         public override IEnumerator UsePower(int index = 0)
         {
-            _inTheMiddleOfPower = true;
             //Discard 1, 2, or 3 cards. For each card discarded this way, shift {DriftL} or {DriftR}. Draw 2 cards.
             int discard1Numeral = base.GetPowerNumeral(0, 1);
             int discard2Numeral = base.GetPowerNumeral(1, 2);
@@ -68,15 +67,6 @@ namespace Cauldron.Drift
 
             //Draw 2 cards.
             coroutine = base.GameController.DrawCards(base.HeroTurnTakerController, drawNumeral, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            coroutine = RetroactiveShiftIfNeeded();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

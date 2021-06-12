@@ -28,5 +28,8 @@ namespace Cauldron.Drift
             yield return base.AfterFlipCardImmediateResponse();
             yield break;
         }
+
+        protected override bool shouldRunSetUp => false;
+
     }
 }

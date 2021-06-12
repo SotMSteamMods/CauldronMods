@@ -17,7 +17,6 @@ namespace Cauldron.Drift
 
         public override IEnumerator UsePower(int index = 0)
         {
-            _inTheMiddleOfPower = true;
             //Play an ongoing card. 
             List<PlayCardAction> playAction = new List<PlayCardAction>();
             IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, playAction, new LinqCardCriteria((Card c) => c.IsOngoing));
@@ -64,15 +63,6 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = RetroactiveShiftIfNeeded();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
             yield break;
         }
 

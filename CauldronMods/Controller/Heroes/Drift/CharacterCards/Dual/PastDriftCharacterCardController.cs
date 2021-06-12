@@ -15,7 +15,6 @@ namespace Cauldron.Drift
 
         public override IEnumerator UsePower(int index = 0)
         {
-            _inTheMiddleOfPower = true;
 
             int cardNumeral = base.GetPowerNumeral(0, 2);
             int deckNumeral = base.GetPowerNumeral(1, 1);
@@ -127,16 +126,6 @@ namespace Cauldron.Drift
 
             //Shift {DriftLL}.
             coroutine = base.ShiftLL();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            coroutine = RetroactiveShiftIfNeeded();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -22,7 +22,6 @@ namespace Cauldron.Drift
 
         public override IEnumerator UsePower(int index = 0)
         {
-            _inTheMiddleOfPower = true;
 
             int cardNumeral = base.GetPowerNumeral(0, 2);
 
@@ -31,15 +30,6 @@ namespace Cauldron.Drift
                     new Function(base.HeroTurnTakerController, "Add the top 2 cards of your deck to your shift track", SelectionType.MoveCard, () => this.AddCardsResponse(cardNumeral)),
                     new Function(base.HeroTurnTakerController, "discard the card from your current shift track space", SelectionType.DiscardCard, () => this.DiscardCardResponse(), onlyDisplayIfTrue: this.GetBreachedCard(base.CurrentShiftPosition()) != null)
             });
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            coroutine = RetroactiveShiftIfNeeded();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

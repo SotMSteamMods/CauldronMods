@@ -17,7 +17,6 @@ namespace Cauldron.Drift
 
         public override IEnumerator UsePower(int index = 0)
         {
-            _inTheMiddleOfPower = true;
             //Discard cards from the top of your deck until you discard an ongoing. Play or draw it.
             List<RevealCardsAction> revealCards = new List<RevealCardsAction>();
             IEnumerator coroutine = base.GameController.RevealCards(base.TurnTakerController, base.TurnTaker.Deck, (Card c) => c.IsOngoing, 1, revealCards, RevealedCardDisplay.ShowMatchingCards, cardSource: base.GetCardSource());
@@ -54,7 +53,6 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = RetroactiveShiftIfNeeded();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
