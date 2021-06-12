@@ -6,6 +6,8 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using Handelabra;
+
 namespace Cauldron.Pyre
 {
     public class RogueFissionCascadeCardController : PyreUtilityCardController
@@ -16,7 +18,7 @@ namespace Cauldron.Pyre
             AddInhibitorException((GameAction ga) => ga is PlayCardAction && Card.Location.IsHand);
             ShowIrradiatedCount();
         }
-
+        private const string LocationKnown = "CascadeLocationKnownKey";
         public override void AddStartOfGameTriggers()
         {
             //"When this card enters your hand, put it into play.",
@@ -30,6 +32,60 @@ namespace Cauldron.Pyre
                 TriggerType.PutIntoPlay,
                 TriggerType.Hidden
             }, TriggerTiming.After, null, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: true);
+            AddTrigger((GameAction ga) => IsLocationRevealer(ga), MarkLocationKnown, TriggerType.Hidden, TriggerTiming.After, priority: TriggerPriority.High, outOfPlayTrigger: true);
+            AddTrigger((ShuffleCardsAction sc) => sc.Location.IsDeck && sc.Location == this.Card.Location, MarkLocationUnknown, TriggerType.Hidden, TriggerTiming.After, outOfPlayTrigger: true);
+
+            //allows player to opt out of drawing a card if they know a Cascade is on top of their deck
+            AddTrigger((DrawCardAction dc) => ShouldWarnForDraw(dc), dc => DoNothing(), TriggerType.DestroySelf, TriggerTiming.Before, outOfPlayTrigger: true);
+        }
+        private bool ShouldWarnForDraw(DrawCardAction dc)
+        {
+            if (dc.DrawnCard == Card)
+            {
+                Log.Debug("Checking whether to warn about cascade draw...");
+                var result = GetCardPropertyJournalEntryBoolean(LocationKnown);
+                if (result == true)
+                {
+                    Log.Debug("Warning should be generated.");
+                    return true;
+                }
+                else
+                {
+                    Log.Debug($"Result was {(result.HasValue ? "false" : "null")}");
+                }
+            }
+            return false;
+        }
+        private bool IsLocationRevealer(GameAction ga)
+        {
+            if (ga is RevealCardsAction rc)
+            {
+                return rc.RevealedCards.Contains(this.Card);
+            }
+            if (ga is MoveCardAction mc)
+            {
+                return mc.CardToMove == this.Card && !(mc.Destination.IsDeck || this.Card.IsFlipped);
+            }
+            if (ga is PlayCardAction pc)
+            {
+                return pc.CardToPlay == this.Card;
+            }
+            return false;
+        }
+        private IEnumerator MarkLocationKnown(GameAction ga)
+        {
+            SetCardPropertyToTrueIfRealAction(LocationKnown);
+            Log.Debug("Marking cascade location as revealed.");
+            return DoNothing();
+        }
+        private IEnumerator MarkLocationUnknown(GameAction ga)
+        {
+            if(IsRealAction(ga))
+            {
+                SetCardProperty(LocationKnown, false);
+                Log.Debug("Marking cascade location as not revealed");
+            }
+            return DoNothing();
         }
         private IEnumerator PlayFromHandResponse()
         {
