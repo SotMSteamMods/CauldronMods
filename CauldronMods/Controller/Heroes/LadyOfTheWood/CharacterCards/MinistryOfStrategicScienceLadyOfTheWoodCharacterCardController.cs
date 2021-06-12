@@ -26,7 +26,7 @@ namespace Cauldron.LadyOfTheWood
         {
             TokenPool elementPool = GetElementTokenPool();
             //When {LadyOfTheWood} would deal damage, you may change its type by spending a token.
-            AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == base.CharacterCard && elementPool.CurrentValue > 0, SpendTokenResponse, new TriggerType[]
+            AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == Card && elementPool.CurrentValue > 0, SpendTokenResponse, new TriggerType[]
             {
                 TriggerType.ModifyTokens,
                 TriggerType.ChangeDamageType
@@ -35,16 +35,10 @@ namespace Cauldron.LadyOfTheWood
 
         private TokenPool GetElementTokenPool()
         {
-            TokenPool elementPool = CharacterCardWithoutReplacements.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
-            if (elementPool is null && TurnTaker.Identifier != LadyOfTheWoodIdentifier)
+            TokenPool elementPool = Card.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+            if (elementPool is null)
             {
-                TurnTaker turnTaker = FindTurnTakersWhere((TurnTaker tt) => tt.Identifier == LadyOfTheWoodIdentifier).FirstOrDefault();
-                if (turnTaker is null)
-                {
-                    return null;
-                }
-
-                elementPool = turnTaker.CharacterCard.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
+                elementPool = CardWithoutReplacements.FindTokenPool(LadyOfTheWoodElementPoolIdentifier);
             }
 
             return elementPool;
