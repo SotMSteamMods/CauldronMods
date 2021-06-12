@@ -27,10 +27,20 @@ namespace Cauldron.TheStranger
             {
                 YesNoAmountDecision yesNo = new YesNoAmountDecision(GameController, DecisionMaker, SelectionType.DrawCard, 1, cardSource: GetCardSource())
                 {
-                    ExtraInfo = () => $"Cards drawn so far: {i}"
+                    ExtraInfo = () => $"Cards drawn so far: {GetNumberOfCardsDrawn(storedResultsDraw)}"
                 };
 
-                IEnumerator coroutine = GameController.MakeDecisionAction(yesNo);
+                IEnumerator coroutine;
+                if (GameController.CanDrawCards(DecisionMaker, GetCardSource()))
+                {
+                    coroutine = GameController.MakeDecisionAction(yesNo);
+                }
+                else
+                {
+                    //makes a '{player} cannot draw cards' message pop up
+                    coroutine = GameController.DrawCard(HeroTurnTaker);
+                }
+
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -39,16 +49,17 @@ namespace Cauldron.TheStranger
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
+
                 if (GameController.DidAnswerYes(yesNo))
                 {
-                    IEnumerator drawCard = base.DrawCard(this.HeroTurnTaker, cardsDrawn: storedResultsDraw);
+                    coroutine = base.DrawCard(this.HeroTurnTaker, cardsDrawn: storedResultsDraw);
                     if (UseUnityCoroutines)
                     {
-                        yield return GameController.StartCoroutine(drawCard);
+                        yield return GameController.StartCoroutine(coroutine);
                     }
                     else
                     {
-                        GameController.ExhaustCoroutine(drawCard);
+                        GameController.ExhaustCoroutine(coroutine);
                     }
                 }
                 else
