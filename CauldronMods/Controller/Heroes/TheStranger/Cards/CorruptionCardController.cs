@@ -25,7 +25,7 @@ namespace Cauldron.TheStranger
             int i;
             for (i = 0; i < 4; i++)
             {
-                YesNoAmountDecision yesNo = new YesNoAmountDecision(GameController, DecisionMaker, SelectionType.DrawCard, 1, upTo: false, requireUnanimous: false, null, null, cardSource: GetCardSource())
+                YesNoAmountDecision yesNo = new YesNoAmountDecision(GameController, DecisionMaker, SelectionType.DrawCard, 1, cardSource: GetCardSource())
                 {
                     ExtraInfo = () => $"Cards drawn so far: {i}"
                 };
