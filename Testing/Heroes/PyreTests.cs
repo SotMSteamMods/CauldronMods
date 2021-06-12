@@ -121,7 +121,7 @@ namespace CauldronTests
         {
             //just to check them in the log, doesn't do any verification
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             PrintSpecialStringsForCard(pyre.CharacterCard);
 
@@ -1224,7 +1224,7 @@ namespace CauldronTests
         public void TestRogueFissionCascadeWarningIfLocationKnown()
         {
             SetupGameController("Omnitron", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             DiscardAllCards(pyre);
@@ -1240,7 +1240,7 @@ namespace CauldronTests
         public void TestRogueFissionCascadeWarningNotGeneratedIfLocationNotKnown()
         {
             SetupGameController("Omnitron", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             DiscardAllCards(pyre);
