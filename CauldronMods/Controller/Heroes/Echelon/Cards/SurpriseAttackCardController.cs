@@ -28,7 +28,7 @@ namespace Cauldron.Echelon
         protected override void AddTacticEffectTrigger()
         {
             //"Whenever a hero uses a power that deals damage, increase that damage by 1. You may change the type of that damage to psychic."
-            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null, dd => 1);
+            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && !dd.CardSource.Card.IsBeingDestroyed, dd => 1);
             var immediateTypeTrigger = new ChangeDamageTypeTrigger(GameController, (DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && IsFirstOrOnlyCopyOfThisCardInPlay(), MaybeMakeDamagePsychic, new TriggerType[] { TriggerType.ChangeDamageType }, new DamageType[] { DamageType.Psychic }, GetCardSource());
             AddTrigger(immediateTypeTrigger);
             AddTrigger((AddStatusEffectAction se) => se.StatusEffect.DoesDealDamage && se.CardSource != null && se.CardSource.PowerSource != null, IncreaseDamageFromEffectResponse, TriggerType.Hidden, TriggerTiming.Before);
