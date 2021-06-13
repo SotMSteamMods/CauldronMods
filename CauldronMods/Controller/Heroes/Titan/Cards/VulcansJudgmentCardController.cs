@@ -27,7 +27,7 @@ namespace Cauldron.Titan
             IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 5, DamageType.Infernal, 1, false, 1,
                                         additionalCriteria: c => IsVillainTarget(c),
                                         storedResultsDecisions: targetDecision,
-                                        cardSource: GetCardSource());
+                                        cardSource: GetNonPowerCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -42,7 +42,7 @@ namespace Cauldron.Titan
             {
                 var target = GetSelectedCard(targetDecision);
                 //...{Titan} also deals that target 2 fire damage.
-                coroutine = DealDamage(CharacterCard, target, 2, DamageType.Fire, cardSource: GetCardSource());
+                coroutine = DealDamage(CharacterCard, target, 2, DamageType.Fire, cardSource: GetNonPowerCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -66,6 +66,24 @@ namespace Cauldron.Titan
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
+
+        private CardSource GetNonPowerCardSource(StatusEffect statusEffectSource = null)
+        {
+            bool? isFlipped = CardWithoutReplacements.IsFlipped;
+            if (AllowActionsFromOtherSide)
+            {
+                isFlipped = null;
+            }
+            Power powerSource = null;
+            List<string> villainCharacterIdentifiers = new List<string>();
+            CardSource cardSource = new CardSource(this, isFlipped, canPerformActionsFromOtherSide: false, AssociatedCardSources, powerSource, CardSourceLimitation, AssociatedTriggers, null, villainCharacterIdentifiers, ActionSources, statusEffectSource);
+            CardSource cardSource2 = GameController.DoesCardSourceGetReplaced(cardSource);
+            if (cardSource2 != null)
+            {
+                return cardSource2;
+            }
+            return cardSource;
         }
     }
 }

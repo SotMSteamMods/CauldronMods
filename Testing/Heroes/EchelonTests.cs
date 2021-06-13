@@ -863,6 +863,22 @@ namespace CauldronTests
             UsePower(tempest);
             QuickHPCheck(-5, -2, -2);
         }
+        [Test()]
+        public void TestSurpriseAttackWithVoidBelter()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "VoidGuardMainstay", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            PlayCard("SurpriseAttack");
+            Card belter = PlayCard("VoidBelter");
+
+            QuickHPStorage(baron);
+            UsePower(belter);
+
+            //3 + 1 from power, 2 + 2 from on destruction
+            QuickHPCheck(-8);
+        }
         [Test]
         public void TestTeslaKnucklesPower()
         {
