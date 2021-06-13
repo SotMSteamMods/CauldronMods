@@ -44,7 +44,7 @@ namespace Cauldron.Pyre
             RecentIrradiatedCardPlays.Remove(pc.InstanceIdentifier);
             if(pc.IsSuccessful)
             {
-                IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 1, DamageType.Energy, 1, false, 1, cardSource: GetCardSource());
+                IEnumerator coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 1, DamageType.Energy, 1, false, 1, cardSource: GetNonPowerCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -82,6 +82,24 @@ namespace Cauldron.Pyre
                 GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        private CardSource GetNonPowerCardSource(StatusEffect statusEffectSource = null)
+        {
+            bool? isFlipped = CardWithoutReplacements.IsFlipped;
+            if (AllowActionsFromOtherSide)
+            {
+                isFlipped = null;
+            }
+            Power powerSource = null;
+            List<string> villainCharacterIdentifiers = new List<string>();
+            CardSource cardSource = new CardSource(this, isFlipped, canPerformActionsFromOtherSide: false, AssociatedCardSources, powerSource, CardSourceLimitation, AssociatedTriggers, null, villainCharacterIdentifiers, ActionSources, statusEffectSource);
+            CardSource cardSource2 = GameController.DoesCardSourceGetReplaced(cardSource);
+            if (cardSource2 != null)
+            {
+                return cardSource2;
+            }
+            return cardSource;
         }
     }
 }

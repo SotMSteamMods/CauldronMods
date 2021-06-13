@@ -1429,6 +1429,23 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSnowshadeGownPowerContagion()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Unity", "Megalopolis");
+            StartGame();
+            RemoveMobileDefensePlatform();
+
+            SetHitPoints(ladyWood, 10);
+            Card gown = PlayCard("SnowshadeGown");
+            DecisionSelectPower = gown;
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron, ladyWood);
+            PlayCard("HastyAugmentation");
+            QuickHPCheck(-1, 3);
+        }
+
+        [Test()]
         public void TestSnowshadeGownDealDamage()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");

@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Cricket
 {
@@ -57,7 +58,21 @@ namespace Cauldron.Cricket
         {
             //Discard all cards beneath this one. {Cricket} deals 1 target X sonic damage, where X is the number of cards discarded this way.
             int numberOfTargets = GetPowerNumeral(0, 1);
-            IEnumerator coroutine = DestroyCardsAndDoActionBasedOnNumberOfCardsDestroyed(DecisionMaker, new LinqCardCriteria((Card c) => c.Location == Card.UnderLocation, "cards below " + base.Card.Title), (int X) => this.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), X, DamageType.Sonic, numberOfTargets, false, numberOfTargets, cardSource: GetCardSource()));
+            var movedCards = new List<MoveCardAction>();
+            Func<Card, IEnumerator> discardAction = (Card c) => GameController.MoveCard(DecisionMaker, c, FindCardController(c).GetTrashDestination().Location, isDiscard: true, responsibleTurnTaker: TurnTaker, storedResults: movedCards, cardSource: GetCardSource());
+
+            IEnumerator coroutine = GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => c.Location == this.Card.UnderLocation), SelectionType.DiscardCard, discardAction, allowAutoDecide: true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            int numDiscarded = movedCards.Count((MoveCardAction mca) => mca.WasCardMoved);
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), numDiscarded, DamageType.Sonic, numberOfTargets, false, numberOfTargets, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

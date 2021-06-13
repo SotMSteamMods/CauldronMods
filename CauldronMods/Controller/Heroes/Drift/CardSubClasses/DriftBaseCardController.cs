@@ -12,7 +12,7 @@ namespace Cauldron.Drift
     {
         protected DriftBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}, this is in the {Past}", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}, this is in the {Future}");
+            var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {Past} effects are active.", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {Future} effects are active.");
             positionString.Condition = () => GetShiftTrack() != null;
         }
 
@@ -20,8 +20,8 @@ namespace Cauldron.Drift
         protected const string Dual = "Dual";
         protected const string ThroughTheBreach = "ThroughTheBreach";
 
-        protected const string Past = "Past";
-        protected const string Future = "Future";
+        protected const string Past = "{Past}";
+        protected const string Future = "{Future}";
 
         protected const string HasShifted = "HasShifted";
         protected const string ShiftTrack = "ShiftTrack";

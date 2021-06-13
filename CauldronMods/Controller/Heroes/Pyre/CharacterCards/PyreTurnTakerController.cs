@@ -14,6 +14,8 @@ namespace Cauldron.Pyre
         {
         }
 
+        public const string Irradiated = "{Rad}";
+
         public void MoveMarkersToSide()
         {
             var markersInDeckOrHand = TurnTaker.GetAllCards(false).Where((Card c) => !c.IsRealCard && c.Identifier == "IrradiatedMarker" && (c.Location == TurnTaker.Deck || c.Location == HeroTurnTaker.Hand));
@@ -32,7 +34,7 @@ namespace Cauldron.Pyre
 
         public void AddIrradiatedSpecialString(Card c)
         {
-            var irradiateString = SpecialStringMaker.ShowSpecialString(() => $"{c.Title} is irradiated.", relatedCards: () => new Card[] { c });
+            var irradiateString = SpecialStringMaker.ShowSpecialString(() => $"{c.Title} is {Irradiated}.", relatedCards: () => new Card[] { c });
             irradiateString.ShowInEffectsList = () => c.IsInHand;
             irradiateString.Condition = () => c.IsInHand;
             irradiateString.ShowWhileIncapacitated = true;

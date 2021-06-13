@@ -53,8 +53,8 @@ namespace Cauldron.Drift
             {
                 //...shift {DriftL}, {DriftR}. 
                 coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Shift Left", SelectionType.RemoveTokens, () => base.ShiftL()),
-                    new Function(base.HeroTurnTakerController, "Shift Right", SelectionType.AddTokens, () => base.ShiftR())
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.RemoveTokens, () => base.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.AddTokens, () => base.ShiftR())
             }, associatedCards: GetShiftTrack().ToEnumerable());
                 if (base.UseUnityCoroutines)
                 {
