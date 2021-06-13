@@ -19,10 +19,8 @@ namespace Cauldron.Pyre
 
         protected PyreUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            //SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Deck, TurnTaker.Trash }, new LinqCardCriteria((Card c) => IsCascade(c), "cascade"));
             SpecialStringMaker.ShowSpecialString(() => BuildCascadeLocationString()).Condition = () => TurnTakerController is PyreTurnTakerController;
             SpecialStringMaker.ShowSpecialString(() => BuildListIrradiatedHeroes()).ShowWhileIncapacitated = true;
-
         }
 
         private string BuildListIrradiatedHeroes()

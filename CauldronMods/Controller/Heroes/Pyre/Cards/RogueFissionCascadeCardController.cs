@@ -42,16 +42,16 @@ namespace Cauldron.Pyre
         {
             if (dc.DrawnCard == Card)
             {
-                Log.Debug("Checking whether to warn about cascade draw...");
+                //Log.Debug("Checking whether to warn about cascade draw...");
                 var result = GetCardPropertyJournalEntryBoolean(LocationKnown);
                 if (result == true)
                 {
-                    Log.Debug("Warning should be generated.");
+                    //Log.Debug("Warning should be generated.");
                     return true;
                 }
                 else
                 {
-                    Log.Debug($"Result was {(result.HasValue ? "false" : "null")}");
+                    //Log.Debug($"Result was {(result.HasValue ? "false" : "null")}");
                 }
             }
             return false;
@@ -75,7 +75,7 @@ namespace Cauldron.Pyre
         private IEnumerator MarkLocationKnown(GameAction ga)
         {
             SetCardPropertyToTrueIfRealAction(LocationKnown);
-            Log.Debug("Marking cascade location as revealed.");
+            //Log.Debug("Marking cascade location as revealed.");
             return DoNothing();
         }
         private IEnumerator MarkLocationUnknown(GameAction ga)
@@ -83,7 +83,7 @@ namespace Cauldron.Pyre
             if(IsRealAction(ga))
             {
                 SetCardProperty(LocationKnown, false);
-                Log.Debug("Marking cascade location as not revealed");
+                //Log.Debug("Marking cascade location as not revealed");
             }
             return DoNothing();
         }
