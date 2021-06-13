@@ -463,6 +463,24 @@ namespace CauldronTests
             SetupIncap(baccarat);
             //One player may shuffle a card from their trash into their deck, then put all cards with the same name from their trash into their hand.
         }
+        [Test()]
+        public void TestBaccaratAceOfSorrowsIncap1Constellations()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter", "Cauldron.Starlight", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+            SetupIncap(baccarat);
+            //One player may shuffle a card from their trash into their deck, then put all cards with the same name from their trash into their hand.
+            Card constA = MoveCard(starlight, "AncientConstellationA", starlight.TurnTaker.Trash);
+            Card constB = MoveCard(starlight, "AncientConstellationB", starlight.TurnTaker.Trash);
+            Card constC = MoveCard(starlight, "AncientConstellationC", starlight.TurnTaker.Trash);
+
+            DecisionSelectTurnTaker = starlight.TurnTaker;
+            DecisionSelectCards = new List<Card> { constA, constB, constC };
+            UseIncapacitatedAbility(baccarat, 0);
+
+            AssertInDeck(constA);
+            AssertInHand(constB, constC);
+        }
 
         [Test()]
         public void TestBaccaratAceOfSorrowsIncap2()
