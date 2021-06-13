@@ -13,7 +13,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         {
         }
 
-        public override IEnumerator StartGame()
+        public  IEnumerator SetupChasm()
         {
             List<Card> natures = (from c in TurnTaker.GetAllCards(true)
                                   where IsNature(c) && !c.Location.IsOutOfGame
