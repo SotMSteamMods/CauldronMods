@@ -665,6 +665,26 @@ namespace CauldronTests
             AssertOnTopOfDeck(top);
 
         }
+        [Test()]
+        public void TestSonicAmplifier_IsDiscard()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "TombOfAnubis");
+            StartGame();
+            RemoveMobileDefensePlatform();
+
+            Card amp = PlayCard("SonicAmplifier");
+            DecisionYesNo = true;
+            DealDamage(cricket, baron, 1, DamageType.Sonic);
+            DealDamage(cricket, baron, 1, DamageType.Sonic);
+
+            //if Sonic Amplifier destroys the cards under it, Anubis will notice and hit Legacy
+            PlayCard("Anubis");
+            QuickHPStorage(legacy);
+
+            UsePower(amp);
+            QuickHPCheckZero();
+
+        }
 
         [Test()]
         public void TestSoundMasking()

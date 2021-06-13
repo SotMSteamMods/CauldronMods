@@ -18,7 +18,7 @@ namespace Cauldron.Drift
         public override IEnumerator UsePower(int index = 0)
         {
             //At the start of your next turn, shift {L} or {R}, then draw a card or use a power.
-            OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.StartOfTurnResponse), "At the start of your next turn, shift {L} or {R}, then draw a card or use a power", new TriggerType[] { TriggerType.ModifyTokens, TriggerType.DrawCard, TriggerType.UsePower }, this.Card);
+            OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.StartOfTurnResponse), "At the start of your next turn, shift {ShiftL} or {ShiftR}, then draw a card or use a power", new TriggerType[] { TriggerType.ModifyTokens, TriggerType.DrawCard, TriggerType.UsePower }, this.Card);
             effect.UntilEndOfNextTurn(base.HeroTurnTaker);
             effect.TurnTakerCriteria.IsSpecificTurnTaker = base.HeroTurnTaker;
             effect.TurnPhaseCriteria.Phase = Phase.Start;
@@ -45,8 +45,8 @@ namespace Cauldron.Drift
         {
             //...shift {DriftL} or {DriftR}...
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Shift Left", SelectionType.RemoveTokens, () => base.ShiftL()),
-                    new Function(base.HeroTurnTakerController, "Shift Right", SelectionType.AddTokens, () => base.ShiftR())
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.RemoveTokens, () => base.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.AddTokens, () => base.ShiftR())
             });
             if (base.UseUnityCoroutines)
             {

@@ -414,6 +414,23 @@ namespace CauldronTests
             AssertInTrash(grayBuilding);
 
         }
+        [Test()]
+        public void TestGrayPharmaceuticalBuilding_VoidBelter()
+        {
+            SetupGameController("BaronBlade", "Ra", "Legacy", "VoidGuardMainstay", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //After a hero uses a power on a non-character card, destroy that card.
+            Card grayBuilding = PlayCard("GrayPharmaceuticalBuilding");
+
+            DecisionSelectTarget = baron.CharacterCard;
+            Card belter = PlayCard("VoidBelter");
+            QuickHPStorage(baron);
+            UsePower(belter);
+            // 3 + 2 for direct power, 2 + 2 for on-destroy, total of 9
+            QuickHPCheck(-9);
+        }
 
 
         [Test()]

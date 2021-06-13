@@ -21,9 +21,9 @@ namespace Cauldron.Mythos
         {
         }
 
-        protected const string MythosClueDeckIdentifier = "Clue";
-        protected const string MythosDangerDeckIdentifier = "Danger";
-        protected const string MythosMadnessDeckIdentifier = "Madness";
+        protected const string MythosClueDeckIdentifier = "{Clue}";
+        protected const string MythosDangerDeckIdentifier = "{Danger}";
+        protected const string MythosMadnessDeckIdentifier = "{Madness}";
 
         private string GetIconIdentifier(Card c)
         {
@@ -152,15 +152,15 @@ namespace Cauldron.Mythos
             switch (this.GetIconIdentifier(this.Card))
             {
                 case MythosClueDeckIdentifier:
-                    output = "This card has a Blue Clue Icon.";
+                    output = $"This card is a {MythosClueDeckIdentifier} card.";
                     break;
 
                 case MythosDangerDeckIdentifier:
-                    output = "This card has a Red Danger Icon.";
+                    output = $"This card is a {MythosDangerDeckIdentifier} card.";
                     break;
 
                 case MythosMadnessDeckIdentifier:
-                    output = "This card has a Green Madness Icon.";
+                    output = $"This card is a {MythosMadnessDeckIdentifier} card.";
                     break;
             }
             return output;

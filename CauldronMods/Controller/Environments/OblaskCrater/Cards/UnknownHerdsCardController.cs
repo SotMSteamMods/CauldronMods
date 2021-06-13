@@ -73,7 +73,7 @@ namespace Cauldron.OblaskCrater
         private IEnumerator PreventDamageFromPowerResponse(UsePowerAction up)
         {
             RemoveTemporaryTriggers();
-            AddToTemporaryTriggerList(AddPreventDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && dd.CardSource.PowerSource == up.Power));
+            AddToTemporaryTriggerList(AddPreventDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && dd.CardSource.PowerSource == up.Power && !dd.CardSource.Card.IsBeingDestroyed));
             AddToTemporaryTriggerList(AddTrigger((AddStatusEffectAction se) => se.StatusEffect.DoesDealDamage && se.CardSource != null && se.CardSource.PowerSource == up.Power, PreventDamageFromEffectResponse, TriggerType.Hidden, TriggerTiming.After));
             yield return null;
             yield break;

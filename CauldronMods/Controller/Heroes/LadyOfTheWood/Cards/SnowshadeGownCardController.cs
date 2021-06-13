@@ -2,6 +2,8 @@
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.LadyOfTheWood
 {
@@ -36,7 +38,7 @@ namespace Cauldron.LadyOfTheWood
 		{
 			//you may select a target that has not been dealt damage this turn- LadyOfTheWood deals that target 1 cold damage.
 
-			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Cold, new int?(1), true, new int?(1), additionalCriteria: (Card c) => !base.HasBeenDealtDamageThisTurn(c), cardSource: base.GetCardSource());
+			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Cold, new int?(1), true, new int?(1), additionalCriteria: (Card c) => !base.HasBeenDealtDamageThisTurn(c), cardSource: GetNonPowerCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -46,6 +48,24 @@ namespace Cauldron.LadyOfTheWood
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 			yield break;
+		}
+
+		private CardSource GetNonPowerCardSource(StatusEffect statusEffectSource = null)
+        {
+			bool? isFlipped = CardWithoutReplacements.IsFlipped;
+			if (AllowActionsFromOtherSide)
+			{
+				isFlipped = null;
+			}
+			Power powerSource = null;
+			List<string> villainCharacterIdentifiers = new List<string>();
+			CardSource cardSource = new CardSource(this, isFlipped, canPerformActionsFromOtherSide: false, AssociatedCardSources, powerSource, CardSourceLimitation, AssociatedTriggers, null, villainCharacterIdentifiers, ActionSources, statusEffectSource);
+			CardSource cardSource2 = GameController.DoesCardSourceGetReplaced(cardSource);
+			if (cardSource2 != null)
+			{
+				return cardSource2;
+			}
+			return cardSource;
 		}
 	}
 }

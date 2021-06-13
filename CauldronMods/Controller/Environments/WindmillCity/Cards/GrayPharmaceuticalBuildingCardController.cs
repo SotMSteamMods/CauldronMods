@@ -17,7 +17,7 @@ namespace Cauldron.WindmillCity
         public override void AddTriggers()
         {
             //Whenever a hero uses a power that deals damage, increase that damage by 2.
-            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null, dd => 2);
+            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && !dd.CardSource.Card.IsBeingDestroyed, dd => 2);
             AddTrigger((AddStatusEffectAction se) => se.StatusEffect.DoesDealDamage && se.CardSource != null && se.CardSource.PowerSource != null, IncreaseDamageFromEffectResponse, TriggerType.Hidden, TriggerTiming.Before);
 
             //After a hero uses a power on a non-character card, destroy that card.

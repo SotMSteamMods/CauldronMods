@@ -858,6 +858,22 @@ namespace CauldronTests
             GoToEndOfTurn(base.env);
             QuickHPCheck(2, -3);
         }
+        [Test()]
+        public void TestUnknownHerdsUsePowerVoidBelter()
+        {
+            SetupGameController("BaronBlade", "VoidGuardMainstay", "Ra", "Haka", DeckNamespace);
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card belter = PlayCard("VoidBelter");
+            DecisionSelectPower = belter;
+            QuickHPStorage(baron);
+            PlayCard("UnknownHerds");
+
+            GoToEndOfTurn(base.env);
+            //direct power damage is prevented, but the on-destruction should not be
+            QuickHPCheck(-4);
+        }
         [Test]
         public void TestUnknownHerdsTooManyPredators()
         {

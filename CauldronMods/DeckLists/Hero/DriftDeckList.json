@@ -33,7 +33,7 @@
             "hitpointColor": "fbf767",
             "character": true,
             "powers": [
-                "Shift {LL}, {L}, {R}, or {RR}. Drift regains 1 HP."
+                "Shift {ShiftLL}, {ShiftL}, {ShiftR}, or {ShiftRR}. Drift regains 1 HP."
             ],
             "icons": [
                 "HasPower",
@@ -74,7 +74,7 @@
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects."
             ],
@@ -102,7 +102,7 @@
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects."
             ],
@@ -130,7 +130,7 @@
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects."
             ],
@@ -158,7 +158,7 @@
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects."
             ],
@@ -212,8 +212,8 @@
                 "DealDamageRadiant"
             ],
             "body": [
-                "Select {L} or {R}. Shift that direction up to 3 times. X is the number of times you shifted this way.",
-                "If you shifted at least {L} this way, X targets regain 2 HP each. If you shifted {R} this way, {Drift} deals X targets 3 radiant damage each."
+                "Select {ShiftL} or {ShiftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.",
+                "If you shifted at least {ShiftL} this way, X targets regain 2 HP each. If you shifted {ShiftR} this way, {Drift} deals X targets 3 radiant damage each."
             ],
             "flavorQuotes": [
                 {
@@ -237,8 +237,8 @@
                 "GainHP"
             ],
             "body": [
-                "{Future} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {L}.",
-                "{Past} Draw a card. {Drift} regains 1 HP. Shift {RR}"
+                "{Future} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {ShiftL}.",
+                "{Past} Draw a card. {Drift} regains 1 HP. Shift {ShiftRR}"
             ],
             "flavorQuotes": [
                 {
@@ -265,8 +265,8 @@
                 "DealDamageRadiant"
             ],
             "body": [
-                "{Past} You may play an ongoing card from your trash, or one player may play a card now. Shift {R}",
-                "{Future} {Drift} deals 1 target 2 radiant damage. Shift {LL}"
+                "{Past} You may play an ongoing card from your trash, or one player may play a card now. Shift {ShiftR}",
+                "{Future} {Drift} deals 1 target 2 radiant damage. Shift {ShiftLL}"
             ],
             "flavorQuotes": [
                 {
@@ -289,8 +289,8 @@
                 "PlayCardNow"
             ],
             "body": [
-                "Shift {L} or {R}.",
-                "If you shifted {L} this way, {Drift} regains 1 HP. If you shifted {R} this way, {Drift} deals 1 target 1 radiant damage.",
+                "Shift {ShiftL} or {ShiftR}.",
+                "If you shifted {ShiftL} this way, {Drift} regains 1 HP. If you shifted {ShiftR} this way, {Drift} deals 1 target 1 radiant damage.",
                 "Draw a card. You may play a card."
             ],
             "flavorQuotes": [
@@ -315,7 +315,7 @@
             ],
             "body": [
                 "When this card enters play, return all other focus cards to your hand.",
-                "When {Drift} is dealt damage, if you have not shifted this turn, you may shift {RRR}. If you shifted {RRR} this way, {Drift} deals 1 target 3 radiant damage."
+                "When {Drift} is dealt damage, if you have not shifted this turn, you may shift {ShiftRRR}. If you shifted {ShiftRRR} this way, {Drift} deals 1 target 3 radiant damage."
             ],
             "flavorQuotes": [
                 {
@@ -340,8 +340,8 @@
             ],
             "body": [
                 "Draw a card.",
-                "{Past} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {L}.",
-                "{Future} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {R}."
+                "{Past} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {ShiftL}.",
+                "{Future} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {ShiftR}."
             ],
             "flavorQuotes": [
                 {
@@ -365,7 +365,7 @@
             ],
             "body": [
                 "When this card enters play, destroy all other copies of Knight's Heritage and play up to 2 ongoing cards from your hand.",
-                "The first time {Drift} is dealt damage each turn, you may shift {L} or {R}."
+                "The first time {Drift} is dealt damage each turn, you may shift {ShiftL} or {ShiftR}."
             ],
             "flavorQuotes": [
                 {
@@ -388,8 +388,8 @@
                 "IncreaseDamageDealt"
             ],
             "body": [
-                "{Past} Whenever you shift {L}, select a hero target. Reduce the next damage dealt to that target by 2.",
-                "{Future} Whenever you shift {R}, select a hero target. Increase the next damage dealt by that target by 2."
+                "{Past} Whenever you shift {ShiftL}, select a hero target. Reduce the next damage dealt to that target by 2.",
+                "{Future} Whenever you shift {ShiftR}, select a hero target. Increase the next damage dealt by that target by 2."
             ],
             "flavorQuotes": [
                 {
@@ -438,7 +438,7 @@
             ],
             "body": [
                 "When this card enters play, return all other focus cards to your hand.",
-                "When {Drift} is dealt damage, if you have not shifted this turn, you may shift {LLL}. If you shifted {LLL} this way, you may play a card."
+                "When {Drift} is dealt damage, if you have not shifted this turn, you may shift {ShiftLLL}. If you shifted {ShiftLLL} this way, you may play a card."
             ],
             "flavorQuotes": [
                 {
@@ -496,8 +496,8 @@
                 "DealDamageRadiant"
             ],
             "powers": [
-                "{Past} Draw a card. Shift {R}.",
-                "{Future} {Drift} deals 1 target 2 radiant damage. Shift {L}."
+                "{Past} Draw a card. Shift {ShiftR}.",
+                "{Future} {Drift} deals 1 target 2 radiant damage. Shift {ShiftL}."
             ],
             "flavorQuotes": [
                 {
@@ -521,8 +521,8 @@
                 "DealDamageRadiant"
             ],
             "powers": [
-                "{Past} 1 target regains 2 HP. Shift {RR}.",
-                "{Future} {Drift} deals each non-hero target 1 radiant damage. Shift {LL}."
+                "{Past} 1 target regains 2 HP. Shift {ShiftRR}.",
+                "{Future} {Drift} deals each non-hero target 1 radiant damage. Shift {ShiftLL}."
             ],
             "flavorQuotes": [
                 {
@@ -568,7 +568,7 @@
             "hitpointColor": "ECCD96",
             "character": true,
             "powers": [
-                "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {LL}."
+                "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {ShiftLL}."
             ],
             "icons": [
                 "HasPower",
@@ -615,7 +615,7 @@
             "hitpointColor": "A7B8C1",
             "character": true,
             "powers": [
-                "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {RR}."
+                "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {ShiftRR}."
             ],
             "icons": [
                 "HasPower",
@@ -652,7 +652,7 @@
                 "The shift track works as normal; its rules are below."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects.",
                 "Once per turn you may do the following in order:",
@@ -686,7 +686,7 @@
                 "The shift track works as normal; its rules are below."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects.",
                 "Once per turn you may do the following in order:",
@@ -720,7 +720,7 @@
                 "The shift track works as normal; its rules are below."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects.",
                 "Once per turn you may do the following in order:",
@@ -754,7 +754,7 @@
                 "The shift track works as normal; its rules are below."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects.",
                 "Once per turn you may do the following in order:",
@@ -786,7 +786,7 @@
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
@@ -814,7 +814,7 @@
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
@@ -842,7 +842,7 @@
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
@@ -870,7 +870,7 @@
                 "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
             ],
             "gameplay": [
-                "When one of your cards instructs you to shift {L} or {R}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {L} or {R}.",
+                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
                 "While the token is on a {Past} space, activate {Past} effects.",
                 "While the token is on a {Future} space, activate {Future} effects.",
                 "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
@@ -966,7 +966,7 @@
             "hitpointColor": "B1B1B1",
             "character": true,
             "powers": [
-                "At the start of your next turn, shift {L} or {R}, then draw a card or use a power."
+                "At the start of your next turn, shift {ShiftL} or {ShiftR}, then draw a card or use a power."
             ],
             "icons": [
                 "HasPower",
@@ -1050,7 +1050,7 @@
             "hitpointColor": "B1B1B1",
             "character": true,
             "powers": [
-                "Discard 1, 2, or 3 cards. For each card discarded this way, shift {L} or {R}. Draw 2 cards."
+                "Discard 1, 2, or 3 cards. For each card discarded this way, shift {ShiftL} or {ShiftR}. Draw 2 cards."
             ],
             "icons": [
                 "HasPower",

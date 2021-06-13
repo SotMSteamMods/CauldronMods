@@ -27,7 +27,8 @@ namespace Cauldron.Pyre
                 WasPlayedIrradiated = false;
                 var effect = new MakeIndestructibleStatusEffect();
                 effect.CardsToMakeIndestructible.IsSpecificCard = Card;
-                effect.UntilEndOfPhase(TurnTaker, Phase.End);
+                effect.ToTurnPhaseExpiryCriteria.Phase = Phase.End;
+                effect.ToTurnPhaseExpiryCriteria.TurnTaker = TurnTaker;
                 effect.CardSource = Card;
 
                 IEnumerator coroutine = AddStatusEffect(effect, false);

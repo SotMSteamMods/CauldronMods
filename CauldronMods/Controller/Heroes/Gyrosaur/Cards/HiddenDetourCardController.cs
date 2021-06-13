@@ -129,8 +129,30 @@ namespace Cauldron.Gyrosaur
                 cardEnteringPlay = mc.CardToMove;
             }
 
-            var storedYesNo = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.MoveCardToUnderCard, cardEnteringPlay, storedResults: storedYesNo, cardSource: GetCardSource());
+            Func<string> extraInfo;
+            List<Card> otherDetourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText && card != this.Card).ToList();
+            if (otherDetourCards.Count > 0)
+            {
+                string cardsUnder = "";
+                foreach (Card detour in otherDetourCards)
+                {
+                    if (detour.UnderLocation.Cards.Count() > 0)
+                    {
+                        cardsUnder += $"{detour.UnderLocation.Cards.First().Title}, ";
+                    }
+                }
+
+                extraInfo = () => $"Cards underneath other Hidden Detours: {cardsUnder.Remove(cardsUnder.Length - 2, 2)}";
+            }
+            else
+            {
+                extraInfo = null;
+            }
+            YesNoCardDecision yesNo = new YesNoCardDecision(GameController, HeroTurnTakerController, SelectionType.Custom, cardEnteringPlay, cardSource: GetCardSource())
+            {
+                ExtraInfo = extraInfo
+            };
+            var coroutine = GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -140,7 +162,7 @@ namespace Cauldron.Gyrosaur
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if(DidPlayerAnswerYes(storedYesNo))
+            if (DidPlayerAnswerYes(yesNo))
             {
                 cardBeingSwapped = this.Card.UnderLocation.TopCard;
                 OwnSwappingCards.Add(cardEnteringPlay);
@@ -312,7 +334,7 @@ namespace Cauldron.Gyrosaur
         private IEnumerator PreventUnderCardRemoval(MoveCardAction moveCardAction)
         {
             IEnumerator coroutine;
-            
+
             //if (moveCardAction.Destination.IsRealTrash && moveCardAction.Destination.IsEnvironment)
             if (moveCardAction.CardSource.Card != base.Card)
             {
@@ -337,6 +359,20 @@ namespace Cauldron.Gyrosaur
         private bool IsCardUnder(Card card)
         {
             return Card.UnderLocation.HasCard(card); // AllDetourUnderCards.Contains(card);
+        }
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            string cardEntering = "this card";
+            if (decision is YesNoCardDecision yncd)
+            {
+                cardEntering = yncd.Card.Title;
+            }
+            return new CustomDecisionText(
+                $"Do you want to put {cardEntering} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"Should they put {cardEntering} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"Vote for if they should put {cardEntering} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play?",
+                $"whether to put {cardEntering} beneath Hidden Detour and put {this.Card.UnderLocation.TopCard.Title} into play"
+            );
         }
     }
 }
