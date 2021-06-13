@@ -1,0 +1,164 @@
+{"frames": {
+
+"Bass.png":
+{
+	"frame": {"x":0,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"Clue.png":
+{
+	"frame": {"x":103,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"Danger.png":
+{
+	"frame": {"x":206,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"Drum.png":
+{
+	"frame": {"x":309,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"Future.png":
+{
+	"frame": {"x":412,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"Guitar.png":
+{
+	"frame": {"x":515,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"Madness.png":
+{
+	"frame": {"x":618,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"Past.png":
+{
+	"frame": {"x":721,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"Rad.png":
+{
+	"frame": {"x":1225,"y":0,"w":156,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":156,"h":100},
+	"sourceSize": {"w":156,"h":100}
+},
+"RedStateBlueState-clean96.png":
+{
+	"frame": {"x":766,"y":103,"w":714,"h":721},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":714,"h":721},
+	"sourceSize": {"w":714,"h":721}
+},
+"RedStateBlueStateBold-clean96.png":
+{
+	"frame": {"x":789,"y":827,"w":842,"h":767},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":842,"h":767},
+	"sourceSize": {"w":842,"h":767}
+},
+"RedStateBlueStateItalic-clean96.png":
+{
+	"frame": {"x":0,"y":827,"w":786,"h":716},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":786,"h":716},
+	"sourceSize": {"w":786,"h":716}
+},
+"ShiftL.png":
+{
+	"frame": {"x":927,"y":0,"w":146,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":146,"h":100},
+	"sourceSize": {"w":146,"h":100}
+},
+"ShiftLL.png":
+{
+	"frame": {"x":1384,"y":0,"w":264,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":264,"h":100},
+	"sourceSize": {"w":264,"h":100}
+},
+"ShiftLLL.png":
+{
+	"frame": {"x":0,"y":103,"w":380,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":380,"h":100},
+	"sourceSize": {"w":380,"h":100}
+},
+"ShiftR.png":
+{
+	"frame": {"x":1076,"y":0,"w":146,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":146,"h":100},
+	"sourceSize": {"w":146,"h":100}
+},
+"ShiftRR.png":
+{
+	"frame": {"x":1651,"y":0,"w":264,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":264,"h":100},
+	"sourceSize": {"w":264,"h":100}
+},
+"ShiftRRR.png":
+{
+	"frame": {"x":383,"y":103,"w":380,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":380,"h":100},
+	"sourceSize": {"w":380,"h":100}
+},
+"Vocal.png":
+{
+	"frame": {"x":824,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "RedStateBlueState.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":2048},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e9573b9f692a31adcac0cec9be24752e:6e3b22971049acfd709d0576d11c2a90:139c651ab45bcb63c46076fcb22396a4$"
+}
+}
