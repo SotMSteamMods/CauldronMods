@@ -124,14 +124,6 @@ namespace Cauldron.Drift
             {
                 desiredIdentifier = activeBaseIdentifier.Replace("Future", "Past");
             }
-
-            if(inactivePosition >= 3)
-            {
-                desiredIdentifier = "Red" + desiredIdentifier;
-            } else
-            {
-                desiredIdentifier = "Blue" + desiredIdentifier;
-            }
             return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location == base.TurnTaker.OffToTheSide && c.Owner == base.TurnTaker && c.Identifier == desiredIdentifier)).FirstOrDefault();
         }
 
