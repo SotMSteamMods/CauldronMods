@@ -48,27 +48,31 @@ namespace Cauldron.Baccarat
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                        Card selectedCard = selectCardDecision.FirstOrDefault().SelectedCard;
-                        coroutine = base.GameController.ShuffleCardsIntoLocation(base.GameController.FindHeroTurnTakerController(selectedTurnTaker.ToHero()), selectedCard.ToEnumerable<Card>(), selectedTurnTaker.Deck, cardSource: base.GetCardSource());
-                        if (base.UseUnityCoroutines)
+
+                        if (DidSelectCard(selectCardDecision))
                         {
-                            yield return base.GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
-                        }
-                        //...then put all cards with the same name from their trash into their hand.
-                        IEnumerable<Card> cardsToMove = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location == selectedTurnTaker.Trash && c.Identifier == selectedCard.Identifier));
-                        MoveCardDestination selectedHand = new MoveCardDestination(selectedTurnTaker.ToHero().Hand);
-                        coroutine = base.GameController.MoveCards(base.GameController.FindHeroTurnTakerController(selectedTurnTaker.ToHero()), cardsToMove, selectedTurnTaker.ToHero().Hand, cardSource: base.GetCardSource());
-                        if (base.UseUnityCoroutines)
-                        {
-                            yield return base.GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            base.GameController.ExhaustCoroutine(coroutine);
+                            Card selectedCard = selectCardDecision.FirstOrDefault().SelectedCard;
+                            coroutine = base.GameController.ShuffleCardsIntoLocation(base.GameController.FindHeroTurnTakerController(selectedTurnTaker.ToHero()), selectedCard.ToEnumerable<Card>(), selectedTurnTaker.Deck, cardSource: base.GetCardSource());
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
+                            //...then put all cards with the same name from their trash into their hand.
+                            IEnumerable<Card> cardsToMove = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location == selectedTurnTaker.Trash && c.Title == selectedCard.Title));
+                            MoveCardDestination selectedHand = new MoveCardDestination(selectedTurnTaker.ToHero().Hand);
+                            coroutine = base.GameController.MoveCards(base.GameController.FindHeroTurnTakerController(selectedTurnTaker.ToHero()), cardsToMove, selectedTurnTaker.ToHero().Hand, cardSource: base.GetCardSource());
+                            if (base.UseUnityCoroutines)
+                            {
+                                yield return base.GameController.StartCoroutine(coroutine);
+                            }
+                            else
+                            {
+                                base.GameController.ExhaustCoroutine(coroutine);
+                            }
                         }
                         yield break;
                     }
