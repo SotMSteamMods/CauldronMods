@@ -16,6 +16,46 @@ namespace Cauldron.StSimeonsCatacombs
             SpecialStringMaker.ShowSpecialString(() => BuildNumberOfRoomsEnteredPlaySpecialString()).Condition = () => Card.IsFlipped;
             SpecialStringMaker.ShowSpecialString(() => "Environment cards cannot be played.", showInEffectsList: () => true).Condition = () => !Card.IsFlipped;
             AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
+
+            AddInhibitorException((GameAction ga) => ga is PlayCardAction && Card.Location.IsDeck);
+            AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
+        }
+
+        public override IEnumerator PerformEnteringGameResponse()
+        {
+            IEnumerator coroutine;
+            if (TurnTakerController is StSimeonsCatacombsTurnTakerController)
+            {
+                List<bool> didEnterPlay = new List<bool>();
+                StSimeonsCatacombsTurnTakerController catacombsTTC = TurnTakerController as StSimeonsCatacombsTurnTakerController;
+                coroutine = GameController.PlayCard(TurnTakerController, Card, isPutIntoPlay: true, wasCardPlayed: didEnterPlay, canBeCancelled: false, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                string not = "";
+                if(didEnterPlay.First() == false)
+                {
+                    not = "not ";
+                }
+
+                Handelabra.Log.Debug($"Instructions card did {not}enter play.");
+
+                coroutine = catacombsTTC.SetupCatacombs();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
 
         public override void AddTriggers()

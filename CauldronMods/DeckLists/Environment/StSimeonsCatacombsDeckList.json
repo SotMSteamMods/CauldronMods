@@ -4,9 +4,6 @@
     "expansionIdentifier": "Cauldron",
     "backgroundColor": "8C7E6E",
     "difficulty": 3,
-    "initialCardIdentifiers":[
-      "StSimeonsCatacombsInstructions"
-    ],
     "cards": [
         {
 			"identifier": "StSimeonsCatacombsInstructions",

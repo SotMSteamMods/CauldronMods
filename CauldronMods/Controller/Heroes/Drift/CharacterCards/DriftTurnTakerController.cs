@@ -12,15 +12,28 @@ namespace Cauldron.Drift
     {
         public DriftTurnTakerController(TurnTaker turnTaker, GameController gameController) : base(turnTaker, gameController)
         {
-
         }
 
         protected const string ShiftTrack = "ShiftTrack";
         protected const string Base = "Base";
         protected const string Dual = "Dual";
         protected const string ThroughTheBreach = "ThroughTheBreach";
+        public bool hasBeenSetup = false;
 
-        public override IEnumerator StartGame()
+        //public override IEnumerator StartGame()
+        //{
+        //    IEnumerator coroutine = SetupDrift();
+        //    if (base.UseUnityCoroutines)
+        //    {
+        //        yield return base.GameController.StartCoroutine(coroutine);
+        //    }
+        //    else
+        //    {
+        //        base.GameController.ExhaustCoroutine(coroutine);
+        //    }
+        //}
+
+        public IEnumerator SetupDrift()
         {
             string promoIdentifier = Base;
             if (base.CharacterCardController is DualDriftCharacterCardController)
@@ -145,67 +158,9 @@ namespace Cauldron.Drift
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-
-                //move other promos red/blues back into the box
-                coroutine = base.GameController.BulkMoveCards(this, base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && c.SharedIdentifier != GetActiveCharacterCard().SharedIdentifier), base.TurnTaker.InTheBox);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            coroutine = ChangeRedBlueForm(selectedTrack.FindTokenPool("ShiftPool").CurrentValue);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             yield break;
-        }
-
-        private IEnumerator ChangeRedBlueForm(int numTokens)
-        {
-            var driftCharacter = FindRedBlueDriftCharacterCard(numTokens);
-            driftCharacter.SetHitPoints(GetActiveCharacterCard().HitPoints.Value);
-
-            Log.Debug($"Switching to {driftCharacter.Identifier}");
-            Log.Debug($"What should happen is \"SwitchCutoutCard: from {GetActiveCharacterCard().PromoIdentifierOrIdentifier} to {driftCharacter.PromoIdentifierOrIdentifier}\"");
-
-            var coroutine = GameController.SwitchCards(GetActiveCharacterCard(), driftCharacter, cardSource: FindCardController(GetActiveCharacterCard()).GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-        }
-
-        public Card FindRedBlueDriftCharacterCard(int numTokens)
-        {
-            Card activeCharacterCard = GetActiveCharacterCard();
-            IEnumerable<Card> characters = base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && c.SharedIdentifier == activeCharacterCard.SharedIdentifier).ToList();
-            string desiredIdentifier;
-            if (numTokens >= 3)
-            {
-                desiredIdentifier = $"Red{activeCharacterCard.PromoIdentifierOrIdentifier}";
-            }
-            else
-            {
-                desiredIdentifier = $"Blue{activeCharacterCard.PromoIdentifierOrIdentifier}";
-            }
-
-            var driftCharacter = characters.First((Card c) => c.Identifier == desiredIdentifier);
-            return driftCharacter;
         }
 
         public override bool IsIncapacitated

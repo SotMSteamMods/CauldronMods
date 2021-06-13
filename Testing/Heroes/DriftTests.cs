@@ -1098,7 +1098,7 @@ namespace CauldronTests
             AssertTrackPosition(trackPosition + 1);
             QuickHPCheck(0);
 
-            AssertNextMessageContains("is not in the future, so nothing happens!");
+            AssertNextMessageContains("is not on a {Future} space, so nothing happens!");
             UsePower(saber, 1);
         }
 
@@ -1123,7 +1123,7 @@ namespace CauldronTests
             AssertTrackPosition(trackPosition - 1);
             QuickHPCheck(-2);
 
-            AssertNextMessageContains("is not in the past, so nothing happens!");
+            AssertNextMessageContains("is not on a {Past} space, so nothing happens!");
             UsePower(saber, 0);
         }
 
@@ -1141,7 +1141,7 @@ namespace CauldronTests
             QuickHPStorage(apostate.CharacterCard, traffic);
             int trackPosition = CurrentShiftPosition();
 
-            AssertNextMessageContains("is not in the future, so nothing happens!");
+            AssertNextMessageContains("is not on a {Future} space, so nothing happens!");
             UsePower(shard, 1);
 
             UsePower(shard, 0);
@@ -1169,7 +1169,7 @@ namespace CauldronTests
             QuickHPStorage(apostate.CharacterCard, traffic);
             int trackPosition = CurrentShiftPosition();
 
-            AssertNextMessageContains("is not in the past, so nothing happens!");
+            AssertNextMessageContains("is not on a {Past} space, so nothing happens!");
             UsePower(shard, 0);
 
             UsePower(shard, 1);
@@ -1247,6 +1247,22 @@ namespace CauldronTests
 
             AssertNotFlipped(progeny);
 
+        }
+
+        [Test()]
+        public void TestDriftComingInWithOblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DealDamage(oblivaeon, legacy, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "AllInGoodTimeDriftCharacter" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Drift";
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(drift);
+            DealDamage(drift, haka, 1, DamageType.Melee);
         }
     }
 }

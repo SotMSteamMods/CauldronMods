@@ -13,7 +13,7 @@ namespace Cauldron.StSimeonsCatacombs
         {
         }
 
-        public override IEnumerator StartGame()
+        public IEnumerator SetupCatacombs()
         {
             //Find all rooms in the deck
             List<Card> rooms = (from c in base.TurnTaker.GetAllCards(true)

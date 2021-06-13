@@ -17,7 +17,6 @@ namespace Cauldron.Drift
 
         public override IEnumerator UsePower(int index = 0)
         {
-            _inTheMiddleOfPower = true;
             //At the start of your next turn, shift {L} or {R}, then draw a card or use a power.
             OnPhaseChangeStatusEffect effect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.StartOfTurnResponse), "At the start of your next turn, shift {ShiftL} or {ShiftR}, then draw a card or use a power", new TriggerType[] { TriggerType.ModifyTokens, TriggerType.DrawCard, TriggerType.UsePower }, this.Card);
             effect.UntilEndOfNextTurn(base.HeroTurnTaker);
@@ -39,15 +38,6 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = RetroactiveShiftIfNeeded();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
             yield break;
         }
 

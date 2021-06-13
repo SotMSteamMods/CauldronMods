@@ -17,6 +17,27 @@ namespace Cauldron.TheChasmOfAThousandNights
             base.AddThisCardControllerToList(CardControllerListType.ChangesVisibility);
             base.AddThisCardControllerToList(CardControllerListType.MakesIndestructible);
             base.Card.UnderLocation.OverrideIsInPlay = false;
+            AddInhibitorException((GameAction ga) => ga is PlayCardAction && Card.Location.IsDeck);
+
+            AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
+        }
+
+        public override IEnumerator PerformEnteringGameResponse()
+        {
+            IEnumerator coroutine;
+            if (TurnTakerController is TheChasmOfAThousandNightsTurnTakerController)
+            {
+                TheChasmOfAThousandNightsTurnTakerController chasmTTC = TurnTakerController as TheChasmOfAThousandNightsTurnTakerController;
+                coroutine = chasmTTC.SetupChasm();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
 
         public override void AddTriggers()
