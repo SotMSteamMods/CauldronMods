@@ -18,10 +18,10 @@ namespace Cauldron.ScreaMachine
 
         private static readonly Dictionary<Value, string> _Keywords = new Dictionary<Value, string>()
         {
-            [Value.Slice] = "{Guitar}",
-            [Value.Bloodlace] = "{Bass}",
-            [Value.Valentine] = "{Vocal}",
-            [Value.RickyG] = "{Drum}",
+            [Value.Slice] = "guitarist",
+            [Value.Bloodlace] = "bassist",
+            [Value.Valentine] = "vocalist",
+            [Value.RickyG] = "drummer",
         };
 
         public static string GetKeyword(this Value member)
