@@ -8,14 +8,6 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
 	"sourceSize": {"w":80,"h":80}
 },
-"card-keywords-full.png":
-{
-	"frame": {"x":83,"y":166,"w":520,"h":527},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":520,"h":527},
-	"sourceSize": {"w":520,"h":527}
-},
 "Clue.png":
 {
 	"frame": {"x":83,"y":0,"w":80,"h":80},
@@ -80,9 +72,33 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":80},
 	"sourceSize": {"w":125,"h":80}
 },
+"RedStateBlueState-clean96.png":
+{
+	"frame": {"x":792,"y":0,"w":714,"h":721},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":714,"h":721},
+	"sourceSize": {"w":714,"h":721}
+},
+"RedStateBlueStateBold-clean96.png":
+{
+	"frame": {"x":0,"y":724,"w":842,"h":767},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":842,"h":767},
+	"sourceSize": {"w":842,"h":767}
+},
+"RedStateBlueStateItalic-clean96.png":
+{
+	"frame": {"x":845,"y":724,"w":786,"h":716},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":786,"h":716},
+	"sourceSize": {"w":786,"h":716}
+},
 "ShiftL.png":
 {
-	"frame": {"x":792,"y":0,"w":98,"h":80},
+	"frame": {"x":1634,"y":724,"w":98,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":98,"h":80},
@@ -90,7 +106,7 @@
 },
 "ShiftLL.png":
 {
-	"frame": {"x":0,"y":83,"w":176,"h":80},
+	"frame": {"x":1735,"y":724,"w":176,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":80},
@@ -98,7 +114,7 @@
 },
 "ShiftLLL.png":
 {
-	"frame": {"x":179,"y":83,"w":253,"h":80},
+	"frame": {"x":0,"y":1494,"w":253,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":253,"h":80},
@@ -106,7 +122,7 @@
 },
 "ShiftR.png":
 {
-	"frame": {"x":435,"y":83,"w":98,"h":80},
+	"frame": {"x":256,"y":1494,"w":98,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":98,"h":80},
@@ -114,7 +130,7 @@
 },
 "ShiftRR.png":
 {
-	"frame": {"x":536,"y":83,"w":176,"h":80},
+	"frame": {"x":357,"y":1494,"w":176,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":80},
@@ -122,7 +138,7 @@
 },
 "ShiftRRR.png":
 {
-	"frame": {"x":715,"y":83,"w":253,"h":80},
+	"frame": {"x":536,"y":1494,"w":253,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":253,"h":80},
@@ -130,7 +146,7 @@
 },
 "Vocal.png":
 {
-	"frame": {"x":0,"y":166,"w":80,"h":80},
+	"frame": {"x":792,"y":1494,"w":80,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
@@ -139,10 +155,10 @@
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "FullCardKeywords.png",
+	"image": "RedStateBlueSate.png",
 	"format": "RGBA8888",
-	"size": {"w":1024,"h":1024},
+	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:f88f913bd9a3d3229c14e69644ab07b9:09c4833b3996531a72677cb852681c90:78a8fe050ee96964a4e5b33f95cb8cbd$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d50fdda78d5187e667198e4fdd6e1ca5:056e0bc2ce98ae89f39949e17e44d329:3a592780b06ac1edde83626b49027f24$"
 }
 }

@@ -74,7 +74,7 @@
 },
 "Rad.png":
 {
-	"frame": {"x":824,"y":0,"w":156,"h":100},
+	"frame": {"x":250,"y":103,"w":156,"h":100},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":156,"h":100},
@@ -82,55 +82,55 @@
 },
 "ShiftL.png":
 {
-	"frame": {"x":0,"y":103,"w":146,"h":100},
+	"frame": {"x":0,"y":103,"w":122,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":146,"h":100},
-	"sourceSize": {"w":146,"h":100}
+	"spriteSourceSize": {"x":0,"y":0,"w":122,"h":100},
+	"sourceSize": {"w":122,"h":100}
 },
 "ShiftLL.png":
 {
-	"frame": {"x":149,"y":103,"w":264,"h":100},
+	"frame": {"x":409,"y":103,"w":220,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":264,"h":100},
-	"sourceSize": {"w":264,"h":100}
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":100},
+	"sourceSize": {"w":220,"h":100}
 },
 "ShiftLLL.png":
 {
-	"frame": {"x":416,"y":103,"w":380,"h":100},
+	"frame": {"x":0,"y":206,"w":316,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":380,"h":100},
-	"sourceSize": {"w":380,"h":100}
+	"spriteSourceSize": {"x":0,"y":0,"w":316,"h":100},
+	"sourceSize": {"w":316,"h":100}
 },
 "ShiftR.png":
 {
-	"frame": {"x":799,"y":103,"w":146,"h":100},
+	"frame": {"x":125,"y":103,"w":122,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":146,"h":100},
-	"sourceSize": {"w":146,"h":100}
+	"spriteSourceSize": {"x":0,"y":0,"w":122,"h":100},
+	"sourceSize": {"w":122,"h":100}
 },
 "ShiftRR.png":
 {
-	"frame": {"x":0,"y":206,"w":264,"h":100},
+	"frame": {"x":632,"y":103,"w":220,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":264,"h":100},
-	"sourceSize": {"w":264,"h":100}
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":100},
+	"sourceSize": {"w":220,"h":100}
 },
 "ShiftRRR.png":
 {
-	"frame": {"x":267,"y":206,"w":380,"h":100},
+	"frame": {"x":319,"y":206,"w":316,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":380,"h":100},
-	"sourceSize": {"w":380,"h":100}
+	"spriteSourceSize": {"x":0,"y":0,"w":316,"h":100},
+	"sourceSize": {"w":316,"h":100}
 },
 "Vocal.png":
 {
-	"frame": {"x":650,"y":206,"w":100,"h":100},
+	"frame": {"x":824,"y":0,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
@@ -143,6 +143,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:50e6e6b9ea371a0d08c0a6978f1d908c:2f1a2074d4059ab4a7cd2e7233a0a33d:a18e781645faf149cbba388043440a07$"
+	"smartupdate": "$TexturePacker:SmartUpdate:2f2d6bbe66ea286889f028cf51975e5e:935b143204d77b171c5cd6b477914c85:a18e781645faf149cbba388043440a07$"
 }
 }
