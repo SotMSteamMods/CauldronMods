@@ -1681,6 +1681,7 @@ namespace CauldronTests
             SetupGameController(new[] { DeckNamespace, "Legacy", "Ra", "Haka", "Megalopolis" }, challenge: true);
             StartGame();
 
+            AddCannotPlayCardsStatusEffect(ra, false, true);
             Card virus = GetCard("Supervirus");
             AssertUnderCard(vector.CharacterCard, virus);
             AssertNotInPlay(virus);

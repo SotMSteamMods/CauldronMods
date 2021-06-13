@@ -1494,7 +1494,7 @@ namespace CauldronTests
             SetHitPoints(haka.CharacterCard, 1);
 
             GoToPlayCardPhase(catacombs);
-            AddImmuneToDamageTrigger(env, true, false);
+            AddImmuneToDamageTrigger(env, true, false, cardSource: ra.CharacterCardController.GetCardSource());
 
             GoToEndOfTurn(catacombs);
             Card playedRoom = FindCard((Card c) => c.IsRoom && catacombs.TurnTaker.PlayArea.Cards.Contains(c));

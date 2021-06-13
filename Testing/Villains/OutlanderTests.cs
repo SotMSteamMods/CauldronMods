@@ -182,7 +182,7 @@ namespace CauldronTests
 
             Card crusader = PlayCard("Crusader");
 
-            DecisionSelectCards = luminary.CharacterCards.Concat(ongoings);
+            DecisionSelectCards = luminary.CharacterCards.Concat(ongoings).Concat(new List<Card>(){ null});
             GoToEndOfTurn(outlander);
             RunActiveTurnPhase();
         }
