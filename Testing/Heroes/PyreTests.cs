@@ -116,7 +116,33 @@ namespace CauldronTests
                 "ContainmentBreach"
             });
         }
+        [Test]
+        public void TestPyreCascadeSpecialStrings()
+        {
+            //just to check them in the log, doesn't do any verification
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
 
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            Card cascade0 = GetCard("RogueFissionCascade", 0);
+            Card cascade1 = GetCard("RogueFissionCascade", 1);
+
+            MoveCard(pyre, cascade0, pyre.TurnTaker.Trash);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            MoveCard(pyre, cascade1, pyre.TurnTaker.Trash);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            MoveCard(pyre, cascade1, pyre.TurnTaker.Deck);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            MoveCard(pyre, cascade0, pyre.TurnTaker.Deck, toBottom: true);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+
+            ShuffleLocation(pyre.TurnTaker.Deck);
+            PrintSpecialStringsForCard(pyre.CharacterCard);
+        }
         [Test]
         public void TestPyreInnatePowerDrawCard()
         {
@@ -1193,6 +1219,40 @@ namespace CauldronTests
             PutOnDeck("AtomicPunch");
             PutInHand("RogueFissionCascade");
             QuickHPCheck(0, -2, -2, 0);
+        }
+        [Test]
+        public void TestRogueFissionCascadeWarningIfLocationKnown()
+        {
+            SetupGameController("Omnitron", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            DiscardAllCards(pyre);
+            Card cascade = PutInHand("RogueFissionCascade");
+
+            MoveCard(pyre, cascade, pyre.TurnTaker.Deck);
+
+            DecisionYesNo = false;
+            GameController.ExhaustCoroutine(GameController.DrawCard(pyre.HeroTurnTaker, true));
+            AssertOnTopOfDeck(cascade);
+        }
+        [Test]
+        public void TestRogueFissionCascadeWarningNotGeneratedIfLocationNotKnown()
+        {
+            SetupGameController("Omnitron", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            DiscardAllCards(pyre);
+            Card cascade = PutInHand("RogueFissionCascade");
+
+            MoveCard(pyre, cascade, pyre.TurnTaker.Deck);
+            ShuffleDeck(pyre);
+            MoveCard(pyre, cascade, pyre.TurnTaker.Deck);
+
+            DecisionYesNo = false;
+            GameController.ExhaustCoroutine(GameController.DrawCard(pyre.HeroTurnTaker, true));
+            AssertInTrash(cascade);
         }
         [Test]
         public void TestThermonuclearCoreEnteringHandResponse()
