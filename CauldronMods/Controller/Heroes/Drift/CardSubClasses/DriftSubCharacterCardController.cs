@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Drift
@@ -11,12 +12,12 @@ namespace Cauldron.Drift
     {
         protected DriftSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}, this is in the {Past}", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}, this is in the {Future}");
+            var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {Past} effects are active.", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {Future} effects are active.");
             positionString.Condition = () => GetShiftTrack() != null;
         }
 
-        protected const string Past = "Past";
-        protected const string Future = "Future";
+        protected const string Past = "{Past}";
+        protected const string Future = "{Future}";
 
         protected const string Base = "Base";
         protected const string Dual = "Dual";
@@ -329,10 +330,43 @@ namespace Cauldron.Drift
                     //this adds an extra power-use record to the journal, of using the OTHER card's power
                     //WITHOUT actually ever 'using' a power, so it shouldn't cause extra triggers
                     //may cause problems with card that want to count how many powers a player has used in a turn, though
-                    GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null);
+                    GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null, this.CardWithoutReplacements);
                 }
             }
         }
-        
+
+        protected override IEnumerator RemoveCardsFromGame(IEnumerable<Card> cards)
+        {
+            if (!Card.IsInPlayAndHasGameText)
+            {
+                yield break;
+            }
+            IEnumerable<Card> enumerable = FindCardsWhere((Card c) => c != Card && c.SharedIdentifier != null && c.SharedIdentifier == Card.SharedIdentifier);
+            foreach (Card item in enumerable)
+            {
+                if (!item.IsIncapacitated)
+                {
+                    IEnumerator coroutine = base.GameController.FlipCard(FindCardController(item), cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+            IEnumerator coroutine2 = base.RemoveCardsFromGame(cards);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+        }
+
     }
 }

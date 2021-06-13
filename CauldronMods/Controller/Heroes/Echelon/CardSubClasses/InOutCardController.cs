@@ -9,15 +9,13 @@ namespace Cauldron.Echelon
     public class InOutCardController : CardController
     {
 
-        public InOutCardController(Card card, TurnTakerController turnTakerController, SelectionType yesNoSelectionType, Phase phaseToIncrease, Phase phaseToSkip) : base(card, turnTakerController)
+        public InOutCardController(Card card, TurnTakerController turnTakerController, Phase phaseToIncrease, Phase phaseToSkip) : base(card, turnTakerController)
         {
-            YesNoSelectionType = yesNoSelectionType;
             PhaseToIncrease = phaseToIncrease;
             PhaseToSkip = phaseToSkip;
         }
 
         private const int HpGain = 1;
-        private SelectionType YesNoSelectionType;
         private Phase PhaseToIncrease;
         private Phase PhaseToSkip;
 
@@ -62,7 +60,7 @@ namespace Cauldron.Echelon
             HeroTurnTakerController heroTTC = pca.GameController.ActiveTurnTakerController.ToHero();
 
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
-            IEnumerator routine = base.GameController.MakeYesNoCardDecision(heroTTC, YesNoSelectionType, this.Card,
+            IEnumerator routine = base.GameController.MakeYesNoCardDecision(heroTTC, SelectionType.Custom, this.Card,
                 storedResults: storedResults, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)

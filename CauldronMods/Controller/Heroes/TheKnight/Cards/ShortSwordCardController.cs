@@ -17,7 +17,7 @@ namespace Cauldron.TheKnight
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             IEnumerator coroutine;
-            if (this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            if (IsMultiCharPromo())
             {
                 List<SelectCardDecision> selectedKnight = new List<SelectCardDecision> { };
                 coroutine = SelectOwnCharacterCard(selectedKnight, SelectionType.HeroCharacterCard);

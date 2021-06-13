@@ -5117,7 +5117,8 @@ namespace Handelabra.Sentinels.UnitTest
         protected void ActivateAbility(string key, Card card)
         {
             var cc = this.GameController.FindCardController(card);
-            var ability = new ActivatableAbility(this.GameController.FindTurnTakerController(card.Owner), cc, key, cc.Card.GetActivatableAbilityDescription(key), cc.ActivateAbility(key), 0, null, null, new CardSource(cc));
+            var abilityDef = cc.GetActivatableAbilities(key).Select(a => a.Definition).First(); ;
+            var ability = new ActivatableAbility(this.GameController.FindTurnTakerController(card.Owner), cc, abilityDef, cc.ActivateAbilityEx(abilityDef), 0, null, null, new CardSource(cc));
             this.RunCoroutine(this.GameController.ActivateAbility(ability, new CardSource(cc)));
         }
 

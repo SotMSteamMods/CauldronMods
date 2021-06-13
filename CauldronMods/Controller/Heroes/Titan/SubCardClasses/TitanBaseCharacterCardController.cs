@@ -74,8 +74,41 @@ namespace Cauldron.Titan
                     //this adds an extra power-use record to the journal, of using the OTHER card's power
                     //WITHOUT actually ever 'using' a power, so it shouldn't cause extra triggers
                     //may cause problems with card that want to count how many powers a player has used in a turn, though
-                    GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null);
+                    GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null, this.CardWithoutReplacements);
                 }
+            }
+        }
+
+        protected override IEnumerator RemoveCardsFromGame(IEnumerable<Card> cards)
+        {
+            if (!Card.IsInPlayAndHasGameText)
+            {
+                yield break;
+            }
+            IEnumerable<Card> enumerable = FindCardsWhere((Card c) => c != Card && c.SharedIdentifier != null && c.SharedIdentifier == Card.SharedIdentifier);
+            foreach (Card item in enumerable)
+            {
+                if (!item.IsIncapacitated)
+                {
+                    IEnumerator coroutine = base.GameController.FlipCard(FindCardController(item), cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+            IEnumerator coroutine2 = base.RemoveCardsFromGame(cards);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine2);
             }
         }
     }

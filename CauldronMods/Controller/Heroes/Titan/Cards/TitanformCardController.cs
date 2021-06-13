@@ -54,7 +54,7 @@ namespace Cauldron.Titan
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource != null && action.DamageSource.IsTarget && action.Target == base.CharacterCard && !action.DamageSource.IsSameCard(this.CharacterCard) && action.DidDealDamage, this.DealtDamageResponse, TriggerType.CreateStatusEffect, TriggerTiming.After);
 
             //When {Titan} would deal damage, you may destroy this card to increase that damage by 2.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard, this.DestroyThisCardToIncreaseDamageResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.IncreaseDamage }, TriggerTiming.Before, isActionOptional: true);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard && !this.Card.IsBeingDestroyed && !GameController.IsCardIndestructible(this.Card), this.DestroyThisCardToIncreaseDamageResponse, new TriggerType[] { TriggerType.DestroySelf, TriggerType.IncreaseDamage }, TriggerTiming.Before, isActionOptional: true);
 
             base.AddAfterLeavesPlayAction(FlagReturnToNormalCard);
         }
@@ -111,6 +111,9 @@ namespace Cauldron.Titan
 
             if (DidPlayerAnswerYes(yesNo))
             {
+                //...destroy this card to increase that damage by 2.
+                damageToIncrease = action;
+                AddWhenDestroyedTrigger(dc => IncreaseDamageResponse(action), TriggerType.IncreaseDamage);
                 coroutine = base.GameController.DestroyCard(HeroTurnTakerController, Card, false);
                 if (UseUnityCoroutines)
                 {
@@ -120,20 +123,21 @@ namespace Cauldron.Titan
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
-
-                this.AddInhibitorException((GameAction ga) => ga is IncreaseDamageAction);
-                //...to increase that damage by 2.
-                coroutine = GameController.IncreaseDamage(action, 2, false, GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-                RemoveInhibitorException();
             }
+        }
+
+        private DealDamageAction damageToIncrease;
+
+        private IEnumerator IncreaseDamageResponse(DealDamageAction action)
+        {
+            if (IsRealAction() && damageToIncrease == action)
+            {
+                //for some reason if this doesn't exist Uh Yeah I'm That Guy will double-apply 
+                //the copied trigger
+                damageToIncrease = null;
+                return GameController.IncreaseDamage(action, 2, false, GetCardSource());
+            }
+            return DoNothing();
         }
 
         private IEnumerator FlagReturnToNormalCard()

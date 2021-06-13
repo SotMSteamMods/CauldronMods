@@ -900,6 +900,20 @@ namespace CauldronTests
             AssertTrackPosition(trackPosition);
         }
         [Test]
+        public void TestKnightsHeritage_DamageTracksAcrossRedBlue()
+        {
+            SetupGameController(new string[] { "Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis" });
+            StartGame();
+
+            DiscardAllCards(drift);
+            PlayCard("FutureFocus");
+            PlayCard("KnightsHeritage");
+            DecisionYesNo = true;
+            DealDamage(apostate, drift, 1, DamageType.Melee);
+
+            AssertTrackPosition(3);
+        }
+        [Test]
         public void TestMakeEverySecondCount()
         {
             SetupGameController("Apostate", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
@@ -1216,6 +1230,23 @@ namespace CauldronTests
 
             AssertMaxNumberOfDecisions(1);
             UsePower(lookingUp);
+        }
+
+        [Test()]
+        public void TestDriftAndProgeny()
+        {
+            SetupGameController("Progeny", "Cauldron.Drift", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetHitPoints(drift, 8);
+            StartGame();
+
+            GoToShiftPosition(4);
+            DealDamage(progeny, drift, 8, DamageType.Radiant);
+            AssertIncapacitated(drift);
+
+            GoToStartOfTurn(progeny);
+
+            AssertNotFlipped(progeny);
+
         }
     }
 }

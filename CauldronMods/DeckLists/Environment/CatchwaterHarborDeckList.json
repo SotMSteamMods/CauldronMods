@@ -183,7 +183,7 @@
             ],
             "activatableAbilities":[
                 {
-                   "name":"[u]travel[/u]:",
+                   "name":"travel",
                    "text":"Each player draws a card. Each villain target regains 3 HP."
                 }
              ],
@@ -240,7 +240,7 @@
             ],
             "activatableAbilities":[
                 {
-                   "name":"[u]travel[/u]:",
+                   "name":"travel",
                    "text":"Play the top card of each other deck in turn order, starting with the villain deck."
                 }
              ],
@@ -263,7 +263,7 @@
             ],
             "activatableAbilities":[
                 {
-                   "name":"[u]travel[/u]:",
+                   "name":"travel",
                    "text":"Increase all damage dealt by 1 until the start of the next environment turn."
                 }
              ],

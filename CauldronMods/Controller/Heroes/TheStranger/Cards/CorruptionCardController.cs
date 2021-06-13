@@ -22,28 +22,55 @@ namespace Cauldron.TheStranger
         {
             //Draw up to 4 cards.
             List<DrawCardAction> storedResultsDraw = new List<DrawCardAction>();
-            IEnumerator coroutine = base.DrawCards(this.DecisionMaker, 4, false, true, storedResultsDraw, false, null);
-            if (base.UseUnityCoroutines)
+            int i;
+            for (i = 0; i < 4; i++)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+                YesNoAmountDecision yesNo = new YesNoAmountDecision(GameController, DecisionMaker, SelectionType.DrawCard, 1, cardSource: GetCardSource())
+                {
+                    ExtraInfo = () => $"Cards drawn so far: {GetNumberOfCardsDrawn(storedResultsDraw)}"
+                };
+
+                IEnumerator coroutine;
+                if (GameController.CanDrawCards(DecisionMaker, GetCardSource()))
+                {
+                    coroutine = GameController.MakeDecisionAction(yesNo);
+                }
+                else
+                {
+                    //makes a '{player} cannot draw cards' message pop up
+                    coroutine = GameController.DrawCard(HeroTurnTaker);
+                }
+
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if (GameController.DidAnswerYes(yesNo))
+                {
+                    coroutine = base.DrawCard(this.HeroTurnTaker, cardsDrawn: storedResultsDraw);
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
 
             //For each card drawn this way, {TheStranger} deals himself 1 toxic damage.
-
             int numberOfCardsDrawn = base.GetNumberOfCardsDrawn(storedResultsDraw);
-            for (int i = 0; i < numberOfCardsDrawn; i++)
+            for (i = 0; i < numberOfCardsDrawn; i++)
             {
                 IEnumerator coroutine2 = base.DealDamage(base.CharacterCard, base.CharacterCard, 1, DamageType.Toxic);
                 if (base.UseUnityCoroutines)

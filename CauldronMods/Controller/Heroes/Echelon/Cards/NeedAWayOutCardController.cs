@@ -17,7 +17,7 @@ namespace Cauldron.Echelon
 
         public static string Identifier = "NeedAWayOut";
 
-        public NeedAWayOutCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, SelectionType.Custom, Phase.UsePower, Phase.PlayCard)
+        public NeedAWayOutCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, Phase.UsePower, Phase.PlayCard)
         {
 
         }
@@ -25,8 +25,8 @@ namespace Cauldron.Echelon
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
 
-            return new CustomDecisionText("Do you want to use an additional power in your power phase?", "Should they use an additional power in their power phase?", "Vote for use an additional power in the power phase?", "extra power");
-                
+            return new CustomDecisionText("Do you want to skip your Play phase to use an additional power in your Power phase?", "Should they skip their Play phase to use an additional power in their Power phase", "Vote for if they should skip their Play phase to use an additional power in their Power phase?", "skip play for extra power");
+
         }
 
     }

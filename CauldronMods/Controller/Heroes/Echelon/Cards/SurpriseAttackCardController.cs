@@ -23,10 +23,12 @@ namespace Cauldron.Echelon
             AllowFastCoroutinesDuringPretend = false;
         }
 
+        private string PowerSourceTitleForCustomText = "";
+
         protected override void AddTacticEffectTrigger()
         {
             //"Whenever a hero uses a power that deals damage, increase that damage by 1. You may change the type of that damage to psychic."
-            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null, dd => 1);
+            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && !dd.CardSource.Card.IsBeingDestroyed, dd => 1);
             var immediateTypeTrigger = new ChangeDamageTypeTrigger(GameController, (DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && IsFirstOrOnlyCopyOfThisCardInPlay(), MaybeMakeDamagePsychic, new TriggerType[] { TriggerType.ChangeDamageType }, new DamageType[] { DamageType.Psychic }, GetCardSource());
             AddTrigger(immediateTypeTrigger);
             AddTrigger((AddStatusEffectAction se) => se.StatusEffect.DoesDealDamage && se.CardSource != null && se.CardSource.PowerSource != null, IncreaseDamageFromEffectResponse, TriggerType.Hidden, TriggerTiming.Before);
@@ -93,7 +95,8 @@ namespace Cauldron.Echelon
         private IEnumerator ChangeDamageTypeFromEffectResponse(AddStatusEffectAction se)
         {
             var storedYesNo = new List<YesNoCardDecision>();
-            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DamageType, this.Card, storedResults: storedYesNo, associatedCards: new Card[] { se.CardSource.Card }, cardSource: GetCardSource());
+            PowerSourceTitleForCustomText = se.CardSource.PowerSource.Title;
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.Custom, this.Card, storedResults: storedYesNo, associatedCards: new Card[] { se.CardSource.Card }, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -130,5 +133,14 @@ namespace Cauldron.Echelon
                 }
             }
         }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText($"Do you want to change all damage dealt from the status effect made by {PowerSourceTitleForCustomText} to Psychic?", $"Should they change all damage dealt from the status effect made by {PowerSourceTitleForCustomText} to Psychic?", $"Vote for if they should change all damage dealt from the status effect made by {PowerSourceTitleForCustomText} to Psychic?", "change damage to Psychic");
+
+        }
+
+
     }
 }

@@ -41,13 +41,13 @@ namespace Cauldron.ScreaMachine
         }
 
         protected abstract IEnumerator ActivateBandAbility();
-
-        public override IEnumerator ActivateAbility(string abilityKey)
+        public override IEnumerator ActivateAbilityEx(CardDefinition.ActivatableAbilityDefinition definition)
         {
-            if (abilityKey == _memberAbilityKey)
+            if (definition.Name == _memberAbilityKey)
+            {
                 return ActivateBandAbility();
-
-            return base.ActivateAbility(abilityKey);
+            }
+            return base.ActivateAbilityEx(definition);
         }
 
         public override bool CanBeDestroyed => false;

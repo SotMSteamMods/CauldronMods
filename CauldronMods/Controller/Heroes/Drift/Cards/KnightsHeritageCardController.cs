@@ -46,7 +46,7 @@ namespace Cauldron.Drift
         public override void AddTriggers()
         {
             //The first time {Drift} is dealt damage each turn, you may shift {DriftL} or {DriftR}.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.Target == base.GetActiveCharacterCard() && action.Amount > 0 && !base.HasBeenSetToTrueThisTurn(DamageTakenThisTurn), this.ShiftResponse, new TriggerType[] { TriggerType.ModifyTokens }, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => IsTargetSelf(action) && action.Amount > 0 && !base.HasBeenSetToTrueThisTurn(DamageTakenThisTurn), this.ShiftResponse, new TriggerType[] { TriggerType.ModifyTokens }, TriggerTiming.After);
         }
 
         private IEnumerator ShiftResponse(DealDamageAction action)
@@ -55,8 +55,8 @@ namespace Cauldron.Drift
 
             //...you may shift {DriftL} or {DriftR}.
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Shift Left", SelectionType.AddTokens, () => base.ShiftL()),
-                    new Function(base.HeroTurnTakerController, "Shift Right", SelectionType.RemoveTokens, () => base.ShiftR())
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.AddTokens, () => base.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.RemoveTokens, () => base.ShiftR())
             }, optional: true, associatedCards: GetShiftTrack().ToEnumerable());
             if (base.UseUnityCoroutines)
             {

@@ -16,7 +16,7 @@ namespace Cauldron.TheKnight
         protected TheKnightCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {VigilarOwnerName()}").Condition = () => this.Card.Location.OwnerTurnTaker != this.TurnTaker && VigilarOwnerName() != null;
-            SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {RoninOwnerName()}").Condition = () => this.TurnTakerController.HasMultipleCharacterCards && RoninOwnerName() != null;
+            SpecialStringMaker.ShowSpecialString(() => $"This card is currently being used by {RoninOwnerName()}").Condition = () => IsMultiCharPromo() && RoninOwnerName() != null;
         }
 
         private string VigilarOwnerName()
@@ -45,7 +45,7 @@ namespace Cauldron.TheKnight
 
         protected bool IsEquipmentEffectingCard(Card card)
         {
-            if (this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            if (IsMultiCharPromo())
             {
                 if(this.Card.Location.IsNextToCard)
                 {
@@ -70,7 +70,7 @@ namespace Cauldron.TheKnight
 
         public IEnumerator SelectOwnCharacterCard(List<SelectCardDecision> results, SelectionType selectionType)
         {
-            if (base.HeroTurnTakerController.HasMultipleCharacterCards)
+            if (IsMultiCharPromo())
             {
                 var criteria = new LinqCardCriteria(c => IsOwnCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero character cards");
                 var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, selectionType, criteria, results, false, cardSource: base.GetCardSource());
@@ -93,6 +93,11 @@ namespace Cauldron.TheKnight
             yield break;
         }
 
+        protected bool IsMultiCharPromo()
+        {
+            return this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards && TurnTakerControllerWithoutReplacements is TheKnightTurnTakerController kttc && kttc.InstructionCardController != null;
+        }
+
         protected Card GetKnightCardUser(Card c)
         {
             if (c == null)
@@ -100,7 +105,7 @@ namespace Cauldron.TheKnight
                 return null;
             }
 
-            if (this.TurnTakerControllerWithoutReplacements.HasMultipleCharacterCards)
+            if (IsMultiCharPromo())
             {
                 if (c.Location.IsNextToCard)
                 {

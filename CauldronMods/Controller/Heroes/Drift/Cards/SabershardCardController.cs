@@ -49,7 +49,7 @@ namespace Cauldron.Drift
                         }
                     } else
                     {
-                        coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not in the past, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
+                        coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {Past} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -92,7 +92,7 @@ namespace Cauldron.Drift
                         }
                     } else
                     {
-                        coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not in the future, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
+                        coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on the {Future} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

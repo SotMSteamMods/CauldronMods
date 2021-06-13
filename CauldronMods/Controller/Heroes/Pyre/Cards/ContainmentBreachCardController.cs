@@ -59,7 +59,8 @@ namespace Cauldron.Pyre
             {
                 //Increase energy damage dealt by {Pyre} by 1 until the end of your turn. 
                 var effect = new IncreaseDamageStatusEffect(1);
-                effect.UntilEndOfPhase(TurnTaker, Phase.End);
+                effect.ToTurnPhaseExpiryCriteria.Phase = Phase.End;
+                effect.ToTurnPhaseExpiryCriteria.TurnTaker = TurnTaker;
                 effect.SourceCriteria.IsSpecificCard = CharacterCard;
                 effect.DamageTypeCriteria.AddType(DamageType.Energy);
                 effect.CreateImplicitExpiryConditions();

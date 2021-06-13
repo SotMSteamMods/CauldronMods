@@ -525,9 +525,15 @@ namespace CauldronTests
         {
             SetupGameController(new string[] { "OblivAeon", "Cauldron.Vanish", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
             StartGame();
-
             GoToStartOfTurn(vanish);
-            AssertNumberOfChoicesInNextDecision(5, SelectionType.RevealTopCardOfDeck);
+
+            Card aeonWarrior = GetCard("AeonWarrior");
+            PlayCard(oblivaeon, aeonWarrior, overridePlayLocation: vanish.BattleZone.FindScion().PlayArea);
+            PlayCard(oblivaeon, borrScion, overridePlayLocation: vanish.BattleZone.FindScion().PlayArea);
+
+
+            AssertNumberOfChoicesInNextDecision(7, SelectionType.RevealTopCardOfDeck);
+            AssertNumberOfChoicesInNextDecision(7, SelectionType.PutIntoPlay);
             PlayCard("FlashRecon");
            
         }

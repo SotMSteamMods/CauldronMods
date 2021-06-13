@@ -199,6 +199,9 @@ namespace CauldronTests
             SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket", "Legacy", "Haka", "Cauldron.FSCContinuanceWanderer", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
             StartGame();
             Card expectedMission = oblivaeon.TurnTaker.FindSubDeck("MissionDeck").TopCard;
+            Card aeonWarrior = GetCard("AeonWarrior");
+            PlayCard(oblivaeon, aeonWarrior, overridePlayLocation: envOne.BattleZone.FindScion().PlayArea);
+            PlayCard(oblivaeon, borrScion, overridePlayLocation: envOne.BattleZone.FindScion().PlayArea);
             GoToStartOfTurn(envOne);
             PlayCard("HeartOfTheWanderer");
             Card actualMission = oblivaeon.TurnTaker.FindSubDeck("MissionDeck").TopCard;

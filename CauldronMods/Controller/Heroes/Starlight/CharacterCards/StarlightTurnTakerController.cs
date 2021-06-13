@@ -65,7 +65,7 @@ namespace Cauldron.Starlight
             }
             return characterCards;
         }
-        private CharacterCardController InstructionCardController
+        public CharacterCardController InstructionCardController
         {
             get
             {

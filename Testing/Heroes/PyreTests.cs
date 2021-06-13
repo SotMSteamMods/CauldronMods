@@ -45,6 +45,19 @@ namespace CauldronTests
         {
             MoveCards(pyre, new string[] { "RogueFissionCascade", "RogueFissionCascade" }, pyre.TurnTaker.OutOfGame);
         }
+        protected void StartGamePyre()
+        {
+            StartGame();
+            ShuffleTrashIntoDeck(pyre);
+            var cardsInHand = pyre.HeroTurnTaker.Hand.Cards.ToList();
+            foreach (Card c in cardsInHand)
+            {
+                if (IsIrradiated(c))
+                {
+                    MoveCard(pyre, c, pyre.TurnTaker.Deck, true);
+                }
+            }
+        }
         #endregion PyreHelperFunctions
         [Test]
         public void TestPyreLoads()
@@ -108,7 +121,7 @@ namespace CauldronTests
         public void TestPyreInnatePowerDrawCard()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             RemoveCascadeFromGame();
             PrintSpecialStringsForCard(pyre.CharacterCard);
@@ -139,7 +152,7 @@ namespace CauldronTests
         public void TestPyreInnatePowerShuffleCascadeIntoDeck()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             Card cascade = PutInTrash("RogueFissionCascade");
             Card punch = PutOnDeck("AtomicPunch");
@@ -154,7 +167,7 @@ namespace CauldronTests
         public void TestPyreIncap1()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             DecisionSelectTurnTaker = legacy.TurnTaker;
             Card ring = PutOnDeck("TheLegacyRing");
@@ -183,7 +196,7 @@ namespace CauldronTests
         public void TestPyreIncap2()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             DealDamage(baron, pyre, 50, DTM);
@@ -200,7 +213,7 @@ namespace CauldronTests
         public void TestPyreIncap3()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DealDamage(baron, pyre, 50, DTM);
 
             DecisionSelectTurnTakers = new TurnTaker[] { legacy.TurnTaker, bunker.TurnTaker, scholar.TurnTaker };
@@ -231,7 +244,7 @@ namespace CauldronTests
         public void TestPyreIncaps_OblivaeonSoftlock()
         {
             SetupGameController(new string[] { "OblivAeon", "Cauldron.Pyre", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
-            StartGame();
+            StartGamePyre();
 
             SetupIncap(oblivaeon);
             GoToAfterEndOfTurn(oblivaeon);
@@ -241,7 +254,7 @@ namespace CauldronTests
         public void TestChromodynamicsDamageTrigger()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             RemoveCascadeFromGame();
@@ -262,7 +275,7 @@ namespace CauldronTests
         public void TestIrradiationOtherPlayer()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             DecisionSelectTurnTaker = legacy.TurnTaker;
             Card ring = PutOnDeck("TheLegacyRing");
@@ -276,7 +289,7 @@ namespace CauldronTests
         public void TestIrradiationRemainsAfterPyreIncap()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             DecisionSelectTurnTaker = legacy.TurnTaker;
             Card ring = PutOnDeck("TheLegacyRing");
@@ -293,7 +306,7 @@ namespace CauldronTests
         public void TestIrradiationClearedWhenOwnerIncaps()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             DiscardAllCards(pyre);
             AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 40);
@@ -311,7 +324,7 @@ namespace CauldronTests
         public void TestAtmosphereScrubbersPlayGrantsPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             Card ring = PutOnDeck("TheLegacyRing");
 
@@ -328,7 +341,7 @@ namespace CauldronTests
         public void TestAtmosphereScrubbersPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
 
             RemoveCascadeFromGame();
@@ -360,7 +373,7 @@ namespace CauldronTests
         public void TestAtomicPunchIrradiateOtherCards()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card ring = PutInHand("TheLegacyRing");
@@ -381,7 +394,7 @@ namespace CauldronTests
         public void TestAtomicPunchIrradiateOwnCards()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card chromo = PutInHand("Chromodynamics");
@@ -413,7 +426,7 @@ namespace CauldronTests
         public void TestAtomicPunchNotIrradiateAlreadyIrradiated()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             DecisionSelectTurnTaker = pyre.TurnTaker;
@@ -433,7 +446,7 @@ namespace CauldronTests
         public void TestCellularIrradiationWithIrradiatedCards([Values(0, 1, 2, 3, 4)] int numIrradiated)
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             RemoveCascadeFromGame();
@@ -491,7 +504,7 @@ namespace CauldronTests
         public void TestCellularIrradiationOnlyCountSamePlayerCards()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card chromo = PutOnDeck("Chromodynamics");
@@ -513,7 +526,7 @@ namespace CauldronTests
         public void TestCherenkovDriveIrradiateCard()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card fort = PutInHand("Fortitude");
@@ -528,7 +541,7 @@ namespace CauldronTests
         public void TestCherenkovDrivePowerOnCardInHand()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card flak = PutInHand("FlakCannon");
@@ -546,7 +559,7 @@ namespace CauldronTests
         public void TestCherenkovDrivePowerSelfDestruct()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card aux = PutInHand("AuxiliaryPowerSource");
@@ -569,7 +582,7 @@ namespace CauldronTests
         public void TestCherenkovDrivePowerSelfDestructAccountForBug()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card aux = PutInHand("AuxiliaryPowerSource");
@@ -591,7 +604,7 @@ namespace CauldronTests
         public void TestCherenkovDriveMultiplePowers()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card hurricane = PutInHand("LocalizedHurricane");
@@ -609,7 +622,7 @@ namespace CauldronTests
         public void TestCherenkovDriveCannotUsePowers()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card flak = PutInHand("FlakCannon");
@@ -631,7 +644,7 @@ namespace CauldronTests
         public void TestChromodynamicsPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card chromo = PlayCard("Chromodynamics");
@@ -649,7 +662,7 @@ namespace CauldronTests
         public void TestContainmentBreachCardPlayResponse()
         {
             SetupGameController(new string[] { "BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis" });
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             if(pyre.TurnTaker.Trash.HasCards)
@@ -702,7 +715,7 @@ namespace CauldronTests
         public void TestContainmentBreachPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             QuickShuffleStorage(pyre);
@@ -715,10 +728,58 @@ namespace CauldronTests
             QuickHPCheck(-1, -1, -1, 0, 0, 0, -1);
         }
         [Test]
+        public void TestContainmentBreachStatusEffectTiming()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis" });
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            if (pyre.TurnTaker.Trash.HasCards)
+            {
+                ShuffleTrashIntoDeck(pyre);
+            }
+
+            Card breach = PlayCard("ContainmentBreach");
+            QuickHPStorage(baron);
+            Card cell = PutOnDeck("CellularIrradiation");
+            UsePower(pyre);
+
+            Card cascade = PutInTrash("RogueFissionCascade");
+            QuickShuffleStorage(pyre);
+
+            PlayCard(cell);
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+            QuickHPCheck(-2);
+            DealDamage(pyre, baron, 1, DTM);
+            QuickHPCheck(-1);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            GoToStartOfTurn(pyre);
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutOnDeck("TheLegacyRing");
+            UsePower(pyre);
+            PlayCard(ring);
+            AssertNumberOfStatusEffectsInPlay(1);
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+            QuickHPCheck(-3);
+
+            PlayCard("SurgeOfStrength");
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            Card fort = PutOnDeck("Fortitude");
+            UsePower(pyre);
+            PlayCard(fort, isPutIntoPlay: true);
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+            QuickHPCheck(-3);
+
+            GoToEndOfTurn(pyre);
+            DealDamage(pyre, baron, 1, DamageType.Energy);
+        }
+        [Test]
         public void TestFissionRegulatorCascadePrevention()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card punch = PutOnDeck("AtomicPunch");
@@ -732,7 +793,7 @@ namespace CauldronTests
         public void TestFissionRegulatorPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card punch = PutInHand("AtomicPunch");
@@ -752,7 +813,7 @@ namespace CauldronTests
         public void TestFracturedControlRodDamageWhenPlayed()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             QuickHPStorage(baron);
@@ -769,7 +830,7 @@ namespace CauldronTests
         public void TestFracturedControlRodDestroyToPlayDiscard()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card fort = PutOnDeck("Fortitude");
@@ -793,7 +854,7 @@ namespace CauldronTests
         public void TestGammaBurst()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card traffic = PutIntoPlay("TrafficPileup");
@@ -815,7 +876,7 @@ namespace CauldronTests
         public void TestGammaBurstIrradiatesOptional()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card traffic = PutIntoPlay("TrafficPileup");
@@ -838,7 +899,7 @@ namespace CauldronTests
         public void TestHalfLife()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card traffic = PutIntoPlay("TrafficPileup");
@@ -858,7 +919,7 @@ namespace CauldronTests
         public void TestHullCladdingDamageReduction()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             PlayCard("HullCladding");
@@ -874,7 +935,7 @@ namespace CauldronTests
         public void TestHullCladdingContainmentBreachDestruction()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card cladding = PlayCard("HullCladding");
@@ -895,7 +956,7 @@ namespace CauldronTests
         public void TestHullCladdingIndestructibleDrops()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "TimeCataclysm");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card point = PlayCard("FixedPoint");
@@ -922,7 +983,7 @@ namespace CauldronTests
         public void TestHullCladdingPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
             RemoveCascadeFromGame();
 
@@ -937,7 +998,7 @@ namespace CauldronTests
         public void TestIonTraceDamage()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             DiscardAllCards(pyre, legacy, tempest, scholar);
@@ -953,7 +1014,7 @@ namespace CauldronTests
         public void TestIonTraceRecovery()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             MoveAllCardsFromHandToDeck(legacy);
@@ -981,7 +1042,7 @@ namespace CauldronTests
         public void TestNeutronForcefieldIndestructibility()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             GoToStartOfTurn(pyre);
@@ -996,10 +1057,28 @@ namespace CauldronTests
             AssertInTrash(neutron);
         }
         [Test]
+        public void TestNeutronForcefieldIndestructibilityTiming()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            GoToStartOfTurn(pyre);
+            Card neutron = PutOnDeck("NeutronForcefield");
+            UsePower(pyre);
+            PlayCard(neutron);
+
+            DestroyCard(neutron);
+            AssertIsInPlay(neutron);
+            GoToEndOfTurn(pyre);
+            DestroyCard(neutron);
+            AssertInTrash(neutron);
+        }
+        [Test]
         public void TestNeutronForcefieldPower()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card neutron = PlayCard("NeutronForcefield");
@@ -1020,7 +1099,7 @@ namespace CauldronTests
         public void TestParticleColliderPowerPlayIrradiated()
         {
             SetupGameController(new string[] { "BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis" });
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             if(pyre.HeroTurnTaker.Hand.Cards.Any(c => IsIrradiated(c)))
@@ -1052,7 +1131,7 @@ namespace CauldronTests
         public void TestParticleColliderPowerDamage()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             Card core = PlayCard("ThermonuclearCore");
@@ -1077,7 +1156,7 @@ namespace CauldronTests
         public void TestRogueFissionCascadeAutoplay()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             DecisionSelectFunction = 0;
@@ -1096,7 +1175,7 @@ namespace CauldronTests
         public void TestRogueFissionCascadeDamage()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
             DestroyNonCharacterVillainCards();
 
             //in case of Thermonuclear Core
@@ -1119,7 +1198,7 @@ namespace CauldronTests
         public void TestThermonuclearCoreEnteringHandResponse()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             Card core = PutOnDeck("ThermonuclearCore");
             Card punch = PutInHand("AtomicPunch");
@@ -1137,7 +1216,7 @@ namespace CauldronTests
         public void TestThermonuclearCoreEndOfTurn()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            StartGamePyre();
 
             DiscardAllCards(pyre);
 

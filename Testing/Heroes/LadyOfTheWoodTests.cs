@@ -591,6 +591,72 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestFallDealLightningTriggerOrder()
+        {
+            SetupGameController("Ambuscade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            GoToPlayCardPhase(ambuscade);
+            Card sonicMine = PlayCard("SonicMine");
+
+            //Whenever LadyOfTheWood deals lightning damage to a target, reduce damage dealt by that target by 1 until the start of your next turn.
+            GoToPlayCardPhase(ladyWood);
+            PlayCard("Fall");
+
+            QuickHPStorage(ladyWood);
+            DealDamage(ladyWood, sonicMine, 1, DamageType.Lightning);
+
+            //reduced by 1, so should be 1
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestFallDealLightningDamageTypeChange()
+        {
+            SetupGameController("Ambuscade", "Ra", "Cauldron.LadyOfTheWood", "Haka", "Megalopolis");
+            StartGame();
+            GoToPlayCardPhase(ambuscade);
+            Card sonicMine = PlayCard("SonicMine");
+
+            GoToPlayCardPhase(ra);
+            PlayCard("ImbuedFire");
+
+            GoToPlayCardPhase(ladyWood);
+            PlayCard("Fall");
+
+            QuickHPStorage(ladyWood);
+            DealDamage(ladyWood, sonicMine, 1, DamageType.Lightning);
+
+            // Lady's damage should have been fire, so no damage reduction on the mine
+            QuickHPCheck(-2);
+        }
+
+        [Test()]
+        public void TestFallDealLightningNoDamage()
+        {
+            SetupGameController("Ambuscade", "Ra", "Cauldron.LadyOfTheWood", "Haka", "Megalopolis");
+            StartGame();
+            GoToPlayCardPhase(ambuscade);
+            Card sonicMine = PlayCard("SonicMine");
+
+            // destroy sonic mine to make heroes unable to deal damage
+            GoToUsePowerPhase(ra);
+            DealDamage(ra, sonicMine, 1, DamageType.Fire);
+
+            // Attempt to deal lightning damage
+            GoToPlayCardPhase(ladyWood);
+            PlayCard("Fall");
+
+            QuickHPStorage(ambuscade);
+            DealDamage(ladyWood, ambuscade, 1, DamageType.Lightning);
+            QuickHPCheck(0);
+
+            // target should not have their damage reduced
+            QuickHPStorage(ladyWood);
+            DealDamage(ambuscade, ladyWood, 3, DamageType.Energy);
+            QuickHPCheck(-3);
+        }
+
+        [Test()]
         public void TestFallDealNotLightning()
         {
             SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
@@ -1360,6 +1426,23 @@ namespace CauldronTests
             QuickHPStorage(ladyWood);
             UsePower(gown);
             QuickHPCheck(3);
+        }
+
+        [Test()]
+        public void TestSnowshadeGownPowerContagion()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Unity", "Megalopolis");
+            StartGame();
+            RemoveMobileDefensePlatform();
+
+            SetHitPoints(ladyWood, 10);
+            Card gown = PlayCard("SnowshadeGown");
+            DecisionSelectPower = gown;
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron, ladyWood);
+            PlayCard("HastyAugmentation");
+            QuickHPCheck(-1, 3);
         }
 
         [Test()]

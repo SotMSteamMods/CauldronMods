@@ -301,5 +301,26 @@ namespace CauldronTests
             Assert.AreEqual(decision, CurrentShiftPosition());
             AssertIsInPlay(track);
         }
+
+        [Test()]
+        public void TestDualDriftAndProgeny()
+        {
+            SetupGameController("Progeny", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card blueFuture = GetCard("Blue" + FutureDriftCharacter);
+            AssertInPlayArea(drift,blueFuture);
+            SetHitPoints(blueFuture, 8);
+
+            GoToStartOfTurn(progeny);
+
+            DealDamage(progeny, blueFuture, 8, DamageType.Radiant);
+            AssertIncapacitated(drift);
+
+            GoToStartOfTurn(progeny);
+
+            AssertNotFlipped(progeny);
+
+        }
     }
 }
