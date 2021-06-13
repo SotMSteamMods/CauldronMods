@@ -66,7 +66,7 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { track, character };
             StartGame(false);
 
-            AssertIsInPlay("Blue" + other.Identifier);
+            AssertIsInPlay(other.Identifier);
         }
 
         [Test()]
@@ -76,7 +76,7 @@ namespace CauldronTests
             StartGame();
 
             //Start with Future
-            AssertIsInPlay("Blue" + FutureDriftCharacter);
+            AssertIsInPlay(FutureDriftCharacter);
             GoToShiftPosition(2);
 
             int position1 = 1;
@@ -95,7 +95,7 @@ namespace CauldronTests
 
             PrintSeparator("Switch completed");
             //Assert that other character and starting position are active
-            AssertIsInPlay("Blue" + PastDriftCharacter);
+            AssertIsInPlay(PastDriftCharacter);
             AssertTrackPosition(position1);
 
             PrintSeparator("Switching Back");
@@ -104,7 +104,7 @@ namespace CauldronTests
 
             PrintSeparator("Switch back successful");
             //Assert in secondary position
-            AssertIsInPlay("Red" + FutureDriftCharacter);
+            AssertIsInPlay(FutureDriftCharacter);
             AssertTrackPosition(position2);
         }
 
@@ -225,7 +225,7 @@ namespace CauldronTests
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
-            AssertIsInPlay("Blue" + PastDriftCharacter);
+            AssertIsInPlay(PastDriftCharacter);
             DestroyCard(drift);
             //One player may draw a card now.
 
@@ -243,7 +243,7 @@ namespace CauldronTests
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
-            AssertIsInPlay("Blue" + PastDriftCharacter);
+            AssertIsInPlay(PastDriftCharacter);
             DestroyCard(drift);
 
             //Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.
@@ -279,7 +279,7 @@ namespace CauldronTests
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
-            AssertIsInPlay("Blue" + PastDriftCharacter);
+            AssertIsInPlay(PastDriftCharacter);
             DestroyCard(drift);
             Card popo = PlayCard("PoliceBackup");
 
@@ -308,7 +308,7 @@ namespace CauldronTests
             SetupGameController("Progeny", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
-            Card blueFuture = GetCard("Blue" + FutureDriftCharacter);
+            Card blueFuture = GetCard(FutureDriftCharacter);
             AssertInPlayArea(drift,blueFuture);
             SetHitPoints(blueFuture, 8);
 
