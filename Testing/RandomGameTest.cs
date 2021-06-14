@@ -83,7 +83,6 @@ namespace CauldronTests
                         promoIdentifiers[identifier] = promo.PromoIdentifier;
                         name = promo.PromoTitle;
                     }
-                    name = definition.Name;
                     useHeroes.Remove(fullIdentifier);
                 }
                 else
