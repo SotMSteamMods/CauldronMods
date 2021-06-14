@@ -499,7 +499,7 @@
 			"hitpointColor": "CF5240",
 			"character": true,
 			"powers": [
-				"Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed plus 1"
+				"Destroy an equipment target. {TheKnight} deals 1 target X psychic damage, where X is the HP of the equipment before it was destroyed plus 1."
 			],
 			"icons": [
 				"HasPower",
