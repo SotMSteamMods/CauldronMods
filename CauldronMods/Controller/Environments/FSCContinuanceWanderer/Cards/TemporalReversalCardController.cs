@@ -71,29 +71,8 @@ namespace Cauldron.FSCContinuanceWanderer
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
 
-            return new CustomDecisionText($"Select the {GetAdjective(deckAdjectiveCount)} deck to return a card to the top of.", $"Select the { GetAdjective(deckAdjectiveCount) } deck to return a card to the top of.", $"Vote for the {GetAdjective(deckAdjectiveCount)} deck to return a card to the top of.", "return a card to deck");
+            return new CustomDecisionText($"Select the {deckAdjectiveCount.ToOrdinalString()} deck to return a card to the top of.", $"Select the { GetAdjective(deckAdjectiveCount) } deck to return a card to the top of.", $"Vote for the {GetAdjective(deckAdjectiveCount)} deck to return a card to the top of.", "return a card to deck");
 
-        }
-
-        private string GetAdjective(int deckAdjectiveCount)
-        {
-            string ending;
-            switch (deckAdjectiveCount)
-            {
-                case 1:
-                    ending = "st";
-                    break;
-                case 2:
-                    ending = "nd";
-                    break;
-                case 3:
-                    ending = "rd";
-                    break;
-                default:
-                    ending = "th";
-                    break;
-            }
-            return $"{deckAdjectiveCount}{ending}";
         }
     }
 }
