@@ -758,9 +758,14 @@ namespace CauldronTests
             QuickHPStorage(cricket);
             DealDamage(akash, cricket, 2, DamageType.Melee);
             QuickHPCheck(-2);
+            PrintSpecialStringsForCard(swarm);
 
             Card defender = PlayCard("SeismicDefender");
+            PrintSpecialStringsForCard(swarm);
+
             Card tunneler = PlayCard("InnerCoreTunneler");
+            PrintSpecialStringsForCard(swarm);
+
             //Redirect to Lowest
             QuickHPStorage(cricket.CharacterCard, akash.CharacterCard, tunneler, defender);
             DealDamage(akash, cricket, 2, DamageType.Melee);
