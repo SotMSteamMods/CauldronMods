@@ -16,48 +16,98 @@ namespace Cauldron.VaultFive
 
         public override IEnumerator UniqueOnPlayEffect()
         {
-            //1 player discards a card...
+            int numTurnTakersInBZ = GetNumberOfTurnTakersInSameBattleZone();
             List<TurnTaker> usedTurnTakers = new List<TurnTaker>();
             List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-            IEnumerator coroutine = base.GameController.SelectHeroToDiscardCard(DecisionMaker, optionalDiscardCard: false, storedResultsTurnTaker: storedResults, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            IEnumerator coroutine;
+            if (numTurnTakersInBZ > 0)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
+                //1 player discards a card...
+                coroutine = base.GameController.SelectHeroToDiscardCard(DecisionMaker, optionalDiscardCard: false, storedResultsTurnTaker: storedResults, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                } else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if (DidSelectTurnTaker(storedResults))
+                {
+                    usedTurnTakers.Add(GetSelectedTurnTaker(storedResults));
+                }
+            } else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
+                //send message saying there are no players available
+                coroutine = GameController.SendMessageAction("There are no valid players to discard a card.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            if(DidSelectTurnTaker(storedResults))
+
+            numTurnTakersInBZ = GetNumberOfTurnTakersInSameBattleZone(usedTurnTakers);
+            if(numTurnTakersInBZ > 0)
             {
-                usedTurnTakers.Add(GetSelectedTurnTaker(storedResults));
-            }
-            //... a second player plays a card...
-            storedResults = new List<SelectTurnTakerDecision>();
-            coroutine = SelectHeroToPlayCard(DecisionMaker, optionalPlayCard: false, storedResultsTurnTaker: storedResults, heroCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => !usedTurnTakers.Contains(tt)));
-            if (base.UseUnityCoroutines)
+                storedResults = new List<SelectTurnTakerDecision>();
+                coroutine = SelectHeroToPlayCard(DecisionMaker, optionalPlayCard: false, storedResultsTurnTaker: storedResults, heroCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => !usedTurnTakers.Contains(tt)));
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                if (DidSelectTurnTaker(storedResults))
+                {
+                    usedTurnTakers.Add(GetSelectedTurnTaker(storedResults));
+                }
+            } else
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                //send message saying there are no players available
+                coroutine = GameController.SendMessageAction("There are no valid players to play a card.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            else
+
+            numTurnTakersInBZ = GetNumberOfTurnTakersInSameBattleZone(usedTurnTakers);
+            if(numTurnTakersInBZ > 0)
             {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            if (DidSelectTurnTaker(storedResults))
+                //... and a third player’s hero uses a power
+                coroutine = GameController.SelectHeroToUsePower(DecisionMaker, optionalUsePower: false, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => !usedTurnTakers.Contains(tt)), cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            } else
             {
-                usedTurnTakers.Add(GetSelectedTurnTaker(storedResults));
+                //send message saying there are no players available
+                coroutine = GameController.SendMessageAction("There are no valid players to use a power.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
-            //... and a third player’s hero uses a power
-            coroutine = GameController.SelectHeroToUsePower(DecisionMaker, optionalUsePower: false, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => !usedTurnTakers.Contains(tt)), cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield break;
+
         }
     }
 }
