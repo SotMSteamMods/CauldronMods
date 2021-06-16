@@ -364,8 +364,38 @@ namespace CauldronTests
             QuickHandCheck(-1, -1, 1);
             AssertInTrash(hakaToDiscard);
             AssertIsInPlay(raToPlay);
-
             
+        }
+
+        [Test()]
+         public void TestMapToLostChoth_Only1AvailableHero()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.VaultFive");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DealDamage(baron, ra, 100, DamageType.Fire);
+            DealDamage(baron, bunker, 100, DamageType.Fire);
+            Card hakaToDiscard = haka.HeroTurnTaker.Hand.TopCard;
+            //When this card enters play, 1 player discards a card, a second player plays a card, and a third player’s hero uses a power.
+            DecisionSelectTurnTakers = new TurnTaker[] { haka.TurnTaker, haka.TurnTaker};
+            DecisionSelectCards = new Card[] { hakaToDiscard};
+            QuickHandStorage(haka);
+            AssertNextMessages(new string[] { "Map to Lost Choth is now a part of Haka's deck!", "There are no valid players to play a card.", "There are no valid players to use a power.", "Map to Lost Choth was moved to Haka's deck."});
+            PlayCard("MapToLostChoth");
+            QuickHandCheck(-1);
+            AssertInTrash(hakaToDiscard);
+
+        }
+
+        [Test()]
+        public void TestMapToLostChoth_NoAvailableHeroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "MobileDefensePlatform", "Cauldron.VaultFive", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            AssertNextMessages(new string[] { "There are no valid players to choose from.", "There are no valid players to discard a card.", "There are no valid players to play a card.", "There are no valid players to use a power.", "Map to Lost Choth was moved to Vault Five's deck." });
+            PlayCard("MapToLostChoth");
+
         }
 
         [Test()]
