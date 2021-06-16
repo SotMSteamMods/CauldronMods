@@ -916,7 +916,7 @@ namespace CauldronTests
 
             // Act
             GoToStartOfTurn(BlackwoodForest);
-
+            DecisionsYesNo = new bool[] { true, true };
             DecisionSelectCards = new[]
             {
                 GetCardFromHand(ra, 0),
@@ -964,9 +964,7 @@ namespace CauldronTests
             // Act
             GoToStartOfTurn(BlackwoodForest);
 
-            //DecisionSelectWord = SelectWordDecision.
-
-            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            DecisionsYesNo = new bool[] { false, false };
 
             GoToEndOfTurn(BlackwoodForest);
 
