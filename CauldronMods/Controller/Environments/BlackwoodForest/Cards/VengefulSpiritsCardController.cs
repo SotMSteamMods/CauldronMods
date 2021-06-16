@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using System;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
@@ -28,7 +28,7 @@ namespace Cauldron.BlackwoodForest
         public VengefulSpiritsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             IEnumerable<Location> villainTrashes = FindLocationsWhere(location => location.IsRealTrash && location.IsVillain && GameController.IsLocationVisibleToSource(location, GetCardSource()));
-            foreach(Location loc in villainTrashes)
+            foreach (Location loc in villainTrashes)
             {
                 base.SpecialStringMaker.ShowListOfCardsAtLocation(loc, new LinqCardCriteria(c => c.IsTarget, "target", useCardsSuffix: false, singular: "target", plural: "targets"));
 
@@ -119,7 +119,7 @@ namespace Cauldron.BlackwoodForest
         private IEnumerator EndOfTurnOptionalDestruction(PhaseChangeAction pca)
         {
             List<DiscardCardAction> discardedCards = new List<DiscardCardAction>();
-            IEnumerator discardCardsRoutine = this.GameController.EachPlayerDiscardsCards(0, NumberOfCardsToDiscard, discardedCards, cardSource: GetCardSource());
+            IEnumerator discardCardsRoutine = EachPlayerDiscardsCardsAllOrNothing(NumberOfCardsToDiscard, NumberOfCardsToDiscard, discardedCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(discardCardsRoutine);
@@ -147,6 +147,35 @@ namespace Cauldron.BlackwoodForest
             }
         }
 
-       
+        //This is a copy of EachPlayerDiscardsCards with the optional parameter set to true instead of false
+        private IEnumerator EachPlayerDiscardsCardsAllOrNothing(int minNumberOfCardsPerHero, int? maxNumberOfCardsPerHero, List<DiscardCardAction> storedResultsDiscard = null, bool allowAutoDecideHeroes = true, int? requiredNumberOfHeroes = null, bool showCounter = false, LinqCardCriteria cardCriteria = null, bool ignoreBattleZone = false, CardSource cardSource = null)
+        {
+            if (minNumberOfCardsPerHero == 0)
+            {
+                requiredNumberOfHeroes = 0;
+            }
+            if (cardCriteria == null)
+            {
+                cardCriteria = new LinqCardCriteria();
+            }
+            Func<string> counter = null;
+            if (showCounter && cardSource != null)
+            {
+                counter = () => "Cards discarded so far: " + (from en in Game.Journal.DiscardCardEntriesThisTurn()
+                                                              where en.Card.Owner.IsHero && en.CardSource == cardSource.Card && en.CardSourcePlayIndex == cardSource.Card.PlayIndex
+                                                              select en).Count();
+            }
+            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(null, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && (tt as HeroTurnTaker).HasCardsInHand && (tt as HeroTurnTaker).Hand.Cards.Where(cardCriteria.Criteria).Count() > 0, $"heroes with {cardCriteria.GetDescription()} in hand"), SelectionType.DiscardCard, (TurnTaker tt) => GameController.SelectAndDiscardCards(FindHeroTurnTakerController((HeroTurnTaker)tt), maxNumberOfCardsPerHero, optional: true, minNumberOfCardsPerHero, storedResultsDiscard, allowAutoDecide: false, null, null, counter, cardCriteria, SelectionType.DiscardCard, tt, cardSource), optional: false, requiredDecisions: requiredNumberOfHeroes, allowAutoDecide: allowAutoDecideHeroes, extraInfo: counter,ignoreBattleZone: ignoreBattleZone, cardSource: cardSource);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+
     }
 }
