@@ -12,6 +12,7 @@ namespace Cauldron.Cricket
         public SwarmingFrequencyCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             AllowFastCoroutinesDuringPretend = false;
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => c.IsEnvironmentTarget, "", useCardsSuffix: false, singular: "environment target", plural: "environment targets"));
         }
 
         public override void AddTriggers()
