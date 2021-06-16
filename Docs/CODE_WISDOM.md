@@ -33,7 +33,7 @@ This distinction matters as game text (read that as 'code') is not run when the 
 This also leads to unclear scenarios when moving cards from between locations (under a card, to the play area) where the card may not cleanly enter play and fire all triggers.
 
 ## Damage Preview and Pretend
-When damage is dealt, a UI damage preview appears on the screen. At that time, the game runs through all the triggers that could affect the damage. This period of time is known as preteend mode. 
+When damage is dealt, a UI damage preview appears on the screen. At that time, the game runs through all the triggers that could affect the damage. This period of time is known as pretend mode. 
 If you have an effect that would trigger a decision in the middle of pretend mode, it will not run by default, the damage will just go through. 
 In order to allow those decisions to occur, you need to set the flag AllowFastCoroutinesDuringPretend to false.
 
