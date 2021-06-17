@@ -61,7 +61,7 @@ namespace Cauldron.TheWanderingIsle
 				if (damageDealers.Count() > 1)
 				{					
 					List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-					coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, source, storedResults, optional: false, allowAutoDecide: true);
+					coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, source, storedResults, optional: false, allowAutoDecide: true, cardSource: GetCardSource());
 					if (UseUnityCoroutines)
 					{
 						yield return GameController.StartCoroutine(coroutine);
