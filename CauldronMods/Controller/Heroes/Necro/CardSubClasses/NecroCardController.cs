@@ -19,32 +19,50 @@ namespace Cauldron.Necro
 
         protected ITrigger AddUndeadDestroyedTrigger(Func<DestroyCardAction, IEnumerator> response, TriggerType triggerType)
         {
-            return base.AddTrigger<DestroyCardAction>(d => this.IsUndead(d.CardToDestroy.Card) && d.WasCardDestroyed, response, triggerType, TriggerTiming.After);
+            return AddTrigger<DestroyCardAction>(d => this.IsUndead(d.CardToDestroy.Card) && d.WasCardDestroyed, response, triggerType, TriggerTiming.After);
         }
 
         protected bool IsHeroConsidering1929(Card card)
         {
-            if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
+            if (GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) == true)
             {
                 return IsVillain(card);
             }
             return card.IsHero;
         }
 
+        protected bool IsHeroTargetConsidering1929(Card card)
+        {
+            if (GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) == true)
+            {
+                return IsVillainTarget(card);
+            }
+            return card.IsHero && card.IsTarget;
+        }
+
         protected bool IsVillianConsidering1929(Card card)
         {
-            if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
+            if (GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) == true)
             {
                 return card.IsHero;
             }
-            return base.IsVillain(card);
+            return IsVillain(card);
+        }
+
+        protected bool IsVillianTargetConsidering1929(Card card)
+        {
+            if (GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) == true)
+            {
+                return card.IsHero && card.IsTarget;
+            }
+            return IsVillainTarget(card);
         }
 
         protected string HeroStringConsidering1929
         {
             get
             {
-                if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
+                if (GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) == true)
                 {
                     return "villain";
                 }
@@ -56,7 +74,7 @@ namespace Cauldron.Necro
         {
             get
             {
-                if (GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(base.CharacterCard, PastNecroPowerKey) == true)
+                if (GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) == true)
                 {
                     return "hero";
                 }
@@ -71,7 +89,7 @@ namespace Cauldron.Necro
 
         protected int GetNumberOfRitualsInPlay()
         {
-            return base.FindCardsWhere(c => c.IsInPlayAndHasGameText && this.IsRitual(c)).Count();
+            return FindCardsWhere(c => c.IsInPlayAndHasGameText && this.IsRitual(c)).Count();
         }
 
         protected bool IsUndead(Card card)
