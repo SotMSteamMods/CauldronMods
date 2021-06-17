@@ -25,7 +25,7 @@ namespace Cauldron.Dynamo
         {
             //...the players may choose to play the top card of the environment deck.
             List<PlayCardAction> storedResults = new List<PlayCardAction>();
-            IEnumerator coroutine = base.GameController.PlayTopCard(base.DecisionMaker, base.FindEnvironment(), true, storedResults: storedResults);
+            IEnumerator coroutine = base.GameController.PlayTopCard(base.DecisionMaker, base.FindEnvironment(), true, storedResults: storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
