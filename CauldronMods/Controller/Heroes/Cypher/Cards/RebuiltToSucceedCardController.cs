@@ -59,8 +59,8 @@ namespace Cauldron.Cypher
 
             MoveCardDestination[] destinations = 
             {
-                new MoveCardDestination(base.HeroTurnTaker.Hand),
-                new MoveCardDestination(base.TurnTaker.PlayArea)
+                new MoveCardDestination(base.TurnTaker.PlayArea),
+                new MoveCardDestination(base.HeroTurnTaker.Hand)
             };
 
             List<MoveCardAction> moveResult = new List<MoveCardAction>();
