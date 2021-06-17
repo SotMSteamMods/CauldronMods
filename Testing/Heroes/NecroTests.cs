@@ -617,6 +617,27 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestCorpseExplosion_RedMenace()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Necro", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card red = MoveCard(oblivaeon, "TheRedMenace", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            GoToBeforeStartOfTurn(necro);
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(necro);
+
+            Card ghoul = PlayCard("Ghoul");
+            Card explosion = PlayCard("CorpseExplosion");
+
+            QuickHPStorage(red);
+            DestroyCard(ghoul, necro.CharacterCard);
+            QuickHPCheck(-2);
+
+        }
+
+        [Test()]
         public void TestFinalRitualSingleCard()
         {
             SetupGameController("BaronBlade", "Cauldron.Necro", "Ra", "Fanatic", "Megalopolis");

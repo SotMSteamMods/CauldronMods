@@ -129,6 +129,29 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestPastNecroInnatePowerBloodRite_RedMenace()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Necro/PastNecroCharacter", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card red = MoveCard(oblivaeon, "TheRedMenace", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            GoToBeforeStartOfTurn(necro);
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(necro);
+            SetHitPoints(red, 5);
+            Card ghoul = PlayCard("Ghoul");
+            Card blood = PlayCard("BloodRite");
+
+            GoToUsePowerPhase(necro);
+            UsePower(necro.CharacterCard);
+            QuickHPStorage(red);
+            DestroyCard(ghoul, necro.CharacterCard);
+            QuickHPCheck(2);
+
+        }
+
+        [Test()]
         public void TestPastNecroInnatePowerCorpseExplosion()
         {
             SetupGameController("BaronBlade", "Cauldron.Necro/PastNecroCharacter", "Fanatic", "Haka", "Megalopolis");
