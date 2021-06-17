@@ -21,7 +21,7 @@ namespace Cauldron.Necro
         {
             //Necro deals 1 non - hero target 3 infernal damage.
             IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 3, DamageType.Infernal, 1, false, 1,
-                additionalCriteria: c => !IsHeroConsidering1929(c),
+                additionalCriteria: c => !IsHeroTargetConsidering1929(c),
                 cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
