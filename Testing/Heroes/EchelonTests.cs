@@ -432,6 +432,7 @@ namespace CauldronTests
             Card advance = PutInTrash("AdvanceAndRegroup");
             Card bt = PutInTrash("BreakThrough");
             Card command = PutInHand("CommandAndConquer");
+            DecisionYesNo = true;
             DecisionSelectCards = new Card[] { command, advance, bt };
 
             GoToPlayCardPhase(echelon);
@@ -448,8 +449,8 @@ namespace CauldronTests
             Card advance = PutInTrash("AdvanceAndRegroup");
             Card bt = PutInTrash("BreakThrough");
             Card command = PutInHand("CommandAndConquer");
-            DecisionSelectCards = new Card[] { null, advance, bt };
-            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { advance, bt };
+            DecisionsYesNo = new bool[] { false, true };
             int startingHand = GetNumberOfCardsInHand(echelon);
 
             PlayCard("FirstResponder");
