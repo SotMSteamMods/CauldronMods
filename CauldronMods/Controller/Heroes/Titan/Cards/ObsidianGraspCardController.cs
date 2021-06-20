@@ -30,7 +30,7 @@ namespace Cauldron.Titan
             }
 
             //If Titanform is in play... 
-            if (base.GetTitanform().IsInPlayAndNotUnderCard && storedTarget.Any() && storedTarget.FirstOrDefault().SelectedCard.Location.IsInPlayAndNotUnderCard)
+            if (base.GetTitanform().IsInPlayAndNotUnderCard && storedTarget.Any())
             {
                 //you may discard a card...
                 List<DiscardCardAction> storedResult = new List<DiscardCardAction>();
