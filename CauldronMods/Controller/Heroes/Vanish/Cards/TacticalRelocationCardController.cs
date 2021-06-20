@@ -98,7 +98,7 @@ namespace Cauldron.Vanish
             //and allow all the other hero's to draw and discard
 
             var sttd = new SelectTurnTakersDecision(GameController, null, new LinqTurnTakerCriteria((TurnTaker tt) => tt is HeroTurnTaker htt && !damaged.Contains(htt), "heroes"), SelectionType.DiscardAndDrawCard,
-                                isOptional: true,
+                                requiredDecisions: 0,
                                 allowAutoDecide: true,
                                 cardSource: GetCardSource());
             coroutine = GameController.SelectTurnTakersAndDoAction(sttd, DrawThenDiscardResponse, cardSource: GetCardSource());
@@ -115,7 +115,7 @@ namespace Cauldron.Vanish
 
         private SelectCardDecision WasDamagedSelection(HeroTurnTakerController httc)
         {
-            return new SelectCardDecision(httc.GameController, httc, SelectionType.MoveCardToPlayArea, httc.GetCardsAtLocation(httc.HeroTurnTaker.Trash),
+            return new SelectCardDecision(httc.GameController, httc, SelectionType.Custom, httc.GetCardsAtLocation(httc.HeroTurnTaker.Trash),
                             isOptional: true,
                             allowAutoDecide: true,
                             additionalCriteria: IsEquipmentOrOngoing,
@@ -126,7 +126,14 @@ namespace Cauldron.Vanish
         {
             if (scd.SelectedCard != null)
             {
-                return GameController.MoveCard(scd.HeroTurnTakerController, scd.SelectedCard, scd.SelectedCard.Owner.PlayArea, isPutIntoPlay: true, showMessage: true, decisionSources: new[] { scd }, cardSource: GetCardSource());
+                return GameController.MoveCard(
+                    scd.HeroTurnTakerController,
+                    scd.SelectedCard,
+                    scd.SelectedCard.Owner.PlayArea,
+                    isPutIntoPlay: true,
+                    showMessage: true,
+                    decisionSources: new[] { scd },
+                    cardSource: GetCardSource());
             }
             else
             {
@@ -160,6 +167,17 @@ namespace Cauldron.Vanish
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText(
+                "Do you want to move an equipment or ongoing card from your trash into play?",
+                "Should they move an equipment or ongoing card from their trash into play?",
+                "Vote for if they should move an equipment or ongoing card from their trash into play?",
+                "whether to move an equipment or ongoing card from their trash into play"
+            );
         }
     }
 }
