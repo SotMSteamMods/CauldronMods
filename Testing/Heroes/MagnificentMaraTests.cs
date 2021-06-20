@@ -841,7 +841,7 @@ namespace CauldronTests
 
             StartGame();
 
-            DecisionSelectFunction = 1;
+            DecisionSelectFunction = 0;
 
             Card kalpak = PlayCard("KalpakOfMysteries");
             UsePower(kalpak);
