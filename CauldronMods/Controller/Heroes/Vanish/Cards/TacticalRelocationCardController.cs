@@ -126,14 +126,7 @@ namespace Cauldron.Vanish
         {
             if (scd.SelectedCard != null)
             {
-                return GameController.MoveCard(
-                    scd.HeroTurnTakerController,
-                    scd.SelectedCard,
-                    scd.SelectedCard.Owner.PlayArea,
-                    isPutIntoPlay: true,
-                    showMessage: true,
-                    decisionSources: new[] { scd },
-                    cardSource: GetCardSource());
+                return GameController.MoveCard(scd.HeroTurnTakerController, scd.SelectedCard, scd.SelectedCard.Owner.PlayArea, isPutIntoPlay: true, showMessage: true, decisionSources: new[] { scd }, cardSource: GetCardSource());
             }
             else
             {
