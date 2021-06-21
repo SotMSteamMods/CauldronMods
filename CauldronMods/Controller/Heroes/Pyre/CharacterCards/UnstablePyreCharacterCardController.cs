@@ -34,6 +34,7 @@ namespace Cauldron.Pyre
             //example yes-no decision to show it with the same CustomDecisionText
             CurrentMode = CustomMode.PlayerToIrradiate;
             var testDecision = new YesNoCardDecision(GameController, DecisionMaker, SelectionType.Custom, Card, cardSource: GetCardSource());
+            coroutine = GameController.MakeDecisionAction(testDecision);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
