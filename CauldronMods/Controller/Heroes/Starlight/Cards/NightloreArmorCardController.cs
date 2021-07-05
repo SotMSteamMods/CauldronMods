@@ -18,6 +18,9 @@ namespace Cauldron.Starlight
         public readonly string HasSaidNoToNightloreArmor = "HasSaidNoToNightloreArmor";
         public readonly string CurrentActionGUID = "CurrentActionGUID";
 
+        private bool hasSaidNoToNightloreArmor = false;
+        private int currentActionGUID = -1;
+
         public override void AddTriggers()
         {
             //"Whenever damage would be dealt to another hero target, you may destroy a constellation card in play to prevent that damage."
@@ -34,12 +37,12 @@ namespace Cauldron.Starlight
 
         private IEnumerator DestroyConstellationToPreventDamage(DealDamageAction dd)
         {
-            if (IsPropertyTrue(HasSaidNoToNightloreArmor) && dd.InstanceIdentifier.GetHashCode() + dd.Target.GetHashCode() == GetCardPropertyJournalEntryInteger(CurrentActionGUID).Value)
+            if(hasSaidNoToNightloreArmor == true && currentActionGUID == dd.InstanceIdentifier.GetHashCode() + dd.Target.GetHashCode())
             {
-                if(!dd.IsPretend)
+                if (!dd.IsPretend)
                 {
-                    SetCardProperty(HasSaidNoToNightloreArmor, false);
-                    SetCardProperty(CurrentActionGUID, -1);
+                    hasSaidNoToNightloreArmor = false;
+                    currentActionGUID = -1;
                 }
                 yield break;
             }
@@ -68,13 +71,14 @@ namespace Cauldron.Starlight
                 }
                 if (!DidPlayerAnswerYes(yesNoDecision))
                 {
-                    SetCardProperty(HasSaidNoToNightloreArmor, true);
-                    SetCardProperty(CurrentActionGUID, dd.InstanceIdentifier.GetHashCode() + dd.Target.GetHashCode());
+                    hasSaidNoToNightloreArmor = true;
+                    currentActionGUID = dd.InstanceIdentifier.GetHashCode() + dd.Target.GetHashCode();
                     yield break;
                 }
 
                 //"...destroy a constellation in play..."
-                IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(HeroTurnTakerController, new LinqCardCriteria(IsConstellationInPlay, "constellation"), optional: false, cardSource: GetCardSource());
+                List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
+                IEnumerator destroyConstellation = GameController.SelectAndDestroyCard(HeroTurnTakerController, new LinqCardCriteria(IsConstellationInPlay, "constellation"), optional: false, storedResultsAction: storedResults, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(destroyConstellation);
@@ -83,8 +87,10 @@ namespace Cauldron.Starlight
                 {
                     GameController.ExhaustCoroutine(destroyConstellation);
                 }
-
-                SetCardProperty(HasConstellationBeenDestroyed, true);
+                if(DidDestroyCard(storedResults))
+                {
+                    SetCardProperty(HasConstellationBeenDestroyed, true);
+                }
             }
             if (IsPropertyTrue(HasConstellationBeenDestroyed))
             {
@@ -103,8 +109,8 @@ namespace Cauldron.Starlight
                 if (!dd.IsPretend)
                 {
                     SetCardProperty(HasConstellationBeenDestroyed, false);
-                    SetCardProperty(CurrentActionGUID, -1);
-                    SetCardProperty(HasSaidNoToNightloreArmor, false);
+                    hasSaidNoToNightloreArmor = false;
+                    currentActionGUID = -1;
                 }
 
             }
