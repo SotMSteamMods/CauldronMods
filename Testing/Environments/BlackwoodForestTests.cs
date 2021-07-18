@@ -5,6 +5,7 @@ using Cauldron.BlackwoodForest;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
+using Handelabra;
 
 using NUnit.Framework;
 
@@ -1163,6 +1164,40 @@ namespace CauldronTests
             QuickHandStorage(thriya);
             DestroyCard(mirror);
             QuickHandCheck(1);
+        }
+
+        [Test]
+        public void TestMirrorWraith_MissionCards()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", DeckNamespace, "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card warTorn = MoveCard(oblivaeon, "AWarTornLandscape", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+
+            GoToBeforeStartOfTurn(ra);
+            RunActiveTurnPhase();
+
+            GoToEndOfTurn();
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(legacy);
+            MoveCards(oblivaeon, FindCardsWhere(c => c.IsEnvironment && c.IsInPlay), c => c.NativeTrash, overrideIndestructible: true);
+
+            GoToEndOfTurn(legacy);
+
+            AssertFlipped(warTorn);
+            Log.Debug($"Owner of {warTorn.Title} is {warTorn.Owner.Name}");
+
+            GoToPlayCardPhase(ra);
+            Card mirror = PlayCard("MirrorWraith");
+            PrintSpecialStringsForCard(mirror);
+            Log.Debug($"Keywords on Mirror Wraith are: {mirror.GetKeywords().ToRecursiveString()}");
+            AssertCardHasKeyword(mirror, "reward", isAdditional: false);
+            DecisionSelectTargets = new Card[] { haka.CharacterCard, haka.CharacterCard, tachyon.CharacterCard, luminary.CharacterCard, legacy.CharacterCard, tachyon.CharacterCard, luminary.CharacterCard, legacy.CharacterCard };
+            QuickHPStorage(haka, legacy, tachyon, luminary);
+            UsePower(ra.CharacterCard);
+            UsePower(ra.CharacterCard);
+            QuickHPCheck(-4, -4, -4, -4);
         }
     }
 }
