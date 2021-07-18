@@ -68,8 +68,16 @@ namespace Cauldron.BlackwoodForest
         {
             var card = CopiedCard; //buffer the resolution
             string replacementTitle = "*" + Card.Title + "*";
-            var sa = card.Definition.Body.Select(b => b.Replace("{" + card.Title + "}", replacementTitle).Replace(card.Title, replacementTitle)).ToArray();
 
+            string[] sa;
+            if (!card.IsFlipped)
+            {
+                sa = card.Definition.Body.Select(b => b.Replace("{" + card.Title + "}", replacementTitle).Replace(card.Title, replacementTitle)).ToArray();
+            } else
+            {
+                sa = card.Definition.FlippedBody.Select(b => b.Replace("{" + card.Title + "}", replacementTitle).Replace(card.Title, replacementTitle)).ToArray();
+
+            }
             return "Copied card text: " + string.Join(System.Environment.NewLine, sa);
         }
 
@@ -165,7 +173,7 @@ namespace Cauldron.BlackwoodForest
 
                 // Set card text
                 CopyGameText(copiedCard);
-                ModifyDefinitionKeywords(BaseKeywords.Concat(copiedCard.Definition.Keywords));
+                ModifyDefinitionKeywords(BaseKeywords.Concat(copiedCard.IsFlipped ? copiedCard.Definition.FlippedKeywords : copiedCard.Definition.Keywords));
 
                 var messageRoutine = GameController.SendMessageAction($"{Card.Title} copies {copiedCard.Title}.", Priority.High, GetCardSource(), new[] { copiedCard });
                 if (base.UseUnityCoroutines)
