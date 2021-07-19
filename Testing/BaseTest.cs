@@ -5064,11 +5064,12 @@ namespace Handelabra.Sentinels.UnitTest
         /// Creates a new game object from an existing one, copying its decision answers so it can be replayed.
         /// </summary>
         /// <param name="game">Game.</param>
-        private Game MakeReplayableGame(Game existingGame)
+        protected Game MakeReplayableGame(Game existingGame)
         {
             // Get the information from the copied game, but not the state of it.
-            var turnTakerIds = existingGame.TurnTakers.Select(tt => tt.Identifier);
+            var turnTakerIds = existingGame.TurnTakers.Select(tt => tt.QualifiedIdentifier);
             var isAdvanced = existingGame.IsAdvanced;
+            var isChallenge = existingGame.IsChallenge;
             var promoIds = new Dictionary<string, string>();
             foreach (var ttWithPromo in existingGame.TurnTakers.Where(tt => tt.PromoIdentifier != null))
             {
@@ -5078,7 +5079,7 @@ namespace Handelabra.Sentinels.UnitTest
             var isMultiplayer = existingGame.IsMultiplayer;
             var randomizer = existingGame.InitialRNG;
 
-            var game = new Game(turnTakerIds, isAdvanced, promoIds, randomSeed, isMultiplayer, randomizer);
+            var game = new Game(turnTakerIds,isAdvanced: isAdvanced, promoIdentifiers: promoIds, randomSeed: randomSeed, isMultiplayer: isMultiplayer, randomizer: randomizer, isChallenge: isChallenge);
             this.ReplayDecisionAnswers = existingGame.Journal.DecisionAnswerEntries(e => true).ToList();
             Console.WriteLine("# of saved replay decision answers: " + this.ReplayDecisionAnswers.Count());
 
