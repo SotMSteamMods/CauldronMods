@@ -384,10 +384,9 @@
 		"flippedAdvancedIcons": [
 			"IncreaseDamageDealt"
 		],
-		"difficulty": 3,
+		"difficulty": 1,
 		"challengeTitle": "Chaotic Colors",
-		"challengeText": "At the start of the game, put 6 random tattoos under {Dendron} instead. {Dendron} is immune to villain damage.
-",
+		"challengeText": "At the start of the game, put 6 random tattoos under {Dendron} instead. {Dendron} is immune to villain damage.",
 		"openingLines": {
 			"default": "Do you feel it coming in the air? My art now knows no boundaries.",
 			"TheStrangerCharacter": "Do you like my new runes?",
