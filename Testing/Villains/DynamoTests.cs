@@ -74,6 +74,17 @@ namespace CauldronTests
             AssertGameOver(EndingResult.VillainDestroyedVictory);
 
         }
+
+        [Test()]
+        public void TestDynamo_Ultimate_PythonCopperHeadStacked()
+        {
+            SetupGameController(new string[] { "Cauldron.Dynamo", "Haka", "Bunker", "TheScholar", "Megalopolis" }, advanced: true, challenge: true);
+            StackDeck("Copperhead", "Python");
+            StartGame();
+
+            AssertIsInPlay("Python", "Copperhead");
+
+        }
         [Test()]
         public void TestDynamo_ChallengeWhenNotLastDestroyed()
         {
