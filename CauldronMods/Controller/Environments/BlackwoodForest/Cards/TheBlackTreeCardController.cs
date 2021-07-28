@@ -52,7 +52,7 @@ namespace Cauldron.BlackwoodForest
 
         private IEnumerator DrawCardFromEachDeckResponse(TurnTakerController ttc)
         {
-            foreach (var deck in ttc.TurnTaker.Decks)
+            foreach (var deck in ttc.TurnTaker.Decks.Where(loc => loc.IsRealDeck && GameController.IsLocationVisibleToSource(loc, GetCardSource())))
             {
                 Card top = deck.TopCard;
                 if (top != null)
