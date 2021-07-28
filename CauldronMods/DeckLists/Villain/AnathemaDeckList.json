@@ -225,7 +225,12 @@
                 "When this card enters play, destroy all other body cards.",
                 "Reduce damage dealt to villain targets by 2."
             ],
-            "flavorText": "I can increase outer{BR}biomass density all day{BR}long. What's your trick, meatsack?",
+            "flavorQuotes": [
+                {
+                    "identifier": "Anathema",
+                    "text": "I can increase outer{BR}biomass density all day{BR}long. What's your trick, meatsack?"
+                }
+            ],
             "flavorReference": "Anathema to the Scholar, Vagabond's Tale #143",
             "hitpoints": 9
         },
