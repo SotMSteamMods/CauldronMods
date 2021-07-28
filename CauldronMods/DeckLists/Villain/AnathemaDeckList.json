@@ -48,7 +48,7 @@
                 "EndOfTurnAction",
                 "Discard"
             ],
-            "difficulty": 2,
+            "difficulty": 1,
             "challengeTitle":"Regenerative Biology",
 		    "challengeText":"At the start of the game, put Biofeedback into play. Biofeedback is indestructible. {Anathema} is immune to villain damage.",
 		    "flippedChallengeIcons":[

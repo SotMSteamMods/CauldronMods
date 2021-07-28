@@ -52,7 +52,7 @@
                 "DestroyOngoing",
                 "DestroyEquipment"
             ],
-            "difficulty": 3,
+            "difficulty": 2,
             "challengeTitle": "Lingering Influence",
 			"challengeText": "Whenever a villain Ongoing is destroyed, other villain Ongoings are indestructible until the end of the villain turn.",
             "openingLines": {

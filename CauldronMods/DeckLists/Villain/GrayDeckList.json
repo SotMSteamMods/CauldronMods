@@ -52,7 +52,7 @@
             "flippedAdvancedIcons": [
                 "ReduceDamageTaken"
             ],
-            "difficulty": 4,
+            "difficulty": 3,
             "challengeTitle": "Decaying World",
 			"challengeText": "At the start of the villain turn, {Gray} deals each target 1 irreducible energy damage.",
             "openingLines": {
