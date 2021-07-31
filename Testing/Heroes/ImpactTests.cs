@@ -127,9 +127,24 @@ namespace CauldronTests
             QuickHPStorage(shield);
 
             UsePower(impact);
-            AssertNumberOfStatusEffectsInPlay(0);
             DealDamage(impact, shield, 1, DamageType.Melee);
             QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestImpactPowerNoDamagePossible()
+        {
+            SetupGameController("CitizensHammerAndAnvilTeam", "Cauldron.Impact", "TheWraith", "WagnerMarsBase");
+            StartGame();
+
+            DecisionSelectTarget = impact.CharacterCard;
+            PlayCard("ThroatJab");
+
+            Card shield = GetCardInPlay("HammerAndShield");
+            DecisionSelectTarget = shield;
+            QuickHPStorage(shield);
+
+            AssertNextMessageContains("from dealing damage");
+            UsePower(impact);
         }
         [Test]
         public void TestImpactIncap1()
