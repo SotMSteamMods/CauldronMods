@@ -100,7 +100,7 @@ namespace Cauldron.VaultFive
                     SetCardPropertyToTrueIfRealAction(FirstTimeEnteredPlay);
 
                     List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                    coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.TurnTaker, false, false, storedResults, cardSource: GetCardSource());
+                    coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.Custom, false, false, storedResults, cardSource: GetCardSource());
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(coroutine);
@@ -198,6 +198,13 @@ namespace Cauldron.VaultFive
             }
 
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText($"Select a player whose deck will gain {Card.Title}", $"Select a player whose deck will gain {Card.Title}", $"Vote for the player whose deck will gain {Card.Title}", $"selecting deck to gain {Card.Title}");
+
         }
     }
 }
