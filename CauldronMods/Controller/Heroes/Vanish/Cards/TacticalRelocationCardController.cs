@@ -32,60 +32,30 @@ namespace Cauldron.Vanish
             bool done = false;
             IEnumerator coroutine;
 
-            var choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && c.BattleZone == BattleZone &&!selected.Contains(c.Owner.ToHero())).ToArray();
-            while (choices.Length > 0 && !done)
+            Func<DealDamageAction, IEnumerator> addDamagedToList = delegate (DealDamageAction dda)
             {
-                var previewDDA = new DealDamageAction(GameController, new DamageSource(GameController, CharacterCard), null, 3, DamageType.Energy);
-                var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.DealDamage, choices,
-                    isOptional: true,
-                    allowAutoDecide: true,
-                    dealDamageInfo: new[] { previewDDA },
-                    cardSource: GetCardSource());
-
-                coroutine = GameController.MakeDecisionAction(scd);
-                if (base.UseUnityCoroutines)
+                if(dda.DidDealDamage && dda.Target.IsHeroCharacterCard && dda.Target.Owner.IsHero)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    damaged.Add(dda.Target.Owner.ToHero());
                 }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                if (scd.SelectedCard == null)
-                {
-                    //if we made no selection, exit our loop
-                    done = true;
-                }
-                else
-                {
-                    //otherwise attempt to damage the selected card, recording the owner, then regenerate the list of choices ignoring those already picked.
-                    var owner = scd.SelectedCard.Owner.ToHero();
-                    selected.Add(owner);
-
-                    var storedDamage = new List<DealDamageAction> { };
-
-                    coroutine = DealDamage(this.CharacterCard, scd.SelectedCard, 3, DamageType.Energy, storedResults: storedDamage, cardSource: GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-
-                    if (DidDealDamage(storedDamage, scd.SelectedCard))
-                    {
-                        damaged.Add(owner);
-                    }
-
-                    choices = GameController.GetAllCards().Where(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && c.BattleZone == BattleZone && !selected.Contains(c.Owner.ToHero())).ToArray();
-                }
+                return DoNothing();
+            };
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 3, DamageType.Energy, null, false, 0, additionalCriteria: c => c.IsHeroCharacterCard, addStatusEffect: addDamagedToList, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             //then allow all the damaged hero's to move a card
-            coroutine = GameController.SelectCardAndDoAction_ManyPlayers(httc => damaged.Contains(httc.HeroTurnTaker), WasDamagedSelection, WasDamagedReponse, cardSource: GetCardSource());
+            var damagedDecision = new SelectTurnTakersDecision(GameController, null, new LinqTurnTakerCriteria((TurnTaker tt) => tt is HeroTurnTaker htt && damaged.Contains(htt), "heroes"), SelectionType.Custom,
+                    requiredDecisions: null,
+                    allowAutoDecide: true,
+                    cardSource: GetCardSource());
+            coroutine = GameController.SelectTurnTakersAndDoAction(damagedDecision, DamagedTurnTakerResponse, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -98,7 +68,7 @@ namespace Cauldron.Vanish
             //and allow all the other hero's to draw and discard
 
             var sttd = new SelectTurnTakersDecision(GameController, null, new LinqTurnTakerCriteria((TurnTaker tt) => tt is HeroTurnTaker htt && !damaged.Contains(htt), "heroes"), SelectionType.DiscardAndDrawCard,
-                                requiredDecisions: 0,
+                                requiredDecisions: null,
                                 allowAutoDecide: true,
                                 cardSource: GetCardSource());
             coroutine = GameController.SelectTurnTakersAndDoAction(sttd, DrawThenDiscardResponse, cardSource: GetCardSource());
@@ -113,25 +83,10 @@ namespace Cauldron.Vanish
             yield break;
         }
 
-        private SelectCardDecision WasDamagedSelection(HeroTurnTakerController httc)
+        private IEnumerator DamagedTurnTakerResponse(TurnTaker tt)
         {
-            return new SelectCardDecision(httc.GameController, httc, SelectionType.Custom, httc.GetCardsAtLocation(httc.HeroTurnTaker.Trash),
-                            isOptional: true,
-                            allowAutoDecide: true,
-                            additionalCriteria: IsEquipmentOrOngoing,
-                            cardSource: GetCardSource());
-        }
-
-        private IEnumerator WasDamagedReponse(SelectCardDecision scd)
-        {
-            if (scd.SelectedCard != null)
-            {
-                return GameController.MoveCard(scd.HeroTurnTakerController, scd.SelectedCard, scd.SelectedCard.Owner.PlayArea, isPutIntoPlay: true, showMessage: true, decisionSources: new[] { scd }, cardSource: GetCardSource());
-            }
-            else
-            {
-                return DoNothing();
-            }
+            IEnumerator coroutine = GameController.SelectCardFromLocationAndMoveIt(FindHeroTurnTakerController(tt.ToHero()), tt.Trash, new LinqCardCriteria(c => c.IsOngoing || IsEquipment(c), "ongoing or equipment"), new List<MoveCardDestination> { new MoveCardDestination(tt.PlayArea) }, isPutIntoPlay: true, optional: true, cardSource: GetCardSource());
+            return coroutine;
         }
 
         private IEnumerator DrawThenDiscardResponse(TurnTaker tt)
@@ -139,7 +94,9 @@ namespace Cauldron.Vanish
             var result = new List<DrawCardAction>();
             var htt = tt.ToHero();
             var httc = GameController.FindHeroTurnTakerController(htt);
-            var coroutine = DrawCard(htt, optional: true, cardsDrawn: result);
+
+            var yesNoStorage = new List<YesNoCardDecision> { };
+            IEnumerator coroutine = GameController.MakeYesNoCardDecision(httc, SelectionType.Custom, Card, storedResults: yesNoStorage, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -148,28 +105,49 @@ namespace Cauldron.Vanish
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if (GetNumberOfCardsDrawn(result) > 0)
+
+            if(!DidPlayerAnswerYes(yesNoStorage))
             {
-                coroutine = SelectAndDiscardCards(httc, 1);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return null;
             }
+
+            coroutine = DrawCard(htt, optional: true, cardsDrawn: result);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            coroutine = SelectAndDiscardCards(httc, 1);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+            yield return null;
         }
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
-
+            if(decision is YesNoCardDecision)
+            {
+                return new CustomDecisionText(
+                    "Do you want to draw a card and discard a card?",
+                    "{0} is choosing whether to draw and discard...",
+                    "Vote for whether {0} should draw and discard.",
+                    "whether to draw and discard"
+                );
+            }
             return new CustomDecisionText(
-                "Do you want to move an equipment or ongoing card from your trash into play?",
-                "Should they move an equipment or ongoing card from their trash into play?",
-                "Vote for if they should move an equipment or ongoing card from their trash into play?",
-                "whether to move an equipment or ongoing card from their trash into play"
+                "Select a hero to move an equipment or ongoing card from their trash into play.",
+                "selecting a hero to put a card into play...",
+                "Vote for who should move an equipment or ongoing card from their trash into play.",
+                "card to move from trash into play"
             );
         }
     }
