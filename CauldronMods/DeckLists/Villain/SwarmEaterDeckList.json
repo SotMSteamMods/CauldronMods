@@ -51,7 +51,7 @@
             "flippedAdvancedIcons": [],
             "challengeTitle": "Inescapable Hunter",
             "challengeText":  "Whenever {SwarmEater} reduces a target to 2 or lower HP, {SwarmEater} destroys that target.",
-            "difficulty": 4,
+            "difficulty": 3,
             "openingLines": {
                 "default": "Obstruction analysis complete. Assigned secondary priority. Primary priority unchanged: incorporate targets, enhance self.",
                 "CypherCharacter": "I will absorb your power!",

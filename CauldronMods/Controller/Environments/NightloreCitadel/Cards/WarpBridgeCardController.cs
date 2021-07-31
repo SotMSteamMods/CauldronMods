@@ -33,7 +33,7 @@ namespace Cauldron.NightloreCitadel
         {
             //select 1 non-character card in play other than this one
             List<SelectCardDecision> storedDecision = new List<SelectCardDecision>() ;
-            IEnumerable<Card> cardList = from c in this.FindCardsWhere((Card c) => c != Card && c.IsInPlayAndHasGameText && !c.IsCharacter && c.IsRealCard && GameController.IsCardVisibleToCardSource(c, GetCardSource()))
+            IEnumerable<Card> cardList = from c in this.FindCardsWhere((Card c) => c != Card && c.IsInPlay && !c.IsCharacter && c.IsRealCard && GameController.IsCardVisibleToCardSource(c, GetCardSource()))
                                          orderby c.Owner.Name
                                          select c;
             IEnumerator coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.ShuffleCardIntoDeck, cardList, storedDecision, false, maintainCardOrder: true, cardSource: GetCardSource());

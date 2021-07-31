@@ -109,7 +109,7 @@ namespace Cauldron.NightloreCitadel
             //each player may put 1 card from their hand beneath this one.
             IEnumerator coroutine = EachPlayerMovesCards(0, 1, SelectionType.MoveCardToUnderCard, new LinqCardCriteria((Card c) => true),
                 (HeroTurnTaker htt) => htt.Hand, (HeroTurnTaker htt) => new List<MoveCardDestination>() { new MoveCardDestination(Card.UnderLocation) },
-                playIfMovingToPlayArea: false, associatedCards: Card.ToEnumerable());
+                requiredNumberOfHeroes: 0, playIfMovingToPlayArea: false, associatedCards: Card.ToEnumerable());
 
             if (base.UseUnityCoroutines)
             {

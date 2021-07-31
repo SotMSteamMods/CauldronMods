@@ -67,7 +67,7 @@
             ],
             "challengeTitle": "Undying Rage",
             "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, that head flips and is restored to {H * 3} HP.",
-            "difficulty": 1
+            "difficulty": 2
         },
         {
             "identifier": "StormTiamatCharacter",
@@ -115,7 +115,8 @@
                 "ReduceDamageTaken"
             ],
             "challengeTitle": "Undying Rage",
-            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, that head flips and is restored to {H * 3} HP."
+            "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, that head flips and is restored to {H * 3} HP.",
+            "difficulty": 2
         },
         {
             "identifier": "WinterTiamatCharacter",
@@ -164,7 +165,7 @@
             ],
             "challengeTitle": "Undying Rage",
             "challengeText": "Whenever a villain Spell card enters play, if the head it names is decapitated, that head flips and is restored to {H * 3} HP.",
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "Screeee! Raoooargh! Khhhaaazzt!",
                 "TheKnightCharacter": "Screeee! Raoooargh! Khhhaaazzt!",
@@ -485,7 +486,8 @@
             "flippedKeywords": [
                 "villain",
                 "head"
-            ]
+            ],
+            "difficulty":  3
         },
         {
             "identifier": "HydraStormTiamatCharacter",
@@ -517,7 +519,8 @@
             "flippedKeywords": [
                 "villain",
                 "head"
-            ]
+            ],
+            "difficulty":  3
         },
         {
             "identifier": "HydraEarthTiamatCharacter",
@@ -550,7 +553,8 @@
             "flippedKeywords": [
                 "villain",
                 "head"
-            ]
+            ],
+            "difficulty":  3
         },
         {
             "identifier": "HydraDecayTiamatCharacter",
@@ -584,7 +588,7 @@
                 "villain",
                 "head"
             ],
-            "difficulty": 1
+            "difficulty": 3
         },
         {
             "identifier": "HydraWindTiamatCharacter",
@@ -617,7 +621,8 @@
             "flippedKeywords": [
                 "villain",
                 "head"
-            ]
+            ],
+            "difficulty":  3
         },
         {
             "identifier": "HydraThunderousGaleTiamatInstructions",
@@ -657,7 +662,7 @@
                 "DealDamageLightning"
             ],
             "isReal": false,
-            "difficulty": 1
+            "difficulty": 3
         },
         {
             "identifier": "HydraNoxiousFireTiamatInstructions",
@@ -698,7 +703,7 @@
                 "DealDamageFire"
             ],
             "isReal": false,
-            "difficulty": 1
+            "difficulty": 3
         },
         {
             "identifier": "HydraFrigidEarthTiamatInstructions",
@@ -737,7 +742,7 @@
                 "DealDamageCold"
             ],
             "isReal": false,
-            "difficulty": 1
+            "difficulty": 3
         },
         {
             "identifier": "ExoscaleCharacter",
@@ -763,7 +768,7 @@
                 "ruined scale"
             ],
             "flippedBody": "This card is indestructible and{BR}cannot leave the villain play area.",
-            "difficulty": 1
+            "difficulty": 2
         },
         {
             "identifier": "NeoscaleCharacter",
@@ -789,7 +794,7 @@
                 "ruined scale"
             ],
             "flippedBody": "This card is indestructible and{BR}cannot leave the villain play area.",
-            "difficulty": 1
+            "difficulty": 2
         }
     ],
     "promoCards": [
@@ -825,7 +830,7 @@
             ],
             "challengeTitle": "Resilience",
             "challengeText": "Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
-            "difficulty": 1,
+            "difficulty": 3,
             "openingLines": {
                 "default": "DrooooooHhhhhreaaaAAAAGHH!",
                 "TheKnightCharacter": "DrooooooHhhhhreaaaAAAAGHH!",
@@ -904,7 +909,7 @@
             "flippedChallengeIcons": [
                 "CounterDamage"
             ],
-            "difficulty": 1,
+            "difficulty": 2,
             "openingLines": {
                 "default": "BzzzzzrroooOOAAGH!",
                 "TheKnightCharacter": "BzzzzzrroooOOAAGH!",
