@@ -15,7 +15,7 @@ namespace Cauldron.Necro
         public override void AddTriggers()
         {
             //At the end of your turn, this card deals the non-undead target with the lowest HP 2 toxic damage.
-            base.AddEndOfTurnTrigger(tt => tt == TurnTaker, p => base.DealDamageToLowestHP(Card, 1, c => !this.IsUndead(c) && IsHeroConsidering1929(c), c => 2, DamageType.Infernal), TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger(tt => tt == TurnTaker, p => base.DealDamageToLowestHP(Card, 1, c => !this.IsUndead(c) && IsHeroTargetConsidering1929(c), c => 2, DamageType.Infernal), TriggerType.DealDamage);
         }
     }
 }

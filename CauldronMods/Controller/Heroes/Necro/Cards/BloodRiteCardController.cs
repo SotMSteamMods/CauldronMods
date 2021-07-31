@@ -22,7 +22,7 @@ namespace Cauldron.Necro
         {
             //all non-undead hero targets regain 2 HP.
             int powerNumeral = base.GetPowerNumeral(0, 2);
-            IEnumerator coroutine = base.GameController.GainHP(base.HeroTurnTakerController, c => IsHeroConsidering1929(c) && !this.IsUndead(c), powerNumeral, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.GainHP(base.HeroTurnTakerController, c => IsHeroTargetConsidering1929(c) && !this.IsUndead(c), powerNumeral, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
