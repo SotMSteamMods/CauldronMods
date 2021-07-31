@@ -784,6 +784,28 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestWarpBridge_Issue1394_CardsUnderCards()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //get another valid target in play to force a decision
+            PlayCard("TheLegacyRing");
+
+            GoToPlayCardPhase(ladyWood);
+            MoveCards(ladyWood, c => c.DoKeywordsContain("season") && c.Location.IsDeck, ladyWood.TurnTaker.Trash);
+            Card rebirth = PlayCard("LadyOfTheWoodsRebirth");
+
+            //At the end of the environment turn, select 1 non-character card in play other than this one and shuffle it back into its associated deck.
+            //If a card leaves play this way, play the top card of the associated deck. 
+            Card bridge = PlayCard("WarpBridge");
+            //there should be 5 choices - rebirth and the 3 cards under it + the legacy ring
+            AssertNumberOfChoicesInNextDecision(5);
+            GoToEndOfTurn(nightlore);
+        }
+
+        [Test()]
         public void TestWarpBridge_NoRogueConstellation_IndestructibleCard()
         {
             SetupGameController("Cauldron.PhaseVillain", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");

@@ -916,7 +916,7 @@ namespace CauldronTests
 
             // Act
             GoToStartOfTurn(BlackwoodForest);
-
+            DecisionsYesNo = new bool[] { true, true };
             DecisionSelectCards = new[]
             {
                 GetCardFromHand(ra, 0),
@@ -964,9 +964,7 @@ namespace CauldronTests
             // Act
             GoToStartOfTurn(BlackwoodForest);
 
-            //DecisionSelectWord = SelectWordDecision.
-
-            DecisionDoNotSelectCard = SelectionType.DiscardCard;
+            DecisionsYesNo = new bool[] { false, false };
 
             GoToEndOfTurn(BlackwoodForest);
 
@@ -1043,6 +1041,40 @@ namespace CauldronTests
 
             // 2 cards left under The Black Tree after playing one
             Assert.AreEqual(2, GetCardsUnderCard(theBlackTree).Count());
+
+        }
+
+        [Test]
+        public void TestTheBlackTree_Oblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Dictionary<Location, Card> topCardsOfSubDecks = new Dictionary<Location, Card>();
+
+            SwitchBattleZone(haka);
+
+            PlayCard(oblivaeon, GetCard("AeonWarrior"), isPutIntoPlay: true, overridePlayLocation: scionOne.TurnTaker.PlayArea);
+
+            //When this card enters play, place the top card of each hero and villain deck face-down beneath it.
+            Card tree = PlayCard("TheBlackTree");
+
+            // Visible: OA, Ra, Legacy, Aeon Deck - 4
+            // Invisible: Haka, Scion Deck, Mission Deck
+            AssertNumberOfCardsUnderCard(tree, 4);
+
+            IEnumerable<Card> underCards = tree.UnderLocation.Cards;
+            foreach(Card c in underCards)
+            {
+                System.Console.WriteLine($"There is a card from the deck with name: {c.NativeDeck.GetFriendlyName()}");
+            }
+            Assert.That(underCards.Any(c => c.NativeDeck.GetFriendlyName() == "OblivAeon's deck"), () => "There was not an OblivAeon card under the Black Tree.");
+            Assert.That(underCards.Any(c => c.NativeDeck.GetFriendlyName() == "Ra's deck"), () => "There was not a Ra card under the Black Tree.");
+            Assert.That(underCards.Any(c => c.NativeDeck.GetFriendlyName() == "Legacy's deck"), () => "There was not a Legacy card under the Black Tree.");
+            Assert.That(underCards.Any(c => c.NativeDeck.GetFriendlyName() == "The Aeon Men Deck"), () => "There was not an Aeon Men card under the Black Tree.");
+            Assert.That(!underCards.Any(c => c.NativeDeck.GetFriendlyName() == "Haka's deck"), () => "There was a Haka card under the Black Tree.");
+            Assert.That(!underCards.Any(c => c.NativeDeck.GetFriendlyName() == "The Scion Deck"), () => "There was a Scion card under the Black Tree.");
+            Assert.That(!underCards.Any(c => c.NativeDeck.GetFriendlyName() == "The Mission Deck"), () => "There was a Mission card under the Black Tree.");
 
         }
 

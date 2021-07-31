@@ -57,7 +57,7 @@
             "flippedAdvancedIcons": [
                 "PlayCardNow"
             ],
-            "difficulty": 2,
+            "difficulty": 3,
             "challengeTitle": "Tactical Retreat",
 			"challengeText": "The first time in the game that {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play, then shuffle all cards other than Up Close and Grappling Claw from the villain trash into the villain deck.",
             "openingLines": {
@@ -391,7 +391,7 @@
             ],
              "challengeTitle": "Reverse Engineering",
 			"challengeText": "If {TheRam} isn’t in play, other villain cards treat {AdmiralWintersCharacter} as {TheRam}.",
-            "difficulty": 3
+            "difficulty": 4
         }
     ],
     "promoCards": [
@@ -445,7 +445,7 @@
                 "StartOfTurnAction",
                 "IncreaseDamageDealtProjectile"
             ],
-            "difficulty": 1,
+            "difficulty": 4,
             "challengeTitle": "Reverse Engineering",
 			"challengeText": "At the end of the villain turn, if this card is in play, destroy an equipment card, then put the top card of the villain deck under {TheRam}.",
             "openingLines": {

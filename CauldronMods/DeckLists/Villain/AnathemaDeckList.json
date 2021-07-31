@@ -48,7 +48,7 @@
                 "EndOfTurnAction",
                 "Discard"
             ],
-            "difficulty": 2,
+            "difficulty": 1,
             "challengeTitle":"Regenerative Biology",
 		    "challengeText":"At the start of the game, put Biofeedback into play. Biofeedback is indestructible. {Anathema} is immune to villain damage.",
 		    "flippedChallengeIcons":[
@@ -225,7 +225,12 @@
                 "When this card enters play, destroy all other body cards.",
                 "Reduce damage dealt to villain targets by 2."
             ],
-            "flavorText": "I can increase outer{BR}biomass density all day{BR}long. What's your trick, meatsack?",
+            "flavorQuotes": [
+                {
+                    "identifier": "Anathema",
+                    "text": "I can increase outer{BR}biomass density all day{BR}long. What's your trick, meatsack?"
+                }
+            ],
             "flavorReference": "Anathema to the Scholar, Vagabond's Tale #143",
             "hitpoints": 9
         },
@@ -483,7 +488,7 @@
             "openingLines": {
                 "default": "I've picked up a few new tricks - and limbs. Care to see?",
                 "TangoOneCharacter": "I should thank you for destroying our masters; now I'm free to eat whoever I want!",
-                "GhostOpsTangoOneCharacter": "Still trying to hide? My senses how only gotten sharper!",
+                "GhostOpsTangoOneCharacter": "Still trying to hide? My senses have only gotten sharper!",
                 "PastTangoOneCharacter": "I keep evolving, but you're stuck in the past!",
                 "CreedOfTheSniperTangoOneCharacter": "Time to die!"
             }

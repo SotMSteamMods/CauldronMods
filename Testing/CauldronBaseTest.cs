@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace CauldronTests
 {
@@ -61,13 +62,21 @@ namespace CauldronTests
         protected TurnTakerController tiamat { get { return FindVillain("Tiamat"); } }
         protected TurnTakerController vector { get { return FindVillain("Vector"); } }
 
-        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune)
+        protected static string[] CauldronHeroes = { "Cauldron.Baccarat", "Cauldron.Cricket", "Cauldron.Cypher", "Cauldron.DocHavoc", "Cauldron.Drift", "Cauldron.Echelon", "Cauldron.Gargoyle", "Cauldron.Gyrosaur", "Cauldron.Impact", "Cauldron.LadyOfTheWood", "Cauldron.MagnificentMara", "Cauldron.Malichae", "Cauldron.Necro", "Cauldron.Pyre", "Cauldron.Quicksilver", "Cauldron.Starlight", "Cauldron.TangoOne", "Cauldron.Terminus", "Cauldron.TheKnight", "Cauldron.TheStranger", "Cauldron.Titan", "Cauldron.Vanish" };
+        protected static string[] CauldronVillains = { "Cauldron.Anathema", "Cauldron.Celadroch", "Cauldron.Dendron", "Cauldron.Dynamo", "Cauldron.Gray", "Cauldron.Menagerie", "Cauldron.Mythos", "Cauldron.Oriphel", "Cauldron.Outlander", "Cauldron.PhaseVillain", "Cauldron.ScreaMachine", "Cauldron.SwarmEater", "Cauldron.TheInfernalChoir", "Cauldron.TheMistressOfFate", "Cauldron.Tiamat", "Cauldron.Vector" };
+        protected static string[] CauldronEnvironments = { "Cauldron.BlackwoodForest", "Cauldron.CatchwaterHarbor", "Cauldron.DungeonsOfTerror", "Cauldron.FSCContinuanceWanderer", "Cauldron.HalberdExperimentalResearchCenter", "Cauldron.NightloreCitadel", "Cauldron.Northspar", "Cauldron.OblaskCrater", "Cauldron.StSimeonsCatacombs", "Cauldron.SuperstormAkela", "Cauldron.TheChasmOfAThousandNights", "Cauldron.TheCybersphere", "Cauldron.TheWanderingIsle", "Cauldron.VaultFive", "Cauldron.WindmillCity" };
+
+        protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune, CardSource cardSource = null )
         {
+            if(cardSource is null)
+            {
+                cardSource = new CardSource(ttc.CharacterCardController);
+            }
             ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
             immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
             immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
             immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
-            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
+            this.RunCoroutine(this.GameController.AddStatusEffect(immuneToDamageStatusEffect, true, cardSource));
         }
 
         protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard, bool untilEnd = false)
@@ -325,6 +334,51 @@ namespace CauldronTests
         {
 
             return GetCard("ThroughTheBreachShiftTrack" + position);
+        }
+
+        protected GameController ReplayGameFromPath(string path)
+        {
+            try
+            {
+                var savedGame = LoadGamePath(path);
+
+                if (savedGame != null)
+                {
+                    var newGame = MakeReplayableGame(savedGame);
+                    SetupGameController(newGame);
+
+                    Console.WriteLine("Successfully created game to replay...");
+
+                    StartGame();
+                    this.ReplayingGame = true;
+
+                    // Keep moving the game forward until we have reached the stopping point.
+                    int sanity = 1000;
+                    while (this.ReplayingGame)
+                    {
+                        RunActiveTurnPhase();
+                        EnterNextTurnPhase();
+                        sanity--;
+
+                        if (sanity == 0)
+                        {
+                            Log.Error("Save game never seemed to end: " + path);
+                            this.ReplayingGame = false;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Failed to load and replay game.");
+                }
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to load and replay game. Reason: " + e.Message);
+                throw;
+            }
+
+            return this.GameController;
         }
 
         //OblivAeon

@@ -56,7 +56,7 @@
             "flippedAdvancedIcons": [
                 "IncreaseDamageDealt"
             ],
-            "difficulty": 2,
+            "difficulty": 3,
             "openingLines": {
                 "default": "You think you can stop me? You've already lost! Every drop of blood is a death sentence.",
                 "DocHavocCharacter": "Come to view your handiwork? It's too late to save me, or to stop me.",

@@ -359,7 +359,6 @@ namespace CauldronTests
 
             DecisionAutoDecideIfAble = true;
             PlayCard("TakeDown");
-            GetCard("BaneOfIron", 0);
             GoToEndOfTurn(choir);
 
             FlipCard(choir);

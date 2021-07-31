@@ -56,7 +56,11 @@
                 "DealDamageToxic",
                 "DrawCardNow"
             ],
-            "body": "At the end of your turn, this card deals all non-Undead hero targets 2 toxic damage. When this card is destroyed, all players draw a card. When this card enters play, # = the number of rituals in play plus 6.",
+            "body": [
+                "At the end of your turn, this card deals all non-Undead hero targets 2 toxic damage.",
+                "When this card is destroyed, all players draw a card.",
+                "When this card enters play, # = the number of rituals in play plus 6."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Necro",
@@ -78,7 +82,10 @@
                 "DestroyOngoing",
                 "PlayCardNow"
             ],
-            "body": "You may destroy an ongoing card. Put an Undead card from the trash into play.",
+            "body": [
+                "You may destroy an ongoing card.",
+                "Put an Undead card from the trash into play."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Necro",
@@ -119,7 +126,10 @@
                 "Search",
                 "DrawCardNow"
             ],
-            "body": "Search your deck or trash for a Ritual and put it into play or into your hand. If you searched your deck, shuffle your deck. You may draw a card.",
+            "body": [
+                "Search your deck or trash for a Ritual and put it into play or into your hand. If you searched your deck, shuffle your deck.",
+                "You may draw a card."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Necro",
@@ -191,11 +201,15 @@
             ],
             "icons": [
                 "EndOfTurnAction",
-                "DestroyEnvironment",
+                "DestroyEquipment",
                 "DestroyOngoing",
                 "PlayCardNow"
             ],
-            "body": "At the end of your turn, destroy 1 hero equipment or ongoing card. When this card is destroyed, one player may play a card. When this card enters play, # = the number of rituals in play plus 2.",
+            "body": [
+                "At the end of your turn, destroy 1 hero equipment or ongoing card.",
+                "When this card is destroyed, one player may play a card.",
+                "When this card enters play, # = the number of rituals in play plus 2."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "TheStranger",
@@ -217,7 +231,10 @@
                 "Search",
                 "DealDamageToxic"
             ],
-            "body": "Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage. Then {Necro} deals himself X toxic damage, where X is 2 times the number of cards put into play this way.",
+            "body": [
+                "Search your trash for up to 2 Undead and put them into play. {Necro} deals each of those cards 2 toxic damage.",
+                "Then {Necro} deals himself X toxic damage, where X is 2 times the number of cards put into play this way."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Necro",
@@ -241,7 +258,10 @@
                 "EndOfTurnAction",
                 "DealDamageToxic"
             ],
-            "body": "At the end of your turn, this card deals the non-Undead hero target with the second lowest HP 2 toxic damage. When this card enters play, # = the number of rituals in play plus 2.",
+            "body": [
+                "At the end of your turn, this card deals the non-Undead hero target with the second lowest HP 2 toxic damage.",
+                "When this card enters play, # = the number of rituals in play plus 2."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Nightmist",
@@ -262,7 +282,10 @@
             "icons": [
                 "Manipulate"
             ],
-            "body": "Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash. Shuffle the other revealed cards back into your deck.",
+            "body": [
+                "Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.",
+                "Shuffle the other revealed cards back into your deck."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Set",
@@ -307,7 +330,10 @@
                 "EndOfTurnAction",
                 "DealDamageInfernal"
             ],
-            "body": "At the end of your turn, this card deals the non-Undead hero target with the lowest HP 2 infernal damage. When this card enters play, # = the number of rituals in play plus 2.",
+            "body": [
+                "At the end of your turn, this card deals the non-Undead hero target with the lowest HP 2 infernal damage.",
+                "When this card enters play, # = the number of rituals in play plus 2."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "DetectiveSedrick",
@@ -368,7 +394,10 @@
                 "EndOfTurnAction",
                 "DealDamageToxic"
             ],
-            "body": "At the end of your turn, this card deals the non-Undead hero target with the highest HP 2 toxic damage. When this card enters play, # = the number of rituals in play plus 2.",
+            "body": [
+                "At the end of your turn, this card deals the non-Undead hero target with the highest HP 2 toxic damage.",
+                "When this card enters play, # = the number of rituals in play plus 2."
+            ],
             "flavorQuotes": [
                 {
                     "identifier": "Necro",
@@ -481,7 +510,9 @@
                 "The next time an undead target is destroyed, 1 hero deals a target 1 fire damage and draws a card."
             ],
             "icons": [
-                "HasPower"
+                "HasPower",
+                "DealDamageFire",
+                "DrawCardNow"
             ],
             "hitpoints": 26,
             "nemesisIdentifiers": [
@@ -493,9 +524,9 @@
                 "One player may play 2 random cards from their hand now."
             ],
             "flippedIcons": [
-                "DealDamageFire",
-                "UsePowerNow",
-                "DrawCardNow"
+                "DrawCardNow",
+                "DestroyEnvironment",
+                "PlayCardNow"
             ],
             "openingLines": {
                 "default": "We must all... repent... before it is... too late.",
