@@ -994,7 +994,7 @@ namespace CauldronTests
 
             //only once per turn
             PlayCard("AquaticCorrespondence");
-            QuickHPCheck(-1, 0, 0);
+            QuickHPCheck(0, 0, -1);
 
             PutInTrash("TrafficPileup");
             GoToStartOfTurn(legacy);
