@@ -94,21 +94,13 @@ namespace Cauldron.VaultFive
             //The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.
             if(!HasOwner)
             {
-<<<<<<< HEAD
-                SetCardPropertyToTrueIfRealAction(FirstTimeEnteredPlay);
-
-                List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                IEnumerator coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.Custom, false, false, storedResults, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
-=======
                 IEnumerator coroutine;
                 if (GetNumberOfTurnTakersInSameBattleZone() > 0)
->>>>>>> main
                 {
                     SetCardPropertyToTrueIfRealAction(FirstTimeEnteredPlay);
 
                     List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                    coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.TurnTaker, false, false, storedResults, cardSource: GetCardSource());
+                    coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.Custom, false, false, storedResults, cardSource: GetCardSource());
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(coroutine);
