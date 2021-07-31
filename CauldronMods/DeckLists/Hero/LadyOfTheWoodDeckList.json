@@ -529,13 +529,14 @@
             },
             "complexity": 3,
              "tokenPools":[
-		 	{
-		 		"identifier":"LadyOfTheWoodElementPool",
-		 		"name":"Lady of the Wood's Element Pool",
-		 		"initialValue":0,
-		 		"minimumValue":0,
-		 		"color":"E14800"
-		 	}]
+                {
+                    "identifier": "LadyOfTheWoodElementPool",
+                    "name": "Lady of the Wood's Element Pool",
+                    "initialValue": 0,
+                    "minimumValue": 0,
+                    "labelTopColor": "e04b26",
+                    "labelBottomColor": "e04b26"
+                }]
         },
         {
             "identifier": "LadyOfTheWoodCharacter",
