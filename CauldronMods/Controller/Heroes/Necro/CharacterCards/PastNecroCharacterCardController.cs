@@ -227,13 +227,13 @@ namespace Cauldron.Necro
         {
             if(customDecisionFlag == CHOOSE_TURNTAKER)
             {
-                return new CustomDecisionText("Select a player to discard their hand and draw the same number of cards.", "Select a player to discard their hand and draw the same number of cards.", "Vote for a player to discard their hand and draw the same number of cards.", "player to discard hand and draw that many cards");
+                return new CustomDecisionText("Select a player to discard their hand and draw the same number of cards.", "selecting a player to discard their hand and draw the same number of cards...", "Vote for a player to discard their hand and draw the same number of cards.", "player to discard hand and draw that many cards");
 
             }
 
             if (customDecisionFlag == DISCARD_HAND_TO_DRAW)
             {
-                return new CustomDecisionText("Do you want to discard your hand and draw the same number of cards?", "Should they discard their hand and draw the same number of cards?", "Vote for if they should discard their hand and draw the same number of cards?", "discard hand and draw the same number of cards");
+                return new CustomDecisionText("Do you want to discard your hand and draw the same number of cards?", "choosing whether to discard their hand and draw the same number of cards...", "Vote for whether {0} should discard their hand and draw the same number of cards.", "discard hand and draw the same number of cards");
             }
 
             return base.GetCustomDecisionText(decision);
