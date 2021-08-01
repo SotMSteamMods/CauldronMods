@@ -28,7 +28,8 @@ namespace Cauldron.Pyre
         private IEnumerator EndOfTurnIrradiateResponse(PhaseChangeAction _)
         {
             var viableHeroes = GameController.AllHeroes.Where(htt => htt.Hand.Cards.Any(c => !IsIrradiated(c)) && GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource())).Select(htt => htt as TurnTaker);
-            var decision = new SelectTurnTakerDecision(GameController, DecisionMaker, viableHeroes, SelectionType.CardFromHand, cardSource: GetCardSource());
+            var decision = new SelectTurnTakerDecision(GameController, DecisionMaker, viableHeroes, SelectionType.Custom, cardSource: GetCardSource());
+            CurrentMode = CustomMode.PlayerToIrradiate;
             IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(decision, IrradiateCardInHandAndMaybeUsePower);
             if (UseUnityCoroutines)
             {

@@ -192,6 +192,7 @@ namespace Cauldron.Pyre
                 minCards = maxCards;
             }
 
+            var oldMode = CurrentMode;
             CurrentMode = CustomMode.CardToIrradiate;
             IEnumerator coroutine = GameController.SelectCardsAndDoAction(decisionMaker, fullCriteria, SelectionType.Custom, IrradiateCard, maxCards, false, minCards, storedResults, cardSource: GetCardSource());
             if (UseUnityCoroutines)
@@ -202,6 +203,7 @@ namespace Cauldron.Pyre
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+            CurrentMode = oldMode;
             yield break;
         }
 
