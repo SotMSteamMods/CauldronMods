@@ -471,7 +471,6 @@ namespace CauldronTests
             QuickHPStorage(ra);
             UsePower(ra);
             AssertInTrash(topMobile);
-            QuickHPCheck(-2);
 
         }
 
