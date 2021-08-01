@@ -455,6 +455,26 @@ namespace CauldronTests
 
         }
 
+        [Test]
+        public void TestMagicBladeOblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card blade = PlayCard("MagicBlade");
+            SwitchBattleZone(ra);
+
+            Card topMobile = PutOnDeck("PropulsionSystems");
+
+            
+            AssertNextToCard(blade, ra.CharacterCard);
+            QuickHPStorage(ra);
+            UsePower(ra);
+            AssertInTrash(topMobile);
+            QuickHPCheck(-2);
+
+        }
+
         [Test()]
         public void TestOneInAMillion_TwoMatches()
         {
