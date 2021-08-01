@@ -30,21 +30,25 @@ namespace Cauldron.Gyrosaur
             //allow decision of increase/decrease if needed
             //sometimes it is not, as Gyro Stabilizer cannot increase/decrease the count past the requisite threshold
 
-            if (CanActivateEffect(TurnTakerController, StabilizerKey) && fullShowDecisionIf())
+            if (CanActivateEffect(DecisionMaker, StabilizerKey) && fullShowDecisionIf())
             {
-                //Log.Debug("Gyro Stabilizer active...");
                 IEnumerator coroutine;
                 int currentCrash = TrueCrashInHand;
-                var functions = new List<Function>
-                {
-                    new Function(DecisionMaker, $"{currentCrash - 1} crash card(s)", SelectionType.RemoveTokens, () => DoNothing(), onlyDisplayIfTrue: currentCrash > 0),
-                    new Function(DecisionMaker, $"{currentCrash} crash card(s)", SelectionType.None, () => DoNothing()),
-                    new Function(DecisionMaker, $"{currentCrash + 1} crash card(s)", SelectionType.AddTokens, () => DoNothing()),
-                };
-                var selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, functions, true, cardSource: GetCardSource(), associatedCards: TurnTaker.GetCardsByIdentifier("GyroStabilizer"));
 
-                var storedFunction = new List<SelectFunctionDecision>();
-                coroutine = GameController.SelectAndPerformFunction(selectFunction, storedFunction);
+                string lowerWord = $"{currentCrash - 1} crash {(currentCrash - 1).ToString_SingularOrPlural("card", "cards")}";
+                string sameWord = $"{currentCrash} crash {currentCrash.ToString_SingularOrPlural("card", "cards")}";
+                string raiseWord = $"{currentCrash + 1} crash {(currentCrash + 1).ToString_SingularOrPlural("card", "cards")}";
+                var words = new List<string>();
+                if (currentCrash - 1 >= 0)
+                {
+                    words.Add(lowerWord);
+                }
+                words.Add(sameWord);
+                words.Add(raiseWord);
+
+
+                List<SelectWordDecision> storedWord = new List<SelectWordDecision>();
+                coroutine = GameController.SelectWord(DecisionMaker, words, SelectionType.Custom, storedWord, optional: false, associatedCards: TurnTaker.GetCardsByIdentifier("GyroStabilizer"), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -54,9 +58,9 @@ namespace Cauldron.Gyrosaur
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                if (DidSelectFunction(storedFunction, DecisionMaker))
+                if (DidSelectWord(storedWord))
                 {
-                    storedModifier.Add(CrashModifierFromDecision(storedFunction.FirstOrDefault()));
+                    storedModifier.Add(CrashModifierFromDecision(storedWord.First()));
                 }
                 else
                 {
@@ -66,10 +70,10 @@ namespace Cauldron.Gyrosaur
                     }
                     storedModifier.Add(0);
                 }
+
             }
             else
             {
-                //Log.Debug("Gyro Stabilizer not active, returning 0.");
                 storedModifier.Add(0);
                 yield return null;
             }
@@ -87,19 +91,21 @@ namespace Cauldron.Gyrosaur
         protected Func<bool> RARTShowDecision => () => Game.ActiveTurnTaker == TurnTaker && TrueCrashInHand >= 3;
         //if there are at least 3 crash cards in hand and Reckless Alien Racing Tortoise is in play, we ALWAYS need to present
         //the Gyro Stabilizer choice, as it may set off RART, even if it doesn't otherwise matter to the effect in question
-        protected int CrashModifierFromDecision(SelectFunctionDecision sfd)
+        protected int CrashModifierFromDecision(SelectWordDecision swd)
         {
-            if (sfd.SelectedFunction != null)
+            if (swd.SelectedWord != null)
             {
-                var selectedType = sfd.SelectedFunction.SelectionType;
-                if (selectedType == SelectionType.RemoveTokens)
+                int numChoices = swd.NumberOfChoices.Value;
+                if (numChoices == 3 && swd.SelectedWord == swd.Choices.First())
                 {
                     return -1;
                 }
-                if (selectedType == SelectionType.AddTokens)
+
+                if (swd.SelectedWord == swd.Choices.Last())
                 {
                     return 1;
                 }
+
             }
             return 0;
         }
