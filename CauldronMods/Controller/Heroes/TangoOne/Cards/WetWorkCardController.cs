@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System;
 
 namespace Cauldron.TangoOne
 {
@@ -27,15 +28,14 @@ namespace Cauldron.TangoOne
         public override IEnumerator Play()
         {
             // Shuffle 2 cards from each trash back into their decks
-            IEnumerator shuffleRoutine = base.DoActionToEachTurnTakerInTurnOrder(ttc => !ttc.IsIncapacitatedOrOutOfGame && ttc.IsLocationVisible(ttc.TurnTaker.Trash, GetCardSource()), MoveCardToDeckResponse);
-
+            IEnumerator coroutine = GameController.SelectLocationsAndDoAction(DecisionMaker, SelectionType.ShuffleCardFromTrashIntoDeck, loc => (loc.IsTrash || loc.IsSubTrash) && loc.IsRealTrash && !loc.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && GameController.IsLocationVisibleToSource(loc, GetCardSource()), SelectCardsToShuffle, cardSource: GetCardSource()) ;
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(shuffleRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(shuffleRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
 
             // You may deal 1 target 2 melee damage
@@ -54,55 +54,39 @@ namespace Cauldron.TangoOne
             }
         }
 
-        private IEnumerator MoveCardToDeckResponse(TurnTakerController turnTakerController)
+        private IEnumerator SelectCardsToShuffle(Location trash)
         {
-            TurnTaker turnTaker = turnTakerController.TurnTaker;
-            //allow each hero to choose for themselves, TangoOne decides for the villain and environment deck.
-            HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : this.DecisionMaker;
+            TurnTaker turnTaker = trash.OwnerTurnTaker;
+            TurnTakerController turnTakerController = FindTurnTakerController(turnTaker);
+            HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : DecisionMaker;
 
-            List<Location> allTrashes = new List<Location>();
-
-            if(turnTaker.Trash.IsRealTrash)
-            {
-                allTrashes.Add(turnTaker.Trash);
-            }
-
-            allTrashes = allTrashes.Concat(turnTaker.SubTrashes.Where(trash => trash.IsRealTrash)).ToList();
-
-            SelectCardsDecision scsd;
-            IEnumerator coroutine;
-            Location deck;
-            foreach(Location trash in allTrashes)
-            {
-                   scsd = new SelectCardsDecision(GameController, decisionMaker, c => c.Location == trash, SelectionType.ShuffleCardFromTrashIntoDeck,
+            SelectCardsDecision scsd = new SelectCardsDecision(GameController, decisionMaker, c => c.Location == trash, SelectionType.ShuffleCardFromTrashIntoDeck,
                    numberOfCards: CardsToMoveFromTrash,
                    isOptional: false,
                    requiredDecisions: CardsToMoveFromTrash,
                    cardSource: GetCardSource());
 
-                   deck = trash.IsSubTrash ? turnTaker.FindSubDeck(trash.Identifier) : turnTaker.Deck;
+            Location deck = trash.IsSubTrash ? turnTaker.FindSubDeck(trash.Identifier) : turnTaker.Deck;
 
-                coroutine = GameController.SelectCardsAndDoAction(scsd, scd => GameController.MoveCard(decisionMaker, scd.SelectedCard, deck, cardSource: GetCardSource()), cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                coroutine = base.GameController.ShuffleLocation(deck, cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+            IEnumerator coroutine = GameController.SelectCardsAndDoAction(scsd, scd => GameController.MoveCard(decisionMaker, scd.SelectedCard, deck, cardSource: GetCardSource()), cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
             }
-           
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            coroutine = base.GameController.ShuffleLocation(deck, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }

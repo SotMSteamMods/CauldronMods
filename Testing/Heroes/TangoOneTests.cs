@@ -1362,6 +1362,7 @@ namespace CauldronTests
             SwitchBattleZone(haka);
 
             DiscardTopCards(oblivaeon, 1);
+            PlayCard(oblivaeon, GetCard("AeonWarrior"), isPutIntoPlay: true, overridePlayLocation: scionOne.TurnTaker.PlayArea);
             foreach(Location subdeck in oblivaeon.TurnTaker.SubDecks.Where(d => d.IsRealDeck))
             {
                 topCardsOfSubDecks.Add(subdeck, subdeck.TopCard);
@@ -1373,7 +1374,7 @@ namespace CauldronTests
             DiscardTopCards(envOne, 1);
             DiscardTopCards(envTwo, 1);
 
-            PlayCard("WetWork");
+            Card wet = PlayCard("WetWork");
 
             AssertNumberOfCardsAtLocation(oblivaeon.TurnTaker.Trash, 0);
             AssertNumberOfCardsAtLocation(tango.TurnTaker.Trash, 1);
@@ -1384,12 +1385,26 @@ namespace CauldronTests
 
             foreach (Location subtrash in oblivaeon.TurnTaker.SubTrashes.Where(d => d.IsRealTrash))
             {
-                AssertNumberOfCardsAtLocation(subtrash, 0);
+                if (GameController.IsLocationVisibleToSource(subtrash, new CardSource(FindCardController(wet))))
+                {
+                    AssertNumberOfCardsAtLocation(subtrash, 0);
+                }
+                else
+                {
+                    AssertNumberOfCardsAtLocation(subtrash, 1);
+                }
             }
 
             foreach (Location subdeck in oblivaeon.TurnTaker.SubDecks.Where(d => d.IsRealDeck))
             {
-                AssertAtLocation(topCardsOfSubDecks[subdeck], subdeck);
+                if (GameController.IsLocationVisibleToSource(subdeck, new CardSource(FindCardController(wet))))
+                {
+                    AssertAtLocation(topCardsOfSubDecks[subdeck], subdeck);
+                }
+                else
+                {
+                    AssertAtLocation(topCardsOfSubDecks[subdeck], oblivaeon.TurnTaker.FindSubTrash(subdeck.Identifier));
+                }
             }
 
         }
