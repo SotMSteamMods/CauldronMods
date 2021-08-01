@@ -1,6 +1,6 @@
 {
   "frames": {
-    "BlackwoodForest.jpg": {
+    "BlackwoodForestDeckBack.jpg": {
       "frame": {
         "x": 1,
         "y": 1,
@@ -24,7 +24,7 @@
         "y": 0.5
       }
     },
-    "CatchwaterHarbor.jpg": {
+    "CatchwaterHarborDeckBack.jpg": {
       "frame": {
         "x": 1,
         "y": 203,
@@ -48,7 +48,7 @@
         "y": 0.5
       }
     },
-    "DungeonsOfTerror.jpg": {
+    "DungeonsOfTerrorDeckBack.jpg": {
       "frame": {
         "x": 403,
         "y": 1,
@@ -72,7 +72,7 @@
         "y": 0.5
       }
     },
-    "FSCContinuanceWanderer.jpg": {
+    "FSCContinuanceWandererDeckBack.jpg": {
       "frame": {
         "x": 1,
         "y": 405,
@@ -96,7 +96,7 @@
         "y": 0.5
       }
     },
-    "HalberdExperimentalResearchCenter.jpg": {
+    "HalberdExperimentalResearchCenterDeckBack.jpg": {
       "frame": {
         "x": 403,
         "y": 203,
@@ -120,7 +120,7 @@
         "y": 0.5
       }
     },
-    "NightloreCitadel.jpg": {
+    "NightloreCitadelDeckBack.jpg": {
       "frame": {
         "x": 805,
         "y": 1,
@@ -144,7 +144,7 @@
         "y": 0.5
       }
     },
-    "Northspar.jpg": {
+    "NorthsparDeckBack.jpg": {
       "frame": {
         "x": 1,
         "y": 607,
@@ -168,7 +168,7 @@
         "y": 0.5
       }
     },
-    "OblaskCrater.jpg": {
+    "OblaskCraterDeckBack.jpg": {
       "frame": {
         "x": 403,
         "y": 405,
@@ -192,7 +192,7 @@
         "y": 0.5
       }
     },
-    "StSimeonsCatacombs.jpg": {
+    "StSimeonsCatacombsDeckBack.jpg": {
       "frame": {
         "x": 805,
         "y": 203,
@@ -216,7 +216,7 @@
         "y": 0.5
       }
     },
-    "SuperstormAkela.jpg": {
+    "SuperstormAkelaDeckBack.jpg": {
       "frame": {
         "x": 1207,
         "y": 1,
@@ -240,7 +240,7 @@
         "y": 0.5
       }
     },
-    "TheChasmOfAThousandNights.jpg": {
+    "TheChasmOfAThousandNightsDeckBack.jpg": {
       "frame": {
         "x": 1,
         "y": 809,
@@ -264,7 +264,7 @@
         "y": 0.5
       }
     },
-    "TheCyberSphere.jpg": {
+    "TheCybersphereDeckBack.jpg": {
       "frame": {
         "x": 403,
         "y": 607,
@@ -288,7 +288,7 @@
         "y": 0.5
       }
     },
-    "TheWanderingIsle-5.jpg": {
+    "TheWanderingIsleDeckBack.jpg": {
       "frame": {
         "x": 805,
         "y": 405,
@@ -312,7 +312,7 @@
         "y": 0.5
       }
     },
-    "VaultFive.jpg": {
+    "VaultFiveDeckBack.jpg": {
       "frame": {
         "x": 1207,
         "y": 203,
@@ -336,7 +336,7 @@
         "y": 0.5
       }
     },
-    "WindmillCity.jpg": {
+    "WindmillCityDeckBack.jpg": {
       "frame": {
         "x": 1609,
         "y": 1,
