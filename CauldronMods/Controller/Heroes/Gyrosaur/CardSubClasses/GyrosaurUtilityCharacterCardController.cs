@@ -119,5 +119,12 @@ namespace Cauldron.Gyrosaur
                 SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => c != this.Card && IsCrash(Card))).Condition = () => Card.Location.IsHand;
             }
         }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("how many crash cards should be counted by Gyro Stabilizer?", "How many crash cards should be counted by Gyro Stabilizer?", "Vote for how many crash cards should be counted by Gyro Stabilizer?", "crash cards should be counted by Gyro Stabilizer");
+
+        }
     }
 }
