@@ -581,6 +581,26 @@ namespace CauldronTests
             AssertIrradiated(flak);
             QuickHPCheck(-3);
         }
+
+        [Test]
+        public void TestCherenkovDrive_GrandDjinn()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            Card grandBathiel = PutInHand("GrandBathiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = grandBathiel;
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(grandBathiel);
+            QuickHPCheck(-6);
+        }
         [Test]
         public void TestCherenkovDrivePowerSelfDestruct()
         {
