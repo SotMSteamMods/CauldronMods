@@ -21,7 +21,7 @@ namespace Cauldron.Gargoyle
             SpecialStringMaker.ShowHasBeenUsedThisTurn(FirstTimeWouldBeDealtDamage);
         }
 
-        private int? DamageToPrevent = null;
+        private Guid? DamageToPrevent = null;
         private bool? ShouldPreventDamage = null;
 
         public override void AddTriggers()
@@ -115,7 +115,7 @@ namespace Cauldron.Gargoyle
         private IEnumerator AskAndMaybeCancelAction(DealDamageAction ga, bool showOutput = true, bool cancelFutureRelatedDecisions = true, List<CancelAction> storedResults = null, bool isPreventEffect = false)
         {
             //ask and set 
-            if (GameController.PretendMode || ga.ActionIdentifier != DamageToPrevent)
+            if (!DamageToPrevent.HasValue || ga.InstanceIdentifier != DamageToPrevent.Value)
             {
                 List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
                 IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
@@ -132,7 +132,7 @@ namespace Cauldron.Gargoyle
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                DamageToPrevent = ga.ActionIdentifier;
+                DamageToPrevent = ga.InstanceIdentifier;
                 if (DidPlayerAnswerYes(storedYesNo))
                 {
                     ShouldPreventDamage = true;
