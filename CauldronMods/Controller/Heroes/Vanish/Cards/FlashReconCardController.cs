@@ -23,11 +23,11 @@ namespace Cauldron.Vanish
             foreach (TurnTaker tt in Game.TurnTakers)
             {
                 if (tt.IsIncapacitatedOrOutOfGame) continue;
-                if (tt.Deck.BattleZone == Card.BattleZone && tt.Deck.IsRealDeck && GameController.IsLocationVisibleToSource(tt.Deck, GetCardSource()))
+                if (tt.Deck.IsRealDeck && GameController.IsLocationVisibleToSource(tt.Deck, GetCardSource()))
                 {
                     decks.Add(tt.Deck);
                 }
-                decks = decks.Concat(tt.SubDecks.Where(l => l.BattleZone == Card.BattleZone && l.IsRealDeck && GameController.IsLocationVisibleToSource(l, GetCardSource()))).ToList();
+                decks = decks.Concat(tt.SubDecks.Where(l => l.IsRealDeck && GameController.IsLocationVisibleToSource(l, GetCardSource()))).ToList();
             }
 
             List<Card> revealedCards = new List<Card>();
