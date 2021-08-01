@@ -157,7 +157,7 @@ namespace CauldronTests.Art
 
         #region Data
 
-        public static bool IsMicroArtRequired = false;
+        public static bool IsMicroArtRequired = true;
         public static bool IsUnusedCardError = true;
 
         protected readonly string ArtPath;
