@@ -118,7 +118,7 @@ namespace Cauldron.Gyrosaur
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = this.UsePower();
+            coroutine = UsePowerOnOtherCard(this.Card);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
