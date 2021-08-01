@@ -12,6 +12,10 @@ namespace Cauldron.Necro
     {
         public static readonly string PastNecroPowerKey = "HeroVillainFlipped";
 
+        private const int CHOOSE_TURNTAKER = 0;
+        private const int DISCARD_HAND_TO_DRAW = 1;
+        private int customDecisionFlag;
+
         public PastNecroCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialString ss = base.SpecialStringMaker.ShowIfElseSpecialString(() => true, () => "Replacing the word “Hero” on " + base.Card.Title + "'s cards with “Villain”, and vice versa", () => "", showInEffectsList: () => true);
@@ -132,9 +136,10 @@ namespace Cauldron.Necro
                     }
                 case 2:
                     {
+                        customDecisionFlag = CHOOSE_TURNTAKER;
                         //One player may discard their hand and draw that many cards.
                         List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                        IEnumerator coroutine3 = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.DiscardAndDrawCard, false, false, storedResults, cardSource: GetCardSource());
+                        IEnumerator coroutine3 = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.Custom, false, false, storedResults, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine3);
@@ -169,6 +174,7 @@ namespace Cauldron.Necro
             HeroTurnTakerController heroTurnTakerController = base.FindHeroTurnTakerController(turnTaker.ToHero());
 
             //ask the selected player if they want to discard and draw
+            customDecisionFlag = DISCARD_HAND_TO_DRAW;
             YesNoDecision yesNo = new YesNoDecision(base.GameController, heroTurnTakerController, SelectionType.Custom, cardSource: GetCardSource());
             IEnumerator coroutine = base.GameController.MakeDecisionAction(yesNo);
             if (base.UseUnityCoroutines)
@@ -219,9 +225,18 @@ namespace Cauldron.Necro
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
+            if(customDecisionFlag == CHOOSE_TURNTAKER)
+            {
+                return new CustomDecisionText("Select a player to discard their hand and draw the same number of cards.", "selecting a player to discard their hand and draw the same number of cards...", "Vote for a player to discard their hand and draw the same number of cards.", "player to discard hand and draw that many cards");
 
-            return new CustomDecisionText("Do you want to discard your hand and draw that many cards?", "Should they discard their hand and draw that many cards?", "Vote for if they should discard their hand and draw that many cards?", "discard hand and draw that many cards");
+            }
 
+            if (customDecisionFlag == DISCARD_HAND_TO_DRAW)
+            {
+                return new CustomDecisionText("Do you want to discard your hand and draw the same number of cards?", "choosing whether to discard their hand and draw the same number of cards...", "Vote for whether {0} should discard their hand and draw the same number of cards.", "discard hand and draw the same number of cards");
+            }
+
+            return base.GetCustomDecisionText(decision);
         }
     }
 }

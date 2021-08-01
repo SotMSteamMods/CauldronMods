@@ -22,7 +22,6 @@ namespace Cauldron.Gargoyle
             IEnumerator coroutine;
             Function[] functions;
             List<DealDamageAction> dealDamageActions = new List<DealDamageAction>();
-            SelectFunctionDecision selectFunction;
 
             //"{Gargoyle} may deal 3 targets 1 toxic damage each or 1 target 3 melee damage.",
             functions = new Function[]
@@ -30,8 +29,7 @@ namespace Cauldron.Gargoyle
                 new Function(DecisionMaker, "Deal 3 targets 1 toxic damage", SelectionType.DealDamage, () => DealTargetsDamage(3, DamageType.Toxic, 1, dealDamageActions)),
                 new Function(DecisionMaker, "Deal 1 target 3 melee damage", SelectionType.DealDamage, () => DealTargetsDamage(1, DamageType.Melee, 3, dealDamageActions))
             };
-            selectFunction = new SelectFunctionDecision(base.GameController, DecisionMaker, functions, false);
-            coroutine = SelectAndPerformFunction(DecisionMaker, functions);
+            coroutine = SelectAndPerformFunction(DecisionMaker, functions, optional: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

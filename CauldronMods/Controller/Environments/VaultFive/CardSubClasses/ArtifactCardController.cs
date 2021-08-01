@@ -76,6 +76,12 @@ namespace Cauldron.VaultFive
 
         public virtual IEnumerator UniqueOnPlayEffect() { return null; }
 
+        protected int GetNumberOfTurnTakersInSameBattleZone(List<TurnTaker> usedTurnTakers = null)
+        {
+            usedTurnTakers = usedTurnTakers ?? new List<TurnTaker>();
+            return GameController.AllTurnTakers.Where(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt.BattleZone == Card.BattleZone && !usedTurnTakers.Contains(tt)).Count();
+        }
+
         private bool HasOwner
         {
             get
@@ -88,24 +94,39 @@ namespace Cauldron.VaultFive
             //The first time this card enters play, select a player. Treat this card as part of their deck for the rest of the game.
             if(!HasOwner)
             {
-                SetCardPropertyToTrueIfRealAction(FirstTimeEnteredPlay);
+                IEnumerator coroutine;
+                if (GetNumberOfTurnTakersInSameBattleZone() > 0)
+                {
+                    SetCardPropertyToTrueIfRealAction(FirstTimeEnteredPlay);
 
-                List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                IEnumerator coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.TurnTaker, false, false, storedResults, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
+                    List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
+                    coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.Custom, false, false, storedResults, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    if (DidSelectTurnTaker(storedResults))
+                    {
+                        GameController.AddCardPropertyJournalEntry(Card, "OverrideTurnTaker", new string[] { "Cauldron.VaultFive", Card.Identifier });
+                        TurnTaker hero = GetSelectedTurnTaker(storedResults);
+                        GameController.ChangeCardOwnership(Card, hero);
+                        coroutine = GameController.SendMessageAction($"{Card.Title} is now a part of { hero.ShortName}'s deck!", Priority.High, GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
+                } else
                 {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-                if(DidSelectTurnTaker(storedResults))
-                {
-                    GameController.AddCardPropertyJournalEntry(Card, "OverrideTurnTaker", new string[] { "Cauldron.VaultFive", Card.Identifier });
-                    TurnTaker hero = GetSelectedTurnTaker(storedResults);
-                    GameController.ChangeCardOwnership(Card, hero);
-                    coroutine = GameController.SendMessageAction($"{Card.Title} is now a part of { hero.ShortName}'s deck!", Priority.High, GetCardSource());
+                    coroutine = GameController.SendMessageAction("There are no valid players to choose from.", Priority.Medium, GetCardSource(), showCardSource: true);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -177,6 +198,13 @@ namespace Cauldron.VaultFive
             }
 
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText($"Select a player whose deck will gain {Card.Title}", $"Select a player whose deck will gain {Card.Title}", $"Vote for the player whose deck will gain {Card.Title}", $"selecting deck to gain {Card.Title}");
+
         }
     }
 }

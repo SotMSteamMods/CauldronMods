@@ -15,7 +15,7 @@ namespace Cauldron.LadyOfTheWood
 
         public MinistryOfStrategicScienceLadyOfTheWoodCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            CardWithoutReplacements.TokenPools.ReorderTokenPool(LadyOfTheWoodElementPoolIdentifier);
+            //CardWithoutReplacements.TokenPools.ReorderTokenPool(LadyOfTheWoodElementPoolIdentifier);
 
             AllowFastCoroutinesDuringPretend = false;
             SpecialString specialString = base.SpecialStringMaker.ShowTokenPool(GetElementTokenPool());

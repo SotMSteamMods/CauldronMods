@@ -20,7 +20,7 @@ namespace Cauldron.Necro
         private IEnumerator DealDamageResponse(DestroyCardAction dca)
         {
             //Necro deals 2 toxic damage to all villain targets.
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => IsVillianConsidering1929(card) && card.IsTarget, 2, DamageType.Toxic);
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => IsVillianTargetConsidering1929(card), 2, DamageType.Toxic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

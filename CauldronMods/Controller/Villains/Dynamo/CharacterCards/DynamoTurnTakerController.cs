@@ -19,17 +19,23 @@ namespace Cauldron.Dynamo
             {
                 //At the start of the game, put Python and Copperhead into play.
 
-                IEnumerator copperhead = PutCardIntoPlay("Copperhead", shuffleDeckAfter: false);
-                IEnumerator python = PutCardIntoPlay("Python");
+                Card copperhead = TurnTaker.FindCard("Copperhead");
+                Card python = TurnTaker.FindCard("Python");
+                CardSource dynamoSource = new CardSource(CharacterCardController);
+                IEnumerator copperheadRoutine = GameController.PlayCard(this, copperhead, isPutIntoPlay: true, cardSource: dynamoSource);
+                IEnumerator pythonRoutine = GameController.PlayCard(this, python, isPutIntoPlay: true, cardSource: dynamoSource);
+                IEnumerator shuffleRoutine = GameController.ShuffleLocation(TurnTaker.Deck);
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(copperhead);
-                    yield return base.GameController.StartCoroutine(python);
+                    yield return base.GameController.StartCoroutine(copperheadRoutine);
+                    yield return base.GameController.StartCoroutine(pythonRoutine);
+                    yield return base.GameController.StartCoroutine(shuffleRoutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(copperhead);
-                    base.GameController.ExhaustCoroutine(python);
+                    base.GameController.ExhaustCoroutine(copperheadRoutine);
+                    base.GameController.ExhaustCoroutine(pythonRoutine);
+                    base.GameController.ExhaustCoroutine(shuffleRoutine);
                 }
             }
             yield break;

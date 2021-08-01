@@ -15,7 +15,7 @@ namespace Cauldron.Necro
         public override void AddTriggers()
         {
             //At the end of your turn, this card deals all non-Undead hero targets 2 toxic damage.        
-            base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, _ => base.DealDamage(this.Card, card => !IsUndead(card) && IsHeroConsidering1929(card), 2, DamageType.Toxic), TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, _ => base.DealDamage(this.Card, card => !IsUndead(card) && IsHeroTargetConsidering1929(card), 2, DamageType.Toxic), TriggerType.DealDamage);
             //When this card is destroyed, all players draw a card.
             base.AddWhenDestroyedTrigger(OnDestroyResponse, new TriggerType[] { TriggerType.PlayCard });
         }

@@ -35,8 +35,8 @@ namespace Cauldron.TheKnight
                 var card = cards[0];
 
                 var destinations = new[] {
-                    new MoveCardDestination(base.HeroTurnTaker.Hand),
-                    new MoveCardDestination(base.TurnTaker.PlayArea)
+                    new MoveCardDestination(base.TurnTaker.PlayArea),
+                    new MoveCardDestination(base.HeroTurnTaker.Hand)
                 };
 
                 List<MoveCardAction> moveResult = new List<MoveCardAction>();

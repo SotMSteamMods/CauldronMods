@@ -312,7 +312,7 @@
         "y": 0.5
       }
     },
-    "BlackwoodForestDeckBack.jpg": {
+    "BlackwoodForestDeckBackMicro.jpg": {
       "frame": {
         "x": 695,
         "y": 1,
@@ -336,7 +336,7 @@
         "y": 0.5
       }
     },
-    "DenseBrambles.jpg": {
+    "DenseBramblesMicro.jpg": {
       "frame": {
         "x": 517,
         "y": 571,
@@ -360,7 +360,7 @@
         "y": 0.5
       }
     },
-    "Desolation.jpg": {
+    "DesolationMicro.jpg": {
       "frame": {
         "x": 775,
         "y": 111,
@@ -384,7 +384,7 @@
         "y": 0.5
       }
     },
-    "DontStrayFromThePath.jpg": {
+    "DontStrayFromThePathMicro.jpg": {
       "frame": {
         "x": 517,
         "y": 681,
@@ -408,7 +408,7 @@
         "y": 0.5
       }
     },
-    "MirrorWraith.jpg": {
+    "MirrorWraithMicro.jpg": {
       "frame": {
         "x": 627,
         "y": 571,
@@ -432,7 +432,7 @@
         "y": 0.5
       }
     },
-    "OldBones.jpg": {
+    "OldBonesMicro.jpg": {
       "frame": {
         "x": 775,
         "y": 221,
@@ -456,7 +456,7 @@
         "y": 0.5
       }
     },
-    "OvergrownCathedral.jpg": {
+    "OvergrownCathedralMicro.jpg": {
       "frame": {
         "x": 805,
         "y": 1,
@@ -480,7 +480,7 @@
         "y": 0.5
       }
     },
-    "ShadowStalker.jpg": {
+    "ShadowStalkerMicro.jpg": {
       "frame": {
         "x": 517,
         "y": 791,
@@ -504,7 +504,7 @@
         "y": 0.5
       }
     },
-    "ShadowWeaver.jpg": {
+    "ShadowWeaverMicro.jpg": {
       "frame": {
         "x": 627,
         "y": 681,
@@ -528,7 +528,7 @@
         "y": 0.5
       }
     },
-    "TheBlackTree.jpg": {
+    "TheBlackTreeMicro.jpg": {
       "frame": {
         "x": 737,
         "y": 571,
@@ -552,7 +552,7 @@
         "y": 0.5
       }
     },
-    "TheHound.jpg": {
+    "TheHoundMicro.jpg": {
       "frame": {
         "x": 885,
         "y": 111,
@@ -576,7 +576,7 @@
         "y": 0.5
       }
     },
-    "VengefulSpirits.jpg": {
+    "VengefulSpiritsMicro.jpg": {
       "frame": {
         "x": 517,
         "y": 901,
@@ -600,7 +600,7 @@
         "y": 0.5
       }
     },
-    "WillOTheWisp.jpg": {
+    "WillOTheWispMicro.jpg": {
       "frame": {
         "x": 627,
         "y": 791,
