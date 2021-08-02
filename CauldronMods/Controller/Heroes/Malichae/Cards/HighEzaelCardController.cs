@@ -33,7 +33,7 @@ namespace Cauldron.Malichae
             yield break;
         }
 
-        public override Power GetGrantedPower(CardController cardController)
+        public override Power GetGrantedPower(CardController cardController, Card damageSource = null)
         {
             return new Power(cardController.HeroTurnTakerController, cardController, $"All Djinn regain 2HP. All other hero targets regain 1HP. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, GetCardSource());
         }

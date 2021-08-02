@@ -19,12 +19,13 @@ namespace Cauldron.Malichae
             base.AddTriggers();
         }
 
-        public override Power GetGrantedPower(CardController cardController)
+        public override Power GetGrantedPower(CardController cardController, Card damageSource = null)
         {
-            return new Power(cardController.HeroTurnTakerController, cardController, $"{cardController.Card.Title} deals up to 3 targets 2 sonic damage each. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, GetCardSource());
+            Card dmgSource = damageSource ?? cardController.Card;
+            return new Power(cardController.HeroTurnTakerController, cardController, $"{dmgSource.Title} deals up to 3 targets 2 sonic damage each. Destroy {this.Card.Title}.", UseGrantedPower(dmgSource), 0, null, GetCardSource());
         }
 
-        private IEnumerator UseGrantedPower()
+        private IEnumerator UseGrantedPower(Card damageSource = null)
         {
             int targets = GetPowerNumeral(0, 3);
             int damages = GetPowerNumeral(1, 2);
@@ -32,22 +33,29 @@ namespace Cauldron.Malichae
             CardSource cs = GetCardSourceForGrantedPower();
             var card = cs.Card;
 
-            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), damages, DamageType.Sonic, targets, false, 0,
-                allowAutoDecide: false,
-                cardSource: cs);
-            if (base.UseUnityCoroutines)
+            Card dmgSource = damageSource ?? card;
+
+            if (dmgSource is null || !dmgSource.IsInPlayAndHasGameText)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
+                string sourceTitle = dmgSource is null ? "Reshiel" : dmgSource.Title;
+                //send message about damage fizzling
+                IEnumerator sendMessage = GameController.SendMessageAction($"{sourceTitle} is not in play, so no damage will be dealt.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(sendMessage);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(sendMessage);
+                }
+
+            } 
             else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            
-            //when played via discard, I'll already be in the trash, so skip
-            if (!Card.IsInTrash)
-            {
-                coroutine = DestroySelf();
+            { 
+
+                var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, dmgSource), damages, DamageType.Sonic, targets, false, 0,
+                    allowAutoDecide: false,
+                    cardSource: cs);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -55,6 +63,20 @@ namespace Cauldron.Malichae
                 else
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            
+            //when played via discard, I'll already be in the trash, so skip
+            if (!Card.IsInTrash)
+            {
+                var destroy = DestroySelf();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(destroy);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(destroy);
                 }
             }
             yield break;

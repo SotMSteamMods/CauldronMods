@@ -18,7 +18,7 @@ namespace Cauldron.Malichae
             base.AddTriggers();
         }
 
-        public override Power GetGrantedPower(CardController cardController)
+        public override Power GetGrantedPower(CardController cardController, Card damageSource = null)
         {
             return new Power(cardController.HeroTurnTakerController, cardController, $"Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy {this.Card.Title}.", UseGrantedPower(), 0, null, GetCardSource());
         }
