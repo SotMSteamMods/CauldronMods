@@ -189,7 +189,7 @@ namespace Cauldron.Pyre
                 }
 
                 //djinn prep
-                var pwr = djinn.GetGrantedPower(djinn);
+                var pwr = djinn.GetGrantedPower(djinn, djinn.FindBaseDjinn().First());
                 var cs = djinn.GetCardSource();
                 djinn.AddAssociatedCardSource(cs);
 
