@@ -257,9 +257,9 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Bathiel. If Bathiel is ever not in play, destroy this card.",
-				"Increase damage dealt by Bathiel by 1."
+				"Increase damage dealt by Bathiel by 1.",
+				"[b]Power:[/b] Bathiel deals 1 target 4 energy damage. Destroy this card."
 			],
-			"powers": "Bathiel deals 1 target 4 energy damage. Destroy this card.",
 			"flavorQuotes": [
 				{
 					"identifier": "Malichae",
@@ -284,9 +284,9 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Ezael. If Ezael is ever not in play, destroy this card.",
-				"At the end of your turn, each Djinn regains 1 HP."
+				"At the end of your turn, each Djinn regains 1 HP.",
+				"[b]Power:[/b] All Djinn regain 2 HP. All other hero targets regain 1 HP. Destroy this card."
 			],
-			"powers": "All Djinn regain 2 HP. All other hero targets regain 1 HP. Destroy this card.",
 			"flavorQuotes": [
 				{
 					"identifier": "DocHavoc",
@@ -312,9 +312,9 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Reshiel. If Reshiel is ever not in play, destroy this card.",
-				"Increase damage dealt by Reshiel by 1."
+				"Increase damage dealt by Reshiel by 1.",
+				"[b]Power:[/b] Reshiel deals up to 3 targets 2 sonic damage each. Destroy this card."
 			],
-			"powers": "Reshiel deals up to 3 targets 2 sonic damage each. Destroy this card.",
 			"flavorQuotes": [
 				{
 					"identifier": "Gloomweaver",
@@ -339,9 +339,9 @@
 			],
 			"body": [
 				"When this card enters play, attach it to Somael. If Somael is ever not in play, destroy this card.",
-				"Reduce damage dealt to Djinn by 1."
+				"Reduce damage dealt to Djinn by 1.",
+				"[b]Power:[/b] Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy this card."
 			],
-			"powers": "Reduce damage dealt to hero targets by 1 until the start of your next turn. Destroy this card.",
 			"flavorQuotes": [
 				{
 					"identifier": "Malichae",
