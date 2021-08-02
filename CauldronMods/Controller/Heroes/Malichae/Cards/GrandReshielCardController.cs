@@ -20,19 +20,38 @@ namespace Cauldron.Malichae
             AddDestroyAtEndOfTurnTrigger();
         }
 
-        public override Power GetGrantedPower(CardController cardController)
+        public override Power GetGrantedPower(CardController cardController, Card damageSource = null)
         {
-            return new Power(cardController.HeroTurnTakerController, cardController, $"{cardController.Card.Title}  deals each non-hero target 2 sonic damage.", UseGrantedPower(), 0, null, GetCardSource());
+            Card dmgSource = damageSource ?? cardController.Card;
+            return new Power(cardController.HeroTurnTakerController, cardController, $"{dmgSource.Title}  deals each non-hero target 2 sonic damage.", UseGrantedPower(dmgSource), 0, null, GetCardSource());
         }
 
-        private IEnumerator UseGrantedPower()
+        private IEnumerator UseGrantedPower(Card damageSource = null)
         {
             int damages = GetPowerNumeral(0, 2);
 
             CardSource cs = GetCardSourceForGrantedPower();
             var card = cs.Card;
 
-            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), damages, DamageType.Sonic, null, false, null,
+            Card dmgSource = damageSource ?? card;
+
+            if (dmgSource is null || !dmgSource.IsInPlayAndHasGameText)
+            {
+                string sourceTitle = dmgSource is null ? "Reshiel" : dmgSource.Title;
+                //send message about damage fizzling
+                IEnumerator sendMessage = GameController.SendMessageAction($"{sourceTitle} is not in play, so no damage will be dealt.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(sendMessage);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(sendMessage);
+                }
+
+                yield break;
+            }
+            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, dmgSource), damages, DamageType.Sonic, null, false, null,
                 allowAutoDecide: true,
                 additionalCriteria: c => c.IsInPlay && !c.IsHero,
                 cardSource: cs);
