@@ -627,6 +627,41 @@ namespace CauldronTests
             PlayCard("LiquidMetal");
             QuickHPCheck(-3, -2);
         }
+        [Test]
+        public void TestLiquidMetalNoCombosInDeck()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            MoveAllCards(quicksilver, quicksilver.TurnTaker.Deck, quicksilver.TurnTaker.Trash);
+            PutOnDeck("ForestOfNeedles");
+            PutOnDeck("ViciousMemories");
+
+            PlayCard("LiquidMetal");
+        }
+        [Test]
+        public void TestLiquidMetalNoFinishersInDeck()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            MoveAllCards(quicksilver, quicksilver.TurnTaker.Deck, quicksilver.TurnTaker.Trash);
+            PutOnDeck("CoalescingSpear");
+            PutOnDeck("ViciousMemories");
+
+            PlayCard("LiquidMetal");
+        }
+        [Test]
+        public void TestLiquidMetalNoSearchablesInDeck()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            MoveAllCards(quicksilver, quicksilver.TurnTaker.Deck, quicksilver.TurnTaker.Trash);
+            PutOnDeck("ViciousMemories");
+
+            PlayCard("LiquidMetal");
+        }
         [Test()]
         public void TestMalleableArmor()
         {
