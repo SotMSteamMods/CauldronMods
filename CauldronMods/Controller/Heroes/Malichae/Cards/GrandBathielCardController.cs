@@ -19,20 +19,39 @@ namespace Cauldron.Malichae
             AddDestroyAtEndOfTurnTrigger();
         }
 
-        public override Power GetGrantedPower(CardController cardController)
+        public override Power GetGrantedPower(CardController cardController, Card damageSource = null)
         {
-            return new Power(cardController.HeroTurnTakerController, cardController, $"{cardController.Card.Title} deals 1 target 6 energy damage.", UseGrantedPower(), 0, null, GetCardSource());
+            Card dmgSource = damageSource ?? cardController.Card;
+            return new Power(cardController.HeroTurnTakerController, cardController, $"{dmgSource.Title} deals 1 target 6 energy damage.", UseGrantedPower(dmgSource), 0, null, GetCardSource());
         }
 
-        private IEnumerator UseGrantedPower()
+        private IEnumerator UseGrantedPower(Card damageSource = null)
         {
             int targets = GetPowerNumeral(0, 1);
             int damages = GetPowerNumeral(1, 6);
 
             CardSource cs = GetCardSourceForGrantedPower();
-            var card = cs.Card;
+            var card = cs?.Card;
+            Card dmgSource = damageSource ?? card;
 
-            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, card), damages, DamageType.Energy, targets, false, targets, cardSource: cs);
+            if(dmgSource is null || !dmgSource.IsInPlayAndHasGameText)
+            {
+                string sourceTitle = dmgSource is null ? "Bathiel" : dmgSource.Title;
+                //send message about damage fizzling
+                IEnumerator sendMessage = GameController.SendMessageAction($"{sourceTitle} is not in play, so no damage will be dealt.", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(sendMessage);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(sendMessage);
+                }
+
+                yield break;
+            }
+
+            var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, dmgSource), damages, DamageType.Energy, targets, false, targets, cardSource: cs);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

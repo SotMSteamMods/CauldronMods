@@ -581,6 +581,190 @@ namespace CauldronTests
             AssertIrradiated(flak);
             QuickHPCheck(-3);
         }
+
+        [Test]
+        public void TestCherenkovDrive_GrandBathiel_BaseInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            Card bathiel = PlayCard("Bathiel");
+            Card grandBathiel = PutInHand("GrandBathiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = grandBathiel;
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(grandBathiel);
+            QuickHPCheck(-6);
+        }
+
+        [Test]
+        public void TestCherenkovDrive_GrandBathiel_BaseNotInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            Card grandBathiel = PutInHand("GrandBathiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = grandBathiel;
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(grandBathiel);
+            //damage should fizzle
+            QuickHPCheck(0);
+        }
+
+        [Test]
+        public void TestCherenkovDrive_HighBathiel_BaseInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            Card bathiel = PlayCard("Bathiel");
+            Card highBathiel = PutInHand("HighBathiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = highBathiel;
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertNotIrradiated(highBathiel);
+            QuickHPCheck(-4);
+            AssertInTrash(highBathiel);
+        }
+
+        [Test]
+        public void TestCherenkovDrive_HighBathiel_BaseNotInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            Card highBathiel = PutInHand("HighBathiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = highBathiel;
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertNotIrradiated(highBathiel);
+
+            //damage should fizzle
+            QuickHPCheck(0);
+            AssertInTrash(highBathiel);
+        }
+
+        [Test]
+        public void TestCherenkovDrive_GrandReshiel_BaseInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+
+            Card reshiel = PlayCard("Reshiel");
+            Card grandReshiel = PutInHand("GrandReshiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = grandReshiel;
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron.CharacterCard, battalion);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(grandReshiel);
+
+            //only the first instance of damage will trigger here, so battalion will be undamaged
+            QuickHPCheck(-2, 0);
+        }
+
+        [Test]
+        public void TestCherenkovDrive_GrandReshiel_BaseNotInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+
+            Card grandReshiel = PutInHand("GrandReshiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = grandReshiel;
+            DecisionYesNo = true;
+
+            QuickHPStorage(baron.CharacterCard, battalion);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertIrradiated(grandReshiel);
+            QuickHPCheck(0, 0);
+        }
+
+        [Test]
+        public void TestCherenkovDrive_HighReshiel_BaseInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            GoToPlayCardPhase(pyre);
+
+            Card reshiel = PlayCard("Reshiel");
+            Card highReshiel = PutInHand("HighReshiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = highReshiel;
+            DecisionYesNo = true;
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, battalion, null };
+
+            QuickHPStorage(baron.CharacterCard, battalion);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertNotIrradiated(highReshiel);
+
+            //only the first instance of damage will trigger here, so battalion will be undamaged
+            QuickHPCheck(-2, 0);
+
+            AssertInTrash(highReshiel);
+        }
+
+        [Test]
+        public void TestCherenkovDrive_HighReshiel_BaseNotInPlay()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Cauldron.Malichae", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+            GoToPlayCardPhase(pyre);
+
+            Card highReshiel = PutInHand("HighReshiel");
+            DecisionSelectTurnTaker = malichae.TurnTaker;
+            DecisionSelectCard = highReshiel;
+            DecisionYesNo = true;
+            DecisionSelectTargets = new Card[] { baron.CharacterCard, battalion, null };
+
+            QuickHPStorage(baron.CharacterCard, battalion);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+            AssertNotIrradiated(highReshiel);
+
+            //only the first instance of damage will trigger here, so battalion will be undamaged
+            QuickHPCheck(0, 0);
+
+            AssertInTrash(highReshiel);
+        }
+
         [Test]
         public void TestCherenkovDrivePowerSelfDestruct()
         {

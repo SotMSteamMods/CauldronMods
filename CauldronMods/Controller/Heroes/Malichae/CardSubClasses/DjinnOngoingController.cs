@@ -20,20 +20,23 @@ namespace Cauldron.Malichae
         }
 
         //This is here for possible Promo support.
-        public abstract Power GetGrantedPower(CardController cardController);
+        public abstract Power GetGrantedPower(CardController cardController, Card damageSource=null);
 
         protected CardSource GetCardSourceForGrantedPower()
         {
+            CardSource cs;
             var card = GetCardThisCardIsNextTo();
             if (card is null)
             {
-                return GetCardSource().AssociatedCardSources.First();
+                cs =  GetCardSource().AssociatedCardSources.FirstOrDefault();
             }
             else
             {
                 var cc = FindCardController(card);
-                return cc.GetCardSource();
+                cs =  cc.GetCardSource();
             }
+
+            return cs;
         }
 
         public override IEnumerable<Power> AskIfContributesPowersToCardController(CardController cardController)
@@ -148,6 +151,16 @@ namespace Cauldron.Malichae
             return base.GameController.DestroyCard(this.DecisionMaker, Card,
                 actionSource: ga,
                 cardSource: GetCardSource());
+        }
+
+        public IEnumerable<Card> FindBaseDjinn()
+        {
+            return FindCardsWhere(c => c.Identifier == _attachIdentifier);
+        }
+
+        private bool IsBaseDjinnInPlay()
+        {
+            return FindBaseDjinn().Where(c => c.IsInPlayAndHasGameText).Any();
         }
     }
 }

@@ -63,6 +63,7 @@ namespace Cauldron.Pyre
 
             // Then, they may use a power on that card.
             var selectedCard = GetSelectedCard(storedCard);
+            var controller = FindCardController(selectedCard);
             if (selectedCard.HasPowers)
             {
 
@@ -80,12 +81,9 @@ namespace Cauldron.Pyre
                     yield break;
                 }
 
-                var controller = FindCardController(selectedCard);
-
-
                 //select the power
                 var indexOfPower = -1;
-                if(selectedCard.NumberOfPowers == 1)
+                if (selectedCard.NumberOfPowers == 1)
                 {
                     var storedYesNo = new List<YesNoCardDecision>();
                     coroutine = GameController.MakeYesNoCardDecision(heroTTC, SelectionType.UsePower, selectedCard, storedResults: storedYesNo, cardSource: GetCardSource());
@@ -97,7 +95,7 @@ namespace Cauldron.Pyre
                     {
                         GameController.ExhaustCoroutine(coroutine);
                     }
-                    if(DidPlayerAnswerYes(storedYesNo))
+                    if (DidPlayerAnswerYes(storedYesNo))
                     {
                         indexOfPower = 0;
                     }
@@ -158,6 +156,72 @@ namespace Cauldron.Pyre
                 }
                 GameController.RemoveInhibitorException(controller);
                 CardUsingPower = null;
+                
+                //"If that power destroys that card, discard it instead."
+                if (TriedSelfDestruct == true)
+                {
+                    TriedSelfDestruct = null;
+                    coroutine = GameController.DiscardCard(heroTTC, selectedCard, null, TurnTaker, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+            else if (controller is Malichae.DjinnOngoingController djinn)
+            {
+                if (!GameController.CanUsePowers(heroTTC, GetCardSource()))
+                {
+                    coroutine = GameController.SendMessageAction($"{Card.Title} would allow {tt.Name} to use a power on {selectedCard.Title}, but they cannot currently use powers.", Priority.High, GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+                    yield break;
+                }
+
+                //djinn prep
+                var pwr = djinn.GetGrantedPower(djinn, djinn.FindBaseDjinn().First());
+                var cs = djinn.GetCardSource();
+                djinn.AddAssociatedCardSource(cs);
+
+                //power use in hand effect
+                bool isOnList = GameController.IsInCardControllerList(selectedCard, CardControllerListType.CanCauseDamageOutOfPlay);
+                GameController.AddInhibitorException(djinn, (GameAction ga) => ga != null && ga.CardSource != null && ga.CardSource.Card == cs.Card);
+                if (!isOnList)
+                {
+                    GameController.AddCardControllerToList(CardControllerListType.CanCauseDamageOutOfPlay, djinn);
+                }
+                CardUsingPower = selectedCard;
+
+                //use power
+                coroutine = GameController.UsePower(pwr, true, DecisionMaker, cs);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                //cleanup power use
+                if (!isOnList)
+                {
+                    GameController.RemoveCardControllerFromList(CardControllerListType.CanCauseDamageOutOfPlay, djinn);
+                }
+                GameController.RemoveInhibitorException(djinn);
+
+                //clean up djinn
+                djinn.RemoveAssociatedCardSource(cs);
 
                 //"If that power destroys that card, discard it instead."
                 if (TriedSelfDestruct == true)
