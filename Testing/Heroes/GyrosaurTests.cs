@@ -159,7 +159,7 @@ namespace CauldronTests
             QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            DecisionDoNotSelectFunction = true;
+            DecisionSelectWord = "1 crash card";
 
             //with 1 crash in hand Gyro Stabilizer can bump it up to 2.
             //We should get a decision, and be able to stand pat for a draw.
@@ -184,7 +184,7 @@ namespace CauldronTests
             QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            DecisionSelectFunction = 2;
+            DecisionSelectWord = "2 crash cards";
 
             //with 1 crash in hand Gyro Stabilizer can bump it up to 2.
             //We should get a decision, and be able to increase it for damage.
@@ -210,7 +210,7 @@ namespace CauldronTests
             QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            DecisionDoNotSelectFunction = true;
+            DecisionSelectWord = "2 crash cards";
 
             //with 2 crash in hand, Gyro Stabilizer can bump it down to 1.
             //We should get a decision, and be able to leave it alone for damage.
@@ -236,7 +236,7 @@ namespace CauldronTests
             QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            DecisionSelectFunction = 0;
+            DecisionSelectWord = "1 crash card";
 
             //with 2 crash in hand, Gyro Stabilizer can bump it down to 1.
             //We should get a decision, and be able to decrease it for a draw.
