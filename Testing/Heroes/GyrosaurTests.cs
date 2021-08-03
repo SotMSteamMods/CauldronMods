@@ -1376,6 +1376,30 @@ namespace CauldronTests
             AssertOnTopOfDeck(chase);
         }
 
+        [Test]
+        public void TestRecklessAlienRacingTortoiseAutoUseIsActualPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            MoveAllCardsFromHandToDeck(gyrosaur);
+
+            Card rart = PlayCard("RecklessAlienRacingTortoise");
+            QuickHPStorage(baron, gyrosaur, legacy, ra);
+
+            Card paparazzi = PlayCard("PaparazziOnTheScene");
+
+            PutInHand("Wipeout"); // Crash
+            PutInHand("SphereOfDevastation"); // Crash
+            PutInHand("WreckingBall"); // Crash
+            PutInHand("IndiscriminatePass"); // Crash
+
+            AssertIsInPlay(rart);
+            GoToStartOfTurn(gyrosaur);
+            QuickHPCheck(0, 0, 0, 0);
+            AssertInTrash(rart);
+        }
         #endregion Test Reckless Alien Racing Tortoise
 
         #region Test Ricochet
