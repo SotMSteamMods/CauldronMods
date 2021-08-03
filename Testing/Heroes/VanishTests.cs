@@ -1277,6 +1277,24 @@ namespace CauldronTests
             PlayCard("TacticalRelocation");
             AssertNotInPlay(liquid);
         }
+        [Test]
+        public void TacticalRelocation_HeroTargetsDamaged()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Tachyon", "TheWraith", "Megalopolis");
+            StartGame();
+
+            Card bolt = PutInTrash("StunBolt");
+            Card synaptic = PlayCard("SynapticInterruption");
+            DecisionSelectCards = new Card[] { tachyon.CharacterCard, wraith.CharacterCard, null, bolt, null };
+
+            QuickHPStorage(vanish, tachyon, wraith);
+            DecisionsYesNo = new bool[] { true, false, false, false, false, false, };
+            PlayCard("TacticalRelocation");
+
+            QuickHPCheck(0, 0, -3);
+            AssertInTrash(synaptic);
+            AssertIsInPlay(bolt);
+        }
 
     }
 }
