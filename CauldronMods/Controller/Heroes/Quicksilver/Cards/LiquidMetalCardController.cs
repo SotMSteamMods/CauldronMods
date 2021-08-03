@@ -33,33 +33,42 @@ namespace Cauldron.Quicksilver
             if (cardToHandEntry != null)
             {
                 foundCard = cardToHandEntry.Card;
+                List<string> missingKeywords = new List<string> { };
+                if (foundCard == null || !foundCard.DoKeywordsContain(FinisherKeyword))
+                {
+                    missingKeywords.Add(FinisherKeyword);
+                }
+                if (foundCard == null || !foundCard.DoKeywordsContain(ComboKeyword))
+                {
+                    missingKeywords.Add(ComboKeyword);
+                }
+
+                //...and [the kind you didn't find first] and put them into your hand. Shuffle the other revealed cards back into your deck.
+                coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(missingKeywords), missingKeywords.FirstOrDefault()), 1, revealedCardDisplay: RevealedCardDisplay.ShowMatchingCards);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
             else
             {
-                //no combo or finisher found in deck, no need for a second sweep
-                yield break;
+                //no combo or finisher found in deck, no need for a second sweep, but we should shuffle
+                coroutine = GameController.ShuffleLocation(TurnTaker.Deck, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
-            List<string> missingKeywords = new List<string> { };
-            if (foundCard == null || !foundCard.DoKeywordsContain(FinisherKeyword))
-            {
-                missingKeywords.Add(FinisherKeyword);
-            }
-            if (foundCard == null || !foundCard.DoKeywordsContain(ComboKeyword))
-            {
-                missingKeywords.Add(ComboKeyword);
-            }
 
-            //...and [the kind you didn't find first] and put them into your hand. Shuffle the other revealed cards back into your deck.
-            coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(missingKeywords), missingKeywords.FirstOrDefault()), 1, revealedCardDisplay: RevealedCardDisplay.ShowMatchingCards);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
             List<YesNoCardDecision> storedResults = new List<YesNoCardDecision>();
             var fake = new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), CharacterCard, 2, DamageType.Melee);
             coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.DealDamageSelf, base.Card, action: fake, storedResults: storedResults, cardSource: GetCardSource());
