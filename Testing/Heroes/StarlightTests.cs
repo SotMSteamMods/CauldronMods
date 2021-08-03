@@ -1071,7 +1071,7 @@ namespace CauldronTests
             AssertNumberOfCardsInPlay(starlight, 3);
         }
         [Test()]
-        public void TestNightloreArmorDamageStillPreventedIfDestructionPrevented()
+        public void TestNightloreArmorDamageDoesNotPreventIfDestructionPrevented()
         {
             SetupGameController("BaronBlade", "Cauldron.Starlight", "Haka", "Ra", "TheVisionary", "TimeCataclysm");
             StartGame();
@@ -1083,10 +1083,10 @@ namespace CauldronTests
             DecisionYesNo = true;
             QuickHPStorage(haka);
             DealDamage(baron, haka, 5, DamageType.Melee);
-            QuickHPCheck(0);
+            QuickHPCheck(-5);
             AssertIsInPlay(constellation);
 
-            DecisionYesNo = false;
+            DecisionYesNo = true;
             DealDamage(baron, haka, 5, DamageType.Melee);
             QuickHPCheck(-5);
         }
