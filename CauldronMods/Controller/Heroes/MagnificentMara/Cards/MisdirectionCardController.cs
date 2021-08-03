@@ -32,8 +32,10 @@ namespace Cauldron.MagnificentMara
                 yield break;
             }
             //"One other hero target deals that same target 2 damage of a type of their choosing."
-            var heroSource = new List<SelectTargetDecision> { };
-            coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && c.IsTarget && c != this.CharacterCard && GameController.IsCardVisibleToCardSource(c, GetCardSource())), heroSource, damageAmount: (Card c) => 2, damageType: DamageType.Melee, selectionType: SelectionType.SelectTargetNoDamage, cardSource: GetCardSource());
+            var heroSource = new List<SelectCardDecision> { };
+            var previewDamage = new DealDamageAction(GetCardSource(), null, null, 2, DamageType.Melee);
+            //coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && c.IsTarget && c != this.CharacterCard && GameController.IsCardVisibleToCardSource(c, GetCardSource())), heroSource, damageAmount: (Card c) => 2, damageType: DamageType.Melee, selectionType: SelectionType.CardToDealDamage, cardSource: GetCardSource());
+            coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsHero && c.IsTarget && c != this.CharacterCard && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero target"), heroSource, optional: false, allowAutoDecide: false, previewDamage, includeRealCardsOnly: true, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

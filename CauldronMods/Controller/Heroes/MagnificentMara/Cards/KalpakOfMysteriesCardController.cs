@@ -142,8 +142,8 @@ namespace Cauldron.MagnificentMara
         {
             var functions = new List<Function>
             {
+                new Function(DecisionMaker, $"Put {cardToMove.Title} in play", SelectionType.PutIntoPlay, () => GameController.MoveCard(FindHeroTurnTakerController(cardToMove.Owner.ToHero()), cardToMove, cardToMove.Owner.PlayArea, isPutIntoPlay: true, responsibleTurnTaker: DecisionMaker.TurnTaker, storedResults: moveCardStorage, cardSource:GetCardSource())),
                 new Function(DecisionMaker, $"Put {cardToMove.Title} in hand", SelectionType.MoveCardToHand, () => GameController.MoveCard(FindHeroTurnTakerController(cardToMove.Owner.ToHero()), cardToMove, cardToMove.Owner.ToHero().Hand, responsibleTurnTaker: DecisionMaker.TurnTaker, storedResults: moveCardStorage, cardSource: GetCardSource())),
-                new Function(DecisionMaker, $"Put {cardToMove.Title} in play", SelectionType.PutIntoPlay, () => GameController.MoveCard(FindHeroTurnTakerController(cardToMove.Owner.ToHero()), cardToMove, cardToMove.Owner.PlayArea, isPutIntoPlay: true, responsibleTurnTaker: DecisionMaker.TurnTaker, storedResults: moveCardStorage, cardSource:GetCardSource()))
             };
             var selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, functions, optional: true, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectAndPerformFunction(selectFunction);

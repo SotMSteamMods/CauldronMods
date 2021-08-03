@@ -300,6 +300,23 @@ namespace CauldronTests
             //Assert.Ignore("Pass-to-Sentinels doesn't work, not sure it's fixable. Pass-from-sentinels doesn't, and I'm not sure why.");
         }
         [Test]
+        public void TestConvincingDoubleOneOptionMessages()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Megalopolis");
+            StartGame();
+
+            DiscardAllCards(mara);
+            DiscardAllCards(legacy);
+
+            PutInHand("FlyingSmash");
+
+            AssertNextMessages("Legacy is the only player who can pass a one-shot.",
+                                "Flying Smash is the only one-shot in Legacy's hand.",
+                                "Magnificent Mara is the only player who can be passed Flying Smash.",
+                                "Magnificent Mara puts Flying Smash into play!");
+            PlayCard("ConvincingDouble");
+        }
+        [Test]
         public void TestDowsingCrystalSimple()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "TheSentinels", "TheScholar", "Megalopolis");
@@ -824,7 +841,7 @@ namespace CauldronTests
 
             StartGame();
 
-            DecisionSelectFunction = 1;
+            DecisionSelectFunction = 0;
 
             Card kalpak = PlayCard("KalpakOfMysteries");
             UsePower(kalpak);

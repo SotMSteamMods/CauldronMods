@@ -22,11 +22,49 @@ namespace Cauldron.MagnificentMara
         private HeroTurnTakerController _receiverController = null;
         private Card _receiverCharacterCard = null;
 
+        private enum CustomMode
+        {
+            CardToPass,
+            PlayerPassingCard,
+            PlayerReceivingCard
+        }
+        private CustomMode CurrentMode;
+
         public override IEnumerator Play()
         {
             //"Select a player."
             List<SelectTurnTakerDecision> storedTurnTakerDecisions = new List<SelectTurnTakerDecision> { };
-            IEnumerator chooseGivingPlayer = GameController.SelectTurnTaker(HeroTurnTakerController, SelectionType.MoveCard, storedTurnTakerDecisions,
+            IEnumerator msgRoutine;
+            var validPassers = GameController.AllTurnTakers.Where((TurnTaker tt) => tt.IsHero &&
+                                                                   GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
+                                                                   tt.ToHero().HasCardsWhere((Card c) => c.IsInHand && c.IsOneShot));
+            if(validPassers.Count() == 0)
+            {
+                msgRoutine = GameController.SendMessageAction("No players can pass a one-shot.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(msgRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(msgRoutine);
+                }
+                yield break;
+            }
+            if (validPassers.Count() == 1)
+            {
+                msgRoutine = GameController.SendMessageAction($"{validPassers.FirstOrDefault().Name} is the only player who can pass a one-shot.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(msgRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(msgRoutine);
+                }
+            }
+            CurrentMode = CustomMode.PlayerPassingCard;
+            IEnumerator chooseGivingPlayer = GameController.SelectTurnTaker(HeroTurnTakerController, SelectionType.Custom, storedTurnTakerDecisions,
                                                                                 additionalCriteria: (TurnTaker tt) => tt.IsHero &&
                                                                                                     GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
                                                                                                     tt.ToHero().HasCardsWhere((Card c) => c.IsInHand && c.IsOneShot),
@@ -52,8 +90,23 @@ namespace Cauldron.MagnificentMara
 
             //"That player passes a one-shot card..."
             List<SelectCardDecision> storedCardDecision = new List<SelectCardDecision> { };
+
+            var validCards = giver.ToHero().Hand.Cards.Where(c => c.IsOneShot);
+            if(validCards.Count() == 1)
+            {
+                msgRoutine = GameController.SendMessageAction($"{validCards.FirstOrDefault().Title} is the only one-shot in {giver.ToHero().Hand.GetFriendlyName()}.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(msgRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(msgRoutine);
+                }
+            }
+            CurrentMode = CustomMode.CardToPass;
             IEnumerator chooseOneShot = GameController.SelectCardAndStoreResults(FindHeroTurnTakerController(giver.ToHero()),
-                                                                                SelectionType.PutIntoPlay,
+                                                                                SelectionType.Custom,
                                                                                 new LinqCardCriteria((Card c) => giver.ToHero().Hand.Cards.Contains(c) && c.IsOneShot),
                                                                                 storedCardDecision,
                                                                                 false,
@@ -76,20 +129,64 @@ namespace Cauldron.MagnificentMara
             Card passedCard = storedCardDecision.FirstOrDefault().SelectedCard;
 
             //"..to another player..."
+            var validReceivers = GameController.AllTurnTakers.Where((TurnTaker tt) => tt.IsHero &&
+                                                                     !tt.IsIncapacitatedOrOutOfGame &&
+                                                                     GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
+                                                                     tt != giver);
+            if(validReceivers.Count() == 0)
+            {
+                msgRoutine = GameController.SendMessageAction($"No player can be passed {passedCard.Title}.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(msgRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(msgRoutine);
+                }
+                yield break;
+            }
+            if(validReceivers.Count() == 1)
+            {
+                msgRoutine = GameController.SendMessageAction($"{validReceivers.FirstOrDefault().Name} is the only player who can be passed {passedCard.Title}.", Priority.Medium, GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(msgRoutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(msgRoutine);
+                }
+            }
+            /*
             IEnumerator chooseReceivingPlayer = GameController.SelectTurnTaker(FindHeroTurnTakerController(giver.ToHero()), SelectionType.MoveCard, storedTurnTakerDecisions,
                                                                                 additionalCriteria: (TurnTaker tt) => tt.IsHero &&
                                                                                                     !tt.IsIncapacitatedOrOutOfGame &&
                                                                                                     GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
                                                                                                     tt != giver,
                                                                                 cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            */
+            CurrentMode = CustomMode.PlayerReceivingCard;
+            var passToDecision = new SelectTurnTakerDecision(GameController, FindHeroTurnTakerController(giver.ToHero()), validReceivers, SelectionType.Custom, cardSource: GetCardSource(), associatedCards: new Card[] { passedCard });
+            if (validReceivers.Count() == 1)
             {
-                yield return base.GameController.StartCoroutine(chooseReceivingPlayer);
+                passToDecision.SelectedTurnTaker = validReceivers.FirstOrDefault();
             }
             else
             {
-                base.GameController.ExhaustCoroutine(chooseReceivingPlayer);
+                IEnumerator chooseReceivingPlayer = GameController.MakeDecisionAction(passToDecision);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(chooseReceivingPlayer);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(chooseReceivingPlayer);
+                }
             }
+
+            storedTurnTakerDecisions.Add(passToDecision);
+
             if (!DidSelectTurnTaker(storedTurnTakerDecisions))
             {
                 yield break;
@@ -258,6 +355,30 @@ namespace Cauldron.MagnificentMara
         {
             ga.CardSource.AddAssociatedCardSource(GetCardSource());
             yield return null;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            if (CurrentMode == CustomMode.CardToPass)
+            {
+                return new CustomDecisionText("Select a card to pass to another player.", $"{decision.DecisionMaker.Name} is deciding which card to pass...", $"Which card should {decision.DecisionMaker.Name} pass?", "card to pass");
+            }
+            else if (CurrentMode == CustomMode.PlayerPassingCard)
+            {
+                return new CustomDecisionText("Select a player to pass a one-shot from their hand.", $"{decision.DecisionMaker.Name} is deciding who should pass a one-shot...", $"Who should pass a one-shot to a different player?", "player to pass a one-shot");
+            }
+            else if (CurrentMode == CustomMode.PlayerReceivingCard)
+            {
+                var passedTitle = "the passed card";
+                if(decision.AssociatedCards.Any())
+                {
+                    passedTitle = decision.AssociatedCards.FirstOrDefault().Title;
+                }
+                return new CustomDecisionText($"Select a player to put {passedTitle} into play.", $"{decision.DecisionMaker.Name} is deciding who to pass {passedTitle} to...", $"Who should {passedTitle} be passed to?", "player to pass a one-shot to");
+            }
+
+            return base.GetCustomDecisionText(decision);
+
         }
     }
 }
