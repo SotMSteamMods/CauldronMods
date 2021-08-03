@@ -66,8 +66,8 @@ namespace Cauldron.TheInfernalChoir
 
         public override void AddTriggers()
         {
-            //NB: Trigger timing needs to be delayed till after Increase/Reduce, hence WouldBeDealtDamage instead of ImmuneToDamage
-            AddTrigger<DealDamageAction>(dda => dda.Target == CharacterCard, VagrantHeartDamageReponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before);
+            //using inbuilt PreventDamageTrigger should handle conflicting cancel responses
+            AddPreventDamageTrigger(dda => dda.Target == CharacterCard, VagrantHeartDamageReponse, new List<TriggerType> { TriggerType.MoveCard }, isPreventEffect: true);
 
             /*
              * "Whenever the Hero with the Vagrant Heart has no cards in it's deck...
@@ -141,15 +141,7 @@ namespace Cauldron.TheInfernalChoir
             IEnumerator coroutine;
             int amount = action.Amount; //NB: ImmuneToDamage call reduces amount to zero, store value ahead of time.
 
-            coroutine = GameController.ImmuneToDamage(action, GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
+            //no need to prevent the damage ourselves, this is now a response to the damage having been prevented
 
             var vagrantHero = VagrantTurnTaker;
             if(vagrantHero is null)
