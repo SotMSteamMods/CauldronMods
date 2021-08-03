@@ -18,7 +18,7 @@ namespace Cauldron.Quicksilver
         public override IEnumerator Play()
         {
             //Reveal cards from the top of your deck until you reveal a [Combo or a Finisher]...
-            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(new string[] { ComboKeyword, FinisherKeyword })), 1, shuffleSourceAfterwards: false);
+            IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(new string[] { ComboKeyword, FinisherKeyword }), "combo or finisher"), 1, revealedCardDisplay: RevealedCardDisplay.ShowMatchingCards, shuffleSourceAfterwards: false);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -34,6 +34,11 @@ namespace Cauldron.Quicksilver
             {
                 foundCard = cardToHandEntry.Card;
             }
+            else
+            {
+                //no combo or finisher found in deck, no need for a second sweep
+                yield break;
+            }
 
             List<string> missingKeywords = new List<string> { };
             if (foundCard == null || !foundCard.DoKeywordsContain(FinisherKeyword))
@@ -46,7 +51,7 @@ namespace Cauldron.Quicksilver
             }
 
             //...and [the kind you didn't find first] and put them into your hand. Shuffle the other revealed cards back into your deck.
-            coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(missingKeywords)), 1);
+            coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, true, new LinqCardCriteria((Card c) => c.DoKeywordsContain(missingKeywords), missingKeywords.FirstOrDefault()), 1, revealedCardDisplay: RevealedCardDisplay.ShowMatchingCards);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
