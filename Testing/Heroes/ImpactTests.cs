@@ -114,6 +114,39 @@ namespace CauldronTests
             QuickHPCheck(-1);
         }
         [Test]
+        public void TestImpactPowerNextDamagePrevented()
+        {
+            SetupGameController("CitizensHammerAndAnvilTeam", "Cauldron.Impact", "Megalopolis");
+            StartGame();
+
+            PlayCard("ScorchingSnap");
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            Card shield = GetCardInPlay("HammerAndShield");
+            DecisionSelectTarget = shield;
+            QuickHPStorage(shield);
+
+            UsePower(impact);
+            DealDamage(impact, shield, 1, DamageType.Melee);
+            QuickHPCheck(-1);
+        }
+        [Test]
+        public void TestImpactPowerNoDamagePossible()
+        {
+            SetupGameController("CitizensHammerAndAnvilTeam", "Cauldron.Impact", "TheWraith", "WagnerMarsBase");
+            StartGame();
+
+            DecisionSelectTarget = impact.CharacterCard;
+            PlayCard("ThroatJab");
+
+            Card shield = GetCardInPlay("HammerAndShield");
+            DecisionSelectTarget = shield;
+            QuickHPStorage(shield);
+
+            AssertNextMessageContains("from dealing damage");
+            UsePower(impact);
+        }
+        [Test]
         public void TestImpactIncap1()
         {
             SetupGameController("BaronBlade", "Cauldron.Impact", "Haka", "Bunker", "TheScholar", "Megalopolis");

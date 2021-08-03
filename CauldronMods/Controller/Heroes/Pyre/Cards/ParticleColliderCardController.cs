@@ -50,6 +50,19 @@ namespace Cauldron.Pyre
                 previewBoost = AddTrigger((DealDamageAction dd) => !IsRealAction(dd) && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == CharacterCard && dd.CardSource == cardSource, IncreaseDamageDecision, TriggerType.IncreaseDamage, TriggerTiming.Before, isActionOptional: false);
             }
 
+            //checks if we need to try to deal damage for a "prevent the next damage" trigger
+            DamageSource source = new DamageSource(GameController, CharacterCard);
+            bool hasNextDamagePrevention = false;
+            CardSource preventionSource = GameController.CanDealDamage(CharacterCard, considerOutOfPlay: true, GetCardSource());
+            if (preventionSource != null)
+            {
+                int? num = GameController.HowManyTimesIsDamagePrevented(source);
+                if (num.HasValue)
+                {
+                    hasNextDamagePrevention = true;
+                }
+            }
+
             //select the targets
             var targetDecision = new SelectTargetsDecision(GameController,
                                             DecisionMaker,
@@ -61,7 +74,7 @@ namespace Cauldron.Pyre
                                             new DamageSource(GameController, CharacterCard),
                                             numDamage,
                                             DamageType.Energy,
-                                            selectTargetsEvenIfCannotPerformAction: false,
+                                            selectTargetsEvenIfCannotPerformAction: hasNextDamagePrevention,
                                             cardSource: cardSource);
             coroutine = GameController.SelectCardsAndDoAction(targetDecision, _ => DoNothing());
             if (base.UseUnityCoroutines)
@@ -81,6 +94,16 @@ namespace Cauldron.Pyre
             var selectedTargets = targetDecision.SelectCardDecisions.Select(scd => scd.SelectedCard).Where((Card c) => c != null);
             if (selectedTargets.Count() == 0)
             {
+                //messaging for if damage cannot be dealt at all
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, source, 1, DamageType.Energy, 1, false, 1, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
                 yield break;
             }
 

@@ -41,6 +41,19 @@ namespace Cauldron.Impact
 
             }
 
+            //checks if we need to try to deal damage for a "prevent the next damage" trigger
+            DamageSource source = new DamageSource(GameController, this.Card);
+            bool hasNextDamagePrevention = false;
+            CardSource preventionSource = GameController.CanDealDamage(Card, considerOutOfPlay: true, GetCardSource());
+            if (preventionSource != null)
+            {
+                int? num = GameController.HowManyTimesIsDamagePrevented(source);
+                if (num.HasValue)
+                {
+                    hasNextDamagePrevention = true;
+                }
+            }
+
             //select the targets
             var targetDecision = new SelectTargetsDecision(GameController,
                                             DecisionMaker,
@@ -49,10 +62,10 @@ namespace Cauldron.Impact
                                             false,
                                             1,
                                             false,
-                                            new DamageSource(GameController, this.Card),
+                                            source,
                                             numDamage,
                                             DamageType.Infernal,
-                                            selectTargetsEvenIfCannotPerformAction: false,
+                                            selectTargetsEvenIfCannotPerformAction: hasNextDamagePrevention,
                                             cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectCardsAndDoAction(targetDecision, _ => DoNothing());
             if (base.UseUnityCoroutines)
@@ -72,6 +85,16 @@ namespace Cauldron.Impact
             var selectedTargets = targetDecision.SelectCardDecisions.Select(scd => scd.SelectedCard).Where((Card c) => c != null);
             if (selectedTargets.Count() == 0)
             {
+                //messaging for if damage cannot be dealt at all
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, source, 1, DamageType.Infernal, 1, false, 1, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
                 yield break;
             }
 
