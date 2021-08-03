@@ -976,6 +976,31 @@ namespace CauldronTests
             PlayCard("FleshOfTheSunGod");
             QuickHPCheck(0, -2, 0);
         }
+
+        [Test]
+        public void TestResidualMalusDamageResponsePutIntoPlay()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Ra", "Tempest", "Megalopolis");
+            StartGame();
+            ResetDays();
+            FlipCard(fate);
+            ResetRFGCards();
+
+            PlayCard("ResidualMalus");
+
+            QuickHPStorage(legacy, ra, tempest);
+            PlayCard("SurgeOfStrength", isPutIntoPlay: true);
+            QuickHPCheck(0, 0, 0);
+
+            //only once per turn
+            PlayCard("AquaticCorrespondence");
+            QuickHPCheck(0, 0, -1);
+
+            PutInTrash("TrafficPileup");
+            GoToStartOfTurn(legacy);
+            PlayCard("FleshOfTheSunGod");
+            QuickHPCheck(0, -2, 0);
+        }
         [Test]
         public void TestResidualMalusOnDestructionEffect()
         {
