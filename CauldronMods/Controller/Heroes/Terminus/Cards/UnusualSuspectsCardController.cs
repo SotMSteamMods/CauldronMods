@@ -64,11 +64,11 @@ namespace Cauldron.Terminus
             foreach (TurnTaker tt in Game.TurnTakers)
             {
                 if (tt.IsIncapacitatedOrOutOfGame) continue;
-                if (tt.Trash.BattleZone == Card.BattleZone && tt.Trash.IsRealTrash && GameController.IsLocationVisibleToSource(tt.Trash, GetCardSource()))
+                if (tt.Trash.IsRealTrash && GameController.IsLocationVisibleToSource(tt.Trash, GetCardSource()))
                 {
                     trashes.Add(tt.Trash);
                 }
-                trashes = trashes.Concat(tt.SubTrashes.Where(l => l.BattleZone == Card.BattleZone && l.IsRealTrash && GameController.IsLocationVisibleToSource(l, GetCardSource()))).ToList();
+                trashes = trashes.Concat(tt.SubTrashes.Where(l => l.IsRealTrash && GameController.IsLocationVisibleToSource(l, GetCardSource()))).ToList();
             }
             List<string> cardKeywords = target.GetKeywords().ToList();
             bool matchesKeyword = false;

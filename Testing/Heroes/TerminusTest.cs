@@ -1614,6 +1614,25 @@ namespace CauldronTests
 
 
         }
+        [Test]
+        public void UnusualSuspectsOblivAeon_OtherBattleZone()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Terminus", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DiscardTopCards(oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"), 3, oblivaeon.CharacterCardController.GetCardSource());
+
+            SwitchBattleZone(terminus);
+            Card aeonWarrior = GetCard("AeonWarrior");
+            PlayCard(oblivaeon, aeonWarrior, overridePlayLocation: terminus.BattleZone.FindScion().PlayArea);
+
+            DecisionSelectTargets = new Card[] { aeonWarrior, null };
+            QuickHPStorage(aeonWarrior);
+            PlayCard("UnusualSuspects");
+            QuickHPCheck(-4);
+
+
+        }
         #endregion Test Unusual Suspects
 
         #region Test Borrowed Token Pools
