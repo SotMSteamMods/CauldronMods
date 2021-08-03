@@ -539,6 +539,26 @@ namespace CauldronTests
         }
 
         [Test]
+        public void FlashReconOblivAeonOtherBattleZone()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Vanish", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            GoToStartOfTurn(vanish);
+
+            SwitchBattleZone(vanish);
+
+            Card aeonWarrior = GetCard("AeonWarrior");
+            PlayCard(oblivaeon, aeonWarrior, overridePlayLocation: vanish.BattleZone.FindScion().PlayArea);
+            PlayCard(oblivaeon, borrScion, overridePlayLocation: vanish.BattleZone.FindScion().PlayArea);
+
+            //vanish, scion deck, aeon man deck, environment
+            AssertNumberOfChoicesInNextDecision(4, SelectionType.RevealTopCardOfDeck);
+            AssertNumberOfChoicesInNextDecision(4, SelectionType.PutIntoPlay);
+            PlayCard("FlashRecon");
+
+        }
+
+        [Test]
         public void FlashReconDarkMind()
         {
             SetupGameController(new string[] { "OblivAeon", "Cauldron.Vanish", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective", scionIdentifiers: new List<string>() { "DarkMindCharacter" }) ;
