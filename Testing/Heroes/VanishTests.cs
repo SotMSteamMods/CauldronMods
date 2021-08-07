@@ -858,6 +858,7 @@ namespace CauldronTests
             StartGame();
 
             var target = GetCardInPlay("MobileDefensePlatform");
+            PlayCard("FilterSpy");
 
             PlayCard("FixedPoint");
 
@@ -865,8 +866,7 @@ namespace CauldronTests
 
             var card = PlayCard("AbductAndAbandon");
 
-            //AssertInTrash(vanish, card);
-            //AssertOnTopOfDeck(target);
+            AssertNextDecisionChoices(included: new List<Card>() { target });
 
             AssertInTrash(vanish, card);
             AssertInPlayArea(baron, target);
@@ -890,6 +890,46 @@ namespace CauldronTests
 
             //AssertInTrash(vanish, card);
             //AssertInPlayArea(baron, target);
+        }
+
+
+        [Test()]
+        public void AbductAndAbandon_Seraph()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Vanish", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card hellion = MoveCard(oblivaeon, "Hellion", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            GoToBeforeStartOfTurn(vanish);
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(vanish);
+
+            DealDamage(oblivaeon.CharacterCard, hellion, 20, DamageType.Radiant);
+            AssertFlipped(hellion);
+
+            DecisionSelectCard = hellion;
+            PlayCard("AbductAndAbandon");
+            AssertAtLocation(hellion, vanish.TurnTaker.Deck);
+           
+        }
+
+        [Test()]
+        public void AbductAndAbandon_Hellion()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Vanish", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card hellion = MoveCard(oblivaeon, "Hellion", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            GoToBeforeStartOfTurn(vanish);
+            RunActiveTurnPhase();
+
+            GoToPlayCardPhase(vanish);
+
+            AssertNextDecisionChoices(notIncluded: new List<Card>() { hellion });
+            PlayCard("AbductAndAbandon");
+            AssertAtLocation(hellion, vanish.TurnTaker.PlayArea);
+
         }
 
 
