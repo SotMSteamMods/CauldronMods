@@ -366,6 +366,32 @@ namespace CauldronTests
             QuickHandCheck(-1, 0, 0);
         }
 
+        [Test]
+        public void TombOfThievesVanishInnatePower_DamageZero()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            var minion = PlayCard("BladeBattalion");
+            var c = PutInHand("JauntingReflex");
+
+
+            GoToUsePowerPhase(vanish);
+
+            QuickHandStorage(vanish, haka, bunker);
+            AssertNumberOfStatusEffectsInPlay(0);
+            UsePower(vanish);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            AddReduceDamageTrigger(vanish, true, false, 1);
+
+            DecisionSelectFunction = 0;
+            DecisionSelectCard = c;
+            DealDamage(minion, vanish, 1, DamageType.Cold);
+            QuickHandCheck(0, 0, 0);
+        }
+
 
         [Test]
         public void TombOfThievesVanishIncap1()
