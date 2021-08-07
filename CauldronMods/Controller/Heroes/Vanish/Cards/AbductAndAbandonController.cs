@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using Handelabra.Sentinels.Engine.Controller.OblivAeon;
 
 namespace Cauldron.Vanish
 {
@@ -16,7 +17,7 @@ namespace Cauldron.Vanish
         public override IEnumerator Play()
         {
             var scd = new SelectCardDecision(GameController, DecisionMaker, SelectionType.MoveCardOnDeck, GameController.GetAllCards(),
-                additionalCriteria: c => c.IsInPlay && !c.IsCharacter && !GameController.IsCardIndestructible(c) && !c.IsOneShot && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
+                additionalCriteria: c => c.IsInPlay && !c.IsCharacter && !c.IsOneShot && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && (FindCardController(c) is MissionCardController ? c.IsFlipped : true),
                 cardSource: GetCardSource());
             var coroutine = GameController.SelectCardAndDoAction(scd, SelectCardResponse);
             if (base.UseUnityCoroutines)
@@ -36,7 +37,9 @@ namespace Cauldron.Vanish
             {
                 var card = scd.SelectedCard;
 
-                var coroutine = GameController.MoveCard(DecisionMaker, card, card.NativeDeck,
+                Location destination = card.NativeDeck is null || card.NativeDeck.OwnerTurnTaker != card.Owner ? card.Owner.Deck : card.NativeDeck;
+              
+                var coroutine = GameController.MoveCard(DecisionMaker, card, destination,
                                     showMessage: true,
                                     decisionSources: new IDecision[] { scd },
                                     evenIfIndestructible: false,
