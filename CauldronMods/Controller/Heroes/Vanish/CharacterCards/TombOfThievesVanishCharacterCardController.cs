@@ -48,6 +48,11 @@ namespace Cauldron.Vanish
 
         public IEnumerator DrawOrPlayResponse(DealDamageAction _1, TurnTaker _2, StatusEffect _3, int[] _4 = null)
         {
+            if(!_1.DidDealDamage)
+            {
+                yield break;
+            }
+
             var uses = GetCardPropertyJournalEntryInteger(InnatePowerUses) ?? 0;
             SetCardProperty(InnatePowerUses, 0);
             System.Console.WriteLine("trigger - " + uses.ToString());
