@@ -30,20 +30,22 @@ namespace Cauldron.DungeonsOfTerror
 
         protected bool IsRingOfForesightInPlay()
         {
-            return FindRingOfForesight().Where(c => c.IsInPlayAndHasGameText).Any();
+            return FindRingOfForesight().Where(c => c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Any();
         }
 
         protected IEnumerator CheckForNumberOfFates(IEnumerable<Card> cardsToCheck, List<int> storedResults, Location checkingLocation = null, List<bool> suppressMessage = null)
         { 
             int numFates = 0;
+            IEnumerator coroutine;
             if(cardsToCheck == null || !cardsToCheck.Any(c => c != null))
             {
                 storedResults.Add(numFates);
                 yield break;
             }
-            if(checkingLocation != null && checkingLocation == TurnTaker.Trash)
+
+            if(checkingLocation != null && checkingLocation == FindEnvironment(Card.BattleZone).TurnTaker.Trash)
             {
-                IEnumerator coroutine = GameController.SendMessageAction("Checking if the top card of the environment trash is a fate card!", Priority.Medium, GetCardSource(), showCardSource: true);
+                coroutine = GameController.SendMessageAction("Checking if the top card of the environment trash is a fate card!", Priority.Medium, GetCardSource(), showCardSource: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -80,7 +82,7 @@ namespace Cauldron.DungeonsOfTerror
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
 
-                        coroutine = GameController.SendMessageAction($"Checking if {ring.Title} is a fate card instead of the top card of {TurnTaker.Trash.GetFriendlyName()}", Priority.High, GetCardSource(), associatedCards: ring.ToEnumerable());
+                        coroutine = GameController.SendMessageAction($"Checking if {ring.Title} is a fate card instead of the top card of {FindEnvironment(Card.BattleZone).TurnTaker.Trash}", Priority.High, GetCardSource(), associatedCards: ring.ToEnumerable());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -102,7 +104,47 @@ namespace Cauldron.DungeonsOfTerror
 
             foreach (Card card in cardsToCheck)
             {
-                if(card != null && IsFate(card))
+                Card realCardToCheck = card;
+                if(card.Location.IsTrash && card.Location.IsEnvironment && IsRingOfForesightInPlay())
+                {
+                    List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
+                    Card ring = FindRingOfForesight().First();
+                    CardSource ringSource = FindCardController(ring).GetCardSource();
+                    coroutine = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.DestroyCard, ring, storedResults: storedYesNo, associatedCards: new Card[] { card }, cardSource: ringSource);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    if(DidPlayerAnswerYes(storedYesNo))
+                    {
+                        coroutine = GameController.DestroyCard(DecisionMaker, ring, cardSource: ringSource);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        coroutine = GameController.SendMessageAction($"Checking if {ring.Title} is a fate card instead of {card.Title}", Priority.High, GetCardSource(), associatedCards: ring.ToEnumerable());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+                        realCardToCheck = ring;
+                    }
+                }
+                if(realCardToCheck != null && IsFate(realCardToCheck))
                 {
                     numFates++;
                 }
