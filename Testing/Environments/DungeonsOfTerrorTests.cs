@@ -697,6 +697,29 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRingOfForesight_OblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card ring = PlayCard("RingOfForesight");
+            SwitchBattleZone(ra);
+
+            PlayCard("MagicBlade");
+            SwitchBattleZone(legacy);
+
+            PlayCard("DelayedRockTrap");
+
+            DecisionYesNo = true;
+            PutInTrash("Shopkeeper");
+
+            AssertIsInPlay(ring);
+
+            UsePower(legacy);
+            AssertNotInPlay(ring);
+        }
+
+        [Test()]
         public void TestRovingSlime_Fate()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror");
