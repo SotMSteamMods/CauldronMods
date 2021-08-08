@@ -169,6 +169,44 @@ namespace Cauldron.SuperstormAkela
 
             Log.Debug(card.Title + " was moved to the left of " + cardToMoveLeftOf.Title + " in the environment's play area.");
 
+            int? currentHP = card.IsTarget ? card.HitPoints : null;
+
+            FlipCardAction flip1 = new FlipCardAction(GetCardSource(), FindCardController(card), false, false, null);
+            flip1.AllowTriggersToRespond = false;
+            flip1.CanBeCancelled = false;
+            FlipCardAction flip2 = new FlipCardAction(GetCardSource(), FindCardController(card), false, false, null);
+            flip2.AllowTriggersToRespond = false;
+            flip2.CanBeCancelled = false;
+            coroutine = DoAction(flip1);
+            IEnumerator coroutine2 = DoAction(flip2);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+
+            if(!(currentHP is null))
+            {
+                SetHPAction setHP = new SetHPAction(GetCardSource(), card, currentHP.Value);
+                setHP.AllowTriggersToRespond = false;
+                setHP.CanBeCancelled = false;
+                coroutine = DoAction(setHP);
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
             yield break;
         }
 
@@ -193,6 +231,46 @@ namespace Cauldron.SuperstormAkela
             }
 
             Log.Debug(card.Title + " was moved to the right of " + cardToMoveRightOf.Title + " in the environment's play area.");
+
+
+            int? currentHP = card.IsTarget ? card.HitPoints : null;
+
+
+            FlipCardAction flip1 = new FlipCardAction(GetCardSource(), FindCardController(card), false, false, null);
+            flip1.AllowTriggersToRespond = false;
+            flip1.CanBeCancelled = false;
+            FlipCardAction flip2 = new FlipCardAction(GetCardSource(), FindCardController(card), false, false, null);
+            flip2.AllowTriggersToRespond = false;
+            flip2.CanBeCancelled = false;
+            coroutine = DoAction(flip1);
+            IEnumerator coroutine2 = DoAction(flip2);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
+
+            if (!(currentHP is null))
+            {
+                SetHPAction setHP = new SetHPAction(GetCardSource(), card, currentHP.Value);
+                setHP.AllowTriggersToRespond = false;
+                setHP.CanBeCancelled = false;
+                coroutine = DoAction(setHP);
+
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
 
             yield break;
         }

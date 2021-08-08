@@ -182,6 +182,44 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRideTheCurrents_MoveTargetsAround()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
+            StartGame();
+            //stack deck to reduce variability
+            PutOnDeck("TheStaffOfRa");
+
+            GoToPlayCardPhase(superstorm);
+            PutInTrash("Scatterburst");
+            PutInTrash("GeogravLocus");
+            Card currents = PlayCard("RideTheCurrents");
+            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
+            PlayCards(cardsToPlay);
+            Card maya = PlayCard("GeminiMaya");
+
+            DealDamage(ra, maya, 3, DamageType.Fire);
+
+            QuickHPStorage(maya);
+
+            DecisionSelectFunction = 1;
+            //selecting maya and moving it to the right of the 2nd card played
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = new Card[] { maya, cardsToPlay.ElementAt(1) };
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            int nextToPosition = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(cardsToPlay.ElementAt(1));
+
+
+            GoToStartOfTurn(baron);
+
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            int expected = nextToPosition + 1;
+            int actual = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(maya);
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(expected) == maya, maya.Title + " is not in the correct position. Expected: " + expected + ", Actual: " + actual);
+
+            QuickHPCheckZero();
+        }
+
+        [Test()]
         public void TestRideTheCurrents_Play()
         {
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
