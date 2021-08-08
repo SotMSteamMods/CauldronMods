@@ -390,6 +390,11 @@ namespace CauldronTests
             DecisionSelectCard = c;
             DealDamage(minion, vanish, 1, DamageType.Cold);
             QuickHandCheck(0, 0, 0);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            DealDamage(minion, vanish, 2, DamageType.Cold);
+            QuickHandCheck(-1, 0, 0);
         }
 
 
