@@ -177,6 +177,26 @@ namespace CauldronTests
             //Then, destroy this card.
             AssertInTrash(trap);
         }
+        [Test()]
+        public void TestDelayedRockTrap_OblivAeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Cauldron.DungeonsOfTerror", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Card trap = PlayCard("DelayedRockTrap");
+            SwitchBattleZone(ra);
+
+
+
+            QuickHPStorage(ra);
+
+            PutInTrash("EnormousPack");
+            AssertNextToCard(trap, ra.CharacterCard);
+
+            PutInTrash("SkyDeck");
+            AssertInTrash(trap);
+
+        }
 
         [Test()]
         public void TestDubiousEdibles_NotFate()

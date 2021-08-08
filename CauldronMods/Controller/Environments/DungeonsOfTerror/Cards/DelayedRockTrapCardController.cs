@@ -33,8 +33,8 @@ namespace Cauldron.DungeonsOfTerror
         public override void AddTriggers()
         {
             //When a card enters the environment trash, check that card. If it is a fate card, this card deal the hero next to it {H} melee damage. If it is not a fate card, this card deals each other hero target {H-2} melee damage. Then, destroy this card.
-            AddTrigger((MoveCardAction mca) => mca.Destination == TurnTaker.Trash && GetCardThisCardIsNextTo() != null, CardEntersTrashResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.DestroySelf }, TriggerTiming.After);
-            AddTrigger((BulkMoveCardsAction bmca) => bmca.Destination == TurnTaker.Trash && GetCardThisCardIsNextTo() != null, CardEntersTrashResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.DestroySelf }, TriggerTiming.After);
+            AddTrigger((MoveCardAction mca) => mca.Destination == FindEnvironment(Card.BattleZone).TurnTaker.Trash && GetCardThisCardIsNextTo() != null, CardEntersTrashResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.DestroySelf }, TriggerTiming.After);
+            AddTrigger((BulkMoveCardsAction bmca) => bmca.Destination == FindEnvironment(Card.BattleZone).TurnTaker.Trash && GetCardThisCardIsNextTo() != null, CardEntersTrashResponse, new TriggerType[] { TriggerType.DealDamage, TriggerType.DestroySelf }, TriggerTiming.After);
         }
 
         private IEnumerator CardEntersTrashResponse(BulkMoveCardsAction bmca)
