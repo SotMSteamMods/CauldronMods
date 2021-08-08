@@ -36,6 +36,7 @@ namespace Cauldron.DungeonsOfTerror
         protected IEnumerator CheckForNumberOfFates(IEnumerable<Card> cardsToCheck, List<int> storedResults, Location checkingLocation = null, List<bool> suppressMessage = null)
         { 
             int numFates = 0;
+            bool hasAlreadyAsked = false;
             IEnumerator coroutine;
             if(cardsToCheck == null || !cardsToCheck.Any(c => c != null))
             {
@@ -57,6 +58,7 @@ namespace Cauldron.DungeonsOfTerror
 
                 if (IsRingOfForesightInPlay())
                 {
+                    hasAlreadyAsked = true;
                     //When checking a card in the environment trash, the players may first destroy ring of foresight, and then check it instead of the original card.
                     Card ring = FindRingOfForesight().First();
                     CardSource ringSource = FindCardController(ring).GetCardSource();
@@ -105,7 +107,7 @@ namespace Cauldron.DungeonsOfTerror
             foreach (Card card in cardsToCheck)
             {
                 Card realCardToCheck = card;
-                if(card.Location.IsTrash && card.Location.IsEnvironment && IsRingOfForesightInPlay())
+                if(!hasAlreadyAsked && card.Location.IsTrash && card.Location.IsEnvironment && IsRingOfForesightInPlay())
                 {
                     List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
                     Card ring = FindRingOfForesight().First();

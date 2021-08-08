@@ -714,13 +714,12 @@ namespace CauldronTests
             QuickHPCheck(0, 1, 0, 0);
 
             //When checking a card in the environment trash, the players may first destroy this card, and then check it instead of the original card.
-            PutInTrash("HighGround");
+            PutInTrash("Shopkeeper");
             DecisionYesNo = false;
             QuickHPUpdate();
             AssertMaxNumberOfDecisions(2);
             PlayCard("DubiousEdibles");
             QuickHPCheck(0, 4, 0, 0);
-            AssertInTrash(ring);
 
         }
 
