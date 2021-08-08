@@ -108,10 +108,10 @@ namespace Cauldron.Vanish
 
             if(!DidPlayerAnswerYes(yesNoStorage))
             {
-                yield return null;
+                yield break;
             }
 
-            coroutine = DrawCard(htt, optional: true, cardsDrawn: result);
+            coroutine = DrawCard(htt, optional: false, cardsDrawn: result);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -129,7 +129,7 @@ namespace Cauldron.Vanish
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield return null;
+            yield break;
         }
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)

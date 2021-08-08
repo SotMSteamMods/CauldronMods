@@ -1355,6 +1355,19 @@ namespace CauldronTests
             AssertInTrash(synaptic);
             AssertIsInPlay(bolt);
         }
+        [Test]
+        public void TacticalRelocation_DrawAndDiscardOptional()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Tachyon", "TheWraith", "Megalopolis");
+            StartGame();
 
+            DecisionSelectTargets = new Card[] { null };
+
+            DecisionYesNo = false;
+            PlayCard("TacticalRelocation");
+            AssertNumberOfCardsInTrash(vanish, 1);
+            AssertNumberOfCardsInTrash(tachyon, 0);
+            AssertNumberOfCardsInTrash(wraith, 0);
+        }
     }
 }
