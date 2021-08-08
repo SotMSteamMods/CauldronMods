@@ -8,7 +8,6 @@ namespace Cauldron.Vanish
 {
     public class TombOfThievesVanishCharacterCardController : HeroCharacterCardController
     {
-        private static readonly string InnatePowerUses = "InnatePower";
 
         public TombOfThievesVanishCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -18,11 +17,11 @@ namespace Cauldron.Vanish
         {
             //"The next time {Vanish} is dealt damage, draw or play a card."
             var effect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(DrawOrPlayResponse), $"The next time {CharacterCard.Title} is dealt damage, draw or play a card.", new[] { TriggerType.DrawCard, TriggerType.PlayCard }, TurnTaker, CharacterCard);
-            effect.NumberOfUses = 1;
+            // if NumberOfUses is set, stacking the effect will automatically increase numberofuses instead of having all the responses happen to the same damage
             effect.TargetCriteria.IsSpecificCard = CharacterCard;
             effect.CardSource = CharacterCard;
             effect.BeforeOrAfter = BeforeOrAfter.After;
-            effect.CanEffectStack = true;
+            effect.DamageAmountCriteria.GreaterThan = 0;
             effect.UntilTargetLeavesPlay(CharacterCard);
 
             var coroutine = AddStatusEffect(effect);
@@ -34,31 +33,33 @@ namespace Cauldron.Vanish
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            if (IsRealAction())
-            {
-                this.IncrementCardProperty(InnatePowerUses);
-            }
         }
 
         public override void AddTriggers()
         {
-            AddTrigger<TargetLeavesPlayAction>(tlpa => !tlpa.IsPretend && tlpa.TargetLeavingPlay == CharacterCard, tlpa => ResetFlagAfterLeavesPlay(InnatePowerUses), TriggerType.HiddenLast, TriggerTiming.Before);
         }
 
         public IEnumerator DrawOrPlayResponse(DealDamageAction _1, TurnTaker _2, StatusEffect _3, int[] _4 = null)
         {
-            if(!_1.DidDealDamage)
+            //avoid having the play-a-card effect indirectly trigger the same status effect
+            if (_3.CardMovedExpiryCriteria.Card == null)
             {
-                yield break;
-            }
+                IEnumerator coroutine;
+                _3.CardMovedExpiryCriteria.Card = this.Card;
+                if (_2 != null && _2.IsHero)
+                {
+                    coroutine = DrawACardOrPlayACard(FindHeroTurnTakerController(_2.ToHero()), false);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
 
-            var uses = GetCardPropertyJournalEntryInteger(InnatePowerUses) ?? 0;
-            SetCardProperty(InnatePowerUses, 0);
-            System.Console.WriteLine("trigger - " + uses.ToString());
-            while (--uses >= 0)
-            {
-                var coroutine = DrawACardOrPlayACard(DecisionMaker, false);
+                coroutine = GameController.ExpireStatusEffect(_3, null);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -68,6 +69,7 @@ namespace Cauldron.Vanish
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+            yield break;
         }
 
         public override IEnumerator UseIncapacitatedAbility(int index)
