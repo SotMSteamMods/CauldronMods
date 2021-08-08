@@ -309,13 +309,43 @@ namespace CauldronTests
             UsePower(vanish);
             AssertNumberOfStatusEffectsInPlay(1);
             UsePower(vanish);
-            AssertNumberOfStatusEffectsInPlay(1);
+            AssertNumberOfStatusEffectsInPlay(2);
 
             DecisionSelectFunction = 1;
                         
             DealDamage(minion, vanish, 1, DamageType.Cold);
             AssertNumberOfStatusEffectsInPlay(0);
             QuickHandCheck(2, 0, 0);
+        }
+        [Test]
+        public void TombOfThievesVanishInnatePowerMidEffectDamage()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+
+            UsePower(vanish);
+            UsePower(vanish);
+
+            Card blindside = PlayCard("BlindsideJump");
+            Card blink = PutInHand("Blink");
+
+            PlayCard("BacklashField");
+
+            Card gauntlet = PutInHand("FocusingGauntlet");
+            Card elusive = PutInHand("Elusive");
+            Card reflex = PutInHand("JauntingReflex");
+
+            DecisionSelectCards = new Card[] { blink, gauntlet, baron.CharacterCard, elusive, reflex };
+            DecisionSelectFunction = 0;
+            DecisionSelectPower = blindside;
+            QuickHPStorage(baron, vanish);
+            DealDamage(baron, vanish, 1, DamageType.Cold);
+
+            AssertIsInPlay(gauntlet, elusive);
+            AssertNotInPlay(reflex);
+            QuickHPCheck(-2, -4);
         }
 
 
@@ -364,6 +394,57 @@ namespace CauldronTests
             DecisionSelectCard = c;
             DealDamage(minion, vanish, 1, DamageType.Cold);
             QuickHandCheck(-1, 0, 0);
+        }
+
+        [Test]
+        public void TombOfThievesVanishInnatePower_DamageZero()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            var minion = PlayCard("BladeBattalion");
+            var c = PutInHand("JauntingReflex");
+
+
+            GoToUsePowerPhase(vanish);
+
+            QuickHandStorage(vanish, haka, bunker);
+            AssertNumberOfStatusEffectsInPlay(0);
+            UsePower(vanish);
+            AssertNumberOfStatusEffectsInPlay(1);
+
+            AddReduceDamageTrigger(vanish, true, false, 1);
+
+            DecisionSelectFunction = 0;
+            DecisionSelectCard = c;
+            DealDamage(minion, vanish, 1, DamageType.Cold);
+            QuickHandCheck(0, 0, 0);
+
+            //the damage reduction is done as a status effect
+            AssertNumberOfStatusEffectsInPlay(2);
+
+            DealDamage(minion, vanish, 2, DamageType.Cold);
+            QuickHandCheck(-1, 0, 0);
+
+            AssertNumberOfStatusEffectsInPlay(1);
+        }
+
+        [Test]
+        public void TombOfThievesVanishInnatePowerGuise()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish/TombOfThievesVanishCharacter", "Guise", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card gritty = PutInHand("GrittyReboot");
+
+            DecisionSelectTurnTaker = vanish.TurnTaker;
+            DecisionSelectCard = gritty;
+
+            PlayCard("ICanDoThatToo");
+
+            DealDamage(baron, guise, 1, DamageType.Melee);
+            AssertIsInPlay(gritty);
         }
 
 
