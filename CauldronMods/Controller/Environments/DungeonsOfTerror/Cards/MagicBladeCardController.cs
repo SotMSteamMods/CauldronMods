@@ -42,7 +42,7 @@ namespace Cauldron.DungeonsOfTerror
         {
             //check the top card of the environment deck.
             List<MoveCardAction> storedDiscard = new List<MoveCardAction>();
-            IEnumerator coroutine = DiscardCardsFromTopOfDeck(TurnTakerController, 1, storedResults: storedDiscard, showMessage: true);
+            IEnumerator coroutine = DiscardCardsFromTopOfDeck(FindEnvironment(Card.BattleZone), 1, storedResults: storedDiscard, showMessage: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
