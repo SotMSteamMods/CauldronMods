@@ -58,7 +58,7 @@
             "flippedGameplay": [
                 "When a spell card causes a head to deal damage, increase that damage by 1 for each “Element of Fire“ card in the villain trash"
             ],
-            "flippedAdvanced": "Reduce damage dealt by heads by 1.",
+            "flippedAdvanced": "Reduce damage taken by heads by 1.",
             "flippedIcons": [
                 "IncreaseDamageDealt"
             ],
