@@ -26,6 +26,8 @@ namespace Cauldron.DocHavoc
             set;
         }
 
+        private DealDamageAction PossibleDealDamageAction { get; set; }
+
         public CauterizeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             this.AllowFastCoroutinesDuringPretend = false;
@@ -94,8 +96,9 @@ namespace Cauldron.DocHavoc
             if(GameController.PretendMode || ga.Target != RememberedTarget)
             {
                 List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
+                PossibleDealDamageAction = ga;
                 IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                    SelectionType.GainHP, ga.Target, action: ga, storedResults: storedYesNo,
+                    SelectionType.Custom, ga.Target, action: ga, storedResults: storedYesNo,
                     associatedCards: new[] { ga.Target, ga.Target },
                     cardSource: base.GetCardSource());
 
@@ -137,6 +140,15 @@ namespace Cauldron.DocHavoc
                 DecisionShouldHeal = null;
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            return new CustomDecisionText(  $"Do you want to heal {PossibleDealDamageAction.Target.Title} by {PossibleDealDamageAction.Amount} instead of dealing damage?",
+                                            $"Should they heal {PossibleDealDamageAction.Target.Title} by {PossibleDealDamageAction.Amount} instead of dealing damage?",
+                                            $"Vote for if they should heal {PossibleDealDamageAction.Target.Title} by {PossibleDealDamageAction.Amount} instead of dealing damage?",
+                                            $"heal {PossibleDealDamageAction.Target.Title} by {PossibleDealDamageAction.Amount}");
+
         }
     }
 }
