@@ -1151,6 +1151,24 @@ namespace CauldronTests
             QuickTokenPoolCheck(5);
 
         }
+
+        [Test]
+        public void TestNoRestForTheWicked_Oblivaeon()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Terminus", "Legacy", "Haka", "Cauldron.BlackwoodForest", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            TokenPool tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+
+            Card aeonWarrior = GetCard("AeonWarrior");
+            Location aeonTrash = oblivaeon.TurnTaker.FindSubTrash("AeonMenDeck");
+            MoveCard(oblivaeon, aeonWarrior, aeonTrash, cardSource: oblivaeon.CharacterCardController.GetCardSource());
+
+            QuickTokenPoolStorage(tokenPool);
+            Card noRestForTheWicked = PlayCard("NoRestForTheWicked");
+            QuickTokenPoolCheck(5);
+            AssertAtLocation(aeonWarrior, aeonTrash);
+                
+        }
         #endregion Test No Rest For The Wicked
 
         #region Test Return Fire
