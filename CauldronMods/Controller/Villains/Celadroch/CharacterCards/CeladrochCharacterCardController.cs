@@ -273,8 +273,10 @@ namespace Cauldron.Celadroch
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
+
+            IEnumerable<Card> minionsToSummon = FindCardsWhere(c => (c.Location == TurnTaker.Deck || c.Location == TurnTaker.Trash) && c.DoKeywordsContain(keyword));
             coroutine = GameController.PlayCards(DecisionMaker,
-                c => (c.Location == TurnTaker.Deck || c.Location == TurnTaker.Trash) && c.DoKeywordsContain(keyword), false, true,
+                c => minionsToSummon.Contains(c), false, true,
                 allowAutoDecide: true,
                 cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
