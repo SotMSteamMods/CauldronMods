@@ -52,6 +52,7 @@ namespace CauldronTests.Art
             public List<string> CharacterIdentifiers;
             public List<string> HeroLeadCharacterIdentifiers;
             public List<string> StartEndIdentifiers;
+            public Dictionary<string, List<string>> SubdeckCardListsDictionary;
 
             public Item(object[] obj)
             {
@@ -61,6 +62,7 @@ namespace CauldronTests.Art
                 CharacterIdentifiers = (List<string>)obj[3];
                 HeroLeadCharacterIdentifiers = (List<string>)obj[4];
                 StartEndIdentifiers = (List<string>)obj[5];
+                SubdeckCardListsDictionary = (Dictionary<string, List<string>>)obj[6];
             }
         }
 
@@ -90,7 +92,7 @@ namespace CauldronTests.Art
 
             foreach (var name in names)
             {
-                int removed = files.RemoveAll(s => s.StartsWith(name, StringComparison.OrdinalIgnoreCase));
+                int removed = files.RemoveAll(s => s.StartsWith(name, StringComparison.Ordinal));
                 if (removed == 0)
                     Warn($"No Atlases found for {name}");
             }
@@ -208,7 +210,7 @@ namespace CauldronTests.Art
 
             foreach (var id in identifiers)
             {
-                int removed = files.RemoveAll(s => s.StartsWith(id + "StartOfGame", StringComparison.OrdinalIgnoreCase));
+                int removed = files.RemoveAll(s => s.StartsWith(id + "StartOfGame", StringComparison.Ordinal));
                 if (removed == 0)
                     Warn($"No Start of Game images found for {id}");
             }
@@ -240,7 +242,7 @@ namespace CauldronTests.Art
 
             foreach (var id in identifiers)
             {
-                int removed = files.RemoveAll(s => s.StartsWith(id, StringComparison.OrdinalIgnoreCase));
+                int removed = files.RemoveAll(s => s.StartsWith(id, StringComparison.Ordinal));
                 if (removed == 0)
                     Warn($"No Start of Game images found for {id}");
             }
@@ -274,7 +276,7 @@ namespace CauldronTests.Art
 
             foreach (var id in identifiers)
             {
-                int removed = files.RemoveAll(s => s.StartsWith("YesNoDialog" + id, StringComparison.OrdinalIgnoreCase));
+                int removed = files.RemoveAll(s => s.StartsWith("YesNoDialog" + id, StringComparison.Ordinal));
                 if (removed == 0)
                     Warn($"No Yes/No Dialog image found for {id}");
             }
@@ -283,6 +285,66 @@ namespace CauldronTests.Art
             {
                 Warn($"{file} isn't used by any decks.");
             }
+
+            AssertNoWarnings();
+        }
+
+        [Test]
+        public void LargeCardArt()
+        {
+            List<string> names = new List<string>();
+            Dictionary<string, List<string>> nameCardsDict = new Dictionary<string, List<string>>();
+             foreach (var item in Items())
+            {
+                names.Add(item.Name);
+                nameCardsDict.Add(item.Name, item.CardIdentifiers);
+                nameCardsDict[item.Name].AddRange(item.CharacterIdentifiers.Select(s => s + "Back").ToList());
+                foreach(string subdeckName in item.SubdeckCardListsDictionary.Keys)
+                {
+                    names.Add(subdeckName);
+                    nameCardsDict.Add(subdeckName, item.SubdeckCardListsDictionary[subdeckName]);
+
+                }
+            }
+
+            string expectedDirectory = Path.Combine(ArtPath, @"LargeCardTextures");
+
+            if (!Directory.Exists(expectedDirectory))
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
+
+            var dirs = Directory.GetDirectories(expectedDirectory).ToList();
+
+            foreach (var name in names)
+            {
+                int removed = dirs.RemoveAll(s => s.EndsWith(name, StringComparison.Ordinal));
+                if (removed == 0)
+                {
+                    Warn($"Large card directory not found for {name}");
+                    continue;
+                }
+
+                string deckSpecificDirectory = expectedDirectory + "\\" + name;
+                var files = Directory.GetFiles(deckSpecificDirectory).Select(s => Path.GetFileName(s)).ToList();
+
+                nameCardsDict[name].Add(name + "DeckBack");
+                foreach(var card in nameCardsDict[name])
+                {
+                    removed = files.RemoveAll(s => s.Equals(card + ".jpg", StringComparison.Ordinal));
+                    if (removed == 0)
+                        Warn($"No large card image found for {card}");
+                }
+
+                foreach (var file in files)
+                {
+                    Warn($"Large Image file {file} isn't used by any cards.");
+                }
+            }
+
+            foreach (var dir in dirs)
+            {
+                Warn($"{dir} isn't used by any decks.");
+            }
+
 
             AssertNoWarnings();
         }

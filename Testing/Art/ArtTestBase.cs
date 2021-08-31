@@ -112,21 +112,39 @@ namespace CauldronTests.Art
                     }
                 }
 
-                results.Add(ModifyForSpecificDecks(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers));
+                List<JSONValue> subdecks = new List<JSONValue>();
+                Dictionary<string, List<string>> subdeckCardListDict = new Dictionary<string, List<string>>();
+                if (jsonObject.ContainsKey("subdecks"))
+                {
+                    subdecks.AddRange(jsonObject.GetArray("subdecks"));
+                }
+                foreach (JSONValue subdeck in subdecks)
+                {
+                    var subdeckCards = subdeck.Obj.GetArray("cards");
+                    List<string> subdeckCardIdentifiers = new List<string>();
+                    foreach (JSONValue card in subdeckCards)
+                    {
+                        var cardIdentifier = card.Obj.GetString("identifier");
+                        subdeckCardIdentifiers.Add(cardIdentifier);
+                    }
+                    subdeckCardListDict.Add(subdeck.Obj.GetString("identifier"), subdeckCardIdentifiers);
+                }
+
+                results.Add(ModifyForSpecificDecks(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers, subdeckCardListDict));
 
             }
 
             return results.GetEnumerator();
         }
 
-        private object[] ModifyForSpecificDecks(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
+        private object[] ModifyForSpecificDecks(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers, Dictionary<string, List<string>> subdeckCardListDict)
         {
             if (name == "MagnificentMara")
             {
                 cardIdentifiers.Add("MesmerPendant");
             }
 
-            return new object[] { name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers };
+            return new object[] { name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers, subdeckCardListDict };
         }
 
     }
@@ -152,6 +170,11 @@ namespace CauldronTests.Art
                 "Mythos: file 'MythosEyeDeckBack' was not used by any cards in the deck.",
                 "Mythos: file 'MythosFearDeckBack' was not used by any cards in the deck.",
                 "Mythos: file 'MythosMindDeckBack' was not used by any cards in the deck.",
+
+                "Large Image file MythosEyeDeckBack.jpg isn't used by any cards.",
+                "Large Image file MythosFearDeckBack.jpg isn't used by any cards.",
+                "Large Image file MythosMindDeckBack.jpg isn't used by any cards."
+
             },
         };
 
