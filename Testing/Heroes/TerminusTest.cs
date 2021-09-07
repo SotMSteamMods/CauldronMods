@@ -696,6 +696,30 @@ namespace CauldronTests
             AssertOutOfGame(badge);
         }
 
+        [Test]
+        public void TestGravenShell_MarkOfDestructionBug()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Cauldron.TheStranger", "Legacy/YoungLegacyCharacter", "Cauldron.WindmillCity");
+            StartGame();
+
+            SetHitPoints(terminus, 10);
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            Card gravenShell = PlayCard("GravenShell");
+            DecisionSelectCard = mdp;
+            DecisionAutoDecideIfAble = true;
+            Card markOfDestruction = PlayCard("MarkOfDestruction");
+
+            QuickHPStorage(terminus);
+            DealDamage(terminus, markOfDestruction, 10, DamageType.Infernal);
+            AssertInTrash(markOfDestruction);
+            AssertInTrash(mdp);
+            QuickHPCheck(1);
+            AssertTokensInWrathPool(2);
+
+        }
+
         #endregion
 
         #region Test Railway Spike
