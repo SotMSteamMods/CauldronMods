@@ -31,6 +31,7 @@ Another anomoly is that the Save Game does export the Decklist.  So changes to t
 The logic around wheather a card is in play when looking at things like cards under other cards, flipped, under and flipped, next to and flipped, etc are obscure.
 This distinction matters as game text (read that as 'code') is not run when the card is out of play.
 This also leads to unclear scenarios when moving cards from between locations (under a card, to the play area) where the card may not cleanly enter play and fire all triggers.
+Looking at the IsCardInPlayAndHasGameText will show you only cards in play that are not flipped or under other cards.
 
 ## Damage Preview and Pretend
 When damage is dealt, a UI damage preview appears on the screen. At that time, the game runs through all the triggers that could affect the damage. This period of time is known as pretend mode. 
