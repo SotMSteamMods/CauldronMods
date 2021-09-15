@@ -25,10 +25,11 @@ namespace Cauldron.MagnificentMara
         private IEnumerator MaybeMoveInsteadResponse(DestroyCardAction dc)
         {
             Card card = dc.CardToDestroy.Card;
+            Location destination = card.NativeDeck is null || card.NativeDeck.OwnerTurnTaker != card.Owner ? card.Owner.Deck : card.NativeDeck;
             var functions = new List<Function>
             {
-                new Function(DecisionMaker, $"Put {card.Title} on top of its deck", SelectionType.MoveCardOnDeck, () => CancelDestructionAndMoveCard(dc, card.NativeDeck)),
-                new Function(DecisionMaker, $"Put {card.Title} on the bottom of its deck", SelectionType.MoveCardOnBottomOfDeck, () => CancelDestructionAndMoveCard(dc, card.NativeDeck, true))
+                new Function(DecisionMaker, $"Put {card.Title} on top of its deck", SelectionType.MoveCardOnDeck, () => CancelDestructionAndMoveCard(dc, destination)),
+                new Function(DecisionMaker, $"Put {card.Title} on the bottom of its deck", SelectionType.MoveCardOnBottomOfDeck, () => CancelDestructionAndMoveCard(dc, destination, true))
             };
             var selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, functions, optional: true, associatedCards: new Card[] { card }, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectAndPerformFunction(selectFunction);
