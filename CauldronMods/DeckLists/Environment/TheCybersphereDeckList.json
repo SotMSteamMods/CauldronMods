@@ -62,7 +62,7 @@
             "icons": [
                 "EndOfTurnAction",
                 "DestroyOngoing",
-                "DestroyEnvironment",
+                "DestroyEquipment",
                 "DrawCardNow"
             ],
             "body": [
@@ -129,7 +129,7 @@
             ],
             "icons": [
                 "DrawCardNow",
-                "EndOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "DestroySelf",
                 "PlayCardNow"
             ],
