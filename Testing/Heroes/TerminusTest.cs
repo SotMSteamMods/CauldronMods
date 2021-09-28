@@ -1167,7 +1167,12 @@ namespace CauldronTests
             Card noRestForTheWicked = PlayCard("NoRestForTheWicked");
             QuickTokenPoolCheck(5);
             AssertAtLocation(aeonWarrior, aeonTrash);
-                
+
+            //check that it can still se aeon trash when needed
+            Card vassal = GetCard("AeonVassal");
+            PlayCard(oblivaeon, vassal, overridePlayLocation: terminus.BattleZone.FindScion().PlayArea);
+            PlayCard(noRestForTheWicked);
+            AssertIsInPlay(aeonWarrior);
         }
         #endregion Test No Rest For The Wicked
 
