@@ -348,5 +348,141 @@ namespace CauldronTests.Art
 
             AssertNoWarnings();
         }
+
+        [Test]
+        public void HeroCutouts()
+        {
+
+            //there will be lots of warnings as the cards with effects vs no effects vary greatly
+
+            List<string> names = new List<string>();
+            Dictionary<string, List<string>> namePromosDict = new Dictionary<string, List<string>>();
+            foreach (var item in Items())
+            {
+                if (item.Kind == DeckDefinition.DeckKind.Hero)
+                {
+                    names.Add(item.Name);
+                    namePromosDict.Add(item.Name, item.CharacterIdentifiers.ToList());
+                }
+            }
+
+            string expectedDirectory = Path.Combine(ArtPath, @"Cutouts\Heroes");
+
+            if (!Directory.Exists(expectedDirectory))
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
+
+            var dirs = Directory.GetDirectories(expectedDirectory).ToList();
+
+            foreach (var name in names)
+            {
+                int removed = dirs.RemoveAll(s => s.EndsWith(name, StringComparison.Ordinal));
+                if (removed == 0)
+                {
+                    Warn($"Hero cutout directory not found for {name}");
+                    continue;
+                }
+
+                string deckSpecificDirectory = expectedDirectory + "\\" + name;
+                var files = Directory.GetFiles(deckSpecificDirectory).Select(s => Path.GetFileName(s)).ToList();
+
+                List<string> cutoutList = new List<string>();
+                foreach(string character in namePromosDict[name])
+                {
+                    string heroTurn = character + "HeroTurn";
+                    string heroTurnFlipped = character + "HeroTurnFlipped";
+                    string heroTurnEffects = character + "HeroTurnEffects";
+                    string heroTurnDamaged = character + "HeroTurnDamaged";
+                    string heroTurnDamagedEffects = character + "HeroTurnDamagedEffects";
+                    string villainTurn = character + "VillainTurn";
+                    string villainTurnFlipped = character + "VillainTurnFlipped";
+                    string villainTurnEffects = character + "VillainTurnEffects";
+                    string villainTurnDamaged = character + "VillainTurnDamaged";
+                    string villainTurnDamagedEffects = character + "VillainTurnDamagedEffects";
+
+                    cutoutList.AddRange(new List<string>() { heroTurn, heroTurnFlipped, heroTurnEffects, heroTurnDamaged, heroTurnDamagedEffects, villainTurn, villainTurnFlipped, villainTurnEffects, villainTurnDamaged, villainTurnDamagedEffects });
+
+                }
+
+                foreach (string cutout in cutoutList)
+                {
+                    removed = files.RemoveAll(s => s.Equals(cutout + ".png", StringComparison.Ordinal));
+                    if (removed == 0)
+                        Warn($"No cutout image found for {cutout}");
+                }
+
+                foreach (var file in files)
+                {
+                    Warn($"Cutout Image file {file} isn't used by any cards.");
+                }
+            }
+
+            foreach (var dir in dirs)
+            {
+                Warn($"{dir} isn't used by any decks.");
+            }
+
+
+            AssertNoWarnings();
+        }
+
+        [Test]
+        public void EnvironmentBackgrounds()
+        {
+            List<string> names = new List<string>();
+            foreach (var item in Items())
+            {
+                if (item.Kind == DeckDefinition.DeckKind.Environment)
+                {
+                    names.Add(item.Name);
+                }
+            }
+
+            string expectedDirectory = Path.Combine(ArtPath, @"Environments");
+
+            if (!Directory.Exists(expectedDirectory))
+                Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
+
+            var dirs = Directory.GetDirectories(expectedDirectory).ToList();
+
+            foreach (var name in names)
+            {
+                int removed = dirs.RemoveAll(s => s.EndsWith(name, StringComparison.Ordinal));
+                if (removed == 0)
+                {
+                    Warn($"Environment backgrounds directory not found for {name}");
+                    continue;
+                }
+
+                string deckSpecificDirectory = expectedDirectory + "\\" + name;
+                var files = Directory.GetFiles(deckSpecificDirectory).Select(s => Path.GetFileName(s)).ToList();
+
+                List<string> imageList = new List<string>();
+                for(int i = 0; i < 12; i++)
+                {
+                    imageList.Add(name + "-" + i);
+                }
+                imageList.Add(name + "-Start");
+
+                foreach (string cutout in imageList)
+                {
+                    removed = files.RemoveAll(s => s.Equals(cutout + ".jpg", StringComparison.Ordinal));
+                    if (removed == 0)
+                        Warn($"No background image found for {cutout}");
+                }
+
+                foreach (var file in files)
+                {
+                    Warn($"Background Image file {file} isn't used by the game.");
+                }
+            }
+
+            foreach (var dir in dirs)
+            {
+                Warn($"{dir} isn't used by any decks.");
+            }
+
+
+            AssertNoWarnings();
+        }
     }
 }
