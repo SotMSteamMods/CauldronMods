@@ -95,7 +95,7 @@ namespace Cauldron.DocHavoc
             {
                 List<YesNoCardDecision> storedYesNo = new List<YesNoCardDecision>();
                 IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(this.DecisionMaker,
-                    SelectionType.GainHP, ga.Target, action: ga, storedResults: storedYesNo,
+                    SelectionType.Custom, ga.Target, action: ga, storedResults: storedYesNo,
                     associatedCards: new[] { ga.Target, ga.Target },
                     cardSource: base.GetCardSource());
 
@@ -137,6 +137,19 @@ namespace Cauldron.DocHavoc
                 DecisionShouldHeal = null;
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            string target = "the target";
+            string hpAmount = "HP";
+            if (decision is YesNoCardDecision yncd && yncd.GameAction is DealDamageAction dd)
+            {
+                target = dd.Target.Title;
+                hpAmount = $"{dd.Amount} HP";
+            }
+            return new CustomDecisionText($"Do you want {target} to regain {hpAmount} instead of dealing damage?", $"{decision.DecisionMaker.Name} is deciding whether to cause HP gain instead of damage...", $"Should {target} regain {hpAmount} instead of taking damage?", "cause HP regain instead of damage");
+
         }
     }
 }
