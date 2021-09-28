@@ -387,5 +387,13 @@ namespace CauldronTests
         {
             cards.ForEach(c => AssertBattleZone(c, bz));
         }
+
+        protected void MoveToSpecificBattleZone(BattleZone bz, TurnTakerController ttc)
+        {
+            if (ttc.BattleZone == bz)
+                return;
+
+            SwitchBattleZone(ttc);
+        }
     }
 }

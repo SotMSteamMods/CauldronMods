@@ -158,6 +158,29 @@ namespace CauldronTests
             QuickHPCheck(-3, -3, -3, -7, 0, 0, 0);
         }
 
+        [Test]
+        public void TestGentleTransport_Oblivaeon()
+        {
+ 
+
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Vanish", "Legacy", "Haka", "Cauldron.WindmillCity", "Cauldron.OblaskCrater", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            GoToPlayCardPhase(envTwo);
+            Card predator = PlayCard("ShadowOfOblask");
+            Card gentleTransport = PlayCard("GentleTransport");
+
+            MoveToSpecificBattleZone(bzOne, vanish);
+            MoveToSpecificBattleZone(bzOne, legacy);
+            MoveToSpecificBattleZone(bzOne, haka);
+
+            GoToEndOfTurn(envTwo);
+
+            AssertNotGameOver();
+
+
+        }
+
         /* 
          * At the end of the environment turn, move this card next to a hero. Then the predator card with the highest HP deals
          * each target in this card's play area {H - 1} melee damage. 
