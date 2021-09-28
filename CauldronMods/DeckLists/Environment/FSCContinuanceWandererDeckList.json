@@ -186,7 +186,7 @@
                 "Players may not play one-shots.",
                 "When another environment card enters play, destroy this card."
             ],
-            "flavorText": "As the timeship's call resonated through the{BR}fabric of reality, those beings contaminated by{BR}temporal anomalies were pulled into it. Not all{BR}of them arrived in one piece."
+            "flavorText": "As the timeship's call resonated through the{BR}fabric of reality, those beings contaminated by{BR}temporal anomalies were pulled into it. Not{BR}all of them arrived in one piece."
         },
         {
             "identifier": "VortexInterference",
