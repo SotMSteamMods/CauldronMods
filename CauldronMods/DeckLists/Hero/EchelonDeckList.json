@@ -53,8 +53,9 @@
                 "tactic"
             ],
             "icons": [
-                "DestroySelf",
-                "GainHP"
+                "GainHP",
+                "StartOfTurnAction",
+                "DestroySelf"
             ],
             "body": [
                 "At the start of your turn, destroy this card.",
@@ -81,8 +82,9 @@
                 "tactic"
             ],
             "icons": [
-                "DestroySelf",
-                "IncreaseDamageDealt"
+                "IncreaseDamageDealt",
+                "StartOfTurnAction",
+                "DestroySelf"
             ],
             "body": [
                 "At the start of your turn, destroy this card.",
@@ -104,7 +106,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate",
+                "Search",
                 "DealDamageLightning",
                 "DealDamageMelee"
             ],
@@ -155,8 +157,9 @@
             ],
             "icons": [
                 "StartOfTurnAction",
-                "MakeDecision",
-                "PlayCardExtra"
+                "PlayCardExtra",
+                "GainHP",
+                "DestroySelf"
             ],
             "body": [
                 "At the start of a player's turn, that player may choose to skip their power Phase. If they do, they may play 1 additional card during their play Phase.",
@@ -203,8 +206,9 @@
                 "tactic"
             ],
             "icons": [
-                "Discard",
                 "DrawCardNow",
+                "StartOfTurnAction",
+                "Discard",
                 "DestroySelf"
             ],
             "body": [
@@ -229,8 +233,9 @@
             ],
             "icons": [
                 "StartOfTurnAction",
-                "MakeDecision",
-                "UsePowerExtra"
+                "UsePowerExtra",
+                "DestroySelf",
+                "GainHP"
             ],
             "body": [
                 "At the start of a player's turn, that player may choose to skip their play Phase. If they do, they may use 1 additional power during their power Phase.",
@@ -282,9 +287,10 @@
             ],
             "icons": [
                 "DrawCardNow",
+                "ReduceDamageTaken",
+                "StartOfTurnAction",
                 "Discard",
-                "DestroySelf",
-                "ReduceDamageTaken"
+                "DestroySelf"
             ],
             "body": [
                 "When this card enters play, each player may draw a card.",
@@ -308,10 +314,11 @@
                 "tactic"
             ],
             "icons": [
+                "DrawCardExtra",
                 "Discard",
-                "DrawCardNow",
+                "StartOfTurnAction",
                 "DestroySelf",
-                "DrawCardExtra"
+                "DrawCardNow"
             ],
             "body": [
                 "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
@@ -334,10 +341,11 @@
                 "tactic"
             ],
             "icons": [
+                "IncreaseDamageDealt",
+                "StartOfTurnAction",
                 "Discard",
                 "DrawCardNow",
-                "DestroySelf",
-                "IncreaseDamageDealt"
+                "DestroySelf"
             ],
             "body": [
                 "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
@@ -360,10 +368,11 @@
                 "tactic"
             ],
             "icons": [
+                "DealDamageMelee",
+                "StartOfTurnAction",
                 "Discard",
                 "DrawCardNow",
-                "DestroySelf",
-                "DealDamageMelee"
+                "DestroySelf"
             ],
             "body": [
                 "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
@@ -409,10 +418,11 @@
                 "tactic"
             ],
             "icons": [
+                "IncreaseDamageDealt",
+                "StartOfTurnAction",
                 "Discard",
                 "DrawCardNow",
-                "DestroySelf",
-                "IncreaseDamageDealt"
+                "DestroySelf"
             ],
             "body": [
                 "At the start of your turn, you may discard a card. If you do not, draw a card and destroy this card.",
@@ -435,8 +445,9 @@
                 "limited"
             ],
             "icons": [
+                "HasPower",
                 "DealDamageLightning",
-                "HasPower"
+                "EndOfTurnAction"
             ],
             "body": "At the end of your turn, {Echelon} may deal 1 target X lightning damage, where X is the number of Tactics destroyed during your turn.",
             "powers": [
@@ -461,7 +472,8 @@
             "icons": [
                 "HasPower",
                 "DealDamageProjectile",
-                "GainHP"
+                "GainHP",
+                "DrawCardNow",
             ],
             "powers": [
                 "{Echelon} deals 1 target 1 projectile damage and regains 2 HP.",
