@@ -408,7 +408,7 @@
                 "limited"
             ],
             "icons": [
-                "ReduceDamageDealt",
+                "ReduceDamageTaken",
                 "IncreaseDamageDealt"
             ],
             "body": [
@@ -573,7 +573,7 @@
             "icons": [
                 "HasPower",
                 "Cauldron.ShiftLR",
-                "Discard"
+                "Manipulate"
             ],
             "hitpoints": 15,
             "nemesisIdentifiers": [
@@ -634,6 +634,7 @@
             "flippedIcons": [
                 "DrawCardNow",
                 "Manipulate",
+                "UsePowerNow",
                 "GainHP"
             ],
             "complexity": 3
@@ -906,8 +907,9 @@
             ],
             "icons": [
                 "HasPower",
-                "Cauldron.ShiftLR",
-                "PlayCardNow"
+                "Manipulate",
+                "PlayCardNow",
+                "DealDamageRadiant"
             ],
             "hitpoints": 25,
             "nemesisIdentifiers": [
@@ -970,7 +972,7 @@
             ],
             "icons": [
                 "HasPower",
-                "AddOrRemoveTokens",
+                "Cauldron.ShiftLR",
                 "DrawCardNow",
                 "UsePowerNow"
             ],
@@ -1012,7 +1014,7 @@
             ],
             "icons": [
                 "HasPower",
-                "Manipulate",
+                "Search",
                 "DrawCardNow",
                 "PlayCardNow"
             ],
