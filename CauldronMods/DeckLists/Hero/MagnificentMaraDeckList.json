@@ -147,6 +147,7 @@
                 "ongoing"
             ],
             "icons": [
+                "StartAndEndOfTurnAction",
                 "Destroy",
                 "DestroySelf"
             ],
