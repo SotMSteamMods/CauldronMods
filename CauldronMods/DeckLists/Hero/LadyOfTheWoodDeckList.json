@@ -189,10 +189,10 @@
                 "limited"
             ],
             "icons": [
+                "DestroySelf",
                 "EndOfTurnAction",
                 "GainHP",
-                "DrawCardNow",
-                "DestroySelf"
+                "DrawCardNow"
             ],
             "body": [
                 "At the end of your turn, if {LadyOfTheWood} dealt no damage this turn, she regains 2 HP and you may draw a card.",
@@ -216,6 +216,7 @@
                 "relic"
             ],
             "icons": [
+                "HasPower",
                 "DealDamageToxic",
                 "DealDamageFire",
                 "DealDamageLightning",
