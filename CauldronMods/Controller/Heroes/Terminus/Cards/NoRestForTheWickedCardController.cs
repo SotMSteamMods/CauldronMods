@@ -32,13 +32,13 @@ namespace Cauldron.Terminus
             Func<TurnTakerController, List<LocationChoice>> allVillainTrashesWithTargets = delegate (TurnTakerController ttc)
             {
                 var trashes = new List<LocationChoice>();
-                if(ttc.TurnTaker.Trash.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: ttc.TurnTaker.PlayArea) == CanPlayCardResult.CanPlay))
+                if(GameController.IsLocationVisibleToSource(ttc.TurnTaker.Trash, GetCardSource()) && ttc.TurnTaker.Trash.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: ttc.TurnTaker.PlayArea) == CanPlayCardResult.CanPlay))
                 {
                     trashes.Add(new LocationChoice(ttc.TurnTaker.Trash));
                 }
                 foreach (Location subtrash in ttc.TurnTaker.SubTrashes)
                 {
-                    if (subtrash.IsRealTrash && subtrash.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: ttc.TurnTaker.PlayArea) == CanPlayCardResult.CanPlay))
+                    if (subtrash.IsRealTrash && GameController.IsLocationVisibleToSource(subtrash, GetCardSource()) && subtrash.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: ttc.TurnTaker.PlayArea) == CanPlayCardResult.CanPlay))
                     {
                         trashes.Add(new LocationChoice(subtrash));
                     }
