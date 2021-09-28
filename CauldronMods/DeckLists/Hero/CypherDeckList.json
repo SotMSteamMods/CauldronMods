@@ -262,7 +262,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate",
+                "Search",
                 "DrawCardNow"
             ],
             "body": [
@@ -473,6 +473,7 @@
                 "augment"
             ],
             "icons": [
+                "EndOfTurnAction",
                 "GainHP"
             ],
             "body": [
