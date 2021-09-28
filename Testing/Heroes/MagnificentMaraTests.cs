@@ -1223,6 +1223,36 @@ namespace CauldronTests
             AssertInTrash(crystal);
         }
 
+        [Test]
+        public void TestWandOfBanishment_TRexBot()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Legacy", "Cauldron.MagnificentMara", "Unity", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            IEnumerable<Card> mechGolemsAndEquipment = FindCardsWhere(c => c.Owner == unity.TurnTaker && (IsEquipment(c) || c.IsMechanicalGolem));
+            MoveCards(unity, mechGolemsAndEquipment, unity.HeroTurnTaker.Hand);
+
+            Card trex = MoveCard(oblivaeon, "BuildingAKing", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
+            GoToBeforeStartOfTurn(legacy);
+            RunActiveTurnPhase();
+
+            List<Card> decisionCards = mechGolemsAndEquipment.ToList();
+            decisionCards.Add(null);
+            DecisionSelectCards = decisionCards.ToArray();
+            DecisionSelectTurnTakers = new TurnTaker[] { unity.TurnTaker, null };
+
+            GoToEndOfTurn(legacy);
+
+
+            GoToPlayCardPhase(mara);
+            Card wandOfBanishment = PlayCard("WandOfBanishment");
+
+            DealDamage(oblivaeon, trex, 20, DamageType.Infernal);
+
+            AssertInTrash(wandOfBanishment);
+            AssertOnTopOfDeck(legacy, trex);
+        }
+
         [Test()]
         public void TestBootlegMesmerPendant_Oblivaeon_0Heroes()
         {
