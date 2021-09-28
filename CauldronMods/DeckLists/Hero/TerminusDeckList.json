@@ -287,7 +287,7 @@
                 "one-shot"
             ],
             "icons": [
-                "PlayCardNow",
+                "Manipulate",
                 "DealDamageInfernal",
                 "AddTokens"
             ],
@@ -390,8 +390,7 @@
             "icons": [
                 "AddTokens",
                 "UsePowerNow",
-                "Discard",
-                "AddTokens"
+                "Discard"
             ],
             "body": [
                 "Add 3 tokens to your Wrath pool.",
@@ -469,7 +468,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate",
+                "Search",
                 "AddTokens",
                 "DealDamageCold"
             ],
