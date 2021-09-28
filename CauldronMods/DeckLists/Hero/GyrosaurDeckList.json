@@ -34,7 +34,8 @@
             ],
             "flippedIcons": [
                 "DrawCardNow",
-                "DealDamageMelee"
+                "DealDamageMelee",
+                "IncreaseDamageTaken"
             ],
             "openingLines": {
                 "default": "We're here to stop you! Although, I usually find stopping to be the hard part.",
@@ -51,6 +52,7 @@
             ],
             "icons": [
                 "ImmuneToDamage",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -263,6 +265,7 @@
                 "ongoing"
             ],
             "icons": [
+                "StartOfTurnAction",
                 "Manipulate",
                 "HasPower",
                 "IncreaseDamageDealt"
@@ -487,6 +490,7 @@
                 "Discard a card. If it was a crash card, {Gyrosaur} regains 2 HP. Otherwise, she deals 1 target 2 melee damage. Draw a card."
             ],
             "icons": [
+                "HasPower",
                 "Discard",
                 "GainHP",
                 "DealDamageMelee",
