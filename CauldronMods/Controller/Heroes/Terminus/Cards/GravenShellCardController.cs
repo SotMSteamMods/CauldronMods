@@ -23,8 +23,13 @@ namespace Cauldron.Terminus
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DestroyCardAction>((dca) => dca.WasCardDestroyed && dca.WasDestroyedBy((card) => card.Owner.CharacterCard == base.CharacterCard), DestroyCardActionResponse, new TriggerType[] { TriggerType.AddTokensToPool, TriggerType.GainHP }, TriggerTiming.After);
+            base.AddTrigger<DestroyCardAction>(TriggerCriteria, DestroyCardActionResponse, new TriggerType[] { TriggerType.AddTokensToPool, TriggerType.GainHP }, TriggerTiming.After);
             base.AddTriggers();
+        }
+
+        private bool TriggerCriteria(DestroyCardAction dca)
+        {
+            return dca.WasCardDestroyed && dca.GetCardDestroyer() != null && dca.WasDestroyedBy((card) => card.Owner.CharacterCard == base.CharacterCard);
         }
 
         private IEnumerator DestroyCardActionResponse(DestroyCardAction destroyCardAction)
