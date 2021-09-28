@@ -259,6 +259,28 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestMistressOfFateFlipRoutine_DualDrift()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Cauldron.Drift/DualDriftCharacter", "Ra", "TheVisionary", "Megalopolis");
+            Card track = FindCardsWhere((Card c) => c.Identifier == "DualShiftTrack1", false).FirstOrDefault();
+            Card past = FindCardsWhere((Card c) => c.Identifier == "PastDriftCharacter").FirstOrDefault();
+            Card future = FindCardsWhere((Card c) => c.Identifier == "FutureDriftCharacter").FirstOrDefault();
+
+
+            DecisionSelectCards = new Card[] { track, past };
+            StartGame();
+
+            ResetDays();
+
+            DealDamage(fate, future, 50, DTM);
+
+            FlipCard(fate);
+
+            AssertIsAtMaxHP(future);
+            AssertInPlayArea(drift, track);
+        }
+
+        [Test]
         public void TestMistressOfFateFlipRoutine_Challenge()
         {
             SetupGameController(new string[] { "Cauldron.TheMistressOfFate", "Legacy", "Ra", "TheVisionary", "Megalopolis" }, challenge: true);
