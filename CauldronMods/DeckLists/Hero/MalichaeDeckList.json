@@ -198,7 +198,8 @@
 			"icons": [
 				"DestroySelf",
 				"HasPower",
-				"DealDamageSonic"
+				"DealDamageSonic",
+				"EndOfTurnAction"
 			],
 			"body": [
 				"When this card enters play, attach it to Reshiel. If High Reshiel is ever not in play, destroy this card.",
@@ -279,6 +280,7 @@
 			],
 			"icons": [
 				"DestroySelf",
+				"EndOfTurnAction",
 				"GainHP",
 				"HasPower"
 			],
