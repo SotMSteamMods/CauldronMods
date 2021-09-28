@@ -17,8 +17,8 @@ namespace Cauldron.Gray
         public override IEnumerator Play()
         {
             //Search the villain deck and trash for all copies of Chain Reaction and put them into play.
-            IEnumerator coroutine = base.PlayCardsFromLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.Identifier == "ChainReaction"));
-            IEnumerator coroutine2 = base.PlayCardsFromLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ChainReaction"));
+            IEnumerator coroutine = base.PlayCardsFromLocation(base.TurnTaker.Deck, new LinqCardCriteria((Card c) => c.Identifier == "ChainReaction", "", useCardsSuffix: false, singular: "Chain Reaction", plural: "copies of Chain Reaction"));
+            IEnumerator coroutine2 = base.PlayCardsFromLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ChainReaction", "", useCardsSuffix: false, singular: "Chain Reaction", plural: "copies of Chain Reaction"));
             //Move 1 copy of Unstable Isotope from the villain trash to the villain deck. 
             MoveCardDestination villianDeck = new MoveCardDestination(base.TurnTaker.Deck);
             IEnumerator coroutine3 = base.GameController.SelectCardFromLocationAndMoveIt(base.DecisionMaker, base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "UnstableIsotope"), villianDeck.ToEnumerable<MoveCardDestination>(), cardSource: base.GetCardSource());
