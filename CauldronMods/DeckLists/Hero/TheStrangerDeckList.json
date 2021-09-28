@@ -385,8 +385,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate",
-                "PlayCardNow",
+                "Search",
                 "DrawCardNow"
             ],
             "body": "Put a Glyph from your trash into your hand, or reveal cards from the top of your deck until you reveal a Glyph, put it into play, and shuffle the other revealed cards into your deck. You may draw a card.",
@@ -432,6 +431,7 @@
             ],
             "icons": [
                 "DrawCardNow",
+                "Manipulate",
                 "PlayCardNow"
             ],
             "body": [
