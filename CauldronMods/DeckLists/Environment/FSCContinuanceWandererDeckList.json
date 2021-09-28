@@ -161,7 +161,8 @@
             "title": "Time Freeze",
             "icons": [
                 "SkipTurn",
-                "EndOfTurnAction",
+                "ImmuneToDamage",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [

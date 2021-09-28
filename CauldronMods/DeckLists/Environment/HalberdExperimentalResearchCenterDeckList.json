@@ -26,9 +26,9 @@
             "count": 1,
             "title": "Emergency Release Protocol",
             "icons": [
-                "EndOfTurnAction",
+                "StartAndEndOfTurnAction",
                 "PlayCardNow",
-                "StartOfTurnAction",
+                "SkipTurn",
                 "DestroySelf"
             ],
             "body": [

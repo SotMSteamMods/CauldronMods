@@ -216,7 +216,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate",
+                "Search",
                 "DealDamageMelee",
                 "PlayCardNow"
             ],
@@ -290,7 +290,8 @@
             ],
             "icons": [
                 "DrawCardNow",
-                "RedirectDamage"
+                "RedirectDamage",
+                "DealDamage"
             ],
             "body": [
                 "When this card enters play, draw a card.",
@@ -508,6 +509,7 @@
             "flippedIcons": [
                 "PlayCardNow",
                 "DestroyTarget",
+                "Discard",
                 "DrawCardNow"
             ],
             "openingLines": {

@@ -38,7 +38,7 @@
 			],
 			"flippedIcons": [
 				"PlayCardNow",
-				"ReduceDamageDealt",
+				"ReduceDamageTaken",
 				"IncreaseDamageDealt"
 			],
 			"openingLines": {
@@ -141,7 +141,7 @@
 			],
 			"icons": [
 				"Search",
-				"ReduceDamageDealt"
+				"ReduceDamageTaken"
 			],
 			"body": [
 				"Search your deck for a copy of “Plate Mail” or “Plate Helm” and put it into play. Shuffle your deck.",
@@ -368,7 +368,7 @@
 				"limited"
 			],
 			"icons": [
-				"IncreaseDamageDealt"
+				"IncreaseDamageDealtMelee"
 			],
 			"body": "Increase melee damage dealt by {TheKnight} by 1.",
 			"flavorQuotes": [
@@ -398,6 +398,7 @@
 			"icons": [
 				"HasPower",
 				"DealDamageLightning",
+				"MakeDamageIrreducible",
 				"Manipulate"
 			],
 			"hitpoints": 18,

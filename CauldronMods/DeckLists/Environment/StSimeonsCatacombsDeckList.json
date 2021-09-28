@@ -54,7 +54,7 @@
                 "room"
             ],
             "icons": [
-                "EndOfTurnAction",
+                "StartOfTurnAction",
                 "GainHP"
             ],
             "body": "At the start of the Villain turn, each target regains 1 HP.",
@@ -157,6 +157,7 @@
             "icons": [
                 "Destroy",
                 "EndOfTurnAction",
+                "PlayCardNow",
                 "DestroySelf"
             ],
             "body": [
@@ -170,9 +171,11 @@
             "count": 1,
             "title": "Panic",
             "icons": [
-                "UsePowerExtra",
+                "StartOfTurnAction",
+                "UsePowerNow",
                 "SkipTurn",
-                "DestroySelf"
+                "DestroySelf",
+                "DrawCardNow"
             ],
             "body": [
                 "Play this next to the hero character with the highest HP.",

@@ -136,8 +136,9 @@
             ],
             "icons": [
                 "PlayCardNow",
-                "Manipulate",
-                "StartOfTurnAction"
+                "RemoveFromGame",
+                "StartOfTurnAction",
+                "Manipulate"
             ],
             "body": [
                 "When this card enters play, play the top card of the environment deck and destroy this card. If Demolished Camp would enter play, instead remove it from the game.",

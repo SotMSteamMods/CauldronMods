@@ -68,6 +68,7 @@
             ],
             "icons": [
                 "ReduceDamageDealt",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -85,7 +86,8 @@
             ],
             "icons": [
                 "Manipulate",
-                "SkipTurn",
+                "CannotDrawCards",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -143,6 +145,7 @@
             "icons": [
                 "Discard",
                 "GainHP",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [
@@ -159,8 +162,9 @@
                 "treasure"
             ],
             "icons": [
-                "GainHP",
-                "DestroySelf"
+                "DestroySelf",
+                "StartOfTurnAction",
+                "GainHP"
             ],
             "body": [
                 "Play this card next to a hero. At the start of their turn, they regain 1 HP.",
@@ -177,6 +181,7 @@
                 "fate"
             ],
             "icons": [
+                "EndOfTurnAction",
                 "DealDamageToxic"
             ],
             "body": [
@@ -214,6 +219,7 @@
                 "monster"
             ],
             "icons": [
+                "EndOfTurnAction",
                 "DealDamageMelee"
             ],
             "body": [
@@ -231,6 +237,7 @@
                 "monster"
             ],
             "icons": [
+                "EndOfTurnAction",
                 "DealDamageToxic",
                 "DrawCardNow"
             ],
@@ -250,10 +257,11 @@
                 "fate"
             ],
             "icons": [
-                "UsePowerNow",
-                "PlayCardNow",
                 "MakeDamageIrreducible",
-                "IncreaseDamageTaken"
+                "IncreaseDamageTaken",
+                "StartOfTurnAction",
+                "UsePowerNow",
+                "PlayCardNow"
             ],
             "body": [
                 "Play this card next to a hero. At the start of their turn, they may use a power, play a card, or destroy this card.",
@@ -267,6 +275,7 @@
             "title": "Underleveled",
             "icons": [
                 "IncreaseDamageDealt",
+                "StartOfTurnAction",
                 "DestroySelf"
             ],
             "body": [

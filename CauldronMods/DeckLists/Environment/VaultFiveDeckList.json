@@ -95,7 +95,9 @@
             "title": "Moment of Sanity",
             "icons": [
                 "DestroyOngoing",
-                "HasPower"
+                "HasPower",
+                "PlayCardNow",
+                "DestroyEnvironment"
             ],
             "body": [
                 "When this card enters play, destroy {H - 2} ongoing cards.",

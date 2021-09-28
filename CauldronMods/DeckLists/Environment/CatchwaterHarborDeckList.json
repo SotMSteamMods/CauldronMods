@@ -71,7 +71,7 @@
                 "structure"
             ],
             "icons": [
-                "IncreaseDamageTaken",
+                "IncreaseDamageDealt",
                 "DealDamageMelee"
             ],
             "body": [

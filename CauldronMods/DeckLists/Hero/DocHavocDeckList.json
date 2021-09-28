@@ -137,7 +137,6 @@
                 "limited"
             ],
             "icons": [
-                "DestroyEnvironment",
                 "GainHP"
             ],
             "body": "Whenever an environment card is destroyed, {DocHavoc} regains 2 HP.",
@@ -212,6 +211,7 @@
             ],
             "icons": [
                 "MakeDamageIrreducible",
+                "StartOfTurnAction",
                 "DealDamageToxic",
                 "DestroySelf"
             ],

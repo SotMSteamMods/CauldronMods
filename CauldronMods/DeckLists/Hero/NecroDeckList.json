@@ -33,6 +33,7 @@
             ],
             "flippedIcons": [
                 "DealDamageToxic",
+                "DrawCardNow",
                 "GainHP",
                 "IncreaseDamageDealt"
             ],
@@ -280,7 +281,7 @@
                 "one-shot"
             ],
             "icons": [
-                "Manipulate"
+                "Search"
             ],
             "body": [
                 "Reveal cards from the top of your deck until you reveal 2 Undead cards. Put 1 into play and 1 into the trash.",

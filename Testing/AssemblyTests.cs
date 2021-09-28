@@ -223,7 +223,7 @@ namespace CauldronTests
                 cards.AddRange(jsonObject.GetArray("promoCards") ?? Enumerable.Empty<JSONValue>());
 
                 List<string> errors = new List<string>();
-
+                List<string> warnings = new List<string>();
                 foreach (var jsonvalue in cards)
                 {
                     var cardObject = jsonvalue.Obj;
@@ -236,7 +236,7 @@ namespace CauldronTests
 
                     if (icons.Count > 4)
                     {
-                        errors.Add(string.Format("Deck: \"{0}\", Card \"{1}\" has more than 4 icons.  Only 4 icons will be displayed. icons: {2}", name, id, string.Join(", ", icons.ToArray())));
+                        warnings.Add(string.Format("Deck: \"{0}\", Card \"{1}\" has more than 4 icons.  Only 4 icons will be displayed. icons: {2}", name, id, string.Join(", ", icons.ToArray())));
                     }
 
                     foreach (string icon in icons)
@@ -254,7 +254,7 @@ namespace CauldronTests
 
                     if (icons.Count > 4)
                     {
-                        errors.Add(string.Format("Deck: \"{0}\", Card \"{1}\" has more than flipped 4 icons.  Only 4 icons will be displayed. icons: {2}", name, id, string.Join(", ", icons.ToArray())));
+                        warnings.Add(string.Format("Deck: \"{0}\", Card \"{1}\" has more than flipped 4 icons.  Only 4 icons will be displayed. icons: {2}", name, id, string.Join(", ", icons.ToArray())));
                     }
 
                     foreach (string icon in icons)
@@ -265,9 +265,13 @@ namespace CauldronTests
                         }
                     }
                 }
-
                 Assert.IsTrue(errors.Count == 0, string.Join(Environment.NewLine + "  ", errors.ToArray()));
+                if (warnings.Count() > 0)
+                {
+                    Assert.Warn(string.Join(Environment.NewLine + "  ", warnings.ToArray()));
+                }
             }
+
             Console.WriteLine("Done");
         }
 

@@ -72,7 +72,6 @@
             "icons": [
                 "HasPower",
                 "DealDamageEnergy",
-                "HasPower",
                 "IncreaseDamageTaken"
             ],
             "powers": [
@@ -205,7 +204,7 @@
                 "limited"
             ],
             "icons": [
-                "IncreaseDamageDealt"
+                "IncreaseDamageDealtEnergy"
             ],
             "body": "Increase energy damage dealt by {Vanish} by 1.",
             "flavorQuotes": [
@@ -450,7 +449,8 @@
             "flippedIcons": [
                 "UsePowerNow",
                 "DestroyOngoing",
-                "DestroyEnvironment"
+                "DestroyEnvironment",
+                "ImmuneToDamage"
             ],
             "openingLines": {
                 "default": "This isn't my usual scene, but I'll manage.",

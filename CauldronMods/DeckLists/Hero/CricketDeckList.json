@@ -245,7 +245,8 @@
                 "limited"
             ],
             "icons": [
-                "UsePowerExtra"
+                "EndOfTurnAction",
+                "UsePowerNow"
             ],
             "body": "At the end of your turn, if {Cricket} dealt no damage this turn, you may use a power.",
             "flavorQuotes": [

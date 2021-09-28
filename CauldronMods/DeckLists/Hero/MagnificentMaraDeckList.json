@@ -99,7 +99,7 @@
             ],
             "icons": [
                 "HasPower",
-                "DealDamageMelee",
+                "DealDamage",
                 "DestroySelf",
                 "IncreaseDamageDealt"
             ],
@@ -147,6 +147,7 @@
                 "ongoing"
             ],
             "icons": [
+                "StartAndEndOfTurnAction",
                 "Destroy",
                 "DestroySelf"
             ],
@@ -245,6 +246,7 @@
                 "limited"
             ],
             "icons": [
+                "RedirectDamage",
                 "StartOfTurnAction",
                 "DestroySelf"
             ],

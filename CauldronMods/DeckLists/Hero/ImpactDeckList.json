@@ -169,7 +169,7 @@
             "icons": [
                 "DealDamageInfernal",
                 "DestroySelf",
-                "CancelledDamageRed"
+                "CancelledDamageGreen"
             ],
             "body": [
                 "Play this card next to a target. {Impact} deals that target 2 infernal damage.",
@@ -375,7 +375,7 @@
             ],
             "icons": [
                 "DrawCardNow",
-                "Destroy",
+                "DestroySelf",
                 "Manipulate"
             ],
             "body": [
