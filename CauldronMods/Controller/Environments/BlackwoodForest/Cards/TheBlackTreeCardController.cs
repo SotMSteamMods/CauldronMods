@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,23 +37,30 @@ namespace Cauldron.BlackwoodForest
 
         public override IEnumerator Play()
         {
-            IEnumerator drawCardsRoutine = base.DoActionToEachTurnTakerInTurnOrder(
-                ttc => (ttc.IsVillain || ttc.IsVillainTeam || ttc.IsHero) && !ttc.IsIncapacitatedOrOutOfGame,
-                DrawCardFromEachDeckResponse);
-
+            List<Location> decks = new List<Location>();
+            foreach (TurnTaker tt in Game.TurnTakers)
+            {
+                if (tt.IsIncapacitatedOrOutOfGame) continue;
+                if (tt.Deck.IsRealDeck && GameController.IsLocationVisibleToSource(tt.Deck, GetCardSource()) && (tt.Deck.IsHero || tt.Deck.IsVillain))
+                {
+                    decks.Add(tt.Deck);
+                }
+                decks = decks.Concat(tt.SubDecks.Where(l => l.IsRealDeck && GameController.IsLocationVisibleToSource(l, GetCardSource()) && (l.IsHero || l.IsVillain))).ToList();
+            }
+            IEnumerator coroutine = MoveCardsFromDecksResponse(decks);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(drawCardsRoutine);
+                yield return base.GameController.StartCoroutine(coroutine);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(drawCardsRoutine);
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
 
-        private IEnumerator DrawCardFromEachDeckResponse(TurnTakerController ttc)
+        private IEnumerator MoveCardsFromDecksResponse(List<Location> decks)
         {
-            foreach (var deck in ttc.TurnTaker.Decks.Where(loc => loc.IsRealDeck && GameController.IsLocationVisibleToSource(loc, GetCardSource())))
+            foreach (Location deck in decks)
             {
                 Card top = deck.TopCard;
                 if (top != null)
