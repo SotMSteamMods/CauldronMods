@@ -702,6 +702,34 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestCeladroch_BulkPlayMinions_BugFix()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "SilverGulch1883" }, advanced: false);
+
+            string keyword = "elemental";
+            int expectedCards = 4;
+            var cards = FindCardsWhere(c => c.DoKeywordsContain(keyword)).ToList();
+            Assert.IsTrue(expectedCards == cards.Count, $"Test Setup Issue, should have {expectedCards} {keyword} cards.");
+
+            Card summersWrath = GetCard("SummersWrath");
+            var topCard = summersWrath;
+            StackAfterShuffle(celadroch.TurnTaker.Deck, new[] { topCard.Identifier });
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SafetyRemovePillars();
+
+            GoToPlayCardPhase(celadroch);
+
+            IEnumerable<Card> wagons = FindCardsWhere(c => c.Identifier == "ExplosivesWagon");
+            PlayCards(wagons);
+
+            PlayTopCard(celadroch);
+            AssertInTrash(summersWrath);
+            
+        }
+
+        [Test()]
         public void TestZombies_MoveNextToAndDealDamage([Values("GraspingBreath", "LeechingBreath", "WhisperingBreath")] string zombie)
         {
             SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
