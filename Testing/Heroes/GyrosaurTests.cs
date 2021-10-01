@@ -516,7 +516,7 @@ namespace CauldronTests
             AssertUnderCard(hiddenDetour, prisonRiot);
 
             DecisionsYesNo = new bool[] { true, true, false };
-            timeCrazedPrisoner = PutIntoPlay("TimeCrazedPrisoner");
+            timeCrazedPrisoner = PlayCard("TimeCrazedPrisoner");
 
             AssertIsInPlay(timeCrazedPrisoner);
             AssertIsInPlay(imprisonedRogue);
