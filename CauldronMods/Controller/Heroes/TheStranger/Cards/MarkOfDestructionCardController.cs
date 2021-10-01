@@ -24,7 +24,7 @@ namespace Cauldron.TheStranger
             //purposely don't call base.AddTrigger as this card should not have the destroy or deal damage effect
 
             //If either card is destroyed, destroy the other. 
-            base.AddWhenDestroyedTrigger((DestroyCardAction destroy) => base.GameController.DestroyCard(this.DecisionMaker, base.GetCardThisCardIsNextTo(true)), TriggerType.DestroyCard);
+            base.AddWhenDestroyedTrigger((DestroyCardAction destroy) => base.GameController.DestroyCard(this.DecisionMaker, base.GetCardThisCardIsNextTo(true), cardSource: GetCardSource()), TriggerType.DestroyCard);
             base.AddTrigger<DestroyCardAction>((DestroyCardAction destroy) => destroy.CardToDestroy != null && destroy.CardToDestroy.Card == base.GetCardThisCardIsNextTo(true), (DestroyCardAction destroy) => base.DestroyThisCardResponse(destroy), TriggerType.DestroySelf, TriggerTiming.After);
             //Redirect damage dealt to this card by non-hero targets to the hero target with the highest HP.
             base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.Card && dd.DamageSource != null && dd.DamageSource.Card != null && !dd.DamageSource.Card.IsHero && dd.DamageSource.Card.IsTarget, this.RedirectResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
