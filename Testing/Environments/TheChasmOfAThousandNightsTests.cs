@@ -737,5 +737,34 @@ namespace CauldronTests
             GoToStartOfTurn(chasm);
             AssertInTrash(ire);
         }
+
+        [Test]
+        public void TestChasmAndHiddenDetour()
+        {
+            //NOTE: Using a random seed to always get Noxious as the nature
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Cauldron.TheChasmOfAThousandNights" }, randomSeed: 1873928370);
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SetHitPoints(gyrosaur, 20);
+
+            Card highTemoq = PutOnDeck("HighTemoq");
+            Card detour = PlayCard("HiddenDetour");
+            AssertHitPoints(gyrosaur, 22);
+            AssertUnderCard(detour, highTemoq);
+
+            Card noxious = GetCard("Noxious");
+
+            DecisionsYesNo = new bool[] { false, true};
+            Card highMhegas = PlayCard("HighMhegas");
+            Card axion = PlayCard("Axion");
+
+            AssertInPlayArea(chasm, highMhegas);
+            AssertBelowCard(noxious, highMhegas);
+            AssertInPlayArea(chasm, highTemoq);
+            AssertUnderCard(detour, axion);
+
+
+        }
     }
 }
