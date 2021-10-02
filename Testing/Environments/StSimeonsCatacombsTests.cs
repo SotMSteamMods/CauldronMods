@@ -1895,6 +1895,35 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestPossessor_Oblivaeon_HeroWithIncapInZone()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.StSimeonsCatacombs", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            SwitchBattleZone(ra);
+            Card raCharacterCard = ra.CharacterCard;
+            DealDamage(oblivaeon, ra, 100, DamageType.Fire, isIrreducible: true, ignoreBattleZone: true);
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "TheSentinels" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "TheSentinels";
+            RunActiveTurnPhase();
+
+            DrawCard(sentinels, numberOfCards: 3);
+
+            //Play this card next to the hero with the most cards in hand.
+            //knight is the most number of cards, possessor should be next to knight
+            //ra is incapped in zone, so it should be ignored
+
+            GoToEndOfTurn(envTwo);
+            AssertNextDecisionChoices(notIncluded: new List<Card> { raCharacterCard });
+            DecisionSelectCard = writhe;
+            Card possessor = PlayCard("Possessor");
+            AssertNextToCard(possessor, writhe);
+
+        }
+
+        [Test()]
         public void TestPossessorNextTo()
         {
 
