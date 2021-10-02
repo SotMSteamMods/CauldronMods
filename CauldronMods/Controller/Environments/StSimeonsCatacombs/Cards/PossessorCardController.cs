@@ -64,7 +64,7 @@ namespace Cauldron.StSimeonsCatacombs
             }
 
             //select the hero with the most cards in hand, resolving ties
-            IEnumerator coroutine2 = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => storedMostCards.Contains(c.Owner) && c.IsHeroCharacterCard && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero target with the most cards in hand"), storedResults, isPutIntoPlay, decisionSources);
+            IEnumerator coroutine2 = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => storedMostCards.Contains(c.Owner) && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero target with the most cards in hand"), storedResults, isPutIntoPlay, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);
