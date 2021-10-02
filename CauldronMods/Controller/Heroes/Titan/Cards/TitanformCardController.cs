@@ -114,7 +114,7 @@ namespace Cauldron.Titan
                 //...destroy this card to increase that damage by 2.
                 damageToIncrease = action;
                 AddWhenDestroyedTrigger(dc => IncreaseDamageResponse(action), TriggerType.IncreaseDamage);
-                coroutine = base.GameController.DestroyCard(HeroTurnTakerController, Card, false);
+                coroutine = base.GameController.DestroyCard(HeroTurnTakerController, Card, false, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
