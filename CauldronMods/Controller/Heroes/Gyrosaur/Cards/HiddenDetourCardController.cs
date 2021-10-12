@@ -12,6 +12,9 @@ namespace Cauldron.Gyrosaur
     {
         public List<Card> OwnSwappingCards { get; set; }
 
+        private TurnTaker EnvironmentTurnTaker => FindEnvironment().TurnTaker;
+        public static readonly string FromDeckToRevealedKey = "FromDeckToRevealed";
+
         private List<Card> AllDetourSwapCards
         {
             get
@@ -77,7 +80,7 @@ namespace Cauldron.Gyrosaur
 
             //Then, reveal the top card of the environment deck and place it beneath this card.",
             var revealStorage = new List<Card>();
-            coroutine = GameController.RevealCards(DecisionMaker, FindEnvironment().TurnTaker.Deck, 1, revealStorage, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: GetCardSource());
+            coroutine = GameController.RevealCards(DecisionMaker, EnvironmentTurnTaker.Deck, 1, revealStorage, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -104,13 +107,34 @@ namespace Cauldron.Gyrosaur
 
         public override void AddTriggers()
         {
-            //"When an environment card would enter play, you may first switch it with the card beneath this one."
-            AddTrigger((PlayCardAction pc) => Card.UnderLocation.HasCards && !IsCardBeingReplaced(pc.CardToPlay) && pc.CardToPlay.IsEnvironment, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PlayCard }, TriggerTiming.Before, isActionOptional: true);
-            AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && !IsCardBeingReplaced(mc.CardToMove) && mc.CardToMove.IsEnvironment && !mc.Origin.IsInPlay && mc.Destination.IsInPlay && !mc.DoesNotEnterPlay, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PutIntoPlay }, TriggerTiming.Before, isActionOptional: true);
+            //"When the environment deck would play a card, you may first switch it with the card beneath this one."
+            AddTrigger((PlayCardAction pc) => Card.UnderLocation.HasCards && !IsCardBeingReplaced(pc.CardToPlay) && pc.Origin == EnvironmentTurnTaker.Deck, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PlayCard }, TriggerTiming.Before, isActionOptional: true);
+            AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && !IsCardBeingReplaced(mc.CardToMove) && mc.Origin == EnvironmentTurnTaker.Deck && mc.Destination.IsInPlay && !mc.DoesNotEnterPlay, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PutIntoPlay }, TriggerTiming.Before, isActionOptional: true);
+            AddTrigger((RevealCardsAction rca) => Card.UnderLocation.HasCards &&rca.SearchLocation == EnvironmentTurnTaker.Deck, CardEnteringRevealedResponse, TriggerType.Hidden, TriggerTiming.After);
+            AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && !IsCardBeingReplaced(mc.CardToMove) && mc.Origin == EnvironmentTurnTaker.Revealed && mc.Destination.IsInPlay && !mc.DoesNotEnterPlay && Game.Journal.GetCardPropertiesBoolean(mc.CardToMove, FromDeckToRevealedKey) != null && Game.Journal.GetCardPropertiesBoolean(mc.CardToMove, FromDeckToRevealedKey).Value == true, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PutIntoPlay }, TriggerTiming.Before, isActionOptional: true);
+            AddTrigger((PlayCardAction pc) => Card.UnderLocation.HasCards && !IsCardBeingReplaced(pc.CardToPlay) && pc.Origin == EnvironmentTurnTaker.Revealed && Game.Journal.GetCardPropertiesBoolean(pc.CardToPlay, FromDeckToRevealedKey) != null && Game.Journal.GetCardPropertiesBoolean(pc.CardToPlay, FromDeckToRevealedKey).Value == true, AskToSwapCard, new TriggerType[] { TriggerType.CancelAction, TriggerType.PutIntoPlay }, TriggerTiming.Before, isActionOptional: true);
 
+            AddTrigger((MoveCardAction mc) => mc.Origin == EnvironmentTurnTaker.Revealed && !mc.Destination.IsInPlay && Game.Journal.GetCardPropertiesBoolean(mc.CardToMove, FromDeckToRevealedKey) != null && Game.Journal.GetCardPropertiesBoolean(mc.CardToMove, FromDeckToRevealedKey).Value == true, CardReturningFromRevealedResponse, TriggerType.Hidden, TriggerTiming.Before);
             // Need this to cover issues with something like RevealCards_PutSomeIntoPlay_DiscardRemaining. Since cards under Hidden Detour do not have text, RevealCards_PutSomeIntoPlay_DiscardRemaining may remove
             // them from under Hidden Detour once it finishes processing.
             AddTrigger((MoveCardAction mc) => Card.UnderLocation.HasCards && IsCardUnder(mc.CardToMove) && mc.CardToMove.IsEnvironment, PreventUnderCardRemoval, TriggerType.CancelAction, TriggerTiming.Before, isActionOptional: true);
+        }
+
+        private IEnumerator CardReturningFromRevealedResponse(MoveCardAction mca)
+        {
+            Card cardToMove = mca.CardToMove;
+            Game.Journal.RecordCardProperties(cardToMove, FromDeckToRevealedKey, boolValue: null);
+            yield break;
+        }
+
+        private IEnumerator CardEnteringRevealedResponse(RevealCardsAction rca)
+        {
+            IEnumerable<Card> cardsToMove = rca.RevealedCards;
+            foreach(Card cardToMove in cardsToMove)
+            {
+                Game.Journal.RecordCardProperties(cardToMove, FromDeckToRevealedKey, true);
+            }
+            yield break;
         }
 
         private IEnumerator AskToSwapCard(GameAction ga)
@@ -127,7 +151,9 @@ namespace Cauldron.Gyrosaur
             if(ga is MoveCardAction mc)
             {
                 cardEnteringPlay = mc.CardToMove;
+                
             }
+
 
             Func<string> extraInfo;
             List<Card> otherDetourCards = TurnTaker.GetCardsWhere((card) => card.Identifier == "HiddenDetour" && card.IsInPlayAndHasGameText && card != this.Card).ToList();
@@ -189,6 +215,16 @@ namespace Cauldron.Gyrosaur
                 OwnSwappingCards.Remove(cardEnteringPlay);
                 OwnSwappingCards.Remove(cardBeingSwapped);
             }
+
+
+            // NOTE: I believe this should be necessary to avoid edge cases where it potentially triggers off of the incorrect situations
+            // However, this causes problems with multiple Hidden Detours in play as we are indicating they are not revealed via the property anymore
+            // This doesn't break any tests to omit this but maybe it will cause problems, and we will need to figure out where this goes
+
+            //if (Game.Journal.GetCardPropertiesBoolean(cardEnteringPlay, FromDeckToRevealedKey) != null)
+            //{
+            //    Game.Journal.RecordCardProperties(cardEnteringPlay, FromDeckToRevealedKey, boolValue: null);
+            //}
 
             //IsReplacingPlay = false;
             yield break;
