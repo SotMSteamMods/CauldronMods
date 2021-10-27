@@ -60,7 +60,7 @@ namespace Cauldron.Pyre
             {
                 yield break;
             }
-            var marker = TurnTaker.GetAllCards(realCardsOnly: false).Where((Card c) => !c.IsRealCard && c.Location.IsOffToTheSide).FirstOrDefault();
+            var marker = TurnTakerControllerWithoutReplacements.TurnTaker.GetAllCards(realCardsOnly: false).Where((Card c) => !c.IsRealCard && c.Location.IsOffToTheSide).FirstOrDefault();
             if (marker != null && cardToIrradiate.Location.IsHand)
             {
                 IEnumerator coroutine = GameController.MoveCard(DecisionMaker, marker, cardToIrradiate.NextToLocation, doesNotEnterPlay: true, cardSource: GetCardSource());
