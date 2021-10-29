@@ -32,7 +32,7 @@ namespace Cauldron.BlackwoodForest
         private IEnumerator DiscardAllBut1CardResponse(HeroTurnTakerController httc)
         {
             List<SelectCardDecision> cardDecisions = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(httc, SelectionType.CardFromHand, new LinqCardCriteria((Card c) => c.Location.IsHand && c.Location.OwnerTurnTaker == httc.TurnTaker), cardDecisions, false, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(httc, SelectionType.Custom, new LinqCardCriteria((Card c) => c.Location.IsHand && c.Location.OwnerTurnTaker == httc.TurnTaker), cardDecisions, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -42,7 +42,14 @@ namespace Cauldron.BlackwoodForest
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.SendMessageAction($"{Card.Title} discards all cards in {httc.HeroTurnTaker.Hand.GetFriendlyName()} except {cardDecisions.FirstOrDefault().SelectedCard.Title}.", Priority.Medium, GetCardSource(), showCardSource: true);
+            if (!DidSelectCard(cardDecisions))
+            {
+                yield break;
+            }
+
+            Card selectedCard = GetSelectedCard(cardDecisions);
+
+            coroutine = GameController.SendMessageAction($"{Card.Title} discards all cards in {httc.HeroTurnTaker.Hand.GetFriendlyName()} except {selectedCard.Title}.", Priority.Medium, GetCardSource(), showCardSource: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -52,7 +59,9 @@ namespace Cauldron.BlackwoodForest
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = base.GameController.MoveCards(httc, httc.HeroTurnTaker.Hand.Cards.Where((Card c) => c != cardDecisions.FirstOrDefault().SelectedCard), httc.TurnTaker.Trash, isDiscard: true, cardSource: base.GetCardSource());
+            
+
+            coroutine = GameController.DiscardCards(httc, httc.HeroTurnTaker.Hand.Cards.Where((Card c) => c != selectedCard), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -108,6 +117,13 @@ namespace Cauldron.BlackwoodForest
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText("Select a card to keep in your hand", "They are selecting a card to keep in their hand", "Vote for a card they should keep in their hand", "keep a card in hand");
+
         }
     }
 }
