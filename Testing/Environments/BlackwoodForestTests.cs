@@ -1013,6 +1013,45 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestDesolation_CriticalMultiplier()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Parse", DeckNamespace);
+
+            StartGame();
+            QuickHPStorage(ra, legacy, parse);
+            QuickHandStorage(ra, legacy, parse);
+
+            Card criticalMultiplier = PlayCard("CriticalMultiplier");
+
+            DrawCard(parse, numberOfCards: parse.HeroTurnTaker.NumberOfCardsInHand - 4);
+
+            DecisionSelectFunctions = new int?[] { 1, 0, 0 };
+            DecisionSelectCards = new Card[] {GetRandomCardFromHand(legacy), GetRandomCardFromHand(parse), legacy.CharacterCard, legacy.CharacterCard, legacy.CharacterCard };
+            DecisionAutoDecideIfAble = true;
+
+            // Act
+            Card desolation = PlayCard("Desolation");
+
+            GoToEndOfTurn(BlackwoodForest);
+
+            // Assert
+            AssertInTrash(BlackwoodForest, DesolationCardController.Identifier);
+
+            // Ra opted not to discard required cards, so -4 HP, Legacy discarded so no damage taken
+            QuickHPCheck(-4, 0, 0);
+
+            // Ra still has all of his hand, Legacy discard down to 1 card to avoid damage from Desolation
+            QuickHandCheck(0, -3, -3);
+
+            //Parse should have discarded 3 cards, resulting in a +3 boost to Legacy's next damage
+            QuickHPStorage(parse);
+            DealDamage(legacy, parse, 1, DamageType.Melee);
+            QuickHPCheck(-4);
+
+        }
+
+        [Test]
         public void TestTheBlackTreeCheckCardProcedures()
         {
             // Arrange
