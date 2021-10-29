@@ -23,30 +23,30 @@ namespace Cauldron.Terminus
         public override IEnumerator Play()
         {
             IEnumerator coroutine;
-            List<LocationChoice> possibleDestinations;
+            IEnumerable<TurnTaker> villainTurnTakers = Game.TurnTakers.Where(tt => !tt.IsIncapacitatedOrOutOfGame && IsVillain(tt));
             List<SelectLocationDecision> storedResults = new List<SelectLocationDecision>();
             List<SelectCardDecision> selectCardDecisions = new List<SelectCardDecision>();
             Location selectedLocation;
             bool targetEnteredPlay = false;
 
-            Func<TurnTakerController, List<LocationChoice>> allVillainTrashesWithTargets = delegate (TurnTakerController ttc)
+            List<Location> possibleLocationsList = new List<Location>();
+            foreach (TurnTaker tt in villainTurnTakers)
             {
-                var trashes = new List<LocationChoice>();
-                if(GameController.IsLocationVisibleToSource(ttc.TurnTaker.Trash, GetCardSource()) && ttc.TurnTaker.Trash.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: ttc.TurnTaker.PlayArea) == CanPlayCardResult.CanPlay))
+                if (TrashCondition(tt.Trash))
                 {
-                    trashes.Add(new LocationChoice(ttc.TurnTaker.Trash));
+                    possibleLocationsList.Add(tt.Trash);
                 }
-                foreach (Location subtrash in ttc.TurnTaker.SubTrashes)
+
+                foreach (Location subtrash in tt.SubTrashes)
                 {
-                    if (subtrash.IsRealTrash && GameController.IsLocationVisibleToSource(subtrash, GetCardSource()) && subtrash.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: ttc.TurnTaker.PlayArea) == CanPlayCardResult.CanPlay))
+                    if (subtrash.IsRealTrash && TrashCondition(subtrash))
                     {
-                        trashes.Add(new LocationChoice(subtrash));
+                        possibleLocationsList.Add(subtrash);
                     }
                 }
-                return trashes;
-            };
-            possibleDestinations = FindVillainTurnTakerControllers(true).Where(ttc => GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource())).SelectMany((TurnTakerController ttc) => allVillainTrashesWithTargets(ttc)).ToList();
+            }
 
+            List<LocationChoice> possibleDestinations = possibleLocationsList.Select(loc => new LocationChoice(loc)).ToList();
             Location chosenLocation = null;
             if(possibleDestinations.Count() == 0)
             {
@@ -150,5 +150,9 @@ namespace Cauldron.Terminus
             yield break;
         }
 
+        private bool TrashCondition(Location loc)
+        {
+            return GameController.IsLocationVisibleToSource(loc, GetCardSource()) && loc.Cards.Any((Card c) => c.IsTarget && GameController.CanPlayCard(FindCardController(c), true, destinationLocation: loc.OwnerTurnTaker.PlayArea) == CanPlayCardResult.CanPlay);
+        }
     }
 }
