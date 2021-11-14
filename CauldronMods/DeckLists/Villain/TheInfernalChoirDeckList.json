@@ -49,7 +49,7 @@
 			"flippedGameplay": [
 				"Redirect all hero damage that would be dealt to villain targets during the villain turn to the hero target with the highest HP.",
 				"At the start of the villain turn, remove all but the bottom 5 cards of each hero's deck from the game, then destroy each hero character whose deck contains no cards.",
-				"Play the top card of the villain deck and each hero deck in order in turn order. Remove all hero cards played this way from the game at the end of the villain turn."
+				"Play the top card of the villain deck and each hero deck in turn order. Remove all hero cards played this way from the game at the end of the villain turn."
 			],
 			"flippedAdvanced": "At the start of each player's turn, remove the top card of their deck from the game.",
 			"flippedIcons": [
