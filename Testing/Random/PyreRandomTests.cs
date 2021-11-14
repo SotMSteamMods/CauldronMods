@@ -11,85 +11,85 @@ using System.Collections.Generic;
 namespace CauldronTests.Random
 {
     [TestFixture()]
-    public class BaccaratRandomTests : RandomGameTest
+    public class PyreRandomTests : RandomGameTest
     {
         [Test]
-        public void TestBaccarat_Random()
+        public void TestPyre_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat" });
+                useHeroes: new List<string> { "Cauldron.Pyre" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSorrowsBaccarat_Random()
+        public void TestUnstablePyre_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Pyre/UnstablePyreCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSwords_Random()
+        public void TestWastelandRonin_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Pyre/WastelandRoninPyreCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestPastBaccarat_Random()
+        public void TestExpeditionOblaskPyre_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Pyre/ExpeditionOblaskPyreCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestBaccarat_Reasonable()
+        public void TestPyre_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat" });
+                useHeroes: new List<string> { "Cauldron.Pyre" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSorrowsBaccarat_Reasonable()
+        public void TestUnstablePyre_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Pyre/UnstablePyreCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSwords_Reasonable()
+        public void TestWastelandRonin_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Pyre/WastelandRoninPyreCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestPastBaccarat_Reasonable()
+        public void TestExpeditionOblaskPyre_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Pyre/ExpeditionOblaskPyreCharacter" });
             RunGame(gameController);
         }
 

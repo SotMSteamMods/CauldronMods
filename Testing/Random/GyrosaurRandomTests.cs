@@ -11,85 +11,85 @@ using System.Collections.Generic;
 namespace CauldronTests.Random
 {
     [TestFixture()]
-    public class BaccaratRandomTests : RandomGameTest
+    public class GyrosaurRandomTests : RandomGameTest
     {
         [Test]
-        public void TestBaccarat_Random()
+        public void TestGyrosaur_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat" });
+                useHeroes: new List<string> { "Cauldron.Gyrosaur" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSorrowsBaccarat_Random()
+        public void TestRenegadeGyrosaur_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Gyrosaur/RenegadeGyrosaurCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSwords_Random()
+        public void TestSpeedDemon_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestPastBaccarat_Random()
+        public void TestCaptainGyrosaur_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Gyrosaur/CaptainGyrosaurCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestBaccarat_Reasonable()
+        public void TestGyrosaur_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat" });
+                useHeroes: new List<string> { "Cauldron.Gyrosaur" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSorrowsBaccarat_Reasonable()
+        public void TestRenegadeGyrosaur_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Gyrosaur/RenegadeGyrosaurCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSwords_Reasonable()
+        public void TestSpeedDemon_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Gyrosaur/SpeedDemonGyrosaurCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestPastBaccarat_Reasonable()
+        public void TestCaptainGyrosaur_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Gyrosaur/CaptainGyrosaurCharacter" });
             RunGame(gameController);
         }
 

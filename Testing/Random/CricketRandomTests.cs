@@ -7,8 +7,9 @@ using System.Collections;
 using Handelabra.Sentinels.UnitTest;
 using Cauldron;
 using System.Collections.Generic;
+using CauldronTests;
 
-namespace CauldronTests
+namespace CauldronTests.Random
 {
     [TestFixture()]
     public class CricketRandomTests : RandomGameTest

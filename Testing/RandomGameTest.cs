@@ -9,15 +9,16 @@ using Troschuetz.Random;
 using Troschuetz.Random.Generators;
 using System.IO;
 using Handelabra;
+using CauldronTests;
 
-namespace CauldronTests
+namespace CauldronTests.Random
 {
     // Subclass this to make your own random test cases - See MyRandomTest.cs for an example!
     [TestFixture]
     public class RandomGameTest : CauldronBaseTest
     {
         private IGenerator rng = new MT19937Generator();
-        private Random seededRng;
+        private System.Random seededRng;
 
         protected IEnumerable<string> PreferredCardsToPlay = null;
 

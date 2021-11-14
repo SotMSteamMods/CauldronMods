@@ -11,85 +11,85 @@ using System.Collections.Generic;
 namespace CauldronTests.Random
 {
     [TestFixture()]
-    public class BaccaratRandomTests : RandomGameTest
+    public class StarlightRandomTests : RandomGameTest
     {
         [Test]
-        public void TestBaccarat_Random()
+        public void TestStarlight_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat" });
+                useHeroes: new List<string> { "Cauldron.Starlight" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSorrowsBaccarat_Random()
+        public void TestGenesisStarlight_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Starlight/GenesisStarlightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSwords_Random()
+        public void TestArea51_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Starlight/Area51StarlightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestPastBaccarat_Random()
+        public void TestNightloreCouncilStarlight_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Starlight/NightloreCouncilStarlightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestBaccarat_Reasonable()
+        public void TestStarlight_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat" });
+                useHeroes: new List<string> { "Cauldron.Starlight" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSorrowsBaccarat_Reasonable()
+        public void TestGenesisStarlight_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Starlight/GenesisStarlightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSwords_Reasonable()
+        public void TestArea51_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Starlight/Area51StarlightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestPastBaccarat_Reasonable()
+        public void TestNightloreCouncilStarlight_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.Starlight/NightloreCouncilStarlightCharacter" });
             RunGame(gameController);
         }
 

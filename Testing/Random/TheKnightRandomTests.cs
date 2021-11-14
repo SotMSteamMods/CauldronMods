@@ -11,85 +11,105 @@ using System.Collections.Generic;
 namespace CauldronTests.Random
 {
     [TestFixture()]
-    public class BaccaratRandomTests : RandomGameTest
+    public class TheKnightRandomTests : RandomGameTest
     {
         [Test]
-        public void TestBaccarat_Random()
+        public void TestTheKnight_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat" });
+                useHeroes: new List<string> { "Cauldron.TheKnight" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSorrowsBaccarat_Random()
+        public void TestFairTheKnight_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.TheKnight/FairTheKnightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSwords_Random()
+        public void TestBerserker_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.TheKnight/BerserkerTheKnightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestPastBaccarat_Random()
+        public void TestWastelandRonin_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.TheKnight/WastelandRoninTheKnightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestBaccarat_Reasonable()
+        public void TestPastTheKnight_Random()
         {
-            GameController gameController = SetupRandomGameController(true,
+            GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat" });
+                useHeroes: new List<string> { "Cauldron.TheKnight/PastTheKnightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSorrowsBaccarat_Reasonable()
+        public void TestTheKnight_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.TheKnight" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestAceOfSwords_Reasonable()
+        public void TestFairTheKnight_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.TheKnight/FairTheKnightCharacter" });
             RunGame(gameController);
         }
 
         [Test]
-        public void TestPastBaccarat_Reasonable()
+        public void TestBerserker_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
                 availableEnvironments: CauldronEnvironments,
-                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+                useHeroes: new List<string> { "Cauldron.TheKnight/BerserkerTheKnightCharacter" });
+            RunGame(gameController);
+        }
+
+        [Test]
+        public void TestWastelandRonin_Reasonable()
+        {
+            GameController gameController = SetupRandomGameController(true,
+                availableVillains: CauldronVillains,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.TheKnight/WastelandRoninTheKnightCharacter" });
+            RunGame(gameController);
+        }
+
+        [Test]
+        public void TestPastTheKnight_Reasonable()
+        {
+            GameController gameController = SetupRandomGameController(true,
+                availableVillains: CauldronVillains,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.TheKnight/PastTheKnightCharacter" });
             RunGame(gameController);
         }
 
