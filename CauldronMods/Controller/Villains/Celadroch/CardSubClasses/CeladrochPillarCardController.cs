@@ -1,5 +1,6 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,14 +51,24 @@ namespace Cauldron.Celadroch
 
             //reward triggers
             //incremental damage trigger
-            AddTrigger<DealDamageAction>(ga => ga.Target == Card && ga.DidDealDamage, PillarCardRewardDamageResponse, _rewardType, TriggerTiming.After);
-            AddTrigger<SetHPAction>(ga => ga.HpGainer == Card && ga.AmountActuallyChanged < 0, PillarCardRewardSetHpResponse, _rewardType, TriggerTiming.After);
+            AddTrigger<DealDamageAction>(ga => ga.Target == Card && ga.DidDealDamage && DidDamageCrossThreshold(ga), PillarCardRewardDamageResponse, _rewardType, TriggerTiming.After);
+            AddTrigger<SetHPAction>(ga => ga.HpGainer == Card && ga.AmountActuallyChanged < 0 && DidSetHpCrossThreshold(ga), PillarCardRewardSetHpResponse, _rewardType, TriggerTiming.After);
             //destroyed by HP damage final
             AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy.Card == Card && dca.DealDamageAction != null && dca.DealDamageAction.DidDealDamage, dca => PillarCardRewardDamageResponse(dca.DealDamageAction), _rewardType, TriggerTiming.Before);
 
             //when this card would leave play, remove it from the game.
             AddTrigger<MoveCardAction>(mca => mca.CardToMove == Card && mca.Origin.IsPlayArea && (!mca.Destination.HighestRecursiveLocation.IsInPlay || !mca.Destination.IsUnderCard), MoveOutOfPlayResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
             AddTrigger<FlipCardAction>(fca => fca.CardToFlip.Card == Card, fca => GameController.MoveCard(TurnTakerController, Card, TurnTaker.OutOfGame, cardSource: GetCardSource()), TriggerType.RemoveFromGame, TriggerTiming.Before);
+        }
+
+        private bool DidDamageCrossThreshold(DealDamageAction ga)
+        {
+            return _rewards.NumberOfTriggers(ga.TargetHitPointsBeforeBeingDealtDamage.Value, ga.TargetHitPointsAfterBeingDealtDamage.Value) > 0;
+        }
+
+        private bool DidSetHpCrossThreshold(SetHPAction ga)
+        {
+            return _rewards.NumberOfTriggers((ga.AmountActuallyChanged * -1) + Card.HitPoints.Value, Card.HitPoints.Value) > 0;
         }
 
         private IEnumerator PillarCardRewardSetHpResponse(SetHPAction action)
