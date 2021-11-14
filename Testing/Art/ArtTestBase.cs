@@ -180,7 +180,7 @@ namespace CauldronTests.Art
 
         #region Data
 
-        public static bool IsMicroArtRequired = true;
+        public static bool IsMicroArtRequired = false;
         public static bool IsUnusedCardError = true;
 
         protected readonly string ArtPath;
@@ -191,11 +191,12 @@ namespace CauldronTests.Art
         protected readonly List<string> _characterIdentifiers;
         protected readonly List<string> _heroLeadCharacterIdentifiers;
         protected readonly List<string> _startEndIdentifiers;
+        protected readonly Dictionary<string, List<string>> _subdeckCardListDict;
         protected readonly HashSet<string> _ignoredWarnings;
         private int _numWarnings;
 
 
-        protected ArtTestBase(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
+        protected ArtTestBase(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers, Dictionary<string, List<string>> subdeckCardListDict)
         {
             ArtPath = GetArtPath();
 
@@ -205,6 +206,7 @@ namespace CauldronTests.Art
             _characterIdentifiers = characterIdentifiers;
             _heroLeadCharacterIdentifiers = heroLeadCharacterIdentifiers;
             _startEndIdentifiers = startEndIdentifiers;
+            _subdeckCardListDict = subdeckCardListDict;
 
             if (!warningsToIgnore.TryGetValue(_name, out var local))
             {
