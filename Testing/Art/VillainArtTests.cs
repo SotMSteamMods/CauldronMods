@@ -22,8 +22,8 @@ namespace CauldronTests.Art.Villain
     [TestFixtureSource(typeof(VillainArtSource))]
     public class VillainArtTests : ArtTestBase
     {
-        public VillainArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
-            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers)
+        public VillainArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers, Dictionary<string, List<string>> subdeckCardListDict)
+            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers, subdeckCardListDict)
         {
         }
 
@@ -35,7 +35,7 @@ namespace CauldronTests.Art.Villain
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             if (!files.Remove(_name + "DeckBack"))
             {
@@ -61,6 +61,30 @@ namespace CauldronTests.Art.Villain
             foreach (var leftovers in files)
             {
                 WarnAboutUnused($"{_name}: file '{leftovers}' was not used by any cards in the deck.");
+            }
+
+            foreach (string subdeck in _subdeckCardListDict.Keys)
+            {
+                expectedDirectory = Path.Combine(ArtPath, @"LargeCardTextures\" + subdeck);
+                var subdeck_files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
+
+                if (!subdeck_files.Remove(subdeck + "DeckBack"))
+                {
+                    Warn($"{subdeck} - DeckBack LargeCardArt is missing");
+                }
+
+                foreach (var card in _subdeckCardListDict[subdeck])
+                {
+                    if (!subdeck_files.Remove(card))
+                    {
+                        Warn($"{subdeck}: {card} - Card LargeCardArt front art is missing");
+                    }
+                }
+
+                foreach (var leftovers in subdeck_files)
+                {
+                    WarnAboutUnused($"{subdeck}: file '{leftovers}' was not used by any cards in the deck.");
+                }
             }
 
             AssertNoWarnings();
@@ -115,6 +139,58 @@ namespace CauldronTests.Art.Villain
                 }
             }
 
+            foreach (string subdeck in _subdeckCardListDict.Keys)
+            {
+                var subdeck_atlas = ReadAtlasJson(expectedDirectory, subdeck);
+                if (subdeck_atlas is null)
+                    Assert.Fail("Atlas file " + subdeck + " does not exist");
+
+                if (!subdeck_atlas.Remove(subdeck + "DeckBack"))
+                {
+                    Warn($"{subdeck} - Card Atlas DeckBack is missing");
+                } else
+                {
+                    atlas.Remove(subdeck + "DeckBack");
+                }
+
+                if (!subdeck_atlas.Remove(subdeck + "DeckBackMicro"))
+                {
+                    if (IsMicroArtRequired)
+                        Warn($"{subdeck} - Card Atlas DeckBackMicro is missing");
+                }
+                else
+                {
+                    atlas.Remove(subdeck + "DeckBackMicro");
+                }
+
+                foreach (var card in _subdeckCardListDict[subdeck])
+                {
+                    if (!subdeck_atlas.Remove(card))
+                    {
+                        Warn($"{subdeck}: {card} - Card Atlas Front art is missing");
+                    }
+                    else
+                    {
+                        atlas.Remove(card);
+                    }
+                    if (!subdeck_atlas.Remove(card + "Micro"))
+                    {
+                        if (IsMicroArtRequired)
+                            Warn($"{subdeck}: {card + "Micro"} - Card Atlas Front art is missing");
+                    }
+                    else
+                    {
+                        atlas.Remove(card);
+                    }
+                }
+
+                foreach (var leftovers in subdeck_atlas)
+                {
+                    //no big deal if there are extras in the atlas
+                    WarnAboutUnused($"{subdeck}: Atlas entry '{leftovers}' was not used by any cards in the deck.");
+                }
+            }
+
             foreach (var leftovers in atlas)
             {
                 //no big deal if there are extras in the atlas
@@ -157,7 +233,7 @@ namespace CauldronTests.Art.Villain
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
             
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             var suffixes = new List<string>() { "HeroesDestroyedDefeat", "VillainDestroyedVictory" };
             
@@ -201,7 +277,7 @@ namespace CauldronTests.Art.Villain
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             foreach (var character in _startEndIdentifiers)
             {
@@ -230,7 +306,7 @@ namespace CauldronTests.Art.Villain
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             var suffixes = new string[] { "HeroTurn", "HeroTurnFlipped", "VillainTurn", "VillainTurnFlipped" };
             var optional = new string[] { "HeroTurnDamaged", "HeroTurnDamagedFlipped", "VillainTurnDamaged", "VillainTurnDamagedFlipped" };

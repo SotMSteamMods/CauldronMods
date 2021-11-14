@@ -22,8 +22,10 @@ namespace CauldronTests.Art.Environment
     [TestFixtureSource(typeof(EnvironmentArtSource))]
     public class EnvironmentArtTests : ArtTestBase
     {
-        public EnvironmentArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
-            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers)
+        public static new bool IsMicroArtRequired = true;
+
+        public EnvironmentArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers, Dictionary<string, List<string>> subdeckCardListDict)
+            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers, subdeckCardListDict)
         {
         }
 
@@ -35,7 +37,7 @@ namespace CauldronTests.Art.Environment
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             if (!files.Remove(_name + "DeckBack"))
             {
@@ -150,7 +152,7 @@ namespace CauldronTests.Art.Environment
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath, "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             string[] suffixes = new string[] { "-0", "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-Start" };
 
@@ -179,7 +181,7 @@ namespace CauldronTests.Art.Environment
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath, "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory, "Ending-" + _name + "*.*").Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory, "Ending-" + _name + "*.*").Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             if (!files.Remove("Ending-" + _name))
             {
