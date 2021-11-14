@@ -48,7 +48,7 @@ namespace Cauldron.StSimeonsCatacombs
         {
             HeroTurnTakerController httc = base.FindHeroTurnTakerController(pca.ToPhase.TurnTaker.ToHero());
 
-            IEnumerator message = base.GameController.SendMessageAction(base.Card.Title + " causes " + httc.CharacterCard.Title + " to use their innate power twice!", Priority.Medium, GetCardSource(), showCardSource: true);
+            IEnumerator message = base.GameController.SendMessageAction(base.Card.Title + " causes " + httc.Name + " to use their innate power twice!", Priority.Medium, GetCardSource(), showCardSource: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(message);
@@ -61,6 +61,11 @@ namespace Cauldron.StSimeonsCatacombs
 
             //that hero uses their innate power twice, 
             CardController cc = GameController.FindCardController(base.GetCardThisCardIsNextTo());
+
+            if(cc.Card.IsIncapacitatedOrOutOfGame)
+            {
+                yield break;
+            }
 
             IEnumerator power1 = base.UsePowerOnOtherCard(cc.Card);
 
@@ -165,7 +170,6 @@ namespace Cauldron.StSimeonsCatacombs
                 base.GameController.ExhaustCoroutine(draw);
                 base.GameController.ExhaustCoroutine(destroy);
             }
-
 
             yield break;
         }

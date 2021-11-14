@@ -40,16 +40,17 @@ namespace Cauldron.Mythos
 
             IEnumerator coroutine;
             //...this card deals that hero 2 infernal damage and 2 psychic damage.
-            Card target;
+            Card target = null;
+            HeroTurnTaker htt = null;
             if (action is UsePowerAction upa)
             {
-                target = upa.HeroUsingPower.CharacterCard;
+                htt = upa.HeroUsingPower.HeroTurnTaker;
             } else if(action is DrawCardAction dca)
             {
-                target = dca.HeroTurnTaker.CharacterCard;
+                htt = dca. HeroTurnTaker;
             } else if(action is CardEntersPlayAction cpa)
             {
-                target = cpa.CardEnteringPlay.Owner.CharacterCard;
+                htt = cpa.CardEnteringPlay.Owner.ToHero();
             }
             else
             {
@@ -60,10 +61,10 @@ namespace Cauldron.Mythos
             SetCardPropertyToTrueIfRealAction(FirstTimeActivated);
 
 
-            if (target.Owner.HasMultipleCharacterCards)
+            if (htt.HasMultipleCharacterCards)
             {
                 List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DealDamage, new LinqCardCriteria((Card c) => c.Owner == target.Owner && c.IsHeroCharacterCard), storedResults, false, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DealDamage, new LinqCardCriteria((Card c) => c.Owner == htt && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame), storedResults, false, cardSource: base.GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -72,7 +73,14 @@ namespace Cauldron.Mythos
                 {
                     GameController.ExhaustCoroutine(coroutine);
                 }
-                target = storedResults.FirstOrDefault().SelectedCard;
+                if(!DidSelectCard(storedResults))
+                {
+                    yield break;
+                }
+                target = GetSelectedCard(storedResults);
+            } else
+            {
+                target = htt.CharacterCard;
             }
 
             coroutine = base.DealMultipleInstancesOfDamage(new List<DealDamageAction>()

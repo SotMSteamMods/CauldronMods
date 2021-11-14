@@ -67,7 +67,7 @@ namespace Cauldron.Pyre
                 case 2:
                     {
                         //"One player may draw a card now."
-                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker);
+                        coroutine = GameController.SelectHeroToDrawCard(DecisionMaker, cardSource: GetCardSource());
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);

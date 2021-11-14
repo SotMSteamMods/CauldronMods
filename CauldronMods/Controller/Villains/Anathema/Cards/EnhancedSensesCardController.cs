@@ -25,9 +25,10 @@ namespace Cauldron.Anathema
 
         private IEnumerator DealDamageResponse(PlayCardAction pc)
         {
+			Card cardEnteringPlay = pc.CardToPlay;
 			//this card deals that Hero Character 1 sonic damage.
 			List<Card> results = new List<Card>();
-			IEnumerator coroutine = base.FindCharacterCardToTakeDamage(pc.TurnTakerController.TurnTaker, results, Card, 1, DamageType.Sonic);
+			IEnumerator coroutine = base.FindCharacterCardToTakeDamage(cardEnteringPlay.Owner, results, Card, 1, DamageType.Sonic);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
