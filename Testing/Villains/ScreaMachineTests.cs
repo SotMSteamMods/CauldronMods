@@ -903,6 +903,24 @@ namespace CauldronTests
             ActivateAbility(key, card);
             AssertNumberOfCardsInDeck(scream, deck - 3);
         }
+
+        [Test()]
+        public void TestMentalLink_PlayCardWhenVillainDeckIsEmpty()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            MoveAllCards(scream, scream.TurnTaker.Deck, scream.TurnTaker.Trash);
+
+            var card = SetupBandCard("MentalLink");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            StackAfterShuffle(scream.TurnTaker.Deck, new string[] { "Biosurge" });
+            QuickShuffleStorage(scream.TurnTaker.Deck);
+            ActivateAbility(key, card);
+            QuickShuffleCheck(1);
+            AssertIsInPlay("Biosurge");
+        }
         [Test()]
         public void TestMentalLink_OtherVillainCardPlayDuringMentalLinkPlay()
         {
