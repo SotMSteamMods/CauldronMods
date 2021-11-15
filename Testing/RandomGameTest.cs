@@ -183,7 +183,7 @@ namespace CauldronTests.Random
                 }
                 else
                 {
-                    identifier = GetRandomEnvironment(availableEnvironments);
+                    identifier = GetRandomEnvironment(envLeft);
                 }
                 var definition = DeckDefinitionCache.GetDeckDefinition(identifier);
                 name = definition.Name;
