@@ -36,7 +36,11 @@ namespace Cauldron.Baccarat
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                        TurnTaker selectedTurnTaker = selectTurnTakerDecision.FirstOrDefault().SelectedTurnTaker;
+                        if(!DidSelectTurnTaker(selectTurnTakerDecision))
+                        {
+                            yield break;
+                        }
+                        TurnTaker selectedTurnTaker = GetSelectedTurnTaker(selectTurnTakerDecision);
                         List<SelectCardDecision> selectCardDecision = new List<SelectCardDecision>();
                         //...may shuffle a card from their trash into their deck...
                         coroutine = base.GameController.SelectCardAndStoreResults(base.GameController.FindHeroTurnTakerController(selectedTurnTaker.ToHero()), SelectionType.ShuffleCardFromTrashIntoDeck, new LinqCardCriteria((Card c) => c.Location == selectedTurnTaker.Trash), selectCardDecision, true, cardSource: base.GetCardSource());

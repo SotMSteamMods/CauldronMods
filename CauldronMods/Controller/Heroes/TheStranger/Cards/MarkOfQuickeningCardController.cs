@@ -40,7 +40,7 @@ namespace Cauldron.TheStranger
 
         private bool ShouldIncreasePhaseActionCount(TurnTaker tt)
         {
-            return tt == base.GetCardThisCardIsNextTo(true).Owner;
+            return base.GetCardThisCardIsNextTo(true) != null && tt == base.GetCardThisCardIsNextTo(true).Owner;
         }
         #endregion Methods
     }
