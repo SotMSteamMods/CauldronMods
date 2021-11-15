@@ -92,7 +92,26 @@ namespace Cauldron.LadyOfTheWood
 						// If a card was discard, they regain 3 HP
 						if (base.DidDiscardCards(storedResults2, new int?(1)))
 						{
-							Card hero = storedResults2[0].HeroTurnTakerController.CharacterCard;
+							HeroTurnTakerController httc = storedResults2[0].HeroTurnTakerController;
+							Card hero = httc.CharacterCard;
+							if(httc.HasMultipleCharacterCards)
+                            {
+								List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
+								coroutine3 = GameController.SelectCardAndStoreResults(httc, SelectionType.GainHP, new LinqCardCriteria(c => c.Owner == httc.TurnTaker && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText), storedResults, false, cardSource: GetCardSource());
+								if (base.UseUnityCoroutines)
+								{
+									yield return base.GameController.StartCoroutine(coroutine3);
+								}
+								else
+								{
+									base.GameController.ExhaustCoroutine(coroutine3);
+								}
+								if(!DidSelectCard(storedResults))
+                                {
+									yield break;
+                                }
+								hero = GetSelectedCard(storedResults);
+							}
 							coroutine3 = base.GameController.GainHP(hero, new int?(3), cardSource: GetCardSource());
 							if (base.UseUnityCoroutines)
 							{
