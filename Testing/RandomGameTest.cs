@@ -23,9 +23,9 @@ namespace CauldronTests.Random
         protected IEnumerable<string> PreferredCardsToPlay = null;
 
         protected GameController SetupRandomGameController(bool reasonable, IEnumerable<string> availableHeroes = null, IEnumerable<string> availableVillains = null, IEnumerable<string> availableEnvironments = null,
-            string overrideEnvironment = null, List<string> useHeroes = null)
+            string useEnvironment = null, List<string> useHeroes = null, string useVillain = null)
         {
-            string environment = overrideEnvironment;
+            string environment = useEnvironment;
             var heroes = new List<string>();
             var promoIdentifiers = new Dictionary<string, string>();
 
@@ -44,9 +44,35 @@ namespace CauldronTests.Random
                 availableEnvironments = DeckDefinition.AvailableEnvironments;
             }
 
-            var villainInfo = GetRandomVillain(availableVillains, promoIdentifiers);
-            var villain = villainInfo.Keys.FirstOrDefault();
-            var villainName = villainInfo.Values.FirstOrDefault();
+            var villain = "";
+            var villainName = "";
+            if (useVillain != null)
+            {
+                var identifier = useVillain;
+                string fullIdentifier = identifier;
+                var promoId = "";
+                if (identifier.Contains("/"))
+                {
+                    var identifierSplit = identifier.Split('/');
+                    identifier = identifierSplit[0];
+                    promoId = identifierSplit[1];
+                }
+                villain = identifier;
+                var villainDefinition = DeckDefinitionCache.GetDeckDefinition(identifier);
+                villainName = villainDefinition.Name;
+                if (promoId != "")
+                {
+                    var promo = villainDefinition.PromoCardDefinitions.Where(def => def.PromoIdentifier == promoId).First();
+                    promoIdentifiers[identifier] = promo.PromoIdentifier;
+                    villainName = promo.PromoTitle;
+                }
+            }
+            else
+            {
+                var villainInfo = GetRandomVillain(availableVillains, promoIdentifiers);
+                villain = villainInfo.Keys.FirstOrDefault();
+                villainName = villainInfo.Values.FirstOrDefault();
+            }
 
             Console.WriteLine(villainName + " threatens the Multiverse!");
 
@@ -56,7 +82,10 @@ namespace CauldronTests.Random
                 environment = GetRandomEnvironment(availableEnvironments);
             }
 
-            Console.WriteLine(environment + " is the location of the conflict.");
+            var definition = DeckDefinitionCache.GetDeckDefinition(environment);
+            var environmentName = definition.Name;
+
+            Console.WriteLine(environmentName + " is the location of the conflict.");
 
             // Choose heroes
             var heroesLeft = availableHeroes.ToList();
@@ -76,11 +105,11 @@ namespace CauldronTests.Random
                         identifier = identifierSplit[0];
                         promoId = identifierSplit[1];
                     }
-                    var definition = DeckDefinitionCache.GetDeckDefinition(identifier);
-                    name = definition.Name;
+                    var heroDefinition = DeckDefinitionCache.GetDeckDefinition(identifier);
+                    name = heroDefinition.Name;
                     if(promoId != "")
                     {
-                        var promo = definition.PromoCardDefinitions.Where(def => def.PromoIdentifier == promoId).First();
+                        var promo = heroDefinition.PromoCardDefinitions.Where(def => def.PromoIdentifier == promoId).First();
                         promoIdentifiers[identifier] = promo.PromoIdentifier;
                         name = promo.PromoTitle;
                     }
@@ -119,12 +148,128 @@ namespace CauldronTests.Random
             return gc;
         }
 
+        protected GameController SetupRandomOblivAeonGameController(bool reasonable, IEnumerable<string> availableHeroes = null, IEnumerable<string> availableEnvironments = null,
+        List<string> useEnvironments = null, List<string> useHeroes = null, string shieldIdentifier = null, IEnumerable<string> scionIdentifiers = null)
+        {
+            var heroes = new List<string>();
+            var environments = new List<string>();
+
+            var promoIdentifiers = new Dictionary<string, string>();
+
+            if (availableHeroes == null)
+            {
+                availableHeroes = DeckDefinition.AvailableHeroes;
+            }
+
+            if (availableEnvironments == null)
+            {
+                availableEnvironments = DeckDefinition.AvailableEnvironments;
+            }
+
+            var villain = "OblivAeon";
+            Console.WriteLine("OblivAeon threatens the very existence of the Multiverse!");
+
+            // Choose an environment
+            var envLeft = availableEnvironments.ToList();
+            int numEnv = 5;
+            while (environments.Count < numEnv)
+            {
+                string identifier = "";
+                string name = "";
+                if (useEnvironments != null && useEnvironments.Count() > 0)
+                {
+                    identifier = useEnvironments.First();
+                    useEnvironments.Remove(identifier);
+                }
+                else
+                {
+                    identifier = GetRandomEnvironment(availableEnvironments);
+                }
+                var definition = DeckDefinitionCache.GetDeckDefinition(identifier);
+                name = definition.Name;
+                
+                Console.WriteLine(name + " is one of the locations threatened by OblivAeon.");
+                environments.Add(identifier);
+                envLeft.Remove(identifier);
+            }
+
+            // Choose heroes
+            var heroesLeft = availableHeroes.ToList();
+            int numHeroes = GetRandomNumber(3, 6);
+            while (heroes.Count < numHeroes)
+            {
+                string identifier = "";
+                string name = "";
+                if (useHeroes != null && useHeroes.Count() > 0)
+                {
+                    identifier = useHeroes.First();
+                    string fullIdentifier = identifier;
+                    var promoId = "";
+                    if (identifier.Contains("/"))
+                    {
+                        var identifierSplit = identifier.Split('/');
+                        identifier = identifierSplit[0];
+                        promoId = identifierSplit[1];
+                    }
+                    var heroDefinition = DeckDefinitionCache.GetDeckDefinition(identifier);
+                    name = heroDefinition.Name;
+                    if (promoId != "")
+                    {
+                        var promo = heroDefinition.PromoCardDefinitions.Where(def => def.PromoIdentifier == promoId).First();
+                        promoIdentifiers[identifier] = promo.PromoIdentifier;
+                        name = promo.PromoTitle;
+                    }
+                    useHeroes.Remove(fullIdentifier);
+                }
+                else
+                {
+                    var heroInfo = GetRandomHero(heroesLeft, promoIdentifiers);
+                    identifier = heroInfo.FirstOrDefault().Key;
+                    name = heroInfo.FirstOrDefault().Value;
+                }
+
+                Console.WriteLine(name + " joins the team!");
+                heroes.Add(identifier);
+                heroesLeft.Remove(identifier);
+            }
+
+            bool advanced = (GetRandomNumber(2) == 1);
+
+            List<string> identifiers = MakeGameIdentifiers(villain, heroes, environments);
+
+            var seed = GetRandomNumber();
+            var gc = SetupGameController(identifiers, advanced, promoIdentifiers, randomSeed: seed, shieldIdentifier: shieldIdentifier, scionIdentifiers: scionIdentifiers);
+            this.seededRng = gc.Game.RNG;
+
+            gc.OnMakeDecisions -= MakeDecisions;
+            if (reasonable)
+            {
+                gc.OnMakeDecisions += MakeSomewhatReasonableDecisions;
+            }
+            else
+            {
+                gc.OnMakeDecisions += MakeRandomDecisions;
+            }
+
+            return gc;
+        }
+
         private List<string> MakeGameIdentifiers(string villain, List<string> heroes, string environment)
         {
             var result = new List<string>();
             result.Add(villain);
             result.AddRange(heroes);
             result.Add(environment);
+
+            return result;
+        }
+
+        private List<string> MakeGameIdentifiers(string villain, List<string> heroes, List<string> environments)
+        {
+            var result = new List<string>();
+            result.Add(villain);
+            result.AddRange(heroes);
+            result.AddRange(environments);
 
             return result;
         }
