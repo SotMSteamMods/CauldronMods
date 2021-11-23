@@ -158,7 +158,7 @@ namespace Cauldron.Gargoyle
                 case 2:
                     // "One player may draw a card now."
                     {
-                        coroutine = base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController, optionalDrawCard: true);
+                        coroutine = base.GameController.SelectHeroToDrawCard(this.HeroTurnTakerController, optionalDrawCard: true, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

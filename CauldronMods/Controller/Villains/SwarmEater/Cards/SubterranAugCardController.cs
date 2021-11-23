@@ -52,9 +52,9 @@ namespace Cauldron.SwarmEater
             IEnumerator coroutine2 = null;
             Random rng = Game.RNG;
             IEnumerable<Card> trashTargets = base.FindCardsWhere(new LinqCardCriteria(c => IsVillainTarget(c) && c.IsInTrash, "villain targets", false));
-            Card cardToPlay = trashTargets.ElementAt(rng.Next(0, trashTargets.Count()));
-            if (cardToPlay != null)
+            if (trashTargets.Count() > 0)
             {
+                Card cardToPlay = trashTargets.ElementAt(rng.Next(0, trashTargets.Count()));
                 coroutine2 = gameController.PlayCard(base.TurnTakerController, cardToPlay, true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {

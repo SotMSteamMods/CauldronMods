@@ -66,7 +66,7 @@ namespace Cauldron.Cypher
 
         private bool ShouldIncreasePhaseActionCount(TurnTaker tt)
         {
-            return tt == base.GetCardThisCardIsNextTo(true).Owner;
+            return base.GetCardThisCardIsNextTo(true) != null && tt == base.GetCardThisCardIsNextTo(true).Owner;
         }
 
         public override bool AskIfIncreasingCurrentPhaseActionCount()

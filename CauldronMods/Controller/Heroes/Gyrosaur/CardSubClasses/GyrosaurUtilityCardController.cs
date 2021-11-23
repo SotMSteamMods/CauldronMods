@@ -85,7 +85,7 @@ namespace Cauldron.Gyrosaur
 
         protected bool IsCrash(Card card)
         {
-            return GameController.DoesCardContainKeyword(card, "crash");
+            return card != null && GameController.DoesCardContainKeyword(card, "crash");
         }
 
         protected bool RARTInPlay => TurnTaker.GetCardsWhere((Card c) => c.Identifier == "RecklessAlienRacingTortoise" && c.IsInPlayAndHasGameText).Any();

@@ -55,7 +55,11 @@ namespace Cauldron.Tiamat
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            Card highestHpHero = highestHpHero = storedResults.FirstOrDefault().SelectedCard;
+            if(!DidSelectCard(storedResults))
+            {
+                yield break;
+            }
+            Card highestHpHero = GetSelectedCard(storedResults);
 
             //...may not use powers until the start of the next villain turn.
             CannotUsePowersStatusEffect cannotUsePowersStatusEffect = new CannotUsePowersStatusEffect();

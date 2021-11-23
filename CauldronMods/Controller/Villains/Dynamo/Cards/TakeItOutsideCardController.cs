@@ -40,14 +40,14 @@ namespace Cauldron.Dynamo
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (dealDamageActions.FirstOrDefault().DidDealDamage)
+            if (DidDealDamage(dealDamageActions))
             {
                 DealDamageAction damageAction = dealDamageActions.FirstOrDefault();
                 //If a hero target takes damage this way...
                 if (damageAction.Target.IsHero && damageAction.Amount > 0)
                 {
                     //...destroy 1 environment card.
-                    coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment), false);
+                    coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment), false, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

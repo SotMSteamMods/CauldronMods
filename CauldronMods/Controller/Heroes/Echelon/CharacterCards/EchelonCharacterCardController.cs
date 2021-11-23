@@ -94,7 +94,10 @@ namespace Cauldron.Echelon
                     {
                         base.GameController.ExhaustCoroutine(routine);
                     }
-
+                    if(!DidSelectLocation(storedResults))
+                    {
+                        yield break;
+                    }
                     Location deck = GetSelectedLocation(storedResults);
                     routine = base.GameController.SelectLocationAndMoveCard(base.HeroTurnTakerController, deck.TopCard, new[]
                     {

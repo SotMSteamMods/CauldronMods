@@ -416,7 +416,7 @@ namespace CauldronTests.Random
             // If hero, player decides
             if (taker is HeroTurnTakerController)
             {
-                RunCoroutine(taker.GameController.SelectAndPlayCard(taker.ToHero(), card => card.Location == taker.ToHero().HeroTurnTaker.Hand, false));
+                RunCoroutine(taker.GameController.SelectAndPlayCard(taker.ToHero(), card => card.Location == taker.ToHero().HeroTurnTaker.Hand && FindCardController(card).CanBePlayedNow, false));
             }
             else
             {

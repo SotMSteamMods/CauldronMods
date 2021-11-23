@@ -372,7 +372,7 @@ namespace Cauldron.Gyrosaur
             IEnumerator coroutine;
 
             //if (moveCardAction.Destination.IsRealTrash && moveCardAction.Destination.IsEnvironment)
-            if (moveCardAction.CardSource.Card != base.Card)
+            if (moveCardAction.CardSource != null && moveCardAction.CardSource.Card != base.Card)
             {
                 coroutine = CancelAction(moveCardAction); 
                 if (base.UseUnityCoroutines)

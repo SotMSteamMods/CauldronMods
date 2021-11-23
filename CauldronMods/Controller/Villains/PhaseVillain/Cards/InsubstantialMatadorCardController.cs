@@ -43,7 +43,7 @@ namespace Cauldron.PhaseVillain
             IEnumerator coroutine = null;
             if (base.FindHeroTurnTakerController(base.Game.ActiveTurnTaker.ToHero()).HasMultipleCharacterCards)
             {
-                coroutine = base.GameController.SelectTargetsToDealDamageToSelf(this.DecisionMaker, 1, DamageType.Melee, 1, false, 1, true, additionalCriteria: (Card c) => c.IsHeroCharacterCard && c.Owner == base.Game.ActiveTurnTaker);
+                coroutine = base.GameController.SelectTargetsToDealDamageToSelf(this.DecisionMaker, 1, DamageType.Melee, 1, false, 1, true, additionalCriteria: (Card c) => c.IsHeroCharacterCard && c.Owner == base.Game.ActiveTurnTaker, cardSource: GetCardSource());
             }
             else
             {

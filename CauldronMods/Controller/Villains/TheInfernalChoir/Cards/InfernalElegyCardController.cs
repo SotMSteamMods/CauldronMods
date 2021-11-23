@@ -42,8 +42,12 @@ namespace Cauldron.TheInfernalChoir
         private IEnumerator PlayRandomGhost(GameAction action)
         {
             SetCardPropertyToTrueIfRealAction(ghostCardPlay);
-
-            var cardToPlay = base.FindCardsWhere(c => c.Location == TurnTaker.Trash && IsGhost(c)).TakeRandomFirstOrDefault(Game.RNG);
+            var ghostsInTrash = base.FindCardsWhere(c => c.Location == TurnTaker.Trash && IsGhost(c));
+            if(ghostsInTrash.Count() == 0)
+            {
+                yield break;
+            }
+            var cardToPlay = ghostsInTrash.TakeRandomFirstOrDefault(Game.RNG);
             if (cardToPlay != null)
             {
                 var coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, true, actionSource: action, cardSource: GetCardSource());

@@ -15,7 +15,7 @@ namespace Cauldron.FSCContinuanceWanderer
         }
 
         private Card cardThisIsNextTo => GetCardThisCardIsNextTo();
-        private HeroTurnTaker superimposedTurnTaker => cardThisIsNextTo.Owner.ToHero();
+        private HeroTurnTaker superimposedTurnTaker => cardThisIsNextTo?.Owner.ToHero();
 
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {

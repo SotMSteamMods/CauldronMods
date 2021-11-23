@@ -46,7 +46,12 @@ namespace Cauldron.Vector
                 yield break;
             }
 
-            HeroTurnTakerController httc = FindHeroTurnTakerController(ddas.First().Target.Owner.ToHero());
+            TurnTaker tt = ddas.First().Target.Owner;
+            if(!tt.IsHero)
+            {
+                yield break;
+            }
+            HeroTurnTakerController httc = FindHeroTurnTakerController(tt.ToHero());
 
             IEnumerator destroyRoutine = base.GameController.SelectAndDestroyCards(httc,
                 new LinqCardCriteria(card => (card.IsOngoing || IsEquipment(card)) && card.IsInPlay && card.Owner == httc.TurnTaker), 
