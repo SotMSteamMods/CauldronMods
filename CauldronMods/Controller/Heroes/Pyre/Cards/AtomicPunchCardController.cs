@@ -19,7 +19,8 @@ namespace Cauldron.Pyre
         {
             //"Select 2 non-{PyreIrradiate} cards in 1 player's hand. {PyreIrradiate} those cards until they leave that player's hand. 
             var irradiateStorage = new List<bool>();
-            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.CardFromHand, tt => IrradiateCardsInHand(tt, irradiateStorage), 1, false, cardSource: GetCardSource());
+            CurrentMode = CustomMode.PlayerToIrradiate;
+            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.Custom, tt => IrradiateCardsInHand(tt, irradiateStorage), 1, false, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

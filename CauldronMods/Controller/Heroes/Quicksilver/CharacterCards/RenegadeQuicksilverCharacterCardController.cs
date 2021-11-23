@@ -39,6 +39,7 @@ namespace Cauldron.Quicksilver
                     {
                         //The next time a hero is dealt damage, they may play a card.
                         OnDealDamageStatusEffect statusEffect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(PlayCardResponse), "The next time a hero is dealt damage, they may play a card.", new TriggerType[] { TriggerType.PlayCard }, base.TurnTaker, base.Card);
+                        statusEffect.TargetCriteria.IsHeroCharacterCard = true;
                         statusEffect.NumberOfUses = 1;
                         statusEffect.BeforeOrAfter = BeforeOrAfter.After;
                         statusEffect.CanEffectStack = true;

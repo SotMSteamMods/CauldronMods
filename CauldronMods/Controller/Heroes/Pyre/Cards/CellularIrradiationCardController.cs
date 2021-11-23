@@ -20,7 +20,7 @@ namespace Cauldron.Pyre
             //"Select a hero. 
             var storedTurnTaker = new List<SelectTurnTakerDecision>();
 
-            IEnumerator coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.UsePower, false, false, storedTurnTaker, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.TurnTaker, false, false, storedTurnTaker, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

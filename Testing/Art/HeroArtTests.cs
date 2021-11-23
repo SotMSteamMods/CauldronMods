@@ -25,8 +25,8 @@ namespace CauldronTests.Art.Hero
         public static bool IsHeroLogosError = true;
         public static bool IsEndGameHeroesError = true;
 
-        public HeroArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers)
-            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers)
+        public HeroArtTests(string name, string kind, List<string> cardIdentifiers, List<string> characterIdentifiers, List<string> heroLeadCharacterIdentifiers, List<string> startEndIdentifiers, Dictionary<string, List<string>> subdeckCardListDict)
+            : base(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers, subdeckCardListDict)
         {
         }
 
@@ -38,7 +38,7 @@ namespace CauldronTests.Art.Hero
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             if (!files.Remove(_name + "DeckBack"))
             {
@@ -212,7 +212,7 @@ namespace CauldronTests.Art.Hero
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             foreach (var character in _startEndIdentifiers)
             {
@@ -240,7 +240,7 @@ namespace CauldronTests.Art.Hero
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             var source = _startEndIdentifiers;
             if (_name == "Titan")
@@ -267,7 +267,7 @@ namespace CauldronTests.Art.Hero
             if (!Directory.Exists(expectedDirectory))
                 Assert.Fail("Directory " + expectedDirectory.Replace(ArtPath.Replace(ArtPath, "<Art>\\"), "<Art>\\") + " does not exist");
 
-            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.OrdinalIgnoreCase);
+            var files = new HashSet<string>(Directory.GetFiles(expectedDirectory).Select(s => Path.GetFileNameWithoutExtension(s)), StringComparer.Ordinal);
 
             var suffixes = new string[] { "HeroTurn", "HeroTurnDamaged", "HeroTurnFlipped", "VillainTurn", "VillainTurnDamaged", "VillainTurnFlipped" };
             var optional = new string[] { "HeroTurnFlipped", "VillainTurnFlipped" };

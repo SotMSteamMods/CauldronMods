@@ -140,7 +140,7 @@
                 "UsePowerNow"
             ],
             "body": [
-                "At the end of your turn, 1 player may select 1 non-{Rad} card in their hand. {Rad} that card it until it leaves their hand. Then, they may use a power on that card.",
+                "At the end of your turn, 1 player may select 1 non-{Rad} card in their hand. {Rad} that card until it leaves their hand. Then, they may use a power on that card.",
                 "If that power destroys that card, discard it instead."
             ],
             "flavorQuotes": [

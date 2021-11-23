@@ -18,6 +18,15 @@ namespace Cauldron.Pyre
         private const string LocationKnown = "CascadeLocationKnownKey";
         public const string Irradiated = "{Rad}";
 
+        protected enum CustomMode
+        {
+            CardToIrradiate,
+            PlayerToIrradiate,
+            Unique
+        }
+
+        protected CustomMode CurrentMode;
+
         protected PyreUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(() => BuildCascadeLocationString()).Condition = () => TurnTakerController is PyreTurnTakerController;
@@ -77,7 +86,7 @@ namespace Cauldron.Pyre
         protected IEnumerator IrradiateCard(Card cardToIrradiate)
         {
             var marker = TurnTakerControllerWithoutReplacements.TurnTaker.GetAllCards(realCardsOnly: false).Where((Card c) => !c.IsRealCard && c.Location.IsOffToTheSide).FirstOrDefault();
-            if(marker != null && cardToIrradiate.Location.IsHand)
+            if(marker != null && cardToIrradiate.Location.IsHand  && !IsIrradiated(cardToIrradiate))
             {
                 IEnumerator coroutine = GameController.MoveCard(DecisionMaker, marker, cardToIrradiate.NextToLocation, doesNotEnterPlay: true, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
@@ -183,7 +192,9 @@ namespace Cauldron.Pyre
                 minCards = maxCards;
             }
 
-            IEnumerator coroutine = GameController.SelectCardsAndDoAction(decisionMaker, fullCriteria, SelectionType.CardFromHand, IrradiateCard, maxCards, false, minCards, storedResults, cardSource: GetCardSource());
+            var oldMode = CurrentMode;
+            CurrentMode = CustomMode.CardToIrradiate;
+            IEnumerator coroutine = GameController.SelectCardsAndDoAction(decisionMaker, fullCriteria, SelectionType.Custom, IrradiateCard, maxCards, false, minCards, storedResults, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -192,6 +203,7 @@ namespace Cauldron.Pyre
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+            CurrentMode = oldMode;
             yield break;
         }
 
@@ -289,6 +301,26 @@ namespace Cauldron.Pyre
                 return positionString;
             }
             return "Not complete yet";
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            string radIcon = "{{Rad}}";
+            if (CurrentMode is CustomMode.CardToIrradiate)
+            {
+                return new CustomDecisionText($"Select a card to {radIcon}", $"{decision.DecisionMaker.Name} is deciding which card to {radIcon}.", $"Vote for which card to {radIcon}", $"card to {radIcon}");
+            }
+            else if (CurrentMode is CustomMode.PlayerToIrradiate)
+            {
+                return new CustomDecisionText($"Select a player to {radIcon} a card in their hand.", $"{decision.DecisionMaker.Name} is deciding whose hand to {radIcon} cards in.", $"Vote for which player's hand to {radIcon} cards from.", $"player's hand to {radIcon} cards from");
+            }
+            else if (CurrentMode is CustomMode.Unique)
+            {
+                return new CustomDecisionText($"Select a player to {radIcon} a card in their hand.", $"{decision.DecisionMaker.Name} is deciding whose hand to {radIcon} cards in.", $"Vote for which player's hand to {radIcon} cards from.", $"player's hand to {radIcon} cards from");
+            }
+
+            return base.GetCustomDecisionText(decision);
+
         }
     }
 }

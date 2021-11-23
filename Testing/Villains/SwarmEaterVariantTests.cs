@@ -70,6 +70,10 @@ namespace CauldronTests
             QuickHPStorage(haka);
             DealDamage(fire, swarm, 2, DamageType.Melee);
             QuickHPCheck(-2);
+
+            QuickHPStorage(haka.CharacterCard, fire);
+            DealDamage(fire, fire, 2, DamageType.Melee, isIrreducible: true);
+            QuickHPCheck(0, -2);
         }
 
         [Test()]

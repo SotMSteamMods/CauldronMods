@@ -8,7 +8,7 @@ using Handelabra.Sentinels.UnitTest;
 using Cauldron;
 using System.Collections.Generic;
 
-namespace CauldronTests
+namespace CauldronTests.Random
 {
     [TestFixture()]
     public class DocHavocRandomTests : RandomGameTest

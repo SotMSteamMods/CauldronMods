@@ -119,12 +119,14 @@ namespace Cauldron.Drift
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-
-                        IEnumerable<SelectCardDecision> decisions = cardsDecision.FirstOrDefault().SelectCardDecisions;
-                        foreach (SelectCardDecision cardDecision in decisions)
+                        if(!DidSelectCards(cardsDecision))
                         {
-                            Card selectedCard = cardDecision.SelectedCard;
-                            coroutine = base.GameController.MoveCard(base.TurnTakerController, selectedCard, selectedCard.Owner.ToHero().Hand, cardSource: base.GetCardSource());
+                            yield break;
+                        }
+                        IEnumerable<Card> selectedCards = GetSelectedCards(cardsDecision);
+                        foreach (Card card in selectedCards)
+                        {
+                            coroutine = base.GameController.MoveCard(base.TurnTakerController, card, card.Owner.ToHero().Hand, cardSource: base.GetCardSource());
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine);

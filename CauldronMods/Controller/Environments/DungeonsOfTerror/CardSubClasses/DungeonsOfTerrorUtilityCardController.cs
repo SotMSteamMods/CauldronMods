@@ -84,7 +84,7 @@ namespace Cauldron.DungeonsOfTerror
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
 
-                        coroutine = GameController.SendMessageAction($"Checking if {ring.Title} is a fate card instead of the top card of {FindEnvironment(Card.BattleZone).TurnTaker.Trash}", Priority.High, GetCardSource(), associatedCards: ring.ToEnumerable());
+                        coroutine = GameController.SendMessageAction($"Checking if {ring.Title} is a fate card instead of the top card of {FindEnvironment(Card.BattleZone).TurnTaker.Trash.GetFriendlyName()}", Priority.High, GetCardSource(), associatedCards: ring.ToEnumerable());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

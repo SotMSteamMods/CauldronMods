@@ -18,7 +18,8 @@ namespace Cauldron.Pyre
         {
             //"Select up to 2 non-{PyreIrradiate} cards in 1 player's hand. {PyreIrradiate} those cards until they leave that player's hand.",
             var storedCards = new List<SelectCardDecision>();
-            var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllHeroes.Where(htt => !htt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource())).Select(htt => htt as TurnTaker), SelectionType.CardFromHand, cardSource: GetCardSource());
+            var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllHeroes.Where(htt => !htt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource())).Select(htt => htt as TurnTaker), SelectionType.Custom, cardSource: GetCardSource());
+            CurrentMode = CustomMode.PlayerToIrradiate;
             IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(selectHero, tt => SelectAndIrradiateCardsInHand(FindHeroTurnTakerController(tt.ToHero()), tt, 2, 0, storedCards));
             if (UseUnityCoroutines)
             {

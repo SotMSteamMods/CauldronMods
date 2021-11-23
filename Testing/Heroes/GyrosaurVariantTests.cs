@@ -78,7 +78,7 @@ namespace CauldronTests
             PlayCard("GyroStabilizer");
             Card wreck = PutInHand("WreckingBall"); // Crash
             Card chase = PutOnDeck("AMerryChase");
-            DecisionSelectFunction = 0;
+            DecisionSelectWord = "0 crash cards";
 
             UsePower(gyrosaur);
             AssertIsInPlay(wreck);
@@ -96,7 +96,7 @@ namespace CauldronTests
             PlayCard("GyroStabilizer");
             Card chase = PutInHand("AMerryChase");
             Card escort = PutOnDeck("ProtectiveEscort");
-            DecisionSelectFunction = 1;
+            DecisionSelectWord = "1 crash card";
 
             UsePower(gyrosaur);
             AssertInHand(chase, escort);

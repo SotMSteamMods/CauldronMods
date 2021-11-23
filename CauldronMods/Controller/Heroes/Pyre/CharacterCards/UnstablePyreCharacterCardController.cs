@@ -15,10 +15,12 @@ namespace Cauldron.Pyre
         }
         public override IEnumerator UsePower(int index = 0)
         {
+
             int numCards = GetPowerNumeral(0, 1);
             //"{PyreIrradiate} 1 non-{PyreIrradiate} card in a player's hand until it leaves their hand."
             var viableHeroes = GameController.AllHeroes.Where(htt => GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource()) && htt.Hand.Cards.Any(c => !IsIrradiated(c))).Select(htt => htt as TurnTaker);
-            var decision = new SelectTurnTakerDecision(GameController, DecisionMaker, viableHeroes, SelectionType.CardFromHand, cardSource: GetCardSource());
+            var decision = new SelectTurnTakerDecision(GameController, DecisionMaker, viableHeroes, SelectionType.Custom, cardSource: GetCardSource());
+            CurrentMode = CustomMode.PlayerToIrradiate;
             IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(decision, tt => SelectAndIrradiateCardsInHand(DecisionMaker, tt, numCards, numCards));
             if (UseUnityCoroutines)
             {
@@ -28,6 +30,22 @@ namespace Cauldron.Pyre
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+
+            //example yes-no decision to show it with the same CustomDecisionText
+            /*
+            CurrentMode = CustomMode.PlayerToIrradiate;
+            var testDecision = new YesNoCardDecision(GameController, DecisionMaker, SelectionType.Custom, Card, cardSource: GetCardSource());
+            coroutine = GameController.MakeDecisionAction(testDecision);
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+            */
+
             // Play an equipment card. 
             var equipmentCriteria = new LinqCardCriteria((Card c) => IsEquipment(c), "equipment");
             coroutine = GameController.SelectAndPlayCardFromHand(DecisionMaker, false, cardCriteria: equipmentCriteria, cardSource: GetCardSource());

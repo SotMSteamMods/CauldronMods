@@ -300,14 +300,11 @@ namespace CauldronTests
         {
             SetupGameController("KaargraWarfang", "Cauldron.Quicksilver", "Legacy", "Ra", "Megalopolis");
             StartGame();
+            DestroyNonCharacterVillainCards();
 
             var heroFavor = FindTokenPool("CrowdsFavor", "HeroFavorPool");
-            Card dymkharn = GetCard("DymkharnTheFearless");
-            if(!dymkharn.IsInPlay)
-            {
-                PlayCard(dymkharn);
-            }
-
+            Card dymkharn = PlayCard("DymkharnTheFearless");
+            
             QuickTokenPoolStorage(heroFavor);
             QuickHPStorage(dymkharn);
             DecisionSelectTarget = dymkharn;

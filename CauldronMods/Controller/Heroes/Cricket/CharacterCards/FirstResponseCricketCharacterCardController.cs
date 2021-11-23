@@ -79,16 +79,21 @@ namespace Cauldron.Cricket
                         {
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
-                        if (selectedTarget.Any())
+
+                        if (selectedTarget != null && selectedTarget.Any())
                         {
-                            coroutine = base.GameController.GainHP(selectedTarget.FirstOrDefault().SelectedCard, 2, cardSource: base.GetCardSource());
-                            if (base.UseUnityCoroutines)
+                            SelectTargetDecision selectedTargetDecision = selectedTarget.FirstOrDefault();
+                            if(selectedTargetDecision != null && selectedTargetDecision.SelectedCard != null)
                             {
-                                yield return base.GameController.StartCoroutine(coroutine);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(coroutine);
+                                coroutine = base.GameController.GainHP(selectedTarget.FirstOrDefault().SelectedCard, 2, cardSource: base.GetCardSource());
+                                if (base.UseUnityCoroutines)
+                                {
+                                    yield return base.GameController.StartCoroutine(coroutine);
+                                }
+                                else
+                                {
+                                    base.GameController.ExhaustCoroutine(coroutine);
+                                }
                             }
                         }
                         break;

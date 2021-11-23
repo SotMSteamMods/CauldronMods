@@ -516,7 +516,7 @@
             "title": "Starlight",
             "promoTitle": "Starlight of Terra",
             "shortPromoTitle": "Terra",
-            "body": "Radiance",
+            "body": "Starfarer",
             "backgroundColor": "FBF8F9",
             "foilBackgroundColor": "FEFEFE",
             "hitpointColor": "C94742",
@@ -608,7 +608,7 @@
             "flippedTitle": "Incapacitated",
             "incapacitatedAbilities": [
                 "One player may play a card now.",
-                "One play may use a power now.",
+                "One player may use a power now.",
                 "The next time a hero target deals damage, choose the type of that damage."
             ],
             "flippedIcons": [

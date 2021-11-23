@@ -215,6 +215,10 @@ namespace Cauldron.TheMistressOfFate
                 //[...remove] the top {H - 1} cards of the villain deck from the game without looking at them."
                 for (int i = 0; i < H - 1; i++)
                 {
+                    if(TurnTaker.Deck.IsEmpty)
+                    {
+                        break;
+                    }
                     var topCard = TurnTaker.Deck.TopCard;
                     coroutine = GameController.FlipCard(FindCardController(topCard), cardSource: GetCardSource());
                     if (UseUnityCoroutines)

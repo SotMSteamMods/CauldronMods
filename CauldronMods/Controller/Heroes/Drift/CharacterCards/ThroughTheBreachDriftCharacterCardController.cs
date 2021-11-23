@@ -258,8 +258,13 @@ namespace Cauldron.Drift
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
 
+                        if(!DidSelectCard(selectedHero))
+                        {
+                            yield break;
+                        }
+
                         //First Hero
-                        coroutine = base.SelectHeroToUsePowerAndModifyIfDealsDamage(base.HeroTurnTakerController, (Func<DealDamageAction, bool> c) => base.AddReduceDamageTrigger((Card card) => true, 1), -1, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt == selectedHero.FirstOrDefault().SelectedCard.Owner));
+                        coroutine = base.SelectHeroToUsePowerAndModifyIfDealsDamage(base.HeroTurnTakerController, (Func<DealDamageAction, bool> c) => base.AddReduceDamageTrigger((Card card) => true, 1), -1, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt == GetSelectedCard(selectedHero).Owner));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -270,7 +275,7 @@ namespace Cauldron.Drift
                         }
 
                         //Second Hero
-                        coroutine = base.SelectHeroToUsePowerAndModifyIfDealsDamage(base.HeroTurnTakerController, (Func<DealDamageAction, bool> c) => base.AddReduceDamageTrigger((Card card) => true, 1), -1, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt != selectedHero.FirstOrDefault().SelectedCard.Owner));
+                        coroutine = base.SelectHeroToUsePowerAndModifyIfDealsDamage(base.HeroTurnTakerController, (Func<DealDamageAction, bool> c) => base.AddReduceDamageTrigger((Card card) => true, 1), -1, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt != GetSelectedCard(selectedHero).Owner));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -295,7 +300,12 @@ namespace Cauldron.Drift
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
 
-                        Card selectedCard = cardDecision.FirstOrDefault().SelectedCard;
+                        if(!DidSelectCard(cardDecision))
+                        {
+                            yield break;
+                        }
+
+                        Card selectedCard = GetSelectedCard(cardDecision);
                         coroutine = base.GameController.MoveCard(base.TurnTakerController, selectedCard, selectedCard.NativeDeck, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {

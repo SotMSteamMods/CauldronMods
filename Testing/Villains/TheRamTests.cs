@@ -466,11 +466,10 @@ namespace CauldronTests
             SetHitPoints(mainstay, 1);
             AssertNextMessages("The Sentinels was pulled Up Close!", MessageTerminator);
 
-            GoToStartOfTurn(legacy);
-
+            GoToEndOfTurn(ram);
             AssertNumberOfCardsInPlay(ram, 3);
             Assert.IsTrue(IsUpClose(sentinels));
-            AssertUsablePower(sentinels, mainstay);
+            AssertNotUsablePower(sentinels, mainstay);
             CheckFinalMessage();
         }
         [Test]

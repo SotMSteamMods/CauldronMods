@@ -538,6 +538,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestInsubstantialMatador_Sentinels()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "TheSentinels", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyWall();
+            PutOnDeck("AroundTheCorner");
+            var mat = PutOnDeck("InsubstantialMatador");
+
+            //At the end of each hero's turn, if that hero dealt {PhaseVillain} no damage, that hero deals themselves 1 irreducible melee damage.
+            GoToStartOfTurn(sentinels);
+            DecisionSelectCards = new Card[] { mainstay };
+            QuickHPStorage(writhe, mainstay, medico, idealist);
+            GoToEndOfTurn(sentinels);
+            QuickHPCheck(0,-1,0,0);
+        }
+
+        [Test()]
         public void TestNowhereToGoButDown()
         {
             SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");

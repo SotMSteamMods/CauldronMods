@@ -73,7 +73,7 @@ namespace Cauldron.Gray
             //If flipping from front to back then destroy 1 environment after flipping
             if (base.Card.IsFlipped && FindNumberOfEnvironmentInPlay() > 0)
             {
-                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment), false);
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment), false, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

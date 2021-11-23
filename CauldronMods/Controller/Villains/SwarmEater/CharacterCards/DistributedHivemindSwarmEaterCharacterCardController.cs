@@ -47,7 +47,7 @@ namespace Cauldron.SwarmEater
             if (!base.Card.IsFlipped)
             {
                 //Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP.
-                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsVillainTarget && action.Target.IsVillainTarget, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before));
+                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsVillainTarget && action.Target.IsVillainTarget && action.DamageSource.Card != action.Target, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before));
                 //When a villain target enters play, flip {SwarmEater}'s villain character cards.
                 //When {SwarmEater} flips to [Back] side, discard cards from the top of the villain deck until a target is discarded.
                 //Put the discarded target beneath the villain target that just entered play. Then flip {SwarmEater}'s character cards.
