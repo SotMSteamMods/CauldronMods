@@ -23,8 +23,22 @@ namespace Cauldron.ScreaMachine
             // This failed becuse those conditions for those is tied to GameContoller.AllowInhibitors and that prop
             // is never true, it's only set to true during certain trigger resolution.
             // AskIfActionCanBePerformed is the answer.
+            
 
             IEnumerator coroutine;
+
+            if (TurnTaker.Deck.Cards.Count() == 0)
+            {
+                coroutine = GameController.ShuffleTrashIntoDeck(TurnTakerController, necessaryToPlayCard: true, cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
             //stolen message action from PlayTopCard
             var cardToPlay = TurnTaker.Deck.TopCard;
             var cc = FindCardController(cardToPlay);
