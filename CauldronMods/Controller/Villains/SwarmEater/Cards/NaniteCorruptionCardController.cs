@@ -24,7 +24,7 @@ namespace Cauldron.SwarmEater
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //{SwarmEater} deals the {H} targets other than itself with the lowest HP 2 projectile damage each.
-            coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsTarget && c != base.CharacterCard, (Card c) => 2, DamageType.Melee, numberOfTargets: Game.H);
+            coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsTarget && c != base.CharacterCard, (Card c) => 2, DamageType.Projectile, numberOfTargets: Game.H);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
