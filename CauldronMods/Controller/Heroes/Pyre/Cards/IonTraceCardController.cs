@@ -18,7 +18,7 @@ namespace Cauldron.Pyre
         public override IEnumerator Play()
         {
             //"Two players may each select a non-{PyreIrradiate} card in their hand and move a card that shares a keyword with it from their trash to their hand. {PyreIrradiate} any cards selected or moved this way until they leave their hands.",
-            var selectHeroes = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.ToHero().Hand.Cards.Any((card) => !IsIrradiated(card))), SelectionType.CardFromHand, 2, false, 2, cardSource: GetCardSource());
+            var selectHeroes = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.ToHero().Hand.Cards.Any((card) => !IsIrradiated(card))), SelectionType.ReturnToHand, 2, false, 2, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(selectHeroes, RescueAndIrradiateCards, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {

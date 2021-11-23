@@ -107,7 +107,8 @@ namespace Cauldron.Pyre
         {
             int numCardsInHand = GetPowerNumeral(0, 1);
             //"Each player selects 1 non-{PyreIrradiate} card in their hand. {PyreIrradiate} those cards until they leave their hands."
-            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.CardFromHand, tt => SelectAndIrradiateCardInHand(tt, numCardsInHand), allowAutoDecide: true, cardSource: GetCardSource());
+            CurrentMode = CustomMode.PlayerToIrradiate;
+            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.Custom, tt => SelectAndIrradiateCardInHand(tt, numCardsInHand), allowAutoDecide: true, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
