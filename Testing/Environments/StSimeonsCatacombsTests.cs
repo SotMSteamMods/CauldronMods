@@ -1215,6 +1215,34 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestLabyrinthGuideEnvironmentTurn_TwistingPassagesNotInPlay_NoAvailableHeroes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "Cauldron.StSimeonsCatacombs", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card catacomb = GetCardInPlay("StSimeonsCatacombs");
+
+            Card playedRoom;
+
+            GoToEndOfTurn(envTwo);
+            playedRoom = FindCard((Card c) => c.IsRoom && envTwo.TurnTaker.PlayArea.Cards.Contains(c));
+
+            //make sure it is not twisting passages in play
+            if (playedRoom.Identifier == "TwistingPassages")
+            {
+                DestroyCard(playedRoom, ra.CharacterCard);
+            }
+
+            GoToEndOfTurn(scionTwo);
+            Card guide = PlayCard("LabyrinthGuide");
+            QuickHPStorage(ra, legacy, haka, tachyon, luminary);
+            GoToStartOfTurn(envTwo);
+            QuickHPCheckZero();
+            AssertInTrash(envTwo, guide);
+        }
+
+        [Test()]
         public void TestLabyrinthGuideEnvironmentTurn_TwistingPassagesNotInPlay_DontTakeDamage()
         {
 

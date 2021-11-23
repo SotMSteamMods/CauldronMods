@@ -38,43 +38,59 @@ namespace Cauldron.StSimeonsCatacombs
             //if Twisting Passages is not in play
             if (!this.IsTwistingPassagesInPlay())
             {
-                List<bool> storedResults = new List<bool>();
-                IEnumerator coroutine = base.MakeUnanimousDecision((HeroTurnTakerController hero) => !hero.IsIncapacitatedOrOutOfGame, SelectionType.DealDamage, storedResults: storedResults);
+                bool availableHeroes = FindActiveHeroTurnTakerControllers().Any(httc => GameController.IsTurnTakerVisibleToCardSource(httc.TurnTaker, GetCardSource()));
+                if (availableHeroes)
+                {
+                    List<bool> storedResults = new List<bool>();
+                    IEnumerator coroutine = base.MakeUnanimousDecision((HeroTurnTakerController hero) => !hero.IsIncapacitatedOrOutOfGame, SelectionType.DealDamage, storedResults: storedResults);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                    if (storedResults.Count<bool>() > 0 && storedResults.First<bool>())
+                    {
+                        // this card deals each hero target 1 psychic damage .
+                        IEnumerator coroutine2 = base.DealDamage(base.Card, (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Psychic);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine2);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine2);
+                        }
+
+                        yield break;
+
+                    }
+                } else
+                {
+                    IEnumerator coroutine = GameController.SendMessageAction($"There are no heroes who can be damaged by {Card.Title}", Priority.Medium, GetCardSource(), showCardSource: true);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+
+                //or it is destroyed
+                IEnumerator coroutine3 = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    yield return base.GameController.StartCoroutine(coroutine3);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    base.GameController.ExhaustCoroutine(coroutine3);
                 }
-                if (storedResults.Count<bool>() > 0 && storedResults.First<bool>())
-                {
-                    // this card deals each hero target 1 psychic damage .
-                    IEnumerator coroutine2 = base.DealDamage(base.Card, (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Psychic);
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine2);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine2);
-                    }
-
-                }
-                else
-                {
-                    //or it is destroyed
-                    IEnumerator coroutine3 = base.GameController.DestroyCard(this.DecisionMaker, base.Card, cardSource: base.GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine3);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine3);
-                    }
-                }
+                
             }
             yield break;
         }
