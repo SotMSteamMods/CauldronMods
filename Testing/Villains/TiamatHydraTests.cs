@@ -409,6 +409,40 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestAcidBreathNoDamageIfNoActiveHeads()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "AbsoluteZero", "Ra", "Haka", "TheBlock");
+            StartGame();
+            GoToPlayCardPhase(tiamat);
+
+            SetupIncap(haka, storm);
+            SetupIncap(haka, winter);
+            SetupIncap(haka, inferno);
+
+            PlayCards(new Card[] {
+                //2 Hero Equipment
+                GetCard("CryoChamber"),
+                GetCard("FocusedApertures"),
+                //3 Hero Ongoing
+                GetCard("ColdSnap"),
+                GetCard("CoolantBlast"),
+                GetCard("GlacialStructure"),
+                //1 Villain Ongoing
+                GetCard("AncientWard"),
+                //1 Environment
+                GetCard("BlockGuard")
+            });
+
+            //Heroes that don't destroy a card get H damage
+            QuickHPStorage(ra.CharacterCard, haka.CharacterCard, az.CharacterCard);
+
+            PlayCard(GetCard("AcidBreath"));
+
+            // No one damaged, because no head to deal the damage
+            QuickHPCheck(0, 0, 0);
+        }
+
+        [Test()]
         public void TestAlteration()
         {
             SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
@@ -1134,6 +1168,32 @@ namespace CauldronTests
             AssertInPlayArea(tiamat, ward);
         }
 
+        [Test]
+        public void TestHeadlingMagicNoActiveHeads()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(haka, winter);
+            SetupIncap(haka, storm);
+            SetupIncap(haka, inferno);
+
+            //Setup top of deck
+            Card ward = GetCard("AncientWard");
+            PutOnDeck(tiamat, ward);
+
+            Card magic = GetCard("HealingMagic");
+
+            //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
+            PlayCard(tiamat, magic);
+
+            //The top card of the villain deck is played
+            AssertInPlayArea(tiamat, ward);
+
+            //No active heads, so no heads healed
+            AssertNumberOfCardsAtLocation(tiamat.TurnTaker.PlayArea, 0, (Card c) => c.IsTarget);
+        }
+
         [Test()]
         public void TestManaChargeDiscard()
         {
@@ -1232,6 +1292,27 @@ namespace CauldronTests
             AddCannotDealNextDamageTrigger(tiamat, inferno);
             PlayCard(tiamat, "SkyBreaker");
             QuickHPCheck(0, -5, -5, -5);
+        }
+
+        [Test]
+        public void TestSkyBreakerNoActiveHeads()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            SetupIncap(haka, winter);
+            SetupIncap(haka, storm);
+            SetupIncap(haka, inferno);
+
+            Card skyBreaker = GetCard("SkyBreaker");
+
+            QuickHPStorage(legacy, bunker, haka);
+
+            //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
+            PlayCard(tiamat, skyBreaker);
+
+            //No active heads, so no heads deal damage
+            QuickHPCheck(0, 0, 0);
         }
 
         [Test()]
@@ -1672,7 +1753,7 @@ namespace CauldronTests
             AssertNotGameOver();
         }
 
-       
+
 
         [Test()]
         public void TestReloadNotLosingInformation()
@@ -1747,7 +1828,7 @@ namespace CauldronTests
             AssertIsInPlay(frenzy);
             QuickHPCheck(-1,-1,-3);
 
-         }  
+         }
         [Test()]
         public void TestHydraTiamatHeadsRemovedFromGame()
         {
