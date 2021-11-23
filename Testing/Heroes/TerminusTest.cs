@@ -1163,16 +1163,42 @@ namespace CauldronTests
             PutOnDeck(baron, FindCardsWhere((card) => card.Identifier == "MobileDefensePlatform" && card.IsInTrash));
             QuickTokenPoolStorage(tokenPool);
 
+
+
             DecisionSelectLocations = new LocationChoice[] { new LocationChoice(baron.TurnTaker.Trash), new LocationChoice(baron.TurnTaker.Trash) };
             QuickHPStorage(baron, terminus, legacy, bunker, scholar);
             noRestForTheWicked = PlayCard("NoRestForTheWicked");
             QuickHPCheck(-5, -5, 0, 0, 0);
             QuickTokenPoolCheck(0);
             AssertHitPoints(elementalRedistributor, 5);
-
             noRestForTheWicked = PlayCard("NoRestForTheWicked");
             QuickHPCheck(0, 0, 0, 0, 0);
             QuickTokenPoolCheck(5);
+        }
+
+        [Test]
+        public void TestNoRestForTheWicked_MazeOfMirrors()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Luminary", "Unity", "MMFFCC");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card elementalRedistributor = PutInTrash("ElementalRedistributor");
+
+            Card raptorBot = PutInTrash("RaptorBot");
+            Card platformBot = PutInTrash("PlatformBot");
+            Card backlashGenerator = PutInTrash("BacklashGenerator");
+            Card sabreBattleDrone = PutInTrash("SabreBattleDrone");
+
+            Card mazeOfMirrors = PlayCard("MazeOfMirrors");
+
+            DecisionSelectLocations = new LocationChoice[] { new LocationChoice(unity.TurnTaker.Trash) };
+            DecisionSelectCards = new Card[] { raptorBot, null };
+            Card noRestForTheWicked = PlayCard("NoRestForTheWicked");
+            AssertInPlayArea(unity, raptorBot);
+            AssertInTrash(baron, elementalRedistributor);
+            AssertInTrash(unity, platformBot);
+            AssertInTrash(luminary, backlashGenerator);
+            AssertInTrash(luminary, sabreBattleDrone);
 
         }
 
