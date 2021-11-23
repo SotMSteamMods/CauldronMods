@@ -32,11 +32,20 @@ namespace Cauldron.Tiamat
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            Card lowestHPHead = storedResults.FirstOrDefault().SelectedCard;
+            Card lowestHPHead = storedResults.FirstOrDefault()?.SelectedCard;
 
             //The Head with the lowest HP regains {H} + X HP, where X is the number of Healing Magic cards in the villain trash.
             Func<int> X = () => PlusNumberOfThisCardInTrash(base.H);
-            coroutine = base.GameController.GainHP(lowestHPHead, PlusNumberOfThisCardInTrash(base.H), X, cardSource: GetCardSource());
+
+            if (lowestHPHead == null)
+            {
+                coroutine = base.GameController.SendMessageAction("There are no active heads to regain HP.", Priority.Medium, base.GetCardSource(), showCardSource: true);
+            }
+            else
+            {
+                coroutine = base.GameController.GainHP(lowestHPHead, PlusNumberOfThisCardInTrash(base.H), X, cardSource: GetCardSource());
+            }
+
             //Play the top card of the villain deck.
             IEnumerator coroutine2 = base.GameController.PlayTopCard(this.DecisionMaker, base.TurnTakerController, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
