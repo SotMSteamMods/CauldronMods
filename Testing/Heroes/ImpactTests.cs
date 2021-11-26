@@ -580,6 +580,29 @@ namespace CauldronTests
             QuickHPCheck(-5);
         }
 
+        [Test]
+        public void TestLocalMicrogravityPreventionAndGravityFluctuation()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact",  "Bunker", "TheVisionary", "Cauldron.NightloreCitadel");
+            StartGame();
+
+            GoToStartOfTurn(visionary);
+            PlayCard("LocalMicrogravity");
+
+            DiscardAllCards(bunker);
+            DiscardAllCards(visionary);
+
+            DrawCard(impact, 4);
+
+            QuickHPStorage(impact);
+            Card gravityFluctuation = PlayCard("GravityFluctuation");
+            QuickHPCheck(-2);
+
+            GoToPlayCardPhase(env);
+            QuickHPUpdate();
+            PlayCard(gravityFluctuation);
+            QuickHPCheckZero();
+        }
 
         [Test]
         public void TestLocalMicrogravityCricketInteraction()
