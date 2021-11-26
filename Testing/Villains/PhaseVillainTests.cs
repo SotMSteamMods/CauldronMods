@@ -506,6 +506,34 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestFrequencyShift_Redirected()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Bunker", "Legacy", "Megalopolis");
+            StartGame();
+
+            Card ring = PlayCard("TheLegacyRing");
+            Card nextEvolution = PlayCard("NextEvolution");
+            Card leadFromTheFront = PlayCard("LeadFromTheFront");
+            Card punish = PlayCard("PunishTheWeak");
+            Card dominion = PlayCard("Dominion");
+            Card moko = PlayCard("TaMoko");
+            Card mere = PlayCard("Mere");
+
+            SetHitPoints(legacy.CharacterCard, 15);
+            SetHitPoints(bunker.CharacterCard, 20);
+            SetHitPoints(haka.CharacterCard, 28);
+
+            //{PhaseVillain} deals the hero target with the highest HP {H} irreducible radiant damage and destroys 1 ongoing and 1 equipment card belonging to that hero.
+            DecisionsYesNo = new bool[] { true };
+            DecisionSelectCards = new Card[] { punish, mere };
+            QuickHPStorage(legacy, haka);
+            PlayCard("FrequencyShift");
+            QuickHPCheck(-3, -0);
+            AssertInTrash(new Card[] { mere, punish });
+            AssertIsInPlay(new Card[] { ring, nextEvolution, leadFromTheFront, dominion, moko });
+        }
+
+        [Test()]
         public void TestInsubstantialMatador()
         {
             SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
