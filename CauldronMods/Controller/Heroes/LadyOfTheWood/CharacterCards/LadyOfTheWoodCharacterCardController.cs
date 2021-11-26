@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.LadyOfTheWood
 {
-	public class LadyOfTheWoodCharacterCardController : HeroCharacterCardController
+	public class LadyOfTheWoodCharacterCardController : LadyOfTheWoodUtilityCharacterCardController
 	{
 		public LadyOfTheWoodCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
 		{
