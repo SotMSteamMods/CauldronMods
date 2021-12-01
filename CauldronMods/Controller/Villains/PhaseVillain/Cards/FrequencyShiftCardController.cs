@@ -45,7 +45,7 @@ namespace Cauldron.PhaseVillain
             var result = targetedHero.FirstOrDefault();
             if (result != null)
             {
-                TurnTaker targetTurnTaker = result.Target.Owner;
+                TurnTaker targetTurnTaker = result.OriginalTarget.Owner;
                 //...destroys 1 ongoing...
                 coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == targetTurnTaker, "ongoing"), false, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
