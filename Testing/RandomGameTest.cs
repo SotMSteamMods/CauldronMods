@@ -23,7 +23,7 @@ namespace CauldronTests.Random
         protected IEnumerable<string> PreferredCardsToPlay = null;
 
         protected GameController SetupRandomGameController(bool reasonable, IEnumerable<string> availableHeroes = null, IEnumerable<string> availableVillains = null, IEnumerable<string> availableEnvironments = null,
-            string useEnvironment = null, List<string> useHeroes = null, string useVillain = null)
+            string useEnvironment = null, List<string> useHeroes = null, string useVillain = null, int? seed = null)
         {
             string environment = useEnvironment;
             var heroes = new List<string>();
@@ -131,7 +131,7 @@ namespace CauldronTests.Random
 
             List<string> identifiers = MakeGameIdentifiers(villain, heroes, environment);
 
-            var seed = GetRandomNumber();
+            seed = seed ?? GetRandomNumber();
             var gc = SetupGameController(identifiers, advanced, promoIdentifiers, randomSeed: seed);
             this.seededRng = gc.Game.RNG;
 
@@ -149,7 +149,7 @@ namespace CauldronTests.Random
         }
 
         protected GameController SetupRandomOblivAeonGameController(bool reasonable, IEnumerable<string> availableHeroes = null, IEnumerable<string> availableEnvironments = null,
-        List<string> useEnvironments = null, List<string> useHeroes = null, string shieldIdentifier = null, IEnumerable<string> scionIdentifiers = null)
+        List<string> useEnvironments = null, List<string> useHeroes = null, string shieldIdentifier = null, IEnumerable<string> scionIdentifiers = null, int? seed = null)
         {
             var heroes = new List<string>();
             var environments = new List<string>();
@@ -237,7 +237,7 @@ namespace CauldronTests.Random
 
             List<string> identifiers = MakeGameIdentifiers(villain, heroes, environments);
 
-            var seed = GetRandomNumber();
+            seed = seed ?? GetRandomNumber();
             var gc = SetupGameController(identifiers, advanced, promoIdentifiers, randomSeed: seed, shieldIdentifier: shieldIdentifier, scionIdentifiers: scionIdentifiers);
             this.seededRng = gc.Game.RNG;
 
