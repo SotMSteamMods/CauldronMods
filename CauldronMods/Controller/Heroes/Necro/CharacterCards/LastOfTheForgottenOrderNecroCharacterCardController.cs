@@ -126,7 +126,7 @@ namespace Cauldron.Necro
                             yield break;
                         }
 
-                        coroutine3 = Play2RandomCardsFromHand(tt);
+                        coroutine3 = PlayNumberOfRandomCardsFromHand(tt, 2);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine3);
@@ -143,7 +143,7 @@ namespace Cauldron.Necro
             yield break;
         }
 
-        private IEnumerator Play2RandomCardsFromHand(TurnTaker tt)
+        private IEnumerator PlayNumberOfRandomCardsFromHand(TurnTaker tt, int numCardsToPlay)
         {
             HeroTurnTaker htt = tt.ToHero();
             TurnTakerController ttc = FindTurnTakerController(tt);
@@ -152,7 +152,7 @@ namespace Cauldron.Necro
             int cardToPlayIndex;
             Card cardToPlay;
             IEnumerable<Card> playableCards;
-            for(int i=0; i < 2; i++)
+            for(int i=0; i < numCardsToPlay; i++)
             {
                 playableCards = htt.Hand.Cards.Where(c => FindCardController(c).CanBePlayedNow);
                 if (playableCards.Count() == 0)
