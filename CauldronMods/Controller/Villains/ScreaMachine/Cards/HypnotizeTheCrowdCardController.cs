@@ -25,10 +25,10 @@ namespace Cauldron.ScreaMachine
         protected override IEnumerator ActivateBandAbility()
         {
             List<SelectTargetDecision> result = new List<SelectTargetDecision>();
-            var env = GameController.FindCardsWhere(new LinqCardCriteria(c => c.IsEnvironmentTarget && c.IsInPlayAndNotUnderCard, "environment target", false), visibleToCard: GetCardSource());
+            var env = GameController.FindCardsWhere(new LinqCardCriteria(c => c.IsEnvironment && c.IsInPlayAndHasGameText, "environment"), visibleToCard: GetCardSource());
             var coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, env, result,
                                 allowAutoDecide: true,
-                                additionalCriteria: c => c.IsEnvironmentTarget,
+                                additionalCriteria: c => c.IsEnvironment,
                                 damageAmount: c => 3,
                                 damageType: DamageType.Melee,
                                 selectionType: SelectionType.CardToDealDamage,
