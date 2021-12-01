@@ -14,21 +14,6 @@ namespace Cauldron.Drift
 
         }
 
-        public override IEnumerator AfterFlipCardImmediateResponse()
-        {
-            IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, base.GetShiftTrack(), base.TurnTaker.OutOfGame, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield return base.AfterFlipCardImmediateResponse();
-            yield break;
-        }
-
         protected override bool shouldRunSetUp => false;
 
     }
