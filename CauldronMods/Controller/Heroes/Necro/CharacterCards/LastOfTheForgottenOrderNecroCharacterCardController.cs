@@ -14,6 +14,14 @@ namespace Cauldron.Necro
         {
         }
 
+        private enum CustomMode
+        {
+            SelectTurnTakerDecision,
+            YesNoDecision
+        }
+
+        private CustomMode customMode { get; set; }
+
         public override IEnumerator UsePower(int index = 0)
         {
             //PowerNumerals Required on powers
@@ -85,7 +93,8 @@ namespace Cauldron.Necro
                     {
                         //One player may play 2 random cards from their hand now.
                         List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                        IEnumerator coroutine3 = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.PutIntoPlay, false, false, storedResults, cardSource: GetCardSource());
+                        customMode = CustomMode.SelectTurnTakerDecision;
+                        IEnumerator coroutine3 = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.Custom, false, false, storedResults, heroCriteria: new LinqTurnTakerCriteria(turnTaker => turnTaker.IsHero && turnTaker.ToHero().NumberOfCardsInHand > 0), cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine3);
@@ -94,38 +103,88 @@ namespace Cauldron.Necro
                         {
                             base.GameController.ExhaustCoroutine(coroutine3);
                         }
-                        if (DidSelectTurnTaker(storedResults))
+                        if (!DidSelectTurnTaker(storedResults))
                         {
-                            TurnTaker tt = GetSelectedTurnTaker(storedResults);
-                            HeroTurnTakerController httc = FindHeroTurnTakerController(tt.ToHero());
-                            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
-                            coroutine3 = GameController.MakeYesNoCardDecision(httc, SelectionType.PlayCard, base.Card, storedResults: storedYesNoResults, cardSource: GetCardSource());
-                            if (base.UseUnityCoroutines)
-                            {
-                                yield return base.GameController.StartCoroutine(coroutine3);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(coroutine3);
-                            }
-                            if (DidPlayerAnswerYes(storedYesNoResults))
-                            {
-
-                                coroutine3 = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, tt.ToHero().Hand, true, false, false, new LinqCardCriteria((Card c) => true), 2, shuffleBeforehand: true);
-                                if (base.UseUnityCoroutines)
-                                {
-                                    yield return base.GameController.StartCoroutine(coroutine3);
-                                }
-                                else
-                                {
-                                    base.GameController.ExhaustCoroutine(coroutine3);
-                                }
-                            }
+                            yield break;
                         }
+
+                        TurnTaker tt = GetSelectedTurnTaker(storedResults);
+                        HeroTurnTakerController httc = FindHeroTurnTakerController(tt.ToHero());
+                        List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+                        customMode = CustomMode.YesNoDecision;
+                        coroutine3 = GameController.MakeYesNoCardDecision(httc, SelectionType.Custom, base.Card, storedResults: storedYesNoResults, cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine3);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine3);
+                        }
+                        if (!DidPlayerAnswerYes(storedYesNoResults))
+                        {
+                            yield break;
+                        }
+
+                        coroutine3 = Play2RandomCardsFromHand(tt);
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine3);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine3);
+                        }
+                        
+                        
                         break;
                     }
             }
             yield break;
+        }
+
+        private IEnumerator Play2RandomCardsFromHand(TurnTaker tt)
+        {
+            HeroTurnTaker htt = tt.ToHero();
+            TurnTakerController ttc = FindTurnTakerController(tt);
+            CardSource cardSource = GetCardSource();
+            IEnumerator coroutine;
+            int cardToPlayIndex;
+            Card cardToPlay;
+            IEnumerable<Card> playableCards;
+            for(int i=0; i < 2; i++)
+            {
+                playableCards = htt.Hand.Cards.Where(c => FindCardController(c).CanBePlayedNow);
+                if (playableCards.Count() == 0)
+                {
+                    string moreWord = i > 0 ? "more " : "";
+                    coroutine = GameController.SendMessageAction($"{tt.Name} has no {moreWord} cards that can be played!", Priority.Medium, cardSource, showCardSource: true);
+                    yield break;
+                }
+
+                cardToPlayIndex = Game.RNG.Next(0, playableCards.Count());
+                cardToPlay = playableCards.ElementAt(cardToPlayIndex);
+
+                coroutine = GameController.SendMessageAction($"{TurnTaker.NameRespectingVariant} forces {tt.Name} to play {cardToPlay.Title}!", Priority.Medium, cardSource, showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                coroutine = GameController.PlayCard(ttc, cardToPlay, cardSource: cardSource);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            
         }
 
         public IEnumerator DealDamageAndDrawResponse(DestroyCardAction dca, HeroTurnTaker htt, WhenCardIsDestroyedStatusEffect effect, int[] powerNumerals = null)
@@ -192,6 +251,24 @@ namespace Cauldron.Necro
 
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            if(customMode == CustomMode.SelectTurnTakerDecision)
+            {
+                return new CustomDecisionText("Select a player to play 2 random cards from their hand.", "They are selecting a player to play 2 random cards from their hand.", "Vote for a player to play 2 random cards from their hand.", "play 2 random cards from hand");
+
+            }
+
+            if (customMode == CustomMode.YesNoDecision)
+            {
+                return new CustomDecisionText("Do you want to play 2 random cards from your hand?", "Should they play 2 random cards from their hand?", "Vote for if they should play 2 random cards from their hand?", "play 2 random cards from their hand");
+            }
+
+            return base.GetCustomDecisionText(decision);
+
+
         }
     }
 }
