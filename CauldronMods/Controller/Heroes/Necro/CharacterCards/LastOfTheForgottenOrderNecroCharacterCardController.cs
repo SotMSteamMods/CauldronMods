@@ -154,7 +154,7 @@ namespace Cauldron.Necro
             IEnumerable<Card> playableCards;
             for(int i=0; i < numCardsToPlay; i++)
             {
-                playableCards = htt.Hand.Cards.Where(c => FindCardController(c).CanBePlayedNow);
+                playableCards = htt.Hand.Cards;
                 if (playableCards.Count() == 0)
                 {
                     string moreWord = i > 0 ? "more " : "";
