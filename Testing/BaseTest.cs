@@ -990,6 +990,24 @@ namespace Handelabra.Sentinels.UnitTest
                     var source = yesNo.CardSource != null ? yesNo.CardSource.Card.Title : "GameController";
                     var who = yesNo.HeroTurnTakerController != null ? yesNo.HeroTurnTakerController.Name : "Everyone";
                     Console.WriteLine("[" + source + "] " + who + ", Make a YesNoDecision of type " + yesNo.SelectionType);
+                    if(yesNo.SelectionType == SelectionType.Custom)
+                    {
+                        if (decision.CardSource != null && decision.CardSource.CardController != null)
+                        {
+                            CustomDecisionText customDecisionText = decision.CardSource.CardController.GetCustomDecisionText(decision);
+
+                            if (customDecisionText == null)
+                            {
+                                Log.Warning("Decision SelectionType is Custom but nothing was returned from GetCustomDecisionText!");
+                            }
+                            Console.WriteLine(customDecisionText.Strings[CustomDecisionText.Key.Question]);
+
+                        }
+                        else
+                        {
+                            Log.Warning("Decision SelectionType is Custom but a CardSource was not provided!");
+                        }
+                    }
                     if (this.DecisionsYesNo != null)
                     {
                         Assert.Greater(this.DecisionsYesNo.Count(), this.DecisionsYesNoIndex, "Not enough DecisionsYesNo were provided.");
@@ -1008,6 +1026,24 @@ namespace Handelabra.Sentinels.UnitTest
                     var source = yesNo.CardSource != null ? yesNo.CardSource.Card.Title : "GameController";
                     var who = yesNo.HeroTurnTakerController != null ? yesNo.HeroTurnTakerController.Name : "Everyone";
                     Console.WriteLine("[" + source + "] " + who + ", Make a YesNoCardDecision of type " + yesNo.SelectionType + " with card " + yesNo.Card.Title);
+                    if (yesNo.SelectionType == SelectionType.Custom)
+                    {
+                        if (decision.CardSource != null && decision.CardSource.CardController != null)
+                        {
+                            CustomDecisionText customDecisionText = decision.CardSource.CardController.GetCustomDecisionText(decision);
+
+                            if (customDecisionText == null)
+                            {
+                                Log.Warning("Decision SelectionType is Custom but nothing was returned from GetCustomDecisionText!");
+                            }
+                            Console.WriteLine(customDecisionText.Strings[CustomDecisionText.Key.Question]);
+
+                        }
+                        else
+                        {
+                            Log.Warning("Decision SelectionType is Custom but a CardSource was not provided!");
+                        }
+                    }
                     if (this.DecisionsYesNo != null)
                     {
                         Assert.Greater(this.DecisionsYesNo.Count(), this.DecisionsYesNoIndex, "Not enough DecisionsYesNo were provided.");
@@ -1481,7 +1517,24 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     SelectWordDecision selectWord = decision as SelectWordDecision;
                     Console.WriteLine("Make a SelectWordDecision: [" + selectWord.Choices.ToCommaList() + "]");
+                    if (selectWord.SelectionType == SelectionType.Custom)
+                    {
+                        if (decision.CardSource != null && decision.CardSource.CardController != null)
+                        {
+                            CustomDecisionText customDecisionText = decision.CardSource.CardController.GetCustomDecisionText(decision);
 
+                            if (customDecisionText == null)
+                            {
+                                Log.Warning("Decision SelectionType is Custom but nothing was returned from GetCustomDecisionText!");
+                            }
+                            Console.WriteLine(customDecisionText.Strings[CustomDecisionText.Key.Question]);
+
+                        }
+                        else
+                        {
+                            Log.Warning("Decision SelectionType is Custom but a CardSource was not provided!");
+                        }
+                    }
                     if (this.DecisionSelectWords != null)
                     {
                         var word = this.DecisionSelectWords[this.DecisionSelectWordsIndex];

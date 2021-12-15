@@ -66,62 +66,122 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { track, character };
             StartGame(false);
 
-            AssertIsInPlay(other.Identifier);
+            AssertIsInPlay(character.Identifier);
+            AssertOffToTheSide(other.Identifier);
         }
 
         [Test()]
         public void TestDriftCharacter_SwitchActiveHero()
         {
             SetupGameController(new string[] { "BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: new int?(-2054413546));
-            StartGame();
+            Card futureDrift = GetCard(FutureDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, futureDrift, baron.CharacterCard, null };
+            StartGame(resetDecisions: false);
 
             //Start with Future
             AssertIsInPlay(FutureDriftCharacter);
             GoToShiftPosition(2);
 
-            int position1 = 1;
+            int position1 = 2;
 
             PrintSeparator("Preparing to Shift Right");
 
             //Shift Right 1
+            DecisionSelectWords = new string[] { "Swap the active Drift, then Shift {ShiftR}", "Swap the active Drift, then Shift {ShiftR}" };
             DecisionSelectFunction = 1;
             PlayCard(DriftStep);
             AssertTrackPosition(3);
-            int position2 = CurrentShiftPosition();
-            PrintSeparator("Triggering Switch");
-            //Trigger switch with phase change
-            DecisionYesNo = true;
-            GoToEndOfTurn(baron);
 
-            PrintSeparator("Switch completed");
-            //Assert that other character and starting position are active
             AssertIsInPlay(PastDriftCharacter);
-            AssertTrackPosition(position1);
 
             PrintSeparator("Switching Back");
             //Switch back
-            GoToPlayCardPhase(drift);
+            GoToNextTurn();
+
+            Card pastDrift = GetCard(PastDriftCharacter);
+            DecisionYesNo = true;
+            DealDamage(baron, pastDrift, 2, DamageType.Radiant);
 
             PrintSeparator("Switch back successful");
             //Assert in secondary position
             AssertIsInPlay(FutureDriftCharacter);
-            AssertTrackPosition(position2);
+            AssertTrackPosition(position1);
         }
+
+
+        [Test()]
+        public void TestDriftCharacter_SwitchActiveHeroOffOfDamage()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: new int?(-2054413546));
+            Card futureDrift = GetCard(FutureDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, futureDrift };
+            StartGame(resetDecisions: false);
+
+            //Start with Future
+            AssertIsInPlay(FutureDriftCharacter);
+            GoToShiftPosition(2);
+
+            DecisionsYesNo = new bool[] { true, true };
+
+            DealDamage(baron, futureDrift, 3, DamageType.Melee);
+
+            PrintSpecialStringsForCard(GetShiftTrack());
+            
+        }
+
+        [Test()]
+        public void TestDriftCharacter_UIPrompts()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: new int?(-2054413546));
+            Card pastDrift = GetCard(PastDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, pastDrift };
+            StartGame(resetDecisions: false);
+
+            //Start with Past
+            AssertIsInPlay(PastDriftCharacter);
+
+            DecisionsYesNo = new bool[] {true, true};
+            DecisionSelectWords = new string[] {"Swap the active Drift, then Shift {ShiftR}", "Swap the active Drift, then Shift {ShiftR}" };
+
+            Card sabershard = PlayCard("Sabershard");
+            UsePower(sabershard);
+
+            Card futureDrift = GetCard(FutureDriftCharacter);
+
+            DealDamage(baron, futureDrift, 3, DamageType.Melee);
+
+            GoToShiftPosition(4);
+
+            GoToNextTurn();
+            DealDamage(baron, futureDrift, 3, DamageType.Melee);
+
+            AssertTrackPosition(2);
+
+            GoToNextTurn();
+            UsePower(sabershard);
+
+            AssertTrackPosition(4);
+        }
+
 
         [Test()]
         public void TestDriftCharacter_Dual_Past_InnatePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
-
-            //Switch to Past and Shift to far Right
-            DecisionYesNo = true;
-            DecisionSelectFunction = 1;
-            DecisionSelectNumber = 3;
-            PlayCard(BorrowedTime);
-
-            int shiftPosition = CurrentShiftPosition();
+            Card shiftTrack4 = GetCard("DualShiftTrack4");
+            Card pastDrift = GetCard(PastDriftCharacter);
             Card[] top2 = GetTopCardsOfDeck(drift, 2).ToArray();
+
+
+            DecisionSelectCards = new Card[] { shiftTrack4, pastDrift, top2[0] };
+
+            StartGame(resetDecisions: false);
+
+   
+            int shiftPosition = CurrentShiftPosition();
             DecisionMoveCardDestinations = new MoveCardDestination[]
             {
                 new MoveCardDestination(drift.TurnTaker.Trash),
@@ -140,11 +200,15 @@ namespace CauldronTests
         public void TestDriftCharacter_Dual_Future_InnatePower()
         {
             SetupGameController("BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            Card futureDrift = GetCard(FutureDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            Card fFocus = GetCard(FutureFocus);
 
-            Card fFocus = PutInHand(FutureFocus);
-            DecisionSelectCard = fFocus;
+            DecisionSelectCards = new Card[] { shiftTrack, futureDrift, fFocus };
+            StartGame(resetDecisions: false);
 
+
+            PutInHand(fFocus);
             //Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {DriftRR}.
             int shiftPosition = CurrentShiftPosition();
             UsePower(drift);
@@ -159,7 +223,10 @@ namespace CauldronTests
         public void TestDriftCharacter_Future_Incap0()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            Card futureDrift = GetCard(FutureDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, futureDrift };
+            StartGame(resetDecisions: false);
 
             DecisionYesNo = true;
             DestroyCard(drift);
@@ -175,7 +242,10 @@ namespace CauldronTests
         public void TestDriftCharacter_Future_Incap1()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            Card futureDrift = GetCard(FutureDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, futureDrift, apostate.CharacterCard };
+            StartGame(resetDecisions: false);
 
             DestroyCard(drift);
             //Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.
@@ -205,7 +275,10 @@ namespace CauldronTests
         public void TestDriftCharacter_Future_Incap2()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            Card futureDrift = GetCard(FutureDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, futureDrift, apostate.CharacterCard };
+            StartGame(resetDecisions: false);
 
             DestroyCard(drift);
             SetHitPoints(apostate, 17);
@@ -221,7 +294,10 @@ namespace CauldronTests
         public void TestDriftCharacter_Past_Incap0()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            Card pastDrift = GetCard(PastDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, pastDrift };
+            StartGame(resetDecisions: false);
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
@@ -239,7 +315,10 @@ namespace CauldronTests
         public void TestDriftCharacter_Past_Incap1()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Tempest", "TheScholar", "Megalopolis");
-            StartGame();
+            Card pastDrift = GetCard(PastDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, pastDrift, apostate.CharacterCard };
+            StartGame(resetDecisions: false);
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
@@ -275,7 +354,10 @@ namespace CauldronTests
         public void TestDriftCharacter_Past_Incap2()
         {
             SetupGameController("Apostate", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            Card pastDrift = GetCard(PastDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionSelectCards = new Card[] { shiftTrack, pastDrift };
+            StartGame(resetDecisions: false);
 
             DecisionYesNo = true;
             GoToEndOfTurn(apostate);
@@ -306,15 +388,21 @@ namespace CauldronTests
         public void TestDualDriftAndProgeny()
         {
             SetupGameController("Progeny", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
-            StartGame();
+            Card futureDrift = GetCard(FutureDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack2");
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectCards = new Card[] {shiftTrack, futureDrift };
 
-            Card blueFuture = GetCard(FutureDriftCharacter);
-            AssertInPlayArea(drift,blueFuture);
-            SetHitPoints(blueFuture, 8);
+            StartGame(resetDecisions: false);
+
+
+            AssertInPlayArea(drift,futureDrift);
+
+            SetHitPoints(futureDrift, 8);
 
             GoToStartOfTurn(progeny);
 
-            DealDamage(progeny, blueFuture, 8, DamageType.Radiant);
+            DealDamage(progeny, futureDrift, 8, DamageType.Radiant);
             AssertIncapacitated(drift);
 
             GoToStartOfTurn(progeny);
