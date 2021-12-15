@@ -34,6 +34,15 @@ namespace Cauldron.Drift
 
         protected bool _inTheMiddleOfPower = false;
 
+        protected enum CustomMode
+        {
+            StartOfGameChooseDrift,
+            DualDriftShift
+        }
+        protected CustomMode customMode { get; set; }
+
+
+
 
         private int totalShifts = 0;
         public int TotalShifts { get => totalShifts; set => totalShifts = value; }
@@ -119,7 +128,7 @@ namespace Cauldron.Drift
             return base.FindCard(promoIdentifier + ShiftTrack + position, false);
         }
 
-        public IEnumerator ShiftL()
+        public IEnumerator ShiftLAction()
         {
             if(this.GetShiftPool() is null)
             {
@@ -177,10 +186,10 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        public IEnumerator ShiftLL()
+        public IEnumerator ShiftLLAction()
         {
-            IEnumerator coroutine = this.ShiftL();
-            IEnumerator coroutine2 = this.ShiftL();
+            IEnumerator coroutine = this.ShiftLAction();
+            IEnumerator coroutine2 = this.ShiftLAction();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -194,7 +203,28 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        public IEnumerator ShiftR()
+        public IEnumerator ShiftLLLAction()
+        {
+            IEnumerator coroutine = this.ShiftLAction();
+            IEnumerator coroutine2 = this.ShiftLAction();
+            IEnumerator coroutine3 = this.ShiftLAction();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+                yield return base.GameController.StartCoroutine(coroutine3);
+
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+                base.GameController.ExhaustCoroutine(coroutine3);
+            }
+            yield break;
+        }
+
+        public IEnumerator ShiftRAction()
         {
             if (this.GetShiftPool() is null)
             {
@@ -252,10 +282,10 @@ namespace Cauldron.Drift
             yield break;
         }
 
-        public IEnumerator ShiftRR()
+        public IEnumerator ShiftRRAction()
         {
-            IEnumerator coroutine = this.ShiftR();
-            IEnumerator coroutine2 = this.ShiftR();
+            IEnumerator coroutine = this.ShiftRAction();
+            IEnumerator coroutine2 = this.ShiftRAction();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -265,6 +295,28 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
                 base.GameController.ExhaustCoroutine(coroutine2);
+            }
+            yield break;
+        }
+
+        public IEnumerator ShiftRRRAction()
+        {
+            IEnumerator coroutine = this.ShiftRAction();
+            IEnumerator coroutine2 = this.ShiftRAction();
+            IEnumerator coroutine3 = this.ShiftRAction();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+                yield return base.GameController.StartCoroutine(coroutine2);
+                yield return base.GameController.StartCoroutine(coroutine3);
+
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+                base.GameController.ExhaustCoroutine(coroutine2);
+                base.GameController.ExhaustCoroutine(coroutine3);
+
             }
             yield break;
         }
@@ -431,5 +483,270 @@ namespace Cauldron.Drift
             }
         }
 
+        public IEnumerator ShiftL()
+        {
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            {
+                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLAction, "{ShiftL}");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
+            else
+            {
+                IEnumerator coroutine = ShiftLAction();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            yield break;
+        }
+
+        public IEnumerator ShiftLL()
+        {
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            {
+                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLLAction, "{ShiftLL}");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
+            else
+            {
+                IEnumerator coroutine = ShiftLLAction();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            yield break;
+        }
+
+        public IEnumerator ShiftLLL()
+        {
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            {
+                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLLLAction, "{ShiftLLL}");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+            }
+            else
+            {
+                IEnumerator coroutine = ShiftLLLAction();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            yield break;
+        }
+
+        public IEnumerator ShiftR()
+        {
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            {
+                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRAction, "{ShiftR}");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                IEnumerator coroutine = ShiftRAction();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            yield break;
+        }
+
+        public IEnumerator ShiftRR()
+        {
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            {
+                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRRAction, "{ShiftRR}");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                IEnumerator coroutine = ShiftRRAction();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            yield break;
+        }
+
+        public IEnumerator ShiftRRR()
+        {
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            {
+                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRRRAction, "{ShiftRRR}");
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+            else
+            {
+                IEnumerator coroutine = ShiftRRRAction();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            yield break;
+        }
+
+        private IEnumerator DualDriftShifting(DualShiftTrackUtilityCardController dualShiftTrack, Func<IEnumerator> shiftAction, string shiftString)
+        {
+            string option1 = "Shift " + shiftString;
+            string option2 = "Swap the active Drift, then Shift " + shiftString;
+            string option3 = "Shift " + shiftString + ", then swap the active Drift";
+            string[] options = new string[] { option1, option2, option3 };
+
+            List<SelectWordDecision> storedResults = new List<SelectWordDecision>();
+            SelectWordDecision decision = new SelectWordDecision(GameController, DecisionMaker, SelectionType.Custom, options, cardSource: GetCardSource(), associatedCards: GetShiftTrack().ToEnumerable());
+            decision.ExtraInfo = () => $"{dualShiftTrack.GetInactiveCharacterCard().Title} is at position {dualShiftTrack.InactiveCharacterPosition()}";
+            storedResults.Add(decision);
+            customMode = CustomMode.DualDriftShift;
+            IEnumerator coroutine = GameController.MakeDecisionAction(decision);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (!DidSelectWord(storedResults))
+            {
+                coroutine = shiftAction();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                yield break;
+            }
+            string selectedWord = GetSelectedWord(storedResults);
+            if (selectedWord == option2)
+            {
+                coroutine = dualShiftTrack.SwapActiveDrift();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+
+            coroutine = shiftAction();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (selectedWord == option3)
+            {
+                coroutine = dualShiftTrack.SwapActiveDrift();
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            if (customMode == CustomMode.DualDriftShift)
+            {
+                return new CustomDecisionText($"What do you want to do?", $"What should they do?", $"Vote for what they should do.", $"what to do");
+            }
+
+            return base.GetCustomDecisionText(decision);
+        }
     }
 }
