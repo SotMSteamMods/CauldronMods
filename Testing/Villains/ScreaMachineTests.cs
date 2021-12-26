@@ -1006,6 +1006,27 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHypnotizeTheCrowd_SelectEnvironment_NonTarget()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var card = SetupBandCard("HypnotizeTheCrowd");
+            var e1 = PlayCard("PlummetingMonorail");
+            var e2 = PlayCard("TrafficPileup");
+            var e3 = PlayCard("PoliceBackup");
+
+            string key = ScreaMachineBandmate.GetAbilityKey(ScreaMachineBandmate.Value.Valentine);
+            AssertNumberOfActivatableAbility(card, key, 1);
+
+            DecisionSelectCard = e3;
+            QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, slice, bloodlace, valentine, rickyg);
+            AssertNextDecisionChoices(included: new List<Card>() { e1, e2, e3 });
+            ActivateAbility(key, card);
+            QuickHPCheck(0, 0, -3, 0, 0, 0, 0, 0);
+        }
+
+        [Test()]
         public void TestHypnotizeTheCrowd_ImmuneToEnviroment()
         {
             SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Bunker", "Megalopolis" }, advanced: false);
