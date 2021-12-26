@@ -64,52 +64,13 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-
-            Card selectedTrack = cardDecisions.FirstOrDefault().SelectedCard;
-            coroutine = base.GameController.PlayCard(this, selectedTrack);
-            if (base.UseUnityCoroutines)
+            
+            if(cardDecisions.Any())
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            CardController selectTrackController = base.FindCardController(selectedTrack);
-            int tokensToAdd = 0;
-            if (selectTrackController is BaseShiftTrack1CardController || selectTrackController is DualShiftTrack1CardController || selectTrackController is ThroughTheBreachShiftTrack1CardController)
-            {
-                tokensToAdd = 1;
-            }
-            else if (selectTrackController is BaseShiftTrack2CardController || selectTrackController is DualShiftTrack2CardController || selectTrackController is ThroughTheBreachShiftTrack2CardController)
-            {
-                tokensToAdd = 2;
-            }
-            else if (selectTrackController is BaseShiftTrack3CardController || selectTrackController is DualShiftTrack3CardController || selectTrackController is ThroughTheBreachShiftTrack3CardController)
-            {
-                tokensToAdd = 3;
-            }
-            else if (selectTrackController is BaseShiftTrack4CardController || selectTrackController is DualShiftTrack4CardController || selectTrackController is ThroughTheBreachShiftTrack4CardController)
-            {
-                tokensToAdd = 4;
-            }
-
-            coroutine = base.GameController.AddTokensToPool(selectedTrack.FindTokenPool("ShiftPool"), tokensToAdd, new CardSource(base.CharacterCardController));
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            //Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.
-            if (base.CharacterCardController is DualDriftCharacterCardController)
-            {
-                List<SelectCardDecision> selectDriftDecision = new List<SelectCardDecision>();
-                coroutine = base.GameController.SelectCardAndStoreResults(this, SelectionType.RemoveCardFromGame, new LinqCardCriteria((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController && !c.Identifier.Contains("Red") && !c.Identifier.Contains("Blue")), selectDriftDecision, false);
+                Card selectedTrack = cardDecisions.FirstOrDefault().SelectedCard;
+                PlayCardAction playShiftAction = new PlayCardAction(GameController, this, selectedTrack, isPutIntoPlay: true, responsibleTurnTaker: TurnTaker, null, null, null, false, canBeCancelled: false);
+                playShiftAction.AllowTriggersToRespond = false;
+                coroutine = GameController.DoAction(playShiftAction);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -119,24 +80,26 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                //Place your other character card into play, active.
-                Card selectedDrift = selectDriftDecision.FirstOrDefault().SelectedCard;
-                Card driftToPlay = base.GameController.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController && selectedDrift != c).FirstOrDefault();
-                coroutine = base.GameController.SwitchCards(base.CharacterCard, driftToPlay);
-                if (base.UseUnityCoroutines)
+                CardController selectTrackController = base.FindCardController(selectedTrack);
+                int tokensToAdd = 0;
+                if (selectTrackController is BaseShiftTrack1CardController || selectTrackController is DualShiftTrack1CardController || selectTrackController is ThroughTheBreachShiftTrack1CardController)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    tokensToAdd = 1;
                 }
-                else
+                else if (selectTrackController is BaseShiftTrack2CardController || selectTrackController is DualShiftTrack2CardController || selectTrackController is ThroughTheBreachShiftTrack2CardController)
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    tokensToAdd = 2;
+                }
+                else if (selectTrackController is BaseShiftTrack3CardController || selectTrackController is DualShiftTrack3CardController || selectTrackController is ThroughTheBreachShiftTrack3CardController)
+                {
+                    tokensToAdd = 3;
+                }
+                else if (selectTrackController is BaseShiftTrack4CardController || selectTrackController is DualShiftTrack4CardController || selectTrackController is ThroughTheBreachShiftTrack4CardController)
+                {
+                    tokensToAdd = 4;
                 }
 
-                //Then place 1 of your 2 character cards (1929 or 2199) next to that same space
-                base.GameController.AddCardPropertyJournalEntry(selectedTrack, "DriftPosition" + tokensToAdd, true);
-
-                //move other red/blue promos into box
-                coroutine = base.GameController.BulkMoveCards(this, base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && !(FindCardController(c) is DualDriftSubCharacterCardController)), base.TurnTaker.InTheBox);
+                coroutine = base.GameController.AddTokensToPool(selectedTrack.FindTokenPool("ShiftPool"), tokensToAdd, new CardSource(base.CharacterCardController));
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -146,17 +109,18 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            else
+            
+
+            if(!(base.CharacterCardController is DualDriftSubCharacterCardController))
             {
-                //move dual drifts into the box
-                coroutine = base.GameController.BulkMoveCards(this, base.FindCardsWhere((Card c) => base.FindCardController(c) is DualDriftSubCharacterCardController), base.TurnTaker.InTheBox);
-                if (base.UseUnityCoroutines)
+                coroutine = GameController.BulkMoveCards(this, FindCardsWhere((Card c) => FindCardController(c) is DualDriftSubCharacterCardController), TurnTaker.InTheBox);
+                if (UseUnityCoroutines)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
+                    yield return GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    GameController.ExhaustCoroutine(coroutine);
                 }
             }
 
@@ -194,7 +158,5 @@ namespace Cauldron.Drift
         {
             return base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == this.TurnTaker).FirstOrDefault();
         }
-
-       
     }
 }

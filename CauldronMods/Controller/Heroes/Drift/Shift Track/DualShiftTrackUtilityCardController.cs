@@ -13,11 +13,19 @@ namespace Cauldron.Drift
         protected DualShiftTrackUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowSpecialString(() => this.GetInactiveCharacterCard().AlternateTitleOrTitle + " is the inactive {Drift}, she is at position " + this.InactiveCharacterPosition());
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasTrackAbilityBeenActivated(), () => "Drift has changed the active character this turn", () => "Drift has not changed the active character this turn");
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasTrackAbilityBeenActivated(), () => "Drift has changed the active character this turn", () => "Drift has not changed the active character this turn", showInEffectsList: () => true);
         }
+
+        protected enum CustomMode
+        {
+            AskToSwap
+        }
+
+        private CustomMode customMode { get; set; }
 
         protected const string DriftPosition = "DriftPosition";
         protected const string OncePerTurn = "DualShiftAbilityOncePerTurn";
+        public override bool AllowFastCoroutinesDuringPretend => false;
 
         public override void AddTriggers()
         {
@@ -26,30 +34,23 @@ namespace Cauldron.Drift
             //1. Place your active character on your current shift track space.
             //2. Place the shift token on your inactive character's shift track space.
             //3. Switch which character is active.
-            base.AddTrigger<ActivateAbilityAction>((ActivateAbilityAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<DiscardCardAction>((DiscardCardAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<DrawCardAction>((DrawCardAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<GainHPAction>((GainHPAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<GiveHighFiveAction>((GiveHighFiveAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<ModifyTokensAction>((ModifyTokensAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<MoveCardAction>((MoveCardAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<RedirectDamageAction>((RedirectDamageAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
-            base.AddTrigger<UsePowerAction>((UsePowerAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated() && action.Target == GetActiveCharacterCard(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);  
         }
 
-        private bool HasTrackAbilityBeenActivated()
+        public bool HasTrackAbilityBeenActivated()
         {
             IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack && entry.TurnIndex == base.Game.TurnIndex);
             return trackEntries.Any();
         }
 
-        private IEnumerator TrackResponse(GameAction action)
+        private IEnumerator TrackResponse(DealDamageAction action)
         {
             List<YesNoCardDecision> switchDecision = new List<YesNoCardDecision>();
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, base.Card, storedResults: switchDecision, associatedCards: this.GetInactiveCharacterCard().ToEnumerable(), cardSource: base.GetCardSource());
+            customMode = CustomMode.AskToSwap;
+            YesNoCardDecision decision = new YesNoCardDecision(GameController, HeroTurnTakerController, SelectionType.Custom, Card, action: action, associatedCards: GetInactiveCharacterCard().ToEnumerable(), cardSource: GetCardSource());
+            decision.ExtraInfo = () => $"{GetInactiveCharacterCard().Title} is at position {InactiveCharacterPosition()}";
+            switchDecision.Add(decision);
+            IEnumerator coroutine = GameController.MakeDecisionAction(decision);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -60,25 +61,63 @@ namespace Cauldron.Drift
             }
             if (base.DidPlayerAnswerYes(switchDecision.FirstOrDefault()))
             {
-                //Once per turn you may do the following in order:
-                base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
-                IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack);
-
-                int inactivePosition = this.InactiveCharacterPosition();
-                base.SetCardProperty(DriftPosition + inactivePosition, false);
-
-                //1. Place your active character on your current shift track space.
-                base.SetCardPropertyToTrueIfRealAction(DriftPosition + this.CurrentShiftPosition());
-
-                //2. Place the shift token on your inactive character's shift track space.
-                if (this.CurrentShiftPosition() < inactivePosition)
+                if(action.IsPretend)
+                { 
+                    yield break;
+                }
+                coroutine = SwapActiveDrift();
+                if (base.UseUnityCoroutines)
                 {
-                    coroutine = base.GameController.AddTokensToPool(this.GetShiftPool(), inactivePosition - this.CurrentShiftPosition(), cardSource: base.GetCardSource());
+                    yield return base.GameController.StartCoroutine(coroutine);
                 }
                 else
                 {
-                    coroutine = base.GameController.RemoveTokensFromPool(this.GetShiftPool(), this.CurrentShiftPosition() - inactivePosition, cardSource: base.GetCardSource());
+                    base.GameController.ExhaustCoroutine(coroutine);
                 }
+
+                coroutine = RedirectDamage(action, TargetType.SelectTarget, c => c == GetActiveCharacterCard());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+            }
+        }
+
+        public IEnumerator SwapActiveDrift()
+        {
+            IEnumerator coroutine = null;
+            //Once per turn you may do the following in order:
+            base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
+            IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack);
+
+            int inactivePosition = this.InactiveCharacterPosition();
+            base.SetCardProperty(DriftPosition + inactivePosition, false);
+
+            //1. Place your active character on your current shift track space.
+            base.SetCardProperty(DriftPosition + this.CurrentShiftPosition(), true);
+
+            //2. Place the shift token on your inactive character's shift track space.
+            if (this.CurrentShiftPosition() < inactivePosition)
+            {
+                AddTokensToPoolAction addTokensAction = new AddTokensToPoolAction(GetCardSource(), GetShiftPool(), inactivePosition - CurrentShiftPosition());
+                addTokensAction.AllowTriggersToRespond = false;
+                addTokensAction.CanBeCancelled = false;
+                coroutine = DoAction(addTokensAction);
+            }
+            else if (this.CurrentShiftPosition() > inactivePosition)
+            {
+                RemoveTokensFromPoolAction removeTokensAction = new RemoveTokensFromPoolAction(GetCardSource(), GetShiftPool(), CurrentShiftPosition() - inactivePosition);
+                removeTokensAction.AllowTriggersToRespond = false;
+                removeTokensAction.CanBeCancelled = false;
+                coroutine = DoAction(removeTokensAction);
+            }
+
+            if (coroutine != null)
+            {
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -88,7 +127,7 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 //Switch visual
-                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(Dual + ShiftTrack + this.CurrentShiftPosition(), false));
+                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(Dual + ShiftTrack + this.CurrentShiftPosition(), false), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -98,18 +137,22 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                //3. Switch which character is active.
-                coroutine = base.GameController.SwitchCards(this.GetActiveCharacterCard(), this.GetInactiveCharacterCard(inactivePosition), ignoreHitPoints: true, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                yield break;
             }
+            
+            Card switchFromDrift = GetActiveCharacterCard();
+            Card switchToDrift = GetInactiveCharacterCard(inactivePosition);
+            //3. Switch which character is active.
+            coroutine = GameController.SwitchCards(switchFromDrift, switchToDrift, ignoreHitPoints: true, cardSource: GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            yield return DoNothing();
         }
 
         public Card GetInactiveCharacterCard(int inactivePosition = 0)
@@ -127,7 +170,7 @@ namespace Cauldron.Drift
             return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location == base.TurnTaker.OffToTheSide && c.Owner == base.TurnTaker && c.Identifier == desiredIdentifier)).FirstOrDefault();
         }
 
-        private int InactiveCharacterPosition()
+        public int InactiveCharacterPosition()
         {
             int inactivePosition = 0;
             string[] inactivePositions = new string[] {
@@ -162,8 +205,14 @@ namespace Cauldron.Drift
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
 
-            return new CustomDecisionText("Do you want to switch character cards?", "Should they switch character cards?", "Vote for if they should switch character cards?", "switching character cards");
+            if (customMode == CustomMode.AskToSwap)
+            {
+                return new CustomDecisionText("Do you want to switch character cards?", "Should they switch character cards?", "Vote for if they should switch character cards?", "switching character cards");
+            }
 
+            return base.GetCustomDecisionText(decision);
         }
+
+        
     }
 }
