@@ -1523,5 +1523,34 @@ namespace CauldronTests
             AssertNumberOfCardsInHand(tempest, 2);
             AssertHitPoints(tempest, 8);
         }
+
+        [Test]
+        public void TestHeroPreservation_DualDrift()
+        {
+            SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Cauldron.Drift/DualDriftCharacter", "Ra", "Megalopolis");
+            StartGame();
+            Card track = FindCardsWhere((Card c) => c.Identifier == $"DualShiftTrack1", false).FirstOrDefault();
+
+            ResetDays();
+            FlipCard(fate);
+            ResetRFGCards();
+
+            DestroyCard(futureDrift);
+
+
+            AssertIncapacitated(drift);
+
+            FlipCard(fate);
+
+            AssertNotFlipped(futureDrift);
+            AssertInPlayArea(drift, track);
+
+
+            AssertNumberOfCardsInHand(drift, 4);
+            AssertNumberOfCardsInDeck(drift, 36);
+            AssertNumberOfCardsInTrash(drift, 0);
+
+
+        }
     }
 }
