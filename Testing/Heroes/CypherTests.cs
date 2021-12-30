@@ -539,6 +539,62 @@ namespace CauldronTests
             QuickHPCheck(-3); // +2 from Cyborg Blaster, +1 from Muscle Aug
         }
 
+        [Test]
+        public void TestCyborgBlasterWhenIsolated()
+        {
+            // You may move 1 Augment in play next to a new hero.
+            // One augmented hero deals 1 target 2 lightning damage.
+
+            // Arrange
+            SetupGameController("MissInformation", DeckNamespace, "Ra", "Tachyon", "Megalopolis");
+            StartGame();
+
+            DestroyNonCharacterVillainCards();
+
+            Card neuralInterface = PlayCard("NeuralInterface");
+
+            Card muscleAug = GetCard("MuscleAug");
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { cypher.CharacterCard, new List<Card>() { muscleAug}}
+            });
+
+            string isolatedHeroMessage = "Isolated Hero will prevent Cypher from affecting other heroes, and other heroes cannot affect Cypher.";
+            string cyborgBlasterMessage = "There are no available heroes to move the augment to.";
+            string moveMuscleAugMessage = "Muscle Aug was moved next to Cypher.";
+            AssertNextMessages(new string[] { isolatedHeroMessage, cyborgBlasterMessage, isolatedHeroMessage, moveMuscleAugMessage });
+
+            Card isolatedHero = PlayCard("IsolatedHero");
+
+            DecisionSelectCard =  muscleAug;
+
+            // Muscle Aug is on Cypher
+            // Since Cypher is isolated, he cannot see any of the other hero cards
+            // Should see message indicating that nothing will happen
+            Card cyborgBlaster = PlayCard("CyborgBlaster");
+
+            DestroyCard(muscleAug);
+            DestroyCard(isolatedHero);
+
+            PutAugmentsIntoPlay(new Dictionary<Card, List<Card>>()
+            {
+                { ra.CharacterCard, new List<Card>() { muscleAug}}
+            });
+
+            DecisionSelectCard = muscleAug;
+
+
+            PlayCard(isolatedHero);
+
+            // Muscle Aug is on Ra
+            // Even though Cypher is isolated, he should still see his own cards
+            //   * this is true even though the aug is in a different play area
+            // However, no other hero characters can be seen, so he moves it to himself
+            // Should see message indicating that the move happened
+            PlayCard(cyborgBlaster);
+
+        }
 
 
         [Test]
