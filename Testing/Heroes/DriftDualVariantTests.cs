@@ -132,6 +132,45 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDriftCharacter_SwitchActiveHeroOffOfCardPlay()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: new int?(-2054413546));
+            Card futureDrift = GetCard(FutureDriftCharacter);
+            Card shiftTrack = GetCard("DualShiftTrack4");
+            Card resourcefulDreamer = PutInTrash("ResourcefulDaydreamer");
+            Card cardToDiscard = PutInHand("DanceOfTheDragons");
+            Card cardToPlay = PutInHand("Sabershard");
+            Card cardToNotPlay = PutInHand("TransitionShock");
+
+            DecisionSelectCards = new Card[] { shiftTrack, futureDrift, cardToDiscard, cardToPlay, cardToNotPlay };
+            StartGame(resetDecisions: false);
+
+            //Start with Future in spot 4
+            AssertIsInPlay(FutureDriftCharacter);
+            AssertTrackPosition(4);
+            // Switch during the villain turn to Past in spot 
+
+            DecisionsYesNo = new bool[] { true, true };
+
+            DealDamage(baron, futureDrift, 3, DamageType.Melee);
+            AssertIsInPlay(PastDriftCharacter);
+            AssertTrackPosition(4);
+            GoToShiftPosition(2);
+
+            GoToNextTurn();
+
+            //Switch on play of resourceful dreamer, resulting in the future effect only
+            QuickHandStorage(drift);
+            PlayCard(resourcefulDreamer);
+            //draw 2, discard 1, power use plays 1, no second play
+            QuickHandCheck(0);
+
+            AssertInTrash(cardToDiscard);
+            AssertInPlayArea(drift, cardToPlay);
+            AssertInHand(cardToNotPlay);
+        }
+
+        [Test()]
         public void TestDriftCharacter_UIPrompts()
         {
             SetupGameController(new string[] { "BaronBlade", "Cauldron.Drift/DualDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis" }, randomSeed: new int?(-2054413546));

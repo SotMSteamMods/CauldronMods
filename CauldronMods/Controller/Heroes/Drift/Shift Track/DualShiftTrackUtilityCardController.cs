@@ -30,11 +30,16 @@ namespace Cauldron.Drift
         public override void AddTriggers()
         {
             base.AddTriggers();
-            //Once per turn you may do the following in order:
+            // Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order
             //1. Place your active character on your current shift track space.
             //2. Place the shift token on your inactive character's shift track space.
             //3. Switch which character is active.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated() && action.Target == GetActiveCharacterCard(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);  
+
+            //shift trigger happens in the actual shifting logic
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated() && action.Target == GetActiveCharacterCard(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+
+            string[] noResponseIdentifiers = new string[] { "ShiftTrack", "FutureDrift", "PastDrift" };
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpa) => cpa.CardEnteringPlay != null && !this.HasTrackAbilityBeenActivated() && cpa.CardEnteringPlay.Owner == TurnTakerControllerWithoutReplacements.TurnTaker && noResponseIdentifiers.All(id => !cpa.CardEnteringPlay.Identifier.Contains(id)), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
         }
 
         public bool HasTrackAbilityBeenActivated()
@@ -43,11 +48,11 @@ namespace Cauldron.Drift
             return trackEntries.Any();
         }
 
-        private IEnumerator TrackResponse(DealDamageAction action)
+        private IEnumerator TrackResponse(GameAction action)
         {
             List<YesNoCardDecision> switchDecision = new List<YesNoCardDecision>();
             customMode = CustomMode.AskToSwap;
-            YesNoCardDecision decision = new YesNoCardDecision(GameController, HeroTurnTakerController, SelectionType.Custom, Card, action: action, associatedCards: GetInactiveCharacterCard().ToEnumerable(), cardSource: GetCardSource());
+            YesNoCardDecision decision = new YesNoCardDecision(GameController, HeroTurnTakerController, SelectionType.Custom, Card, action: action is DealDamageAction ? action : null, associatedCards: GetInactiveCharacterCard().ToEnumerable(), cardSource: GetCardSource());
             decision.ExtraInfo = () => $"{GetInactiveCharacterCard().Title} is at position {InactiveCharacterPosition()}";
             switchDecision.Add(decision);
             IEnumerator coroutine = GameController.MakeDecisionAction(decision);
@@ -75,14 +80,17 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = RedirectDamage(action, TargetType.SelectTarget, c => c == GetActiveCharacterCard());
-                if (base.UseUnityCoroutines)
+                if (action is DealDamageAction dealDamageAction)
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    coroutine = RedirectDamage(dealDamageAction, TargetType.SelectTarget, c => c == GetActiveCharacterCard());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
         }
