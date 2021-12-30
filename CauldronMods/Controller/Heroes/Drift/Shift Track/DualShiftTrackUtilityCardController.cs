@@ -12,14 +12,17 @@ namespace Cauldron.Drift
     {
         protected DualShiftTrackUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => this.GetInactiveCharacterCard().AlternateTitleOrTitle + " is the inactive {Drift}, she is at position " + this.InactiveCharacterPosition());
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasTrackAbilityBeenActivated(), () => "Drift has changed the active character this turn", () => "Drift has not changed the active character this turn", showInEffectsList: () => true);
+            base.SpecialStringMaker.ShowSpecialString(() => this.GetInactiveCharacterCard().AlternateTitleOrTitle + " is the inactive {Drift}, she is at position " + this.InactiveCharacterPosition()).Condition = () => TurnTakerController is DriftTurnTakerController driftTTC && driftTTC.HasBeenSetup;
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasTrackAbilityBeenActivated(), () => "Drift has changed the active character this turn", () => "Drift has not changed the active character this turn", showInEffectsList: () => true).Condition = () => !(FindCardController(GetActiveCharacterCard()) is DualDriftCharacterCardController); ;
         }
 
         protected enum CustomMode
         {
-            AskToSwap
+            AskToSwap,
+            AskToSwapFromPlay
         }
+
+        private Card customTextCardBeingPlayed { get; set; }
 
         private CustomMode customMode { get; set; }
 
@@ -51,7 +54,15 @@ namespace Cauldron.Drift
         private IEnumerator TrackResponse(GameAction action)
         {
             List<YesNoCardDecision> switchDecision = new List<YesNoCardDecision>();
-            customMode = CustomMode.AskToSwap;
+            if (action is CardEntersPlayAction cpa)
+            {
+                customMode = CustomMode.AskToSwapFromPlay;
+                customTextCardBeingPlayed = cpa.CardEnteringPlay;
+            }
+            else
+            {
+                customMode = CustomMode.AskToSwap;
+            }
             YesNoCardDecision decision = new YesNoCardDecision(GameController, HeroTurnTakerController, SelectionType.Custom, Card, action: action is DealDamageAction ? action : null, associatedCards: GetInactiveCharacterCard().ToEnumerable(), cardSource: GetCardSource());
             decision.ExtraInfo = () => $"{GetInactiveCharacterCard().Title} is at position {InactiveCharacterPosition()}";
             switchDecision.Add(decision);
@@ -216,6 +227,11 @@ namespace Cauldron.Drift
             if (customMode == CustomMode.AskToSwap)
             {
                 return new CustomDecisionText("Do you want to switch character cards?", "Should they switch character cards?", "Vote for if they should switch character cards?", "switching character cards");
+            }
+
+            if(customMode == CustomMode.AskToSwapFromPlay)
+            {
+                return new CustomDecisionText($"Do you want to switch character cards before playing [b]{customTextCardBeingPlayed.Title}[/b]?", $"Should they switch character cards before playing {customTextCardBeingPlayed.Title}?", $"Vote for if they should switch character cardsbefore playing {customTextCardBeingPlayed.Title}?", $"switching character cards before playing {customTextCardBeingPlayed.Title}");
             }
 
             return base.GetCustomDecisionText(decision);

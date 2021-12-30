@@ -18,7 +18,7 @@ namespace Cauldron.Drift
         protected const string Base = "Base";
         protected const string Dual = "Dual";
         protected const string ThroughTheBreach = "ThroughTheBreach";
-        public bool hasBeenSetup = false;
+        public bool HasBeenSetup = false;
 
         //public override IEnumerator StartGame()
         //{
@@ -123,6 +123,8 @@ namespace Cauldron.Drift
                     GameController.ExhaustCoroutine(coroutine);
                 }
             }
+
+            HasBeenSetup = true;
 
             yield break;
         }
