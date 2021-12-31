@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Anathema
 {
@@ -18,31 +19,48 @@ namespace Cauldron.Anathema
 		{
 			if (base.GetNumberOfArmsInPlay() > 2)
 			{
-				//Determine the arm with the highest HP
-				List<Card> highestArm = new List<Card>();
-				IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => base.IsArm(c) && c.IsInPlay && c != base.Card, highestArm, cardSource: base.GetCardSource());
-
-				if (base.UseUnityCoroutines)
+				IEnumerator coroutine;
+				IEnumerable<Card> nonIndestructableOtherArms = GetArmsInPlay().Where(c => c != Card && !GameController.IsCardIndestructible(c));
+				if (nonIndestructableOtherArms.Count() > 0)
 				{
-					yield return base.GameController.StartCoroutine(coroutine);
+					//Determine the arm with the highest HP
+					List<Card> highestArm = new List<Card>();
+					coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => nonIndestructableOtherArms.Contains(c), highestArm, cardSource: base.GetCardSource());
+
+					if (base.UseUnityCoroutines)
+					{
+						yield return base.GameController.StartCoroutine(coroutine);
+					}
+					else
+					{
+						base.GameController.ExhaustCoroutine(coroutine);
+					}
+
+					//Destroy all other arm cards except for the one with the highest HP.
+
+					coroutine = base.GameController.DestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => nonIndestructableOtherArms.Contains(c) && !highestArm.Contains(c), "arm"), cardSource: base.GetCardSource());
+					if (base.UseUnityCoroutines)
+					{
+						yield return base.GameController.StartCoroutine(coroutine);
+					}
+					else
+					{
+						base.GameController.ExhaustCoroutine(coroutine);
+					}
 				}
 				else
 				{
-					base.GameController.ExhaustCoroutine(coroutine);
+					coroutine = GameController.SendMessageAction("All other arms in play are indestructible.", Priority.Medium, GetCardSource(), showCardSource: true);
+					if (base.UseUnityCoroutines)
+					{
+						yield return base.GameController.StartCoroutine(coroutine);
+					}
+					else
+					{
+						base.GameController.ExhaustCoroutine(coroutine);
+					}
 				}
-
-				//Destroy all other arm cards except for the one with the highest HP.
-
-				IEnumerator coroutine2 = base.GameController.DestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => base.IsArm(c) && !highestArm.Contains(c) && c != base.Card, "arm"), cardSource: base.GetCardSource());
-				if (base.UseUnityCoroutines)
-				{
-					yield return base.GameController.StartCoroutine(coroutine2);
 				}
-				else
-				{
-					base.GameController.ExhaustCoroutine(coroutine2);
-				}
-			}
 
 			yield break;
 		}
