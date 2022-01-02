@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Cauldron.Drift
 {
@@ -34,6 +35,8 @@ namespace Cauldron.Drift
 
         protected bool _inTheMiddleOfPower = false;
 
+        private bool _instantiatingShiftTracks = false;
+
         protected enum CustomMode
         {
             StartOfGameChooseDrift,
@@ -41,18 +44,16 @@ namespace Cauldron.Drift
         }
         protected CustomMode customMode { get; set; }
 
-
-
-
         private int totalShifts = 0;
         public int TotalShifts { get => totalShifts; set => totalShifts = value; }
 
         public override IEnumerator PerformEnteringGameResponse()
         {
+            IEnumerator coroutine;
             if (TurnTakerController is DriftTurnTakerController)
             {
                 DriftTurnTakerController dttc = ((DriftTurnTakerController)HeroTurnTakerController);
-                IEnumerator coroutine = dttc.SetupDrift();
+                coroutine = dttc.SetupDrift();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -62,8 +63,6 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-
-
         }
 
         public override void AddTriggers()
@@ -72,6 +71,8 @@ namespace Cauldron.Drift
             //base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 3, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
             ////...or from {DriftFuture} to {DriftPast}...
             //base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 2, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
+
+            AddTrigger((GameAction ga) => !(TurnTakerController is DriftTurnTakerController) && GetShiftTrack() is null && !_instantiatingShiftTracks, ga => InstatiateShiftTrack(), TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
         }
 
         public int CurrentShiftPosition()
@@ -91,6 +92,11 @@ namespace Cauldron.Drift
                 DriftTurnTakerController dttc = (DriftTurnTakerController) GameController.AllTurnTakers.Select(tt => FindTurnTakerController(tt)).First(ttc => ttc is DriftTurnTakerController);
                 DriftSubCharacterCardController drift_cc = FindCardController(dttc.GetActiveCharacterCard()) as DriftSubCharacterCardController;
                 return drift_cc.GetShiftPool();
+            }
+
+            if (!(GetShiftTrack() is null))
+            {
+                return this.GetShiftTrack().FindTokenPool(ShiftPoolIdentifier);
             }
 
             return null;
@@ -485,7 +491,7 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftL()
         {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
             {
                 IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLAction, "{ShiftL}");
                 if (base.UseUnityCoroutines)
@@ -516,7 +522,7 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftLL()
         {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
             {
                 IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLLAction, "{ShiftLL}");
                 if (base.UseUnityCoroutines)
@@ -547,7 +553,7 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftLLL()
         {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
             {
                 IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLLLAction, "{ShiftLLL}");
                 if (base.UseUnityCoroutines)
@@ -578,7 +584,7 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftR()
         {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
             {
                 IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRAction, "{ShiftR}");
                 if (base.UseUnityCoroutines)
@@ -608,7 +614,7 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftRR()
         {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
             {
                 IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRRAction, "{ShiftRR}");
                 if (base.UseUnityCoroutines)
@@ -638,7 +644,7 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftRRR()
         {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated())
+            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
             {
                 IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRRRAction, "{ShiftRRR}");
                 if (base.UseUnityCoroutines)
@@ -737,6 +743,109 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+        }
+
+        private DeckDefinition DriftDeckDefinition => DeckDefinitionCache.GetDeckDefinition("Cauldron.Drift");
+       
+        private string ShiftTrackPrefix
+        {
+            get
+            {
+                if(this is DualDriftSubCharacterCardController)
+                {
+                    return "Dual";
+                }
+
+                if (this is ThroughTheBreachDriftCharacterCardController)
+                {
+                    return "ThroughTheBreach";
+                }
+
+                return "Base";
+            }
+        }
+        protected IEnumerator InstatiateShiftTrack()
+        {
+            _instantiatingShiftTracks = true;
+            Log.Debug("Instantiating Shift Track");
+            IEnumerable<CardDefinition> shiftTrackDefinitions = DriftDeckDefinition.CardDefinitions.Where(cd => cd.Identifier.Contains(ShiftTrackPrefix + "ShiftTrack"));
+            List<Card> shiftTracks = new List<Card>();
+            Card modelCard;
+            CardController cardController;
+            Dictionary<Card, CardController> cardToControllerDict = new Dictionary<Card, CardController>();
+            string overrideNamespace = TurnTaker.QualifiedIdentifier;
+            List<string> list = new List<string>();
+            list.Add(overrideNamespace);
+            foreach (CardDefinition trackDefinition in shiftTrackDefinitions)
+            {
+                modelCard = new Card(trackDefinition, TurnTaker, 0);
+                TurnTaker.OffToTheSide.AddCard(modelCard);
+                shiftTracks.Add(modelCard);
+                cardController = CardControllerFactory.CreateInstance(modelCard, TurnTakerController, overrideNamespace: "Cauldron.Drift");
+                TurnTakerController.AddCardController(cardController);
+                cardToControllerDict.Add(modelCard, cardController);
+                GameController.AddCardPropertyJournalEntry(modelCard, "OverrideTurnTaker", list);
+            }
+
+            List<SelectCardDecision> cardDecisions = new List<SelectCardDecision>();
+            IEnumerator coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.AddTokens, new LinqCardCriteria((Card c) => shiftTracks.Contains(c), "Shift Track Position"), cardDecisions, false, includeRealCardsOnly: false, cardSource: new CardSource(this));
+            if (UseUnityCoroutines)
+            {
+                yield return GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                GameController.ExhaustCoroutine(coroutine);
+            }
+
+            if (!DidSelectCard(cardDecisions))
+                yield break;
+
+            Card selectedTrack = GetSelectedCard(cardDecisions);
+            PlayCardAction playShiftAction = new PlayCardAction(GameController, TurnTakerController, selectedTrack, isPutIntoPlay: true, responsibleTurnTaker: TurnTaker, null, null, null, false, canBeCancelled: false);
+            playShiftAction.AllowTriggersToRespond = false;
+            coroutine = GameController.DoAction(playShiftAction);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            CardController selectTrackController = cardToControllerDict[selectedTrack];
+            int tokensToAdd = 0;
+            if (selectTrackController is BaseShiftTrack1CardController || selectTrackController is DualShiftTrack1CardController || selectTrackController is ThroughTheBreachShiftTrack1CardController)
+            {
+                tokensToAdd = 1;
+            }
+            else if (selectTrackController is BaseShiftTrack2CardController || selectTrackController is DualShiftTrack2CardController || selectTrackController is ThroughTheBreachShiftTrack2CardController)
+            {
+                tokensToAdd = 2;
+            }
+            else if (selectTrackController is BaseShiftTrack3CardController || selectTrackController is DualShiftTrack3CardController || selectTrackController is ThroughTheBreachShiftTrack3CardController)
+            {
+                tokensToAdd = 3;
+            }
+            else if (selectTrackController is BaseShiftTrack4CardController || selectTrackController is DualShiftTrack4CardController || selectTrackController is ThroughTheBreachShiftTrack4CardController)
+            {
+                tokensToAdd = 4;
+            }
+
+            coroutine = base.GameController.AddTokensToPool(selectedTrack.FindTokenPool("ShiftPool"), tokensToAdd, new CardSource(this));
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            _instantiatingShiftTracks = false;
+
+            yield break;
         }
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
