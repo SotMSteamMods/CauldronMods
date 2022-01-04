@@ -52,7 +52,7 @@ namespace Cauldron.Drift
                 //Place your other character card into play, active.
                 Card driftToPlay = GetSelectedCard(selectDriftDecision);
                 Card driftToNotUse = GameController.FindCardsWhere((Card c) => FindCardController(c) is DualDriftSubCharacterCardController && driftToPlay != c).FirstOrDefault();
-                coroutine = GameController.SwitchCards(CharacterCard, driftToPlay);
+                coroutine = GameController.SwitchCards(CharacterCard, driftToPlay, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
