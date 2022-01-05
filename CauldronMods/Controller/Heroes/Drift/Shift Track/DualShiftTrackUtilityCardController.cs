@@ -109,6 +109,23 @@ namespace Cauldron.Drift
         public IEnumerator SwapActiveDrift()
         {
             IEnumerator coroutine = null;
+
+            //put in a escape hatch if a swap has happened this turn after selecting to swap
+            if (this.HasTrackAbilityBeenActivated())
+            {
+                coroutine = GameController.SendMessageAction("Drift has already swapped characters this turn...", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                yield break;
+            }
+
             //Once per turn you may do the following in order:
             base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
             IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack);
