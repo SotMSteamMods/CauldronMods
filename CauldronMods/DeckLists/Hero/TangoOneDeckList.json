@@ -1,6 +1,7 @@
 {
     "name": "Tango One",
     "kind": "Hero",
+    "expansionIdentifier": "Cauldron",
     "initialCardIdentifiers": [
         "TangoOneCharacter"
     ],
