@@ -27,7 +27,7 @@
                 "Cauldron.Necro"
             ],
             "incapacitatedAbilities": [
-                "One hero may deal himself 2 toxic damage to draw 2 cards now.",
+                "One hero may deal themselves 2 toxic damage to draw 2 cards now.",
                 "One hero may discard up to 3 cards, then regain 2 HP for each card discarded.",
                 "Select a hero target. Increase damage dealt by that target by 3 and increase damage dealt to that target by 2 until the start of your next turn."
             ],

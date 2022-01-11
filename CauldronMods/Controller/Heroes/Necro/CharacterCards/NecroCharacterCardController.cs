@@ -54,7 +54,7 @@ namespace Cauldron.Necro
             {
                 case 0:
                     {
-                        //One hero may deal himself 2 toxic damage to draw 2 cards now.
+                        //One hero may themselves deal the 2 toxic damage to draw 2 cards now.
 
                         //Select a Hero
                         List<SelectCardDecision> storedHero = new List<SelectCardDecision>();
