@@ -53,7 +53,7 @@ namespace Cauldron.Mythos
         public bool IsTopCardMatching(string type)
         {
             //Advanced: Activate all {MythosDanger} effects.
-            if (base.Game.IsAdvanced && type == MythosDangerDeckIdentifier)
+            if (base.Game.IsAdvanced && CharacterCard.IsFlipped && type == MythosDangerDeckIdentifier)
             {
                 return true;
             }
