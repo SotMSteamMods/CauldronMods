@@ -2577,5 +2577,25 @@ namespace CauldronTests
             AssertNotGameOver();
 
         }
+
+        [Test()]
+        public void TestGhostsAndBattleZones()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.StSimeonsCatacombs", "MobileDefensePlatform", "InsulaPrimalis", "RookCity", "Megalopolis" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            DrawCard(haka);
+
+            GoToEndOfTurn(envOne);
+
+            Card possessor = PlayCard("Possessor");
+            AssertNextToCard(possessor, haka.CharacterCard);
+
+            PrintSpecialStringsForCard(possessor);
+
+            SwitchBattleZone(haka);
+            PrintSpecialStringsForCard(possessor);
+
+        }
     }
 }
