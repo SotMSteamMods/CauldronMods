@@ -516,6 +516,58 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestDisarmingBlow_TwoHeroDiscard()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Parse", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
+            //Any hero damaged this way discards 1 card.
+            QuickHPStorage(haka, parse, scholar);
+            QuickHandStorage(haka, parse, scholar);
+            PlayCard(DisarmingBlow);
+            QuickHPCheck(-3, 0, -3);
+            QuickHandCheck(-1, 0, -1);
+        }
+
+        [Test]
+        public void TestDisarmingBlow_TwoHeroDiscard_AutoDecide()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Parse", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
+            //Any hero damaged this way discards 1 card.
+            QuickHPStorage(haka, parse, scholar);
+            QuickHandStorage(haka, parse, scholar);
+            DecisionAutoDecideIfAble = true;
+            PlayCard(DisarmingBlow);
+            QuickHPCheck(-3, 0, -3);
+            QuickHandCheck(-1, 0, -1);
+        }
+
+        [Test]
+        public void TestDisarmingBlow_OneHeroTakesAllDamage()
+        {
+            SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Legacy", "TheScholar", "Megalopolis" });
+            outlander.DebugTraceToPlay = GetCard(Archangel);
+            StartGame();
+
+            Card leadFromTheFront = PlayCard("LeadFromTheFront");
+
+            DecisionYesNo = true;
+
+            QuickHandStorage(haka, legacy, scholar);
+            QuickHPStorage(haka, legacy, scholar);
+            PlayCard(DisarmingBlow);
+            QuickHPCheck(0, -6, 0);
+            QuickHandCheck(0, -1, 0);
+           
+        }
+
+        [Test]
         public void TestDisarmingBlow_NotHeroTakesDamage()
         {
             SetupGameController(new string[] { "Cauldron.Outlander", "Haka", "Unity", "TheScholar", "Megalopolis" });
