@@ -519,5 +519,19 @@ namespace CauldronTests.Oblivaeon
             PlayCard(squad);
             QuickHPCheck(-1, 0, 0, 0, 0, 0, 0);
         }
+
+        [Test()]
+        public void TestStartOfVillainOblivaeonTurn()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "RealmOfDiscord", "MobileDefensePlatform", "InsulaPrimalis", "RookCity", "Megalopolis" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            GoToPlayCardPhase(envOne);
+
+            Card impendingDoom = MoveCard(oblivaeon, "ImpendingDoom", oblivaeon.TurnTaker.Deck);
+            Card timeFlies = PlayCard("TimeFlies");
+            GoToStartOfTurn(oblivaeon);
+            AssertInPlayArea(scionTwo, impendingDoom);
+        }
     }
 }

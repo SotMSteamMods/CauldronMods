@@ -408,6 +408,12 @@ namespace CauldronTests.Random
             {
                 Console.WriteLine("Game over!");
                 Console.WriteLine(gameController.Game);
+
+                EndingResult[] winConditions = new EndingResult[] { EndingResult.VillainDestroyedVictory, EndingResult.PrematureVictory, EndingResult.AlternateVictory };
+                if (gameController.GameOverEndingResult.HasValue && winConditions.Contains(gameController.GameOverEndingResult.Value))
+                {
+                    Assert.Warn("The game was won!");
+                }
             }
         }
 
