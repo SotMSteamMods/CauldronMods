@@ -193,6 +193,29 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestRenegadeQuicksilverIncap2_NoDamageDealt()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");
+            StartGame();
+
+            SetupIncap(apostate, quicksilver.CharacterCard);
+            Card staff = PutInHand("TheStaffOfRa");
+            Card blaze = PutInHand("BlazingTornado");
+            DecisionYesNo = true;
+            DecisionSelectCards = new Card[] { staff, blaze };
+
+            //The next time a hero is dealt damage, they may play a card.
+            UseIncapacitatedAbility(quicksilver, 1);
+            AssertInHand(new Card[] { staff, blaze });
+
+            AddImmuneToNextDamageEffect(ra, false, true);
+            DealDamage(apostate, ra, 2, DamageType.Melee);
+            AssertInHand(new Card[] { staff, blaze });
+
+
+        }
+
+        [Test]
         public void TestRenegadeQuicksilverIncap2UsedTwice()
         {
             SetupGameController("Apostate", "Cauldron.Quicksilver/RenegadeQuicksilverCharacter", "Ra", "TheWraith", "Megalopolis");

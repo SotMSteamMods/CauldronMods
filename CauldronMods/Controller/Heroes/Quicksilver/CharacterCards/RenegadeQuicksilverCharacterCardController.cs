@@ -42,6 +42,7 @@ namespace Cauldron.Quicksilver
                         statusEffect.TargetCriteria.IsHeroCharacterCard = true;
                         statusEffect.NumberOfUses = 1;
                         statusEffect.BeforeOrAfter = BeforeOrAfter.After;
+                        statusEffect.DamageAmountCriteria.GreaterThan = 0;
                         statusEffect.CanEffectStack = true;
 
                         if (IsRealAction())
