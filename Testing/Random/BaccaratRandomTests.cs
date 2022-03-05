@@ -24,10 +24,28 @@ namespace CauldronTests.Random
         }
 
         [Test]
+        public void TestBaccarat_RandomOblivaeon()
+        {
+            GameController gameController = SetupRandomOblivAeonGameController(false,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.Baccarat" });
+            RunGame(gameController);
+        }
+
+        [Test]
         public void TestAceOfSorrowsBaccarat_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+            RunGame(gameController);
+        }
+
+        [Test]
+        public void TestAceOfSorrowsBaccarat_RandomOblivaeon()
+        {
+            GameController gameController = SetupRandomOblivAeonGameController(false,
                 availableEnvironments: CauldronEnvironments,
                 useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
             RunGame(gameController);
@@ -44,10 +62,28 @@ namespace CauldronTests.Random
         }
 
         [Test]
+        public void TestAceOfSwordsBaccarat_RandomOblivaeon()
+        {
+            GameController gameController = SetupRandomOblivAeonGameController(false,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+            RunGame(gameController);
+        }
+
+        [Test]
         public void TestPastBaccarat_Random()
         {
             GameController gameController = SetupRandomGameController(false,
                 availableVillains: CauldronVillains,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+            RunGame(gameController);
+        }
+
+        [Test]
+        public void TestPastBaccarat_RandomOblivaeon()
+        {
+            GameController gameController = SetupRandomOblivAeonGameController(false,
                 availableEnvironments: CauldronEnvironments,
                 useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
             RunGame(gameController);
@@ -64,10 +100,28 @@ namespace CauldronTests.Random
         }
 
         [Test]
+        public void TestBaccarat_ReasonableOblivaeon()
+        {
+            GameController gameController = SetupRandomOblivAeonGameController(true,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.Baccarat" });
+            RunGame(gameController);
+        }
+
+        [Test]
         public void TestAceOfSorrowsBaccarat_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
+            RunGame(gameController);
+        }
+
+        [Test]
+        public void TestAceOfSorrowsBaccarat_ReasonableOblivaeon()
+        {
+            GameController gameController = SetupRandomOblivAeonGameController(true,
                 availableEnvironments: CauldronEnvironments,
                 useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSorrowsBaccaratCharacter" });
             RunGame(gameController);
@@ -84,10 +138,28 @@ namespace CauldronTests.Random
         }
 
         [Test]
+        public void TestAceOfSwordsBaccarat_ReasonableOblivaeon()
+        {
+            GameController gameController = SetupRandomOblivAeonGameController(true,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.Baccarat/AceOfSwordsBaccaratCharacter" });
+            RunGame(gameController);
+        }
+
+        [Test]
         public void TestPastBaccarat_Reasonable()
         {
             GameController gameController = SetupRandomGameController(true,
                 availableVillains: CauldronVillains,
+                availableEnvironments: CauldronEnvironments,
+                useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
+            RunGame(gameController);
+        }
+
+        [Test]
+        public void TestPastBaccarat_ReasonableOblivaeon()
+        {
+            GameController gameController = SetupRandomOblivAeonGameController(true,
                 availableEnvironments: CauldronEnvironments,
                 useHeroes: new List<string> { "Cauldron.Baccarat/PastBaccaratCharacter" });
             RunGame(gameController);

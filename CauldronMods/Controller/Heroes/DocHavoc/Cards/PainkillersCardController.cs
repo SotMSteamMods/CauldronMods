@@ -57,7 +57,7 @@ namespace Cauldron.DocHavoc
             //At the start of that hero's turn, that target may deal itself 2 toxic damage. If no damage is taken this way, this card is destroyed.
             this.AddStartOfTurnTrigger(
                 (TurnTaker tt) =>
-                    tt == base.GetCardThisCardIsNextTo().Owner, this.DamageOrDestroyResponse, new TriggerType[]
+                    base.GetCardThisCardIsNextTo() != null && tt == base.GetCardThisCardIsNextTo().Owner, this.DamageOrDestroyResponse, new TriggerType[]
                 {
                     TriggerType.DealDamage,
                     TriggerType.DestroySelf

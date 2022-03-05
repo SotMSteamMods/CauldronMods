@@ -43,7 +43,7 @@ namespace Cauldron.Drift
 
         public TokenPool GetShiftPool()
         {
-            return this.GetShiftTrack().FindTokenPool("ShiftPool");
+            return this.GetShiftTrack()?.FindTokenPool("ShiftPool");
         }
 
         public Card GetShiftTrack()
