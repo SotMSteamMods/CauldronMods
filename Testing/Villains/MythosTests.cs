@@ -472,7 +472,13 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Mythos", "Legacy", "Bunker", "Haka", "Megalopolis" }, true);
             StartGame();
 
-            PutOnDeck(AclastyphWhoPeers);
+            PutOnDeck(PallidAcademic);
+
+            //Advanced where all {MythosDanger} effects are active should not be happening
+            Card rustedArtifact = PlayCard("RustedArtifact");
+            DealDamage(haka, rustedArtifact, 2, DamageType.Melee);
+            AssertNotInPlayArea(mythos, rustedArtifact);
+
             AddTokensToDangerousInvestigationPool(3);
             GoToEndOfTurn(mythos);
 
@@ -481,6 +487,8 @@ namespace CauldronTests
             DealDamage(haka, mythos, 2, DamageType.Melee);
             QuickHPCheck(-1);
         }
+
+       
 
         [Test()]
         public void TestAclastyphWhoPeers_Danger()
