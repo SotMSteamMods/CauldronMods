@@ -1,5 +1,6 @@
 ﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cauldron.Anathema
@@ -35,6 +36,21 @@ namespace Cauldron.Anathema
 		protected int GetNumberOfHeadInPlay()
 		{
 			return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && this.IsHead(c)).Count();
+		}
+
+		protected IEnumerable<Card> GetHeadsInPlay()
+		{
+			return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && this.IsHead(c));
+		}
+
+		protected IEnumerable<Card> GetBodiesInPlay()
+		{
+			return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && this.IsBody(c));
+		}
+
+		protected IEnumerable<Card> GetArmsInPlay()
+		{
+			return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && this.IsArm(c));
 		}
 
 		protected int GetNumberOfBodyInPlay()
