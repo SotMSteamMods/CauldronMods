@@ -308,15 +308,15 @@ namespace Cauldron.Pyre
             string radIcon = "{{Rad}}";
             if (CurrentMode is CustomMode.CardToIrradiate)
             {
-                return new CustomDecisionText($"Select a card to {radIcon}", $"{decision.DecisionMaker.Name} is deciding which card to {radIcon}.", $"Vote for which card to {radIcon}", $"card to {radIcon}");
+                return new CustomDecisionText($"Select a card to {radIcon}", $"deciding which card to {radIcon}.", $"Vote for which card to {radIcon}", $"card to {radIcon}");
             }
             else if (CurrentMode is CustomMode.PlayerToIrradiate)
             {
-                return new CustomDecisionText($"Select a player to {radIcon} a card in their hand.", $"{decision.DecisionMaker.Name} is deciding whose hand to {radIcon} cards in.", $"Vote for which player's hand to {radIcon} cards from.", $"player's hand to {radIcon} cards from");
+                return new CustomDecisionText($"Select a player to {radIcon} a card in their hand.", $"deciding whose hand to {radIcon} cards in.", $"Vote for which player's hand to {radIcon} cards from.", $"player's hand to {radIcon} cards from");
             }
             else if (CurrentMode is CustomMode.Unique)
             {
-                return new CustomDecisionText($"Select a player to {radIcon} a card in their hand.", $"{decision.DecisionMaker.Name} is deciding whose hand to {radIcon} cards in.", $"Vote for which player's hand to {radIcon} cards from.", $"player's hand to {radIcon} cards from");
+                return new CustomDecisionText($"Select a player to {radIcon} a card in their hand.", $"deciding whose hand to {radIcon} cards in.", $"Vote for which player's hand to {radIcon} cards from.", $"player's hand to {radIcon} cards from");
             }
 
             return base.GetCustomDecisionText(decision);
