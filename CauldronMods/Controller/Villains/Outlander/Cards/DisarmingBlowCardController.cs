@@ -19,7 +19,8 @@ namespace Cauldron.Outlander
         {
             //{Outlander} deals the 2 non-villain targets with the highest HP 3 melee damage each.
             //Any hero damaged this way discards 1 card.
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 3, DamageType.Melee, numberOfTargets: () => 2, addStatusEffect: DiscardCardResponse);
+            List<DealDamageAction> storedResults = new List<DealDamageAction>();
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 3, DamageType.Melee, numberOfTargets: () => 2, storedResults: storedResults);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -28,19 +29,52 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
+            if (storedResults.Any(dd => dd.Target.IsHeroCharacterCard && dd.DidDealDamage))
+            {
+                List<TurnTaker> heroesThatTookDamage = storedResults.Where(dd => dd.Target.IsHeroCharacterCard && dd.DidDealDamage).Select(dd => dd.Target.Owner).Distinct().ToList();
+
+                List<SelectTurnTakerDecision> storedHero = new List<SelectTurnTakerDecision>();
+                coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.DiscardCard, false, true, storedHero, heroCriteria: new LinqTurnTakerCriteria(tt => heroesThatTookDamage.Contains(tt)), cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if (DidSelectTurnTaker(storedHero))
+                {
+                    TurnTaker selectedHero = GetSelectedTurnTaker(storedHero);
+                    heroesThatTookDamage.Remove(selectedHero);
+                    coroutine = GameController.SelectAndDiscardCard(FindHeroTurnTakerController(selectedHero.ToHero()), cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
+
+                    if (heroesThatTookDamage.Count() > 0)
+                    {
+                        TurnTaker otherHero = heroesThatTookDamage.First();
+                        coroutine = GameController.SelectAndDiscardCard(FindHeroTurnTakerController(otherHero.ToHero()), cardSource: GetCardSource());
+                        if (UseUnityCoroutines)
+                        {
+                            yield return GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            GameController.ExhaustCoroutine(coroutine);
+                        }
+                    }
+                }
+            }
             yield break;
         }
 
-        private IEnumerator DiscardCardResponse(DealDamageAction dd)
-        {
-            if(dd.DidDealDamage && dd.Target.IsHeroCharacterCard)
-            {
-                return GameController.SelectAndDiscardCard(FindHeroTurnTakerController(dd.Target.Owner.ToHero()), cardSource: GetCardSource());
-            }
-            else
-            {
-                return DoNothing();
-            }
-        }
     }
 }
