@@ -92,7 +92,7 @@ namespace Cauldron.StSimeonsCatacombs
                 }
                 affectedRoomString += "in play. " + Card.Title + " is affected by Hero cards.";
             }
-            else
+            else if(AffectedCards.Count() > 0)
             {
                 var affectedRoomsList = AffectedCards;
                 affectedRoomString += affectedRoomsList.First().Title + " ";
@@ -109,6 +109,10 @@ namespace Cauldron.StSimeonsCatacombs
                     affectedRoomString += "not ";
                 }
                 affectedRoomString += "in play. " + Card.Title + " is unaffected by Hero cards.";
+            } else
+            {
+                string affectedWord = !FlipIdentiferInPlayCondition ? "unaffected" : "affected";
+                affectedRoomString += "No rooms are visible to " + Card.Title + ". " + Card.Title + " is " + affectedWord + " by Hero cards.";
             }
             return affectedRoomString;
         }
