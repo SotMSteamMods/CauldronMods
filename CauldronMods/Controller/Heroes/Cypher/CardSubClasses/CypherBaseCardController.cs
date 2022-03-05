@@ -126,20 +126,27 @@ namespace Cauldron.Cypher
 
         protected IEnumerator MoveInPlayAugment(SelectCardDecision scd)
         {
-            if (scd.SelectedCard == null)
+            if (scd.SelectedCard is null)
             {
                 yield break;
             }
 
             var otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard.Location.OwnerCard && c.IsHeroCharacterCard &&
-                                                         c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, realCardsOnly: true)
+                                                         c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), realCardsOnly: true)
                                     .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
 
-            IEnumerator routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard, otherHeroLocations,
-                                    isPutIntoPlay: false,
-                                    playIfMovingToPlayArea: false,
-                                    cardSource: GetCardSource());
-
+            IEnumerator routine = null;
+            if (otherHeroLocations.Count() > 0)
+            {
+                routine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, scd.SelectedCard, otherHeroLocations,
+                                        isPutIntoPlay: false,
+                                        playIfMovingToPlayArea: false,
+                                        cardSource: GetCardSource());
+            }
+            else
+            {
+                routine = GameController.SendMessageAction("There are no available heroes to move the augment to.", Priority.Medium, GetCardSource(), showCardSource: true);
+            }
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

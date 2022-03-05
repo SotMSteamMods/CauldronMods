@@ -27,7 +27,7 @@ namespace Cauldron.Cypher
         {
             // You may move 1 Augment in play next to a new hero.
             SelectCardDecision scd = new SelectCardDecision(GameController, DecisionMaker,
-                SelectionType.Custom, GetAugmentsInPlay(), true, cardSource: GetCardSource());
+                SelectionType.Custom, GetAugmentsInPlay().Where(c => GameController.IsCardVisibleToCardSource(c, GetCardSource())), true, cardSource: GetCardSource());
 
             IEnumerator routine = base.GameController.SelectCardAndDoAction(scd, MoveInPlayAugment);
             if (base.UseUnityCoroutines)
@@ -61,7 +61,7 @@ namespace Cauldron.Cypher
                 yield break;
             }
 
-            var selectedHero = storedHeroCard.FirstOrDefault().SelectedCard;
+            var selectedHero = GetSelectedCard(storedHeroCard);
             var heroController = FindHeroTurnTakerController(selectedHero.Owner.ToHero());
 
             routine = base.GameController.SelectTargetsAndDealDamage(heroController,
