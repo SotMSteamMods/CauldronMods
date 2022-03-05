@@ -12,14 +12,17 @@ namespace Cauldron.Drift
     {
         protected DualShiftTrackUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => this.GetInactiveCharacterCard().AlternateTitleOrTitle + " is the inactive {Drift}, she is at position " + this.InactiveCharacterPosition());
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasTrackAbilityBeenActivated(), () => "Drift has changed the active character this turn", () => "Drift has not changed the active character this turn", showInEffectsList: () => true);
+            base.SpecialStringMaker.ShowSpecialString(() => this.GetInactiveCharacterCard().AlternateTitleOrTitle + " is the inactive {Drift}, she is at position " + this.InactiveCharacterPosition()).Condition = () => TurnTakerController is DriftTurnTakerController driftTTC && driftTTC.HasBeenSetup;
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasTrackAbilityBeenActivated(), () => "Drift has changed the active character this turn", () => "Drift has not changed the active character this turn", showInEffectsList: () => true).Condition = () => !(FindCardController(GetActiveCharacterCard()) is DualDriftCharacterCardController); ;
         }
 
         protected enum CustomMode
         {
-            AskToSwap
+            AskToSwap,
+            AskToSwapFromPlay
         }
+
+        private Card customTextCardBeingPlayed { get; set; }
 
         private CustomMode customMode { get; set; }
 
@@ -30,11 +33,16 @@ namespace Cauldron.Drift
         public override void AddTriggers()
         {
             base.AddTriggers();
-            //Once per turn you may do the following in order:
+            // Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order
             //1. Place your active character on your current shift track space.
             //2. Place the shift token on your inactive character's shift track space.
             //3. Switch which character is active.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated() && action.Target == GetActiveCharacterCard(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);  
+
+            //shift trigger happens in the actual shifting logic
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => Game.HasGameStarted && !this.HasTrackAbilityBeenActivated() && action.Target == GetActiveCharacterCard(), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
+
+            string[] noResponseIdentifiers = new string[] { "ShiftTrack", "FutureDrift", "PastDrift" };
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpa) => cpa.CardEnteringPlay != null && !this.HasTrackAbilityBeenActivated() && cpa.CardEnteringPlay.Owner == TurnTakerControllerWithoutReplacements.TurnTaker && noResponseIdentifiers.All(id => !cpa.CardEnteringPlay.Identifier.Contains(id)), this.TrackResponse, TriggerType.ModifyTokens, TriggerTiming.Before);
         }
 
         public bool HasTrackAbilityBeenActivated()
@@ -43,11 +51,19 @@ namespace Cauldron.Drift
             return trackEntries.Any();
         }
 
-        private IEnumerator TrackResponse(DealDamageAction action)
+        private IEnumerator TrackResponse(GameAction action)
         {
             List<YesNoCardDecision> switchDecision = new List<YesNoCardDecision>();
-            customMode = CustomMode.AskToSwap;
-            YesNoCardDecision decision = new YesNoCardDecision(GameController, HeroTurnTakerController, SelectionType.Custom, Card, action: action, associatedCards: GetInactiveCharacterCard().ToEnumerable(), cardSource: GetCardSource());
+            if (action is CardEntersPlayAction cpa)
+            {
+                customMode = CustomMode.AskToSwapFromPlay;
+                customTextCardBeingPlayed = cpa.CardEnteringPlay;
+            }
+            else
+            {
+                customMode = CustomMode.AskToSwap;
+            }
+            YesNoCardDecision decision = new YesNoCardDecision(GameController, HeroTurnTakerController, SelectionType.Custom, Card, action: action is DealDamageAction ? action : null, associatedCards: GetInactiveCharacterCard().ToEnumerable(), cardSource: GetCardSource());
             decision.ExtraInfo = () => $"{GetInactiveCharacterCard().Title} is at position {InactiveCharacterPosition()}";
             switchDecision.Add(decision);
             IEnumerator coroutine = GameController.MakeDecisionAction(decision);
@@ -75,7 +91,29 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = RedirectDamage(action, TargetType.SelectTarget, c => c == GetActiveCharacterCard());
+                if (action is DealDamageAction dealDamageAction)
+                {
+                    coroutine = RedirectDamage(dealDamageAction, TargetType.SelectTarget, c => c == GetActiveCharacterCard());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
+                }
+            }
+        }
+
+        public IEnumerator SwapActiveDrift()
+        {
+            IEnumerator coroutine = null;
+
+            //put in a escape hatch if a swap has happened this turn after selecting to swap
+            if (this.HasTrackAbilityBeenActivated())
+            {
+                coroutine = GameController.SendMessageAction("Drift has already swapped characters this turn...", Priority.Medium, GetCardSource(), showCardSource: true);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -84,12 +122,10 @@ namespace Cauldron.Drift
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-            }
-        }
 
-        public IEnumerator SwapActiveDrift()
-        {
-            IEnumerator coroutine = null;
+                yield break;
+            }
+
             //Once per turn you may do the following in order:
             base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
             IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack);
@@ -208,6 +244,11 @@ namespace Cauldron.Drift
             if (customMode == CustomMode.AskToSwap)
             {
                 return new CustomDecisionText("Do you want to switch character cards?", "Should they switch character cards?", "Vote for if they should switch character cards?", "switching character cards");
+            }
+
+            if(customMode == CustomMode.AskToSwapFromPlay)
+            {
+                return new CustomDecisionText($"Do you want to switch character cards before playing [b]{customTextCardBeingPlayed.Title}[/b]?", $"Should they switch character cards before playing {customTextCardBeingPlayed.Title}?", $"Vote for if they should switch character cardsbefore playing {customTextCardBeingPlayed.Title}?", $"switching character cards before playing {customTextCardBeingPlayed.Title}");
             }
 
             return base.GetCustomDecisionText(decision);
