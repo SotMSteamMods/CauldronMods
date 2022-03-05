@@ -147,7 +147,7 @@ namespace Cauldron.Baccarat
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                Card selectedCard = decisions.LastOrDefault<PlayCardAction>().CardToPlay;
+                Card selectedCard = decisions.LastOrDefault<PlayCardAction>()?.CardToPlay;
                 if (decisions.Count() > X && selectedCard != null)
                 {
                     playedCards.Add(selectedCard);

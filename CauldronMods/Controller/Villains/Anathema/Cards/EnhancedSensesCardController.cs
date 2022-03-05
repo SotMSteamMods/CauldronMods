@@ -38,6 +38,10 @@ namespace Cauldron.Anathema
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
 
+			if(results.Count() == 0)
+            {
+				yield break;
+            }
 			coroutine = base.DealDamage(base.Card, results.First(), 1, DamageType.Sonic, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
