@@ -383,6 +383,36 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestAnticoagulant_InfiniteLoop()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "AkashThriya", "Megalopolis");
+            StartGame();
+
+            Card antiC = GetCard(AnticoagulantCardController.Identifier);
+
+            PlayCard(antiC);
+
+            Card vitalizedThorn = MoveCard(thriya, "VitalizedThorns", env.TurnTaker.Deck);
+            PlayCard(vitalizedThorn);
+
+            //change phase to help with consistency
+            GoToPlayCardPhase(legacy);
+            PutOnDeck("BioterrorSquad");
+            PutOnDeck("UndiagnosedSubject");
+
+
+            QuickHPStorage(vector, legacy, ra, thriya);
+
+            // Act
+            DealDamage(legacy, vector, 1, DamageType.Melee);
+
+            // Assert
+            QuickHPCheck(-3, -2, -2, -2);
+            AssertInTrash(antiC);
+        }
+
+        [Test]
         public void TestAnticoagulant_NoResponseOnZeroDamage()
         {
             // Arrange
