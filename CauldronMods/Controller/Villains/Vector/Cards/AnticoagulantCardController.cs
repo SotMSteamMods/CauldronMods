@@ -19,6 +19,8 @@ namespace Cauldron.Vector
 
         private const int IncreaseDamageAmount = 1;
 
+        private DealDamageAction respondingDealDamageAction { get; set; }
+
         public AnticoagulantCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -41,20 +43,8 @@ namespace Cauldron.Vector
             // deals each hero target X toxic damage, where X is the amount
             // of damage that was dealt to {Vector}.
 
-            IEnumerator damageRoutine = base.GameController.DealDamage(base.DecisionMaker, base.CharacterCard, 
-                card => card.IsHero && card.IsInPlay,
-                dda.Amount, DamageType.Toxic, cardSource: GetCardSource());
-
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(damageRoutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(damageRoutine);
-            }
-
-            IEnumerator destroyRoutine = base.GameController.DestroyCard(this.DecisionMaker, this.Card);
+            respondingDealDamageAction = dda;
+            IEnumerator destroyRoutine = base.GameController.DestroyCard(this.DecisionMaker, this.Card, postDestroyAction: () =>  DealDamageFollowup(dda), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(destroyRoutine);
@@ -63,6 +53,13 @@ namespace Cauldron.Vector
             {
                 base.GameController.ExhaustCoroutine(destroyRoutine);
             }
+        }
+
+        private IEnumerator DealDamageFollowup(DealDamageAction dda)
+        {
+            return GameController.DealDamage(base.DecisionMaker, base.CharacterCard,
+                card => card.IsHero && card.IsInPlay,
+                dda.Amount, DamageType.Toxic, cardSource: CharacterCardController.GetCardSource());
         }
     }
 }
