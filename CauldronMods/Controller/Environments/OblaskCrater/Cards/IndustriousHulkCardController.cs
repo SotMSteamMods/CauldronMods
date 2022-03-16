@@ -28,7 +28,7 @@ namespace Cauldron.OblaskCrater
 		private IEnumerator DealDamageResponse(DrawCardAction drawCard)
 		{
 			List<Card> storedCharacter = new List<Card>();
-			IEnumerator coroutine = FindCharacterCardToTakeDamage(drawCard.HeroTurnTaker, storedCharacter, base.CharacterCard, 1, DamageType.Melee);
+			IEnumerator coroutine = FindCharacterCardToTakeDamage(drawCard.HeroTurnTaker, storedCharacter, Card, 1, DamageType.Melee);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
