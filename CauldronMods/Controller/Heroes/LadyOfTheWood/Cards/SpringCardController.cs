@@ -12,7 +12,7 @@ namespace Cauldron.LadyOfTheWood
 		public override void AddTriggers()
 		{
 			//Whenever LadyOfTheWood deals toxic damage to a target, she regains that much HP.
-			Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Toxic;
+			Func<DealDamageAction, bool> criteria = (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard) && dd.DamageType == DamageType.Toxic && dd.Amount > 0;
 			base.AddTrigger<DealDamageAction>(criteria, (DealDamageAction dd) => base.GameController.GainHP(base.CharacterCard, new int?(dd.Amount), cardSource: base.GetCardSource()), new TriggerType[]{ TriggerType.GainHP }, TriggerTiming.After);
 		}
 	}
