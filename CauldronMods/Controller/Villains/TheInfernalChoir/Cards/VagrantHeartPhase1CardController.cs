@@ -81,7 +81,7 @@ namespace Cauldron.TheInfernalChoir
             AddTrigger<BulkMoveCardsAction>(HeartBulkMoveCriteria, ga => GoToPhase2(ga), TriggerType.FlipCard, TriggerTiming.After);
 
             // "If the Hero is Incapacitated or Vagrant Heart leaves play, the heroes lose. Game over."
-            AddTrigger<TargetLeavesPlayAction>(tlpa => tlpa.TargetLeavingPlay.Owner == VagrantTurnTaker && VagrantTurnTaker.IsIncapacitatedOrOutOfGame, VagrantHeartGameOver, TriggerType.GameOver, TriggerTiming.After);
+            AddTrigger<TargetLeavesPlayAction>(tlpa => tlpa.TargetLeavingPlay.Owner == VagrantTurnTaker && VagrantTurnTaker.IsIncapacitated, VagrantHeartGameOver, TriggerType.GameOver, TriggerTiming.After);
 
             //visibility
             base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && !md.CardSource.Card.IsVillain, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
@@ -106,7 +106,7 @@ namespace Cauldron.TheInfernalChoir
 
         private bool HeartBulkMoveCriteria(BulkMoveCardsAction bmca)
         {
-            return !VagrantTurnTaker.Revealed.HasCards && !VagrantDeck.HasCards;
+            return !VagrantTurnTaker.Revealed.HasCards && !VagrantDeck.HasCards && !VagrantTurnTaker.IsIncapacitated;
         }
 
         /* ..shuffle all cards under Vagrant Heart back into the hero's deck, and flip {TheInfernalChoir}'s villain character cards and Vagrant Heart." */
