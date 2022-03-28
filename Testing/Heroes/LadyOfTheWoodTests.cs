@@ -93,67 +93,67 @@ namespace CauldronTests
 
             PrintSeparator("Check for Cold");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Energy");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Energy, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Energy, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Fire");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Infernal");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Lightning");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Melee");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Melee, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Melee, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Projectile");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Projectile, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Projectile, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Psychic");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Psychic, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Psychic, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Radiant");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Radiant, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Radiant, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Sonic");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Sonic, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Sonic, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
 
             PrintSeparator("Check for Toxic");
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
             UsePower(ladyWood.CharacterCard);
             QuickHPCheck(0);
         }
@@ -470,23 +470,23 @@ namespace CauldronTests
                 baron.CharacterCard, ladyWood.CharacterCard, ra.CharacterCard, haka.CharacterCard 
             };
             PrintSeparator("Check for Toxic");
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
             UsePower(crown);
             QuickHPCheck(0, -1, -1, -1);
 
             PrintSeparator("Check for Fire");
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             UsePower(crown);
             QuickHPCheck(-1, 0, -1, -1);
 
 
             PrintSeparator("Check for Lightning");
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
             UsePower(crown);
             QuickHPCheck(-1, -1, 0, -1);
 
             PrintSeparator("Check for Cold");
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
             UsePower(crown);
             QuickHPCheck(-1, -1, -1, 0);
 
@@ -707,7 +707,7 @@ namespace CauldronTests
             QuickHPStorage(mdp);
 
             PrintSeparator("Check for fire");
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             PlayCard("FireInTheClouds");
             QuickHPCheck(-2);
 
@@ -779,7 +779,7 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { baron.CharacterCard, null };
             QuickHPStorage(baron, ladyWood, ra, haka);
             PrintSeparator("Check for lightning");
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
             PlayCard("FireInTheClouds");
             QuickHPCheck(0, 0, 0, 0);
         }
@@ -835,7 +835,7 @@ namespace CauldronTests
             QuickHPStorage(mdp);
 
             PrintSeparator("Check for toxic");
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(-2);
 
@@ -855,7 +855,7 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { baron.CharacterCard, null };
             QuickHPStorage(baron, ladyWood, ra, haka);
             PrintSeparator("Check for cold");
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
             PlayCard("FrostOnThePetals");
             QuickHPCheck(0, 0, 0, 0);
         }
@@ -1618,7 +1618,7 @@ namespace CauldronTests
             DecisionSelectCard = ra.CharacterCard;
             QuickHPStorage(ra);
             //Use LotW power to trigger reaction
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
             UsePower(gown);
             QuickHPCheck(0);
         }
@@ -1653,6 +1653,42 @@ namespace CauldronTests
             DealDamage(haka, ra, 5, DamageType.Toxic);
             //since not lady of the wood dealt the damage, she should not gain hp
             QuickHPCheckZero();
+
+        }
+
+        [Test()]
+        public void TestSpring_NoDamageDealt()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //set hp so room to gain more
+            SetHitPoints(ladyWood, 10);
+            //put spring in play
+            PutIntoPlay("Spring");
+
+            //Whenever LadyOfTheWood deals toxic damage to a target, she regains that much HP.
+
+            PrintSeparator("Checking for no healing when damage is prevented...");
+            AddIncreaseNextHealingTrigger(ladyWood, 2);
+            AddImmuneToNextDamageEffect(baron, villains: true, heroes: false);
+
+            QuickHPStorage(baron, ladyWood);
+            DealDamage(ladyWood, baron, 2, DamageType.Toxic);
+            QuickHPCheck(0, 0);
+
+            PrintSeparator("Checking for no healing when damage is reduced to 0...");
+            AddIncreaseNextHealingTrigger(ladyWood, 2);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 2);
+            QuickHPStorage(baron, ladyWood);
+            DealDamage(ladyWood, baron, 2, DamageType.Toxic);
+            QuickHPCheck(0, 0);
+
+
+
+
+
 
         }
 
@@ -1715,7 +1751,7 @@ namespace CauldronTests
             //LadyOfTheWood deals herself 1 fire damage and 1 target 4 fire damage.
             QuickHPStorage(ladyWood, haka, baron, ra);
             DecisionSelectTarget = haka.CharacterCard;
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             UsePower(suncast);
             QuickHPCheck(0, -4, 0, 0);
         }
@@ -1802,7 +1838,7 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { ra.CharacterCard, haka.CharacterCard };
             QuickHPStorage(ra, haka, baron);
             //use increase damage check since damage will be irreducible
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Lightning, 1);
             UsePower(shawl);
             QuickHPCheck(-2, -1, 0);
 

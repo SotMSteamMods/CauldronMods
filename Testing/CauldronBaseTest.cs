@@ -143,7 +143,7 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(ttc.CharacterCardController)));
         }
 
-        protected void AddReduceDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
+        protected void AddReduceNextDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
         {
             ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(amount);
             reduceDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
@@ -151,12 +151,19 @@ namespace CauldronTests
             this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
         }
 
-        protected void AddIncreaseDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
+        protected void AddIncreaseNextDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
         {
             IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(amount);
             increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
             increaseDamageStatusEffect.NumberOfUses = 1;
             this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
+        }
+
+        protected void AddIncreaseNextHealingTrigger(HeroTurnTakerController httc,  int amount)
+        {
+            IncreaseGainHPStatusEffect increaseGainHPStatusEffect = new IncreaseGainHPStatusEffect(amount);
+            increaseGainHPStatusEffect.NumberOfUses = 1;
+            this.RunCoroutine(this.GameController.AddStatusEffect(increaseGainHPStatusEffect, true, new CardSource(httc.CharacterCardController)));
         }
 
         protected void AddDamageCannotBeIncreasedTrigger(Func<DealDamageAction, bool> criteria, CardSource cardSource)

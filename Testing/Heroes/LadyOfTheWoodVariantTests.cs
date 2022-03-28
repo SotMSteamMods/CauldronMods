@@ -192,19 +192,19 @@ namespace CauldronTests
 
             //irreducible for villains
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Melee, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Melee, 1);
             DealDamage(baron, ra, 5, DamageType.Melee);
             QuickHPCheck(-5);
 
             //irreducible for heroes
             QuickHPStorage(baron);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             DealDamage(ra, baron, 5, DamageType.Fire);
             QuickHPCheck(-5);
 
             //irreducible for env targets
             QuickHPStorage(baron);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Projectile, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Projectile, 1);
             DealDamage(police, baron.CharacterCard, 5, DamageType.Projectile);
             QuickHPCheck(-5);
 
@@ -214,19 +214,19 @@ namespace CauldronTests
 
             // no longer irreducible for villains
             QuickHPStorage(ra);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Melee, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Melee, 1);
             DealDamage(baron, ra, 5, DamageType.Melee);
             QuickHPCheck(-4);
 
             //no longer irreducible for heroes
             QuickHPStorage(baron);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             DealDamage(ra, baron, 5, DamageType.Fire);
             QuickHPCheck(-4);
 
             //no longer irreducible for env targets
             QuickHPStorage(baron);
-            AddReduceDamageOfDamageTypeTrigger(ladyWood, DamageType.Projectile, 1);
+            AddReduceNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Projectile, 1);
             DealDamage(police, baron.CharacterCard, 5, DamageType.Projectile);
             QuickHPCheck(-4);
 
@@ -261,7 +261,7 @@ namespace CauldronTests
             GoToNextTurn();
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionYesNo = true;
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
             QuickHPStorage(ra);
             AssertTokenPoolCount(ElementTokenPool, 2);
             DealDamage(ladyWood, ra, 3, DamageType.Cold);
@@ -271,7 +271,7 @@ namespace CauldronTests
             //check that it only applies to lady of the wood
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionYesNo = true;
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
             QuickHPStorage(ra);
             AssertTokenPoolCount(ElementTokenPool, 1);
             DealDamage(haka, ra, 3, DamageType.Cold);
@@ -282,7 +282,7 @@ namespace CauldronTests
             GoToStartOfTurn(ladyWood);
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionYesNo = true;
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
             QuickHPStorage(ra);
             AssertTokenPoolCount(ElementTokenPool, 1);
             DealDamage(ladyWood, ra, 3, DamageType.Cold);
@@ -303,7 +303,7 @@ namespace CauldronTests
             //check optional damage type change when guise deals damage
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionYesNo = true;
-            AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
             QuickHPStorage(ra);
             AssertTokenPoolCount(ElementTokenPool, 2);
             DealDamage(guise, ra, 3, DamageType.Cold);
@@ -315,7 +315,7 @@ namespace CauldronTests
 
             DecisionSelectDamageType = DamageType.Radiant;
             DecisionYesNo = true;
-            AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Radiant, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(guise, DamageType.Radiant, 1);
             QuickHPStorage(ra);
             AssertTokenPoolCount(ElementTokenPool, 3);
             DealDamage(guise, ra, 3, DamageType.Cold);
@@ -326,7 +326,7 @@ namespace CauldronTests
             //check that it only applies to guise and lotw
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionYesNo = true;
-            AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
             QuickHPStorage(ra);
             AssertTokenPoolCount(ElementTokenPool, 2);
             DealDamage(ra, ra, 3, DamageType.Cold);
@@ -337,7 +337,7 @@ namespace CauldronTests
             GoToStartOfTurn(guise);
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionYesNo = true;
-            AddIncreaseDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(guise, DamageType.Infernal, 1);
             QuickHPStorage(ra);
             AssertTokenPoolCount(ElementTokenPool, 2);
             DealDamage(guise, ra, 3, DamageType.Cold);
@@ -434,7 +434,7 @@ namespace CauldronTests
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionSelectTarget = baron.CharacterCard;
             QuickHPStorage(baron);
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
             AssertTokenPoolCount(ElementTokenPool, 2);
             UseIncapacitatedAbility(ladyWood, 2);
             QuickHPCheck(-4);
@@ -459,7 +459,7 @@ namespace CauldronTests
             DecisionSelectDamageType = DamageType.Infernal;
             DecisionSelectTarget = baron.CharacterCard;
             QuickHPStorage(baron);
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Infernal, 1);
             AssertTokenPoolCount(ElementTokenPool, 0);
             UseIncapacitatedAbility(ladyWood, 2);
             QuickHPCheck(0);
@@ -523,13 +523,13 @@ namespace CauldronTests
             QuickHPCheck(3);
 
             //check that damage has been changed to toxic
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
             QuickHPStorage(ra);
             DealDamage(ladyWood, ra, 3, DamageType.Cold);
             QuickHPCheck(-4);
 
             //check only next damage
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Toxic, 1);
             QuickHPStorage(ra);
             DealDamage(ladyWood, ra, 3, DamageType.Cold);
             QuickHPCheck(-3);
@@ -559,7 +559,7 @@ namespace CauldronTests
             QuickHPCheck(3);
 
             //check that damage has been changed to fire
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Fire, 1);
             QuickHPStorage(ra);
             DealDamage(ladyWood, ra, 3, DamageType.Cold);
             QuickHPCheck(-6); //+1 from check, +2 from summer
@@ -596,7 +596,7 @@ namespace CauldronTests
             GoToUseIncapacitatedAbilityPhase(ladyWood);
             QuickHPStorage(ra);
             DecisionSelectTarget = ra.CharacterCard;
-            AddIncreaseDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
+            AddIncreaseNextDamageOfDamageTypeTrigger(ladyWood, DamageType.Cold, 1);
             UseIncapacitatedAbility(ladyWood, 1);
             QuickHPCheck(-2);
         }
