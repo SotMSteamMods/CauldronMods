@@ -32,7 +32,6 @@ namespace Cauldron.Outlander
             if (storedResults.Any(dd => dd.Target.IsHeroCharacterCard && dd.DidDealDamage))
             {
                 List<TurnTaker> heroesThatTookDamage = storedResults.Where(dd => dd.Target.IsHeroCharacterCard && dd.DidDealDamage).Select(dd => dd.Target.Owner).Distinct().ToList();
-
                 List<SelectTurnTakerDecision> storedHero = new List<SelectTurnTakerDecision>();
                 coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.DiscardCard, false, true, storedHero, heroCriteria: new LinqTurnTakerCriteria(tt => heroesThatTookDamage.Contains(tt)), cardSource: GetCardSource());
                 if (UseUnityCoroutines)
@@ -44,11 +43,34 @@ namespace Cauldron.Outlander
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
+                if(!DidSelectTurnTaker(storedHero) && !storedHero.First().AutoDecided)
+                {
+                    yield break;
+                }
+
+                // default to first hero in case decision was auto-decided
+                TurnTaker selectedHero = heroesThatTookDamage.First();
+
                 if (DidSelectTurnTaker(storedHero))
                 {
-                    TurnTaker selectedHero = GetSelectedTurnTaker(storedHero);
-                    heroesThatTookDamage.Remove(selectedHero);
-                    coroutine = GameController.SelectAndDiscardCard(FindHeroTurnTakerController(selectedHero.ToHero()), cardSource: GetCardSource());
+                    selectedHero = GetSelectedTurnTaker(storedHero);
+                }
+
+                heroesThatTookDamage.Remove(selectedHero);
+                coroutine = GameController.SelectAndDiscardCard(FindHeroTurnTakerController(selectedHero.ToHero()), cardSource: GetCardSource());
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if (heroesThatTookDamage.Count() > 0)
+                {
+                    TurnTaker otherHero = heroesThatTookDamage.First();
+                    coroutine = GameController.SelectAndDiscardCard(FindHeroTurnTakerController(otherHero.ToHero()), cardSource: GetCardSource());
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(coroutine);
@@ -57,21 +79,8 @@ namespace Cauldron.Outlander
                     {
                         GameController.ExhaustCoroutine(coroutine);
                     }
-
-                    if (heroesThatTookDamage.Count() > 0)
-                    {
-                        TurnTaker otherHero = heroesThatTookDamage.First();
-                        coroutine = GameController.SelectAndDiscardCard(FindHeroTurnTakerController(otherHero.ToHero()), cardSource: GetCardSource());
-                        if (UseUnityCoroutines)
-                        {
-                            yield return GameController.StartCoroutine(coroutine);
-                        }
-                        else
-                        {
-                            GameController.ExhaustCoroutine(coroutine);
-                        }
-                    }
                 }
+                
             }
             yield break;
         }
