@@ -652,6 +652,32 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSonicAmplifier_CardsUnderAreNotInPlay()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
+            StartGame();
+
+            Card amp = PlayCard("SonicAmplifier");
+            Card soundMasking = MoveCard(cricket, "SoundMasking", cricket.TurnTaker.Trash);
+            Card swarmingFrequency = MoveCard(cricket, "SwarmingFrequency", cricket.TurnTaker.Trash);
+            Card top = cricket.TurnTaker.Deck.TopCard;
+            DecisionYesNo = true;
+            //Whenever {Cricket} deals sonic damage to a target, you may put the top card of your deck beneath this one. Cards beneath this one are not considered to be in play.
+            DealDamage(cricket, akash, 2, DamageType.Sonic);
+            AssertUnderCard(amp, top);
+
+            PlayCard(soundMasking);
+            PlayCard(swarmingFrequency);
+
+            AssertNextDecisionChoices(included: new List<Card>() {amp, soundMasking, swarmingFrequency }, notIncluded: new List<Card>() { top });
+            PlayCard("LookingForThis");
+
+            
+
+           
+        }
+
+        [Test()]
         public void TestSonicAmplifier_Optional()
         {
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
