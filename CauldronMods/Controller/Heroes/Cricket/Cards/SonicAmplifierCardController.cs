@@ -16,6 +16,10 @@ namespace Cauldron.Cricket
 
         public override void AddTriggers()
         {
+
+            //Cards beneath this are not considered to be in play.
+            Card.UnderLocation.OverrideIsInPlay = false;
+
             //Whenever {Cricket} deals sonic damage to a target, you may put the top card of your deck beneath this one. Cards beneath this one are not considered to be in play.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && action.DamageType == DamageType.Sonic && action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard, this.MoveCardResponse, new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.After);
         }
