@@ -480,6 +480,26 @@ namespace CauldronTests
             DealDamage(impact, mdp, 1, DTM);
             QuickHPCheck(-1, -1, 0);
         }
+
+        [Test]
+        public void TestHurledObstructionDamageReduction_HeroicInfinitor()
+        {
+            SetupGameController("Infinitor/HeroicInfinitorCharacter", "Cauldron.Impact", "Haka", "Bunker", "TheVisionary", "RealmOfDiscord");
+            StartGame();
+
+            PlayCard("HurledObstruction");
+
+            GoToEndOfTurn(infinitor);
+
+            PrintSeparator("Dealing Damage for Test");
+
+            //doesn't reduces damage from heroic infinitor
+            QuickHPStorage(haka);
+            DealDamage(infinitor, haka, 3, DTM);
+            //infinitor always increase damage by 1 on frontside
+            QuickHPCheck(-4);
+        }
+
         [Test]
         public void TestHurledObstructionSelfDestroy()
         {
