@@ -896,6 +896,41 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestMirrorWraithIndestructible()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            Card reinforcedWall = GetCardInPlay("ReinforcedWall");
+            Card mirrorWraith = GetCard(MirrorWraithCardController.Identifier);
+            PlayCard(mirrorWraith);
+
+            // mirror wraith should be immune to damage until reinforced wall is destroyed
+            QuickHPStorage(mirrorWraith);
+            DealDamage(ra, mirrorWraith, 5, DamageType.Fire);
+            QuickHPCheckZero();
+
+            DestroyCard(mirrorWraith);
+            AssertInPlayArea(BlackwoodForest, mirrorWraith);
+
+            // once reinforced wall is destroyed, should still be indestructible, but not immune to damage
+            DealDamage(ra.CharacterCard, reinforcedWall, 10, DamageType.Fire,isIrreducible: true);
+            AssertInTrash(phase, reinforcedWall);
+
+            QuickHPStorage(mirrorWraith);
+            DealDamage(ra, mirrorWraith, 3, DamageType.Fire);
+            QuickHPCheck(-3);
+
+            DestroyCard(mirrorWraith);
+            AssertInPlayArea(BlackwoodForest, mirrorWraith);
+
+            // once below 0 HP, mirror wraith should be destroyed
+            DealDamage(ra.CharacterCard, mirrorWraith, 10, DamageType.Fire, isIrreducible: true);
+            AssertInTrash(BlackwoodForest, mirrorWraith);
+        }
+
+        [Test]
         public void TestVengefulSpiritsDiscardToDestroy()
         {
             // Arrange
