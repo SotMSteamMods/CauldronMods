@@ -173,6 +173,30 @@ namespace CauldronTests
 
         }
 
+
+        [Test()]
+        public void TestGho5t_Destroyed_OptionalDraw()
+        {
+            SetupGameController("Omnitron", "Ra", "Legacy", "Haka", "Cauldron.TheCybersphere");
+            StartGame();
+
+            PlayCard("InterpolationBeam");
+
+            GoToPlayCardPhase(cybersphere);
+            Card gho5t = PlayCard("Gho5t");
+
+            //When this card is destroyed, each player *may* draw a card.
+
+            DecisionsYesNo = new bool[] { false, false, true };
+            QuickHandStorage(ra, legacy, haka);
+            QuickHPStorage(ra, legacy, haka);
+            DestroyCard(gho5t, omnitron.CharacterCard);
+            QuickHPCheck(0, 0, -1);
+            QuickHandCheck(0, 0, 1);
+
+
+        }
+
         [Test()]
         public void TestGlitch_Destroyed()
         {
