@@ -26,7 +26,7 @@ namespace Cauldron.TheCybersphere
         private IEnumerator DrawCardsResponse(DestroyCardAction dca)
         {
             //Each player may draw a card.
-            IEnumerator coroutine = base.EachPlayerDrawsACard((HeroTurnTaker t) => t.IsHero && !t.ToHero().IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(t, GetCardSource()));
+            IEnumerator coroutine = base.EachPlayerDrawsACard(heroCriteria: (HeroTurnTaker t) => t.IsHero && !t.ToHero().IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(t, GetCardSource()), optional: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
