@@ -193,11 +193,14 @@ namespace CauldronTests
             PutInTrash("Scatterburst");
             PutInTrash("GeogravLocus");
             Card currents = PlayCard("RideTheCurrents");
-            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
+            Card maya = GetCard("GeminiMaya");
+            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c != maya).Take(4);
             PlayCards(cardsToPlay);
-            Card maya = PlayCard("GeminiMaya");
+            PlayCard(maya);
 
             DealDamage(ra, maya, 3, DamageType.Fire);
+
+            GoToEndOfTurn(superstorm);
 
             QuickHPStorage(maya);
 
@@ -207,12 +210,12 @@ namespace CauldronTests
             DecisionSelectCards = new Card[] { maya, cardsToPlay.ElementAt(1) };
             PrintPlayAreaPositions(superstorm.TurnTaker);
             int nextToPosition = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(cardsToPlay.ElementAt(1));
-
+            int mayaPosition = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(maya);
 
             GoToStartOfTurn(baron);
 
             PrintPlayAreaPositions(superstorm.TurnTaker);
-            int expected = nextToPosition + 1;
+            int expected = mayaPosition < nextToPosition ? nextToPosition : nextToPosition + 1;
             int actual = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(maya);
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(expected) == maya, maya.Title + " is not in the correct position. Expected: " + expected + ", Actual: " + actual);
 
@@ -479,7 +482,7 @@ namespace CauldronTests
             GoToPlayCardPhase(superstorm);
             PrintPlayAreaPositions(superstorm.TurnTaker);
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(2) == churning, churning.Title + " is not in the correct position.");
-
+            AssertNotFlipped(churning);
 
         }
 
@@ -503,6 +506,7 @@ namespace CauldronTests
             GoToPlayCardPhase(superstorm);
             PrintPlayAreaPositions(superstorm.TurnTaker);
             Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(1) == churning, churning.Title + " is not in the correct position.");
+            AssertNotFlipped(churning);
 
 
         }

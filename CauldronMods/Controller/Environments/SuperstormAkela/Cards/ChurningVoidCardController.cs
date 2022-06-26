@@ -15,13 +15,15 @@ namespace Cauldron.SuperstormAkela
             base.SpecialStringMaker.ShowSpecialString(() => BuildCardsLeftOfThisSpecialString()).Condition = () => Card.IsInPlayAndHasGameText;
         }
 
+        public readonly string HasTriggeredBeforeKey = "HasTriggeredBefore";
+
         public override void AddTriggers()
         {
             //At the start of the environment turn, this card deals the { H} targets with the highest HP X projectile damage each, where X is the number of environment cards to the left of this one.
             AddStartOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, DealDamageResponse, TriggerType.DealDamage);
 
             //After all other start of turn effects have taken place, move this card 1 space to the right in the environment play area.
-            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction p) => p.FromPhase.TurnTaker == base.TurnTaker && p.FromPhase.IsStart, MoveCardResponse, TriggerType.MoveCard, TriggerTiming.Before);
+            base.AddTrigger<PhaseChangeAction>((PhaseChangeAction p) => p.FromPhase.TurnTaker == base.TurnTaker && p.FromPhase.IsStart && !HasBeenSetToTrueThisTurn(HasTriggeredBeforeKey), MoveCardResponse, TriggerType.MoveCard, TriggerTiming.Before);
 
         }
 
@@ -53,6 +55,8 @@ namespace Cauldron.SuperstormAkela
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+
+            SetCardPropertyToTrueIfRealAction(HasTriggeredBeforeKey);
             yield break;
         }
 
