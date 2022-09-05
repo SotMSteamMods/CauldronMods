@@ -910,6 +910,50 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestImmediateEvac_Sentinels()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "TheSentinels", "RuinsOfAtlantis");
+
+            MakeCustomHeroHand(doc, new List<string>()
+            {
+                ImmediateEvacCardController.Identifier, RecklessChargeCardController.Identifier,
+                RecklessChargeCardController.Identifier, GasMaskCardController.Identifier
+            });
+
+
+            StartGame();
+
+            SetHitPoints(baron.CharacterCard, 35);
+
+            PutInTrash(doc, new List<Card>() { GetCard(DocsFlaskCardController.Identifier), GetCard(BrawlerCardController.Identifier) });
+            PutInTrash(tempest, new List<Card>() { GetCard("ChainLightning"), GetCard("FlashFlood") });
+            PutInTrash(haka, new List<Card>() { GetCard("Mere"), GetCard("GroundPound") });
+            PutInTrash(sentinels, new List<Card>() { GetCard("HumanShield"), GetCard("PositiveEnergy") });
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+            SetHitPoints(mdp, 5);
+
+            QuickHPStorage(baron.CharacterCard, mdp, doc.CharacterCard, tempest.CharacterCard, haka.CharacterCard, medico,mainstay, idealist, writhe);
+            QuickHandStorage(doc, tempest, haka, sentinels);
+
+            DecisionSelectFunctions = new int?[] { 1, 0, 1, 1};
+
+            Card sentinelsDiscard = GetRandomCardFromHand(sentinels);
+
+            DecisionSelectCards = new[] { GetCardFromHand(doc, RecklessChargeCardController.Identifier), GetCardFromTrash(tempest, "FlashFlood"), GetCardFromHand(haka), sentinelsDiscard };
+
+            // Act
+            GoToPlayCardPhase(doc);
+            PlayCardFromHand(doc, ImmediateEvacCardController.Identifier);
+
+            // Assert
+            QuickHPCheck(2, 2, 0, 0, 0, 0, 0, 0, 0); // Villain HP gain check
+            QuickHandCheck(0, 1, 1, 1);
+
+        }
+
+        [Test]
         public void TestPainkillersAcceptSelfDamage()
         {
             SetupGameController("BaronBlade", "Cauldron.DocHavoc", "Tempest", "Haka", "RuinsOfAtlantis");
