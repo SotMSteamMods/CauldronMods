@@ -1085,6 +1085,39 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestTheBlackTreeUnderWillOfTheWisp()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", DeckNamespace);
+
+            StartGame();
+
+            int baronDeckCount = GetNumberOfCardsInDeck(baron);
+            int raDeckCount = GetNumberOfCardsInDeck(ra);
+            int legacyDeckCount = GetNumberOfCardsInDeck(legacy);
+
+
+            // Act
+            GoToStartOfTurn(BlackwoodForest);
+            Card theBlackTree = GetCard(TheBlackTreeCardController.Identifier);
+            PlayCard(theBlackTree);
+
+            Card willOTheWisp = PlayCard(WillOTheWispCardController.Identifier);
+
+            AssertNumberOfCardsAtLocation(theBlackTree.UnderLocation, 4);
+            Card[] cards = theBlackTree.UnderLocation.Cards.ToArray();
+
+            // At the end of the environment turn, play a random card from beneath this one
+            GoToEndOfTurn(BlackwoodForest);
+
+            // Assert
+            // Will of the Wisps says: Environment cards may not be played during the environment turn.
+            // However, cards under the Black Tree are not environment cards and should still be played
+            AssertNumberOfCardsAtLocation(theBlackTree.UnderLocation, 3);
+
+        }
+
+        [Test]
         public void TestTheBlackTree_Oblivaeon()
         {
             SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Cauldron.BlackwoodForest", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
