@@ -37,7 +37,7 @@ namespace Cauldron.DocHavoc
                         new MoveCardDestination[] { new MoveCardDestination(h.HeroTurnTaker.Hand) }),
                     repeatDecisionText: ChoiceTextSelectTrashIntoHand),
 
-                new Function(h, ChoiceTextDiscardAndDraw, SelectionType.DiscardAndDrawCard, () => DiscardCardAndDrawCardsResponse(h.CharacterCard)),
+                new Function(h, ChoiceTextDiscardAndDraw, SelectionType.DiscardAndDrawCard, () => DiscardCardAndDrawCardsResponse(h)),
             };
 
             List<SelectFunctionDecision> choicesMade = new List<SelectFunctionDecision>();
@@ -73,19 +73,17 @@ namespace Cauldron.DocHavoc
         }
 
 
-        private IEnumerator DiscardCardAndDrawCardsResponse(Card card)
+        private IEnumerator DiscardCardAndDrawCardsResponse(HeroTurnTakerController httc)
         {
-            if (card == null)
+            if (httc is null)
             {
                 yield break;
             }
 
             //discard a card and draw 2 cards
-            CardController cc = base.FindCardController(card);
-
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
 
-            IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(cc.HeroTurnTakerController, storedResults: storedResults, cardSource: GetCardSource());
+            IEnumerator discardCardRoutine = this.GameController.SelectAndDiscardCard(httc, storedResults: storedResults, cardSource: GetCardSource());
 
 
             if (this.UseUnityCoroutines)
