@@ -24,8 +24,7 @@ namespace Cauldron.BlackwoodForest
         public override void AddTriggers()
         {
             // Environment cards may not be played during the environment turn
-            base.CannotPlayCards((TurnTakerController ttc) => ttc.TurnTaker.IsEnvironment && base.Game.ActiveTurnPhase.IsEnvironment && GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource()));
-
+            base.CannotPlayCards(cardCriteria: (Card c) =>  base.Game.ActiveTurnPhase.IsEnvironment && c.Owner.IsEnvironment && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
             // At the end of the villain turn play the top 2 cards of the environment deck.
             base.AddEndOfTurnTrigger(tt => tt.IsVillain && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()), PlayCardsResponse, TriggerType.PlayCard);
 
