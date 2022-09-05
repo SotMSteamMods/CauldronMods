@@ -31,6 +31,9 @@ namespace Cauldron.Pyre
         {
             SpecialStringMaker.ShowSpecialString(() => BuildCascadeLocationString()).Condition = () => TurnTakerController is PyreTurnTakerController;
             SpecialStringMaker.ShowSpecialString(() => BuildListIrradiatedHeroes()).ShowWhileIncapacitated = true;
+
+            SpecialStringMaker.ShowSpecialString(() => "You may need to right click {Rad} cards and select 'Play Card' in order to play them.", showInEffectsList: () => true, relatedCards: () => FindCardsWhere(c => IsIrradiated(c))).Condition = () => FindCardsWhere(c => IsIrradiated(c)).Any();
+
         }
 
         private string BuildListIrradiatedHeroes()
