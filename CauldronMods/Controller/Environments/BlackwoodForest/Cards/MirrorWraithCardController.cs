@@ -300,10 +300,22 @@ namespace Cauldron.BlackwoodForest
                 var cc = FindCardController(copiedCard);
                 if (card == Card)
                 {
+                    //special cases for behavior that is unique and different (within Cauldron only)
+                    string reinforcedWallQI = "Cauldron.ReinforcedWall";
+                    if (copiedCard.QualifiedIdentifier == reinforcedWallQI)
+                    {
+                        return Card.HitPoints > 0;
+                    }
+
+                    string rustedArtifactQI = "Cauldron.RustedArtifact";
+                    if (copiedCard.QualifiedIdentifier == rustedArtifactQI)
+                    {
+                        return cc.AskIfCardIsIndestructible(copiedCard);
+                    }
                     //asking for a friend bro.  This is a mixed bag.  If the card makes itself immune, this returns true
                     //but if it's looking at state on the itself/card this fails.
                     //There's probally someway
-                    return cc.AskIfCardIsIndestructible(copiedCard);
+                    return copiedCard.IsInPlayAndHasGameText && cc.AskIfCardIsIndestructible(copiedCard);
                 }
                 else
                 {
