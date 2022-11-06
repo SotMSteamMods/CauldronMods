@@ -42,9 +42,9 @@ namespace CauldronTests
         [Order(0)]
         public void TestTheInfernalChoir_LoadedProperly()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
 
-            Assert.AreEqual(3, this.GameController.TurnTakerControllers.Count());
+            Assert.AreEqual(5, this.GameController.TurnTakerControllers.Count());
 
             Assert.IsNotNull(choir);
             Assert.IsInstanceOf(typeof(TheInfernalChoirTurnTakerController), choir);
@@ -54,7 +54,7 @@ namespace CauldronTests
         [Test()]
         public void TestTheInfernalChoir_StartGame()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             AssertInPlayArea(choir, choir.CharacterCard);
@@ -100,7 +100,7 @@ namespace CauldronTests
         [Test()]
         public void TestTheInfernalChoir_Front_EndOfTurnPlay()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             var c1 = GetCard("BaneOfIron", 0);
@@ -120,7 +120,7 @@ namespace CauldronTests
         [Test()]
         public void TestTheInfernalChoir_Front_Indestructible()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
             StartGame();
 
             PrintSpecialStringsForCard(choir.CharacterCard);
@@ -366,6 +366,7 @@ namespace CauldronTests
             AddDamageCannotBeRedirectedTrigger(dd => dd.DamageSource.IsSameCard(legacy.CharacterCard), legacy.CharacterCardController.GetCardSource());
 
             //When {TheInfernalChoir} flips, reduce damage dealt to {TheInfernalChoir} by 2 until the start of the villain turn.
+
             QuickHPStorage(choir);
             DealDamage(legacy, choir, 3, DamageType.Melee);
             QuickHPCheck(-1);
@@ -377,6 +378,10 @@ namespace CauldronTests
 
             //should expire at the start of the next turn
             GoToStartOfTurn(choir);
+
+            //cleanup up the board to verify nothing interferes with this damage
+            DestroyCards(c => !c.IsCharacter);
+
             QuickHPStorage(choir);
             DealDamage(legacy, choir, 3, DamageType.Melee);
             QuickHPCheck(-3);
@@ -387,7 +392,8 @@ namespace CauldronTests
         [Test()]
         public void TestVagrantHeartPhase1_DamagePrevention()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
@@ -414,7 +420,8 @@ namespace CauldronTests
         [Test()]
         public void TestVagrantHeartPhase1_FlipFromMove()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
@@ -442,7 +449,9 @@ namespace CauldronTests
         [Test()]
         public void TestVagrantHeartPhase1_FlipFromDraw()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
@@ -473,7 +482,9 @@ namespace CauldronTests
         [Test()]
         public void TestVagrantHeartPhase1_FlipFromPlay()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
+            choir.DebugForceHeartPlayer = legacy;
+
             StartGame();
 
             AssertInPlayArea(legacy, heart1);
@@ -506,7 +517,7 @@ namespace CauldronTests
         [Test()]
         public void TestVagrantHeartPhase1_DontFlipFromReveal()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Cauldron.Cricket", "Megalopolis");
+            SetupGameController(new string[] { "Cauldron.TheInfernalChoir", "Legacy", "Cauldron.Cricket", "Megalopolis" });
             choir.DebugForceHeartPlayer = legacy;
             StartGame();
 
@@ -520,7 +531,7 @@ namespace CauldronTests
             var deckCount = GetNumberOfCardsInDeck(legacy);
 
             QuickHPStorage(choir, legacy);
-            DealDamage(legacy, choir, 35, DamageType.Melee);
+            DealDamage(legacy, choir, deckCount - 1, DamageType.Melee);
             QuickHPCheck(0, 0);
 
             AssertNotFlipped(choir.CharacterCard);
@@ -581,7 +592,7 @@ namespace CauldronTests
         [Test()]
         public void TestVagrantHeartPhase1_Defeated()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
             choir.DebugForceHeartPlayer = legacy;
             StartGame();
 
@@ -595,11 +606,29 @@ namespace CauldronTests
             AssertGameOver(EndingResult.AlternateDefeat);
         }
 
+        [Test()]
+        public void TestVagrantHeartPhase1_Defeated_WithDrift()
+        {
+            SetupGameController("Cauldron.TheInfernalChoir", "Cauldron.Drift", "Haka", "Ra", "Megalopolis");
+            choir.DebugForceHeartPlayer = drift;
+            StartGame();
+
+            AssertInPlayArea(drift, heart1);
+            AssertIsInPlay(heart1);
+            AssertOffToTheSide(heart2);
+            AssertNotInPlay(heart2);
+
+            DestroyCard(drift);
+
+            AssertGameOver(EndingResult.AlternateDefeat);
+        }
+
+
 
         [Test()]
         public void TestVagrantHeartPhase2_PreventEmptyDraw()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
             choir.DebugForceHeartPlayer = legacy;
             StartGame();
 
@@ -622,7 +651,7 @@ namespace CauldronTests
         [Test()]
         public void TestVagrantHeartPhase2_PreventEmptyPlay()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
             choir.DebugForceHeartPlayer = legacy;
             StartGame();
 
@@ -649,7 +678,7 @@ namespace CauldronTests
         [Test()]
         public void TestVagrantHeartPhase2_PreventEmptyDiscard()
         {
-            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Megalopolis");
+            SetupGameController("Cauldron.TheInfernalChoir", "Legacy", "Haka", "Ra", "Megalopolis");
             choir.DebugForceHeartPlayer = legacy;
             StartGame();
 
