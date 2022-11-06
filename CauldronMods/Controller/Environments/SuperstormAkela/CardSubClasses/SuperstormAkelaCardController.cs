@@ -41,6 +41,15 @@ namespace Cauldron.SuperstormAkela
                 Log.Debug(card.Title + " was moved to the far left of the environment's play area.");
             }
 
+            IEnumerator coroutine2 = RefreshUI(card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
 
             yield break;
         }
@@ -67,6 +76,16 @@ namespace Cauldron.SuperstormAkela
                 }
 
                 Log.Debug(card.Title + " was played to the far left of the environment's play area.");
+            }
+
+            IEnumerator coroutine2 = RefreshUI(card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine2);
             }
             yield break;
         }
@@ -96,6 +115,16 @@ namespace Cauldron.SuperstormAkela
                 }
 
                 Log.Debug(card.Title + " was moved to the far right of the environment's play area.");
+            }
+
+            IEnumerator coroutine2 = RefreshUI(card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine2);
             }
             yield break;
         }
@@ -143,6 +172,16 @@ namespace Cauldron.SuperstormAkela
 
                 Log.Debug(card.Title + " was moved one space to the right in the environment's play area.");
             }
+
+            IEnumerator coroutine2 = RefreshUI(card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine2);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine2);
+            }
             yield break;
         }
 
@@ -169,16 +208,41 @@ namespace Cauldron.SuperstormAkela
 
             Log.Debug(card.Title + " was moved to the left of " + cardToMoveLeftOf.Title + " in the environment's play area.");
 
-            int? currentHP = card.IsTarget ? card.HitPoints : null;
+            coroutine = RefreshUI(card);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
 
-            FlipCardAction flip1 = new FlipCardAction(GetCardSource(), FindCardController(card), false, false, null);
+        private IEnumerator RefreshUI(Card card)
+        {
+            IEnumerator coroutine;
+            IEnumerator coroutine2;
+
+            // grab the card source for some other card visible to this card so the action can finish after initial flip
+            Card otherCard = FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Title != Card.Title && GameController.IsCardVisibleToCardSource(c, GetCardSource())).TakeRandomFirstOrDefault(Game.RNG);
+            
+            // if no other cards found, then we don't need to worry about refreshing the UI
+            if(otherCard is null)
+            {
+                yield break;
+            }
+            CardSource otherCardSource = FindCardController(otherCard).GetCardSource();
+
+            int? currentHP = card.IsTarget ? card.HitPoints : null;
+            FlipCardAction flip1 = new FlipCardAction(otherCardSource, FindCardController(card), false, false, null);
             flip1.AllowTriggersToRespond = false;
             flip1.CanBeCancelled = false;
-            FlipCardAction flip2 = new FlipCardAction(GetCardSource(), FindCardController(card), false, false, null);
+            FlipCardAction flip2 = new FlipCardAction(otherCardSource, FindCardController(card), false, false, null);
             flip2.AllowTriggersToRespond = false;
             flip2.CanBeCancelled = false;
             coroutine = DoAction(flip1);
-            IEnumerator coroutine2 = DoAction(flip2);
+            coroutine2 = DoAction(flip2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -190,9 +254,9 @@ namespace Cauldron.SuperstormAkela
                 base.GameController.ExhaustCoroutine(coroutine2);
             }
 
-            if(!(currentHP is null))
+            if (!(currentHP is null))
             {
-                SetHPAction setHP = new SetHPAction(GetCardSource(), card, currentHP.Value);
+                SetHPAction setHP = new SetHPAction(otherCardSource, card, currentHP.Value);
                 setHP.AllowTriggersToRespond = false;
                 setHP.CanBeCancelled = false;
                 coroutine = DoAction(setHP);
@@ -233,43 +297,14 @@ namespace Cauldron.SuperstormAkela
             Log.Debug(card.Title + " was moved to the right of " + cardToMoveRightOf.Title + " in the environment's play area.");
 
 
-            int? currentHP = card.IsTarget ? card.HitPoints : null;
-
-
-            FlipCardAction flip1 = new FlipCardAction(GetCardSource(), FindCardController(card), false, false, null);
-            flip1.AllowTriggersToRespond = false;
-            flip1.CanBeCancelled = false;
-            FlipCardAction flip2 = new FlipCardAction(GetCardSource(), FindCardController(card), false, false, null);
-            flip2.AllowTriggersToRespond = false;
-            flip2.CanBeCancelled = false;
-            coroutine = DoAction(flip1);
-            IEnumerator coroutine2 = DoAction(flip2);
+            IEnumerator coroutine2 = RefreshUI(card);
             if (base.UseUnityCoroutines)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
                 yield return base.GameController.StartCoroutine(coroutine2);
             }
             else
             {
-                base.GameController.ExhaustCoroutine(coroutine);
                 base.GameController.ExhaustCoroutine(coroutine2);
-            }
-
-            if (!(currentHP is null))
-            {
-                SetHPAction setHP = new SetHPAction(GetCardSource(), card, currentHP.Value);
-                setHP.AllowTriggersToRespond = false;
-                setHP.CanBeCancelled = false;
-                coroutine = DoAction(setHP);
-
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
             }
 
             yield break;

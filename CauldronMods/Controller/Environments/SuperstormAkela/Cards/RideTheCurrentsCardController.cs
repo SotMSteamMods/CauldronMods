@@ -15,10 +15,12 @@ namespace Cauldron.SuperstormAkela
 
         }
 
+        public readonly string HasTriggeredBeforeKey = "HasTriggeredBefore";
+
         public override void AddTriggers()
         {
             //At the start of the villain turn, you may move 1 environment card to a new location in the environment play area.
-            AddStartOfTurnTrigger((TurnTaker tt) => FindVillainTurnTakerControllers(true).Contains(FindTurnTakerController(tt)), MoveEnvironmentCardResponse, TriggerType.MoveCard);
+            AddStartOfTurnTrigger((TurnTaker tt) => FindVillainTurnTakerControllers(true).Contains(FindTurnTakerController(tt)) && !HasBeenSetToTrueThisTurn(HasTriggeredBeforeKey), MoveEnvironmentCardResponse, TriggerType.MoveCard);
         }
 
         private IEnumerator MoveEnvironmentCardResponse(PhaseChangeAction pca)
@@ -77,6 +79,8 @@ namespace Cauldron.SuperstormAkela
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
                 }
+
+                SetCardPropertyToTrueIfRealAction(HasTriggeredBeforeKey);
 
             }
 
