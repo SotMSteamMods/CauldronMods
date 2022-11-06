@@ -31,7 +31,7 @@ namespace Cauldron.Impact
         public override void AddTriggers()
         {
             //"Reduce damage dealt by villain targets by 1.",
-            AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsTarget && IsVillain(dd.DamageSource.Card), dd => 1);
+            AddReduceDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsTarget && IsVillainTarget(dd.DamageSource.Card), dd => 1);
 
             //"At the start of your turn, destroy this card."
             AddStartOfTurnTrigger(tt => tt == this.TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
