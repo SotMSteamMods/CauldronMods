@@ -204,22 +204,51 @@ namespace CauldronTests
             base.GainHP(baron, 2);
             QuickHPCheck(2, 0, 0, 0, 0, 0);
         }
+
         [Test]
-        public void TestBoneChillingTouchGrantedPower()
+        public void TestBoneChillingTouch_CarChaseScene()
         {
-            StartTestGame();
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Ra", "Haka", "ChampionStudios");
+            StartGame();
+            DestroyNonCharacterVillainCards();
 
-            Card touch = PlayCard("BoneChillingTouch");
-            AssertNumberOfUsablePowers(terminus, 3);
+            GoToUsePowerPhase(terminus);
+            Card boneChillingTouch = PutIntoPlay("BoneChillingTouch");
+            Card bladeBattalion = PutIntoPlay("BladeBattalion");
+            Card carChaseScene = PlayCard("CarChaseScene");
 
-            Assert.AreEqual(GameController.GetAllPowersForCardController(terminus.CharacterCardController).Count(), 2);
-            Assert.AreEqual(GameController.GetAllPowersForCardController(GameController.FindCardController(touch)).Count(), 1);
-            UsePower(touch);
-            AssertNumberOfUsablePowers(terminus, 1);
-            GoToStartOfTurn(terminus);
-            UsePower(terminus, 1);
-            AssertNumberOfUsablePowers(terminus, 1);
-            
+            SetHitPoints(bladeBattalion, 3);
+
+            DecisionSelectTarget = bladeBattalion;
+            DecisionYesNo = true;
+            UsePower(boneChillingTouch);
+
+            AssertInTrash(bladeBattalion);
+            AssertInPlayArea(terminus, boneChillingTouch);
+        }
+
+        [Test]
+        public void TestBoneChillingTouch_Guise()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Guise", "Haka", "ChampionStudios");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card boneChillingTouch = PutIntoPlay("BoneChillingTouch");
+
+            GoToUsePowerPhase(guise);
+            Card bladeBattalion = PutIntoPlay("BladeBattalion");
+            Card uhYeamImThatGuy = PutIntoPlay("UhYeahImThatGuy");
+
+
+            SetHitPoints(bladeBattalion, 3);
+
+            DecisionSelectTarget = bladeBattalion;
+            DecisionYesNo = true;
+            QuickHPStorage(bladeBattalion);
+            UsePower(uhYeamImThatGuy);
+            QuickHPCheck(-2);
+            AssertNextToCard(boneChillingTouch, bladeBattalion);
         }
 
         #endregion Test Bone Chilling Touch
