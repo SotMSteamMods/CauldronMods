@@ -33,11 +33,10 @@ namespace Cauldron.Quicksilver
         public override void AddTriggers()
         {
             //When {Quicksilver} is dealt damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.CharacterCard && !dd.IsPretend && dd.Amount > 0 && dd.DamageSource.IsInPlayAndHasGameText && !base.IsBeingDestroyed, DestroySelfResponse, new TriggerType[]
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.CharacterCard && !dd.IsPretend && dd.DidDealDamage && dd.Amount > 0 && !base.IsBeingDestroyed, DestroySelfResponse, new TriggerType[]
              {
-                TriggerType.WouldBeDealtDamage,
                 TriggerType.DestroySelf
-             }, TriggerTiming.After);
+             }, TriggerTiming.After, new ActionDescription[] { ActionDescription.DamageTaken });
         }
         private IEnumerator DestroySelfResponse(DealDamageAction action)
         {

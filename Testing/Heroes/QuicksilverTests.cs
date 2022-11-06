@@ -543,6 +543,32 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestIronRetortDestroy_Timing()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            StartGame();
+
+            SetHitPoints(quicksilver.CharacterCard, 16);
+
+            Card gauntletOfPerdition = PlayCard("GauntletOfPerdition");
+
+            Card stressHardening = PutInHand("StressHardening");
+            Card ironRetort = PlayCard("IronRetort");
+
+            //When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card.
+            DecisionSelectCardToPlay = stressHardening;
+            DecisionYesNo = true;
+
+            DealDamage(apostate, quicksilver, 2, DamageType.Melee);
+
+            string gauntletMessage = "Gauntlet of Perdition dealt 1 Infernal damage to Quicksilver.";
+            string ironRetortMessage = "Iron Retort was destroyed by Iron Retort and moved from Quicksilver's play area.";
+
+            var journal = GameController.Game.Journal.Entries.Select(e => e.ToString()).ToList();
+            Assert.Greater(journal.IndexOf(gauntletMessage), journal.IndexOf(ironRetortMessage), "Iron Retort triggered after Gauntlet of Perdition.");
+        }
+
+        [Test()]
         public void TestIronRetortDestroyIndestructible()
         {
             SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
