@@ -604,6 +604,30 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestBeyondTheVeil_DiscardTriggers()
+        {
+            SetupGameController(new string[] { "Omnitron", "LaComodora", "Legacy", "Ra", "Cauldron.TheChasmOfAThousandNights" });
+            Card veil = GetCard("BeyondTheVeil");
+            Card chron = GetCard("ChronologicalSweetspot");
+            Card combat = GetCard("CombatTiming");
+
+            StartGame();
+            PlayCard(combat);
+            PlayCard(chron);
+            PlayCard(veil);
+            MoveCard(comodora, "CannonPortal", comodora.TurnTaker.Deck);
+            MoveCard(legacy, "TheLegacyRing", legacy.TurnTaker.Deck);
+            MoveCard(ra, "BlazingTornado", ra.TurnTaker.Deck);
+            MoveCard(omnitron, "AdaptivePlatingSubroutine", omnitron.TurnTaker.Deck);
+            MoveCard(omnitron, "DisintegrationRay", omnitron.TurnTaker.Deck);
+            DecisionDestroyCard = combat;
+
+            QuickHPStorage(comodora);
+            GoToEndOfTurn(comodora);
+            QuickHPCheck(-1);
+        }
+
+        [Test()]
         public void TestBeyondTheVeil_FirstTimeDiscard()
         {
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Tachyon", "Cauldron.TheChasmOfAThousandNights" });
