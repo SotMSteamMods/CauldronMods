@@ -119,7 +119,8 @@ namespace Cauldron.BlackwoodForest
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, reassignPlayIndex: true, cardSource: GetCardSource());
+                List<PlayCardAction> storedResults = new List<PlayCardAction>();
+                coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, reassignPlayIndex: true, storedResults: storedResults, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -127,6 +128,20 @@ namespace Cauldron.BlackwoodForest
                 else
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if(!DidPlayCards(storedResults))
+                {
+                    // if we couldn't play this card for whatever reason, put it back underneath
+                    coroutine = GameController.MoveCard(TurnTakerController, cardToPlay, Card.UnderLocation, cardSource: GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
 
