@@ -311,6 +311,25 @@ namespace CauldronTests
             PlayCard(ring);
             AssertNotIrradiated(ring);
         }
+
+        [Test]
+        public void TestIrradiationSpecialString()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            StartGamePyre();
+
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+            Card ring = PutOnDeck("TheLegacyRing");
+            UsePower(pyre);
+
+            AssertIrradiated(ring);
+            PrintSpecialStringsForCard(ring);
+            AssertCardSpecialString(ring, 0, "You may need to right click {Rad} cards and select 'Play Card' in order to play them.");
+            Card irradiatedMarker = ring.NextToLocation.Cards.First();
+            PrintSpecialStringsForCard(irradiatedMarker);
+            AssertCardSpecialString(irradiatedMarker, 1, "You may need to right click the card this is next to and select 'Play Card' in order to play it.");
+            
+        }
         [Test]
         public void TestIrradiationRemainsAfterPyreIncap()
         {
