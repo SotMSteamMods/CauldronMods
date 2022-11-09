@@ -72,7 +72,7 @@ namespace Cauldron.Drift
                         {
                             //Else pick one
                             List<SelectCardDecision> storedResultsCards = new List<SelectCardDecision>();
-                            coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ReturnToDeck, revealedCards, storedResultsCards, false, cardSource: base.GetCardSource());
+                            coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.Custom, revealedCards, storedResultsCards, false, cardSource: base.GetCardSource());
                             if (base.UseUnityCoroutines)
                             {
                                 yield return base.GameController.StartCoroutine(coroutine);
@@ -104,6 +104,13 @@ namespace Cauldron.Drift
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
                             selectedCard = null;
+
+                            // Check if there are no more options
+                            if(revealedCards.Count == chosenCards.Count)
+                            {
+                                break;
+                            }
+   
                             //Pick a new card
                             List<SelectCardDecision> storedResultsCards = new List<SelectCardDecision>();
                             coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ReturnToDeck, revealedCards, storedResultsCards, false, additionalCriteria: new LinqCardCriteria((Card c) => !chosenCards.Contains(c)), cardSource: base.GetCardSource());
@@ -238,6 +245,17 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+
+            return new CustomDecisionText(
+                "Select the card to move first", 
+                "Select the card to move first", 
+                "Vote for the card to move first?", 
+                "card to move first");
+
         }
     }
 }
