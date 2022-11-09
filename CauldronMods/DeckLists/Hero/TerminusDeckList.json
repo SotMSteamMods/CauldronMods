@@ -48,7 +48,7 @@
             ],
             "openingLines": {
                 "default": "Judgment time.",
-                "TheInfernalChoirCharacter": "I've been on the wrong side of the tracks long enough. And my punishment is to deal with the likes of you."
+                "Cauldron.TheInfernalChoirCharacter": "I've been on the wrong side of the tracks long enough. And my punishment is to deal with the likes of you."
             },
             "complexity": 2
         },
@@ -582,8 +582,8 @@
             ],
             "openingLines": {
                 "default": "It's time to make things right.",
-                "TheInfernalChoirCharacter": "Well, you made it look like so much fun.",
-                "MythosCharacter": "Let me look you in the eye, and we'll see what kinds of sins your past holds."
+                "Cauldron.TheInfernalChoirCharacter": "Well, you made it look like so much fun.",
+                "Cauldron.MythosCharacter": "Let me look you in the eye, and we'll see what kinds of sins your past holds."
             },
             "complexity": 2
         },
@@ -632,8 +632,8 @@
             ],
             "openingLines": {
                 "default": "Get out of our way, or we'll punch your ticket.",
-                "TheInfernalChoirCharacter": "Oh, I'm just getting started.",
-				"FutureTiamatCharacter": "The bigger they are, the harder they fall."
+                "Cauldron.TheInfernalChoirCharacter": "Oh, I'm just getting started.",
+				        "FutureTiamatCharacter": "The bigger they are, the harder they fall."
             },
             "complexity": 2
         }

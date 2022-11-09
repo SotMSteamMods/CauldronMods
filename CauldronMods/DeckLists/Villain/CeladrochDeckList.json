@@ -63,7 +63,7 @@
 			"challengeText": "At the start of the game, put a token in the storm pool.",
 			"openingLines": {
 				"default": "This prison will not hold me much longer. Your doom approaches.",
-				"LadyOfTheWoodCharacter": "--You.",
+				"Cauldron.LadyOfTheWoodCharacter": "--You.",
 				"SeasonsOfChangeLadyOfTheWoodCharacter": "--You.",
 				"MinistryOfStrategicScienceLadyOfTheWoodCharacter": "--You.",
 				"FutureLadyOfTheWoodCharacter": "--You.",

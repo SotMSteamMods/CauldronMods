@@ -54,7 +54,7 @@
 			"challengeText": "Band members flip when 2 cards of their corresponding keyword are in play rather than 3.",
 			"openingLines": {
 				"default": "We are Screamachine! And you lot are out of your league!",
-				"GyrosaurCharacter": "VALENTINE: You wrecked our show! Well, now we'll wreck you! [b]And[/b] rock you!",
+				"Cauldron.GyrosaurCharacter": "VALENTINE: You wrecked our show! Well, now we'll wreck you! [b]And[/b] rock you!",
 				"RenegadeGyrosaurCharacter": "BLOODLACE: I see you came to our newest show! Prepare to be blown away! Literally!",
 				"SpeedDemonGyrosaurCharacter": "SLICE: Whoa, the space turtle's got a radical new look.",
 				"CaptainGyrosaurCharacter": "RICKY G: Did we miss something? Why is there a zombie pirate turtle?"

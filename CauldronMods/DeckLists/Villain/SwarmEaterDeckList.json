@@ -54,7 +54,7 @@
             "difficulty": 3,
             "openingLines": {
                 "default": "Obstruction analysis complete. Assigned secondary priority. Primary priority unchanged: incorporate targets, enhance self.",
-                "CypherCharacter": "I will absorb your power!",
+                "Cauldron.CypherCharacter": "I will absorb your power!",
                 "FirstResponseCypherCharacter": "I...hunger.",
                 "SwarmingProtocolCypherCharacter": "We are the same. Soon, we will be one!"
             }
@@ -511,7 +511,7 @@
             "difficulty": 2,
             "openingLines": {
                 "default": "We are legion. Soon all will join the hive mind.",
-                "CypherCharacter": "We...are...legion.",
+                "Cauldron.CypherCharacter": "We...are...legion.",
                 "FirstResponseCypherCharacter": "We are no longer Swarm Eater. Or Halberd-13. We are something new. Something better.",
                 "SwarmingProtocolCypherCharacter": "Another hive mind. Yours powers will amplify our own."
             }

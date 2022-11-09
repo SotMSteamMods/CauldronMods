@@ -40,7 +40,7 @@
             ],
             "openingLines": {
                 "default": "Some players don't know when to fold.",
-                "TheMistressOfFateCharacter": "Cheating is such an ugly word. True, but ugly."
+                "Cauldron.TheMistressOfFateCharacter": "Cheating is such an ugly word. True, but ugly."
             },
             "complexity": 3
         },
@@ -354,7 +354,7 @@
             ],
             "openingLines": {
                 "default": "Let me show you a card trick.",
-                "TheMistressOfFateCharacter": "Alright, heads up, kiddies - this one is between me and the cuckoo in the clock."
+                "Cauldron.TheMistressOfFateCharacter": "Alright, heads up, kiddies - this one is between me and the cuckoo in the clock."
             },
             "complexity": 3
         },
@@ -395,7 +395,7 @@
             ],
             "openingLines": {
                 "default": "Fate is not going to be kind to you today.",
-                "TheMistressOfFateCharacter": "Fate! It's been too long - and yet somehow not long enough."
+                "Cauldron.TheMistressOfFateCharacter": "Fate! It's been too long - and yet somehow not long enough."
             },
             "complexity": 3
         },
@@ -435,7 +435,7 @@
             ],
             "openingLines": {
                 "default": "You shouldn't show your hand before the game even starts.",
-                "TheMistressOfFateCharacter": "Oh, you again? I won these cards fair and square in our first meeting!",
+                "Cauldron.TheMistressOfFateCharacter": "Oh, you again? I won these cards fair and square in our first meeting!",
                 "PastTheRamCharacter": "You're a traitor and a thief. And your fate just caught up with you!"
             },
             "complexity": 3

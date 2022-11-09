@@ -39,7 +39,7 @@
             ],
             "openingLines": {
                 "default": "We're here to stop you! Although, I usually find stopping to be the hard part.",
-                "TheSetList": "Um, sorry about that. I'll try to be gentler when I run you all over this time."
+                "Cauldron.TheSetList": "Um, sorry about that. I'll try to be gentler when I run you all over this time."
             },
             "complexity": 1
         },
@@ -470,7 +470,7 @@
             ],
             "openingLines": {
                 "default": "On your mark, get set...",
-                "TheSetList": "Is that bad?"
+                "Cauldron.TheSetList": "Is that bad?"
             },
             "complexity": 1
         },
@@ -512,7 +512,7 @@
             ],
             "openingLines": {
                 "default": "This situation calls for being sneaky!",
-                "TheSetList": "Wait, you can see me? I was being sneaky."
+                "Cauldron.TheSetList": "Wait, you can see me? I was being sneaky."
             },
             "complexity": 1
         },
@@ -553,7 +553,7 @@
             ],
             "openingLines": {
                 "default": "Arr! Avast!... What else do cursed pirates say?",
-                "TheSetList": "Prepare to board them, me hearties!"
+                "Cauldron.TheSetList": "Prepare to board them, me hearties!"
             },
             "complexity": 1
         }

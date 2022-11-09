@@ -39,9 +39,9 @@
             ],
             "openingLines": {
                 "default": "What comes next may be unpleasant.",
-                "WinterTiamatCharacter": "You are but the shape of my folly. I raised you, now I shall send you back to the underworld!",
+                "Cauldron.WinterTiamatCharacter": "You are but the shape of my folly. I raised you, now I shall send you back to the underworld!",
                 "HydraWinterTiamatCharacter": "Impressive; you have returned from death even stronger. I should like to learn such a trick.",
-                "MythosCharacter": "You seem happy to make it one for others. I will not allow it!"
+                "Cauldron.MythosCharacter": "You seem happy to make it one for others. I will not allow it!"
             },
             "complexity": 2
         },
@@ -446,9 +446,9 @@
             ],
             "openingLines": {
                 "default": "There is no defense against the horrors I shall unleash.",
-                "WinterTiamatCharacter": "The Chaos Wyrm! Impressive, but Chaos serves me now.",
+                "Cauldron.WinterTiamatCharacter": "The Chaos Wyrm! Impressive, but Chaos serves me now.",
                 "HydraWinterTiamatCharacter": "I shall not hold back.",
-                "MythosCharacter": "It is exactly because I have seen greater fears that death holds no terror for me."
+                "Cauldron.MythosCharacter": "It is exactly because I have seen greater fears that death holds no terror for me."
             },
             "complexity": 2
         },
@@ -488,10 +488,10 @@
             "openingLines": {
                 "default": "I will bring my most powerful rituals to bear against this foe.",
                 "PastTheRamCharacter": "Oh, I am no academic...",
-                "WinterTiamatCharacter": "You will not survive my undead hordes!",
+                "Cauldron.WinterTiamatCharacter": "You will not survive my undead hordes!",
                 "HydraWinterTiamatCharacter": "Come forth, my servants, and attend to this beast!",
-                "MythosCharacter": "Those papers you hold... But how did [i]you[/i] obtain the missing pages of my tome?",
-                "TheMistressOfFateCharacter": "I have thwarted death! I will not stop now, not until you are defeated."
+                "Cauldron.MythosCharacter": "Those papers you hold... But how did [i]you[/i] obtain the missing pages of my tome?",
+                "Cauldron.TheMistressOfFateCharacter": "I have thwarted death! I will not stop now, not until you are defeated."
             },
             "complexity": 2
         },
@@ -531,10 +531,10 @@
             ],
             "openingLines": {
                 "default": "We must all... repent... before it is... too late.",
-                "WinterTiamatCharacter": "One of my first mistakes, but not the last.",
+                "Cauldron.WinterTiamatCharacter": "One of my first mistakes, but not the last.",
                 "HydraWinterTiamatCharacter": "I see we both refuse to stay dead.",
-                "MythosCharacter": "Is this to be my atonement? Thwarting the designs I spent so long advancing? Very well.",
-                "CeladrochCharacter": "The sins of a lost and maddened soul. I stand here now to make amends, and stop you at all costs."
+                "Cauldron.MythosCharacter": "Is this to be my atonement? Thwarting the designs I spent so long advancing? Very well.",
+                "Cauldron.CeladrochCharacter": "The sins of a lost and maddened soul. I stand here now to make amends, and stop you at all costs."
             },
             "complexity": 2
         }

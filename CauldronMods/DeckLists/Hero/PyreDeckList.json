@@ -41,7 +41,7 @@
             ],
             "openingLines": {
                 "default": "This suit isn't for my protection... It's for all of yours.",
-                "GrayCharacter": "Okay, is this some weird time travel stuff again? Where I have to help my past self solve his problems?",
+                "Cauldron.GrayCharacter": "Okay, is this some weird time travel stuff again? Where I have to help my past self solve his problems?",
                 "PastTheRamCharacter": "I don't think Alistair will begrudge me a little violence against his upstart of an ancestor."
             },
             "complexity": 3
@@ -501,7 +501,7 @@
             ],
             "openingLines": {
                 "default": "Just like old times. Let's turn up the heat!",
-                "GrayCharacter": "I wish I knew. Let's just pretend I'm your conscience, here to make myself heard through all that radiation."
+                "Cauldron.GrayCharacter": "I wish I knew. Let's just pretend I'm your conscience, here to make myself heard through all that radiation."
             },
             "complexity": 3
         },
@@ -543,7 +543,7 @@
             ],
             "openingLines": {
                 "default": "Radiation output levels are safe. But you're not.",
-                "GrayCharacter": "Something like that. You make it sound worse than it is."
+                "Cauldron.GrayCharacter": "Something like that. You make it sound worse than it is."
             },
             "complexity": 3
         },
@@ -583,7 +583,7 @@
             ],
             "openingLines": {
                 "default": "Let's see how this makeshift containment suit holds up.",
-                "GrayCharacter": "Well, I'm you from the future, so trust me when I say, that's not going to happen today."
+                "Cauldron.GrayCharacter": "Well, I'm you from the future, so trust me when I say, that's not going to happen today."
             },
             "complexity": 3
         }

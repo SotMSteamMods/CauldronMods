@@ -56,7 +56,7 @@
 		    ],
             "openingLines": {
                 "default": "Give it up, heroes - what chance do you have against the pinnacle of evolution?",
-                "TangoOneCharacter": "Sniper girl! I remember you. What say we knock over a town, for old time's sake?",
+                "Cauldron.TangoOneCharacter": "Sniper girl! I remember you. What say we knock over a town, for old time's sake?",
                 "GhostOpsTangoOneCharacter": "Come out, come out, wherever you are!",
                 "PastTangoOneCharacter": "That gun is so last century. Today it's all about bioweapons, and you're looking at the best one there is!",
                 "CreedOfTheSniperTangoOneCharacter": "Let's play a game: It's one where I eat a bunch of second-rate heroes."
@@ -487,7 +487,7 @@
             "flippedChallengeIcons":[],
             "openingLines": {
                 "default": "I've picked up a few new tricks - and limbs. Care to see?",
-                "TangoOneCharacter": "I should thank you for destroying our masters; now I'm free to eat whoever I want!",
+                "Cauldron.TangoOneCharacter": "I should thank you for destroying our masters; now I'm free to eat whoever I want!",
                 "GhostOpsTangoOneCharacter": "Still trying to hide? My senses have only gotten sharper!",
                 "PastTangoOneCharacter": "I keep evolving, but you're stuck in the past!",
                 "CreedOfTheSniperTangoOneCharacter": "Time to die!"

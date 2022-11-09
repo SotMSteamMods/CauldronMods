@@ -57,7 +57,7 @@
 			"difficulty": 3,
 			"openingLines": {
 				"default": "You're too late, heroes! Soon I will break the veil between our worlds, and rule over both!",
-				"MalichaeCharacter": "Greetings, Shardcatcher. I see you brought your pets.",
+				"Cauldron.MalichaeCharacter": "Greetings, Shardcatcher. I see you brought your pets.",
 				"ShardmasterMalichaeCharacter": "You work side by side with the djinn, but I shall become one with them! My power shall be limitless!",
 				"MinistryOfStrategicScienceMalichaeCharacter": "You are too late! Soon the Breathing Shadow will enter this realm!"
 			}

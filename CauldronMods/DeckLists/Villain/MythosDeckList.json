@@ -62,11 +62,11 @@
             "challengeText":  "You are only allowed to check the symbol on the top card of the villain deck.",
             "openingLines": {
                 "default": "You can't begin to understand the horrors that have been set in motion - or your part in them. ",
-                "TitanCharacter": "Do you have any idea what your foolhardiness has cost? Rituals are delicate things, you can't just pop down to the corner store for replacements.",
+                "Cauldron.TitanCharacter": "Do you have any idea what your foolhardiness has cost? Rituals are delicate things, you can't just pop down to the corner store for replacements.",
                 "MinistryofStrategicScienceTitanCharacter": "Your laughable masters at the Ministry were ignorant of my existence for almost a century; and now they send you to stop me?",
                 "FutureTitanCharacter": "Whatever time or reality you hail from, I hope that you have suffered as much loss there as I have in this one.",
                 "OniTitanCharacter": "This new demeanor suits you.",
-                "NecroCharacter": "Leave, Mr. Coil. This place is not to be your grave.",
+                "Cauldron.NecroCharacter": "Leave, Mr. Coil. This place is not to be your grave.",
                 "WardenOfChaosNecroCharacter": "No fear of death in you, eh? Believe me, you have no idea what fear looks like.",
                 "PastNecroCharacter": "Fascinating. Just...fascinating. What sort of shade are you, and what sort of portent am I, to have found ourselves face to face?",
                 "LastOfTheForgottenOrderNecroCharacter": "Plans within plans have been laid and buried...Are you my end? Or another beginning?",

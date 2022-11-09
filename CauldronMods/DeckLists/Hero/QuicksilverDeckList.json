@@ -39,7 +39,7 @@
             ],
             "openingLines": {
                 "default": "Let's dance!",
-                "TheRamCharacter": "Halberd wants me back that badly, huh?",
+                "Cauldron.TheRamCharacter": "Halberd wants me back that badly, huh?",
                 "PastTheRamCharacter": "What is this? Halberd didn't even exist in your time, and I don't need another giant robot in my life."
             },
             "complexity": 1
@@ -433,7 +433,7 @@
             ],
             "openingLines": {
                 "default": "We'll see how much you yap after I turn you into a pincushion.",
-                "TheRamCharacter": "I've got some new tricks, too."
+                "Cauldron.TheRamCharacter": "I've got some new tricks, too."
             },
             "complexity": 1
         },
@@ -473,7 +473,7 @@
             ],
             "openingLines": {
                 "default": "Seems like the whole world wants a piece of me today.",
-                "TheRamCharacter": "Let's see you try it after we tear you apart."
+                "Cauldron.TheRamCharacter": "Let's see you try it after we tear you apart."
             },
             "complexity": 1
         },
@@ -514,7 +514,7 @@
             ],
             "openingLines": {
                 "default": "You're testing my patience.",
-                "TheRamCharacter": "What, Harbinger couldn't afford a new walking trash can?"
+                "Cauldron.TheRamCharacter": "What, Harbinger couldn't afford a new walking trash can?"
             },
             "complexity": 2
         }

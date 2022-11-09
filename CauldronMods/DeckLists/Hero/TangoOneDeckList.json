@@ -38,7 +38,7 @@
             ],
             "openingLines": {
                 "default": "You can't hide from my sniper rifle.",
-                "AnathemaCharacter": "You are a monster, and that place was run by monsters. I'm doing what I should have in the first place.",
+                "Cauldron.AnathemaCharacter": "You are a monster, and that place was run by monsters. I'm doing what I should have in the first place.",
                 "AcceleratedEvolutionAnathemaCharacter": "Not without any teeth, you won't be."
             },
             "complexity": 2
@@ -407,7 +407,7 @@
             ],
             "openingLines": {
                 "default": "Going dark. Let's do this.",
-                "AnathemaCharacter": "Heads down, folks - stay out of sight, and we might get through this.",
+                "Cauldron.AnathemaCharacter": "Heads down, folks - stay out of sight, and we might get through this.",
                 "AcceleratedEvolutionAnathemaCharacter": "We have to pick off those mutated limbs before he turns into even more of a monster."
             },
             "complexity": 2
@@ -448,10 +448,10 @@
             ],
             "openingLines": {
                 "default": "I've got a bullet with your name on it. And backups, just in case.",
-                "AnathemaCharacter": "Then maybe I'll get some kind of reward for taking you down.",
+                "Cauldron.AnathemaCharacter": "Then maybe I'll get some kind of reward for taking you down.",
                 "AcceleratedEvolutionAnathemaCharacter": "Let's see if you've evolved an immunity to bullets.",
                 "PastTheRamCharacter": "He certainly put a lot of guns on that Ram. Don't let him get a target lock!",
-                "TheMistressOfFateCharacter": "I've had enough of these time loops. Let's take her down and get home."
+                "Cauldron.TheMistressOfFateCharacter": "I've had enough of these time loops. Let's take her down and get home."
             },
             "complexity": 2
         },
@@ -491,7 +491,7 @@
             ],
             "openingLines": {
                 "default": "This reality is just an elaborate simulation, that ends with your defeat.",
-                "AnathemaCharacter": "This simulation we're in doesn't seem very historically accurate.",
+                "Cauldron.AnathemaCharacter": "This simulation we're in doesn't seem very historically accurate.",
                 "AcceleratedEvolutionAnathemaCharacter": "Not sure if this is still a simulation, but let's not take chances. Don't get eaten!"
             },
             "complexity": 2

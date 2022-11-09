@@ -487,7 +487,7 @@
             ],
             "openingLines": {
                 "default": "So full of energy... But not for long.",
-				"FutureTiamatCharacter": "Just a robot? Good, I don't have to restrain myself."
+				        "FutureTiamatCharacter": "Just a robot? Good, I don't have to restrain myself."
             },
             "complexity": 2
         },

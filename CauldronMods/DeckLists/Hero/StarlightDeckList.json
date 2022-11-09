@@ -45,7 +45,7 @@
             "complexity": 3,
             "openingLines": {
                 "default": "Your defeat is written in the stars!",
-                "MenagerieCharacter":"Mog Chordal, you are wanted for poaching and kidnapping on at least 38 planets. Please surrender peacefully."
+                "Cauldron.MenagerieCharacter":"Mog Chordal, you are wanted for poaching and kidnapping on at least 38 planets. Please surrender peacefully."
             }
         },
         {
@@ -573,7 +573,7 @@
             ],
             "openingLines": {
                 "default": "This sector is under Nightlore protection.",
-                "MenagerieCharacter": "That mercenary has his own crimes to answer for. But let's start with yours."
+                "Cauldron.MenagerieCharacter": "That mercenary has his own crimes to answer for. But let's start with yours."
             },
             "complexity": 3
         },
@@ -618,7 +618,7 @@
             "isReal": false,
             "openingLines": {
                 "default": "To survey the darkness and guard the light; this we pledge!",
-                "MenagerieCharacter": "By the order of the Nightlore Council, you are under arrest! ...Was that right?"
+                "Cauldron.MenagerieCharacter": "By the order of the Nightlore Council, you are under arrest! ...Was that right?"
             },
             "complexity": 3
         },
@@ -658,7 +658,7 @@
             ],
             "openingLines": {
                 "default": "Just look right here, if you please.",
-                "MenagerieCharacter": "The truth of your crimes is out there, Menagerie. Don't make this harder than it needs to be."
+                "Cauldron.MenagerieCharacter": "The truth of your crimes is out there, Menagerie. Don't make this harder than it needs to be."
             },
             "complexity": 3
         }

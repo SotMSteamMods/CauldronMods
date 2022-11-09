@@ -45,7 +45,7 @@
             ],
             "openingLines": {
                 "default": "Wait until you see my other face.",
-                "MythosCharacter": "Hey, don't play with portals of hellfire if you don't wanna turn into...whatever you are, exactly."
+                "Cauldron.MythosCharacter": "Hey, don't play with portals of hellfire if you don't wanna turn into...whatever you are, exactly."
             },
             "complexity": 2
         },
@@ -608,7 +608,7 @@
             ],
             "openingLines": {
                 "default": "The Ministry will be a lot happier when you're locked up in the Vault.",
-                "MythosCharacter": "Well, it almost worked before. This time, I'll make sure you don't come back."
+                "Cauldron.MythosCharacter": "Well, it almost worked before. This time, I'll make sure you don't come back."
             },
             "complexity": 2
         },
@@ -649,7 +649,7 @@
             ],
             "openingLines": {
                 "default": "Stop! This is Neo-Windmill City Law Enforcement!",
-                "MythosCharacter": "Do I know you, pal?"
+                "Cauldron.MythosCharacter": "Do I know you, pal?"
             },
             "complexity": 2
         },
@@ -690,7 +690,7 @@
             ],
             "openingLines": {
                 "default": "How do you like my costume?",
-                "MythosCharacter": "I wish you'd find your old demeanor and put it back on. You're not much to look at, mate."
+                "Cauldron.MythosCharacter": "I wish you'd find your old demeanor and put it back on. You're not much to look at, mate."
             },
             "complexity": 2
         }

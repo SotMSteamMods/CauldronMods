@@ -58,7 +58,7 @@
 			"challengeText": "At the end of the villain turn, the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.",
             "openingLines": {
                 "default": "Oh, hello, guests! Care to see my latest catch?",
-                "StarlightCharacter": "Why, you are simply exquisite, my dear. I'll have to make your accomodations especially fortified.",
+                "Cauldron.StarlightCharacter": "Why, you are simply exquisite, my dear. I'll have to make your accomodations especially fortified.",
                 "GenesisStarlightCharacter": "I've heard so much about you, darling - too much to simply ignore!",
                 "NightloreCouncilStarlightCharacter": "What is this, the B-team from Nightlore? How insulting. I deserve the best!",
                 "Area51StarlightCharacter": "A rarity among rarities, it seems."
