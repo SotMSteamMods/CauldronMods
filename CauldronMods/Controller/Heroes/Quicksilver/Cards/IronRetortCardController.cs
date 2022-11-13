@@ -40,10 +40,11 @@ namespace Cauldron.Quicksilver
         }
         private IEnumerator DestroySelfResponse(DealDamageAction action)
         {
+            HeroTurnTakerController httc = HeroTurnTakerController;
             //... you may destroy this card..
             IEnumerator coroutine = base.GameController.DestroyCard(this.DecisionMaker, base.Card,
                 //... If you do, you may play a card.
-                postDestroyAction: () => base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true),
+                postDestroyAction: () => PostDestroyTrigger(httc),
                 optional: true,
                 cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -55,6 +56,11 @@ namespace Cauldron.Quicksilver
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             yield break;
+        }
+
+        private IEnumerator PostDestroyTrigger(HeroTurnTakerController httc)
+        {
+            return base.SelectAndPlayCardFromHand(httc, true);
         }
     }
 }
