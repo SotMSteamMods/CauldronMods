@@ -1299,6 +1299,33 @@ namespace CauldronTests
             base.AssertNumberOfCardsInHand(legacy, 3);
         }
 
+        [Test()]
+        public void TestGallowsBlast_Play_DamageReduction()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Megalopolis" }, advanced: false);
+            SuppressCeladrochMinionPlay();
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+
+            StackDeckAfterShuffle(celadroch, new[] { "GallowsBlast" });
+            StartGame(false);
+
+            GoToPlayCardPhase(celadroch);
+
+            var card = GetCard("GallowsBlast");
+
+
+            ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(2);
+            effect.SourceCriteria.IsSpecificCard = celadroch.CharacterCard;
+            effect.UntilStartOfNextTurn(celadroch.TurnTaker);
+            this.RunCoroutine(this.GameController.AddStatusEffect(effect, true, new CardSource(celadroch.CharacterCardController)));
+
+            QuickHPStorage(ra, haka, legacy);
+            PlayCard(card);
+            AssertInTrash(celadroch, card);
+            QuickHPCheck(-3, -3, -3);
+        }
+
 
         [Test()]
         public void TestGallowsBlast_StatusEffect()
@@ -1409,6 +1436,9 @@ namespace CauldronTests
             StackDeckAfterShuffle(celadroch, new[] { "AvatarOfDeath", "TatteredDevil" });
             StartGame(false);
 
+            GoToPlayCardPhase(celadroch);
+            PrintSeparator("IN PLAY PHASE");
+
             var card = PlayCard("NightUnderTheMountain");
             AssertInPlayArea(celadroch, card);
 
@@ -1420,12 +1450,28 @@ namespace CauldronTests
             AssertNumberOfStatusEffectsInPlay(1);
 
             QuickHPStorage(ra, haka, legacy);
+
+            // verify the +2 buff
+            DealDamage(celadroch, ra.CharacterCard, 2, DamageType.Infernal);
+            QuickHPCheck(-4, 0, 0);
+            QuickHPUpdate();
+            DealDamage(top, ra.CharacterCard, 2, DamageType.Infernal);
+            QuickHPCheck(-4, 0, 0);
+            QuickHPUpdate();
+
+
             GoToEndOfTurn(celadroch);
 
+            // check that buff effect has expired
+            AssertNumberOfStatusEffectsInPlay(0);
+
             //includes cela's end of turn
-            // cele = 2 + 2 = 4 to two highest
-            // deth = H + 2 to all
-            QuickHPCheck(-5, -9, -9);
+            // buff should have expired by now
+            // cela = 2 to two highest
+            // death = H to all
+            QuickHPCheck(-3, -5, -5);
+
+
         }
 
 
