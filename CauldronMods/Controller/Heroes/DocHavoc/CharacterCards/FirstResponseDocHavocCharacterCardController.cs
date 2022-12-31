@@ -6,7 +6,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.DocHavoc
 {
-    public class FirstResponseDocHavocCharacterCardController : HeroCharacterCardController
+    public class FirstResponseDocHavocCharacterCardController : DocHavocSubCharacterCardController
     {
         private const int PowerNumberOfTargets = 1;
         private const int PowerDamageToDeal = 1;
