@@ -3,7 +3,6 @@ using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
 using System.Linq;
-using Handelabra;
 
 namespace Cauldron.Tiamat
 {
@@ -14,8 +13,13 @@ namespace Cauldron.Tiamat
 
         }
 
+        public string[] availablePromos = new string[] { "HydraTiamat" };
+
+        public bool ArePromosSetup { get; set; } = false;
+
         public override IEnumerator StartGame()
         {
+
             //Elemental Hydra
             if (base.FindCardController(base.CharacterCard) is HydraWinterTiamatCharacterCardController)
             {

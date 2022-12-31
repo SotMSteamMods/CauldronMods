@@ -36,14 +36,14 @@ namespace Cauldron.Tiamat
             {
                 if (base.GameController.HasGameStarted && !(g is GameOverAction) && !(g is IncrementAchievementAction))
                 {
-					return base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsVillainTarget(c)).Count() == 0;
+                    return base.FindCardsWhere((Card c) => IsVillain(c) && c.IsInPlay && c.IsFlipped).Count() == 3;
                 }
                 return false;
             }, (GameAction g) => base.DefeatedResponse(g), new TriggerType[]
             {
                 TriggerType.GameOver,
                 TriggerType.Hidden
-            }, TriggerTiming.After));
+            }, TriggerTiming.After, outOfPlayTrigger: true));
             //Front Triggers
             if (!base.Card.IsFlipped)
             {

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System;
 using Handelabra;
+using Cauldron.Cricket;
 
 namespace Cauldron.Necro
 {
@@ -15,6 +16,22 @@ namespace Cauldron.Necro
 
         protected NecroCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+
+        public override void AddStartOfGameTriggers()
+        {
+            AddTrigger((GameAction ga) => TurnTakerController is NecroTurnTakerController ttc && !ttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+        }
+
+        public IEnumerator SetupPromos(GameAction ga)
+        {
+            if (TurnTakerController is NecroTurnTakerController ttc && !ttc.ArePromosSetup)
+            {
+                ttc.SetupPromos(ttc.availablePromos);
+                ttc.ArePromosSetup = true;
+            }
+
+            return DoNothing();
         }
 
         protected ITrigger AddUndeadDestroyedTrigger(Func<DestroyCardAction, IEnumerator> response, TriggerType triggerType)

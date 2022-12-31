@@ -8,7 +8,7 @@ using Handelabra;
 
 namespace Cauldron.Impact
 {
-    public class ImpactCharacterCardController : HeroCharacterCardController
+    public class ImpactCharacterCardController : ImpactSubCharacterCardController
     {
         public ImpactCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

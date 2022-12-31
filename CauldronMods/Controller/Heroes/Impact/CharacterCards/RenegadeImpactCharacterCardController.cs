@@ -8,7 +8,7 @@ using Handelabra;
 
 namespace Cauldron.Impact
 {
-    public class RenegadeImpactCharacterCardController : HeroCharacterCardController
+    public class RenegadeImpactCharacterCardController : ImpactSubCharacterCardController
     {
         private readonly string renegadeKey = "RenegadeImpactIrreducibleTriggerKey";
         public RenegadeImpactCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)

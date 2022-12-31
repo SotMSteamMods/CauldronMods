@@ -1412,5 +1412,19 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestLastOfTheForgottenOrderUnlock()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Necro/PastNecroCharacter", "Cauldron.TangoOne/PastTangoOneCharacter", "Cauldron.Vanish/PastVanishCharacter", "LaComodora", "Cauldron.CatchwaterHarbor");
+            StartGame();
+
+            Card left = PlayCard("LeftBehind");
+            AssertNextToCard(left, necro.CharacterCard);
+
+            DestroyCard(necro);
+
+
+        }
+
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.Cricket
 {
-    public class FirstResponseCricketCharacterCardController : HeroCharacterCardController
+    public class FirstResponseCricketCharacterCardController : CricketCharacterSubCardController
     {
         public FirstResponseCricketCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Handelabra;
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
-using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-
-using Handelabra;
 
 namespace Cauldron.Pyre
 {
@@ -17,6 +15,17 @@ namespace Cauldron.Pyre
         public const string CascadeKeyword = "cascade";
         private const string LocationKnown = "CascadeLocationKnownKey";
         public const string Irradiated = "{Rad}";
+
+        public IEnumerator SetupPromos(GameAction ga)
+        {
+            if (TurnTakerController is PyreTurnTakerController ttc && !ttc.ArePromosSetup)
+            {
+                ttc.SetupPromos(ttc.availablePromos);
+                ttc.ArePromosSetup = true;
+            }
+
+            return DoNothing();
+        }
 
         protected enum CustomMode
         {
@@ -49,8 +58,10 @@ namespace Cauldron.Pyre
 
         public override void AddStartOfGameTriggers()
         {
-            if(TurnTakerController is PyreTurnTakerController ttc)
+
+            if (TurnTakerController is PyreTurnTakerController ttc)
             {
+                AddTrigger((GameAction ga) => !ttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
                 ttc.MoveMarkersToSide();
             }
         }

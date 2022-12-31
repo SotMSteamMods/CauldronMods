@@ -98,5 +98,7 @@ namespace Cauldron
                 return (list.Count() > 0) ? string.Format("{0} with the most{3}{2}: {1}.", text, list.ToRecursiveString(), text2, text3) : "Warning: No heroes found";
             }, showInEffectsList);
         }
+                    Log.Debug(text + " has already been unlocked!");
+                Log.Debug(text + " has not already been unlocked!");
     }
 }

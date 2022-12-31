@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,22 @@ namespace Cauldron.Gargoyle
         protected GargoyleUtilityCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(TotalNextDamageBoostString);
+        }
+
+        public override void AddStartOfGameTriggers()
+        {
+            AddTrigger((GameAction ga) => TurnTakerController is GargoyleTurnTakerController ttc && !ttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+        }
+
+        public IEnumerator SetupPromos(GameAction ga)
+        {
+            if (TurnTakerController is GargoyleTurnTakerController ttc && !ttc.ArePromosSetup)
+            {
+                ttc.SetupPromos(ttc.availablePromos);
+                ttc.ArePromosSetup = true;
+            }
+
+            return DoNothing();
         }
 
         protected string TotalNextDamageBoostString()

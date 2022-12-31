@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Cauldron.Drift;
+using Cauldron.Starlight;
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -14,6 +18,18 @@ namespace Cauldron.Tiamat
             base.SpecialStringMaker.ShowHeroTargetWithHighestHP().Condition = () => !base.Card.IsFlipped;
             base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfIce", "element of ice")).Condition = () => base.Card.IsFlipped;
             base.SpecialStringMaker.ShowDamageDealt(new LinqCardCriteria((Card c) => c == base.Card, base.Card.Title, useCardsSuffix: false), thisTurn: true).Condition = () => Game.ActiveTurnTaker == base.TurnTaker && !base.Card.IsFlipped;
+            AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
+        }
+
+        public IEnumerator SetupPromos(GameAction ga)
+        {
+            if (TurnTakerController is TiamatTurnTakerController tttc && !tttc.ArePromosSetup)
+            {
+                tttc.SetupPromos(tttc.availablePromos);
+                tttc.ArePromosSetup = true;
+            }
+
+            return DoNothing();
         }
 
         protected override ITrigger[] AddFrontTriggers()
@@ -30,6 +46,7 @@ namespace Cauldron.Tiamat
         public override void AddStartOfGameTriggers()
         {
             base.AddStartOfGameTriggers();
+            AddTrigger((GameAction ga) => TurnTakerController is TiamatTurnTakerController tttc && !tttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
             (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();
         }
 
