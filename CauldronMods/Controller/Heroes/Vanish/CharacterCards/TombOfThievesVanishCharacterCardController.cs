@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Vanish
 {
-    public class TombOfThievesVanishCharacterCardController : HeroCharacterCardController
+    public class TombOfThievesVanishCharacterCardController : VanishSubCharacterCardController
     {
 
         public TombOfThievesVanishCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)

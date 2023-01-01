@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Vanish
 {
-    public class FirstResponseVanishCharacterCardController : HeroCharacterCardController
+    public class FirstResponseVanishCharacterCardController : VanishSubCharacterCardController
     {
         public FirstResponseVanishCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

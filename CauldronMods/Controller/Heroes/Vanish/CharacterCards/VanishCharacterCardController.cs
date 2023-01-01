@@ -7,7 +7,7 @@ using Handelabra;
 
 namespace Cauldron.Vanish
 {
-    public class VanishCharacterCardController : HeroCharacterCardController
+    public class VanishCharacterCardController : VanishSubCharacterCardController
     {
         public VanishCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
