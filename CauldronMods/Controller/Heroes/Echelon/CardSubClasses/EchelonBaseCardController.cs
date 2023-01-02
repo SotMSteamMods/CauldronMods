@@ -3,6 +3,7 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Cauldron.Impact;
 
 namespace Cauldron.Echelon
 {
@@ -10,6 +11,22 @@ namespace Cauldron.Echelon
     {
         public EchelonBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
+        }
+
+        public override void AddStartOfGameTriggers()
+        {
+            AddTrigger((GameAction ga) => TurnTakerController is EchelonTurnTakerController ttc && !ttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+        }
+
+        public IEnumerator SetupPromos(GameAction ga)
+        {
+            if (TurnTakerController is EchelonTurnTakerController ttc && !ttc.ArePromosSetup)
+            {
+                ttc.SetupPromos(ttc.availablePromos);
+                ttc.ArePromosSetup = true;
+            }
+
+            return DoNothing();
         }
 
         protected bool IsTactic(Card card)
