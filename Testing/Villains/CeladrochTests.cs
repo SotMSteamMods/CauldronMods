@@ -938,6 +938,44 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestCelestials_TestImmunity_DamageInterrupt()
+        {
+            SetupGameController(new[] { "Cauldron.Celadroch", "Ra", "Haka", "Legacy", "Cauldron.BlackwoodForest" }, advanced: false);
+            AddTokensToPool(stormPool, 3);
+            DecisionYesNo = false;
+            StartGame(false);
+            SuppressCeladrochMinionPlay();
+
+            GoToPlayCardPhase(celadroch);
+
+            DestroyNonCharacterVillainCards();
+
+            var c1 = GetCard("HollowAngel");
+            var c2 = GetCard("TatteredDevil");
+            PlayCard(c1);
+            PlayCard(c2);
+
+            Card overgrownCathedral = PlayCard("OvergrownCathedral");
+            DecisionSelectCards = new Card[] { celadroch.CharacterCard, ra.CharacterCard, haka.CharacterCard, legacy.CharacterCard, c2 };
+            QuickHPStorage(c1, c2);
+            DealDamage(haka, c1, 2, DamageType.Cold);
+            DealDamage(legacy, c2, 2, DamageType.Cold);
+            DealDamage(legacy, c1, 2, DamageType.Cold);
+            DealDamage(ra, c1, 2, DamageType.Cold);
+            DealDamage(ra, c2, 2, DamageType.Cold);
+
+            // c1 -> haka (-2) + legacy (-2) + ra (0)
+            // c2 -> overgrown cathedral (-1) + legacy (0) + ra (-2)
+            QuickHPCheck(-4, -3);
+
+            QuickHPStorage(c1, c2);
+            DealDamage(ra, c1, 2, DamageType.Cold);
+            DealDamage(haka, c2, 2, DamageType.Cold);
+            DealDamage(legacy, c2, 2, DamageType.Cold);
+            QuickHPCheck(-2, -2);
+        }
+
+        [Test()]
         public void TestOngoings_PlayCard([Values("HoursTilDawn", "LingeringExhalation", "NightUnderTheMountain", "RattlingWind", "ScreamingGale")] string identifier)
         {
 

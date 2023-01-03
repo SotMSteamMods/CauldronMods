@@ -39,15 +39,16 @@ namespace Cauldron.Celadroch
             //when my partner receives damage make them immune to damage.
             AddTrigger<DealDamageAction>(dda => dda.DidDealDamage && !dda.DidDestroyTarget && dda.Target == Partner && !dda.Target.IsLeavingPlay,
                 (dda) => { SetCardPropertyIfRealAction(Partner, _IsImmuneKey, true); return DoNothing(); },
-                TriggerType.MakeImmuneToDamage,
+                TriggerType.FirstTrigger,
                 TriggerTiming.After
             );
 
             //when I receive damage, clear my partner's immunity
             AddTrigger<DealDamageAction>(dda => dda.DidDealDamage && !dda.DidDestroyTarget && dda.Target == Card && !dda.Target.IsLeavingPlay,
                 (dda) => { SetCardPropertyIfRealAction(Partner, _IsImmuneKey, false); return DoNothing(); },
-                TriggerType.ImmuneToDamage,
-                TriggerTiming.After
+                TriggerType.Hidden,
+                TriggerTiming.After,
+                priority: TriggerPriority.High
             );
 
             //make my partner immune to damage
