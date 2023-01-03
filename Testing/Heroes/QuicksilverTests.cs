@@ -543,6 +543,25 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestIronRetortDestroy_UhYeahImThatGuy()
+        {
+            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "Guise", "RookCity");
+            StartGame();
+
+            DealDamage(apostate, quicksilver, 10, DamageType.Cold);
+            Card totalBeefcake = PutInHand("TotalBeefcake");
+            Card retort = PlayCard("IronRetort");
+            Card uhYeah = PlayCard("UhYeahImThatGuy");
+
+            //When {Quicksilver} is dealt damage, you may destroy this card. If you do, you may play a card.
+            DecisionSelectCardToPlay = totalBeefcake;
+            DecisionYesNo = true;
+            DealDamage(apostate, guise, 2, DamageType.Cold);
+            AssertInTrash(uhYeah);
+            AssertIsInPlay(totalBeefcake);
+        }
+
+        [Test()]
         public void TestIronRetortDestroy_Timing()
         {
             SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
