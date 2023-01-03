@@ -1478,5 +1478,32 @@ namespace CauldronTests
             DestroyCard(storm);
             AssertGameOver();
         }
+
+        [Test()]
+        public void TestHydraPromoUnlock()
+        {
+            SetupGameController("Cauldron.Tiamat", "Cauldron.TheKnight", "Cauldron.Echelon", "Cauldron.Necro", "Megalopolis");
+            StartGame();
+
+            AssertPromoCardIsUnlockableThisGame("HydraTiamatPromoCardUnlockController");
+            SetupIncap(echelon, storm);
+
+            AssertNotGameOver();
+            SetupIncap(knight, inferno);
+            AssertNotGameOver();
+
+            AssertPromoCardNotUnlocked("HydraTiamatPromoCardUnlockController");
+
+            SaveAndLoad();
+
+            SetupIncap(necro, winter);
+
+
+            //Win if all heads are flipped
+            AssertGameOver();
+            AssertPromoCardUnlocked("HydraTiamatPromoCardUnlockController");
+
+        }
+
     }
 }

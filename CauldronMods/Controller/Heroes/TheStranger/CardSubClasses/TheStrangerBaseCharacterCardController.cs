@@ -1,9 +1,8 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
+﻿using Cauldron.Impact;
+using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System;
+using System.Collections;
 
 namespace Cauldron.TheStranger
 {
@@ -13,6 +12,22 @@ namespace Cauldron.TheStranger
         {
             SpecialStringMaker.ShowNumberOfCardsInPlay(IsRuneCriteria(), owners: new[] { TurnTaker });
             SpecialStringMaker.ShowNumberOfCardsInPlay(IsGlyphCriteria(), owners: new[] { TurnTaker });
+        }
+
+        public override void AddStartOfGameTriggers()
+        {
+            AddTrigger((GameAction ga) => TurnTakerController is TheStrangerTurnTakerController ttc && !ttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+        }
+
+        public IEnumerator SetupPromos(GameAction ga)
+        {
+            if (TurnTakerController is TheStrangerTurnTakerController ttc && !ttc.ArePromosSetup)
+            {
+                ttc.SetupPromos(ttc.availablePromos);
+                ttc.ArePromosSetup = true;
+            }
+
+            return DoNothing();
         }
 
         protected LinqCardCriteria IsRuneCriteria(Func<Card, bool> additionalCriteria = null)

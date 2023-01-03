@@ -1509,6 +1509,67 @@ namespace CauldronTests
             QuickHPCheck(1);
         }
 
+        [Test]
+        public void TestFirstReponsePromoUnlock()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Cauldron.Cricket", "Cauldron.Echelon", "Cauldron.Vanish", "Cauldron.DocHavoc", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+
+            AssertPromoCardIsUnlockableThisGame("FirstResponseCypherCharacter");
+
+            IEnumerable<Card> augments = FindCardsWhere(c => IsAugment(c)).Take(4);
+            DecisionSelectCards = new Card[] { cricket.CharacterCard, echelon.CharacterCard, doc.CharacterCard, vanish.CharacterCard, cricket.CharacterCard, echelon.CharacterCard, doc.CharacterCard, vanish.CharacterCard };
+            foreach(Card augment in augments)
+            {
+                PlayCard(augment);
+            }
+
+            DestroyCards(c => IsAugment(c) && c.IsInPlayAndHasGameText);
+            foreach (Card augment in augments)
+            {
+                PlayCard(augment);
+            }
+
+            AssertPromoCardNotUnlocked("FirstResponseCypherCharacter");
+            DealDamage(cricket, baron, 100, DamageType.Radiant);
+            DealDamage(cricket, baron, 100, DamageType.Radiant);
+
+            AssertGameOver();
+            AssertPromoCardUnlocked("FirstResponseCypherCharacter");
+        }
+
+        [Test]
+        public void TestSwarmingProtocolPromoUnlock()
+        {
+            SetupGameController("BaronBlade", DeckNamespace, "Cauldron.Cricket", "Cauldron.Echelon", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+
+
+            DestroyCard(cypher);
+            DestroyCard(cricket);
+            DestroyCard(echelon);
+
+            AssertGameOver();
+
+            SetupGameController("BaronBlade", DeckNamespace, "Cauldron.Cricket", "Cauldron.Echelon", "Cauldron.WindmillCity");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card augment = FindCardsWhere(c => IsAugment(c)).FirstOrDefault();
+            DecisionSelectCards = new Card[] { cypher.CharacterCard };
+
+
+
+
+
+
+
+        }
+
         #region Augment Helpers
 
         private bool IsAugment(Card card)

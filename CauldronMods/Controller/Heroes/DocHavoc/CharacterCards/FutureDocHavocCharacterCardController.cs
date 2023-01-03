@@ -7,7 +7,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.DocHavoc
 {
-    public class FutureDocHavocCharacterCardController : HeroCharacterCardController
+    public class FutureDocHavocCharacterCardController : DocHavocSubCharacterCardController
     {
         public FutureDocHavocCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

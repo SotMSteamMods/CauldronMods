@@ -1369,5 +1369,20 @@ namespace CauldronTests
             AssertNumberOfCardsInTrash(tachyon, 0);
             AssertNumberOfCardsInTrash(wraith, 0);
         }
+
+        [Test]
+        public void FirstResponseUnlock()
+        {
+            SetupGameController("Cauldron.Gray", "Cauldron.Vanish", "Cauldron.Cricket", "Cauldron.Echelon", "Cauldron.Cypher", "Cauldron.DocHavoc", "Cauldron.WindmillCity");
+            StartGame();
+
+            DecisionSelectCards = new Card[] { cricket.CharacterCard, gray.CharacterCard, echelon.CharacterCard, gray.CharacterCard, cypher.CharacterCard, gray.CharacterCard, doc.CharacterCard, gray.CharacterCard };
+            UsePower(vanish);
+            UsePower(vanish);
+            UsePower(vanish);
+            UsePower(vanish);
+
+            DealDamage(vanish, gray, 100, DamageType.Energy);
+        }
     }
 }

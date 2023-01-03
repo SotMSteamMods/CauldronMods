@@ -1,11 +1,10 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
+﻿using Handelabra;
+using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using Handelabra;
+using System.Reflection;
 
 namespace Cauldron
 {
@@ -97,6 +96,62 @@ namespace Cauldron
                 }
                 return (list.Count() > 0) ? string.Format("{0} with the most{3}{2}: {1}.", text, list.ToRecursiveString(), text2, text3) : "Warning: No heroes found";
             }, showInEffectsList);
+        }
+
+        public static void SetupPromos(this TurnTakerController turnTakerController, string[] availablePromos, string name = null)
+        {
+            Func<FieldInfo> promosList = () => turnTakerController.GameController.PromoCardManager.GetType().GetField("_promos", System.Reflection.BindingFlags.NonPublic
+| System.Reflection.BindingFlags.Instance);
+            List<PromoCardUnlockController> _promos = promosList().GetValue(turnTakerController.GameController.PromoCardManager) as List<PromoCardUnlockController>;
+
+            Func<FieldInfo> flagsList = () => turnTakerController.GameController.PromoCardManager.GetType().GetField("_flags", System.Reflection.BindingFlags.NonPublic
+| System.Reflection.BindingFlags.Instance);
+            List<PromoCardUnlockController> _flags = flagsList().GetValue(turnTakerController.GameController.PromoCardManager) as List<PromoCardUnlockController>;
+
+
+            name = name ?? turnTakerController.TurnTaker.Identifier;
+            foreach (string text in availablePromos)
+            {
+                if (turnTakerController.GameController.PromoCardManager.IsPromoCardUnlocked(text))
+                {
+                    continue;
+                }
+
+                PromoCardUnlockController promoCardUnlockController = null;
+                string text2 = $"Cauldron.{name}.{text}PromoCardUnlockController";
+                try
+                {
+                    Type type = Type.GetType(text2);
+                    if (type == null)
+                    {
+                        continue;
+                    }
+                    object obj = Activator.CreateInstance(type, turnTakerController.GameController);
+                    if (obj != null && obj is PromoCardUnlockController)
+                    {
+                        promoCardUnlockController = (PromoCardUnlockController)obj;
+                        if (promoCardUnlockController.IsUnlockPossibleThisGame())
+                        {
+                            Log.Debug(LogName.NonProduction, text + " is unlockable this game.");
+                            _promos.Add(promoCardUnlockController);
+                        }
+                        if (promoCardUnlockController.IsFlagPossibleThisGame())
+                        {
+                            promoCardUnlockController.ContinueCheckingForFlags = true;
+                            _flags.Add(promoCardUnlockController);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Promo Card Manager: " + ex.Message + " (" + text2 + ")");
+                }
+            }
+
+            promosList().SetValue(turnTakerController.GameController.PromoCardManager, _promos);
+            flagsList().SetValue(turnTakerController.GameController.PromoCardManager, _flags);
+
+
         }
     }
 }

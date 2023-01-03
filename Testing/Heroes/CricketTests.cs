@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Cauldron.Cricket;
+using System.Collections;
 
 namespace CauldronTests
 {
@@ -888,6 +889,82 @@ namespace CauldronTests
             //Play the top card of a deck.
             PlayCard("VoiceMimicry");
             AssertIsInPlay(card);
+
+        }
+
+        [Test()]
+        public void TestFirstResponsePromo()
+        {
+            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Cauldron.Echelon", "Bunker", "TheScholar", "Cauldron.WindmillCity");
+            StartGame();
+
+            DealDamage(akash, cricket, cricket.CharacterCard.MaximumHitPoints.Value - 2, DamageType.Projectile);
+            Assert.That(cricket.CharacterCard.HitPoints.Value, Is.LessThan(5));
+
+            Func<IEnumerator> gainHpAction = () => GameController.GainHP(cricket.CharacterCard, 6, cardSource: echelon.CharacterCardController.GetCardSource());
+            this.RunCoroutine(gainHpAction());
+            this.RunCoroutine(gainHpAction());
+
+            DealDamage(cricket, akash, akash.CharacterCard.HitPoints.Value + 5, DamageType.Sonic);
+        }
+
+        [Test()]
+        public void TestRenegadePromo()
+        {
+            SetupGameController("Cauldron.Dynamo", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Cauldron.WindmillCity");
+
+            StackDeck(dynamo, new[] { "HeresThePlan" }); // Dynamo discards the top card of his deck. Make sure it isn't the card we are testing.
+            StartGame();
+
+            Card pyt = PlayCard("Python");
+
+            //The first time a hero target deals damage to this card each turn, reduce damage dealt by that target by 1 until the start of the next villain turn.
+            DealDamage(cricket, pyt, 1, DamageType.Melee);
+
+            QuickHPStorage(dynamo.CharacterCard, pyt, cricket.CharacterCard, legacy.CharacterCard, bunker.CharacterCard, scholar.CharacterCard);
+            DealDamage(cricket, dynamo, 2, DamageType.Melee);
+            QuickHPCheck(-2, 0, 0, 0, 0, 0);
+
+            Card responder = PlayCard("WCPDSquad");
+
+            DealDamage(responder, cricket, cricket.CharacterCard.MaximumHitPoints.Value + 2, DamageType.Projectile);
+            AssertIncapacitated(cricket);
+
+            DestroyCard(legacy);
+            DestroyCard(bunker); 
+            DestroyCard(scholar);
+
+            AssertGameOver();
+
+        }
+
+        [Test()]
+        public void TestWastelandRoninPromo()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Cricket", "Cauldron.Impact", "Cauldron.Pyre", "Cauldron.TheStranger", "Cauldron.Gargoyle", "Cauldron.FSCContinuanceWanderer");
+
+            StartGame();
+            AssertPromoCardIsUnlockableThisGame("WastelandRoninCricketCharacter");
+            AssertPromoCardIsUnlockableThisGame("WastelandRoninGargoyleCharacter");
+            AssertPromoCardIsUnlockableThisGame("WastelandRoninImpactCharacter");
+            AssertPromoCardIsUnlockableThisGame("WastelandRoninPyreCharacter");
+            AssertPromoCardIsUnlockableThisGame("WastelandRoninTheStrangerCharacter");
+
+
+
+            Card heartOfTheWanderer = PlayCard("HeartOfTheWanderer");
+
+            AssertPromoCardNotUnlocked("WastelandRoninCricketCharacter");
+
+            PlayCard("RogueFissionCascade");
+
+            AssertPromoCardNotUnlocked("WastelandRoninCricketCharacter");
+
+            AssertPromoCardUnlocked("WastelandRoninCricketCharacter");
+            AssertPromoCardUnlocked("WastelandRoninGargoyleCharacter");
+            AssertPromoCardUnlocked("WastelandRoninImpactCharacter");
+            AssertPromoCardUnlocked("WastelandRoninPyreCharacter");
+            AssertPromoCardUnlocked("WastelandRoninTheStrangerCharacter");
 
         }
     }

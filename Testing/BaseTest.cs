@@ -1,14 +1,14 @@
-﻿using NUnit.Framework;
-using System;
+﻿using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Controller.PromoCardUnlockControllers;
 using Handelabra.Sentinels.Engine.Model;
-using Handelabra.Sentinels.Engine.Controller;
-using System.Collections.Generic;
-using System.Linq;
+using NUnit.Framework;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using Handelabra.Sentinels.Engine.Controller.PromoCardUnlockControllers;
 
 namespace Handelabra.Sentinels.UnitTest
 {
@@ -5394,6 +5394,11 @@ namespace Handelabra.Sentinels.UnitTest
             {
                 Console.WriteLine("GAME OVER");
                 this._continueRunningGame = false;
+            }
+
+            if (gameAction is UnlockPromoCardAction unlock && unlock.IsSuccessful)
+            {
+                SetPersistentValueInView(unlock.PromoCardUnlockedPropertyKey, true);
             }
 
             yield return null;

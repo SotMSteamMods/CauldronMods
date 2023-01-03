@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Cauldron.Impact
 {
-    public class WastelandRoninImpactCharacterCardController : HeroCharacterCardController
+    public class WastelandRoninImpactCharacterCardController : ImpactSubCharacterCardController
     {
         public WastelandRoninImpactCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

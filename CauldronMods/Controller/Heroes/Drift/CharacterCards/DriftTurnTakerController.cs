@@ -33,6 +33,14 @@ namespace Cauldron.Drift
         //    }
         //}
 
+        public string[] availablePromos = new string[] {  };
+        public Dictionary<string, string[]> nonDriftPromos = new Dictionary<string, string[]>()
+        {
+            { "Necro", new string[] {"LastOfTheForgottenOrderNecro"} }
+        };
+
+        public bool ArePromosSetup { get; set; } = false;
+
         public IEnumerator SetupDrift()
         {
             string promoIdentifier = Base;

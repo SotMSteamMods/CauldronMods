@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Handelabra.Sentinels.Engine.Controller;
+﻿using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cauldron.Cypher
 {
@@ -65,5 +66,22 @@ namespace Cauldron.Cypher
             return FindTurnTakersWhere(tt =>
                 tt.IsHero && tt.CharacterCards.Any(IsAugmentedHeroCharacterCard)).ToList();
         }
+
+        public override void AddStartOfGameTriggers()
+        {
+            AddTrigger((GameAction ga) => TurnTakerController is CypherTurnTakerController ttc && !ttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+        }
+
+        public IEnumerator SetupPromos(GameAction ga)
+        {
+            if (TurnTakerController is CypherTurnTakerController ttc && !ttc.ArePromosSetup)
+            {
+                ttc.SetupPromos(ttc.availablePromos);
+                ttc.ArePromosSetup = true;
+            }
+
+            return DoNothing();
+        }
+
     }
 }

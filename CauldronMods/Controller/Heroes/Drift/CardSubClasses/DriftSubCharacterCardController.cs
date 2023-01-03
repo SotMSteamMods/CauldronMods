@@ -47,6 +47,26 @@ namespace Cauldron.Drift
         private int totalShifts = 0;
         public int TotalShifts { get => totalShifts; set => totalShifts = value; }
 
+        public override void AddStartOfGameTriggers()
+        {
+            AddTrigger((GameAction ga) => TurnTakerController is DriftTurnTakerController ttc && !ttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+        }
+
+        public IEnumerator SetupPromos(GameAction ga)
+        {
+            if (TurnTakerController is DriftTurnTakerController ttc && !ttc.ArePromosSetup)
+            {
+                ttc.SetupPromos(ttc.availablePromos);
+                foreach(string name in ttc.nonDriftPromos.Keys)
+                {
+                    ttc.SetupPromos(ttc.nonDriftPromos[name], name: name);
+                }
+                ttc.ArePromosSetup = true;
+            }
+
+            return DoNothing();
+        }
+
         public override IEnumerator PerformEnteringGameResponse()
         {
             IEnumerator coroutine;

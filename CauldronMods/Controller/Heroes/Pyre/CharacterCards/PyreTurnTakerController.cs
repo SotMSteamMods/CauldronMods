@@ -15,6 +15,8 @@ namespace Cauldron.Pyre
         }
 
         public const string Irradiated = "{Rad}";
+        public string[] availablePromos = new string[] { "WastelandRoninPyre" };
+        public bool ArePromosSetup { get; set; } = false;
 
         public void MoveMarkersToSide()
         {

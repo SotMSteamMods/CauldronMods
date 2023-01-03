@@ -7,7 +7,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.DocHavoc
 {
-    public class DocHavocCharacterCardController : HeroCharacterCardController
+    public class DocHavocCharacterCardController : DocHavocSubCharacterCardController
     {
         private const int PowerDamageAmount = 3;
 
