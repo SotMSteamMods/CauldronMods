@@ -39,7 +39,7 @@
             ],
             "openingLines": {
                 "default": "Alright, folks, let's keep a level head here. This may get rough.",
-                "VectorCharacter": "I'm not giving up on you yet."
+                "Cauldron.VectorCharacter": "I'm not giving up on you yet."
             },
             "complexity": 2
         },
@@ -440,7 +440,7 @@
             ],
             "openingLines": {
                 "default": "First priority, people, evacuate the wounded - then we knock the kook out cold.",
-                "VectorCharacter": "Quarantine the area! We can't let his plague spread."
+                "Cauldron.VectorCharacter": "Quarantine the area! We can't let his plague spread."
             },
             "complexity": 2
         },
@@ -480,7 +480,7 @@
             ],
             "openingLines": {
                 "default": "Haven't seen your like before; let's see how you respond to punching.",
-                "VectorCharacter": "I won't let those events take place in this reality, too."
+                "Cauldron.VectorCharacter": "I won't let those events take place in this reality, too."
             },
             "complexity": 2
         }

@@ -39,7 +39,7 @@
             ],
             "openingLines": {
                 "default": "Nanite defensive routines activated.",
-                "SwarmEaterCharacter": "It can augment itself with whatever it consumes. Be careful, team.",
+                "Cauldron.SwarmEaterCharacter": "It can augment itself with whatever it consumes. Be careful, team.",
                 "DistributedHivemindSwarmEaterCharacter": "Well, good for you."
             },
             "complexity": 3
@@ -526,7 +526,7 @@
             ],
             "openingLines": {
                 "default": "Nanite offensive routines activated.",
-                "SwarmEaterCharacter": "If we don't stop it, we'll all be on the menu.",
+                "Cauldron.SwarmEaterCharacter": "If we don't stop it, we'll all be on the menu.",
                 "DistributedHivemindSwarmEaterCharacter": "You certainly talk more."
             },
             "complexity": 3
@@ -566,7 +566,7 @@
             ],
             "openingLines": {
                 "default": "We are the swarm.",
-                "SwarmEaterCharacter": "Except I'm a friendly cloud of nanites, instead of a ravenous, all-consuming one.",
+                "Cauldron.SwarmEaterCharacter": "Except I'm a friendly cloud of nanites, instead of a ravenous, all-consuming one.",
                 "DistributedHivemindSwarmEaterCharacter": "Not if we take you down. You and your bug friends."
             },
             "complexity": 3

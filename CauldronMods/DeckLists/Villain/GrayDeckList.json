@@ -57,11 +57,11 @@
 			"challengeText": "At the start of the villain turn, {Gray} deals each target 1 irreducible energy damage.",
             "openingLines": {
                 "default": "I'm already fixing the problem. If you don't like what it takes, that just makes you another problem. ",
-                "VanishCharacter": "You! [b]You[/b] did this to me. Let's see how you like having [b]your[/b] life torn apart!",
+                "Cauldron.VanishCharacter": "You! [b]You[/b] did this to me. Let's see how you like having [b]your[/b] life torn apart!",
                 "FirstResponseVanishCharacter": "Your company was just a warmup. Your new team is next. No matter how far you run, I'll rip down everything you build. ",
                 "PastVanishCharacter": "You can't fool me by changing your outfit. I'm going to destroy you for your part in all this.",
                 "TombOfThievesVanishCharacter": "Reduced to thieving? You're no better than me.",
-                "PyreCharacter": "That glow... How did you meet the same fate as I? Show yourself!",
+                "Cauldron.PyreCharacter": "That glow... How did you meet the same fate as I? Show yourself!",
                 "UnstablePyreCharacter": "I don't understand. Is this a trick?",
                 "WastelandRoninPyreCharacter": "So...in the future, I am relegated to living in a shell and depending on these wretches for help?",
                 "ExpeditionOblaskPyreCharacter": "My company could profit greatly from the technology you have there. Hand it over, or I'll peel it off your corpse."

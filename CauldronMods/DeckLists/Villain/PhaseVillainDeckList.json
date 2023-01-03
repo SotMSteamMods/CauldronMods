@@ -55,7 +55,7 @@
 			"challengeText": "Whenever an Obstacle is destroyed, Obstacles become immune to damage until the end of the turn.",
 			"openingLines": {
 				"default": "Ha! Smell ya later, losers! This girl is outta here!",
-				"ImpactCharacter": "You again! 'Fraid I can't talk now - things to steal, places to go through!",
+				"Cauldron.ImpactCharacter": "You again! 'Fraid I can't talk now - things to steal, places to go through!",
 				"RenegadeImpactCharacter": "Seems we're finally on the same side - of the wall. See ya!",
 				"WastelandRoninImpactCharacter": "That's a wild look you got there, boy. Fallen on rough times?"
 			}

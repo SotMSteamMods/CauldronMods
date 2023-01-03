@@ -65,7 +65,7 @@
 			"flippedChallengeText": "When {TheInfernalChoir} flips to this side, reduce damage dealt to {TheInfernalChoir} by 2 until the start of the villain turn.",
 			"openingLines": {
 				"default": "You're surprised there are ghosts in organized crime? Let us show why it's called the “criminal underworld“...",
-				"TerminusCharacter": "Your talent is wasted, working for the Conductor. Join me, Daiyu.",
+				"Cauldron.TerminusCharacter": "Your talent is wasted, working for the Conductor. Join me, Daiyu.",
 				"MinistryOfStrategicScienceTerminusCharacter": "So you found a gang to work for, after all. It's certainly bringing out your better side.",
 				"FutureTerminusCharacter": "Interesting choice of weapons, but such toys will not save you."
 			}

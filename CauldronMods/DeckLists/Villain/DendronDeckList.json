@@ -56,7 +56,7 @@
 			"challengeText": "Whenever a Tattoo enters play, it deals the hero target with the highest HP {H - 2} infernal damage.",
 			"openingLines": {
 				"default": "The world will know the mark of Dendron.",
-				"TheStrangerCharacter": "Those markings...I sense my own hand in your creation. Fitting that I will also be your destruction.",
+				"Cauldron.TheStrangerCharacter": "Those markings...I sense my own hand in your creation. Fitting that I will also be your destruction.",
 				"RunecarvedTheStrangerCharacter": "Pathetic. You're paying for your magic with your own soul, and soon nothing will remain.",
 				"WastelandRoninTheStrangerCharacter": "What sort of sorcery is this? Your runes...they have new power!",
 				"PastTheStrangerCharacter": "You bear my mark, and yet don't obey my will? Impossible.",
@@ -389,7 +389,7 @@
 		"challengeText": "At the start of the game, put 6 random tattoos under {Dendron} instead. {Dendron} is immune to villain damage.",
 		"openingLines": {
 			"default": "Do you feel it coming in the air? My art now knows no boundaries.",
-			"TheStrangerCharacter": "Do you like my new runes?",
+			"Cauldron.TheStrangerCharacter": "Do you like my new runes?",
 			"WastelandRoninTheStrangerCharacter": "My new pets will make short work of you!",
 			"RunecarvedTheStrangerCharacter": "Your fate is becoming inevitable, fool. Why not save yourself?",
 			"PastTheStrangerCharacter": "Poor creature; created purely by accident. You have no purpose!",

@@ -62,7 +62,7 @@
 			"challengeText": "The first time in the game that {TheRam} is reduced to 40 or fewer HP, search the villain deck and trash for a copy of Fall Back and put it into play, then shuffle all cards other than Up Close and Grappling Claw from the villain trash into the villain deck.",
             "openingLines": {
                 "default": "Target Acquired//Status//Hostile//Initiate Neutralization Protocol",
-                "QuicksilverCharacter": "Primary target identified//Halberd-19//Initiate R43 combat retrieval",
+                "Cauldron.QuicksilverCharacter": "Primary target identified//Halberd-19//Initiate R43 combat retrieval",
                 "UncannyQuicksilverCharacter": "Primary target identified//Halberd-19 morphology has changed//Deploy increased countermeasures",
                 "RenegadeQuicksilverCharacter": "Primary target identified//Halberd-19 appears to be evading law enforcement//Exploit opportunity",
                 "HarbingerQuicksilverCharacter": "Primary target identified//Reclamation already completed//Presence does not compute//Attack anyway"
@@ -450,8 +450,8 @@
 			"challengeText": "At the end of the villain turn, if this card is in play, destroy an equipment card, then put the top card of the villain deck under {TheRam}.",
             "openingLines": {
                 "default": "ADMIRAL WINTERS: I'll blast you all back to whatever time you came from, even if I have to destroy this whole place!",
-                "PyreCharacter": "ADMIRAL WINTERS: Once I've reduced that fancy metal suit to pieces, I'm sure it will prove fascinating to study!",
-                "QuicksilverCharacter": "I see I am not the only one with a metal shell to fight in.",
+                "Cauldron.PyreCharacter": "ADMIRAL WINTERS: Once I've reduced that fancy metal suit to pieces, I'm sure it will prove fascinating to study!",
+                "Cauldron.QuicksilverCharacter": "I see I am not the only one with a metal shell to fight in.",
                 "PastTheStrangerCharacter": "I have seen you before, stranger. What kind of creature are you?",
                 "PastNecroCharacter": "This is no place for you, professor.",
                 "PastTangoOneCharacter": "What a pitiful firearm. Let me show you mine!",

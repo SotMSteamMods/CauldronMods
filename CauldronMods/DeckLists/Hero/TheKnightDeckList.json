@@ -43,8 +43,8 @@
 			],
 			"openingLines": {
 				"default": "Halt, villain! Leave, or cross my steel!",
-				"OutlanderCharacter": "There is no honor in one who prospers from the death of others. Whatever you once were, I see nothing of myself left in you now.",
-				"WinterTiamatCharacter": "Foul Beast! I have slain thee once, I will do so again.",
+				"Cauldron.OutlanderCharacter": "There is no honor in one who prospers from the death of others. Whatever you once were, I see nothing of myself left in you now.",
+				"Cauldron.WinterTiamatCharacter": "Foul Beast! I have slain thee once, I will do so again.",
 				"HydraWinterTiamatCharacter": "No matter how many heads this beast returns with, I shall vanquish it again!",
 				"FutureTiamatCharacter": "The dragon's armor appears even stronger than my own."
 			},
@@ -480,8 +480,8 @@
 			],
 			"openingLines": {
 				"default": "Have at thee! I've always wanted to say that.",
-				"OutlanderCharacter": "And you are nothing but a broken reflection of my ancestor.",
-				"WinterTiamatCharacter": "For my ancestors!",
+				"Cauldron.OutlanderCharacter": "And you are nothing but a broken reflection of my ancestor.",
+				"Cauldron.WinterTiamatCharacter": "For my ancestors!",
 				"HydraWinterTiamatCharacter": "This dragon keeps getting uglier.",
 				"FutureTiamatCharacter": "Is that thing from the future?"
 			},
@@ -523,8 +523,8 @@
 			],
 			"openingLines": {
 				"default": "Whether 'tis by my blood and bone alone, today shall be your undoing!",
-				"OutlanderCharacter": "I will not stand down while I yet draw breath.",
-				"WinterTiamatCharacter": "Yeaaarghh! To battle!",
+				"Cauldron.OutlanderCharacter": "I will not stand down while I yet draw breath.",
+				"Cauldron.WinterTiamatCharacter": "Yeaaarghh! To battle!",
 				"HydraWinterTiamatCharacter": "Each of those necks shall feel my blade!",
 				"FutureTiamatCharacter": "An armored dragon! What a sight!"
 			},
@@ -566,11 +566,11 @@
 			],
 			"openingLines": {
 				"default": "You will not shed innocent blood while we stand.",
-				"OutlanderCharacter": "The tale is long, but the ending is simple: your defeat, at my blade.",
+				"Cauldron.OutlanderCharacter": "The tale is long, but the ending is simple: your defeat, at my blade.",
 				"PastTheRamCharacter": "A sword, and my honor. You shall not destroy this city.",
-				"WinterTiamatCharacter": "Hold fast! We will smite this serpent where it stands.",
+				"Cauldron.WinterTiamatCharacter": "Hold fast! We will smite this serpent where it stands.",
 				"HydraWinterTiamatCharacter": "Stand fast; this will be a fearsome onslaught.",
-				"TheMistressOfFateCharacter": "Whatever sorcery this is, I have faced worse.",
+				"Cauldron.TheMistressOfFateCharacter": "Whatever sorcery this is, I have faced worse.",
 				"FutureTiamatCharacter": "I have never seen a dragon such as this."
 			},
 			"complexity": 1
@@ -616,8 +616,8 @@
 			],
 			"openingLines": {
 				"default": "We survived the Wastelands; this should be easy!",
-				"OutlanderCharacter": "Well, you'll have to keep wondering!",
-				"WinterTiamatCharacter": "I have seen worse horrors than you!",
+				"Cauldron.OutlanderCharacter": "Well, you'll have to keep wondering!",
+				"Cauldron.WinterTiamatCharacter": "I have seen worse horrors than you!",
 				"HydraWinterTiamatCharacter": "We've visited the future and seen your bones. You don't frighten us!",
 				"FutureTiamatCharacter": "These monsters are not flesh and blood; don't hold back!"
 			},

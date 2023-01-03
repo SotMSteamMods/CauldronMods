@@ -57,8 +57,8 @@
             ],
             "openingLines": {
                 "default": "It's about time we took care of you!",
-                "OutlanderCharacter": "Bad news; I can already see the future where we defeat you!",
-				"FutureTiamatCharacter": "Who thought it was a good idea to build a cyborg dragon?"
+                "Cauldron.OutlanderCharacter": "Bad news; I can already see the future where we defeat you!",
+				        "FutureTiamatCharacter": "Who thought it was a good idea to build a cyborg dragon?"
             },
             "complexity": 3
         },
@@ -929,7 +929,7 @@
             ],
             "openingLines": {
                 "default": "Don't worry people, I'll make sure we have plenty of time for this mission!",
-                "OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
+                "Cauldron.OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
             },
             "complexity": 3
         },
@@ -949,8 +949,8 @@
             ],
             "openingLines": {
                 "default": "What year is this again?",
-                "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
-                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
+                "Cauldron.TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
+                "Cauldron.OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
                 "FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
             },
             "complexity": 3
@@ -993,7 +993,7 @@
             ],
             "openingLines": {
                 "default": "Your time is up.",
-                "OutlanderCharacter": "Well, I figured that was appropriate, given the audience."
+                "Cauldron.OutlanderCharacter": "Well, I figured that was appropriate, given the audience."
             },
             "complexity": 3
         },
@@ -1035,7 +1035,7 @@
             ],
             "openingLines": {
                 "default": "The problem with all this time travel is you start losing track of what's going on.",
-                "OutlanderCharacter": "Just one, but you can't blame me for a little sightseeing!"
+                "Cauldron.OutlanderCharacter": "Just one, but you can't blame me for a little sightseeing!"
             },
             "complexity": 3
         },
@@ -1077,7 +1077,7 @@
             ],
             "openingLines": {
                 "default": "Someone's not thinking with temporal anomalies!",
-                "OutlanderCharacter": "Well, it's heavy and it hurts when it hits you in the head!"
+                "Cauldron.OutlanderCharacter": "Well, it's heavy and it hurts when it hits you in the head!"
             },
             "complexity": 3
         }

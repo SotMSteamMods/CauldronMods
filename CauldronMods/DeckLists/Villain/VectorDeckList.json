@@ -59,7 +59,7 @@
             "difficulty": 3,
             "openingLines": {
                 "default": "You think you can stop me? You've already lost! Every drop of blood is a death sentence.",
-                "DocHavocCharacter": "Come to view your handiwork? It's too late to save me, or to stop me.",
+                "Cauldron.DocHavocCharacter": "Come to view your handiwork? It's too late to save me, or to stop me.",
                 "FirstResponseDocHavocCharacter": "Your response time is much too slow; my supervirus is already nearly complete.",
                 "FutureDocHavocCharacter": "From what I hear, my plague has already overcome your future."
             }

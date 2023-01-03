@@ -53,7 +53,7 @@
 			"challengeText": "At the start of the game, put Python and Copperhead into play. {Dynamo} is indestructible as long as there is another villain target in play.",
             "openingLines": {
                 "default": "You interrupted the wrong heist, do-gooders! Prepare for pain!",
-                "CricketCharacter": "Hey pipsqueak, aren't you a little young to be playing caped crusader?",
+                "Cauldron.CricketCharacter": "Hey pipsqueak, aren't you a little young to be playing caped crusader?",
                 "FirstResponseCricketCharacter": "Nice digs, kid. But fancy gear ain't nothing without the brains behind it.",
                 "RenegadeCricketCharacter": "Whoa, what is this? You fixing to join the gang? Or is this another one of your tricks?",
                 "WastelandRoninCricketCharacter": "Looks like you got a new edge. Wonder how it'll look broken."

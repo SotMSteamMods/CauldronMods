@@ -39,7 +39,7 @@
             ],
             "openingLines": {
                 "default": "Before we go charging in, let's figure out what we're dealing with.",
-                "WinterTiamatCharacter": "Such a noisy lizard. I've got the antidote for that.",
+                "Cauldron.WinterTiamatCharacter": "Such a noisy lizard. I've got the antidote for that.",
                 "HydraWinterTiamatCharacter": "That lizard looks meaner than before."
             },
             "complexity": 3
@@ -528,7 +528,7 @@
             ],
             "openingLines": {
                 "default": "Get ready to move out.",
-                "WinterTiamatCharacter": "What are you jokers waiting for? We've got a dragon that needs to be taught some manners.",
+                "Cauldron.WinterTiamatCharacter": "What are you jokers waiting for? We've got a dragon that needs to be taught some manners.",
                 "HydraWinterTiamatCharacter": "This is where we make our stand; can't let it get past us!"
             },
             "complexity": 3
@@ -566,7 +566,7 @@
             ],
             "openingLines": {
                 "default": "Deploying surveillance drones to identify strategic weaknesses.",
-                "WinterTiamatCharacter": "What a quaint beast.",
+                "Cauldron.WinterTiamatCharacter": "What a quaint beast.",
                 "HydraWinterTiamatCharacter": "You still don't have enough eyes to see what's coming."
             },
             "complexity": 3
