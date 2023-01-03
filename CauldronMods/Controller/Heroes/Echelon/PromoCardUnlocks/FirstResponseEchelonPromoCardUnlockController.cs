@@ -95,7 +95,6 @@ namespace Cauldron.Echelon
                     string unlockConditionKey = conditionEnvironmentDictionary.First(c => c.Value == environmentIdentifier).Key;
                     SetFlag(unlockConditionKey, value: true);
                     ContinueCheckingForFlags = false;
-                    Log.Debug("Flag for " + environmentIdentifier + " has been achieved");
                 }
             }
         }
@@ -132,7 +131,6 @@ namespace Cauldron.Echelon
                 PlayCardAction playCardAction = action as PlayCardAction;
                 if (playCardAction.WasCardPlayed && (playCardAction.CardToPlay.Identifier == "FirstResponder" && AreAnyInPlay((Card c) => c.Identifier == "TheKestrelMarkII")))
                 {
-                    Log.Debug("FirstResponseEchelonPromoUnlock play card condition has been met!");
                     DidEchelonPlayFirstResponderWhileKestrelWasOut = true;
                 }
             }
