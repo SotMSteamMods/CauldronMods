@@ -347,6 +347,20 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestSetListCharacterRemovedFromGameDestroy_SkyDeck([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "MobileDefensePlatform" }, advanced: false);
+            StartGame();
+
+            PlayCard("SkyDeck");
+            var memberCard = GetCard(member.GetIdentifier());
+
+            DestroyCard(memberCard);
+
+            AssertAtLocation(memberCard, scream.TurnTaker.OutOfGame);
+        }
+
+        [Test()]
         public void TestSetListCharacterRemovedFromGameDamage([Values(ScreaMachineBandmate.Value.Slice, ScreaMachineBandmate.Value.Bloodlace, ScreaMachineBandmate.Value.Valentine, ScreaMachineBandmate.Value.RickyG)] ScreaMachineBandmate.Value member)
         {
             SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
@@ -411,7 +425,7 @@ namespace CauldronTests
 
             QuickHPStorage(legacy.CharacterCard, ra.CharacterCard, haka.CharacterCard, bunker.CharacterCard, rickyg, bloodlace);
 
-            AssertNextMessage("Take Down prevented ScreaMachine from playing cards.");
+            AssertNextMessage("Take Down prevented a card from being played.");
             GoToEndOfTurn(scream);
             QuickHPCheck(-2, -2, -2, -2, 0, 0);
 

@@ -68,7 +68,7 @@ namespace Cauldron.ScreaMachine
             {
                 AddFlippedSideTriggers();
             }
-
+            AddSideTrigger(AddTrigger((DestroyCardAction destroyCard) => destroyCard.CardToDestroy == this, CannotBeMovedResponse, TriggerType.Hidden, TriggerTiming.Before));
             AddAfterLeavesPlayAction(ga => CheckForDefeat(ga), TriggerType.GameOver);
         }
 

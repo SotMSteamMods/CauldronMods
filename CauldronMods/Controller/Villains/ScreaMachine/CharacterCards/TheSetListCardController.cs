@@ -305,14 +305,20 @@ namespace Cauldron.ScreaMachine
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            coroutine = GameController.DealDamage(DecisionMaker, highest.First(), c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, 2, DamageType.Sonic, cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
+            // add check for targets just in case
+            // this should never matter since if there are no villain targets, the game should already be over
+            if (highest.Any())
             {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
+
+                coroutine = GameController.DealDamage(DecisionMaker, highest.First(), c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, 2, DamageType.Sonic, cardSource: GetCardSource());
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
             }
 
             coroutine = GameController.PlayTopCardOfLocation(TurnTakerController, TurnTaker.Deck, cardSource: GetCardSource());
@@ -324,6 +330,7 @@ namespace Cauldron.ScreaMachine
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+            
         }
 
         private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
