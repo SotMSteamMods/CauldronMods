@@ -35,7 +35,8 @@ namespace Cauldron.Celadroch
             var effect = new IncreaseDamageStatusEffect(2);
             effect.SourceCriteria.IsVillain = true;
             effect.SourceCriteria.IsTarget = true;
-            effect.UntilEndOfNextTurn(TurnTaker);
+            effect.ToTurnPhaseExpiryCriteria.TurnTaker = TurnTaker;
+            effect.ToTurnPhaseExpiryCriteria.Phase = Phase.End;
             effect.CardSource = Card;
 
             return AddStatusEffect(effect);
