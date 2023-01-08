@@ -15,7 +15,7 @@ namespace Cauldron.Gray
         public override IEnumerator StartGame()
         {
             //Search the villain deck for 1 copy of Chain Reaction and put it into play.
-            IEnumerator coroutine = base.GameController.PlayCard(this, base.TurnTaker.GetCardByIdentifier("ChainReaction"), cardSource: new CardSource(base.CharacterCardController));
+            IEnumerator coroutine = base.GameController.PlayCard(this, base.TurnTaker.GetCardByIdentifier("ChainReaction"), isPutIntoPlay: true, cardSource: new CardSource(base.CharacterCardController));
             //Shuffle the villain deck.
             IEnumerator coroutine2 = base.GameController.ShuffleLocation(base.TurnTaker.Deck, cardSource: new CardSource(base.CharacterCardController));
             if (base.UseUnityCoroutines)

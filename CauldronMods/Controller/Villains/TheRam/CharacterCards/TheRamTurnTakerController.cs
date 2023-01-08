@@ -34,7 +34,7 @@ namespace Cauldron.TheRam
                 }
 
                 //Put Grappling Claw into play. Shuffle the villain deck."
-                coroutine = GameController.PlayCard(this, FindCardsWhere((Card c) => c.Identifier == "GrapplingClaw").FirstOrDefault(), cardSource: new CardSource(CharacterCardController));
+                coroutine = GameController.PlayCard(this, FindCardsWhere((Card c) => c.Identifier == "GrapplingClaw").FirstOrDefault(), isPutIntoPlay: true, cardSource: new CardSource(CharacterCardController));
                 if (base.UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
