@@ -17,7 +17,7 @@ namespace Cauldron.Tiamat
 
         public bool ArePromosSetup { get; set; } = false;
 
-        public override IEnumerator StartGame()
+        public IEnumerator SupplementalSetup()
         {
 
             //Elemental Hydra
@@ -75,8 +75,11 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
-        public void MoveStartingCards()
+        public bool AreStartingCardsSetUp { get; private set; } = false;
+
+        public IEnumerator MoveStartingCards(GameAction action)
         {
+            AreStartingCardsSetUp = true;
             //Winter is in all, just has promoIdentifier differentiating
             Card winter = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter");
             
@@ -133,11 +136,23 @@ namespace Cauldron.Tiamat
                 throw new InvalidOperationException("Character Controller is not a Tiamat Character Card Controller");
             }
 
+            IEnumerator coroutine;
             foreach (Card c in inPlay)
             {
                 if (c.Location.IsOffToTheSide)
-                {
-                    TurnTaker.MoveCard(c, TurnTaker.PlayArea);
+                { 
+                    //TurnTaker.MoveCard(c, TurnTaker.PlayArea);
+                    coroutine = GameController.PlayCard(this, c, isPutIntoPlay: true, cardSource: FindCardController(c).GetCardSource());
+                    coroutine = GameController.PlayCard(this, c, isPutIntoPlay: true, cardSource: FindCardController(c).GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                      
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             foreach (Card c in inBox)
@@ -145,7 +160,28 @@ namespace Cauldron.Tiamat
                 if (c.Location.IsOffToTheSide)
                 {
                     TurnTaker.MoveCard(c, TurnTaker.InTheBox);
+                    coroutine = GameController.MoveCard(this, c, TurnTaker.InTheBox, cardSource: FindCardController(c).GetCardSource());
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+
+                    }
+                    else
+                    {
+                        base.GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
+            }
+
+            coroutine = SupplementalSetup();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
 

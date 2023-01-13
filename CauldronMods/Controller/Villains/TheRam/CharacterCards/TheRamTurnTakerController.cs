@@ -6,7 +6,6 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 using Handelabra;
-
 namespace Cauldron.TheRam
 {
     public class TheRamTurnTakerController : TurnTakerController
@@ -91,17 +90,37 @@ namespace Cauldron.TheRam
             return GameController.DoAction(upCloseToTrash);
         }
 
-        public void HandleWintersEarly(bool banish = true)
+        public bool IsAdmiralWintersHandled { get; private set; } = false;
+        public IEnumerator HandleWintersEarly(bool banish = true)
         {
+            IsAdmiralWintersHandled = true;
             Card winters = TurnTaker.FindCard("AdmiralWintersCharacter", true);
             if (winters == null || winters.Location != TurnTaker.OffToTheSide)
             {
                 Log.Debug("Failed to find Admiral Winters");
-                return;
+                yield return GameController.DoNothing();
             }
+            else
+            {
+                IEnumerator coroutine;
+                if (banish)
+                {
+                    coroutine = GameController.MoveCard(this, winters, TurnTaker.InTheBox, cardSource: FindCardController(winters).GetCardSource());
+                }
+                else
+                {
+                    coroutine = GameController.PlayCard(this, winters, isPutIntoPlay: true, cardSource: FindCardController(winters).GetCardSource());
+                }
 
-            Location targetLocation = banish ? TurnTaker.InTheBox : TurnTaker.PlayArea;
-            TurnTaker.MoveCard(winters, targetLocation);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+            }
         }
     }
 }

@@ -29,6 +29,12 @@ namespace Cauldron.Tiamat
         protected abstract ITrigger[] AddDecapitatedAdvancedTriggers();
         protected abstract ITrigger[] AddDecapitatedChallengeTriggers();
 
+        public override void AddStartOfGameTriggers()
+        {
+            base.AddStartOfGameTriggers();
+            AddTrigger((GameAction ga) => TurnTakerController is TiamatTurnTakerController tttc && !tttc.AreStartingCardsSetUp, (TurnTakerController as TiamatTurnTakerController).MoveStartingCards, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+        }
+
         public override void AddSideTriggers()
         {
             //Win Condition

@@ -47,7 +47,6 @@ namespace Cauldron.Tiamat
         {
             base.AddStartOfGameTriggers();
             AddTrigger((GameAction ga) => TurnTakerController is TiamatTurnTakerController tttc && !tttc.ArePromosSetup, SetupPromos, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
-            (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();
         }
 
         protected override ITrigger[] AddFrontAdvancedTriggers()
