@@ -141,8 +141,6 @@ namespace Cauldron.Tiamat
             {
                 if (c.Location.IsOffToTheSide)
                 { 
-                    //TurnTaker.MoveCard(c, TurnTaker.PlayArea);
-                    coroutine = GameController.PlayCard(this, c, isPutIntoPlay: true, cardSource: FindCardController(c).GetCardSource());
                     coroutine = GameController.PlayCard(this, c, isPutIntoPlay: true, cardSource: FindCardController(c).GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
