@@ -188,14 +188,16 @@ namespace CauldronTests
             //{Tiamat} counts as The Jaws of Winter, The Mouth of the Inferno, and The Eye of the Storm.
             AddCannotDealNextDamageTrigger(tiamat, tiamat.CharacterCard);
             QuickHPStorage(legacy, bunker, haka, ra);
-            PlayCard("ElementOfIce");
+            Card ice = PlayCard("ElementOfIce");
+            PrintSpecialStringsForCard(ice);
             //Preventing damage by Tiamat once shows the damage is coming from her
             QuickHPCheck(0, -2, -2, -2);
 
             //Each spell card in the villain trash counts as Element of Ice, Element of Fire, and Element of Lightining.
             AddCannotDealNextDamageTrigger(tiamat, tiamat.CharacterCard);
             QuickHPStorage(legacy, bunker, haka, ra);
-            PlayCard("ElementOfFire");
+            Card fire = PlayCard("ElementOfFire");
+            PrintSpecialStringsForCard(fire);
             //Preventing damage by Tiamat once shows the damage is coming from her
             //Only card in trash is Element of Ice which means Ice increased Fire
             QuickHPCheck(0, -3, -3, -3);
@@ -203,7 +205,8 @@ namespace CauldronTests
 
             AddCannotDealNextDamageTrigger(tiamat, tiamat.CharacterCard);
             QuickHPStorage(legacy, bunker, haka, ra);
-            PlayCard("ElementOfLightning");
+            Card lightning = PlayCard("ElementOfLightning");
+            PrintSpecialStringsForCard(lightning);
             //Preventing damage by Tiamat once shows the damage is coming from her
             //Only card in trash is Element of Ice which means Ice increased Fire
             QuickHPCheck(0, -4, -4, -4);
