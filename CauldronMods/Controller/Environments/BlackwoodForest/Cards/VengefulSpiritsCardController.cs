@@ -162,10 +162,10 @@ namespace Cauldron.BlackwoodForest
             if (showCounter && cardSource != null)
             {
                 counter = () => "Cards discarded so far: " + (from en in Game.Journal.DiscardCardEntriesThisTurn()
-                                                              where en.Card.Owner.IsHero && en.CardSource == cardSource.Card && en.CardSourcePlayIndex == cardSource.Card.PlayIndex
+                                                              where IsHero(en.Card.Owner) && en.CardSource == cardSource.Card && en.CardSourcePlayIndex == cardSource.Card.PlayIndex
                                                               select en).Count();
             }
-            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(null, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && (tt as HeroTurnTaker).HasCardsInHand && (tt as HeroTurnTaker).Hand.Cards.Where(cardCriteria.Criteria).Count() > 0, $"heroes with {cardCriteria.GetDescription()} in hand"), SelectionType.DiscardCard, (TurnTaker tt) => GameController.SelectAndDiscardCards(FindHeroTurnTakerController((HeroTurnTaker)tt), maxNumberOfCardsPerHero, optional: true, minNumberOfCardsPerHero, storedResultsDiscard, allowAutoDecide: false, null, null, counter, cardCriteria, SelectionType.DiscardCard, tt, cardSource), optional: false, requiredDecisions: requiredNumberOfHeroes, allowAutoDecide: allowAutoDecideHeroes, extraInfo: counter,ignoreBattleZone: ignoreBattleZone, cardSource: cardSource);
+            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(null, new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && (tt as HeroTurnTaker).HasCardsInHand && (tt as HeroTurnTaker).Hand.Cards.Where(cardCriteria.Criteria).Count() > 0, $"heroes with {cardCriteria.GetDescription()} in hand"), SelectionType.DiscardCard, (TurnTaker tt) => GameController.SelectAndDiscardCards(FindHeroTurnTakerController((HeroTurnTaker)tt), maxNumberOfCardsPerHero, optional: true, minNumberOfCardsPerHero, storedResultsDiscard, allowAutoDecide: false, null, null, counter, cardCriteria, SelectionType.DiscardCard, tt, cardSource), optional: false, requiredDecisions: requiredNumberOfHeroes, allowAutoDecide: allowAutoDecideHeroes, extraInfo: counter,ignoreBattleZone: ignoreBattleZone, cardSource: cardSource);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

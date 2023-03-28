@@ -28,7 +28,7 @@ namespace Cauldron.OblaskCrater
             IEnumerator coroutine;
 
             // Whenever a predator card destroys another target, that predator deals each hero {H - 2} melee damage.
-            coroutine = base.DealDamage(destroyCardAction.DealDamageAction.DamageSource.Card, (card) => card.IsHeroCharacterCard, base.H - 2, DamageType.Melee);
+            coroutine = base.DealDamage(destroyCardAction.DealDamageAction.DamageSource.Card, (card) => IsHeroCharacterCard(card), base.H - 2, DamageType.Melee);
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);

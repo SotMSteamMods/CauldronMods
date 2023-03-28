@@ -21,7 +21,7 @@ namespace Cauldron.Northspar
         {
             //Whenever this card has no cards beneath it, place the top card of each hero deck beneath this one.
             Func<GameAction, bool> criteria = (GameAction ga) => base.Card.UnderLocation.NumberOfCards == 0 && !this._movingCards;
-            base.AddTrigger<GameAction>(criteria, (GameAction ga) => base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Deck.HasCards && GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource()),
+            base.AddTrigger<GameAction>(criteria, (GameAction ga) => base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => IsHero(ttc.TurnTaker) && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Deck.HasCards && GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource()),
                 (TurnTakerController ttc) => this.MoveCardsUnderResponse(ttc)),
                 TriggerType.MoveCard, TriggerTiming.After);
 

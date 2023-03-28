@@ -32,7 +32,7 @@ namespace Cauldron.StSimeonsCatacombs
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             List<Card> foundTarget = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(2, (Card c) => c.IsHeroCharacterCard && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(2, (Card c) =>  IsHeroCharacterCard(c) && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -50,7 +50,7 @@ namespace Cauldron.StSimeonsCatacombs
             else
             {
                 string message = $"There are no heroes in play to put {Card.Title} next to. Moving it to {TurnTaker.Trash.GetFriendlyName()} instead.";
-                if (GameController.GetAllCards(battleZone: BattleZone).Where(c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Any())
+                if (GameController.GetAllCards(battleZone: BattleZone).Where(c =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Any())
                 {
                     message = $"There is only one hero in play to put {Card.Title} next to. Moving it to {TurnTaker.Trash.GetFriendlyName()} instead.";
                 }

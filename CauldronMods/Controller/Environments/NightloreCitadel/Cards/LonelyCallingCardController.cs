@@ -36,7 +36,7 @@ namespace Cauldron.NightloreCitadel
 
         private Card GetLastHeroCardToEnterPlay()
         {
-            CardEntersPlayJournalEntry playJournalEntry = Game.Journal.CardEntersPlayEntries().Where(cpe => cpe.Card.IsHero && cpe.Card.BattleZone == Card.BattleZone).LastOrDefault();
+            CardEntersPlayJournalEntry playJournalEntry = Game.Journal.CardEntersPlayEntries().Where(cpe => IsHero(cpe.Card) && cpe.Card.BattleZone == Card.BattleZone).LastOrDefault();
             if(playJournalEntry != null)
             {
                 return playJournalEntry.Card;
@@ -48,7 +48,7 @@ namespace Cauldron.NightloreCitadel
 
         private int GetNumberOfHeroCardsEnteredPlayThisRound()
         {
-            int cardsEnteredPlayThisRound = Game.Journal.CardEntersPlayEntries().Where(cpe => cpe.Card.IsHero && cpe.Round == Game.Round).Count();
+            int cardsEnteredPlayThisRound = Game.Journal.CardEntersPlayEntries().Where(cpe => IsHero(cpe.Card) && cpe.Round == Game.Round).Count();
             return cardsEnteredPlayThisRound;
         }
 

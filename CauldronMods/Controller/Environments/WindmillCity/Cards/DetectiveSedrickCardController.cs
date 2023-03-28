@@ -17,7 +17,7 @@ namespace Cauldron.WindmillCity
         protected override IEnumerator PerformActionOnDestroy()
         {
             //1 hero target regains 2HP.
-            IEnumerable<Card> choices = FindCardsWhere((Card c) => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText, visibleToCard: GetCardSource());
+            IEnumerable<Card> choices = FindCardsWhere((Card c) => IsHeroTarget(c) && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText, visibleToCard: GetCardSource());
             SelectCardDecision selectCardDecision = new SelectCardDecision(GameController, DecisionMaker, SelectionType.GainHP, choices, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectCardAndDoAction(selectCardDecision, (SelectCardDecision decision) => GameController.GainHP(decision.SelectedCard, 2, cardSource: GetCardSource()));
             if (base.UseUnityCoroutines)

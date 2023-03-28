@@ -40,7 +40,7 @@ namespace Cauldron.WindmillCity
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                coroutine = PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => ttc.IsHero, (Location loc) => loc.IsHero);
+                coroutine = PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => IsHero(ttc.TurnTaker), (Location loc) => loc.IsHero);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

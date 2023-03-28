@@ -21,7 +21,7 @@ namespace Cauldron.Northspar
             base.AddTrigger<CardEntersPlayAction>(criteria, this.FrozenEntersPlayResponse, TriggerType.GainHP, TriggerTiming.After);
 
             //At the end of the environment turn this card deals each hero target 2 toxic damage
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero && c.IsTarget, TargetType.All, 2, DamageType.Toxic);
+            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => IsHeroTarget(c), TargetType.All, 2, DamageType.Toxic);
         }
 
         private IEnumerator FrozenEntersPlayResponse(CardEntersPlayAction cp)

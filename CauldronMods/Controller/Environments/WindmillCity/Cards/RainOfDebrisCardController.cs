@@ -62,7 +62,7 @@ namespace Cauldron.WindmillCity
                     discardHeroes.Add(dca.HeroTurnTakerController.TurnTaker);
                 }
             }
-            coroutine = DealDamage(Card, (Card card) => card.IsHeroCharacterCard && !discardHeroes.Contains(card.Owner), 2, DamageType.Melee);
+            coroutine = DealDamage(Card, (Card card) => IsHeroCharacterCard(card) && !discardHeroes.Contains(card.Owner), 2, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

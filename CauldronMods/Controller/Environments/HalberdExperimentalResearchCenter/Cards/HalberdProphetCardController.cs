@@ -32,7 +32,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             if (!base.IsChemicalTriggerInPlay())
             {
                 //each player may look at the top card of their deck, and put it back on either the top or bottom of their deck
-                IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt.Deck.NumberOfCards > 1),
+                IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && tt.Deck.NumberOfCards > 1),
                                             SelectionType.RevealTopCardOfDeck,
                                             tt => RevealCardsResponse(tt),
                                             requiredDecisions: 0,
@@ -40,7 +40,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
                                             cardSource: GetCardSource());
 
 
-                //IEnumerator coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Deck.HasCards, (TurnTakerController ttc) => this.RevealCardsResponse(ttc));
+                //IEnumerator coroutine = base.DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => IsHero(ttc.TurnTaker) && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Deck.HasCards, (TurnTakerController ttc) => this.RevealCardsResponse(ttc));
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

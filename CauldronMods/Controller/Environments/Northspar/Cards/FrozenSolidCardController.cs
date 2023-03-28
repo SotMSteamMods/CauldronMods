@@ -18,7 +18,7 @@ namespace Cauldron.Northspar
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //When this card enters play, place it next to the hero with the lowest HP. 
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => card.IsHeroCharacterCard && !card.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(card, GetCardSource())) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero with the lowest hp"), storedResults, isPutIntoPlay, decisionSources);
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => IsHeroCharacterCard(card) && !card.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(card, GetCardSource())) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero with the lowest hp"), storedResults, isPutIntoPlay, decisionSources);
 
             if (base.UseUnityCoroutines)
             {

@@ -131,7 +131,7 @@ namespace Cauldron.DungeonsOfTerror
                 yield break;
             }
             TurnTaker turnTaker = storedHero.First();
-            if (turnTaker != null && turnTaker.IsHero)
+            if (turnTaker != null && IsHero(turnTaker))
             {
                 coroutine = SelectAndDiscardCards(FindHeroTurnTakerController(turnTaker.ToHero()), 2);
                 if (base.UseUnityCoroutines)

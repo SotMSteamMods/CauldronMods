@@ -25,7 +25,7 @@ namespace Cauldron.OblaskCrater
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>((dda)=> !base.IsPropertyTrue(FirstTimeWouldBeDealtDamage) && dda.Target.IsHero && !dda.DamageSource.IsHero && dda.DamageSource.IsTarget, DealDamageActionResponse, new TriggerType[]
+            base.AddTrigger<DealDamageAction>((dda)=> !base.IsPropertyTrue(FirstTimeWouldBeDealtDamage) && IsHeroTarget(dda.Target) && !dda.DamageSource.IsHero && dda.DamageSource.IsTarget, DealDamageActionResponse, new TriggerType[]
                 {
                     TriggerType.IncreaseDamage,
                     TriggerType.PlayCard,

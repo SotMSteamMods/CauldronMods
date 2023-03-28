@@ -30,7 +30,7 @@ namespace Cauldron.TheCybersphere
 
         private IEnumerator EachPlayerDiscardsCardsToDestroyCard(PhaseChangeAction pca)
         {
-            if (FindTurnTakersWhere((TurnTaker tt) => tt.IsHero).Any())
+            if (FindTurnTakersWhere((TurnTaker tt) => IsHero(tt)).Any())
             {
                 //each player may discard up to 2 cards
                 List<DiscardCardAction> storedDiscards = new List<DiscardCardAction>();

@@ -30,7 +30,7 @@ namespace Cauldron.VaultFive
 
         private IEnumerator ReturnArtifactsToDeckResponse(PhaseChangeAction arg)
         {
-            IEnumerator coroutine = DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => ttc.IsHero, (TurnTakerController ttc) => RevealArtifactsInTrash_MoveInAnyOrder(DecisionMaker,ttc, ttc.TurnTaker), TurnTaker);
+            IEnumerator coroutine = DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => IsHero(ttc.TurnTaker), (TurnTakerController ttc) => RevealArtifactsInTrash_MoveInAnyOrder(DecisionMaker,ttc, ttc.TurnTaker), TurnTaker);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

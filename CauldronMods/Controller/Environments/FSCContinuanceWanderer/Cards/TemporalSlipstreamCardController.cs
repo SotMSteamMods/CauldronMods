@@ -17,7 +17,7 @@ namespace Cauldron.FSCContinuanceWanderer
         public override IEnumerator Play()
         {
             //When this card enters play, each player discards their hand and draws that many cards.
-            IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(base.DecisionMaker, new LinqTurnTakerCriteria((TurnTaker turnTaker) => turnTaker.IsHero && !turnTaker.IsIncapacitatedOrOutOfGame), SelectionType.DiscardHand, (TurnTaker turnTaker) => this.DiscardAndDrawResponse(turnTaker), allowAutoDecide: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(base.DecisionMaker, new LinqTurnTakerCriteria((TurnTaker turnTaker) => IsHero(turnTaker) && !turnTaker.IsIncapacitatedOrOutOfGame), SelectionType.DiscardHand, (TurnTaker turnTaker) => this.DiscardAndDrawResponse(turnTaker), allowAutoDecide: true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

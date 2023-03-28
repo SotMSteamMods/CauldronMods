@@ -45,7 +45,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             if (!base.IsChemicalTriggerInPlay())
             {
                 //find  hero character card with the lowest hitpoints
-                targets = (Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => card.IsHeroCharacterCard);
+                targets = (Card c) => base.CanCardBeConsideredLowestHitPoints(c, (Card card) => IsHeroCharacterCard(card));
             }
             else
             {

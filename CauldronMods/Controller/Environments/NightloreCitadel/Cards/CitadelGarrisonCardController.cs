@@ -18,7 +18,7 @@ namespace Cauldron.NightloreCitadel
         public override void AddTriggers()
         {
             //At the start of the environment turn, this card deals the hero target with the second highest HP {H + 1} radiant damage.
-            AddDealDamageAtStartOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, Game.H + 1, DamageType.Radiant, highestLowestRanking: 2);
+            AddDealDamageAtStartOfTurnTrigger(TurnTaker, Card, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, Game.H + 1, DamageType.Radiant, highestLowestRanking: 2);
             //Then, if Starlight of Oros and Aethium Cannon are in play, discard 2 cards from beneath Aethium Cannon.
             AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DiscardCardResponse, TriggerType.MoveCard, (PhaseChangeAction pca) => IsStarlightOfOrosInPlay() && IsAethiumCannonInPlay());
         }

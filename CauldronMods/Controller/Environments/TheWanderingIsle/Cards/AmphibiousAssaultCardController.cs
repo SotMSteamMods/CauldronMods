@@ -36,7 +36,7 @@ namespace Cauldron.TheWanderingIsle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //coroutine = MultipleDamageSourcesDealDamage(new LinqCardCriteria((Card c) => damageDealers.Contains(c), "H-1 villain targets with the lowest HP", useCardsSuffix: false), TargetType.SelectTarget, 1, new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget, "hero target"), 3, DamageType.Lightning);
+            //coroutine = MultipleDamageSourcesDealDamage(new LinqCardCriteria((Card c) => damageDealers.Contains(c), "H-1 villain targets with the lowest HP", useCardsSuffix: false), TargetType.SelectTarget, 1, new LinqCardCriteria((Card c) => IsHeroTarget(c), "hero target"), 3, DamageType.Lightning);
             //if (base.UseUnityCoroutines)
             //{
             //	yield return base.GameController.StartCoroutine(coroutine);
@@ -83,7 +83,7 @@ namespace Cauldron.TheWanderingIsle
                 List<SelectCardDecision> selectCards = new List<SelectCardDecision>();
 
                 coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(GameController, villainSource), 3, DamageType.Lightning, 1, false, 1,
-                    additionalCriteria: c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && !heroTargets.Contains(c),
+                    additionalCriteria: c => IsHeroTarget(c) && c.IsInPlayAndHasGameText && !heroTargets.Contains(c),
                     storedResultsDecisions: selectCards,
                     cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -140,7 +140,7 @@ namespace Cauldron.TheWanderingIsle
         private bool WasHeroCardPlayedThisRound()
         {
             return base.GameController.Game.Journal.PlayCardEntries()
-                            .Any(e => e.Round == this.Game.Round && !e.IsPutIntoPlay && e.CardPlayed.IsHero);
+                            .Any(e => e.Round == this.Game.Round && !e.IsPutIntoPlay && IsHero(e.CardPlayed));
         }
 
 	}

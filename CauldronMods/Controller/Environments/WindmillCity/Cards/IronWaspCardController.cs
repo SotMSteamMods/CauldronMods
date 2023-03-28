@@ -23,7 +23,7 @@ namespace Cauldron.WindmillCity
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
             //this card deals each hero target X melee damage, where X is the current HP of this card.
-            IEnumerator coroutine = DealDamage(Card, (Card c) => c.IsTarget && c.IsHero, (Card c) => Card.HitPoints, DamageType.Melee);
+            IEnumerator coroutine = DealDamage(Card, (Card c) => c.IsTarget && IsHero(c), (Card c) => Card.HitPoints, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

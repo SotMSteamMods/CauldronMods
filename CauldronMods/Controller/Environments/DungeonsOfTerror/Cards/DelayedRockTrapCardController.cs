@@ -17,7 +17,7 @@ namespace Cauldron.DungeonsOfTerror
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Play this card next to a hero.
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "active hero"), storedResults, isPutIntoPlay, decisionSources);
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "active hero"), storedResults, isPutIntoPlay, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -112,7 +112,7 @@ namespace Cauldron.DungeonsOfTerror
             {
                 //If it is not a fate card, this card deals each other hero target {H-2} melee damage. 
                 message = GameController.SendMessageAction($"{cardToCheck.Title} is not a fate card!", Priority.High, GetCardSource(), associatedCards: cardToCheck.ToEnumerable(), showCardSource: true);
-                effect = DealDamage(Card, (Card c) => c.IsHero && c.IsTarget && c != GetCardThisCardIsNextTo(), Game.H - 2, DamageType.Melee);
+                effect = DealDamage(Card, (Card c) => IsHeroTarget(c) && c != GetCardThisCardIsNextTo(), Game.H - 2, DamageType.Melee);
             }
 
             //Then, destroy this card.

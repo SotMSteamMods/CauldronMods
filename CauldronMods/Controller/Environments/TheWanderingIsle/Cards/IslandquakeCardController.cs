@@ -54,7 +54,7 @@ namespace Cauldron.TheWanderingIsle
 
         private bool IsHeroTargetWhoCausedTeryxToGainHpLastRound(Card card)
         {
-            return card.IsHero && card.IsTarget &&
+            return IsHeroTarget(card) &&
                 base.GameController.Game.Journal.GainHPEntries()
                 .Where(Journal.SinceLastTurn<GainHPJournalEntry>(base.TurnTaker))
                         .Any(e => e.Round == this.Game.Round && e.TargetCard.Identifier == TeryxIdentifier && IsGainHPCausedByHeroTarget(e, card));

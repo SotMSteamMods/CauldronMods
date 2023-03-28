@@ -30,7 +30,7 @@ namespace Cauldron.Northspar
 
         private bool HeroEquipmentOrOngoingQuery(Card c)
         {
-            return c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource());
+            return c.IsInPlayAndHasGameText && IsHero(c) && (IsOngoing(c) || base.IsEquipment(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource());
         }
 
         private IEnumerator StartOfTurnResponse(PhaseChangeAction pca)

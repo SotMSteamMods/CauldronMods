@@ -23,7 +23,7 @@ namespace Cauldron.FSCContinuanceWanderer
 
         private IEnumerator DestroyHeroOngoingOrEquipmentResponse(UsePowerAction action)
         {
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing or equipment"), false, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && (IsOngoing(c) || base.IsEquipment(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing or equipment"), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

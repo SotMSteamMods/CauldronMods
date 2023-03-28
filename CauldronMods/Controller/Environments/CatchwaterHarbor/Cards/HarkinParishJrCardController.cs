@@ -19,14 +19,14 @@ namespace Cauldron.CatchwaterHarbor
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals the hero target with the highest HP {H} melee damage.
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, Game.H, DamageType.Melee);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, Game.H, DamageType.Melee);
         }
 
         public override IEnumerator Play()
         {
             //When this card enters play, the hero with the highest HP must discard a card. Each other player must discard a card that shares a keyword with that card.
             List<Card> storeHighest = new List<Card>();
-            IEnumerator coroutine = GameController.FindTargetsWithHighestHitPoints(1, 1, (Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), storeHighest, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.FindTargetsWithHighestHitPoints(1, 1, (Card c) => IsHeroCharacterCard(c)&& !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), storeHighest, cardSource: GetCardSource());
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);
@@ -80,7 +80,7 @@ namespace Cauldron.CatchwaterHarbor
                     list.Add(discardedCard);
                     IEnumerable<string> keywords = GameController.GetAllKeywords(discardedCard);
                     Func<Card, bool> cardCriteria = (Card c) => GameController.GetAllKeywords(c).Intersect(keywords).Any();
-                    var ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt != httc.TurnTaker && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
+                    var ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && tt != httc.TurnTaker && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
                     coroutine = base.GameController.SelectTurnTakersAndDoAction(DecisionMaker, ttCriteria, SelectionType.DiscardCard, (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero()), additionalCriteria: cardCriteria, cardSource: GetCardSource()), allowAutoDecide: true, associatedCards: list, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {

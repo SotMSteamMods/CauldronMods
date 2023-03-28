@@ -21,7 +21,7 @@ namespace Cauldron.SuperstormAkela
             AddTrigger((DealDamageAction dd) => dd.Amount > 0 && IsVillainTarget(dd.Target) && !HasBeenSetToTrueThisTurn("VillainTargetWouldBeDealtDamage"), RedirectToThisCardResponse, TriggerType.RedirectDamage, TriggerTiming.Before, actionType: ActionDescription.DamageTaken);
 
             //At the start of each hero’s turn, they may choose what order to perform that turn's play, power, and draw phases in.
-            AddTrigger((PhaseChangeAction p) => p.FromPhase.TurnTaker.IsHero && p.FromPhase.TurnTaker == p.ToPhase.TurnTaker && !p.FromPhase.TurnTaker.IsIncapacitatedOrOutOfGame && !p.FromPhase.IsBeforeStart && !p.FromPhase.IsAfterEnd && !p.ToPhase.IsBeforeStart && !p.ToPhase.IsAfterEnd, (PhaseChangeAction p) => base.GameController.ChooseNextPhase(p, cardSource: GetCardSource()), new TriggerType[1]
+            AddTrigger((PhaseChangeAction p) =>IsHero(p.FromPhase.TurnTaker) && p.FromPhase.TurnTaker == p.ToPhase.TurnTaker && !p.FromPhase.TurnTaker.IsIncapacitatedOrOutOfGame && !p.FromPhase.IsBeforeStart && !p.FromPhase.IsAfterEnd && !p.ToPhase.IsBeforeStart && !p.ToPhase.IsAfterEnd, (PhaseChangeAction p) => base.GameController.ChooseNextPhase(p, cardSource: GetCardSource()), new TriggerType[1]
             {
                 TriggerType.ChangePhaseOrder
             }, TriggerTiming.Before);
@@ -47,7 +47,7 @@ namespace Cauldron.SuperstormAkela
 
         public override TurnPhase AskIfTurnPhaseShouldBeChanged(TurnPhase fromPhase, TurnPhase toPhase)
         {
-            if (GameController.ActiveTurnTaker.IsHero)
+            if (IsHero(GameController.ActiveTurnTaker))
             {
                 TurnTaker isSpecificTurnTaker = GameController.ActiveTurnTaker;
                 return base.GameController.GetNextTurnPhaseIfChoosable(isSpecificTurnTaker.ToHero(), fromPhase, toPhase, GetCardSource());

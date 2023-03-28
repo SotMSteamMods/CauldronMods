@@ -16,7 +16,7 @@ namespace Cauldron.NightloreCitadel
 
         private string BuildHeroesWithMoreThan3CardsInHandString()
         {
-            IEnumerable<TurnTaker> source = FindTurnTakersWhere(tt => tt.IsHero && tt.ToHero().NumberOfCardsInHand > 3);
+            IEnumerable<TurnTaker> source = FindTurnTakersWhere(tt => IsHero(tt) && tt.ToHero().NumberOfCardsInHand > 3);
             int num = source.Count();
             string heroSpecial = "";
             if (num > 0)
@@ -44,7 +44,7 @@ namespace Cauldron.NightloreCitadel
         {
             // When this card enters play, it deals each hero with more than 3 cards in their hand 2 irreducible melee damage. 
             IEnumerable<HeroTurnTakerController> heroList = FindActiveHeroTurnTakerControllers().Where(httc => httc.HeroTurnTaker.NumberOfCardsInHand > 3);
-            IEnumerable<Card> characters = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHeroCharacterCard && heroList.Select(httc => httc.TurnTaker).Contains(c.Owner));
+            IEnumerable<Card> characters = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsTarget &&  IsHeroCharacterCard(c) && heroList.Select(httc => httc.TurnTaker).Contains(c.Owner));
             List<DealDamageAction> storedResults = new List<DealDamageAction>();
             IEnumerator coroutine = DealDamage(base.Card, (Card c) => characters.Contains(c), 2, DamageType.Melee, isIrreducible: true, storedResults: storedResults);
             if (base.UseUnityCoroutines)
@@ -70,7 +70,7 @@ namespace Cauldron.NightloreCitadel
             //One hero that was dealt no damage this way may deal 1 target 3 melee damage.
 
             List<SelectCardDecision> storedDecision = new List<SelectCardDecision>();
-            coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, new LinqCardCriteria(c => c.IsHeroCharacterCard &&  !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText && !damagedHeroes.Contains(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults: storedDecision, false, cardSource: GetCardSource());
+            coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroToDealDamage, new LinqCardCriteria(c =>  IsHeroCharacterCard(c) &&  !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText && !damagedHeroes.Contains(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults: storedDecision, false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

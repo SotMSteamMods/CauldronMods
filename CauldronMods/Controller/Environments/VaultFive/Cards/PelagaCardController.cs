@@ -50,7 +50,7 @@ namespace Cauldron.VaultFive
             if(heroesWithMostArtifacts.Count() == 0)
             {
                 List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>() ;
-                IEnumerator coroutine = GameController.SelectTurnTaker(DecisionMaker, SelectionType.DealDamage, storedResults, additionalCriteria: (TurnTaker tt) => tt.IsHero && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()), cardSource: GetCardSource());
+                IEnumerator coroutine = GameController.SelectTurnTaker(DecisionMaker, SelectionType.DealDamage, storedResults, additionalCriteria: (TurnTaker tt) => IsHero(tt) && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
