@@ -19,7 +19,7 @@ namespace Cauldron.Celadroch
 
         public override void AddTriggers()
         {
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.LowestHP, H - 1, DamageType.Toxic);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => IsHeroTarget(c), TargetType.LowestHP, H - 1, DamageType.Toxic);
         }
     }
 }

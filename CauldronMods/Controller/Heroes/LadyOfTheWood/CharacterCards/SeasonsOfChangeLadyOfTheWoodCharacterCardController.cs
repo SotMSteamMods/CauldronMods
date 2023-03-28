@@ -77,7 +77,7 @@ namespace Cauldron.LadyOfTheWood
                         TurnTaker turnTaker = (from d in storedResults
                                                where d.Completed
                                                select d.SelectedTurnTaker).FirstOrDefault();
-                        if (turnTaker != null && turnTaker.IsHero)
+                        if (turnTaker != null && IsHero(turnTaker))
                         {
                             coroutine2 = DiscardAndDrawResponse(turnTaker);
                             if (base.UseUnityCoroutines)

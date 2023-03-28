@@ -30,7 +30,7 @@ namespace Cauldron.DocHavoc
             Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //When this card enters play, place it next to a hero target.
-            LinqCardCriteria validTargets = new LinqCardCriteria(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, "hero target");
+            LinqCardCriteria validTargets = new LinqCardCriteria(c => IsHeroTarget(c) && c.IsInPlayAndHasGameText, "hero target");
 
             IEnumerator routine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria(
                     (Card c) => validTargets.Criteria(c) &&

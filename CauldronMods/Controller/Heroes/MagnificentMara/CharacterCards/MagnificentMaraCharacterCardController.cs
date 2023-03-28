@@ -60,7 +60,7 @@ namespace Cauldron.MagnificentMara
                 case (0):
                     {
                         //"One hero may put a card from their trash on top of their deck.",
-                        var turnTakerDecision = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.MoveCardOnDeck, true, cardSource: GetCardSource());
+                        var turnTakerDecision = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.MoveCardOnDeck, true, cardSource: GetCardSource());
                         coroutine = GameController.SelectTurnTakerAndDoAction(turnTakerDecision, (TurnTaker tt) => GameController.SelectAndMoveCard(FindHeroTurnTakerController(tt.ToHero()), (Card c) => c.Location == tt.Trash, tt.Deck, cardSource: GetCardSource()));
                         if (base.UseUnityCoroutines)
                         {
@@ -75,7 +75,7 @@ namespace Cauldron.MagnificentMara
                 case (1):
                     {
                         //"Destroy 1 ongoing card.",
-                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"), false, cardSource: GetCardSource());
+                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c), "ongoing"), false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

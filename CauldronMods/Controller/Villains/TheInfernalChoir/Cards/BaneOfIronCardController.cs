@@ -13,7 +13,7 @@ namespace Cauldron.TheInfernalChoir
         public BaneOfIronCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(() => BuildHiddenHeartSpecialString()).Condition = () => IsVagrantHeartHiddenHeartInPlay() && GetPlayAreaContainingHiddenHeart() != null;
-            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => c.IsHero && (IsEquipment(c) || c.IsOngoing), "hero ongoing or equipment"));
+            SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria(c => IsHero(c) && (IsEquipment(c) || IsOngoing(c)), "hero ongoing or equipment"));
         }
 
         public override void AddTriggers()
@@ -26,7 +26,7 @@ namespace Cauldron.TheInfernalChoir
 
         private bool ReductionCriteria(DealDamageAction dda)
         {
-            if (dda.DamageSource is null || dda.DamageSource.Card is null  || !dda.DamageSource.Card.IsCharacter || !dda.DamageSource.Card.IsHero)
+            if (dda.DamageSource is null || dda.DamageSource.Card is null  || !dda.DamageSource.Card.IsCharacter || !IsHero(dda.DamageSource.Card))
                 return false;
             //is a hero character card
             return !DoesPlayAreaContainHiddenHeart(dda.DamageSource.Card.Owner);
@@ -34,7 +34,7 @@ namespace Cauldron.TheInfernalChoir
 
         private IEnumerator DestroyOngoingsOrEquipment(GameAction action)
         {
-            var coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsHero && (IsEquipment(c) || c.IsOngoing), "hero ongoing or equipment"), H,
+            var coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => IsHero(c) && (IsEquipment(c) || IsOngoing(c)), "hero ongoing or equipment"), H,
                                 requiredDecisions: H,
                                 allowAutoDecide: true,
                                 cardSource: GetCardSource());

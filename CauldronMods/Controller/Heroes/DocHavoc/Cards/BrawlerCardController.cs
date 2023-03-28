@@ -29,7 +29,7 @@ namespace Cauldron.DocHavoc
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
 
             IEnumerator selectCardRoutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.SelectTargetNoDamage,
-                new LinqCardCriteria((Card c) => c.IsTarget && !c.IsHero && c.IsInPlayAndHasGameText, "non-hero targets in play"),
+                new LinqCardCriteria((Card c) => c.IsTarget && !IsHero(c) && c.IsInPlayAndHasGameText, "non-hero targets in play"),
                 storedResults, false, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

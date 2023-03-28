@@ -51,13 +51,13 @@ namespace Cauldron.MagnificentMara
             Log.Debug("Mesmer pendant's ask-if-is-villain fires");
             if (cardSource != null && cardSource.Card == GetCardThisCardIsNextTo())
             {
-                if(card.IsTarget || card.IsOngoing)
+                if(card.IsTarget || IsOngoing(card))
                 {
                     if(card.IsVillain)
                     {
                         return false;
                     }
-                    if(card.IsHero)
+                    if(IsHero(card))
                     {
                         return true;
                     }
@@ -72,11 +72,11 @@ namespace Cauldron.MagnificentMara
             //it doesn't seem to
             if (cardSource != null && cardSource.Card == GetCardThisCardIsNextTo())
             {
-                if(card.IsTarget && card.IsHero)
+                if(card.IsTarget && IsHero(card))
                 {
                     return true;
                 }
-                if(card.IsTarget && card.IsVillain)
+                if(card.IsTarget && IsVillain(card))
                 {
                     return false;
                 }

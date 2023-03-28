@@ -35,7 +35,7 @@ namespace Cauldron.MagnificentMara
             //"Select a player."
             List<SelectTurnTakerDecision> storedTurnTakerDecisions = new List<SelectTurnTakerDecision> { };
             IEnumerator msgRoutine;
-            var validPassers = GameController.AllTurnTakers.Where((TurnTaker tt) => tt.IsHero &&
+            var validPassers = GameController.AllTurnTakers.Where((TurnTaker tt) => IsHero(tt) &&
                                                                    GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
                                                                    tt.ToHero().HasCardsWhere((Card c) => c.IsInHand && c.IsOneShot));
             if(validPassers.Count() == 0)
@@ -65,7 +65,7 @@ namespace Cauldron.MagnificentMara
             }
             CurrentMode = CustomMode.PlayerPassingCard;
             IEnumerator chooseGivingPlayer = GameController.SelectTurnTaker(HeroTurnTakerController, SelectionType.Custom, storedTurnTakerDecisions,
-                                                                                additionalCriteria: (TurnTaker tt) => tt.IsHero &&
+                                                                                additionalCriteria: (TurnTaker tt) => IsHero(tt) &&
                                                                                                     GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
                                                                                                     tt.ToHero().HasCardsWhere((Card c) => c.IsInHand && c.IsOneShot),
                                                                                 cardSource: GetCardSource());
@@ -129,7 +129,7 @@ namespace Cauldron.MagnificentMara
             Card passedCard = storedCardDecision.FirstOrDefault().SelectedCard;
 
             //"..to another player..."
-            var validReceivers = GameController.AllTurnTakers.Where((TurnTaker tt) => tt.IsHero &&
+            var validReceivers = GameController.AllTurnTakers.Where((TurnTaker tt) => IsHero(tt) &&
                                                                      !tt.IsIncapacitatedOrOutOfGame &&
                                                                      GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
                                                                      tt != giver);
@@ -160,7 +160,7 @@ namespace Cauldron.MagnificentMara
             }
             /*
             IEnumerator chooseReceivingPlayer = GameController.SelectTurnTaker(FindHeroTurnTakerController(giver.ToHero()), SelectionType.MoveCard, storedTurnTakerDecisions,
-                                                                                additionalCriteria: (TurnTaker tt) => tt.IsHero &&
+                                                                                additionalCriteria: (TurnTaker tt) => IsHero(tt) &&
                                                                                                     !tt.IsIncapacitatedOrOutOfGame &&
                                                                                                     GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
                                                                                                     tt != giver,
@@ -263,7 +263,7 @@ namespace Cauldron.MagnificentMara
                 //Most cards, code-wise, refer to their hero with simply "this.CharacterCard" which is automatically
                 //swapped out when the TurnTakerController is. For those few that call out a specific hero some other 
                 //way, this swaps it for the receiver's character.
-                if (card != null && _receiverCharacterCard != null && cardSource != null && card.IsHeroCharacterCard && cardSource.AllowReplacements)
+                if (card != null && _receiverCharacterCard != null && cardSource != null && IsHeroCharacterCard(card) && cardSource.AllowReplacements)
                 {
                     //Log.Debug($"Card-to-possibly-replace is {card.Title}");
                     if (_passedCard != null && _giverController != null)

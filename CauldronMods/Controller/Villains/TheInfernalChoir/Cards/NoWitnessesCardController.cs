@@ -18,7 +18,7 @@ namespace Cauldron.TheInfernalChoir
         public override IEnumerator Play()
         {
             List<DealDamageAction> result = new List<DealDamageAction>();
-            var coroutine = DealDamageToLowestHP(CharacterCard, 1, c => c.IsHeroCharacterCard, c => 3, DamageType.Infernal,
+            var coroutine = DealDamageToLowestHP(CharacterCard, 1, c =>  IsHeroCharacterCard(c), c => 3, DamageType.Infernal,
                                 storedResults: result,
                                 numberOfTargets: H - 1);
             if (base.UseUnityCoroutines)
@@ -30,7 +30,7 @@ namespace Cauldron.TheInfernalChoir
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            var turnTakers = result.Where(dda => dda.Target.IsHero && dda.Amount > 0 && dda.DidDealDamage && !dda.Target.IsIncapacitatedOrOutOfGame).Select(dda => dda.Target.Owner).Distinct().ToList();
+            var turnTakers = result.Where(dda => IsHero(dda.Target) && dda.Amount > 0 && dda.DidDealDamage && !dda.Target.IsIncapacitatedOrOutOfGame).Select(dda => dda.Target.Owner).Distinct().ToList();
             List<SelectTurnTakerDecision> decision = new List<SelectTurnTakerDecision>();
             coroutine = GameController.SelectTurnTaker(DecisionMaker, SelectionType.DrawCard, decision,
                             allowAutoDecide: true,

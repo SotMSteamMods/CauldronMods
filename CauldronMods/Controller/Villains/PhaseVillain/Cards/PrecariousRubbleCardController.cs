@@ -15,7 +15,7 @@ namespace Cauldron.PhaseVillain
         public override IEnumerator Play()
         {
             //When this card enters play, it deals the hero target with the lowest HP {H - 1} projectile damage. 
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => Game.H - 1, DamageType.Projectile);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => Game.H - 1, DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -22,7 +22,7 @@ namespace Cauldron.Celadroch
         {
             AddReduceDamageTrigger(c => IsVillain(c), 1);
 
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.HighestHP, H, DamageType.Cold);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => IsHeroTarget(c), TargetType.HighestHP, H, DamageType.Cold);
         }
     }
 }

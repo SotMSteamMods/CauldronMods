@@ -20,7 +20,7 @@ namespace Cauldron.TheMistressOfFate
         {
             //"Play this card next to the hero with the highest HP.
             var storedHero = new List<Card>();
-            IEnumerator coroutine = GameController.FindTargetWithHighestHitPoints(1, (Card c) => c.IsHeroCharacterCard, storedHero, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.FindTargetWithHighestHitPoints(1, (Card c) =>  IsHeroCharacterCard(c), storedHero, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -78,7 +78,7 @@ namespace Cauldron.TheMistressOfFate
             var playArea = this.Card.Location.HighestRecursiveLocation;
             if(playArea.IsInPlayAndNotUnderCard)
             {
-                IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsTarget && c.Location.HighestRecursiveLocation == playArea), null, cardSource: GetCardSource());
+                IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && c.IsTarget && c.Location.HighestRecursiveLocation == playArea), null, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

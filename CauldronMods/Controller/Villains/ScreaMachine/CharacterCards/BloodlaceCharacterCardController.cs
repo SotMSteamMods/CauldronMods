@@ -41,7 +41,7 @@ namespace Cauldron.ScreaMachine
         private IEnumerator UltimateEndOfTurn()
         {
             List<DealDamageAction> results = new List<DealDamageAction>();
-            var coroutine = base.DealDamageToHighestHP(null, 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => H, DamageType.Melee,
+            var coroutine = base.DealDamageToHighestHP(null, 1, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, c => H, DamageType.Melee,
                             storedResults: results,
                             numberOfTargets: () => 1,
                             damageSourceInfo: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria(c => IsVillainTarget(c) && c.IsInPlay)),

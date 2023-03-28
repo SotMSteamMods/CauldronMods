@@ -31,7 +31,7 @@ namespace Cauldron.Malichae
             CardSource cs = GetCardSourceForGrantedPower();
             var card = cs.Card;
 
-            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && c.IsHero && c.IsInPlayAndHasGameText, hp, cardSource: cs);
+            var coroutine = base.GameController.GainHP(DecisionMaker, c => c.IsTarget && IsHero(c) && c.IsInPlayAndHasGameText, hp, cardSource: cs);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

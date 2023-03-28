@@ -21,7 +21,7 @@ namespace Cauldron.Dynamo
             base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource.IsSameCard(this.Card) && this.Card.HitPoints <= 10, 2);
 
             //At the end of the villain turn, this card deals the 2 hero targets with the highest HP {H} melee damage each.
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, this.Card, (Card c) => c.IsHero && c.IsTarget, TargetType.HighestHP, base.Game.H, DamageType.Melee, numberOfTargets: 2);
+            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, this.Card, (Card c) => IsHeroTarget(c), TargetType.HighestHP, base.Game.H, DamageType.Melee, numberOfTargets: 2);
         }
     }
 }

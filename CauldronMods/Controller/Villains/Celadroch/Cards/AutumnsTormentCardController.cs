@@ -18,7 +18,7 @@ namespace Cauldron.Celadroch
 
         public override void AddTriggers()
         {
-            AddTrigger<PlayCardAction>(pca => !pca.IsPutIntoPlay && pca.TurnTakerController.IsHero && pca.WasCardPlayed, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            AddTrigger<PlayCardAction>(pca => !pca.IsPutIntoPlay && IsHero(pca.TurnTakerController.TurnTaker) && pca.WasCardPlayed, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         public override IEnumerator Play()

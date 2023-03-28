@@ -25,7 +25,7 @@ namespace Cauldron.Anathema
 		{
 			//Anathema deals the Hero target with the lowest HP {H-2} melee damage.
 			//If that target took damage this way, it cannot deal damage until the start of the next Villain Turn.
-			IEnumerator coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => new int?(base.H - 2), DamageType.Melee,addStatusEffect: base.TargetsDealtDamageCannotDealDamageUntilTheStartOfNextTurnResponse);
+			IEnumerator coroutine = base.DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => new int?(base.H - 2), DamageType.Melee,addStatusEffect: base.TargetsDealtDamageCannotDealDamageUntilTheStartOfNextTurnResponse);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

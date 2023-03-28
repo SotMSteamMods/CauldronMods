@@ -18,7 +18,7 @@ namespace Cauldron.Pyre
             int numPlayers = GetPowerNumeral(0, 1);
             //"1 player draws a card. {PyreIrradiate} that card until it leaves their hand. 
             var storedDraw = new List<DrawCardAction>();
-            var selectHero = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.CanDrawCards(FindHeroTurnTakerController(tt.ToHero()), GetCardSource())), SelectionType.DrawCard, numberOfTurnTakers: numPlayers, numberOfCards: 1, cardSource: GetCardSource());
+            var selectHero = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.CanDrawCards(FindHeroTurnTakerController(tt.ToHero()), GetCardSource())), SelectionType.DrawCard, numberOfTurnTakers: numPlayers, numberOfCards: 1, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(selectHero, DrawAndIrradiateDrawnCard, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -119,7 +119,7 @@ namespace Cauldron.Pyre
                 case 1:
                     {
                         //"One hero target deals each target 1 energy damage.",
-                        var heroTargets = GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHero && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
+                        var heroTargets = GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && IsHero(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
                         var storedTarget = new List<SelectTargetDecision>();
                         coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, heroTargets, storedTarget, damageAmount: c => 1, damageType: DamageType.Energy, selectionType: SelectionType.CardToDealDamage, cardSource: GetCardSource());
                         if (UseUnityCoroutines)

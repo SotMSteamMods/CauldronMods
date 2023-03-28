@@ -40,7 +40,7 @@ namespace Cauldron.Titan
                         {
                             int ongoingNumeral = base.GetPowerNumeral(2, 1);
                             //If Titanform is in play, destroy 1 ongoing card.
-                            coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing), false, cardSource: base.GetCardSource());
+                            coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => IsOngoing(c)), false, cardSource: base.GetCardSource());
                             if (UseUnityCoroutines)
                             {
                                 yield return GameController.StartCoroutine(coroutine);

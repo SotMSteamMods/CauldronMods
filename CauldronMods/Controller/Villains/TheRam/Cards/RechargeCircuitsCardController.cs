@@ -13,7 +13,7 @@ namespace Cauldron.TheRam
     {
         public RechargeCircuitsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(() => FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && IsUpClose(tt)).Any(), () => "There is a hero Up Close", () => "There are no heroes Up Close.");
+            SpecialStringMaker.ShowIfElseSpecialString(() => FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && IsUpClose(tt)).Any(), () => "There is a hero Up Close", () => "There are no heroes Up Close.");
         }
 
         public override void AddTriggers()
@@ -24,7 +24,7 @@ namespace Cauldron.TheRam
 
         public IEnumerator HealEverythingResponse(PhaseChangeAction pc)
         {
-            if (GameController.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && IsUpClose(tt)).Any())
+            if (GameController.FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && IsUpClose(tt)).Any())
             {
                 yield break;
             }

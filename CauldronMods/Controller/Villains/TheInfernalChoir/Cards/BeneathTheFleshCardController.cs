@@ -17,7 +17,7 @@ namespace Cauldron.TheInfernalChoir
         public override void AddTriggers()
         {
             base.AddTriggers();
-            AddTrigger<DealDamageAction>(dda => dda.Target.IsHeroCharacterCard && dda.Amount >= 3 && !dda.Target.IsIncapacitatedOrOutOfGame && dda.CardSource.Card != Card, dda => DiscardCardsAndOptionalDamageToPlayAndDestroyResponse(dda), new[] { TriggerType.DiscardCard, TriggerType.PutIntoPlay, TriggerType.DealDamage }, TriggerTiming.After);
+            AddTrigger<DealDamageAction>(dda => IsHeroCharacterCard(dda.Target) && dda.Amount >= 3 && !dda.Target.IsIncapacitatedOrOutOfGame && dda.CardSource.Card != Card, dda => DiscardCardsAndOptionalDamageToPlayAndDestroyResponse(dda), new[] { TriggerType.DiscardCard, TriggerType.PutIntoPlay, TriggerType.DealDamage }, TriggerTiming.After);
         }
 
         private IEnumerator DiscardCardsAndOptionalDamageToPlayAndDestroyResponse(DealDamageAction dda)

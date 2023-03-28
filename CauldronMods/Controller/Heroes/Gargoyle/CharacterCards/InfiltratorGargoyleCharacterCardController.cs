@@ -39,7 +39,7 @@ namespace Cauldron.Gargoyle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            var damagedHeroes = storedDamage.Where(dd => dd.DidDealDamage && dd.Target.IsHeroCharacterCard).Select(dd => dd.Target).Distinct();
+            var damagedHeroes = storedDamage.Where(dd => dd.DidDealDamage && IsHeroCharacterCard(dd.Target)).Select(dd => dd.Target).Distinct();
             if (damagedHeroes.Any())
             {
                 // For each hero damaged this way, draw or play a card.

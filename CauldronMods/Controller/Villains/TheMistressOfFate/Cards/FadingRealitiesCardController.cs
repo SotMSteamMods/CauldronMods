@@ -22,7 +22,7 @@ namespace Cauldron.TheMistressOfFate
         {
             //"The hero with the second lowest HP...
             var storedHero = new List<Card>();
-            IEnumerator coroutine = GameController.FindTargetWithLowestHitPoints(2, (Card c) => c.IsHeroCharacterCard, storedHero, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.FindTargetWithLowestHitPoints(2, (Card c) =>  IsHeroCharacterCard(c), storedHero, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

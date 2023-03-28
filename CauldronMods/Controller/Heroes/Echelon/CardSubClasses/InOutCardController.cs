@@ -29,7 +29,7 @@ namespace Cauldron.Echelon
             });
 
             // At the start of a player's turn, that player may choose to skip one of their phases.
-            AddStartOfTurnTrigger(tt => tt != base.TurnTaker && tt.IsHero, StartOfTurnPhaseShiftResponse,
+            AddStartOfTurnTrigger(tt => tt != base.TurnTaker && IsHero(tt), StartOfTurnPhaseShiftResponse,
                 new[] { TriggerType.ReducePhaseActionCount, TriggerType.IncreasePhaseActionCount });
         }
 
@@ -38,7 +38,7 @@ namespace Cauldron.Echelon
 
             // each hero target regains 1 HP
             IEnumerator healRoutine = base.GameController.GainHP(this.HeroTurnTakerController,
-                 c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource()), HpGain, cardSource: GetCardSource());
+                 c => IsHeroTarget(c) && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource()), HpGain, cardSource: GetCardSource());
 
             List<DestroyCardAction> storedResults = new List<DestroyCardAction>();
             IEnumerator routine = base.GameController.DestroyCard(this.HeroTurnTakerController, this.Card, storedResults: storedResults, postDestroyAction: () => healRoutine,

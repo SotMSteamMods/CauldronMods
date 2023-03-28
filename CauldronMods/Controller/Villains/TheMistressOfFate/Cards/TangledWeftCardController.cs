@@ -19,7 +19,7 @@ namespace Cauldron.TheMistressOfFate
         {
             var failingHeroes = new List<TurnTaker>();
             //"Each player may discard a card that shares a keyword with at least one of their cards in play.",
-            var selectTurnTakers = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame), SelectionType.DiscardCard, allowAutoDecide: true, cardSource: GetCardSource());
+            var selectTurnTakers = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame), SelectionType.DiscardCard, allowAutoDecide: true, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(selectTurnTakers, tt => DiscardMatchingCard(tt, failingHeroes), cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -34,7 +34,7 @@ namespace Cauldron.TheMistressOfFate
 
             if (numFaceUpDays == 1)
             {
-                coroutine = DealDamage(CharacterCard, (Card c) => c.IsHeroCharacterCard && failingHeroes.Contains(c.Owner), 5, DamageType.Infernal);
+                coroutine = DealDamage(CharacterCard, (Card c) =>  IsHeroCharacterCard(c) && failingHeroes.Contains(c.Owner), 5, DamageType.Infernal);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -52,7 +52,7 @@ namespace Cauldron.TheMistressOfFate
                     damages.Add(new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), null, 5, DamageType.Infernal));
                 }
                 
-                coroutine = SelectTargetsAndDealMultipleInstancesOfDamage(damages, (Card c) => c.IsHeroCharacterCard && failingHeroes.Contains(c.Owner));
+                coroutine = SelectTargetsAndDealMultipleInstancesOfDamage(damages, (Card c) =>  IsHeroCharacterCard(c) && failingHeroes.Contains(c.Owner));
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

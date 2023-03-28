@@ -21,7 +21,7 @@ namespace Cauldron.Outlander
         public override IEnumerator Play()
         {
             //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHero, (Card c) => 1, DamageType.Melee);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => IsHero(c), (Card c) => 1, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -55,7 +55,7 @@ namespace Cauldron.Outlander
                 }
 
                 //...destroy {H} hero ongoing and/or equipment cards.
-                coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), Game.H, cardSource: GetCardSource());
+                coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && (IsOngoing(c) || IsEquipment(c)), "hero ongoing or equipment"), Game.H, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

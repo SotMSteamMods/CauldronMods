@@ -25,7 +25,7 @@ namespace Cauldron.TheInfernalChoir
         private IEnumerator EndOfTurnDamage()
         {
             List<TurnTaker> result = new List<TurnTaker>();
-            var coroutine = GameController.DetermineTurnTakersWithMostOrFewest(true, 1, 1, tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame, tt => tt.Trash.NumberOfCards, SelectionType.DealDamage, result, cardSource: GetCardSource());
+            var coroutine = GameController.DetermineTurnTakersWithMostOrFewest(true, 1, 1, tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame, tt => tt.Trash.NumberOfCards, SelectionType.DealDamage, result, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

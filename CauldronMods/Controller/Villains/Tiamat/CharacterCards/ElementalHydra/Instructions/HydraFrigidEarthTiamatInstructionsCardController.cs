@@ -15,7 +15,7 @@ namespace Cauldron.Tiamat
         }
 
         //Whenever Element of Ice enters play and {WinterTiamatCharacter} is decapitated, if {EarthTiamatCharacter} is active she deals the hero target with the highest HP X melee damage, where X = {H} plus the number of Sky Breaker cards in the villain trash.
-        protected override IEnumerator alternateElementCoroutine => base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(Game.H, "SkyBreaker"), DamageType.Melee);
+        protected override IEnumerator alternateElementCoroutine => base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(Game.H, "SkyBreaker"), DamageType.Melee);
 
         protected override ITrigger[] AddFrontTriggers()
         {
@@ -63,7 +63,7 @@ namespace Cauldron.Tiamat
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage.
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.FirstHeadCardController().Card, 1, (Card c) => c.IsHero, (Card c) => new int?(1), DamageType.Cold);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.FirstHeadCardController().Card, 1, (Card c) => IsHero(c), (Card c) => new int?(1), DamageType.Cold);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

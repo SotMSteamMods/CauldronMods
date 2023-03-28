@@ -38,7 +38,7 @@ namespace Cauldron.Echelon
             int numDamage = GetPowerNumeral(0, 1);
 
             //Power: "{Echelon} deals each non-hero target 1 lightning damage."
-            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !c.IsHero, numDamage, DamageType.Lightning);
+            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !IsHero(c), numDamage, DamageType.Lightning);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

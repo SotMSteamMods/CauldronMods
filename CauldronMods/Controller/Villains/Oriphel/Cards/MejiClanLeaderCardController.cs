@@ -18,7 +18,7 @@ namespace Cauldron.Oriphel
             AddReduceDamageTrigger((Card c) => IsGoon(c), 1);
 
             //"At the end of the villain turn, this card deals each hero target 3 melee damage."
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsHero && c.IsTarget, TargetType.All, 3, DamageType.Melee);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => IsHeroTarget(c), TargetType.All, 3, DamageType.Melee);
         }
     }
 }

@@ -101,7 +101,7 @@ namespace Cauldron.Dendron
             }
 
             // All other heroes shuffle their trash into their decks
-            IEnumerator shuffleRoutine = base.DoActionToEachTurnTakerInTurnOrder(ttc => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame && !excludedTurnTakers.Contains(ttc.TurnTaker), ShuffleTrashResponse);
+            IEnumerator shuffleRoutine = base.DoActionToEachTurnTakerInTurnOrder(ttc => IsHero(ttc.TurnTaker) && !ttc.IsIncapacitatedOrOutOfGame && !excludedTurnTakers.Contains(ttc.TurnTaker), ShuffleTrashResponse);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(shuffleRoutine);

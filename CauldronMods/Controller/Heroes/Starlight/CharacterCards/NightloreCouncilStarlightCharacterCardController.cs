@@ -100,7 +100,7 @@ namespace Cauldron.Starlight
         public bool AsheronBoostDamageCriteria(DealDamageAction dda)
         {
             //"If Starlight of Asheron has a constellation next to her, increase damage she does to non-hero targets by 1."
-            return dda.DamageSource.IsSameCard(asheron) && IsNextToConstellation(asheron) && !dda.Target.IsHero;
+            return dda.DamageSource.IsSameCard(asheron) && IsNextToConstellation(asheron) && !IsHero(dda.Target);
         }
         public bool CryosCardDrawCriteria(CardEntersPlayAction cep)
         {
@@ -128,7 +128,7 @@ namespace Cauldron.Starlight
 
         private bool FlipCriteria(GameAction ga)
         {
-            return ((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker && c.IsHeroCharacterCard && c.IsActive && c != base.Card).Count() == 0);
+            return ((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker &&  IsHeroCharacterCard(c) && c.IsActive && c != base.Card).Count() == 0);
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()

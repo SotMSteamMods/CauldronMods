@@ -31,7 +31,7 @@ namespace Cauldron.Titan
             int damageNumeral = base.GetPowerNumeral(1, 2);
 
             //{Titan} deals up to 2 non-hero targets 2 infernal damage each.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Infernal, targetNumeral, false, 0, additionalCriteria: (Card c) => !c.IsHero, addStatusEffect: AddRedirectToSelfEffect, selectTargetsEvenIfCannotDealDamage: true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), damageNumeral, DamageType.Infernal, targetNumeral, false, 0, additionalCriteria: (Card c) => !IsHero(c), addStatusEffect: AddRedirectToSelfEffect, selectTargetsEvenIfCannotDealDamage: true, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

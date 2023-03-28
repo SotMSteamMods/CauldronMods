@@ -29,7 +29,7 @@ namespace Cauldron.Vector
 
             List<DealDamageAction> ddas = new List<DealDamageAction>();
             IEnumerator damageRoutine 
-                = base.DealDamageToHighestHP(base.CharacterCard, 1, card => card.IsHero && card.IsTarget && card.IsInPlay,
+                = base.DealDamageToHighestHP(base.CharacterCard, 1, card => IsHero(card) && card.IsTarget && card.IsInPlay,
                     card => damageAmount, DamageType.Projectile, storedResults: ddas, selectTargetEvenIfCannotDealDamage: true);
 
             if (base.UseUnityCoroutines)
@@ -47,14 +47,14 @@ namespace Cauldron.Vector
             }
 
             TurnTaker tt = ddas.First().Target.Owner;
-            if(!tt.IsHero)
+            if(!IsHero(tt))
             {
                 yield break;
             }
             HeroTurnTakerController httc = FindHeroTurnTakerController(tt.ToHero());
 
             IEnumerator destroyRoutine = base.GameController.SelectAndDestroyCards(httc,
-                new LinqCardCriteria(card => (card.IsOngoing || IsEquipment(card)) && card.IsInPlay && card.Owner == httc.TurnTaker), 
+                new LinqCardCriteria(card => (IsOngoing(card) || IsEquipment(card)) && card.IsInPlay && card.Owner == httc.TurnTaker), 
                 CardsToDestroy, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)

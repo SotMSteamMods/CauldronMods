@@ -19,7 +19,7 @@ namespace Cauldron.Dynamo
         {
             //{Dynamo} deals the hero target with the highest HP 5 energy damage.
             List<Card> storeHighest = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => c.IsHero && c.IsTarget, storeHighest, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => IsHeroTarget(c), storeHighest, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -44,7 +44,7 @@ namespace Cauldron.Dynamo
             {
                 DealDamageAction damageAction = dealDamageActions.FirstOrDefault();
                 //If a hero target takes damage this way...
-                if (damageAction.Target.IsHero && damageAction.Amount > 0)
+                if (IsHero(damageAction.Target) && damageAction.Amount > 0)
                 {
                     //...destroy 1 environment card.
                     coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment), false, cardSource: GetCardSource());
@@ -60,7 +60,7 @@ namespace Cauldron.Dynamo
             }
 
             //{Dynamo} deals each other hero target 1 sonic damage.
-            coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget && !storeHighest.Contains(c), (Card c) => 1, DamageType.Sonic);
+            coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHeroTarget(c) && !storeHighest.Contains(c), (Card c) => 1, DamageType.Sonic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

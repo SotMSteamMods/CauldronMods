@@ -27,7 +27,7 @@ namespace Cauldron.Starlight
                 GameController.ExhaustCoroutine(coroutine);
             }
             TurnTaker hero = GetSelectedTurnTaker(storedResults);
-            if (hero == null || !hero.IsHero)
+            if (hero == null || !IsHero(hero))
             {
                 yield break;
             }

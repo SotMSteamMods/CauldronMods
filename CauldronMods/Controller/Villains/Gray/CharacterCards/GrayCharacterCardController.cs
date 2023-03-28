@@ -22,7 +22,7 @@ namespace Cauldron.Gray
                 //At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cards and destroy 1 environment card.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, FlipCardResponse, TriggerType.FlipCard, additionalCriteria: (PhaseChangeAction action) => this.FindNumberOfRadiationCardsInPlay() >= 3));
                 //At the end of the villain turn, {Gray} deals the hero target with the highest HP {H - 1} energy damage.
-                base.AddSideTrigger(base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => c.IsHero, TargetType.HighestHP, Game.H - 1, DamageType.Energy));
+                base.AddSideTrigger(base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => IsHero(c), TargetType.HighestHP, Game.H - 1, DamageType.Energy));
                 //Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and gray deals each non-villain target {H - 1} energy damage.
                 //Advanced - Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.
                 base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.WasCardDestroyed && action.CardToDestroy.Card.DoKeywordsContain("radiation"), this.DestroyRadiationFrontResponse, new TriggerType[] { TriggerType.DestroyCard, TriggerType.DealDamage }, TriggerTiming.After));
@@ -98,7 +98,7 @@ namespace Cauldron.Gray
                     //Advanced - Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.
                     numberOfCards = new int?(2);
                 }
-                coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), numberOfCards, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && (IsOngoing(c) || base.IsEquipment(c))), numberOfCards, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -108,7 +108,7 @@ namespace Cauldron.Gray
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            coroutine = base.DealDamage(base.Card, (Card c) => c.IsNonVillainTarget, Game.H - 1, DamageType.Energy);
+            coroutine = base.DealDamage(base.Card, (Card c) => c.IsTarget && !IsVillainTarget(c), Game.H - 1, DamageType.Energy);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -123,17 +123,17 @@ namespace Cauldron.Gray
 
         private int? FindNumberOfDestructibleHeroOngoingAndEquipmentInPlay()
         {
-            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && CanBeDestroyedByGray(c)).Count());
+            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsHero(c) && (IsOngoing(c) || base.IsEquipment(c)) && CanBeDestroyedByGray(c)).Count());
         }
 
         private int? FindNumberOfIndestructibleHeroOngoingAndEquipmentInPlay()
         {
-            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c)) && !CanBeDestroyedByGray(c)).Count());
+            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsHero(c) && (IsOngoing(c) || base.IsEquipment(c)) && !CanBeDestroyedByGray(c)).Count());
         }
 
         private int? FindNumberOfHeroOngoingAndEquipmentInPlay()
         {
-            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && (c.IsOngoing || base.IsEquipment(c))).Count());
+            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsHero(c) && (IsOngoing(c) || base.IsEquipment(c))).Count());
         }
 
         private bool CanBeDestroyedByGray(Card c)
@@ -154,7 +154,7 @@ namespace Cauldron.Gray
             IEnumerator coroutine;
             while (FindNumberOfHeroOngoingAndEquipmentInPlay() > 2 && FindNumberOfHeroOngoingAndEquipmentInPlay() != this.FindNumberOfIndestructibleHeroOngoingAndEquipmentInPlay())
             {
-                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c))), false);
+                coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && (IsOngoing(c) || base.IsEquipment(c))), false);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -180,7 +180,7 @@ namespace Cauldron.Gray
             }
 
             //...{Gray} deals each hero target {H x 2} energy damage.
-            coroutine = base.GameController.DealDamage(this.DecisionMaker, base.Card, (Card c) => c.IsHero, Game.H * 2, DamageType.Energy, cardSource: base.GetCardSource());
+            coroutine = base.GameController.DealDamage(this.DecisionMaker, base.Card, (Card c) => IsHero(c), Game.H * 2, DamageType.Energy, cardSource: base.GetCardSource());
             //...Play the top card of the villain deck.
             IEnumerator coroutine2 = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck);
             if (base.UseUnityCoroutines)
@@ -204,7 +204,7 @@ namespace Cauldron.Gray
             //Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.
             IEnumerator coroutine;
             //if its not a hero destroying it do no damage
-            if (responsibleTurnTaker != null && responsibleTurnTaker.IsHero && !responsibleTurnTaker.IsIncapacitatedOrOutOfGame)
+            if (responsibleTurnTaker != null && IsHero(responsibleTurnTaker) && !responsibleTurnTaker.IsIncapacitatedOrOutOfGame)
             {
                 List<Card> results = new List<Card>();
                 coroutine = base.FindCharacterCardToTakeDamage(responsibleTurnTaker, results, Card, Game.H - 1, DamageType.Energy);
@@ -230,7 +230,7 @@ namespace Cauldron.Gray
             //Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage.
             if (action.CardToDestroy.Card.Identifier == "RadioactiveCascade")
             {
-                coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(Game.H - 1), DamageType.Energy);
+                coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => new int?(Game.H - 1), DamageType.Energy);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

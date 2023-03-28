@@ -69,7 +69,7 @@ namespace Cauldron.Cricket
                     {
                         //1 hero target regains 2 HP.
                         List<SelectTargetDecision> selectedTarget = new List<SelectTargetDecision>();
-                        IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText));
+                        IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText));
                         coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, choices, selectedTarget, selectionType: SelectionType.GainHP, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {

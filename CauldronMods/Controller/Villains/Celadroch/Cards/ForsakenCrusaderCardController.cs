@@ -24,7 +24,7 @@ namespace Cauldron.Celadroch
         public override void AddTriggers()
         {
             AddStartOfTurnTrigger(tt => tt == TurnTaker, PlayTheTopCardOfTheVillainDeckWithMessageResponse, TriggerType.PlayCard);
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.HighestHP, H - 2, DamageType.Melee, numberOfTargets: 2);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => IsHeroTarget(c), TargetType.HighestHP, H - 2, DamageType.Melee, numberOfTargets: 2);
         }
 
     }

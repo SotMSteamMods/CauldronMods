@@ -12,7 +12,7 @@ namespace Cauldron.Anathema
 		{
 			SpecialStringMaker.ShowHeroTargetWithHighestHP();
 			SpecialStringMaker.ShowHeroCharacterCardWithLowestHP();
-			SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.IsVillainTarget, useCardsSuffix: false, singular: "villain target", plural: "villain targets"));
+			SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => IsVillainTarget(c), useCardsSuffix: false, singular: "villain target", plural: "villain targets"));
 		}
 
 		public override IEnumerator Play()
@@ -21,7 +21,7 @@ namespace Cauldron.Anathema
 
 			//Find the hero target with the most HP
 			List<Card> storedResults = new List<Card>();
-			IEnumerator coroutine = base.GameController.FindTargetsWithHighestHitPoints(1, 1, (Card card) => card.IsHero && card.IsTarget, storedResults, cardSource: base.GetCardSource());
+			IEnumerator coroutine = base.GameController.FindTargetsWithHighestHitPoints(1, 1, (Card card) => IsHeroTarget(card), storedResults, cardSource: base.GetCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -37,7 +37,7 @@ namespace Cauldron.Anathema
 				//The Hero target with the highest HP deals the Hero Character with the lowest HP X toxic damage, where X is the number of villain targets in play. 
 				int X = this.NumberOfVillainTargetsInPlay;
 				List<DealDamageAction> targetResults = new List<DealDamageAction>();
-				IEnumerator coroutine2 = base.DealDamageToLowestHP(heroTarget, 1, (Card c) => c.IsHeroCharacterCard, (Card c) => new int?(X), DamageType.Toxic, storedResults: targetResults);
+				IEnumerator coroutine2 = base.DealDamageToLowestHP(heroTarget, 1, (Card c) =>  IsHeroCharacterCard(c), (Card c) => new int?(X), DamageType.Toxic, storedResults: targetResults);
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine2);
@@ -51,7 +51,7 @@ namespace Cauldron.Anathema
 
 				//currently only discards 1 card
 				DealDamageAction dealDamageAction = targetResults.FirstOrDefault();
-				if (dealDamageAction != null && dealDamageAction.Target != null && dealDamageAction.Target.IsHeroCharacterCard && dealDamageAction.DidDealDamage)
+				if (dealDamageAction != null && dealDamageAction.Target != null && IsHeroCharacterCard(dealDamageAction.Target) && dealDamageAction.DidDealDamage)
 				{
 					HeroTurnTakerController httc = base.FindHeroTurnTakerController(dealDamageAction.Target.Owner.ToHero());
 					IEnumerator discard = base.GameController.SelectAndDiscardCards(httc, base.H - 2, false, base.H - 2,cardSource: base.GetCardSource());

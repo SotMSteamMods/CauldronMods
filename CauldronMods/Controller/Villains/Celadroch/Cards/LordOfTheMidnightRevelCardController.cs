@@ -67,7 +67,7 @@ namespace Cauldron.Celadroch
         private IEnumerator WhenDestroyedResponse()
         {
             var coroutine = GameController.SelectAndDestroyCards(DecisionMaker,
-                                new LinqCardCriteria(c => c.IsHero && (c.IsOngoing || IsEquipment(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing or equipment"),
+                                new LinqCardCriteria(c => IsHero(c) && (IsOngoing(c) || IsEquipment(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing or equipment"),
                                 null,
                                 dynamicNumberOfCards: GetAmountOfCardsToDestoy,
                                 allowAutoDecide: true,

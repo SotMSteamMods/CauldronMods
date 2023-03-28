@@ -58,7 +58,7 @@ namespace Cauldron.TangoOne
         {
             TurnTaker turnTaker = trash.OwnerTurnTaker;
             TurnTakerController turnTakerController = FindTurnTakerController(turnTaker);
-            HeroTurnTakerController decisionMaker = turnTaker.IsHero ? turnTakerController.ToHero() : DecisionMaker;
+            HeroTurnTakerController decisionMaker = IsHero(turnTaker) ? turnTakerController.ToHero() : DecisionMaker;
 
             SelectCardsDecision scsd = new SelectCardsDecision(GameController, decisionMaker, c => c.Location == trash, SelectionType.ShuffleCardFromTrashIntoDeck,
                    numberOfCards: CardsToMoveFromTrash,

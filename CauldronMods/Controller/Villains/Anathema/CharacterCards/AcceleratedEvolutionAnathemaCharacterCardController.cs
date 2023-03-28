@@ -99,7 +99,7 @@ namespace Cauldron.Anathema
         private IEnumerator AdvancedEndOfTurnBackResponse(PhaseChangeAction arg)
         {
             //Anathema} regains 1 HP for each villain target in play.
-            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, null, () => FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsVillainTarget).Count(), cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.GainHP(base.CharacterCard, null, () => FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsVillainTarget(c)).Count(), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

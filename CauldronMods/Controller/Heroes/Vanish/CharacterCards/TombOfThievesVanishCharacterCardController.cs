@@ -46,7 +46,7 @@ namespace Cauldron.Vanish
             {
                 IEnumerator coroutine;
                 _3.CardMovedExpiryCriteria.Card = this.Card;
-                if (_2 != null && _2.IsHero)
+                if (_2 != null && IsHero(_2))
                 {
                     coroutine = DrawACardOrPlayACard(FindHeroTurnTakerController(_2.ToHero()), false);
                     if (base.UseUnityCoroutines)
@@ -99,7 +99,7 @@ namespace Cauldron.Vanish
                 case 1:
                     {
                         //"Destroy 1 ongoing card.",
-                        var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => c.IsOngoing, "ongoing"), false, cardSource: GetCardSource());
+                        var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => IsOngoing(c), "ongoing"), false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

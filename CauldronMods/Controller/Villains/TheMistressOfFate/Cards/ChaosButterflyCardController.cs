@@ -32,7 +32,7 @@ namespace Cauldron.TheMistressOfFate
                 new DealDamageAction(GetCardSource(), new DamageSource(GameController, this.Card), null, 3, DamageType.Projectile),
                 new DealDamageAction(GetCardSource(), new DamageSource(GameController, this.Card), null, 3, DamageType.Cold)
             };
-            IEnumerator coroutine = DealMultipleInstancesOfDamage(damages, (Card c) => c.IsHero);
+            IEnumerator coroutine = DealMultipleInstancesOfDamage(damages, (Card c) => IsHero(c));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

@@ -107,7 +107,7 @@ namespace Cauldron.Drift
                     }
                 case 2:
                     {
-                        IEnumerable<TurnTaker> turnTakersWithOneShots = base.FindTurnTakersWhere((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && !tt.IsIncapacitated && tt.IsHero && base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location.OwnerTurnTaker == tt && c.Location.IsHand && c.IsOneShot && c.Location.IsHero)).Any());
+                        IEnumerable<TurnTaker> turnTakersWithOneShots = base.FindTurnTakersWhere((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && !tt.IsIncapacitated && IsHero(tt) && base.FindCardsWhere(new LinqCardCriteria((Card c) => c.Location.OwnerTurnTaker == tt && c.Location.IsHand && c.IsOneShot && c.Location.IsHero)).Any());
                         List<SelectTurnTakerDecision> turnTakerDecisions = new List<SelectTurnTakerDecision>();
                         if (turnTakersWithOneShots.Any())
                         {

@@ -60,6 +60,21 @@ namespace Cauldron
             p2.SetValue(effect, array, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, null, null);
         }
 
+        public enum CustomDecisionOption
+        {
+            Decision1,
+            Decision2,
+            Decision3
+        }
+
+        private static CustomDecisionOption SelectedCustomDecisionOption = CustomDecisionOption.Decision1;
+
+        public static void SetCustomDecisionOption(this CardController cardController, CustomDecisionOption customDecisionOption)
+        {
+            SelectedCustomDecisionOption = customDecisionOption;
+        }
+
+
         public static SpecialString ShowHeroWithMostCardsInTrash(this SpecialStringMaker maker, LinqCardCriteria additionalCriteria = null, Func<bool> showInEffectsList = null)
         {
             CardController _cardController;
@@ -69,7 +84,7 @@ namespace Cauldron
 
             return maker.ShowSpecialString(delegate
             {
-                IEnumerable<TurnTaker> enumerable = _cardController.GameController.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame, _cardController.BattleZone);
+                IEnumerable<TurnTaker> enumerable = _cardController.GameController.FindTurnTakersWhere((TurnTaker tt) => _cardController.IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame, _cardController.BattleZone);
                 List<string> list = new List<string>();
                 int num = 0;
                 foreach (HeroTurnTaker hero in enumerable)

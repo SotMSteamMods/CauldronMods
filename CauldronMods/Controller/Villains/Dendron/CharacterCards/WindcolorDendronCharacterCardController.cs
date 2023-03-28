@@ -75,7 +75,7 @@ namespace Cauldron.Dendron
                 if (this.IsGameAdvanced)
                 {
                     // Increase damage dealt by {Dendron} to hero targets by {H - 2}.
-                    base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null &&  dda.DamageSource.IsCard && dda.DamageSource.Card == CharacterCard && dda.Target.IsHero, H - 2));
+                    base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null &&  dda.DamageSource.IsCard && dda.DamageSource.Card == CharacterCard && IsHero(dda.Target), H - 2));
                 }
             }
 
@@ -173,7 +173,7 @@ namespace Cauldron.Dendron
         private IEnumerator DestroyOngoingToDealDamage(PhaseChangeAction action)
         {
             List<DestroyCardAction> results = new List<DestroyCardAction>();
-            var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => IsVillain(c) && c.IsOngoing && c.IsInPlayAndHasGameText, "villain ongoing"), false, results, cardSource: GetCardSource());
+            var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => IsVillain(c) && IsOngoing(c) && c.IsInPlayAndHasGameText, "villain ongoing"), false, results, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -185,7 +185,7 @@ namespace Cauldron.Dendron
 
             if (DidDestroyCard(results))
             {
-                coroutine = DealDamage(CharacterCard, c => c.IsHero && c.IsTarget, 2, DamageType.Radiant);
+                coroutine = DealDamage(CharacterCard, c => IsHeroTarget(c), 2, DamageType.Radiant);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -59,7 +59,7 @@ namespace Cauldron.Dynamo
             }
 
             //...deals the hero target with the second highest HP {H} melee damage.
-            coroutine = base.DealDamageToHighestHP(highestVillain, 2, (Card c) => c.IsHero && c.IsTarget, (Card c) => base.Game.H, DamageType.Melee);
+            coroutine = base.DealDamageToHighestHP(highestVillain, 2, (Card c) => IsHeroTarget(c), (Card c) => base.Game.H, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

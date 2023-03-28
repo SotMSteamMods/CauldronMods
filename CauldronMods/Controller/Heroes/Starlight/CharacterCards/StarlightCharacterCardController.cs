@@ -92,7 +92,7 @@ namespace Cauldron.Starlight
                 case 2:
                     {
                         //"1 hero target regains 2 HP."
-                        IEnumerator coroutine3 = GameController.SelectAndGainHP(HeroTurnTakerController, 2, optional: false, (Card c) => c.IsInPlay && c.IsHero && c.IsTarget, 1, null, allowAutoDecide: false, null, GetCardSource());
+                        IEnumerator coroutine3 = GameController.SelectAndGainHP(HeroTurnTakerController, 2, optional: false, (Card c) => c.IsInPlay && IsHeroTarget(c), 1, null, allowAutoDecide: false, null, GetCardSource());
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine3);

@@ -14,7 +14,7 @@ namespace Cauldron.TheRam
     {
         public GrapplingClawCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowLowestHP(1, null, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !IsUpClose(c), "", false, singular: "hero that is not Up Close", plural: "heroes that are not Up Close"));
+            SpecialStringMaker.ShowLowestHP(1, null, new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && !IsUpClose(c), "", false, singular: "hero that is not Up Close", plural: "heroes that are not Up Close"));
         }
 
         public override void AddTriggers()
@@ -27,14 +27,14 @@ namespace Cauldron.TheRam
 
         private bool LogCardChecks(Card c)
         {
-            if (c.IsHeroCharacterCard && c.IsInPlayAndHasGameText)
+            if (IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText)
             {
                 Log.Debug($"{c.Title} is in play and has game text. Is it up close? {IsUpClose(c)}. Is it visible? {AskIfCardIsVisibleToCardSource(c, GetCardSource())}");
-                return c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false;
+                return  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false;
 
             }
             return false;
-            //(Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) == true, 
+            //(Card c) =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) == true, 
 
         }
         public IEnumerator EndOfTurnGrappleResponse(PhaseChangeAction pca)
@@ -43,7 +43,7 @@ namespace Cauldron.TheRam
             List<Card> results = new List<Card> { };
             DealDamageAction damagePreview = new DealDamageAction(GetCardSource(), new DamageSource(GameController, GetRam), null, H - 2, DamageType.Projectile);
             IEnumerator chooseTarget = GameController.FindTargetWithLowestHitPoints(1,
-                                                                      (Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false,
+                                                                      (Card c) =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !IsUpClose(c) && AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false,
                                                                       results, evenIfCannotDealDamage: true, dealDamageInfo: new List<DealDamageAction> { damagePreview }, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {

@@ -46,7 +46,7 @@ namespace Cauldron.Tiamat
         {
             if (!base.Card.IsFlipped)
             {
-                SelectTurnTakerDecision turnTakerDecision = new SelectTurnTakerDecision(base.GameController, this.DecisionMaker, base.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame), SelectionType.SelectFunction, cardSource: base.GetCardSource());
+                SelectTurnTakerDecision turnTakerDecision = new SelectTurnTakerDecision(base.GameController, this.DecisionMaker, base.FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame), SelectionType.SelectFunction, cardSource: base.GetCardSource());
                 //When this card is destroyed, 1 hero may draw a card or [use a power/play a card]. Then, flip this card.
                 IEnumerator coroutine = base.GameController.SelectTurnTakerAndDoAction(turnTakerDecision, this.SelectActionResponse);
                 if (base.UseUnityCoroutines)

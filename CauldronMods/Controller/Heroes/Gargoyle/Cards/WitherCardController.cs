@@ -24,7 +24,7 @@ namespace Cauldron.Gargoyle
             IEnumerator coroutine;
 
             // Destroy 1 ongoing or environment card.
-            coroutine = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((card) => (card.IsEnvironment || card.IsOngoing) && card.IsInPlay && GameController.IsCardVisibleToCardSource(card, GetCardSource()), "ongoing or environment"), 1, false, 1, storedResultsAction: storedResults, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((card) => (card.IsEnvironment || IsOngoing(card)) && card.IsInPlay && GameController.IsCardVisibleToCardSource(card, GetCardSource()), "ongoing or environment"), 1, false, 1, storedResultsAction: storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

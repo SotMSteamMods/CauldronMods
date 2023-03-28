@@ -18,7 +18,7 @@ namespace Cauldron.Vanish
 
         public override void AddTriggers()
         {
-            AddTrigger<DealDamageAction>(dda => dda.DamageSource.IsSameCard(this.CharacterCard) && !dda.Target.IsHero && !base.HasBeenSetToTrueThisTurn(TrackingKey), DealDamageResponse, TriggerType.AddStatusEffectToDamage, TriggerTiming.Before);
+            AddTrigger<DealDamageAction>(dda => dda.DamageSource.IsSameCard(this.CharacterCard) && !IsHero(dda.Target) && !base.HasBeenSetToTrueThisTurn(TrackingKey), DealDamageResponse, TriggerType.AddStatusEffectToDamage, TriggerTiming.Before);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(TrackingKey), TriggerType.Hidden);
         }

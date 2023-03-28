@@ -8,12 +8,16 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfBreakingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "targets", false, false, null, null, false))
+        public MarkOfBreakingCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
         #endregion Constructors
+
+        #region Properties
+        public override LinqCardCriteria NextToCardCriteria => new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "targets", useCardsSuffix: false);
+        #endregion
 
         #region Methods
         public override void AddTriggers()

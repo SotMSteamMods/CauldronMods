@@ -116,7 +116,7 @@ namespace Cauldron.ScreaMachine
 
             if (wasDrumCard)
             {
-                coroutine = DealDamage(Card, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, 3, DamageType.Melee);
+                coroutine = DealDamage(Card, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, 3, DamageType.Melee);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

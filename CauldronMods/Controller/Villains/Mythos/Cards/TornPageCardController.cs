@@ -29,7 +29,7 @@ namespace Cauldron.Mythos
             //{MythosDanger} a hero card is drawn...
             base.AddTrigger<DrawCardAction>((DrawCardAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeActivated) && base.IsTopCardMatching(MythosDangerDeckIdentifier) && action.DidDrawCard, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After);
             //{MythosMadness} a hero card enters play...
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeActivated) && base.IsTopCardMatching(MythosMadnessDeckIdentifier) && action.CardEnteringPlay.IsHero && action.IsSuccessful, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeActivated) && base.IsTopCardMatching(MythosMadnessDeckIdentifier) && IsHero(action.CardEnteringPlay) && action.IsSuccessful, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After);
             //{MythosClue} a power is used...
             base.AddTrigger<UsePowerAction>((UsePowerAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeActivated) && base.IsTopCardMatching(MythosClueDeckIdentifier) && action.IsSuccessful, this.DealDamageResponse, new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After);
             //...this card deals that hero 2 infernal damage and 2 psychic damage.
@@ -64,7 +64,7 @@ namespace Cauldron.Mythos
             if (htt.HasMultipleCharacterCards)
             {
                 List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DealDamage, new LinqCardCriteria((Card c) => c.Owner == htt && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame), storedResults, false, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DealDamage, new LinqCardCriteria((Card c) => c.Owner == htt &&  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame), storedResults, false, cardSource: base.GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

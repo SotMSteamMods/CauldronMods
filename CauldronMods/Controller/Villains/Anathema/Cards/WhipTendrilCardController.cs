@@ -23,7 +23,7 @@ namespace Cauldron.Anathema
 		{
 			//Anathema deals each Hero target 2 projectile damage. 
 			List<DealDamageAction> storedResults = new List<DealDamageAction>();
-			IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => card.IsHero && card.IsTarget, 2, DamageType.Projectile, storedResults: storedResults);
+			IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => IsHeroTarget(card), 2, DamageType.Projectile, storedResults: storedResults);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -35,7 +35,7 @@ namespace Cauldron.Anathema
 			//Heroes that take damage this way must destroy 1 of their equipment cards.
 			foreach(DealDamageAction dd in storedResults)
 			{
-				if(dd.DidDealDamage && dd.Target.IsHeroCharacterCard)
+				if(dd.DidDealDamage && IsHeroCharacterCard(dd.Target))
 				{
 					HeroTurnTakerController httc = base.FindHeroTurnTakerController(dd.Target.Owner.ToHero());
 					coroutine = base.GameController.SelectAndDestroyCard(httc, new LinqCardCriteria((Card c) => base.IsEquipment(c) && c.Owner == dd.Target.Owner, "equipment"), false, cardSource: base.GetCardSource());

@@ -94,7 +94,7 @@ namespace Cauldron.Pyre
             //"{3: Deal themselves 2 energy damage.",
             if(irradiatedCardsInHand() >= 3)
             {
-                coroutine = GameController.SelectTargetsToDealDamageToSelf(heroTTC, 2, DamageType.Energy, 1, false, 1, additionalCriteria: (Card c) => c.IsHeroCharacterCard && c.Owner == heroTTC.TurnTaker, cardSource: GetCardSource());
+                coroutine = GameController.SelectTargetsToDealDamageToSelf(heroTTC, 2, DamageType.Energy, 1, false, 1, additionalCriteria: (Card c) =>  IsHeroCharacterCard(c) && c.Owner == heroTTC.TurnTaker, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

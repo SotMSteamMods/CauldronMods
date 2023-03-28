@@ -22,7 +22,7 @@ namespace Cauldron.Celadroch
         protected override IEnumerator SelectZombieTarget(List<MoveCardDestination> storedResults, List<IDecision> decisionSources, bool isPutIntoPlay, LinqTurnTakerCriteria additionalCriteria = null)
         {
             List<Card> storeHighest = new List<Card>();
-            var coroutine = GameController.FindTargetWithHighestHitPoints(1, c => c.IsHeroCharacterCard && (additionalCriteria?.Criteria(c.Owner) ?? true), storeHighest, cardSource: GetCardSource());
+            var coroutine = GameController.FindTargetWithHighestHitPoints(1, c =>  IsHeroCharacterCard(c) && (additionalCriteria?.Criteria(c.Owner) ?? true), storeHighest, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

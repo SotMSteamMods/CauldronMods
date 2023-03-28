@@ -24,7 +24,7 @@ namespace Cauldron.Celadroch
             AddImmuneToDamageTrigger(dda => dda.Target == Card &&
                 (dda.DamageType == DamageType.Fire || dda.DamageType == DamageType.Lightning || dda.DamageType == DamageType.Cold || dda.DamageType == DamageType.Toxic));
 
-            AddIncreaseDamageTrigger(dda => dda.Target.IsHero, 1);
+            AddIncreaseDamageTrigger(dda => IsHero(dda.Target), 1);
 
             AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => DestroyCardResponse(), TriggerType.DestroyCard);
         }
@@ -32,7 +32,7 @@ namespace Cauldron.Celadroch
         private IEnumerator DestroyCardResponse()
         {
             return GameController.SelectAndDestroyCard(DecisionMaker,
-                        new LinqCardCriteria(c => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), false,
+                        new LinqCardCriteria(c => IsHero(c) && (IsOngoing(c) || IsEquipment(c)), "hero ongoing or equipment"), false,
                         cardSource: GetCardSource());
         }
     }

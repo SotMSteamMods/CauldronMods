@@ -18,7 +18,7 @@ namespace Cauldron.Starlight
         {
             int damageNumeral = base.GetPowerNumeral(0, 1);
             //"Starlight deals each hero target 1 energy damage."
-            IEnumerator damageHeroes = DealDamage(this.Card, (Card c) => c.IsInPlayAndHasGameText && c.IsHero, damageNumeral, DamageType.Energy);
+            IEnumerator damageHeroes = DealDamage(this.Card, (Card c) => c.IsInPlayAndHasGameText && IsHero(c), damageNumeral, DamageType.Energy);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(damageHeroes);
@@ -57,10 +57,10 @@ namespace Cauldron.Starlight
                     {
                         //"One player may put an ongoing card from their trash into their hand.",
                         List<TurnTaker> usableHeroes = GameController.AllTurnTakers
-                                                                     .Where((TurnTaker tt) => tt.IsHero &&
+                                                                     .Where((TurnTaker tt) => IsHero(tt) &&
                                                                                             !tt.IsIncapacitatedOrOutOfGame &&
                                                                                             GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
-                                                                                            tt.Trash.Cards.Where((Card c) => c.IsOngoing).Count() > 0)
+                                                                                            tt.Trash.Cards.Where((Card c) => IsOngoing(c)).Count() > 0)
                                                                      .ToList();
                         SelectTurnTakerDecision whoGetsCard = new SelectTurnTakerDecision(GameController,
                                                                             HeroTurnTakerController,
@@ -69,7 +69,7 @@ namespace Cauldron.Starlight
                                                                             isOptional: true,
                                                                             cardSource: GetCardSource());
                         Func<TurnTaker, IEnumerator> getOngoingFromTrash = (TurnTaker tt) => GameController.SelectAndMoveCard(GameController.FindHeroTurnTakerController(tt.ToHero()),
-                                                                                                                        (Card c) => c.IsInTrash && c.IsOngoing && c.Location == tt.Trash,
+                                                                                                                        (Card c) => c.IsInTrash && IsOngoing(c) && c.Location == tt.Trash,
                                                                                                                         tt.ToHero().Hand,
                                                                                                                         optional: true,
                                                                                                                         cardSource: GetCardSource());

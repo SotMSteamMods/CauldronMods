@@ -11,13 +11,13 @@ namespace Cauldron.Titan
     {
         public PaybackTimeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => !c.IsHero && this.HasTargetDealtDamageToTitanSinceHisLastTurn(c), "non-hero targets who have dealt damge to Titan since the end of his last turn"));
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => !IsHero(c) && this.HasTargetDealtDamageToTitanSinceHisLastTurn(c), "non-hero targets who have dealt damge to Titan since the end of his last turn"));
         }
 
         public override void AddTriggers()
         {
             //Increase damage dealt by {Titan} by 1 to non-hero targets that have dealt him damage since the end of his last turn.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard && !action.Target.IsHero && this.HasTargetDealtDamageToTitanSinceHisLastTurn(action.Target), 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard && !IsHero(action.Target) && this.HasTargetDealtDamageToTitanSinceHisLastTurn(action.Target), 1);
             //At the end of your turn {Titan} regains 1HP.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.GainHPResponse, TriggerType.GainHP);
         }

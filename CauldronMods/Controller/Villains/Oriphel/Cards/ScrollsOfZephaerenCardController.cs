@@ -50,7 +50,7 @@ namespace Cauldron.Oriphel
             //"If {Oriphel} is in play, he deals the hero target with the second lowest HP 3 melee damage."
             if (oriphelIfInPlay != null)
             {
-                coroutine = DealDamageToLowestHP(oriphelIfInPlay, 2, (Card c) => c.IsHero, (c) => 3, DamageType.Melee);
+                coroutine = DealDamageToLowestHP(oriphelIfInPlay, 2, (Card c) => IsHero(c), (c) => 3, DamageType.Melee);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

@@ -25,7 +25,7 @@ namespace Cauldron.Dynamo
             if (base.FindCopperhead().IsInPlayAndHasGameText)
             {
                 //...he deals each hero target 2 melee damage.
-                coroutine = base.DealDamage(base.FindCopperhead(), (Card c) => c.IsHero && c.IsTarget, 2, DamageType.Melee);
+                coroutine = base.DealDamage(base.FindCopperhead(), (Card c) => IsHeroTarget(c), 2, DamageType.Melee);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

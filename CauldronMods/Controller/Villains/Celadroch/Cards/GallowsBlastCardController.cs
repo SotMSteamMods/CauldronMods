@@ -19,7 +19,7 @@ namespace Cauldron.Celadroch
 
         public override IEnumerator Play()
         {
-            var coroutine = GameController.DealDamage(DecisionMaker, CharacterCard, c => c.IsHeroCharacterCard, 5, DamageType.Infernal, cardSource: GetCardSource());
+            var coroutine = GameController.DealDamage(DecisionMaker, CharacterCard, c =>  IsHeroCharacterCard(c), 5, DamageType.Infernal, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

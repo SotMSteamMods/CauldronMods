@@ -69,7 +69,7 @@ namespace Cauldron.TheInfernalChoir
 
                 if (Game.IsAdvanced)
                 {
-                    AddSideTrigger(AddStartOfTurnTrigger(tt => tt.IsHero, pca => AdvancedRemoveTopCardOfDeck(pca), TriggerType.RemoveFromGame));
+                    AddSideTrigger(AddStartOfTurnTrigger(tt => IsHero(tt), pca => AdvancedRemoveTopCardOfDeck(pca), TriggerType.RemoveFromGame));
                 }
 
                 //This trigger's only purpose is to force the GameController.WouldAutoDraw to consider there to be a candidate trigger.
@@ -205,7 +205,7 @@ namespace Cauldron.TheInfernalChoir
                         GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    coroutine = GameController.DestroyCards(httc, new LinqCardCriteria(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && htt.CharacterCards.Contains(c)),
+                    coroutine = GameController.DestroyCards(httc, new LinqCardCriteria(c =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && htt.CharacterCards.Contains(c)),
                                 autoDecide: true,
                                 cardSource: GetCardSource());
                     if (UseUnityCoroutines)
@@ -232,7 +232,7 @@ namespace Cauldron.TheInfernalChoir
 
             foreach (var card in playedCards)
             {
-                if (card.IsHero)
+                if (IsHero(card))
                     Journal.RecordCardProperties(card, "TheInfernalChoirRemoveFromGame", true);
             }
         }
@@ -275,7 +275,7 @@ namespace Cauldron.TheInfernalChoir
         {
           
             List<Card> storedResults = new List<Card>();
-            IEnumerator coroutine2 = base.GameController.FindTargetWithHighestHitPoints(1, (Card card) => card.IsHero && base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), storedResults, dealDamage, cardSource: GetCardSource());
+            IEnumerator coroutine2 = base.GameController.FindTargetWithHighestHitPoints(1, (Card card) => IsHero(card) && base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), storedResults, dealDamage, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);

@@ -22,7 +22,7 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            var coroutine = DealDamageToHighestHP(Card, 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => H - 2, DamageType.Psychic,
+            var coroutine = DealDamageToHighestHP(Card, 1, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, c => H - 2, DamageType.Psychic,
                             numberOfTargets: () => 2);
             if (UseUnityCoroutines)
             {
@@ -48,7 +48,7 @@ namespace Cauldron.ScreaMachine
                 new DealDamageAction(GetCardSource(), new DamageSource(GameController, Card), null, H - 2, DamageType.Psychic)
             };
 
-            var coroutine = DealMultipleInstancesOfDamageToHighestLowestHP(damageInfo, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, HighestLowestHP.HighestHP);
+            var coroutine = DealMultipleInstancesOfDamageToHighestLowestHP(damageInfo, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, HighestLowestHP.HighestHP);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

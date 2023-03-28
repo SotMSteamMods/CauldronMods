@@ -38,7 +38,7 @@ namespace Cauldron.Gyrosaur
             if (TrueCrashInHand + crashMod <= 0)
             {
                 //{Gyrosaur} deals 1 other hero 2 psychic damage.
-                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 2, DamageType.Psychic, 1, false, 1, additionalCriteria: (Card c) => c.IsHeroCharacterCard && c != CharacterCard, cardSource: GetCardSource());
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 2, DamageType.Psychic, 1, false, 1, additionalCriteria: (Card c) =>  IsHeroCharacterCard(c) && c != CharacterCard, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

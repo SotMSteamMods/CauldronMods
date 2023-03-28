@@ -39,7 +39,7 @@ namespace Cauldron.Vector
 
         public override IEnumerator Play()
         {
-            IEnumerator damageRoutine = this.DealDamage(base.CharacterCard, c => c.IsHero && c.IsInPlay, 
+            IEnumerator damageRoutine = this.DealDamage(base.CharacterCard, c => IsHero(c) && c.IsInPlay, 
                 DamageToDeal, DamageType.Toxic);
             
             if (base.UseUnityCoroutines)

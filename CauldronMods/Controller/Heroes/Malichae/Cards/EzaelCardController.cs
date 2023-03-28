@@ -21,7 +21,7 @@ namespace Cauldron.Malichae
         {
 
             var coroutine = GameController.SelectAndGainHP(this.DecisionMaker, 2,
-                additionalCriteria: c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText,
+                additionalCriteria: c => IsHeroTarget(c) && c.IsInPlayAndHasGameText,
                 cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

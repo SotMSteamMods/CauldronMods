@@ -28,7 +28,7 @@ namespace Cauldron.SwarmEater
         {
             //...this card deals the hero target with the highest HP {H} projectile damage.
             List<DealDamageAction> storedResults = new List<DealDamageAction>();
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, c => c.IsHero, c => Game.H, DamageType.Projectile, storedResults: storedResults, numberOfTargets: () => 1);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, c => IsHero(c), c => Game.H, DamageType.Projectile, storedResults: storedResults, numberOfTargets: () => 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

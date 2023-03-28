@@ -20,7 +20,7 @@ namespace Cauldron.Cricket
         public override void AddTriggers()
         {
             //Once per turn when a hero target would be dealt damage, you may redirect that damage to another hero target.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && action.Target.IsHero, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before,
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && IsHero(action.Target), this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before,
                 orderMatters: true,
                 isActionOptional: true);
 
@@ -31,7 +31,7 @@ namespace Cauldron.Cricket
         {
             //Once per turn when a hero target would be dealt damage, you may redirect that damage to another hero target.
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectTargetAndRedirectDamage(base.HeroTurnTakerController, (Card c) => c.IsHero && c != action.Target, action, true, storedResults, base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetAndRedirectDamage(base.HeroTurnTakerController, (Card c) => IsHero(c) && c != action.Target, action, true, storedResults, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

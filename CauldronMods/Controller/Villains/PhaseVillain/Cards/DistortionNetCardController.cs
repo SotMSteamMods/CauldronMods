@@ -18,7 +18,7 @@ namespace Cauldron.PhaseVillain
         {
             List<Card> storedResults = new List<Card>();
             //When this card enters play, place it next to the hero with the highest HP.
-            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => c.IsHeroCharacterCard, storedResults, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) =>  IsHeroCharacterCard(c), storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

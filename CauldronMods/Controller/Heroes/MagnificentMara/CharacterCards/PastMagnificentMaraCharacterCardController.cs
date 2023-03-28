@@ -256,7 +256,7 @@ namespace Cauldron.MagnificentMara
                 case (2):
                     {
                         //"One player selects a keyword and reveals the top 3 cards of their deck, putting any revealed cards with that keyword into their hand and discarding the rest."
-                        var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllTurnTakers.Where(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame), SelectionType.RevealCardsFromDeck, cardSource: GetCardSource());
+                        var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllTurnTakers.Where(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame), SelectionType.RevealCardsFromDeck, cardSource: GetCardSource());
                         coroutine = GameController.SelectTurnTakerAndDoAction(selectHero, SelectKeywordThenRevealAndMoveCards);
                         if (UseUnityCoroutines)
                         {

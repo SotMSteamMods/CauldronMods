@@ -26,7 +26,7 @@ namespace Cauldron.TangoOne
         {
             // Destroy ongoing card option
             IEnumerator destroyOngoingRoutine = this.GameController.SelectAndDestroyCard(this.HeroTurnTakerController,
-                new LinqCardCriteria(card => card.IsOngoing && card.IsInPlay, "ongoing"),
+                new LinqCardCriteria(card => IsOngoing(card) && card.IsInPlay, "ongoing"),
                 true, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)

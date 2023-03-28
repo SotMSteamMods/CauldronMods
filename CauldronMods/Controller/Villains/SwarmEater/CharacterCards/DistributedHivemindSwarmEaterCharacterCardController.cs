@@ -47,11 +47,11 @@ namespace Cauldron.SwarmEater
             if (!base.Card.IsFlipped)
             {
                 //Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP.
-                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsVillainTarget && action.Target.IsVillainTarget && action.DamageSource.Card != action.Target, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before));
+                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource.IsVillainTarget && IsVillainTarget(action.Target) && action.DamageSource.Card != action.Target, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before));
                 //When a villain target enters play, flip {SwarmEater}'s villain character cards.
                 //When {SwarmEater} flips to [Back] side, discard cards from the top of the villain deck until a target is discarded.
                 //Put the discarded target beneath the villain target that just entered play. Then flip {SwarmEater}'s character cards.
-                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => action.CardToPlay.IsVillainTarget && action.WasCardPlayed, this.AugmentTargetResponse, TriggerType.FlipCard, TriggerTiming.After));
+                base.AddSideTrigger(base.AddTrigger<PlayCardAction>((PlayCardAction action) => IsVillainTarget(action.CardToPlay) && action.WasCardPlayed, this.AugmentTargetResponse, TriggerType.FlipCard, TriggerTiming.After));
                 //At then end of the villain turn, if there are no nanomutants in play, play the top card of the villain deck.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker && !base.GameController.FindTargetsInPlay((Card c) => this.IsNanomutant(c)).Any(), base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard));
             }
@@ -61,7 +61,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator RedirectDamageResponse(DealDamageAction action)
         {
             //Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP.
-            IEnumerator coroutine = base.RedirectDamage(action, TargetType.HighestHP, (Card c) => c.IsHero);
+            IEnumerator coroutine = base.RedirectDamage(action, TargetType.HighestHP, (Card c) => IsHero(c));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

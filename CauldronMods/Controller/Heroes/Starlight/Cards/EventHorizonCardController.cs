@@ -37,7 +37,7 @@ namespace Cauldron.Starlight
             IEnumerator coroutine2;
             if (numberOfConstellationsDestroyed > 0)
             {
-                coroutine2 = GameController.SelectAndDestroyCards(HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsInPlay && (c.IsOngoing || c.IsEnvironment), "environment or ongoing"), numberOfConstellationsDestroyed,
+                coroutine2 = GameController.SelectAndDestroyCards(HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsInPlay && (IsOngoing(c) || c.IsEnvironment), "environment or ongoing"), numberOfConstellationsDestroyed,
                     optional: false,
                     requiredDecisions: numberOfConstellationsDestroyed,
                     cardSource: GetCardSource());

@@ -58,7 +58,7 @@ namespace Cauldron.Vector
         private IEnumerator DealDamageFollowup(DealDamageAction dda)
         {
             return GameController.DealDamage(base.DecisionMaker, base.CharacterCard,
-                card => card.IsHero && card.IsInPlay,
+                card => IsHero(card) && card.IsInPlay,
                 dda.Amount, DamageType.Toxic, cardSource: CharacterCardController.GetCardSource());
         }
     }

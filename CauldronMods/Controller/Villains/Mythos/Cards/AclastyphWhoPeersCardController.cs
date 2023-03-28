@@ -35,7 +35,7 @@ namespace Cauldron.Mythos
             if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
             {
                 //{MythosDanger} This card deals the hero target with the highest HP 2 melee damage. 
-                coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => c.IsHero && c.IsInPlayAndHasGameText, (Card c) => 2, DamageType.Melee);
+                coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => IsHero(c) && c.IsInPlayAndHasGameText, (Card c) => 2, DamageType.Melee);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

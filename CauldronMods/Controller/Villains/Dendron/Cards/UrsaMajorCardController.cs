@@ -35,7 +35,7 @@ namespace Cauldron.Dendron
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
            
-            IEnumerator dealDamageRoutine = DealDamageToHighestHP(Card, 1, (Card c) => c.IsHero, (Card c) => new int?(DamageToDeal), DamageType.Melee);
+            IEnumerator dealDamageRoutine = DealDamageToHighestHP(Card, 1, (Card c) => IsHero(c), (Card c) => new int?(DamageToDeal), DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);

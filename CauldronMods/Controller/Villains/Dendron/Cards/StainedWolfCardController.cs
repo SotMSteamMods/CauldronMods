@@ -31,7 +31,7 @@ namespace Cauldron.Dendron
 
             //  At the end of the villain turn,  this card deals the hero target with the highest HP {H - 1} melee damage.
             int damageToDeal = Game.H - 1;
-            IEnumerator dealDamageRoutine = DealDamageToHighestHP(Card, 1, (Card c) => c.IsHero, (Card c) => damageToDeal, DamageType.Melee);
+            IEnumerator dealDamageRoutine = DealDamageToHighestHP(Card, 1, (Card c) => IsHero(c), (Card c) => damageToDeal, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);

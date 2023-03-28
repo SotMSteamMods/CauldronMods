@@ -34,7 +34,7 @@ namespace Cauldron.Celadroch
 
         public override void AddTriggers()
         {
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.All, 2, _damageType);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => IsHeroTarget(c), TargetType.All, 2, _damageType);
 
             //when my partner receives damage make them immune to damage.
             AddTrigger<DealDamageAction>(dda => dda.DidDealDamage && !dda.DidDestroyTarget && dda.Target == Partner && !dda.Target.IsLeavingPlay,

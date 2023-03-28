@@ -35,7 +35,7 @@ namespace Cauldron.Gargoyle
             
             // One other player may discard a card,
             var selectTurnTakers = new SelectTurnTakersDecision(GameController, DecisionMaker,
-                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && tt != base.TurnTaker && !tt.IsIncapacitatedOrOutOfGame && tt.ToHero().Hand.HasCards, "other heroes with cards in hand"),
+                                                new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && tt != base.TurnTaker && !tt.IsIncapacitatedOrOutOfGame && tt.ToHero().Hand.HasCards, "other heroes with cards in hand"),
                                                 SelectionType.DiscardCard, numberOfTurnTakers: 1,isOptional: false, requiredDecisions: 0, cardSource: GetCardSource());
             coroutine = GameController.SelectTurnTakersAndDoAction(selectTurnTakers, (TurnTaker tt) => base.SelectAndDiscardCards(FindHeroTurnTakerController(tt.ToHero()), 1, false, 0, storedResults: storedResultsDiscard), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)

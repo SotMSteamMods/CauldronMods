@@ -20,7 +20,7 @@ namespace Cauldron.TheInfernalChoir
 
             AddIncreaseDamageTrigger(dda => IsVagrantHeartHiddenHeartInPlay() && DoesPlayAreaContainHiddenHeart(dda.DamageSource.Owner) && dda.DamageSource.IsHeroCharacterCard, 1);
 
-            AddTrigger<UsePowerAction>(upa => upa.Power.Description != KataMichiPowerDesc && upa.Power.CardSource.Card.IsHeroCharacterCard, upa => UsePowerResponse(upa), new[] { TriggerType.CancelAction, TriggerType.UsePower }, TriggerTiming.Before);
+            AddTrigger<UsePowerAction>(upa => upa.Power.Description != KataMichiPowerDesc && IsHeroCharacterCard(upa.Power.CardSource.Card), upa => UsePowerResponse(upa), new[] { TriggerType.CancelAction, TriggerType.UsePower }, TriggerTiming.Before);
         }
 
         private readonly string KataMichiPowerDesc = "Each hero target and each Ghost deals itself 2 cold damage.";
@@ -86,7 +86,7 @@ namespace Cauldron.TheInfernalChoir
 
             var coroutine = GameController.SelectTargetsToDealDamageToSelf(httc, damage, DamageType.Cold, null, false, null,
                                 allowAutoDecide: true,
-                                additionalCriteria: c => c.IsHero || IsGhost(c),
+                                additionalCriteria: c => IsHero(c) || IsGhost(c),
                                 //stopDealingDamage: () => !source.IsInPlay || source.IsIncapacitatedOrOutOfGame || httc.IsIncapacitatedOrOutOfGame,
                                 cardSource: cs);
             if (base.UseUnityCoroutines)

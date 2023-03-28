@@ -99,7 +99,7 @@ namespace Cauldron.Pyre
             //If they do, each player may play a card now.
             if(DidDiscardCards(storedDiscard))
             {
-                var activeHeroes = new LinqTurnTakerCriteria((TurnTaker turntaker) => turntaker.IsHero && !turntaker.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(turntaker, GetCardSource()));
+                var activeHeroes = new LinqTurnTakerCriteria((TurnTaker turntaker) => IsHero(turntaker) && !turntaker.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(turntaker, GetCardSource()));
                 var selectHero = new SelectTurnTakersDecision(GameController, DecisionMaker, activeHeroes, SelectionType.PlayCard, allowAutoDecide: true, cardSource: GetCardSource());
                 coroutine = GameController.SelectTurnTakersAndDoAction(selectHero, (turntaker) => GameController.SelectAndPlayCardFromHand(FindHeroTurnTakerController(turntaker.ToHero()), true, cardSource: GetCardSource()));
                 if (UseUnityCoroutines)

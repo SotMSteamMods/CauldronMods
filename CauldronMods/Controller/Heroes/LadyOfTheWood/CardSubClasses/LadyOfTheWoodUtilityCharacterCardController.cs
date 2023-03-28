@@ -127,8 +127,8 @@ namespace Cauldron.LadyOfTheWood
                 base.GameController.RemoveTriggers((ITrigger t) => t.CardSource != null && t.CardSource.CardController.TurnTakerControllerWithoutReplacements == base.TurnTakerControllerWithoutReplacements && !t.IsStatusEffect && !t.IsOutOfPlayTrigger && t.CardSource != null && (t.CardSource.CardController == this || !t.CardSource.Card.IsInPlayAndNotUnderCard));
                 IEnumerable<Card> cards = base.TurnTakerControllerWithoutReplacements.TurnTaker.GetAllCards();
                 List<Card> list = new List<Card>();
-                list.AddRange(cards.Where((Card c) => !c.IsHeroCharacterCard).SelectMany((Card c) => c.UnderLocation.Cards.Where((Card co) => co.Owner != base.TurnTakerControllerWithoutReplacements.TurnTaker)));
-                if (base.TurnTakerControllerWithoutReplacements.TurnTaker.IsHero)
+                list.AddRange(cards.Where((Card c) => !IsHeroCharacterCard(c)).SelectMany((Card c) => c.UnderLocation.Cards.Where((Card co) => co.Owner != base.TurnTakerControllerWithoutReplacements.TurnTaker)));
+                if (IsHero(base.TurnTakerControllerWithoutReplacements.TurnTaker))
                 {
                     HeroTurnTaker heroTurnTaker = base.TurnTakerControllerWithoutReplacements.ToHero().HeroTurnTaker;
                     list.AddRange(from c in heroTurnTaker.Hand.Cards.Union(heroTurnTaker.Deck.Cards).Union(heroTurnTaker.Trash.Cards)

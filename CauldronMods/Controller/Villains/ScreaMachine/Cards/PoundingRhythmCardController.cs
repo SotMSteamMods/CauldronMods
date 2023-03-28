@@ -17,7 +17,7 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            var coroutine = DealDamageToHighestHP(GetBandmate(), 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => 1, DamageType.Melee, true,
+            var coroutine = DealDamageToHighestHP(GetBandmate(), 1, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, c => 1, DamageType.Melee, true,
                                 addStatusEffect: MakeStatusEffect);
             if (UseUnityCoroutines)
             {

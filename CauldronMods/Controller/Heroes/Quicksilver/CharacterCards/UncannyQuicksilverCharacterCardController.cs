@@ -22,7 +22,7 @@ namespace Cauldron.Quicksilver
                     {
                         //One player may draw until they have 4 cards in hand.
                         List<SelectTurnTakerDecision> selection = new List<SelectTurnTakerDecision>();
-                        IEnumerator coroutine = base.GameController.SelectHeroTurnTaker(base.HeroTurnTakerController, SelectionType.DrawCard, true, false, selection, new LinqTurnTakerCriteria((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && tt.IsHero && tt.ToHero().NumberOfCardsInHand < 4), cardSource: GetCardSource());
+                        IEnumerator coroutine = base.GameController.SelectHeroTurnTaker(base.HeroTurnTakerController, SelectionType.DrawCard, true, false, selection, new LinqTurnTakerCriteria((TurnTaker tt) => !tt.IsIncapacitatedOrOutOfGame && IsHero(tt) && tt.ToHero().NumberOfCardsInHand < 4), cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

@@ -34,7 +34,7 @@ namespace Cauldron.Impact
             int numDamage = GetPowerNumeral(0, 2);
             int numTargetIncrease = GetPowerNumeral(1, 1);
             var storedDestroys = new List<DestroyCardAction> { };
-            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == this.TurnTaker, "ongoing"), null, false, 0, storedResultsAction: storedDestroys, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c) && c.Owner == this.TurnTaker, "ongoing"), null, false, 0, storedResultsAction: storedDestroys, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

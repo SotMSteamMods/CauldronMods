@@ -59,6 +59,9 @@ namespace Cauldron.Celadroch
             //when this card would leave play, remove it from the game.
             AddTrigger<MoveCardAction>(mca => mca.CardToMove == Card && mca.Origin.IsPlayArea && (!mca.Destination.HighestRecursiveLocation.IsInPlay || !mca.Destination.IsUnderCard), MoveOutOfPlayResponse, TriggerType.RemoveFromGame, TriggerTiming.Before);
             AddTrigger<FlipCardAction>(fca => fca.CardToFlip.Card == Card, fca => GameController.MoveCard(TurnTakerController, Card, TurnTaker.OutOfGame, cardSource: GetCardSource()), TriggerType.RemoveFromGame, TriggerTiming.Before);
+
+            // make it so when destroyed, always gets RFG no matter what
+            AddTrigger((DestroyCardAction destroyCard) => destroyCard.CardToDestroy.Card == Card, CannotBeMovedResponse, TriggerType.Hidden, TriggerTiming.Before);
         }
 
         private bool DidDamageCrossThreshold(DealDamageAction ga)
@@ -189,6 +192,13 @@ namespace Cauldron.Celadroch
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
+
+        protected IEnumerator CannotBeMovedResponse(DestroyCardAction destroyCard)
+        {
+            Handelabra.Log.Debug("In Cannot Move Response for " + destroyCard.CardToDestroy.Card.Identifier);
+            destroyCard.PostDestroyDestinationCanBeChanged = false;
+            yield return null;
         }
     }
 }

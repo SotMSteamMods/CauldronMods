@@ -30,7 +30,7 @@ namespace Cauldron.Anathema
 		{
 			//Anathema deals the Hero character with the highest HP {H+1} melee damage..
 			List<DealDamageAction> storedResults = new List<DealDamageAction>();
-			IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => c.IsHeroCharacterCard, (Card c) => new int?(base.H + 1), DamageType.Melee, storedResults: storedResults);
+			IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) =>  IsHeroCharacterCard(c), (Card c) => new int?(base.H + 1), DamageType.Melee, storedResults: storedResults);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -44,7 +44,7 @@ namespace Cauldron.Anathema
 			if (dd != null && dd.DidDealDamage && DidIntendedTargetTakeDamage(new DealDamageAction[] { dd }, dd.OriginalTarget))
 			{
 				HeroTurnTakerController httc = base.FindHeroTurnTakerController(dd.Target.Owner.ToHero());
-				coroutine = base.GameController.SelectAndDestroyCard(httc, new LinqCardCriteria((Card c) => c.IsOngoing && c.Owner == dd.Target.Owner, "ongoing"), false, cardSource: base.GetCardSource());
+				coroutine = base.GameController.SelectAndDestroyCard(httc, new LinqCardCriteria((Card c) => IsOngoing(c) && c.Owner == dd.Target.Owner, "ongoing"), false, cardSource: base.GetCardSource());
 				if (base.UseUnityCoroutines)
 				{
 					yield return base.GameController.StartCoroutine(coroutine);

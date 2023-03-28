@@ -11,19 +11,23 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfTheFadedCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero targets", false, false, null, null, false))
+        public MarkOfTheFadedCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
 
         }
 
         #endregion Constructors
 
+        #region Properties
+        public override LinqCardCriteria NextToCardCriteria => new LinqCardCriteria((Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero targets", useCardsSuffix: false);
+        #endregion
+
         #region Methods
         public override void AddTriggers()
         {
             base.AddTriggers();
             //Play this next to a hero target. When that target would be dealt damage by a non-hero card, you may redirect that damage to a hero with higher HP.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.GetCardThisCardIsNextTo(true) && dd.DamageSource != null && dd.DamageSource.Card != null && !dd.DamageSource.Card.IsHero && dd.DamageSource.Card.IsTarget, this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == base.GetCardThisCardIsNextTo(true) && dd.DamageSource != null && dd.DamageSource.Card != null && !IsHeroTarget(dd.DamageSource.Card), this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
         }
 
         private IEnumerator RedirectDamageResponse(DealDamageAction dealDamage)
@@ -32,7 +36,7 @@ namespace Cauldron.TheStranger
 
             //select hero with a higher hp
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-            IEnumerator coroutine2 = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.RedirectDamage, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && !c.IsOffToTheSide && c.HitPoints.Value > base.GetCardThisCardIsNextTo(true).HitPoints, "a hero with higher HP"), storedResults, true);
+            IEnumerator coroutine2 = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.RedirectDamage, new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame && !c.IsOffToTheSide && c.HitPoints.Value > base.GetCardThisCardIsNextTo(true).HitPoints, "a hero with higher HP"), storedResults, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);

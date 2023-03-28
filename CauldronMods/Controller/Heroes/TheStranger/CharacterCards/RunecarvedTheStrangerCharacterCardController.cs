@@ -16,7 +16,7 @@ namespace Cauldron.TheStranger
             //1 hero target regains 2 HP.
             int targets = GetPowerNumeral(0, 1);
             int amount = GetPowerNumeral(1, 2);
-            IEnumerator coroutine = GameController.SelectAndGainHP(base.HeroTurnTakerController, amount, additionalCriteria: (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, numberOfTargets: targets, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndGainHP(base.HeroTurnTakerController, amount, additionalCriteria: (Card c) => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, numberOfTargets: targets, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -48,8 +48,8 @@ namespace Cauldron.TheStranger
                 case 1:
                     {
                         //Destroy 1 hero ongoing, 1 non-hero ongoing, and 1 environment card.
-                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.IsHero && c.IsInPlay, "hero ongoing"), false, cardSource: GetCardSource());
-                        IEnumerator coroutine3 = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && !c.IsHero && c.IsInPlay, "non-hero ongoing"), false, cardSource: GetCardSource());
+                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c) && IsHero(c) && c.IsInPlay, "hero ongoing"), false, cardSource: GetCardSource());
+                        IEnumerator coroutine3 = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c) && !IsHero(c) && c.IsInPlay, "non-hero ongoing"), false, cardSource: GetCardSource());
                         IEnumerator coroutine4 = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment && c.IsInPlay, "environment"),false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {

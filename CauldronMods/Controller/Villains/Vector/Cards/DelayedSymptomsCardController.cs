@@ -25,7 +25,7 @@ namespace Cauldron.Vector
             int cardsToDestroy = base.Game.H - 1;
 
             IEnumerator destroyRoutine = this.GameController.SelectAndDestroyCards(this.DecisionMaker,
-                new LinqCardCriteria(c => (c.IsOngoing || IsEquipment(c)) && c.Owner.IsHero), cardsToDestroy,
+                new LinqCardCriteria(c => (IsOngoing(c) || IsEquipment(c)) && IsHero(c.Owner)), cardsToDestroy,
                 cardSource: GetCardSource());
 
             IEnumerator discardRoutine = this.GameController.DiscardTopCardsOfDecks(this.DecisionMaker, l => l.IsHero, 
