@@ -1,698 +1,550 @@
 {
-    "name": "Titan",
-    "kind": "Hero",
-    "expansionIdentifier": "CauldronExperimental",
-    "initialCardIdentifiers": [
-        "TitanCharacter"
-    ],
-    "initialOffToTheSideCardIdentifiers": [
-        "TitanFormCharacter",
-        "MinistryOfStrategicScienceTitanFormCharacter",
-        "FutureTitanFormCharacter",
-        "OniTitanFormCharacter"
-    ],
-    "cards": [
+  "name": "Titan",
+  "kind": "Hero",
+  "expansionIdentifier": "CauldronExperimental",
+  "initialCardIdentifiers": [
+    "TitanCharacter"
+  ],
+  "cards": [
+    {
+      "identifier": "TitanCharacter",
+      "sharedIdentifier": "Titan",
+      "count": 1,
+      "title": "Titan",
+      "body": "Dormant Fury",
+      "backgroundColor": "fcd070",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "fcd070",
+      "character": true,
+      "powers": [
+        "{Titan} deals 1 target 2 infernal damage."
+      ],
+      "icons": [
+        "HasPower",
+        "DealDamageInfernal"
+      ],
+      "hitpoints": 32,
+      "nemesisIdentifiers": [
+        "Cauldron.Titan"
+      ],
+      "incapacitatedAbilities": [
+        "One player may use a power now.",
+        "One player may play a card now.",
+        "Increase the next damage dealt by a hero target by 1."
+      ],
+      "flippedIcons": [
+        "UsePowerNow",
+        "PlayCardNow",
+        "IncreaseDamageDealt"
+      ],
+      "openingLines": {
+        "default": "Wait until you see my other face.",
+        "Cauldron.MythosCharacter": "Hey, don't play with portals of hellfire if you don't wanna turn into...whatever you are, exactly."
+      },
+      "complexity": 2
+    },
+    {
+      "identifier": "CombatPragmatism",
+      "count": 2,
+      "title": "Combat Pragmatism",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "DestroySelf",
+        "UsePowerNow",
+        "HasPower",
+        "GainHP"
+      ],
+      "body": "When a non-hero card enters play, you may destroy this card. If you do, you may use a power now.",
+      "powers": [
+        "{Titan} regains 3 HP."
+      ],
+      "flavorQuotes": [
         {
-            "identifier": "TitanCharacter",
-            "sharedIdentifier": "Titan",
-            "count": 1,
-            "title": "Titan",
-            "body": "Dormant Fury",
-            "backgroundColor": "fcd070",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "fcd070",
-            "character": true,
-            "powers": [
-                "{Titan} deals 1 target 2 infernal damage."
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageInfernal"
-            ],
-            "hitpoints": 32,
-            "nemesisIdentifiers": [
-                "Cauldron.Titan"
-            ],
-            "incapacitatedAbilities": [
-                "One player may use a power now.",
-                "One player may play a card now.",
-                "Increase the next damage dealt by a hero target by 1."
-            ],
-            "flippedIcons": [
-                "UsePowerNow",
-                "PlayCardNow",
-                "IncreaseDamageDealt"
-            ],
-            "openingLines": {
-                "default": "Wait until you see my other face.",
-                "Cauldron.MythosCharacter": "Hey, don't play with portals of hellfire if you don't wanna turn into...whatever you are, exactly."
-            },
-            "complexity": 2
-        },
-        {
-            "identifier": "CombatPragmatism",
-            "count": 2,
-            "title": "Combat Pragmatism",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "DestroySelf",
-                "UsePowerNow",
-                "HasPower",
-                "GainHP"
-            ],
-            "body": "When a non-hero card enters play, you may destroy this card. If you do, you may use a power now.",
-            "powers": [
-                "{Titan} regains 3 HP."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "Should have kept your eyes on me."
-                }
-            ],
-            "flavorReference": "Titan, The Archive #8"
-        },
-        {
-            "identifier": "ForbiddenArchives",
-            "count": 3,
-            "title": "Forbidden Archives",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DrawCardNow",
-                "DealDamagePsychic"
-            ],
-            "body": [
-                "Each player may draw 2 cards now.",
-                "For each other player that draws cards this way, {Titan} deals himself 2 psychic damage."
-            ],
-            "flavorText": "Not everything can be true. Hopefully.",
-            "flavorReference": "Inscription from the Ministry of Strategic Science Archive"
-        },
-        {
-            "identifier": "HaplessShield",
-            "count": 2,
-            "title": "Hapless Shield",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DealDamageMelee"
-            ],
-            "body": "Select a non-hero target. Each other non-hero target deals that target 1 melee damage.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "I think they're friendly!"
-                }
-            ],
-            "flavorReference": "Titan, The Archive #5"
-        },
-        {
-            "identifier": "Immolate",
-            "count": 2,
-            "title": "Immolate",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "DealDamageFire",
-                "DestroySelf"
-            ],
-            "body": [
-                "Play this card next to a target.",
-                "The first time that target deals damage each turn, it deals itself 1 fire damage.",
-                "If that target leaves play, destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "DrWells",
-                    "text": "Some things don’t react well to being set on fire."
-                }
-            ],
-            "flavorReference": "Dr. Wells, Department of Secrets #117"
-        },
-        {
-            "identifier": "JuggernautStrike",
-            "count": 3,
-            "title": "Juggernaut Strike",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "PlayCardNow",
-                "DealDamageInfernal",
-                "DealDamageProjectile"
-            ],
-            "body": [
-                "If Titanform is in your hand you may play it now.",
-                "{Titan} deals 1 target 4 infernal damage and each other target from that deck 1 projectile damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Cricket",
-                    "text": "This is not the part we call being sneaky."
-                }
-            ],
-            "flavorReference": "Cricket, Experimental One-shot"
-        },
-        {
-            "identifier": "Misbehavior",
-            "count": 4,
-            "title": "Misbehavior",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Manipulate",
-                "GainHP"
-            ],
-            "body": [
-                "Reveal up to 3 cards from the top of your deck. Put 1 of them into play or into your hand. Put the rest into your trash.",
-                "{Titan} regains X HP, where X is 3 minus the number of cards revealed this way."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "I'm due for a bad idea any minute now."
-                }
-            ],
-            "flavorReference": "Titan, Dancing Ghosts #71"
-        },
-        {
-            "identifier": "MoltenVeins",
-            "count": 4,
-            "title": "Molten Veins",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "GainHP",
-                "Search",
-                "PlayCardNow"
-            ],
-            "body": [
-                "{Titan} regains 2 HP.",
-                "You may search your deck and trash for a copy of the card Titanform and put it into your hand. If you searched your deck, shuffle it.",
-                "You may play a card."
-            ],
-            "flavorText": "The obsidian shard embedded in Titan's forearm began to gleam. Then it began to spread."
-        },
-        {
-            "identifier": "Ms5DemolitionCharge",
-            "count": 2,
-            "title": "MS.5 Demolition Charge",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DestroyEnvironment",
-                "DealDamageFire"
-            ],
-            "body": [
-                "Destroy all environment cards.",
-                "For each environment card destroyed this way, {Titan} deals himself 1 fire damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Cpt. Reager",
-                    "text": "What are you doing?!"
-                },
-                {
-                    "identifier": "Titan",
-                    "text": "Blowin' it all up."
-                }
-            ],
-            "flavorReference": "The Archive #27"
-        },
-        {
-            "identifier": "ObsidianGrasp",
-            "count": 3,
-            "title": "Obsidian Grasp",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DealDamageMelee",
-                "Discard",
-                "Search"
-            ],
-            "body": [
-                "{Titan} deals 1 target 3 melee damage.",
-                "If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "I call it the right hand of doom."
-                }
-            ],
-            "flavorReference": "Titan, The Archive #1"
-        },
-        {
-            "identifier": "PaybackTime",
-            "count": 2,
-            "title": "Payback Time",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "IncreaseDamageDealt",
-                "EndOfTurnAction",
-                "GainHP"
-            ],
-            "body": [
-                "Increase damage dealt by {Titan} by 1 to non-hero targets that have dealt him damage since the end of his last turn.",
-                "At the end of your turn {Titan} regains 1 HP."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "AgentNelson",
-                    "text": "Oh don't get him started."
-                }
-            ],
-            "flavorReference": "Agent Nelson, Fall of Titan One-shot"
-        },
-        {
-            "identifier": "Reversal",
-            "count": 2,
-            "title": "Reversal",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DealDamageInfernal",
-                "RedirectDamage",
-                "Manipulate"
-            ],
-            "body": [
-                "{Titan} deals 1 target 1 infernal damage.",
-                "Redirect the next damage dealt by that target back to itself.",
-                "If Titanform is in your trash, you may put it into play or into your hand."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Malichae",
-                    "text": "Watch it. We're not all indestructible."
-                }
-            ],
-            "flavorReference": "Malichae, Somael One-Shot"
-        },
-        {
-            "identifier": "StubbornGoliath",
-            "count": 2,
-            "title": "Stubborn Goliath",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageInfernal",
-                "RedirectDamage"
-            ],
-            "powers": [
-                "{Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TangoOne",
-                    "text": "He likes it that way. The whole 'lone hero' thing."
-                }
-            ],
-            "flavorReference": "Tango One, Paranormal Squad #3"
-        },
-        {
-            "identifier": "TheChaplain",
-            "count": 3,
-            "title": "The Chaplain",
-            "keywords": [
-                "equipment",
-                "limited"
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageProjectile",
-                "DestroyOngoing"
-            ],
-            "powers": [
-                "{Titan} deals 1 target 3 projectile damage.",
-                "If Titanform is in play, destroy 1 ongoing card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "I might not be a good shot, but the Chaplain here fires very large bullets."
-                }
-            ],
-            "flavorReference": "Titan, Paranormal Squad #4"
-        },
-        {
-            "identifier": "Titanform",
-            "count": 1,
-            "title": "Titanform",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "ReduceDamageTaken",
-                "DestroySelf",
-                "IncreaseDamageDealt"
-            ],
-            "body": [
-                "Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.",
-                "When {Titan} would deal damage, you may destroy this card to increase that damage by 2."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "Why don't you pick on someone your own density?"
-                }
-            ],
-            "flavorReference": "Titan, The Archive #1"
-        },
-        {
-            "identifier": "Unbreakable",
-            "count": 2,
-            "title": "Unbreakable",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "CannotUsePowers",
-                "CannotDrawCards",
-                "StartOfTurnAction",
-                "DestroySelf"
-            ],
-            "body": [
-                "Skip any effects which would act at the end of the villain turn.",
-                "You may not use Powers. You may not draw cards.",
-                "At the start of your turn, destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Titan",
-                    "text": "You. Shall. Not. Pass."
-                }
-            ],
-            "flavorReference": "Titan, The Archive #5"
-        },
-        {
-            "identifier": "VulcansJudgment",
-            "count": 3,
-            "title": "Vulcan's Judgment",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "DealDamageInfernal",
-                "DealDamageFire",
-                "HasPower",
-                "DestroySelf"
-            ],
-            "body": "When this card is destroyed, {Titan} deals 1 villain target 5 infernal damage. If Titanform is in play, {Titan} also deals that target 2 fire damage.",
-            "powers": [
-                "Destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Mythos",
-                    "text": "The beast awakens!"
-                }
-            ],
-            "flavorReference": "Mythos, The Archive #1"
-        },
-        {
-            "identifier": "TitanFormCharacter",
-            "sharedIdentifier": "Titan",
-            "count": 1,
-            "title": "Titan",
-            "body": "Dormant Fury",
-            "backgroundColor": "fcd070",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "fcd070",
-            "character": true,
-            "powers": [
-                "{Titan} deals 1 target 2 infernal damage."
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageInfernal"
-            ],
-            "hitpoints": 32,
-            "nemesisIdentifiers": [
-                "Cauldron.Titan"
-            ],
-            "incapacitatedAbilities": [
-                "One player may use a power now.",
-                "One player may play a card now.",
-                "Increase the next damage dealt by a hero target by 1."
-            ],
-            "flippedIcons": [
-                "UsePowerNow",
-                "PlayCardNow",
-                "IncreaseDamageDealt"
-            ],
-            "complexity": 2
-        },
-        {
-            "identifier": "MinistryOfStrategicScienceTitanFormCharacter",
-            "sharedIdentifier": "MinistryOfStrategicScienceTitan",
-            "count": 1,
-            "title": "Titan",
-            "promoTitle": "Ministry Of Strategic Science Titan",
-            "shortPromoTitle": "MOSS Titan",
-            "body": "Pyroclast",
-            "backgroundColor": "ABC187",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "ABC187",
-            "character": true,
-            "powers": [
-                "You may play an ongoing card. Draw a card."
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow",
-                "DrawCardNow"
-            ],
-            "hitpoints": 29,
-            "nemesisIdentifiers": [
-                "Cauldron.Titan"
-            ],
-            "incapacitatedAbilities": [
-                "Each hero may deal themselves 1 psychic damage to draw a card.",
-                "Destroy an environment card.",
-                "Prevent the next damage that would be dealt to a hero target."
-            ],
-            "flippedIcons": [
-                "DealDamagePsychic",
-                "DrawCardNow",
-                "DestroyEnvironment",
-                "CancelledDamageGreen"
-            ],
-            "complexity": 2
-        },
-        {
-            "identifier": "FutureTitanFormCharacter",
-            "sharedIdentifier": "FutureTitan",
-            "count": 1,
-            "title": "Titan",
-            "promoTitle": "Titan 2199",
-            "shortPromoTitle": "Titan 2199",
-            "body": "Rumble",
-            "backgroundColor": "A7B8C1",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "A7B8C1",
-            "character": true,
-            "powers": [
-                "If Titanform is in play, 1 target deals {Titan} 1 melee damage. Otherwise, play the top card of your deck."
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageMelee",
-                "PlayCardNow"
-            ],
-            "hitpoints": 33,
-            "nemesisIdentifiers": [
-                "Cauldron.Titan"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now,",
-                "Two targets regain 1 HP each.",
-                "Destroy an ongoing card."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "GainHP",
-                "DestroyOngoing"
-            ],
-            "complexity": 2
-        },
-        {
-            "identifier": "OniTitanFormCharacter",
-            "sharedIdentifier": "OniTitan",
-            "count": 1,
-            "title": "Titan",
-            "promoTitle": "Titan: Oni",
-            "shortPromoTitle": "Titan: Oni",
-            "body": "Enrage",
-            "backgroundColor": "e68078",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "e68078",
-            "character": true,
-            "powers": [
-                "Titan regains 1 HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
-            ],
-            "icons": [
-                "HasPower",
-                "GainHP",
-                "Search"
-            ],
-            "hitpoints": 27,
-            "nemesisIdentifiers": [
-                "Cauldron.Titan"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now,",
-                "One Hero may use a power now.",
-                "One hero may discard a card to reduce damage dealt to them by 1 until the start of your turn."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "UsePowerNow",
-                "ReduceDamageTaken"
-            ],
-            "complexity": 2
+          "identifier": "Titan",
+          "text": "Should have kept your eyes on me."
         }
-    ],
-    "promoCards": [
+      ],
+      "flavorReference": "Titan, The Archive #8"
+    },
+    {
+      "identifier": "ForbiddenArchives",
+      "count": 3,
+      "title": "Forbidden Archives",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DrawCardNow",
+        "DealDamagePsychic"
+      ],
+      "body": [
+        "Each player may draw 2 cards now.",
+        "For each other player that draws cards this way, {Titan} deals himself 2 psychic damage."
+      ],
+      "flavorText": "Not everything can be true. Hopefully.",
+      "flavorReference": "Inscription from the Ministry of Strategic Science Archive"
+    },
+    {
+      "identifier": "HaplessShield",
+      "count": 2,
+      "title": "Hapless Shield",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DealDamageMelee"
+      ],
+      "body": "Select a non-hero target. Each other non-hero target deals that target 1 melee damage.",
+      "flavorQuotes": [
         {
-            "identifier": "TitanCharacter",
-            "promoIdentifier": "MinistryOfStrategicScienceTitanCharacter",
-            "sharedIdentifier": "MinistryOfStrategicScienceTitan",
-            "count": 1,
-            "title": "Titan",
-            "promoTitle": "Ministry Of Strategic Science Titan",
-            "shortPromoTitle": "MOSS Titan",
-            "body": "Pyroclast",
-            "backgroundColor": "ABC187",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "ABC187",
-            "character": true,
-            "powers": [
-                "You may play an ongoing card. Draw a card."
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow",
-                "DrawCardNow"
-            ],
-            "hitpoints": 29,
-            "nemesisIdentifiers": [
-                "Cauldron.Titan"
-            ],
-            "incapacitatedAbilities": [
-                "Each hero may deal themselves 1 psychic damage to draw a card.",
-                "Destroy an environment card.",
-                "Prevent the next damage that would be dealt to a hero target."
-            ],
-            "flippedIcons": [
-                "DealDamagePsychic",
-                "DrawCardNow",
-                "DestroyEnvironment",
-                "CancelledDamageGreen"
-            ],
-            "openingLines": {
-                "default": "The Ministry will be a lot happier when you're locked up in the Vault.",
-                "Cauldron.MythosCharacter": "Well, it almost worked before. This time, I'll make sure you don't come back."
-            },
-            "complexity": 2
-        },
-        {
-            "identifier": "TitanCharacter",
-            "promoIdentifier": "FutureTitanCharacter",
-            "sharedIdentifier": "FutureTitan",
-            "count": 1,
-            "title": "Titan",
-            "promoTitle": "Titan 2199",
-            "shortPromoTitle": "Titan 2199",
-            "body": "Rumble",
-            "backgroundColor": "A7B8C1",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "A7B8C1",
-            "character": true,
-            "powers": [
-                "If Titanform is in play, 1 target deals {Titan} 1 melee damage. Otherwise, play the top card of your deck."
-            ],
-            "icons": [
-                "HasPower",
-                "DealDamageMelee",
-                "PlayCardNow"
-            ],
-            "hitpoints": 33,
-            "nemesisIdentifiers": [
-                "Cauldron.Titan"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now,",
-                "Two targets regain 1 HP each.",
-                "Destroy an ongoing card."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "GainHP",
-                "DestroyOngoing"
-            ],
-            "openingLines": {
-                "default": "Stop! This is Neo-Windmill City Law Enforcement!",
-                "Cauldron.MythosCharacter": "Do I know you, pal?"
-            },
-            "complexity": 2
-        },
-        {
-            "identifier": "TitanCharacter",
-            "promoIdentifier": "OniTitanCharacter",
-            "sharedIdentifier": "OniTitan",
-            "count": 1,
-            "title": "Titan",
-            "promoTitle": "Titan: Oni",
-            "shortPromoTitle": "Titan: Oni",
-            "body": "Enrage",
-            "backgroundColor": "e68078",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "e68078",
-            "character": true,
-            "powers": [
-                "Titan regains 1 HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
-            ],
-            "icons": [
-                "HasPower",
-                "GainHP",
-                "Search"
-            ],
-            "hitpoints": 27,
-            "nemesisIdentifiers": [
-                "Cauldron.Titan"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now,",
-                "One Hero may use a power now.",
-                "One hero may discard a card to reduce damage dealt to them by 1 until the start of your turn."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "UsePowerNow",
-                "ReduceDamageTaken"
-            ],
-            "openingLines": {
-                "default": "How do you like my costume?",
-                "Cauldron.MythosCharacter": "I wish you'd find your old demeanor and put it back on. You're not much to look at, mate."
-            },
-            "complexity": 2
+          "identifier": "Titan",
+          "text": "I think they're friendly!"
         }
-    ]
+      ],
+      "flavorReference": "Titan, The Archive #5"
+    },
+    {
+      "identifier": "Immolate",
+      "count": 2,
+      "title": "Immolate",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "DealDamageFire",
+        "DestroySelf"
+      ],
+      "body": [
+        "Play this card next to a target.",
+        "The first time that target deals damage each turn, it deals itself 1 fire damage.",
+        "If that target leaves play, destroy this card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "DrWells",
+          "text": "Some things don’t react well to being set on fire."
+        }
+      ],
+      "flavorReference": "Dr. Wells, Department of Secrets #117"
+    },
+    {
+      "identifier": "JuggernautStrike",
+      "count": 3,
+      "title": "Juggernaut Strike",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "PlayCardNow",
+        "DealDamageInfernal",
+        "DealDamageProjectile"
+      ],
+      "body": [
+        "If Titanform is in your hand you may play it now.",
+        "{Titan} deals 1 target 4 infernal damage and each other target from that deck 1 projectile damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Cricket",
+          "text": "This is not the part we call being sneaky."
+        }
+      ],
+      "flavorReference": "Cricket, Experimental One-shot"
+    },
+    {
+      "identifier": "Misbehavior",
+      "count": 4,
+      "title": "Misbehavior",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "Manipulate",
+        "GainHP"
+      ],
+      "body": [
+        "Reveal up to 3 cards from the top of your deck. Put 1 of them into play or into your hand. Put the rest into your trash.",
+        "{Titan} regains X HP, where X is 3 minus the number of cards revealed this way."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Titan",
+          "text": "I'm due for a bad idea any minute now."
+        }
+      ],
+      "flavorReference": "Titan, Dancing Ghosts #71"
+    },
+    {
+      "identifier": "MoltenVeins",
+      "count": 4,
+      "title": "Molten Veins",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "GainHP",
+        "Search",
+        "PlayCardNow"
+      ],
+      "body": [
+        "{Titan} regains 2 HP.",
+        "You may search your deck and trash for a copy of the card Titanform and put it into your hand. If you searched your deck, shuffle it.",
+        "You may play a card."
+      ],
+      "flavorText": "The obsidian shard embedded in Titan's forearm began to gleam. Then it began to spread."
+    },
+    {
+      "identifier": "Ms5DemolitionCharge",
+      "count": 2,
+      "title": "MS.5 Demolition Charge",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DestroyEnvironment",
+        "DealDamageFire"
+      ],
+      "body": [
+        "Destroy all environment cards.",
+        "For each environment card destroyed this way, {Titan} deals himself 1 fire damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Cpt. Reager",
+          "text": "What are you doing?!"
+        },
+        {
+          "identifier": "Titan",
+          "text": "Blowin' it all up."
+        }
+      ],
+      "flavorReference": "The Archive #27"
+    },
+    {
+      "identifier": "ObsidianGrasp",
+      "count": 3,
+      "title": "Obsidian Grasp",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DealDamageMelee",
+        "Discard",
+        "Search"
+      ],
+      "body": [
+        "{Titan} deals 1 target 3 melee damage.",
+        "If Titanform is in play, you may discard a card to search your deck and trash for a copy of the card Immolate and play it next to that target. If you searched your deck, shuffle it."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Titan",
+          "text": "I call it the right hand of doom."
+        }
+      ],
+      "flavorReference": "Titan, The Archive #1"
+    },
+    {
+      "identifier": "PaybackTime",
+      "count": 2,
+      "title": "Payback Time",
+      "keywords": [
+        "ongoing",
+        "limited"
+      ],
+      "icons": [
+        "IncreaseDamageDealt",
+        "EndOfTurnAction",
+        "GainHP"
+      ],
+      "body": [
+        "Increase damage dealt by {Titan} by 1 to non-hero targets that have dealt him damage since the end of his last turn.",
+        "At the end of your turn {Titan} regains 1 HP."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "AgentNelson",
+          "text": "Oh don't get him started."
+        }
+      ],
+      "flavorReference": "Agent Nelson, Fall of Titan One-shot"
+    },
+    {
+      "identifier": "Reversal",
+      "count": 2,
+      "title": "Reversal",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DealDamageInfernal",
+        "RedirectDamage",
+        "Manipulate"
+      ],
+      "body": [
+        "{Titan} deals 1 target 1 infernal damage.",
+        "Redirect the next damage dealt by that target back to itself.",
+        "If Titanform is in your trash, you may put it into play or into your hand."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Malichae",
+          "text": "Watch it. We're not all indestructible."
+        }
+      ],
+      "flavorReference": "Malichae, Somael One-Shot"
+    },
+    {
+      "identifier": "StubbornGoliath",
+      "count": 2,
+      "title": "Stubborn Goliath",
+      "keywords": [
+        "ongoing",
+        "limited"
+      ],
+      "icons": [
+        "HasPower",
+        "DealDamageInfernal",
+        "RedirectDamage"
+      ],
+      "powers": [
+        "{Titan} deals up to 2 non-hero targets 2 infernal damage each.{BR}Until the start of your next turn, when those targets would deal damage, you may redirect that damage to {Titan}."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TangoOne",
+          "text": "He likes it that way. The whole 'lone hero' thing."
+        }
+      ],
+      "flavorReference": "Tango One, Paranormal Squad #3"
+    },
+    {
+      "identifier": "TheChaplain",
+      "count": 3,
+      "title": "The Chaplain",
+      "keywords": [
+        "equipment",
+        "limited"
+      ],
+      "icons": [
+        "HasPower",
+        "DealDamageProjectile",
+        "DestroyOngoing"
+      ],
+      "powers": [
+        "{Titan} deals 1 target 3 projectile damage.",
+        "If Titanform is in play, destroy 1 ongoing card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Titan",
+          "text": "I might not be a good shot, but the Chaplain here fires very large bullets."
+        }
+      ],
+      "flavorReference": "Titan, Paranormal Squad #4"
+    },
+    {
+      "identifier": "Titanform",
+      "count": 1,
+      "title": "Titanform",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "ReduceDamageTaken",
+        "DestroySelf",
+        "IncreaseDamageDealt"
+      ],
+      "body": [
+        "Whenever {Titan} is dealt damage by another target, reduce damage dealt to {Titan} by 1 until the start of your next turn.",
+        "When {Titan} would deal damage, you may destroy this card to increase that damage by 2."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Titan",
+          "text": "Why don't you pick on someone your own density?"
+        }
+      ],
+      "flavorReference": "Titan, The Archive #1"
+    },
+    {
+      "identifier": "Unbreakable",
+      "count": 2,
+      "title": "Unbreakable",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "CannotUsePowers",
+        "CannotDrawCards",
+        "StartOfTurnAction",
+        "DestroySelf"
+      ],
+      "body": [
+        "Skip any effects which would act at the end of the villain turn.",
+        "You may not use Powers. You may not draw cards.",
+        "At the start of your turn, destroy this card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Titan",
+          "text": "You. Shall. Not. Pass."
+        }
+      ],
+      "flavorReference": "Titan, The Archive #5"
+    },
+    {
+      "identifier": "VulcansJudgment",
+      "count": 3,
+      "title": "Vulcan's Judgment",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "DealDamageInfernal",
+        "DealDamageFire",
+        "HasPower",
+        "DestroySelf"
+      ],
+      "body": "When this card is destroyed, {Titan} deals 1 villain target 5 infernal damage. If Titanform is in play, {Titan} also deals that target 2 fire damage.",
+      "powers": [
+        "Destroy this card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Mythos",
+          "text": "The beast awakens!"
+        }
+      ],
+      "flavorReference": "Mythos, The Archive #1"
+    }
+  ],
+  "promoCards": [
+    {
+      "identifier": "TitanCharacter",
+      "promoIdentifier": "MinistryOfStrategicScienceTitanCharacter",
+      "sharedIdentifier": "MinistryOfStrategicScienceTitan",
+      "count": 1,
+      "title": "Titan",
+      "promoTitle": "Ministry Of Strategic Science Titan",
+      "shortPromoTitle": "MOSS Titan",
+      "body": "Pyroclast",
+      "backgroundColor": "ABC187",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "ABC187",
+      "character": true,
+      "powers": [
+        "You may play an ongoing card. Draw a card."
+      ],
+      "icons": [
+        "HasPower",
+        "PlayCardNow",
+        "DrawCardNow"
+      ],
+      "hitpoints": 29,
+      "nemesisIdentifiers": [
+        "Cauldron.Titan"
+      ],
+      "incapacitatedAbilities": [
+        "Each hero may deal themselves 1 psychic damage to draw a card.",
+        "Destroy an environment card.",
+        "Prevent the next damage that would be dealt to a hero target."
+      ],
+      "flippedIcons": [
+        "DealDamagePsychic",
+        "DrawCardNow",
+        "DestroyEnvironment",
+        "CancelledDamageGreen"
+      ],
+      "openingLines": {
+        "default": "The Ministry will be a lot happier when you're locked up in the Vault.",
+        "Cauldron.MythosCharacter": "Well, it almost worked before. This time, I'll make sure you don't come back."
+      },
+      "complexity": 2
+    },
+    {
+      "identifier": "TitanCharacter",
+      "promoIdentifier": "FutureTitanCharacter",
+      "sharedIdentifier": "FutureTitan",
+      "count": 1,
+      "title": "Titan",
+      "promoTitle": "Titan 2199",
+      "shortPromoTitle": "Titan 2199",
+      "body": "Rumble",
+      "backgroundColor": "A7B8C1",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "A7B8C1",
+      "character": true,
+      "powers": [
+        "If Titanform is in play, 1 target deals {Titan} 1 melee damage. Otherwise, play the top card of your deck."
+      ],
+      "icons": [
+        "HasPower",
+        "DealDamageMelee",
+        "PlayCardNow"
+      ],
+      "hitpoints": 33,
+      "nemesisIdentifiers": [
+        "Cauldron.Titan"
+      ],
+      "incapacitatedAbilities": [
+        "One player may draw a card now,",
+        "Two targets regain 1 HP each.",
+        "Destroy an ongoing card."
+      ],
+      "flippedIcons": [
+        "DrawCardNow",
+        "GainHP",
+        "DestroyOngoing"
+      ],
+      "openingLines": {
+        "default": "Stop! This is Neo-Windmill City Law Enforcement!",
+        "Cauldron.MythosCharacter": "Do I know you, pal?"
+      },
+      "complexity": 2
+    },
+    {
+      "identifier": "TitanCharacter",
+      "promoIdentifier": "OniTitanCharacter",
+      "sharedIdentifier": "OniTitan",
+      "count": 1,
+      "title": "Titan",
+      "promoTitle": "Titan: Oni",
+      "shortPromoTitle": "Titan: Oni",
+      "body": "Enrage",
+      "backgroundColor": "e68078",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "e68078",
+      "character": true,
+      "powers": [
+        "Titan regains 1 HP. Search your deck, trash, and hand for Titanform and play it. Shuffle your deck."
+      ],
+      "icons": [
+        "HasPower",
+        "GainHP",
+        "Search"
+      ],
+      "hitpoints": 27,
+      "nemesisIdentifiers": [
+        "Cauldron.Titan"
+      ],
+      "incapacitatedAbilities": [
+        "One player may draw a card now,",
+        "One Hero may use a power now.",
+        "One hero may discard a card to reduce damage dealt to them by 1 until the start of your turn."
+      ],
+      "flippedIcons": [
+        "DrawCardNow",
+        "UsePowerNow",
+        "ReduceDamageTaken"
+      ],
+      "openingLines": {
+        "default": "How do you like my costume?",
+        "Cauldron.MythosCharacter": "I wish you'd find your old demeanor and put it back on. You're not much to look at, mate."
+      },
+      "complexity": 2
+    }
+  ]
 }
