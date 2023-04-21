@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "CauldronMods": {
+      "commandName": "Project"
+    },
+    "Sentinels": {
+      "commandName": "Executable",
+      "executablePath":  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sentinels of the Multiverse\\Sentinels.exe",
+      "workingDirectory": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sentinels of the Multiverse"
+    }
+  }
+}
