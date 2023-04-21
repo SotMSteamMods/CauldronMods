@@ -2740,14 +2740,14 @@ namespace Handelabra.Sentinels.UnitTest
 
         protected IEnumerable<DamagePreviewResult> GetDamagePreviewResults(Card source, Card target, int amount, DamageType? damageType, bool isIrreducible = false)
         {
-            var results = this.GameController.GetDamagePreviewResults(new DamageSource(this.GameController, source), target, amount, null, damageType, isIrreducible);
+            var results = this.GameController.GetDamagePreviewResults(new DamageSource(this.GameController, source), target, amount, null, damageType, isIrreducible, cardSource: FindCardController(source).GetCardSource());
             OutputDamagePreviewResults(results);
             return results;
         }
 
         protected IEnumerable<DamagePreviewResult> GetDamagePreviewResults(TurnTaker source, Card target, int amount, DamageType? damageType, bool isIrreducible = false)
         {
-            var results = this.GameController.GetDamagePreviewResults(new DamageSource(this.GameController, source), target, amount, null, damageType, isIrreducible);
+            var results = this.GameController.GetDamagePreviewResults(new DamageSource(this.GameController, source), target, amount, null, damageType, isIrreducible, cardSource: FindCardController(source.CharacterCard).GetCardSource());
             OutputDamagePreviewResults(results);
             return results;
         }
