@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net35</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 	<Deterministic>true</Deterministic>
 	<DebugType>pdbonly</DebugType>
 	<Version>1.5.0</Version>
+	 <LangVersion>8.0</LangVersion>
 	<Authors>CauldronMods Dev. Team</Authors>
 	<Description>The Cauldron Fan Expansion for the Sentinels of the Multiverse Digital Card Game.</Description>
 	<Copyright>All rights reserved, 2020-2023</Copyright>
@@ -13,6 +14,7 @@
 	<PackageProjectUrl>https://github.com/SotMSteamMods/CauldronMods</PackageProjectUrl>
 	<RepositoryUrl></RepositoryUrl>
 	<NeutralLanguage>en</NeutralLanguage>
+	<AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <ItemGroup>
