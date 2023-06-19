@@ -430,7 +430,7 @@ namespace CauldronTests
             Card futureDrift = GetCard(FutureDriftCharacter);
             Card shiftTrack = GetCard("DualShiftTrack2");
             DecisionAutoDecideIfAble = true;
-            DecisionSelectCards = new Card[] {shiftTrack, futureDrift };
+            DecisionSelectCards = new Card[] {shiftTrack, futureDrift, null };
 
             StartGame(resetDecisions: false);
 

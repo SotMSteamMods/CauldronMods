@@ -62,118 +62,126 @@
             },
             "complexity": 3
         },
-        {
-            "identifier": "BaseShiftTrack1",
-            "sharedIdentifier": "ShiftTrack",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "body": "Shift Track",
-            "backgroundColor": "fcf8b7",
-            "character": true,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ],
-            "flippedBody": "Shift Track",
-            "isReal": false
-        },
-        {
-            "identifier": "BaseShiftTrack2",
-            "sharedIdentifier": "ShiftTrack",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "body": "Shift Track",
-            "backgroundColor": "fcf8b7",
-            "character": true,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ],
-            "flippedBody": "Shift Track",
-            "isReal": false
-        },
-        {
-            "identifier": "BaseShiftTrack3",
-            "sharedIdentifier": "ShiftTrack",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "body": "Shift Track",
-            "backgroundColor": "fcf8b7",
-            "character": true,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ],
-            "flippedBody": "Shift Track",
-            "isReal": false
-        },
-        {
-            "identifier": "BaseShiftTrack4",
-            "sharedIdentifier": "ShiftTrack",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "body": "Shift Track",
-            "backgroundColor": "fcf8b7",
-            "character": true,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ],
-            "flippedBody": "Shift Track",
-            "isReal": false
-        },
+      {
+        "identifier": "BaseShiftTrack1",
+        "sharedIdentifier": "ShiftTrack",
+        "count": 1,
+        "title": "Shift Track: Past",
+        "body": "Shift Track",
+        "backgroundColor": "fcf8b7",
+        "character": true,
+        "setup": [
+          "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ],
+        "flippedBody": "Shift Track",
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero"
+      },
+      {
+        "identifier": "BaseShiftTrack2",
+        "sharedIdentifier": "ShiftTrack",
+        "count": 1,
+        "title": "Shift Track: Past",
+        "body": "Shift Track",
+        "backgroundColor": "fcf8b7",
+        "character": true,
+        "setup": [
+          "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ],
+        "flippedBody": "Shift Track",
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero"
+      },
+      {
+        "identifier": "BaseShiftTrack3",
+        "sharedIdentifier": "ShiftTrack",
+        "count": 1,
+        "title": "Shift Track: Future",
+        "body": "Shift Track",
+        "backgroundColor": "fcf8b7",
+        "character": true,
+        "setup": [
+          "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ],
+        "flippedBody": "Shift Track",
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero"
+      },
+      {
+        "identifier": "BaseShiftTrack4",
+        "sharedIdentifier": "ShiftTrack",
+        "count": 1,
+        "title": "Shift Track: Future",
+        "body": "Shift Track",
+        "backgroundColor": "fcf8b7",
+        "character": true,
+        "setup": [
+          "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ],
+        "flippedBody": "Shift Track",
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero"
+      },
         {
             "identifier": "AttenuationField",
             "count": 2,
@@ -640,254 +648,270 @@
             ],
             "complexity": 3
         },
-        {
-            "identifier": "DualShiftTrack1",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "character": true,
-            "isReal": false,
-            "notsetup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) into play active. Place your other character card next to current space, inactive.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order:",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "DualShiftTrack2",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "character": true,
-            "isReal": false,
-            "notsetup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "DualShiftTrack3",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "character": true,
-            "isReal": false,
-            "notsetup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "DualShiftTrack4",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "character": true,
-            "isReal": false,
-            "notsetup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "ThroughTheBreachShiftTrack1",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "character": true,
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "ThroughTheBreachShiftTrack2",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "character": true,
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "ThroughTheBreachShiftTrack3",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "character": true,
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "ThroughTheBreachShiftTrack4",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "character": true,
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        }
+      {
+        "identifier": "DualShiftTrack1",
+        "sharedIdentifier": "ShiftTrack",
+        "backgroundColor": "D1D2D4",
+        "count": 1,
+        "title": "Shift Track: Past",
+        "character": true,
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero",
+        "notsetup": [
+          "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+          "Then place 1 of your 2 character cards (1929 or 2199) into play active. Place your other character card next to current space, inactive.",
+          "The shift track works as normal; its rules are below."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects.",
+          "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order:",
+          "1. Place your active character on your current shift track space.",
+          "2. Place the shift token on your inactive character's shift track space.",
+          "3. Switch which character is active.",
+          "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+          "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ]
+      },
+      {
+        "identifier": "DualShiftTrack2",
+        "sharedIdentifier": "ShiftTrack",
+        "backgroundColor": "D1D2D4",
+        "count": 1,
+        "title": "Shift Track: Past",
+        "character": true,
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero",
+        "notsetup": [
+          "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+          "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+          "The shift track works as normal; its rules are below."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects.",
+          "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
+          "1. Place your active character on your current shift track space.",
+          "2. Place the shift token on your inactive character's shift track space.",
+          "3. Switch which character is active.",
+          "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+          "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ]
+      },
+      {
+        "identifier": "DualShiftTrack3",
+        "sharedIdentifier": "ShiftTrack",
+        "backgroundColor": "D1D2D4",
+        "count": 1,
+        "title": "Shift Track: Future",
+        "character": true,
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero",
+        "notsetup": [
+          "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+          "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+          "The shift track works as normal; its rules are below."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects.",
+          "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
+          "1. Place your active character on your current shift track space.",
+          "2. Place the shift token on your inactive character's shift track space.",
+          "3. Switch which character is active.",
+          "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+          "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ]
+      },
+      {
+        "identifier": "DualShiftTrack4",
+        "sharedIdentifier": "ShiftTrack",
+        "backgroundColor": "D1D2D4",
+        "count": 1,
+        "title": "Shift Track: Future",
+        "character": true,
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero",
+        "notsetup": [
+          "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+          "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+          "The shift track works as normal; its rules are below."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects.",
+          "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
+          "1. Place your active character on your current shift track space.",
+          "2. Place the shift token on your inactive character's shift track space.",
+          "3. Switch which character is active.",
+          "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+          "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ]
+      },
+      {
+        "identifier": "ThroughTheBreachShiftTrack1",
+        "sharedIdentifier": "ShiftTrack",
+        "backgroundColor": "FCB040",
+        "count": 1,
+        "title": "Shift Track: Past",
+        "character": true,
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero",
+        "setup": [
+          "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects.",
+          "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+          "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ]
+      },
+      {
+        "identifier": "ThroughTheBreachShiftTrack2",
+        "sharedIdentifier": "ShiftTrack",
+        "backgroundColor": "FCB040",
+        "count": 1,
+        "title": "Shift Track: Past",
+        "character": true,
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero",
+        "setup": [
+          "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects.",
+          "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+          "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ]
+      },
+      {
+        "identifier": "ThroughTheBreachShiftTrack3",
+        "sharedIdentifier": "ShiftTrack",
+        "backgroundColor": "FCB040",
+        "count": 1,
+        "title": "Shift Track: Future",
+        "character": true,
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero",
+        "setup": [
+          "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects.",
+          "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+          "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ]
+      },
+      {
+        "identifier": "ThroughTheBreachShiftTrack4",
+        "sharedIdentifier": "ShiftTrack",
+        "backgroundColor": "FCB040",
+        "count": 1,
+        "title": "Shift Track: Future",
+        "character": true,
+        "isReal": false,
+        "kind": "Villain",
+        "flippedKind": "Hero",
+        "setup": [
+          "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+        ],
+        "gameplay": [
+          "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+          "While the token is on a {Past} space, activate {Past} effects.",
+          "While the token is on a {Future} space, activate {Future} effects.",
+          "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+          "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+        ],
+        "tokenPools": [
+          {
+            "identifier": "ShiftPool",
+            "name": "Shift Track Location",
+            "initialValue": 0,
+            "minimumValue": 0,
+            "color": "fcf8b7"
+          }
+        ]
+      }
     ],
     "promoCards": [
         {
