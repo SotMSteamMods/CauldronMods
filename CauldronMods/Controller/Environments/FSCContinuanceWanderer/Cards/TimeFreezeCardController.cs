@@ -67,7 +67,10 @@ namespace Cauldron.FSCContinuanceWanderer
                 GameController,
                 new object[] {
                     CardControllerListType.ChangesTurnTakerOrder,
-                    (Func<CardController, TurnTaker>)(cc => cc == this ? null : cc.AskIfTurnTakerOrderShouldBeChanged(active, next)),
+                    (Func<CardController, TurnTaker>)(
+                        cc => cc == this || cc.AskPriority > AskPriority
+                                        ? null
+                                        : cc.AskIfTurnTakerOrderShouldBeChanged(active, next)),
                     false,
                     null
                 }
