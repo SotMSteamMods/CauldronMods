@@ -14,6 +14,12 @@ namespace Cauldron.Tiamat
 
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            base.AddStartOfGameTriggers();
+            AddTrigger((GameAction ga) => TurnTakerController is TiamatTurnTakerController tttc && !tttc.AreStartingCardsSetUp, (TurnTakerController as TiamatTurnTakerController).MoveStartingCards, TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+        }
+
         public bool IsSpell(Card card)
         {
             return card != null && base.GameController.DoesCardContainKeyword(card, "spell");

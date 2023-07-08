@@ -10,12 +10,6 @@ namespace Cauldron.Tiamat
             base.SpecialStringMaker.ShowSpecialString(() => base.Card.Title + " is immune to Cold damage.").Condition = () => !base.Card.IsFlipped;
         }
 
-        public override void AddStartOfGameTriggers()
-        {
-            base.AddStartOfGameTriggers();
-            (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();
-        }
-
         protected override ITrigger[] AddFrontTriggers()
         {
             return new ITrigger[]

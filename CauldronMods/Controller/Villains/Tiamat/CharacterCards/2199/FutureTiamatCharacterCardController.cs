@@ -16,12 +16,7 @@ namespace Cauldron.Tiamat
             base.SpecialStringMaker.ShowDamageDealt(new LinqCardCriteria((Card c) => c == base.Card, base.Card.Title, useCardsSuffix: false), thisTurn: true).Condition = () => Game.ActiveTurnTaker == base.TurnTaker && !base.Card.IsFlipped;
         }
 
-        public override void AddStartOfGameTriggers()
-        {
-            base.AddStartOfGameTriggers();
-            (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();            
-        }
-
+    
         private IEnumerator Discard2Spells(PhaseChangeAction action)
         {
             IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, false, new LinqCardCriteria((Card c) => this.IsSpell(c), "spell"), 2,

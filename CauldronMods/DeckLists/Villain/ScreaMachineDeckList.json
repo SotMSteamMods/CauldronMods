@@ -35,7 +35,7 @@
 			],
 			"flippedBody": "The Main Event!",
 			"flippedGameplay": [
-				"Cards beneath this one are not considered in play. Guitarist, Vocalist, Bassist, and Drummer cards are indestructible. Destroyed villain characteres are removed from the game.",
+				"Cards beneath this one are not considered in play. Guitarist, Vocalist, Bassist, and Drummer cards are indestructible. Destroyed villain characters are removed from the game.",
 				"Whenever a card beneath this one is revealed, play it if it shares a keyword with a card in play. Otherwise, place it face down on the bottom of the stack and play the top card beneath this one.",
 				"At the start of the villain turn, reveal the top card beneath this one.",
 				"At the end of the villain turn, if {H - 2} or fewer villain characters remain in play, the villain target with the highest HP deals each hero 2 sonic damage and plays the top card of the villain deck."

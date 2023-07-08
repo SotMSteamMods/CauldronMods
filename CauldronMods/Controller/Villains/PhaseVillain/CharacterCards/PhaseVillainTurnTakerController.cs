@@ -15,7 +15,7 @@ namespace Cauldron.PhaseVillain
         public override IEnumerator StartGame()
         {
             //Search the villain deck for the card Reinforced Wall and put it into play.
-            IEnumerator coroutine = base.GameController.PlayCard(this, base.GameController.FindCard("ReinforcedWall"));
+            IEnumerator coroutine = base.GameController.PlayCard(this, base.GameController.FindCard("ReinforcedWall"), isPutIntoPlay: true, cardSource: CharacterCardController.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -26,7 +26,7 @@ namespace Cauldron.PhaseVillain
             }
 
             //Shuffle the villain deck.
-            coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck);
+            coroutine = base.GameController.ShuffleLocation(base.TurnTaker.Deck, cardSource: CharacterCardController.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

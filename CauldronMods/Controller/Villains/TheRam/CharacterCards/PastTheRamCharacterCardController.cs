@@ -18,7 +18,8 @@ namespace Cauldron.TheRam
         public override void AddStartOfGameTriggers()
         {
             base.AddStartOfGameTriggers();
-            (TurnTakerController as TheRamTurnTakerController).HandleWintersEarly(false);
+            AddTrigger((GameAction ga) => TurnTakerController is TheRamTurnTakerController tttc && !tttc.IsAdmiralWintersHandled, ga => (TurnTakerController as TheRamTurnTakerController).HandleWintersEarly(false), TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
+
         }
 
         public override void AddSideTriggers()

@@ -63,6 +63,9 @@ namespace Cauldron.ScreaMachine
                 GameController.ExhaustCoroutine(coroutine);
             }
 
+            if (TheSetListCardController is null)
+                yield break;
+
             coroutine = TheSetListCardController.RevealTopCardOfTheSetList();
             if (UseUnityCoroutines)
             {
