@@ -1,1085 +1,1097 @@
 {
-    "name": "Drift",
-    "kind": "Hero",
-    "expansionIdentifier": "CauldronAdrift",
-    "initialCardIdentifiers": [
-        "DriftCharacter"
-    ],
-    "initialOffToTheSideCardIdentifiers":[
-        "BaseShiftTrack1",
-        "BaseShiftTrack2",
-        "BaseShiftTrack3",
-        "BaseShiftTrack4",
-        "PastDriftCharacter",
-        "FutureDriftCharacter",
-        "DualShiftTrack1",
-        "DualShiftTrack2",
-        "DualShiftTrack3",
-        "DualShiftTrack4",
-        "ThroughTheBreachShiftTrack1",
-        "ThroughTheBreachShiftTrack2",
-        "ThroughTheBreachShiftTrack3",
-        "ThroughTheBreachShiftTrack4"
-    ],
-    "cards": [
+  "name": "Drift",
+  "kind": "Hero",
+  "expansionIdentifier": "CauldronAdrift",
+  "initialCardIdentifiers": [
+    "DriftCharacter"
+  ],
+  "initialOffToTheSideCardIdentifiers": [
+    "BaseShiftTrack1",
+    "BaseShiftTrack2",
+    "BaseShiftTrack3",
+    "BaseShiftTrack4",
+    "PastDriftCharacter",
+    "FutureDriftCharacter",
+    "DualShiftTrack1",
+    "DualShiftTrack2",
+    "DualShiftTrack3",
+    "DualShiftTrack4",
+    "ThroughTheBreachShiftTrack1",
+    "ThroughTheBreachShiftTrack2",
+    "ThroughTheBreachShiftTrack3",
+    "ThroughTheBreachShiftTrack4"
+  ],
+  "cards": [
+    {
+      "identifier": "DriftCharacter",
+      "count": 1,
+      "title": "Drift",
+      "sharedIdentifier": "Drift",
+      "body": "Chronoshift",
+      "backgroundColor": "fbf767",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "fbf767",
+      "character": true,
+      "powers": [
+        "Shift {ShiftLL}, {ShiftL}, {ShiftR}, or {ShiftRR}. Drift regains 1 HP."
+      ],
+      "icons": [
+        "HasPower",
+        "Cauldron.ShiftLR",
+        "GainHP"
+      ],
+      "hitpoints": 26,
+      "nemesisIdentifiers": [
+        "Cauldron.Drift"
+      ],
+      "incapacitatedAbilities": [
+        "One hero may use a power now.",
+        "One target regains 1 HP and deals another target 1 radiant damage.",
+        "One player may discard a one-shot. If they do, they may draw 2 cards."
+      ],
+      "flippedIcons": [
+        "UsePowerNow",
+        "GainHP",
+        "DealDamageRadiant",
+        "DrawCardNow"
+      ],
+      "openingLines": {
+        "default": "It's about time we took care of you!",
+        "Cauldron.OutlanderCharacter": "Bad news; I can already see the future where we defeat you!",
+        "FutureTiamatCharacter": "Who thought it was a good idea to build a cyborg dragon?"
+      },
+      "complexity": 3
+    },
+    {
+      "identifier": "BaseShiftTrack1",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "count": 1,
+      "title": "Shift Track: Past",
+      "body": "Shift Track",
+      "backgroundColor": "fcf8b7",
+      "character": true,
+      "setup": [
+        "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects."
+      ],
+      "tokenPools": [
         {
-            "identifier": "DriftCharacter",
-            "count": 1,
-            "title": "Drift",
-            "sharedIdentifier": "Drift",
-            "body": "Chronoshift",
-            "backgroundColor": "fbf767",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "fbf767",
-            "character": true,
-            "powers": [
-                "Shift {ShiftLL}, {ShiftL}, {ShiftR}, or {ShiftRR}. Drift regains 1 HP."
-            ],
-            "icons": [
-                "HasPower",
-                "Cauldron.ShiftLR",
-                "GainHP"
-            ],
-            "hitpoints": 26,
-            "nemesisIdentifiers": [
-                "Cauldron.Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One hero may use a power now.",
-                "One target regains 1 HP and deals another target 1 radiant damage.",
-                "One player may discard a one-shot. If they do, they may draw 2 cards."
-            ],
-            "flippedIcons": [
-                "UsePowerNow",
-                "GainHP",
-                "DealDamageRadiant",
-                "DrawCardNow"
-            ],
-            "openingLines": {
-                "default": "It's about time we took care of you!",
-                "Cauldron.OutlanderCharacter": "Bad news; I can already see the future where we defeat you!",
-				        "FutureTiamatCharacter": "Who thought it was a good idea to build a cyborg dragon?"
-            },
-            "complexity": 3
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ],
+      "flippedBody": "Shift Track",
+      "isReal": false
+    },
+    {
+      "identifier": "BaseShiftTrack2",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "count": 1,
+      "title": "Shift Track: Past",
+      "body": "Shift Track",
+      "backgroundColor": "fcf8b7",
+      "character": true,
+      "setup": [
+        "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ],
+      "flippedBody": "Shift Track",
+      "isReal": false
+    },
+    {
+      "identifier": "BaseShiftTrack3",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "count": 1,
+      "title": "Shift Track: Future",
+      "body": "Shift Track",
+      "backgroundColor": "fcf8b7",
+      "character": true,
+      "setup": [
+        "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ],
+      "flippedBody": "Shift Track",
+      "isReal": false
+    },
+    {
+      "identifier": "BaseShiftTrack4",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "count": 1,
+      "title": "Shift Track: Future",
+      "body": "Shift Track",
+      "backgroundColor": "fcf8b7",
+      "character": true,
+      "setup": [
+        "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ],
+      "flippedBody": "Shift Track",
+      "isReal": false
+    },
+    {
+      "identifier": "AttenuationField",
+      "count": 2,
+      "title": "Attenuation Field",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DrawCardNow",
+        "DestroyEnvironment",
+        "DestroyOngoing"
+      ],
+      "body": [
+        "Draw a card.",
+        "{Past} Destroy 1 environment card.",
+        "{Future} Destroy 1 ongoing card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Drift",
+          "text": "I love old things."
+        }
+      ],
+      "flavorReference": "Drift, Burnout #7"
+    },
+    {
+      "identifier": "BorrowedTime",
+      "count": 3,
+      "title": "Borrowed Time",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "Cauldron.ShiftLR",
+        "GainHP",
+        "DealDamageRadiant"
+      ],
+      "body": [
+        "Select {ShiftL} or {ShiftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.",
+        "If you shifted at least {ShiftL} this way, X targets regain 2 HP each. If you shifted {ShiftR} this way, {Drift} deals X targets 3 radiant damage each."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TheOperative",
+          "text": "The ravages of time,{BR}condensed to an instant."
+        }
+      ],
+      "flavorReference": "The Operative, Mystery Comics #495"
+    },
+    {
+      "identifier": "DanceOfTheDragons",
+      "count": 3,
+      "title": "Dance of the Dragons",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DealDamageRadiant",
+        "Cauldron.ShiftLR",
+        "DrawCardNow",
+        "GainHP"
+      ],
+      "body": [
+        "{Future} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {ShiftL}.",
+        "{Past} Draw a card. {Drift} regains 1 HP. Shift {ShiftRR}"
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Tango One",
+          "text": "Those ghouls again?"
         },
         {
-            "identifier": "BaseShiftTrack1",
-            "sharedIdentifier": "ShiftTrack",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "body": "Shift Track",
-            "backgroundColor": "fcf8b7",
-            "character": true,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ],
-            "flippedBody": "Shift Track",
-            "isReal": false
+          "identifier": "Drift",
+          "text": "Yes. I can see where{BR}they're going to be."
+        }
+      ],
+      "flavorReference": "Adrift One-Shot"
+    },
+    {
+      "identifier": "DestroyersAdagio",
+      "count": 3,
+      "title": "Destroyer's Adagio",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "PlayCardNow",
+        "Cauldron.ShiftLR",
+        "DealDamageRadiant"
+      ],
+      "body": [
+        "{Past} You may play an ongoing card from your trash, or one player may play a card now. Shift {ShiftR}",
+        "{Future} {Drift} deals 1 target 2 radiant damage. Shift {ShiftLL}"
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Drift",
+          "text": "Mum always says 'You can{BR}be anything.' Well I need you to be what you were."
+        }
+      ],
+      "flavorReference": "Drift, Eclipse #1"
+    },
+    {
+      "identifier": "DriftStep",
+      "count": 4,
+      "title": "Drift Step",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "Cauldron.ShiftLR",
+        "DrawCardNow",
+        "PlayCardNow"
+      ],
+      "body": [
+        "Shift {ShiftL} or {ShiftR}.",
+        "If you shifted {ShiftL} this way, {Drift} regains 1 HP. If you shifted {ShiftR} this way, {Drift} deals 1 target 1 radiant damage.",
+        "Draw a card. You may play a card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Drift",
+          "text": "--kind of theme song?{BR}Shouldn't I have some--"
+        }
+      ],
+      "flavorReference": "Drift, The Wanderer's Elegy #161"
+    },
+    {
+      "identifier": "FutureFocus",
+      "count": 2,
+      "title": "Future Focus",
+      "keywords": [
+        "ongoing",
+        "focus"
+      ],
+      "icons": [
+        "Manipulate",
+        "Cauldron.ShiftLR",
+        "DealDamageRadiant"
+      ],
+      "body": [
+        "When this card enters play, return all other focus cards to your hand.",
+        "When {Drift} is dealt damage, if you have not shifted this turn, you may shift {ShiftRRR}. If you shifted {ShiftRRR} this way, {Drift} deals 1 target 3 radiant damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Drift",
+          "text": "I've been to the future{BR}and you weren't in it!"
+        }
+      ],
+      "flavorReference": "Drift, The Return: Part 2"
+    },
+    {
+      "identifier": "ImposedSynchronization",
+      "count": 2,
+      "title": "Imposed Synchronization",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DrawCardNow",
+        "Cauldron.ShiftLR",
+        "ReduceDamageTaken",
+        "IncreaseDamageDealt"
+      ],
+      "body": [
+        "Draw a card.",
+        "{Past} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {ShiftL}.",
+        "{Future} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {ShiftR}."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Drift",
+          "text": "I don't need your help to see{BR}the past, Marm. You need mine."
+        }
+      ],
+      "flavorReference": "Drift, Echoes of the Past #6"
+    },
+    {
+      "identifier": "KnightsHeritage",
+      "count": 3,
+      "title": "Knight's Heritage",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "Destroy",
+        "PlayCardNow",
+        "Cauldron.ShiftLR"
+      ],
+      "body": [
+        "When this card enters play, destroy all other copies of Knight's Heritage and play up to 2 ongoing cards from your hand.",
+        "The first time {Drift} is dealt damage each turn, you may shift {ShiftL} or {ShiftR}."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TheKnight",
+          "text": "This is your birthright."
+        }
+      ],
+      "flavorReference": "The Knight, The Wanderer's Requiem #147"
+    },
+    {
+      "identifier": "MakeEverySecondCount",
+      "count": 2,
+      "title": "Make Every Second Count",
+      "keywords": [
+        "ongoing",
+        "limited"
+      ],
+      "icons": [
+        "ReduceDamageTaken",
+        "IncreaseDamageDealt"
+      ],
+      "body": [
+        "{Past} Whenever you shift {ShiftL}, select a hero target. Reduce the next damage dealt to that target by 2.",
+        "{Future} Whenever you shift {ShiftR}, select a hero target. Increase the next damage dealt by that target by 2."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Drift",
+          "text": "Hang on, I'm checking{BR}how that would play out."
+        }
+      ],
+      "flavorReference": "Drift, Echoes of the Past #6"
+    },
+    {
+      "identifier": "OutOfSync",
+      "count": 2,
+      "title": "Out Of Sync",
+      "keywords": [
+        "ongoing",
+        "limited"
+      ],
+      "icons": [
+        "ReduceDamageTaken",
+        "IncreaseDamageDealt"
+      ],
+      "body": [
+        "{Past} Reduce damage dealt to {Drift} by 1.",
+        "{Future} Increase damage dealt by {Drift} to other targets by 1."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Drift",
+          "text": "Enough with the monsters!{BR}You're taking us home!"
+        }
+      ],
+      "flavorReference": "Drift, The Return: Part 1"
+    },
+    {
+      "identifier": "PastFocus",
+      "count": 2,
+      "title": "Past Focus",
+      "keywords": [
+        "ongoing",
+        "focus"
+      ],
+      "icons": [
+        "Manipulate",
+        "Cauldron.ShiftLR",
+        "PlayCardNow"
+      ],
+      "body": [
+        "When this card enters play, return all other focus cards to your hand.",
+        "When {Drift} is dealt damage, if you have not shifted this turn, you may shift {ShiftLLL}. If you shifted {ShiftLLL} this way, you may play a card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Dendron",
+          "text": "Lost your toys?"
         },
         {
-            "identifier": "BaseShiftTrack2",
-            "sharedIdentifier": "ShiftTrack",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "body": "Shift Track",
-            "backgroundColor": "fcf8b7",
-            "character": true,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ],
-            "flippedBody": "Shift Track",
-            "isReal": false
+          "identifier": "Drift",
+          "text": "I never lose anything!"
+        }
+      ],
+      "flavorReference": "Drift Dancer Limited Series"
+    },
+    {
+      "identifier": "ResourcefulDaydreamer",
+      "count": 4,
+      "title": "Resourceful Daydreamer",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DrawCardNow",
+        "Discard",
+        "PlayCardNow",
+        "UsePowerNow"
+      ],
+      "body": [
+        "Draw 2 cards. Discard a card.",
+        "{Past} You may play a card.",
+        "{Future} You may use a power."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Gyrosaur",
+          "text": "She's people-watching."
         },
         {
-            "identifier": "BaseShiftTrack3",
-            "sharedIdentifier": "ShiftTrack",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "body": "Shift Track",
-            "backgroundColor": "fcf8b7",
-            "character": true,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ],
-            "flippedBody": "Shift Track",
-            "isReal": false
-        },
+          "identifier": "The Knight",
+          "text": "Where are the people?"
+        }
+      ],
+      "flavorReference": "The Wanderer's Requiem #160"
+    },
+    {
+      "identifier": "Sabershard",
+      "count": 3,
+      "title": "Sabershard",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "HasPower",
+        "Cauldron.ShiftLR",
+        "DrawCardNow",
+        "DealDamageRadiant"
+      ],
+      "powers": [
+        "{Past} Draw a card. Shift {ShiftR}.",
+        "{Future} {Drift} deals 1 target 2 radiant damage. Shift {ShiftL}."
+      ],
+      "flavorQuotes": [
         {
-            "identifier": "BaseShiftTrack4",
-            "sharedIdentifier": "ShiftTrack",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "body": "Shift Track",
-            "backgroundColor": "fcf8b7",
-            "character": true,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ],
-            "flippedBody": "Shift Track",
-            "isReal": false
-        },
+          "identifier": "Drift",
+          "text": "Look! I can make swords!{BR}Swords I've had, or will have. Apparently{BR}it's a lot of swords."
+        }
+      ],
+      "flavorReference": "Drift, The Wanderer's Requiem #160"
+    },
+    {
+      "identifier": "ThrowingShard",
+      "count": 3,
+      "title": "Throwing Shard",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "HasPower",
+        "Cauldron.ShiftLR",
+        "GainHP",
+        "DealDamageRadiant"
+      ],
+      "powers": [
+        "{Past} 1 target regains 2 HP. Shift {ShiftRR}.",
+        "{Future} {Drift} deals each non-hero target 1 radiant damage. Shift {ShiftLL}."
+      ],
+      "flavorQuotes": [
         {
-            "identifier": "AttenuationField",
-            "count": 2,
-            "title": "Attenuation Field",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DrawCardNow",
-                "DestroyEnvironment",
-                "DestroyOngoing"
-            ],
-            "body": [
-                "Draw a card.",
-                "{Past} Destroy 1 environment card.",
-                "{Future} Destroy 1 ongoing card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "I love old things."
-                }
-            ],
-            "flavorReference": "Drift, Burnout #7"
-        },
+          "identifier": "OmnitronX",
+          "text": "Analysis: system health is{BR}now identical to 453 seconds prior, due{BR}to contact with temporal energy shard."
+        }
+      ],
+      "flavorReference": "Omnitron-X, Drift Dancer Limited Series"
+    },
+    {
+      "identifier": "TransitionShock",
+      "count": 2,
+      "title": "Transition Shock",
+      "keywords": [
+        "ongoing",
+        "limited"
+      ],
+      "icons": [
+        "DealDamagePsychic"
+      ],
+      "body": "Whenever you shift from {Past} to {Future} or from {Future} to {Past}, {Drift} may deal 1 other target and herself 1 psychic damage.",
+      "flavorQuotes": [
         {
-            "identifier": "BorrowedTime",
-            "count": 3,
-            "title": "Borrowed Time",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Cauldron.ShiftLR",
-                "GainHP",
-                "DealDamageRadiant"
-            ],
-            "body": [
-                "Select {ShiftL} or {ShiftR}. Shift that direction up to 3 times. X is the number of times you shifted this way.",
-                "If you shifted at least {ShiftL} this way, X targets regain 2 HP each. If you shifted {ShiftR} this way, {Drift} deals X targets 3 radiant damage each."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheOperative",
-                    "text": "The ravages of time,{BR}condensed to an instant."
-                }
-            ],
-            "flavorReference": "The Operative, Mystery Comics #495"
-        },
-        {
-            "identifier": "DanceOfTheDragons",
-            "count": 3,
-            "title": "Dance of the Dragons",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DealDamageRadiant",
-                "Cauldron.ShiftLR",
-                "DrawCardNow",
-                "GainHP"
-            ],
-            "body": [
-                "{Future} {Drift} deals up to 3 targets 2 radiant damage each. Increase damage dealt this way by 1 to targets that entered play since the end of your last turn. Shift {ShiftL}.",
-                "{Past} Draw a card. {Drift} regains 1 HP. Shift {ShiftRR}"
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Tango One",
-                    "text": "Those ghouls again?"
-                },
-                {
-                    "identifier": "Drift",
-                    "text": "Yes. I can see where{BR}they're going to be."
-                }
-            ],
-            "flavorReference": "Adrift One-Shot"
-        },
-        {
-            "identifier": "DestroyersAdagio",
-            "count": 3,
-            "title": "Destroyer's Adagio",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "PlayCardNow",
-                "Cauldron.ShiftLR",
-                "DealDamageRadiant"
-            ],
-            "body": [
-                "{Past} You may play an ongoing card from your trash, or one player may play a card now. Shift {ShiftR}",
-                "{Future} {Drift} deals 1 target 2 radiant damage. Shift {ShiftLL}"
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "Mum always says 'You can{BR}be anything.' Well I need you to be what you were."
-                }
-            ],
-            "flavorReference": "Drift, Eclipse #1"
-        },
-        {
-            "identifier": "DriftStep",
-            "count": 4,
-            "title": "Drift Step",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Cauldron.ShiftLR",
-                "DrawCardNow",
-                "PlayCardNow"
-            ],
-            "body": [
-                "Shift {ShiftL} or {ShiftR}.",
-                "If you shifted {ShiftL} this way, {Drift} regains 1 HP. If you shifted {ShiftR} this way, {Drift} deals 1 target 1 radiant damage.",
-                "Draw a card. You may play a card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "--kind of theme song?{BR}Shouldn't I have some--"
-                }
-            ],
-            "flavorReference": "Drift, The Wanderer's Elegy #161"
-        },
-        {
-            "identifier": "FutureFocus",
-            "count": 2,
-            "title": "Future Focus",
-            "keywords": [
-                "ongoing",
-                "focus"
-            ],
-            "icons": [
-                "Manipulate",
-                "Cauldron.ShiftLR",
-                "DealDamageRadiant"
-            ],
-            "body": [
-                "When this card enters play, return all other focus cards to your hand.",
-                "When {Drift} is dealt damage, if you have not shifted this turn, you may shift {ShiftRRR}. If you shifted {ShiftRRR} this way, {Drift} deals 1 target 3 radiant damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "I've been to the future{BR}and you weren't in it!"
-                }
-            ],
-            "flavorReference": "Drift, The Return: Part 2"
-        },
-        {
-            "identifier": "ImposedSynchronization",
-            "count": 2,
-            "title": "Imposed Synchronization",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DrawCardNow",
-                "Cauldron.ShiftLR",
-                "ReduceDamageTaken",
-                "IncreaseDamageDealt"
-            ],
-            "body": [
-                "Draw a card.",
-                "{Past} Select a target. Reduce damage dealt to that target by 1 until the start of your next turn. Shift {ShiftL}.",
-                "{Future} Select a target. Increase damage dealt by that target by 1 until the start of your next turn. Shift {ShiftR}."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "I don't need your help to see{BR}the past, Marm. You need mine."
-                }
-            ],
-            "flavorReference": "Drift, Echoes of the Past #6"
-        },
-        {
-            "identifier": "KnightsHeritage",
-            "count": 3,
-            "title": "Knight's Heritage",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "Destroy",
-                "PlayCardNow",
-                "Cauldron.ShiftLR"
-            ],
-            "body": [
-                "When this card enters play, destroy all other copies of Knight's Heritage and play up to 2 ongoing cards from your hand.",
-                "The first time {Drift} is dealt damage each turn, you may shift {ShiftL} or {ShiftR}."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheKnight",
-                    "text": "This is your birthright."
-                }
-            ],
-            "flavorReference": "The Knight, The Wanderer's Requiem #147"
-        },
-        {
-            "identifier": "MakeEverySecondCount",
-            "count": 2,
-            "title": "Make Every Second Count",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "ReduceDamageTaken",
-                "IncreaseDamageDealt"
-            ],
-            "body": [
-                "{Past} Whenever you shift {ShiftL}, select a hero target. Reduce the next damage dealt to that target by 2.",
-                "{Future} Whenever you shift {ShiftR}, select a hero target. Increase the next damage dealt by that target by 2."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "Hang on, I'm checking{BR}how that would play out."
-                }
-            ],
-            "flavorReference": "Drift, Echoes of the Past #6"
-        },
-        {
-            "identifier": "OutOfSync",
-            "count": 2,
-            "title": "Out Of Sync",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "ReduceDamageTaken",
-                "IncreaseDamageDealt"
-            ],
-            "body": [
-                "{Past} Reduce damage dealt to {Drift} by 1.",
-                "{Future} Increase damage dealt by {Drift} to other targets by 1."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "Enough with the monsters!{BR}You're taking us home!"
-                }
-            ],
-            "flavorReference": "Drift, The Return: Part 1"
-        },
-        {
-            "identifier": "PastFocus",
-            "count": 2,
-            "title": "Past Focus",
-            "keywords": [
-                "ongoing",
-                "focus"
-            ],
-            "icons": [
-                "Manipulate",
-                "Cauldron.ShiftLR",
-                "PlayCardNow"
-            ],
-            "body": [
-                "When this card enters play, return all other focus cards to your hand.",
-                "When {Drift} is dealt damage, if you have not shifted this turn, you may shift {ShiftLLL}. If you shifted {ShiftLLL} this way, you may play a card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Dendron",
-                    "text": "Lost your toys?"
-                },
-                {
-                    "identifier": "Drift",
-                    "text": "I never lose anything!"
-                }
-            ],
-            "flavorReference": "Drift Dancer Limited Series"
-        },
-        {
-            "identifier": "ResourcefulDaydreamer",
-            "count": 4,
-            "title": "Resourceful Daydreamer",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DrawCardNow",
-                "Discard",
-                "PlayCardNow",
-                "UsePowerNow"
-            ],
-            "body": [
-                "Draw 2 cards. Discard a card.",
-                "{Past} You may play a card.",
-                "{Future} You may use a power."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Gyrosaur",
-                    "text": "She's people-watching."
-                },
-                {
-                    "identifier": "The Knight",
-                    "text": "Where are the people?"
-                }
-            ],
-            "flavorReference": "The Wanderer's Requiem #160"
-        },
-        {
-            "identifier": "Sabershard",
-            "count": 3,
-            "title": "Sabershard",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "HasPower",
-                "Cauldron.ShiftLR",
-                "DrawCardNow",
-                "DealDamageRadiant"
-            ],
-            "powers": [
-                "{Past} Draw a card. Shift {ShiftR}.",
-                "{Future} {Drift} deals 1 target 2 radiant damage. Shift {ShiftL}."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "Look! I can make swords!{BR}Swords I've had, or will have. Apparently{BR}it's a lot of swords."
-                }
-            ],
-            "flavorReference": "Drift, The Wanderer's Requiem #160"
-        },
-        {
-            "identifier": "ThrowingShard",
-            "count": 3,
-            "title": "Throwing Shard",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "HasPower",
-                "Cauldron.ShiftLR",
-                "GainHP",
-                "DealDamageRadiant"
-            ],
-            "powers": [
-                "{Past} 1 target regains 2 HP. Shift {ShiftRR}.",
-                "{Future} {Drift} deals each non-hero target 1 radiant damage. Shift {ShiftLL}."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "OmnitronX",
-                    "text": "Analysis: system health is{BR}now identical to 453 seconds prior, due{BR}to contact with temporal energy shard."
-                }
-            ],
-            "flavorReference": "Omnitron-X, Drift Dancer Limited Series"
-        },
-        {
-            "identifier": "TransitionShock",
-            "count": 2,
-            "title": "Transition Shock",
-            "keywords": [
-                "ongoing",
-                "limited"
-            ],
-            "icons": [
-                "DealDamagePsychic"
-            ],
-            "body": "Whenever you shift from {Past} to {Future} or from {Future} to {Past}, {Drift} may deal 1 other target and herself 1 psychic damage.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Drift",
-                    "text": "The timestream's like a{BR}window for me. Only sometimes{BR}the glass breaks."
-                }
-            ],
-            "flavorReference": "Drift, The Archive #29"
-        },
-        {
-            "identifier": "PastDriftCharacter",
-            "count": 1,
-            "title": "Drift",
-            "sharedIdentifier": "PastDrift",
-            "keywords": [
-                "1929"
-            ],
-            "promoTitle": "1929 Drift",
-            "shortPromoTitle": "1929 Drift",
-            "body": "Omen",
-            "backgroundColor": "ECCD96",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "ECCD96",
-            "character": true,
-            "powers": [
-                "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {ShiftLL}."
-            ],
-            "icons": [
-                "HasPower",
-                "Cauldron.ShiftLR",
-                "Manipulate"
-            ],
-            "hitpoints": 15,
-            "nemesisIdentifiers": [
-                "Cauldron.Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now.",
-                "Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.",
-                "Destroy an environment card."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "UsePowerNow",
-                "Manipulate",
-                "DestroyEnvironment"
-            ],
-            "openingLines": {
-                "default": "What year is this again?",
-                "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
-                "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
-				"FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
-            },
+          "identifier": "Drift",
+          "text": "The timestream's like a{BR}window for me. Only sometimes{BR}the glass breaks."
+        }
+      ],
+      "flavorReference": "Drift, The Archive #29"
+    },
+    {
+      "identifier": "PastDriftCharacter",
+      "count": 1,
+      "title": "Drift",
+      "sharedIdentifier": "PastDrift",
+      "keywords": [
+        "1929"
+      ],
+      "promoTitle": "1929 Drift",
+      "shortPromoTitle": "1929 Drift",
+      "body": "Omen",
+      "backgroundColor": "ECCD96",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "ECCD96",
+      "character": true,
+      "powers": [
+        "Reveal the top 2 cards of 1 hero deck. Replace or discard each of them in any order. Shift {ShiftLL}."
+      ],
+      "icons": [
+        "HasPower",
+        "Cauldron.ShiftLR",
+        "Manipulate"
+      ],
+      "hitpoints": 15,
+      "nemesisIdentifiers": [
+        "Cauldron.Drift"
+      ],
+      "incapacitatedAbilities": [
+        "One player may draw a card now.",
+        "Select a card in a hero trash with a power on it. That hero uses that power, then shuffles that card into their deck.",
+        "Destroy an environment card."
+      ],
+      "flippedIcons": [
+        "DrawCardNow",
+        "UsePowerNow",
+        "Manipulate",
+        "DestroyEnvironment"
+      ],
+      "openingLines": {
+        "default": "What year is this again?",
+        "TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
+        "OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
+        "FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
+      },
 
-            "complexity": 3
-        },
+      "complexity": 3
+    },
+    {
+      "identifier": "FutureDriftCharacter",
+      "count": 1,
+      "title": "Drift",
+      "sharedIdentifier": "FutureDrift",
+      "keywords": [
+        "2199"
+      ],
+      "promoTitle": "2199 Drift",
+      "shortPromoTitle": "2199 Drift",
+      "body": "Uncertain Future",
+      "backgroundColor": "A7B8C1",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "A7B8C1",
+      "character": true,
+      "powers": [
+        "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {ShiftRR}."
+      ],
+      "icons": [
+        "HasPower",
+        "PlayCardNow",
+        "Cauldron.ShiftLR"
+      ],
+      "hitpoints": 16,
+      "nemesisIdentifiers": [
+        "Cauldron.Drift"
+      ],
+      "incapacitatedAbilities": [
+        "One player may draw a card now.",
+        "Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.",
+        "One target regains 2 HP."
+      ],
+      "flippedIcons": [
+        "DrawCardNow",
+        "Manipulate",
+        "UsePowerNow",
+        "GainHP"
+      ],
+      "complexity": 3
+    },
+    {
+      "identifier": "DualShiftTrack1",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "backgroundColor": "D1D2D4",
+      "count": 1,
+      "title": "Shift Track: Past",
+      "character": true,
+      "isReal": false,
+      "notsetup": [
+        "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+        "Then place 1 of your 2 character cards (1929 or 2199) into play active. Place your other character card next to current space, inactive.",
+        "The shift track works as normal; its rules are below."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects.",
+        "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order:",
+        "1. Place your active character on your current shift track space.",
+        "2. Place the shift token on your inactive character's shift track space.",
+        "3. Switch which character is active.",
+        "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+        "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+      ],
+      "tokenPools": [
         {
-            "identifier": "FutureDriftCharacter",
-            "count": 1,
-            "title": "Drift",
-            "sharedIdentifier": "FutureDrift",
-            "keywords": [
-                "2199"
-            ],
-            "promoTitle": "2199 Drift",
-            "shortPromoTitle": "2199 Drift",
-            "body": "Uncertain Future",
-            "backgroundColor": "A7B8C1",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "A7B8C1",
-            "character": true,
-            "powers": [
-                "Play an ongoing card. At the end of your next turn, return it from play to your hand. Shift {ShiftRR}."
-            ],
-            "icons": [
-                "HasPower",
-                "PlayCardNow",
-                "Cauldron.ShiftLR"
-            ],
-            "hitpoints": 16,
-            "nemesisIdentifiers": [
-                "Cauldron.Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now.",
-                "Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.",
-                "One target regains 2 HP."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "Manipulate",
-                "UsePowerNow",
-                "GainHP"
-            ],
-            "complexity": 3
-        },
-        {
-            "identifier": "DualShiftTrack1",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "character": true,
-            "isReal": false,
-            "notsetup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) into play active. Place your other character card next to current space, inactive.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order:",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "DualShiftTrack2",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "character": true,
-            "isReal": false,
-            "notsetup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "DualShiftTrack3",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "character": true,
-            "isReal": false,
-            "notsetup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "DualShiftTrack4",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "D1D2D4",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "character": true,
-            "isReal": false,
-            "notsetup": [
-                "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
-                "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
-                "The shift track works as normal; its rules are below."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
-                "1. Place your active character on your current shift track space.",
-                "2. Place the shift token on your inactive character's shift track space.",
-                "3. Switch which character is active.",
-                "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
-                "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "ThroughTheBreachShiftTrack1",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "character": true,
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "ThroughTheBreachShiftTrack2",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track: Past",
-            "character": true,
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "ThroughTheBreachShiftTrack3",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "character": true,
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
-        },
-        {
-            "identifier": "ThroughTheBreachShiftTrack4",
-            "sharedIdentifier": "ShiftTrack",
-            "backgroundColor": "FCB040",
-            "count": 1,
-            "title": "Shift Track: Future",
-            "character": true,
-            "isReal": false,
-            "setup": [
-                "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
-            ],
-            "gameplay": [
-                "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
-                "While the token is on a {Past} space, activate {Past} effects.",
-                "While the token is on a {Future} space, activate {Future} effects.",
-                "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
-                "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
-            ],
-            "tokenPools": [
-		 	    {
-		 		    "identifier":"ShiftPool",
-		 		    "name":"Shift Track Location",
-		 		    "initialValue":0,
-		 		    "minimumValue":0,
-		 		    "color":"fcf8b7"
-		 	    }
-            ]
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
         }
-    ],
-    "promoCards": [
+      ]
+    },
+    {
+      "identifier": "DualShiftTrack2",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "backgroundColor": "D1D2D4",
+      "count": 1,
+      "title": "Shift Track: Past",
+      "character": true,
+      "isReal": false,
+      "notsetup": [
+        "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+        "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+        "The shift track works as normal; its rules are below."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects.",
+        "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
+        "1. Place your active character on your current shift track space.",
+        "2. Place the shift token on your inactive character's shift track space.",
+        "3. Switch which character is active.",
+        "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+        "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+      ],
+      "tokenPools": [
         {
-            "identifier": "DriftCharacter",
-            "promoIdentifier": "ThroughTheBreachDriftCharacter",
-            "count": 1,
-            "title": "Drift",
-            "sharedIdentifier": "ThroughTheBreachDrift",
-            "promoTitle": "Drift: Through the Breach",
-            "shortPromoTitle": "Breach Drift",
-            "body": "Riftwalker",
-            "backgroundColor": "FCB040",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "FCB040",
-            "character": true,
-            "powers": [
-                "Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space."
-            ],
-            "icons": [
-                "HasPower",
-                "Manipulate",
-                "PlayCardNow",
-                "DealDamageRadiant"
-            ],
-            "hitpoints": 25,
-            "nemesisIdentifiers": [
-                "Cauldron.Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One hero may draw a card now.",
-                "Two heroes may use a power now. If those powers deal damage, reduce that damage by 1.",
-                "Move 1 environment card from play to the top of its deck."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "UsePowerNow",
-                "ReduceDamageDealt",
-                "Manipulate"
-            ],
-            "openingLines": {
-                "default": "Don't worry people, I'll make sure we have plenty of time for this mission!",
-                "Cauldron.OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
-            },
-            "complexity": 3
-        },
-        {
-            "identifier": "DriftCharacter",
-            "promoIdentifier": "DualDriftCharacter",
-            "promoTitle": "Dual Drift",
-            "count": 1,
-            "title": "Drift",
-            "backgroundColor": "ECCD96",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "ECCD96",
-            "character": true,
-            "isReal":false,
-            "nemesisIdentifiers": [
-                "Cauldron.Drift"
-            ],
-            "openingLines": {
-                "default": "What year is this again?",
-                "Cauldron.TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
-                "Cauldron.OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
-                "FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
-            },
-            "complexity": 3
-        },
-        {
-            "identifier": "DriftCharacter",
-            "promoIdentifier": "DriftingShadowDriftCharacter",
-            "count": 1,
-            "title": "Drift",
-            "sharedIdentifier": "DriftingShadowDrift",
-            "promoTitle": "Drift: 1609",
-            "shortPromoTitle": "1609 Drift",
-            "body": "Drifting Shadow",
-            "backgroundColor": "B1B1B1",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "B1B1B1",
-            "character": true,
-            "powers": [
-                "At the start of your next turn, shift {ShiftL} or {ShiftR}, then draw a card or use a power."
-            ],
-            "icons": [
-                "HasPower",
-                "Cauldron.ShiftLR",
-                "DrawCardNow",
-                "UsePowerNow"
-            ],
-            "hitpoints": 26,
-            "nemesisIdentifiers": [
-                "Cauldron.Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One hero may play a card now.",
-                "One hero may use a power now.",
-                "Move up to 3 non-character hero cards from play to their owner's hands."
-            ],
-            "flippedIcons": [
-                "PlayCardNow",
-                "UsePowerNow",
-                "Manipulate"
-            ],
-            "openingLines": {
-                "default": "Your time is up.",
-                "Cauldron.OutlanderCharacter": "Well, I figured that was appropriate, given the audience."
-            },
-            "complexity": 3
-        },
-        {
-            "identifier": "DriftCharacter",
-            "promoIdentifier": "AllInGoodTimeDriftCharacter",
-            "count": 1,
-            "title": "Drift",
-            "sharedIdentifier": "AllInGoodTimeDrift",
-            "promoTitle": "Drift: 1789",
-            "shortPromoTitle": "1789 Drift",
-            "body": "All in Good Time",
-            "backgroundColor": "B1B1B1",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "B1B1B1",
-            "character": true,
-            "powers": [
-                "Discard cards from the top of your deck until you discard an ongoing. Play or draw it."
-            ],
-            "icons": [
-                "HasPower",
-                "Search",
-                "DrawCardNow",
-                "PlayCardNow"
-            ],
-            "hitpoints": 28,
-            "nemesisIdentifiers": [
-                "Cauldron.Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One hero may play a card now.",
-                "Destroy 1 ongoing card.",
-                "Select a target. Increase the next damage it deals by 2."
-            ],
-            "flippedIcons": [
-                "PlayCardNow",
-                "DestroyOngoing",
-                "IncreaseDamageDealt"
-            ],
-            "openingLines": {
-                "default": "The problem with all this time travel is you start losing track of what's going on.",
-                "Cauldron.OutlanderCharacter": "Just one, but you can't blame me for a little sightseeing!"
-            },
-            "complexity": 3
-        },
-        {
-            "identifier": "DriftCharacter",
-            "promoIdentifier": "TestSubjectHalberdDriftCharacter",
-            "count": 1,
-            "title": "Drift",
-            "sharedIdentifier": "TestSubjectHalberdDrift",
-            "promoTitle": "Drift: Test Subject Halberd-26",
-            "shortPromoTitle": "Test Subject Drift",
-            "body": "Temporal Aperture",
-            "backgroundColor": "B1B1B1",
-            "foilBackgroundColor": "FEFEFE",
-            "hitpointColor": "B1B1B1",
-            "character": true,
-            "powers": [
-                "Discard 1, 2, or 3 cards. For each card discarded this way, shift {ShiftL} or {ShiftR}. Draw 2 cards."
-            ],
-            "icons": [
-                "HasPower",
-                "Discard",
-                "Cauldron.ShiftLR",
-                "DrawCardNow"
-            ],
-            "hitpoints": 26,
-            "nemesisIdentifiers": [
-                "Cauldron.Drift"
-            ],
-            "incapacitatedAbilities": [
-                "One player may draw a card now.",
-                "One hero may use a power now.",
-                "Select a target. Prevent the next damage dealt to it."
-            ],
-            "flippedIcons": [
-                "DrawCardNow",
-                "UsePowerNow",
-                "CancelledDamageGreen"
-            ],
-            "openingLines": {
-                "default": "Someone's not thinking with temporal anomalies!",
-                "Cauldron.OutlanderCharacter": "Well, it's heavy and it hurts when it hits you in the head!"
-            },
-            "complexity": 3
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
         }
-    ]
+      ]
+    },
+    {
+      "identifier": "DualShiftTrack3",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "backgroundColor": "D1D2D4",
+      "count": 1,
+      "title": "Shift Track: Future",
+      "character": true,
+      "isReal": false,
+      "notsetup": [
+        "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+        "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+        "The shift track works as normal; its rules are below."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects.",
+        "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
+        "1. Place your active character on your current shift track space.",
+        "2. Place the shift token on your inactive character's shift track space.",
+        "3. Switch which character is active.",
+        "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+        "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ]
+    },
+    {
+      "identifier": "DualShiftTrack4",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "backgroundColor": "D1D2D4",
+      "count": 1,
+      "title": "Shift Track: Future",
+      "character": true,
+      "isReal": false,
+      "notsetup": [
+        "At the start of the game, after drawing your cards, flip this card and place a token on 1 of the 4 spaces of the shift track.",
+        "Then place 1 of your 2 character cards (1929 or 2199) next to that same space, inactive. Place your other character card into play, active.",
+        "The shift track works as normal; its rules are below."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects.",
+        "Once per turn when Drift would shift, play a card, or be dealt damage, you may do the following in order::",
+        "1. Place your active character on your current shift track space.",
+        "2. Place the shift token on your inactive character's shift track space.",
+        "3. Switch which character is active.",
+        "When your cards refer to “Drift”, they refer to your active character. Your active character should be in your normal play area, away from the shift track.",
+        "Your inactive character ignores and is ignored by cards from other decks, and her innate power cannot be used. If your active character is incapacitated, remove your inactive character from the game."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ]
+    },
+    {
+      "identifier": "ThroughTheBreachShiftTrack1",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "backgroundColor": "FCB040",
+      "count": 1,
+      "title": "Shift Track: Past",
+      "character": true,
+      "isReal": false,
+      "setup": [
+        "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects.",
+        "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+        "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ]
+    },
+    {
+      "identifier": "ThroughTheBreachShiftTrack2",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "backgroundColor": "FCB040",
+      "count": 1,
+      "title": "Shift Track: Past",
+      "character": true,
+      "isReal": false,
+      "setup": [
+        "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects.",
+        "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+        "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ]
+    },
+    {
+      "identifier": "ThroughTheBreachShiftTrack3",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "backgroundColor": "FCB040",
+      "count": 1,
+      "title": "Shift Track: Future",
+      "character": true,
+      "isReal": false,
+      "setup": [
+        "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects.",
+        "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+        "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ]
+    },
+    {
+      "identifier": "ThroughTheBreachShiftTrack4",
+      "sharedIdentifier": "ShiftTrack",
+      "hitpoints": 1,
+      "backgroundColor": "FCB040",
+      "count": 1,
+      "title": "Shift Track: Future",
+      "character": true,
+      "isReal": false,
+      "setup": [
+        "At the start of the game, after drawing your cards, place a token on 1 of the 4 spaces of the shift track."
+      ],
+      "gameplay": [
+        "When one of your cards instructs you to shift {ShiftL} or {ShiftR}, move the shift token 1 space in that direction if possible. Only if the token actually moves does it count as {ShiftL} or {ShiftR}.",
+        "While the token is on a {Past} space, activate {Past} effects.",
+        "While the token is on a {Future} space, activate {Future} effects.",
+        "Cards added to your shift track are placed face up next to 1 of its 4 spaces. Each space may only have 1 card next to it. They are not considered in play.",
+        "When you discard a card from the track, you may play it or {Drift} may deal 1 target 3 radiant damage."
+      ],
+      "tokenPools": [
+        {
+          "identifier": "ShiftPool",
+          "name": "Shift Track Location",
+          "initialValue": 0,
+          "minimumValue": 0,
+          "color": "fcf8b7"
+        }
+      ]
+    }
+  ],
+  "promoCards": [
+    {
+      "identifier": "DriftCharacter",
+      "promoIdentifier": "ThroughTheBreachDriftCharacter",
+      "count": 1,
+      "title": "Drift",
+      "sharedIdentifier": "ThroughTheBreachDrift",
+      "promoTitle": "Drift: Through the Breach",
+      "shortPromoTitle": "Breach Drift",
+      "body": "Riftwalker",
+      "backgroundColor": "FCB040",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "FCB040",
+      "character": true,
+      "powers": [
+        "Add the top 2 cards of your deck to your shift track, or discard the card from your current shift track space."
+      ],
+      "icons": [
+        "HasPower",
+        "Manipulate",
+        "PlayCardNow",
+        "DealDamageRadiant"
+      ],
+      "hitpoints": 25,
+      "nemesisIdentifiers": [
+        "Cauldron.Drift"
+      ],
+      "incapacitatedAbilities": [
+        "One hero may draw a card now.",
+        "Two heroes may use a power now. If those powers deal damage, reduce that damage by 1.",
+        "Move 1 environment card from play to the top of its deck."
+      ],
+      "flippedIcons": [
+        "DrawCardNow",
+        "UsePowerNow",
+        "ReduceDamageDealt",
+        "Manipulate"
+      ],
+      "openingLines": {
+        "default": "Don't worry people, I'll make sure we have plenty of time for this mission!",
+        "Cauldron.OutlanderCharacter": "To think, there's a version of Sir George that could turn out like you."
+      },
+      "complexity": 3
+    },
+    {
+      "identifier": "DriftCharacter",
+      "promoIdentifier": "DualDriftCharacter",
+      "promoTitle": "Dual Drift",
+      "count": 1,
+      "title": "Drift",
+      "backgroundColor": "ECCD96",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "ECCD96",
+      "character": true,
+      "isReal": false,
+      "nemesisIdentifiers": [
+        "Cauldron.Drift"
+      ],
+      "openingLines": {
+        "default": "What year is this again?",
+        "Cauldron.TheMistressOfFateCharacter": "This doesn't look good. Better work together!",
+        "Cauldron.OutlanderCharacter": "Careful, everyone. Each time we knock him down, another version of him will come back stronger.",
+        "FutureTiamatCharacter": "I never thought I'd miss the old Tiamat."
+      },
+      "complexity": 3
+    },
+    {
+      "identifier": "DriftCharacter",
+      "promoIdentifier": "DriftingShadowDriftCharacter",
+      "count": 1,
+      "title": "Drift",
+      "sharedIdentifier": "DriftingShadowDrift",
+      "promoTitle": "Drift: 1609",
+      "shortPromoTitle": "1609 Drift",
+      "body": "Drifting Shadow",
+      "backgroundColor": "B1B1B1",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "B1B1B1",
+      "character": true,
+      "powers": [
+        "At the start of your next turn, shift {ShiftL} or {ShiftR}, then draw a card or use a power."
+      ],
+      "icons": [
+        "HasPower",
+        "Cauldron.ShiftLR",
+        "DrawCardNow",
+        "UsePowerNow"
+      ],
+      "hitpoints": 26,
+      "nemesisIdentifiers": [
+        "Cauldron.Drift"
+      ],
+      "incapacitatedAbilities": [
+        "One hero may play a card now.",
+        "One hero may use a power now.",
+        "Move up to 3 non-character hero cards from play to their owner's hands."
+      ],
+      "flippedIcons": [
+        "PlayCardNow",
+        "UsePowerNow",
+        "Manipulate"
+      ],
+      "openingLines": {
+        "default": "Your time is up.",
+        "Cauldron.OutlanderCharacter": "Well, I figured that was appropriate, given the audience."
+      },
+      "complexity": 3
+    },
+    {
+      "identifier": "DriftCharacter",
+      "promoIdentifier": "AllInGoodTimeDriftCharacter",
+      "count": 1,
+      "title": "Drift",
+      "sharedIdentifier": "AllInGoodTimeDrift",
+      "promoTitle": "Drift: 1789",
+      "shortPromoTitle": "1789 Drift",
+      "body": "All in Good Time",
+      "backgroundColor": "B1B1B1",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "B1B1B1",
+      "character": true,
+      "powers": [
+        "Discard cards from the top of your deck until you discard an ongoing. Play or draw it."
+      ],
+      "icons": [
+        "HasPower",
+        "Search",
+        "DrawCardNow",
+        "PlayCardNow"
+      ],
+      "hitpoints": 28,
+      "nemesisIdentifiers": [
+        "Cauldron.Drift"
+      ],
+      "incapacitatedAbilities": [
+        "One hero may play a card now.",
+        "Destroy 1 ongoing card.",
+        "Select a target. Increase the next damage it deals by 2."
+      ],
+      "flippedIcons": [
+        "PlayCardNow",
+        "DestroyOngoing",
+        "IncreaseDamageDealt"
+      ],
+      "openingLines": {
+        "default": "The problem with all this time travel is you start losing track of what's going on.",
+        "Cauldron.OutlanderCharacter": "Just one, but you can't blame me for a little sightseeing!"
+      },
+      "complexity": 3
+    },
+    {
+      "identifier": "DriftCharacter",
+      "promoIdentifier": "TestSubjectHalberdDriftCharacter",
+      "count": 1,
+      "title": "Drift",
+      "sharedIdentifier": "TestSubjectHalberdDrift",
+      "promoTitle": "Drift: Test Subject Halberd-26",
+      "shortPromoTitle": "Test Subject Drift",
+      "body": "Temporal Aperture",
+      "backgroundColor": "B1B1B1",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "B1B1B1",
+      "character": true,
+      "powers": [
+        "Discard 1, 2, or 3 cards. For each card discarded this way, shift {ShiftL} or {ShiftR}. Draw 2 cards."
+      ],
+      "icons": [
+        "HasPower",
+        "Discard",
+        "Cauldron.ShiftLR",
+        "DrawCardNow"
+      ],
+      "hitpoints": 26,
+      "nemesisIdentifiers": [
+        "Cauldron.Drift"
+      ],
+      "incapacitatedAbilities": [
+        "One player may draw a card now.",
+        "One hero may use a power now.",
+        "Select a target. Prevent the next damage dealt to it."
+      ],
+      "flippedIcons": [
+        "DrawCardNow",
+        "UsePowerNow",
+        "CancelledDamageGreen"
+      ],
+      "openingLines": {
+        "default": "Someone's not thinking with temporal anomalies!",
+        "Cauldron.OutlanderCharacter": "Well, it's heavy and it hurts when it hits you in the head!"
+      },
+      "complexity": 3
+    }
+  ]
 }

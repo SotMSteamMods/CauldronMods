@@ -71,7 +71,7 @@ namespace Cauldron.Drift
 
         public bool IsTargetSelf(DealDamageAction dd)
         {
-            if(dd.Target != null && dd.Target.SharedIdentifier != null && dd.Target.SharedIdentifier == GetActiveCharacterCard().SharedIdentifier)
+            if (dd.Target != null && dd.Target.SharedIdentifier != null && dd.Target.SharedIdentifier == GetActiveCharacterCard().SharedIdentifier)
             {
                 return true;
             }

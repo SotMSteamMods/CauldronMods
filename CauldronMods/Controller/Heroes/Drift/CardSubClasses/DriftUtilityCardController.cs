@@ -14,6 +14,8 @@ namespace Cauldron.Drift
         {
         }
 
+        private readonly static string ShiftTrackPositionKeyword = "ShiftTrackPosition";
+
         protected enum CustomMode
         {
             AskToShift,
@@ -36,7 +38,8 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
 
-            } else
+            }
+            else
             {
                 IEnumerator coroutine = ShiftLAction(shiftCounter);
                 if (base.UseUnityCoroutines)
@@ -185,7 +188,7 @@ namespace Cauldron.Drift
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                if(shiftCounter.Count() <= i)
+                if (shiftCounter.Count() <= i)
                 {
                     //if we have already failed to shift we don't need to try again
                     break;
@@ -196,7 +199,7 @@ namespace Cauldron.Drift
 
         public IEnumerator ShiftLLLAction(List<bool> shiftCounter = null)
         {
-            if(shiftCounter == null)
+            if (shiftCounter == null)
             {
                 shiftCounter = new List<bool>();
             }
@@ -499,7 +502,11 @@ namespace Cauldron.Drift
             {
                 promoIdentifier = ThroughTheBreach;
             }
-            IEnumerator coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(promoIdentifier + ShiftTrack + (this.CurrentShiftPosition() + newPositionModifier), false), cardSource: GetCardSource());
+
+            Card currentShiftTrack = this.GetShiftTrack();
+            Card newShiftTrack = base.FindCard(promoIdentifier + ShiftTrack + (this.CurrentShiftPosition() + newPositionModifier), false);
+            CardSource cardSource = GetCardSource();
+            IEnumerator coroutine = base.GameController.SwitchCards(currentShiftTrack, newShiftTrack, cardSource: cardSource);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

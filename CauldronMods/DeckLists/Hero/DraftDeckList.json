@@ -1,0 +1,69 @@
+{
+  "name": "Draft",
+  "kind": "Hero",
+  "expansionIdentifier": "CauldronAdrift",
+  "initialCardIdentifiers": [
+    "DraftCharacter"
+  ],
+  "cards": [
+    {
+      "identifier": "DraftCharacter",
+      "count": 1,
+      "title": "Draft",
+      "sharedIdentifier": "Draft",
+      "body": "Chronoshift",
+      "backgroundColor": "fbf767",
+      "foilBackgroundColor": "FEFEFE",
+      "hitpointColor": "fbf767",
+      "character": true,
+      "powers": [
+        "Shift {ShiftLL}, {ShiftL}, {ShiftR}, or {ShiftRR}. Draft regains 1 HP."
+      ],
+      "icons": [
+        "HasPower",
+        "Cauldron.ShiftLR",
+        "GainHP"
+      ],
+      "hitpoints": 26,
+      "nemesisIdentifiers": [
+        "Cauldron.Draft"
+      ],
+      "incapacitatedAbilities": [
+        "One hero may use a power now.",
+        "One target regains 1 HP and deals another target 1 radiant damage.",
+        "One player may discard a one-shot. If they do, they may draw 2 cards."
+      ],
+      "flippedIcons": [
+        "UsePowerNow",
+        "GainHP",
+        "DealDamageRadiant",
+        "DrawCardNow"
+      ],
+      "openingLines": {
+        "default": "It's about time we took care of you!"
+      },
+      "complexity": 3
+    },
+    {
+      "identifier": "TransitionShock",
+      "count": 40,
+      "title": "Transition Shock",
+      "keywords": [
+        "ongoing",
+        "limited"
+      ],
+      "icons": [
+        "DealDamagePsychic"
+      ],
+      "body": "Whenever you shift from {Past} to {Future} or from {Future} to {Past}, {Draft} may deal 1 other target and herself 1 psychic damage.",
+      "flavorQuotes": [
+        {
+          "identifier": "Draft",
+          "text": "The timestream's like a{BR}window for me. Only sometimes{BR}the glass breaks."
+        }
+      ],
+      "flavorReference": "Drift, The Archive #29"
+    }
+  ],
+  "promoCards": []
+}

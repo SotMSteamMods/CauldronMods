@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="EngineCommon">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\EngineCommon.dll</HintPath>
+		</Reference>
+		<Reference Include="SentinelsEngine">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\SentinelsEngine.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+
+</Project>

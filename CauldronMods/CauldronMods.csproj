@@ -32,6 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controller\Heroes\Drift\CardSubClasses\DriftUtilityCardController.cs.bak" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Controller\Heroes\Drift\CardSubClasses\DriftUtilityCardController.cs.bak" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="manifest.json">
 	  <Link>manifest.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -49,6 +57,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="DeckLists\Environment\OblaskCraterDeckList.json">
+      <LogicalName>Cauldron.DeckLists.%(EmbeddedResource.FileName).json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DeckLists\Hero\DraftDeckList.json">
       <LogicalName>Cauldron.DeckLists.%(EmbeddedResource.FileName).json</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
