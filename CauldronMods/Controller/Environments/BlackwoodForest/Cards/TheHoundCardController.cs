@@ -60,7 +60,7 @@ namespace Cauldron.BlackwoodForest
 
             // Destroy 1 hero ongoing or equipment card
             coroutine = base.GameController.SelectAndDestroyCard(DecisionMaker,
-                            new LinqCardCriteria(card => card.IsHero && (IsEquipment(card) || card.IsOngoing), "hero ongoing or equipment"),
+                            new LinqCardCriteria(card => IsHero(card) && (IsEquipment(card) || IsOngoing(card)), "hero ongoing or equipment"),
                             false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

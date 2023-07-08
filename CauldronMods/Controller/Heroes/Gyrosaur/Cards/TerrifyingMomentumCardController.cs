@@ -34,7 +34,7 @@ namespace Cauldron.Gyrosaur
             //"If X is more than 4, redirect this damage to the non-hero target with the lowest HP.",
             if(TrueCrashInHand + crashMod > 4)
             {
-                AddToTemporaryTriggerList(AddTrigger((DealDamageAction dd) => dd.CardSource.Card == Card, dd => RedirectDamage(dd, TargetType.LowestHP, (Card c) => !c.IsHero), TriggerType.RedirectDamage, TriggerTiming.Before));
+                AddToTemporaryTriggerList(AddTrigger((DealDamageAction dd) => dd.CardSource.Card == Card, dd => RedirectDamage(dd, TargetType.LowestHP, (Card c) => !IsHero(c)), TriggerType.RedirectDamage, TriggerTiming.Before));
             }
 
             //"{Gyrosaur} deals 1 target X+2 melee damage",

@@ -22,7 +22,7 @@ namespace Cauldron.OblaskCrater
 
         public override void AddTriggers()
         {
-            base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.LowestHP, base.H, DamageType.Energy, highestLowestRanking: 2);
+            base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.LowestHP, base.H, DamageType.Energy, highestLowestRanking: 2);
             base.AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(Card) && !base.GameController.GetAllCards().Any(c => c != base.Card && c.IsInPlay && IsPredator(c)), 1);
         }
     }

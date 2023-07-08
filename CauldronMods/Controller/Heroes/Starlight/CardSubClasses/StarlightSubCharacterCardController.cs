@@ -38,7 +38,7 @@ namespace Cauldron.Starlight
         }
         private bool IsSwapForOtherCardDecision(MakeDecisionAction md)
         {
-            if(md.Decision is SelectFromBoxDecision sfb && md.CardSource != null && md.CardSource.Card.IsHero)
+            if(md.Decision is SelectFromBoxDecision sfb && md.CardSource != null && IsHero(md.CardSource.Card))
             {
                 //Log.Debug($"TurnTakerIdentifier: {sfb.SelectedTurnTakerIdentifier}");
                 return sfb.SelectedTurnTakerIdentifier == "Cauldron.Starlight";

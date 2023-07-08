@@ -19,7 +19,7 @@ namespace Cauldron.PhaseVillain
         public override IEnumerator Play()
         {
             //When this card enters play, {Phase} deals the hero target with the second lowest HP {H - 1} radiant damage.
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.CharacterCard, 2, (Card c) => c.IsHero, (Card c) => Game.H - 1, DamageType.Radiant, true);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.CharacterCard, 2, (Card c) => IsHero(c), (Card c) => Game.H - 1, DamageType.Radiant, true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -34,7 +34,7 @@ namespace Cauldron.PhaseVillain
         public override void AddTriggers()
         {
             //At the end of each hero's turn, if that hero dealt {Phase} no damage, that hero deals themselves 1 irreducible melee damage.
-            base.AddEndOfTurnTrigger((TurnTaker tt) => tt.IsHero && !this.DidDamageVillainThisTurn(), this.DealDamageResponse, TriggerType.DealDamage);
+            base.AddEndOfTurnTrigger((TurnTaker tt) => IsHero(tt) && !this.DidDamageVillainThisTurn(), this.DealDamageResponse, TriggerType.DealDamage);
         }
 
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
@@ -43,7 +43,7 @@ namespace Cauldron.PhaseVillain
             IEnumerator coroutine = null;
             if (base.FindHeroTurnTakerController(base.Game.ActiveTurnTaker.ToHero()).HasMultipleCharacterCards)
             {
-                coroutine = base.GameController.SelectTargetsToDealDamageToSelf(this.DecisionMaker, 1, DamageType.Melee, 1, false, 1, true, additionalCriteria: (Card c) => c.IsHeroCharacterCard && c.Owner == base.Game.ActiveTurnTaker, cardSource: GetCardSource());
+                coroutine = base.GameController.SelectTargetsToDealDamageToSelf(this.DecisionMaker, 1, DamageType.Melee, 1, false, 1, true, additionalCriteria: (Card c) =>  IsHeroCharacterCard(c) && c.Owner == base.Game.ActiveTurnTaker, cardSource: GetCardSource());
             }
             else
             {

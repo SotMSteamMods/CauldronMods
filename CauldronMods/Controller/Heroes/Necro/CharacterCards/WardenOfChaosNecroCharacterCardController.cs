@@ -17,7 +17,7 @@ namespace Cauldron.Necro
         {
             //Put the top card of your deck into play.
             IEnumerator coroutine;
-            if (base.TurnTaker.IsHero)
+            if (IsHero(base.TurnTaker))
             {
                 coroutine = ((!base.TurnTaker.Deck.HasCards) ? base.GameController.SendMessageAction("There are no cards in " + base.TurnTaker.Name + "'s deck to play.", Priority.High, GetCardSource(), null, showCardSource: true) : base.GameController.PlayCard(base.TurnTakerController, base.TurnTaker.Deck.TopCard, isPutIntoPlay: true, cardSource: GetCardSource()));
                 if (base.UseUnityCoroutines)
@@ -95,7 +95,7 @@ namespace Cauldron.Necro
                     {
                         //Destroy 1 ongoing card.
                         IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController,
-                                new LinqCardCriteria((Card c) => c.IsOngoing && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "ongoing"),
+                                new LinqCardCriteria((Card c) => IsOngoing(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "ongoing"),
                                 optional: false,
                                 cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)

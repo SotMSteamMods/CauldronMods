@@ -9,7 +9,7 @@ namespace Cauldron.Menagerie
     {
         public HiredKeeperCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowHighestHP(1, () => 2, new LinqCardCriteria(c => c.IsHero && !IsCaptured(c.Owner), "non-captured hero targets", false));
+            SpecialStringMaker.ShowHighestHP(1, () => 2, new LinqCardCriteria(c => IsHero(c) && !IsCaptured(c.Owner), "non-captured hero targets", false));
         }
 
         public override void AddTriggers()
@@ -25,7 +25,7 @@ namespace Cauldron.Menagerie
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => !base.IsCaptured(c.Owner) && c.IsHero, (Card c) => 2, DamageType.Sonic, numberOfTargets: () => 2);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => !base.IsCaptured(c.Owner) && IsHero(c), (Card c) => 2, DamageType.Sonic, numberOfTargets: () => 2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -40,7 +40,7 @@ namespace Cauldron.Menagerie
         private IEnumerator DestroyCardResponse(DestroyCardAction action)
         {
             //...destroy 1 hero ongoing or equipment card.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || base.IsEquipment(c)), "hero ongoing or equipment"), false, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && (IsOngoing(c) || base.IsEquipment(c)), "hero ongoing or equipment"), false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

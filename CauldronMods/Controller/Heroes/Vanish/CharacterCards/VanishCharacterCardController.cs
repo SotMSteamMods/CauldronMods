@@ -121,7 +121,7 @@ namespace Cauldron.Vanish
                     {
                         //Select a hero target. Reduce damage dealt to that target by 1 till the start of your next turn"
                         List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                        var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.SelectTargetFriendly, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHero, "hero target", false), storedResults, false, cardSource: base.GetCardSource());
+                        var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.SelectTargetFriendly, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsTarget && IsHero(c), "hero target", false), storedResults, false, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

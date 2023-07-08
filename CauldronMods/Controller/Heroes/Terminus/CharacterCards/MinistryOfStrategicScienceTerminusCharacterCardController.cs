@@ -139,7 +139,7 @@ namespace Cauldron.Terminus
                     break;
                 // One non-hero target regains 3 HP.
                 case 1:
-                    coroutine = base.GameController.SelectAndGainHP(DecisionMaker, 3, additionalCriteria: (card) => !card.IsHero, cardSource: base.GetCardSource());
+                    coroutine = base.GameController.SelectAndGainHP(DecisionMaker, 3, additionalCriteria: (card) => !IsHero(card), cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -164,7 +164,7 @@ namespace Cauldron.Terminus
                         }
                         return decks;
                     };
-                    List<LocationChoice> heroDecks = GameController.AllTurnTakers.Where(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()))
+                    List<LocationChoice> heroDecks = GameController.AllTurnTakers.Where(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()))
                                                             .SelectMany(tt => AllDecksForTurnTaker(tt))
                                                             .ToList();
                     if(heroDecks.Count() == 0)

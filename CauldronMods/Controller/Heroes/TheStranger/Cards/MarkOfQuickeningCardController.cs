@@ -10,12 +10,16 @@ namespace Cauldron.TheStranger
     {
         #region Constructors
 
-        public MarkOfQuickeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, "hero", true, false, null, null, false))
+        public MarkOfQuickeningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.AddThisCardControllerToList(CardControllerListType.IncreasePhaseActionCount);
         }
 
         #endregion Constructors
+
+        #region Properties
+        public override LinqCardCriteria NextToCardCriteria => new LinqCardCriteria((Card c) => IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame, "hero", useCardsSuffix: true);
+        #endregion
 
         #region Methods
         public override void AddTriggers()

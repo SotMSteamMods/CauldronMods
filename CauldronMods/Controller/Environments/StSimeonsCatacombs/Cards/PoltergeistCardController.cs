@@ -51,7 +51,7 @@ namespace Cauldron.StSimeonsCatacombs
                     {
                         //multiple targets, let the hero choose the victim
                         var coroutine = GameController.SelectTargetsAndDealDamage(httc, new DamageSource(GameController, Card), 1, DamageType.Projectile, 1, false, 1,
-                            additionalCriteria: c => c.IsHeroCharacterCard && c.IsInPlay && !c.IsIncapacitatedOrOutOfGame,
+                            additionalCriteria: c =>  IsHeroCharacterCard(c) && c.IsInPlay && !c.IsIncapacitatedOrOutOfGame,
                             cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {

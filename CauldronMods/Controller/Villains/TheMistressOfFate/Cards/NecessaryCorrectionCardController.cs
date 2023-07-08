@@ -20,7 +20,7 @@ namespace Cauldron.TheMistressOfFate
         public override IEnumerator Play()
         {
             //"When this card enters play, {TheMistressOfFate} deals the {H - 1} hero targets with the highest HP 10 psychic damage each.",
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHero, c => 10, DamageType.Psychic, numberOfTargets: () => H - 1);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => IsHero(c), c => 10, DamageType.Psychic, numberOfTargets: () => H - 1);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

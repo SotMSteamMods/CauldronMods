@@ -42,7 +42,7 @@ namespace Cauldron.DocHavoc
 
             List<SelectFunctionDecision> choicesMade = new List<SelectFunctionDecision>();
             IEnumerator playerSelectRoutine = this.EachPlayerSelectsFunction(
-                (h => h.IsHero && !h.IsIncapacitatedOrOutOfGame),
+                (h => !h.IsIncapacitatedOrOutOfGame),
                 Functions,
                 storedResults: choicesMade,
                 outputIfCannotChooseFunction: (h => $"{h.Name} has no valid choices"));

@@ -31,7 +31,7 @@ namespace Cauldron.Drift
             }
 
             //...and play up to 2 ongoing cards from your hand.
-            coroutine = base.SelectAndPlayCardsFromHand(base.HeroTurnTakerController, 2, cardCriteria: new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"));
+            coroutine = base.SelectAndPlayCardsFromHand(base.HeroTurnTakerController, 2, cardCriteria: new LinqCardCriteria((Card c) => IsOngoing(c), "ongoing"));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

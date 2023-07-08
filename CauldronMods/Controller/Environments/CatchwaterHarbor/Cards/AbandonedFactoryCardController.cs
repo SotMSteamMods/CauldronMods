@@ -17,7 +17,7 @@ namespace Cauldron.CatchwaterHarbor
         public override void AddTriggers()
         {
             //Whenever an ongoing or equipment card enters a hero trash pile, the villain character target with the lowest HP regains 2HP.
-            AddTrigger<MoveCardAction>((MoveCardAction mca) => mca.CardToMove != null && (mca.CardToMove.IsOngoing || IsEquipment(mca.CardToMove)) && mca.Destination.IsTrash && mca.Destination.IsHero, CardToTrashResponse, TriggerType.GainHP, TriggerTiming.After);
+            AddTrigger<MoveCardAction>((MoveCardAction mca) => mca.CardToMove != null && (IsOngoing(mca.CardToMove) || IsEquipment(mca.CardToMove)) && mca.Destination.IsTrash && mca.Destination.IsHero, CardToTrashResponse, TriggerType.GainHP, TriggerTiming.After);
 
 			//When a Transport card would be destroyed, you may destroy this card instead.
 			AddTrigger((DestroyCardAction dca) => !this.IsBeingDestroyed && IsTransport(dca.CardToDestroy.Card) && !GameController.IsCardIndestructible(dca.CardToDestroy.Card), DestroyThisCardInsteadResponse, new TriggerType[]

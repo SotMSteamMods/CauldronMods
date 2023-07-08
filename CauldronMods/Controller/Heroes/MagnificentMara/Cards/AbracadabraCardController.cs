@@ -19,7 +19,7 @@ namespace Cauldron.MagnificentMara
             Func<DestroyCardAction, bool> validCardDestroyed = (DestroyCardAction dc) => !this.IsBeingDestroyed &&
                                                                                 dc.CardToDestroy != null &&
                                                                                 dc.CardToDestroy.Card != null &&
-                                                                                dc.CardToDestroy.Card.IsHero &&
+                                                                                IsHero(dc.CardToDestroy.Card) &&
                                                                                 !dc.CardToDestroy.Card.IsCharacter &&
                                                                                 dc.CardToDestroy.Card.Owner != TurnTaker &&
                                                                                 dc.WasCardDestroyed;

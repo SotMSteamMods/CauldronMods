@@ -26,7 +26,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DealDamageAndDiscardCardResponse(PhaseChangeAction action)
         {
             //this card deals the hero target with the second highest HP {H - 1} fire damage... 
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 2, c => c.IsInPlay && c.IsHero && c.IsTarget, c => Game.H - 1, DamageType.Fire);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 2, c => c.IsInPlay && IsHeroTarget(c), c => Game.H - 1, DamageType.Fire);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -49,7 +49,7 @@ namespace Cauldron.SwarmEater
 
         private IEnumerator AbsorbDiscardResponse(PhaseChangeAction action, Card absorbingCard)
         {
-            SelectTurnTakersDecision turnTakerDecision = new SelectTurnTakersDecision(base.GameController, this.DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt.ToHero().HasCardsInHand), SelectionType.DiscardCard, Game.H - 2, associatedCards: new Card[] { absorbingCard }, cardSource: base.GetCardSource());
+            SelectTurnTakersDecision turnTakerDecision = new SelectTurnTakersDecision(base.GameController, this.DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && tt.ToHero().HasCardsInHand), SelectionType.DiscardCard, Game.H - 2, associatedCards: new Card[] { absorbingCard }, cardSource: base.GetCardSource());
             //...{H - 2} players must discard a card.
             IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoAction(turnTakerDecision, (TurnTaker tt) => base.GameController.SelectAndDiscardCard(base.FindHeroTurnTakerController(tt.ToHero()), cardSource: base.GetCardSource()), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)

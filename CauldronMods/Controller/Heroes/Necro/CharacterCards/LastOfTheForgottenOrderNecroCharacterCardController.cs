@@ -94,7 +94,7 @@ namespace Cauldron.Necro
                         //One player may play 2 random cards from their hand now.
                         List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
                         customMode = CustomMode.SelectTurnTakerDecision;
-                        IEnumerator coroutine3 = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.Custom, false, false, storedResults, heroCriteria: new LinqTurnTakerCriteria(turnTaker => turnTaker.IsHero && turnTaker.ToHero().NumberOfCardsInHand > 0), cardSource: GetCardSource());
+                        IEnumerator coroutine3 = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.Custom, false, false, storedResults, heroCriteria: new LinqTurnTakerCriteria(turnTaker => IsHero(turnTaker) && turnTaker.ToHero().NumberOfCardsInHand > 0), cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine3);
@@ -199,7 +199,7 @@ namespace Cauldron.Necro
                 //1 hero deals a target 1 fire damage and draws a card.
                 List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
                 IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage,
-                    new LinqCardCriteria((Card c) => c.IsInPlay && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero character", useCardsSuffix: false),
+                    new LinqCardCriteria((Card c) => c.IsInPlay &&  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero character", useCardsSuffix: false),
                     storedResults, false,
                     cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)

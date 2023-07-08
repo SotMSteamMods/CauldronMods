@@ -119,7 +119,7 @@ namespace Cauldron.Gargoyle
                 case 2:
                     {
                         // One hero target deals itself 2 toxic damage. Another regains 2 HP.
-                        coroutine = GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 2, DamageType.Toxic, 1, false, 1, additionalCriteria: (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), storedResultsDecisions: selectCardResults, selectTargetsEvenIfCannotDealDamage: true, cardSource: GetCardSource());
+                        coroutine = GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 2, DamageType.Toxic, 1, false, 1, additionalCriteria: (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), storedResultsDecisions: selectCardResults, selectTargetsEvenIfCannotDealDamage: true, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -131,7 +131,7 @@ namespace Cauldron.Gargoyle
 
                         // Another regains 2 HP.
                         var selectedCard = GetSelectedCard(selectCardResults);
-                        coroutine = base.GameController.SelectAndGainHP(DecisionMaker, 2, additionalCriteria: (card) => card.IsHero && card.IsTarget && !(card == selectedCard) && GameController.IsCardVisibleToCardSource(card, GetCardSource()));
+                        coroutine = base.GameController.SelectAndGainHP(DecisionMaker, 2, additionalCriteria: (card) => IsHeroTarget(card) && !(card == selectedCard) && GameController.IsCardVisibleToCardSource(card, GetCardSource()));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

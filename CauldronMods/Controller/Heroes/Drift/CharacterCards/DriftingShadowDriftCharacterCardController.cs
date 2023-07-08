@@ -81,7 +81,7 @@ namespace Cauldron.Drift
                 case 0:
                     {
                         //One hero may play a card now.
-                        coroutine = base.SelectHeroToPlayCard(base.HeroTurnTakerController, heroCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitated));
+                        coroutine = base.SelectHeroToPlayCard(base.HeroTurnTakerController, heroCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitated));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -110,7 +110,7 @@ namespace Cauldron.Drift
                     {
                         //Move up to 3 non-character hero cards from play to their owner' hands.
                         List<SelectCardsDecision> cardsDecision = new List<SelectCardsDecision>();
-                        coroutine = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController, SelectionType.ReturnToHand, (Card c) => c.IsHero && !c.IsCharacter && c.IsInPlayAndHasGameText, 3, cardsDecision, false, 0, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController, SelectionType.ReturnToHand, (Card c) => IsHero(c) && !c.IsCharacter && c.IsInPlayAndHasGameText, 3, cardsDecision, false, 0, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

@@ -89,7 +89,7 @@ namespace Cauldron.Menagerie
         {
             //the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.
             int X = FindCardsWhere(c => IsEnclosure(c) && c.IsInPlayAndHasGameText).Count();
-            IEnumerator coroutine = GameController.DealDamageToSelf(DecisionMaker, (Card c) => c.Owner.IsHero  && c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && (IsCaptured(c.Owner) || HasEnclosure(c.Owner)), X, DamageType.Psychic, isIrreducible: true, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.DealDamageToSelf(DecisionMaker, (Card c) => IsHero(c.Owner)  &&  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && (IsCaptured(c.Owner) || HasEnclosure(c.Owner)), X, DamageType.Psychic, isIrreducible: true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

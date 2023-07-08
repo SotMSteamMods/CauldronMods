@@ -18,8 +18,8 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            var coroutine = DealDamageToHighestHP(null, 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => 2, DamageType.Melee,
-                                damageSourceInfo: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria(c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, "hero target with the lowest")));
+            var coroutine = DealDamageToHighestHP(null, 1, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, c => 2, DamageType.Melee,
+                                damageSourceInfo: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria(c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, "hero target with the lowest")));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

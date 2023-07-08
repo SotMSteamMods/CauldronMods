@@ -29,7 +29,7 @@ namespace Cauldron.BlackwoodForest
         public override void AddTriggers()
         {
             // At the end of the environment turn, this card deals the hero with the lowest HP {H - 2} toxic damage.
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHeroCharacterCard && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => IsHeroCharacterCard(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
                     TargetType.LowestHP, H - 2, DamageType.Toxic,
                     highestLowestRanking: 1,
                     numberOfTargets: 1);

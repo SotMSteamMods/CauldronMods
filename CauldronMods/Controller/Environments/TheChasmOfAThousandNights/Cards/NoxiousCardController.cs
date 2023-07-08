@@ -23,7 +23,7 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         private IEnumerator DealDamageResponse(PhaseChangeAction arg)
         {
-            IEnumerator coroutine = DealDamage(GetCardThisCardIsBelow(), (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Toxic);
+            IEnumerator coroutine = DealDamage(GetCardThisCardIsBelow(), (Card c) => IsHeroTarget(c), 1, DamageType.Toxic);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

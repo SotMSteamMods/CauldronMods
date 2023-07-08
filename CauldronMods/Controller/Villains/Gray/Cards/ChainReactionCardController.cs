@@ -12,7 +12,7 @@ namespace Cauldron.Gray
         public ChainReactionCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowNumberOfCardsInPlay(new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation"), "radiation"));
-            base.SpecialStringMaker.ShowLowestHP(1, () => base.FindNumberOfRadiationCardsInPlay().Value, new LinqCardCriteria((Card c) => c.IsHero, "hero", true, false, "target", "targets"));
+            base.SpecialStringMaker.ShowLowestHP(1, () => base.FindNumberOfRadiationCardsInPlay().Value, new LinqCardCriteria((Card c) => IsHero(c), "hero", true, false, "target", "targets"));
             base.SpecialStringMaker.ShowListOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.DoKeywordsContain("radiation"), "radiation"));
         }
 
@@ -22,7 +22,7 @@ namespace Cauldron.Gray
         {
             //At the start of the villain turn, this card deals the X hero targets with the lowest HP 1 energy damage each, where X is the number of Radiation cards in play.
             //This does not affect a dynamic number of targets because the DealDamageToLowestHP does not accept a dynamic number of targets
-            base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, (PhaseChangeAction action) => this.DealDamageToLowestHP(this.Card, 1, (Card c) => c.IsHero, (Card c) => new int?(1), DamageType.Energy, numberOfTargets: this.FindNumberOfRadiationCardsInPlay() ?? default), TriggerType.DealDamage);
+            base.AddStartOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, (PhaseChangeAction action) => this.DealDamageToLowestHP(this.Card, 1, (Card c) => IsHero(c), (Card c) => new int?(1), DamageType.Energy, numberOfTargets: this.FindNumberOfRadiationCardsInPlay() ?? default), TriggerType.DealDamage);
 
             //At the end of the villain turn, put a random Radiation card from the villain trash into play.
             base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, new Func<PhaseChangeAction, IEnumerator>(this.BringRadiationBackResponse), TriggerType.PutIntoPlay);

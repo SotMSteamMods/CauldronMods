@@ -25,7 +25,7 @@ namespace Cauldron.Dynamo
             if (base.FindPython().IsInPlayAndHasGameText)
             {
                 //...destroy {H} hero ongoing and/or equipment cards.
-                coroutine = base.GameController.SelectAndDestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (base.IsEquipment(c) || c.IsOngoing)), base.Game.H, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndDestroyCards(base.DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && (base.IsEquipment(c) || IsOngoing(c))), base.Game.H, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

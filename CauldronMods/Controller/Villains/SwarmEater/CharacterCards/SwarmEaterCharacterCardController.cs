@@ -28,7 +28,7 @@ namespace Cauldron.SwarmEater
                 base.AddSideTrigger(base.AddDealDamageAtStartOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => this.IsPursued(c), TargetType.All, 3, DamageType.Psychic));
 
                 //Whenever a pursued hero deals damage to a target other than {SwarmEater}, you may move Single-Minded Pursuit next to that target.
-                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction dda) => dda.DamageSource != null && dda.DamageSource.Card != null && this.IsPursued(dda.DamageSource.Card) && dda.DamageSource.Card.IsHeroCharacterCard && dda.Target != base.Card && dda.Target != dda.DamageSource.Card && dda.Target.IsInPlay && !dda.Target.IsBeingDestroyed,
+                base.AddSideTrigger(base.AddTrigger<DealDamageAction>((DealDamageAction dda) => dda.DamageSource != null && dda.DamageSource.Card != null && this.IsPursued(dda.DamageSource.Card) && IsHeroCharacterCard(dda.DamageSource.Card) && dda.Target != base.Card && dda.Target != dda.DamageSource.Card && dda.Target.IsInPlay && !dda.Target.IsBeingDestroyed,
                             this.ChangePursuedResponse, TriggerType.MoveCard, TriggerTiming.After));
 
                 if (base.Game.IsAdvanced)
@@ -106,7 +106,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DealDamageResponse(PlayCardAction action)
         {
             //...{SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage.
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c != base.Card && !c.IsHero, (Card c) => 3, DamageType.Melee);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c != base.Card && !IsHero(c), (Card c) => 3, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

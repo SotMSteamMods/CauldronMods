@@ -56,9 +56,9 @@ namespace Cauldron.Cypher
 
                     storedDestroy = new List<DestroyCardAction> { };
                     storedHero = new List<SelectTurnTakerDecision> { };
-                    heroCriteria = new LinqTurnTakerCriteria(tt => tt.GetCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing).Any());
+                    heroCriteria = new LinqTurnTakerCriteria(tt => tt.GetCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsOngoing(c)).Any());
 
-                    routine = GameController.SelectHeroToDestroyTheirCard(DecisionMaker, (httc) => new LinqCardCriteria(c => c.Owner == httc.TurnTaker && c.IsInPlayAndHasGameText && c.IsOngoing, "ongoing"),
+                    routine = GameController.SelectHeroToDestroyTheirCard(DecisionMaker, (httc) => new LinqCardCriteria(c => c.Owner == httc.TurnTaker && c.IsInPlayAndHasGameText && IsOngoing(c), "ongoing"),
                                     additionalCriteria: heroCriteria,
                                     storedResultsTurnTaker: storedHero,
                                     storedResultsAction: storedDestroy,

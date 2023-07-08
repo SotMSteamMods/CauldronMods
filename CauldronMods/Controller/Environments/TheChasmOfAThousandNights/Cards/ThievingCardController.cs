@@ -17,7 +17,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override void AddTriggers()
         {
             //Whenever the target next to this card deals damage to a hero, that hero must discard a card.
-            AddTrigger((DealDamageAction dd) => dd.DidDealDamage && GetCardThisCardIsBelow() != null && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == GetCardThisCardIsBelow() && dd.Target != null && dd.Target.IsHeroCharacterCard, DiscardCardResponse, TriggerType.DiscardCard, TriggerTiming.After);
+            AddTrigger((DealDamageAction dd) => dd.DidDealDamage && GetCardThisCardIsBelow() != null && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card == GetCardThisCardIsBelow() && dd.Target != null && IsHeroCharacterCard(dd.Target), DiscardCardResponse, TriggerType.DiscardCard, TriggerTiming.After);
             base.AddTriggers();
         }
 

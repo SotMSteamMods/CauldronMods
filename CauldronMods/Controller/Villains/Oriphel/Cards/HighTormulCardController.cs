@@ -18,7 +18,7 @@ namespace Cauldron.Oriphel
             base.AddTriggers();
 
             //"At the start of each hero turn, this card deals that hero 2 toxic damage.",
-            AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame,
+            AddStartOfTurnTrigger((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame,
                                       DamageTurnTakerHeroResponse,
                                       TriggerType.DealDamage);
         }
@@ -32,7 +32,7 @@ namespace Cauldron.Oriphel
                                                                                 1,
                                                                                 false,
                                                                                 1,
-                                                                                additionalCriteria: (Card c) => c.Owner == Game.ActiveTurnTaker && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame,
+                                                                                additionalCriteria: (Card c) => c.Owner == Game.ActiveTurnTaker &&  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame,
                                                                                 cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

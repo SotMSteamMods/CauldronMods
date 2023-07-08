@@ -79,7 +79,7 @@ namespace Cauldron.VaultFive
         protected int GetNumberOfTurnTakersInSameBattleZone(List<TurnTaker> usedTurnTakers = null)
         {
             usedTurnTakers = usedTurnTakers ?? new List<TurnTaker>();
-            return GameController.AllTurnTakers.Where(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && tt.BattleZone == Card.BattleZone && !usedTurnTakers.Contains(tt)).Count();
+            return GameController.AllTurnTakers.Where(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && tt.BattleZone == Card.BattleZone && !usedTurnTakers.Contains(tt)).Count();
         }
 
         private bool HasOwner

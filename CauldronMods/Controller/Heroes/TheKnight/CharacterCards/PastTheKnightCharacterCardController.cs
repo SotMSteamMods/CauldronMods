@@ -36,7 +36,7 @@ namespace Cauldron.TheKnight
             Card equipment = storedEquipment.FirstOrDefault().SelectedCard;
             //"...next to a hero"
             List<SelectCardDecision> storedHero = new List<SelectCardDecision> { };
-            coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroCharacterCard, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHeroCharacterCard && !c.IsIncapacitated, "hero character"), storedHero, false, cardSource: GetCardSource());
+            coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.HeroCharacterCard, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsTarget &&  IsHeroCharacterCard(c) && !c.IsIncapacitated, "hero character"), storedHero, false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

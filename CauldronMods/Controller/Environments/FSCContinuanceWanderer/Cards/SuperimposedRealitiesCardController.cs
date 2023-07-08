@@ -20,7 +20,7 @@ namespace Cauldron.FSCContinuanceWanderer
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Play this card next to a hero.
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults, true, decisionSources);
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource())), storedResults, true, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -36,10 +36,10 @@ namespace Cauldron.FSCContinuanceWanderer
         {
             //Whenever another hero would play a card, use a power, or draw a card, instead the hero next to this card does that respective action.
             //When a Play Card/Use Power/Draw Card phase is entered then give the Superimposed target those actions instead
-            //base.AddPhaseChangeTrigger((TurnTaker turnTaker) => turnTaker.IsHero && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), (PhaseChangeAction action) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(action.ToPhase.Phase), this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
+            //base.AddPhaseChangeTrigger((TurnTaker turnTaker) => IsHero(turnTaker) && turnTaker != cardThisIsNextTo.NativeDeck.OwnerTurnTaker, (Phase phase) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(phase), (PhaseChangeAction action) => new Phase[] { Phase.PlayCard, Phase.UsePower, Phase.DrawCard }.Contains(action.ToPhase.Phase), this.SuperimposedPhaseResponse, new TriggerType[] { TriggerType.SetPhaseActionCount, TriggerType.PreventPhaseAction }, TriggerTiming.After);
             //If a hero were to hero play. Instead the Superimposed plays.
 
-            base.AddTrigger<PlayCardAction>((PlayCardAction action) => !action.IsPutIntoPlay && action.TurnTakerController.TurnTaker != superimposedTurnTaker && action.TurnTakerController.IsHero && GameController.IsTurnTakerVisibleToCardSource(action.TurnTakerController.TurnTaker, GetCardSource()), SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
+            base.AddTrigger<PlayCardAction>((PlayCardAction action) => !action.IsPutIntoPlay && action.TurnTakerController.TurnTaker != superimposedTurnTaker && IsHero(action.TurnTakerController.TurnTaker) && GameController.IsTurnTakerVisibleToCardSource(action.TurnTakerController.TurnTaker, GetCardSource()), SuperimposePlayResponse, TriggerType.PlayCard, TriggerTiming.Before);
 
             //If a hero were to use a power. Instead the Superimposed plays.
             base.AddTrigger<UsePowerAction>((UsePowerAction action) => action.HeroUsingPower.TurnTaker != superimposedTurnTaker && GameController.IsTurnTakerVisibleToCardSource(action.HeroUsingPower.TurnTaker, GetCardSource()), SuperimposePowerResponse, TriggerType.UsePower, TriggerTiming.Before);

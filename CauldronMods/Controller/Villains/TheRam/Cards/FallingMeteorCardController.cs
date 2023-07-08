@@ -15,7 +15,7 @@ namespace Cauldron.TheRam
         public FallingMeteorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowNumberOfCardsAtLocations(() => new Location[] { TurnTaker.Trash, TurnTaker.Deck }, new LinqCardCriteria((Card c) => c.Identifier == "UpClose", "", false, singular: "copy of Up Close", plural: "copies of Up Close"));
-            SpecialStringMaker.ShowHighestHP(1, () => Game.H - 2, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && !IsUpClose(c), "", false, singular: "hero that is not Up Close", plural: "heroes that are not Up Close"));
+            SpecialStringMaker.ShowHighestHP(1, () => Game.H - 2, new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && !IsUpClose(c), "", false, singular: "hero that is not Up Close", plural: "heroes that are not Up Close"));
 
         }
 
@@ -81,7 +81,7 @@ namespace Cauldron.TheRam
             //"{TheRam} deals each non-villain target {H} projectile damage."
             if (RamIfInPlay != null)
             {
-                IEnumerator damage = DealDamage(GetRam, (Card c) => c.IsInPlayAndHasGameText && c.IsNonVillainTarget, H, DamageType.Projectile);
+                IEnumerator damage = DealDamage(GetRam, (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && !IsVillainTarget(c), H, DamageType.Projectile);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(damage);
@@ -181,7 +181,7 @@ namespace Cauldron.TheRam
             for(int i = 0; i < upCloseList.Count(); i++)
             {
                 //this has to be dynamic because once we pick one of a multi-character team the rest are no longer valid
-                List<Card> currentHighestOptions = GameController.FindAllTargetsWithHighestHitPoints(1, (Card c) => c.IsHeroCharacterCard && !IsUpClose(c), GetCardSource(), highestRemainingTargets).ToList();
+                List<Card> currentHighestOptions = GameController.FindAllTargetsWithHighestHitPoints(1, (Card c) =>  IsHeroCharacterCard(c) && !IsUpClose(c), GetCardSource(), highestRemainingTargets).ToList();
                 //Log.Debug($"Found {currentHighestOptions.Count()} viable targets");
                 if (currentHighestOptions.Any())
                 {

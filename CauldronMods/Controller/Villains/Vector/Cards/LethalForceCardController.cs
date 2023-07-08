@@ -25,7 +25,7 @@ namespace Cauldron.Vector
         public override IEnumerator Play()
         {
             int highestHpDamage = base.Game.H - 1;
-            IEnumerator routine = base.DealDamageToHighestHP(base.CharacterCard, 2, c => c.IsHero && c.IsTarget, c => new int?(highestHpDamage), DamageType.Melee);
+            IEnumerator routine = base.DealDamageToHighestHP(base.CharacterCard, 2, c => IsHeroTarget(c), c => new int?(highestHpDamage), DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);
@@ -36,7 +36,7 @@ namespace Cauldron.Vector
             }
 
             int lowestHpDamage = base.Game.H - 2;
-            routine = base.DealDamageToLowestHP(base.CharacterCard, 1, c => c.IsHero && c.IsTarget, c => new int?(lowestHpDamage), DamageType.Melee);
+            routine = base.DealDamageToLowestHP(base.CharacterCard, 1, c => IsHeroTarget(c), c => new int?(lowestHpDamage), DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

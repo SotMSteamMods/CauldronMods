@@ -23,7 +23,7 @@ namespace Cauldron.Echelon
 
         public override IEnumerator Play()
         {
-            IEnumerator coroutine = IncreasePhaseActionCountIfInPhase((TurnTaker tt) => tt.IsHero, Phase.DrawCard, 1);
+            IEnumerator coroutine = IncreasePhaseActionCountIfInPhase((TurnTaker tt) => IsHero(tt), Phase.DrawCard, 1);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -37,8 +37,8 @@ namespace Cauldron.Echelon
         protected override void AddTacticEffectTrigger()
         {
             //"During their draw Phase, heroes draw 1 additional card, then discard 1 card."
-            AddAdditionalPhaseActionTrigger((TurnTaker tt) => tt.IsHero, Phase.DrawCard, 1);
-            AddPhaseChangeTrigger(tt => tt.IsHero, phase => true, pca => pca.FromPhase.IsDrawCard, ThenDiscard, new TriggerType[] { TriggerType.DiscardCard }, TriggerTiming.Before);
+            AddAdditionalPhaseActionTrigger((TurnTaker tt) => IsHero(tt), Phase.DrawCard, 1);
+            AddPhaseChangeTrigger(tt => IsHero(tt), phase => true, pca => pca.FromPhase.IsDrawCard, ThenDiscard, new TriggerType[] { TriggerType.DiscardCard }, TriggerTiming.Before);
         }
 
         private IEnumerator ThenDiscard(PhaseChangeAction pca)

@@ -29,7 +29,7 @@ namespace Cauldron.Northspar
         private IEnumerator DealDamageAndDestroyResponse(PhaseChangeAction pca)
         {
             //this card deals each hero target 1 psychic damage...
-            IEnumerator coroutine = base.DealDamage(base.Card, (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Psychic);
+            IEnumerator coroutine = base.DealDamage(base.Card, (Card c) => IsHeroTarget(c), 1, DamageType.Psychic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

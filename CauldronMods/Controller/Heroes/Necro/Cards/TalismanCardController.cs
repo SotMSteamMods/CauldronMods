@@ -34,7 +34,7 @@ namespace Cauldron.Necro
 
             //if the card this is next to leaves, have this card fall off
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
-            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(false, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
+            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(false, cardThisCardIsNextTo != null && !IsHeroCharacterCard(cardThisCardIsNextTo));
         }
     }
 }

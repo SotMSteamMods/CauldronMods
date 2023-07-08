@@ -9,9 +9,8 @@ namespace Cauldron.TheStranger
 {
     public abstract class RuneCardController : TheStrangerBaseCardController
     {
-        protected RuneCardController(Card card, TurnTakerController turnTakerController, LinqCardCriteria nextToCardCriteria) : base(card, turnTakerController)
+        protected RuneCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            this.NextToCardCriteria = nextToCardCriteria;
         }
 
         public override void AddTriggers()
@@ -21,7 +20,7 @@ namespace Cauldron.TheStranger
            
             //if the card this is next to leaves, have this card fall off
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
-            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(false, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
+            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(false, cardThisCardIsNextTo != null && !IsHeroCharacterCard(cardThisCardIsNextTo));
         }
 
         private IEnumerator DestroyCardResponse(PhaseChangeAction action)
@@ -69,6 +68,6 @@ namespace Cauldron.TheStranger
             yield break;
         }
 
-        public LinqCardCriteria NextToCardCriteria { get; }
+        public virtual LinqCardCriteria NextToCardCriteria { get; }
     }
 }

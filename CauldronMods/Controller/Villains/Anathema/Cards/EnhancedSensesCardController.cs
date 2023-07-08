@@ -19,7 +19,7 @@ namespace Cauldron.Anathema
 			base.AddChangeDamageTypeTrigger((DealDamageAction dd) => true, DamageType.Sonic);
 
 			//Whenever a Hero card enters play, this card deals that Hero Character 1 sonic damage.
-			base.AddTrigger<PlayCardAction>((PlayCardAction pca) => pca.CardToPlay.IsHero, this.DealDamageResponse,
+			base.AddTrigger<PlayCardAction>((PlayCardAction pca) => IsHero(pca.CardToPlay), this.DealDamageResponse,
 				new TriggerType[] { TriggerType.DealDamage }, TriggerTiming.After, null, false, true, null, false, null, null, false, false);		
 		}
 

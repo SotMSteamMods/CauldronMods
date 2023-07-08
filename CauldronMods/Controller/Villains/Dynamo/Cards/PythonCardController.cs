@@ -52,7 +52,7 @@ namespace Cauldron.Dynamo
         private IEnumerator DealDamageResponse(MoveCardAction action)
         {
             //...this card deals the 2 hero targets with the lowest HP {H - 2} toxic damage each.
-            IEnumerator coroutine = base.DealDamageToLowestHP(this.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => base.Game.H - 2, DamageType.Toxic, numberOfTargets: 2);
+            IEnumerator coroutine = base.DealDamageToLowestHP(this.Card, 1, (Card c) => IsHeroTarget(c), (Card c) => base.Game.H - 2, DamageType.Toxic, numberOfTargets: 2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

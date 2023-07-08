@@ -21,7 +21,7 @@ namespace Cauldron.Echelon
 
             //"1 other player draws X+1 cards, where X is the number of tactic cards destroyed this turn."
             var selectTurnTakers = new SelectTurnTakersDecision(GameController, DecisionMaker, 
-                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && tt != DecisionMaker.TurnTaker && !tt.IsIncapacitatedOrOutOfGame), 
+                                                new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && tt != DecisionMaker.TurnTaker && !tt.IsIncapacitatedOrOutOfGame), 
                                                 SelectionType.DrawCard, 
                                                 numPlayers, false, numPlayers,
                                                 cardSource: GetCardSource());

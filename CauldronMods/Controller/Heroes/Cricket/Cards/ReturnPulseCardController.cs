@@ -18,7 +18,7 @@ namespace Cauldron.Cricket
         {
             List<DealDamageAction> targets = new List<DealDamageAction>();
             //{Cricket} deals up to 3 non-hero targets 1 sonic damage each.
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Sonic, 3, false, 0, additionalCriteria: (Card c) => !c.IsHero, storedResultsDamage: targets, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Sonic, 3, false, 0, additionalCriteria: (Card c) => !IsHero(c), storedResultsDamage: targets, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

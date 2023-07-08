@@ -22,7 +22,7 @@ namespace Cauldron.VaultFive
 
         protected IEnumerable<TurnTaker> GetPlayersWithArtifactsInHand()
         {
-            return FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && DoesPlayerHaveArtifactInHand(tt.ToHero()));
+            return FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && DoesPlayerHaveArtifactInHand(tt.ToHero()));
         }
 
         protected string BuildPlayersWithArtifactInHandSpecialString()

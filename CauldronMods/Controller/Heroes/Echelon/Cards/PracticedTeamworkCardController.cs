@@ -39,7 +39,7 @@ namespace Cauldron.Echelon
         protected override void AddTacticEffectTrigger()
         {
             //"Reduce damage dealt to hero targets by hero targets by 1."
-            AddReduceDamageTrigger((DealDamageAction dd) => dd.Target.IsHero && dd.DamageSource.IsHero && dd.DamageSource.IsTarget, _ => 1);
+            AddReduceDamageTrigger((DealDamageAction dd) => IsHero(dd.Target) && dd.DamageSource.IsHero && dd.DamageSource.IsTarget, _ => 1);
         }
     }
 }

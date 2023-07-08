@@ -21,7 +21,7 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            var coroutine = DealDamageToLowestHP(Card, 2, c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, c => H - 1, DamageType.Sonic);
+            var coroutine = DealDamageToLowestHP(Card, 2, c =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame, c => H - 1, DamageType.Sonic);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -40,7 +40,7 @@ namespace Cauldron.ScreaMachine
         private IEnumerator UltimateEndOfTurn()
         {
             List<DealDamageAction> results = new List<DealDamageAction>();
-            var coroutine = DealDamageToLowestHP(Card, 2, c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, c => H - 1, DamageType.Sonic,
+            var coroutine = DealDamageToLowestHP(Card, 2, c =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame, c => H - 1, DamageType.Sonic,
                                 storedResults: results,
                                 evenIfCannotDealDamage: true);
             if (UseUnityCoroutines)

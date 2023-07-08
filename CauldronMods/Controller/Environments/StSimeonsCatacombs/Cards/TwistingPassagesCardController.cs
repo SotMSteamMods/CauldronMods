@@ -21,7 +21,7 @@ namespace Cauldron.StSimeonsCatacombs
             base.AddIncreaseDamageTrigger(envCriteria, (DealDamageAction dd) => 1);
 
             //If there are fewer than 2 environment targets in play, increase damage dealt by hero targets by 1.
-            bool heroCriteria(DealDamageAction dd) => this.GetNumberOfEnvironmentTargetsInPlay() < 2 && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card.IsHero && dd.DamageSource.Card.IsTarget;
+            bool heroCriteria(DealDamageAction dd) => this.GetNumberOfEnvironmentTargetsInPlay() < 2 && dd.DamageSource != null && dd.DamageSource.Card != null && IsHero(dd.DamageSource.Card) && dd.DamageSource.Card.IsTarget;
             base.AddIncreaseDamageTrigger(heroCriteria, (DealDamageAction dd) => 1);
 
             base.AddTriggers();

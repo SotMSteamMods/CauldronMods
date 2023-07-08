@@ -17,7 +17,7 @@ namespace Cauldron.Starlight
             IEnumerator draw = DrawCard(HeroTurnTaker);
             //"2 players may play 1 card."
             IEnumerator allowPlays = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
-                                                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && CanPlayCardsFromHand(GameController.FindHeroTurnTakerController(tt.ToHero()))),
+                                                                                new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && CanPlayCardsFromHand(GameController.FindHeroTurnTakerController(tt.ToHero()))),
                                                                                 SelectionType.PlayCard,
                                                                                 (TurnTaker tt) => SelectAndPlayCardFromHand(GameController.FindHeroTurnTakerController(tt.ToHero())),
                                                                                 numberOfTurnTakers: 2,

@@ -21,7 +21,7 @@ namespace Cauldron.TheMistressOfFate
         public override void AddTriggers()
         {
             //"The first time a hero card is played each turn, this card deals that hero X melee damage, where X is the number of cards in the environment trash plus 1.",
-            AddTrigger((PlayCardAction pc) => pc.CardToPlay.IsHero && !pc.IsPutIntoPlay && !HasBeenSetToTrueThisTurn(CardPlayedKey), PlayCardDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            AddTrigger((PlayCardAction pc) => IsHero(pc.CardToPlay) && !pc.IsPutIntoPlay && !HasBeenSetToTrueThisTurn(CardPlayedKey), PlayCardDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             //"When this card is destroyed, destroy 1 Warped Malus."
             AddWhenDestroyedTrigger(DestroyWarpedMalusResponse, TriggerType.DestroyCard);
         }
@@ -39,7 +39,7 @@ namespace Cauldron.TheMistressOfFate
                                                                 (Card c) => FindEnvironment().TurnTaker.Trash.NumberOfCards + 1,
                                                                 DamageType.Melee,
                                                                 () => 1, false, 1,
-                                                                additionalCriteria: (Card c) => c.IsHeroCharacterCard && c.Owner == hero,
+                                                                additionalCriteria: (Card c) =>  IsHeroCharacterCard(c) && c.Owner == hero,
                                                                 cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {

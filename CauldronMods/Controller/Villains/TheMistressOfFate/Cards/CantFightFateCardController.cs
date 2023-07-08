@@ -19,7 +19,7 @@ namespace Cauldron.TheMistressOfFate
         {
             //"The hero with the highest HP...",
             var storedHero = new List<Card>();
-            IEnumerator coroutine = GameController.FindTargetWithHighestHitPoints(1, (Card c) => c.IsHeroCharacterCard, storedHero, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.FindTargetWithHighestHitPoints(1, (Card c) =>  IsHeroCharacterCard(c), storedHero, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

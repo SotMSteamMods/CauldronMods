@@ -41,7 +41,7 @@ namespace Cauldron.Outlander
             if(Game.IsChallenge)
             {
                 //CHALLENGE: Whenever a villain Ongoing is destroyed, other villain Ongoings are indestructible until the end of the villain turn.
-                base.AddSideTrigger(AddTrigger((DestroyCardAction dca) => dca.WasCardDestroyed && dca.CardToDestroy != null && dca.CardToDestroy.Card.IsOngoing && IsVillain(dca.CardToDestroy.Card), ChallengeOngoingDestroyedResponse, TriggerType.CreateStatusEffect, TriggerTiming.After));
+                base.AddSideTrigger(AddTrigger((DestroyCardAction dca) => dca.WasCardDestroyed && dca.CardToDestroy != null && IsOngoing(dca.CardToDestroy.Card) && IsVillain(dca.CardToDestroy.Card), ChallengeOngoingDestroyedResponse, TriggerType.CreateStatusEffect, TriggerTiming.After));
             }
 
 
@@ -207,7 +207,7 @@ namespace Cauldron.Outlander
         private IEnumerator DestroyCardsResponse(PhaseChangeAction action)
         {
             //...destroy {H - 2} hero ongoing and/or equipment cards.
-            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), Game.H - 2, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && (IsOngoing(c) || IsEquipment(c)), "hero ongoing or equipment"), Game.H - 2, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

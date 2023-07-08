@@ -21,7 +21,7 @@ namespace Cauldron.Cypher
 
         protected bool IsAugmentedHeroCharacterCard(Card hero)
         {
-            return hero.IsHeroCharacterCard && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
+            return IsHeroCharacterCard(hero) && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
                 && hero.NextToLocation.HasCards && hero.GetAllNextToCards(false).Any(IsAugment);
         }
 
@@ -64,7 +64,7 @@ namespace Cauldron.Cypher
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
         {
             return FindTurnTakersWhere(tt =>
-                tt.IsHero && tt.CharacterCards.Any(IsAugmentedHeroCharacterCard)).ToList();
+                IsHero(tt) && tt.CharacterCards.Any(IsAugmentedHeroCharacterCard)).ToList();
         }
 
         public override void AddStartOfGameTriggers()

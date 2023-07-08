@@ -27,7 +27,7 @@ namespace Cauldron.Impact
 
             _customText_numBoost = numBoost;
             _customText_numToDestroy = numToDestroy;
-            bool enoughOngoingsInPlay = GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() >= numToDestroy;
+            bool enoughOngoingsInPlay = GameController.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsOngoing(c) && IsHero(c) && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() >= numToDestroy;
 
             if (numTargets < 1)
             {
@@ -117,7 +117,7 @@ namespace Cauldron.Impact
 
                 if (DidPlayerAnswerYes(storedYesNo))
                 {
-                    coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsOngoing && c.IsHero && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing"), numToDestroy, false, numToDestroy, cardSource: GetCardSource());
+                    coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && IsOngoing(c) && IsHero(c) && !c.IsBeingDestroyed && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "hero ongoing"), numToDestroy, false, numToDestroy, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -186,7 +186,7 @@ namespace Cauldron.Impact
                     {
                         //"Select a hero target. That target deals 1 other target 1 projectile damage.",
                         var storedTarget = new List<SelectCardDecision> { };
-                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsTarget && c.IsHero), storedTarget, false, cardSource: GetCardSource());
+                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsTarget && IsHero(c)), storedTarget, false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

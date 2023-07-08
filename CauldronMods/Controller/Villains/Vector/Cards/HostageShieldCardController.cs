@@ -28,7 +28,7 @@ namespace Cauldron.Vector
         {
             List<Card> storedHeroes = new List<Card>();
             IEnumerator routine = base.GameController.FindTargetWithLowestHitPoints(1,
-                c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 
+                c =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 
                 storedHeroes, cardSource: this.GetCardSource());
 
             if (base.UseUnityCoroutines)
@@ -85,7 +85,7 @@ namespace Cauldron.Vector
 
         public override void AddTriggers()
         {
-            base.AddStartOfTurnTrigger(tt => tt.IsHero, base.SkipTheirTurnToDestroyThisCardResponse, new[]
+            base.AddStartOfTurnTrigger(tt => IsHero(tt), base.SkipTheirTurnToDestroyThisCardResponse, new[]
             {
                 TriggerType.SkipTurn,
                 TriggerType.DestroySelf

@@ -64,7 +64,7 @@ namespace Cauldron.Necro
                 case 0:
                     {
                         //One hero target deals itself 3 toxic damage.
-                        IEnumerable<Card> choices = FindCardsWhere((Card c) => c.IsInPlayAndNotUnderCard && c.IsTarget && c.IsHero);
+                        IEnumerable<Card> choices = FindCardsWhere((Card c) => c.IsInPlayAndNotUnderCard && c.IsTarget && IsHero(c));
                         List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
                         var damageInfo = new DealDamageAction(GetCardSource(), new DamageSource(GameController, TurnTaker), null, 3, DamageType.Toxic);
                         IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.DealDamageSelf, choices, storedResults,
@@ -151,7 +151,7 @@ namespace Cauldron.Necro
                         TurnTaker turnTaker = (from d in storedResults
                                                where d.Completed
                                                select d.SelectedTurnTaker).FirstOrDefault();
-                        if (turnTaker != null && turnTaker.IsHero)
+                        if (turnTaker != null && IsHero(turnTaker))
                         {
                             coroutine3 = DiscardAndDrawResponse(turnTaker);
                             if (base.UseUnityCoroutines)

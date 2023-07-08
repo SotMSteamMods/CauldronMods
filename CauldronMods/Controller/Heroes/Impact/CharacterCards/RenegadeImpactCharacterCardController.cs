@@ -20,7 +20,7 @@ namespace Cauldron.Impact
             //"Destroy 1 of your ongoing cards. If you do, play a card and draw a card."
             int numToDestroy = GetPowerNumeral(0, 1);
             var storedDestroy = new List<DestroyCardAction> { };
-            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.Owner == this.TurnTaker && c.IsOngoing && !c.IsBeingDestroyed, "ongoing"),
+            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.Owner == this.TurnTaker && IsOngoing(c) && !c.IsBeingDestroyed, "ongoing"),
                                                                                                         numToDestroy, false, numToDestroy, storedResultsAction: storedDestroy, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

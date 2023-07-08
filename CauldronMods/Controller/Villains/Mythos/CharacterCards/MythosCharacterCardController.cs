@@ -138,7 +138,7 @@ namespace Cauldron.Mythos
             if (this.IsTopCardMatching((MythosMadnessDeckIdentifier)))
             {
                 //{MythosMadness} {Mythos} deals each hero target {H} infernal damage.
-                coroutine = base.DealDamage(this.Card, (Card c) => c.IsHero, base.Game.H, DamageType.Infernal);
+                coroutine = base.DealDamage(this.Card, (Card c) => IsHero(c), base.Game.H, DamageType.Infernal);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

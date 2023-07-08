@@ -21,7 +21,7 @@ namespace Cauldron.Outlander
         public override void AddTriggers()
         {
             //The first time a hero one-shot enters play each turn, {Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
-            AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !HasBeenSetToTrueThisTurn(OncePerTurn) && action.CardEnteringPlay.IsHero && action.CardEnteringPlay.IsOneShot, OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
+            AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => !HasBeenSetToTrueThisTurn(OncePerTurn) && IsHero(action.CardEnteringPlay) && action.CardEnteringPlay.IsOneShot, OncePerTurnResponse, TriggerType.DealDamage, TriggerTiming.After);
 
             //At the end of the villain turn, {Outlander} deals the hero target with the highest HP 3 melee damage.
             AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DealDamageResponse, TriggerType.DealDamage);
@@ -31,7 +31,7 @@ namespace Cauldron.Outlander
         {
             SetCardPropertyToTrueIfRealAction(OncePerTurn);
             //...{Outlander} deals the hero target with the highest HP 1 irreducible lightning damage.
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 1, DamageType.Lightning, isIrreducible: true);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => 1, DamageType.Lightning, isIrreducible: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -45,7 +45,7 @@ namespace Cauldron.Outlander
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals the hero target with the highest HP 3 melee damage.
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 3, DamageType.Melee);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => 3, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

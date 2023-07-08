@@ -11,7 +11,7 @@ namespace Cauldron.Starlight
     {
         public GoldenAstrolabeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && IsNextToConstellation(c), useCardsSuffix: false, singular: "hero character next to a constellation", plural: "hero characters next to a constellation"));
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && IsNextToConstellation(c), useCardsSuffix: false, singular: "hero character next to a constellation", plural: "hero characters next to a constellation"));
         }
 
         public override IEnumerator UsePower(int index = 0)
@@ -44,7 +44,7 @@ namespace Cauldron.Starlight
             LinqTurnTakerCriteria ttCriteria = new LinqTurnTakerCriteria((TurnTaker tt) =>
                                                         tt is HeroTurnTaker htt &&
                                                         !tt.IsIncapacitatedOrOutOfGame &&
-                                                        tt.HasCardsWhere((Card c) => c.IsHeroCharacterCard && IsNextToConstellation(c)) &&
+                                                        tt.HasCardsWhere((Card c) =>  IsHeroCharacterCard(c) && IsNextToConstellation(c)) &&
                                                         GetUsablePowersFromAllowedSource(GameController.FindHeroTurnTakerController(htt)).Any());
 
             //because of Nightlore Council Starlight, Sentinels, and others, restricting power use to either:
@@ -95,7 +95,7 @@ namespace Cauldron.Starlight
 
         private bool PowerCriteria(Power p)
         {
-            return !p.CardController.Card.IsHeroCharacterCard || IsNextToConstellation(p.CardController.Card);
+            return !IsHeroCharacterCard(p.CardController.Card) || IsNextToConstellation(p.CardController.Card);
         }
     }
 }

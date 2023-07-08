@@ -93,7 +93,7 @@ namespace Cauldron.Gyrosaur
                 case 1:
                     {
                         //"Each hero with fewer than 2 non-character cards in play may use a power now.",
-                        var viableHeroCriteria = new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero
+                        var viableHeroCriteria = new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt)
                                                                                     && !tt.IsIncapacitatedOrOutOfGame
                                                                                     && tt.GetCardsWhere((Card c) => c.IsInPlay && !c.IsCharacter).Count() < 2
                                                                                     && GameController.CanPerformAction<UsePowerAction>(FindTurnTakerController(tt), GetCardSource())

@@ -16,7 +16,7 @@ namespace Cauldron.TheWanderingIsle
         public override void AddTriggers()
         {
             //Whenever this card is dealt damage by a hero target, move it next to that target.
-            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.Card.IsTarget && dd.DamageSource.Card.IsHero && !IsThisCardNextToCard(dd.DamageSource) && dd.DidDealDamage, this.NextToResponse, new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource != null && dd.DamageSource.Card != null && IsHeroTarget(dd.DamageSource.Card) && !IsThisCardNextToCard(dd.DamageSource) && dd.DidDealDamage, this.NextToResponse, new TriggerType[] { TriggerType.MoveCard }, TriggerTiming.After);
             //If the card this card is next to leaves play, have this card fall off in the play area
             base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, true);
             //At the start of the environment turn, if this card is next to a target, it deals that target {H} toxic damage and moves back to the environment play area. Otherwise it deals Teryx {H + 2} toxic damage.

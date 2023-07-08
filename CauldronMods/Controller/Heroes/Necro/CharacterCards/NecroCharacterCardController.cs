@@ -58,7 +58,7 @@ namespace Cauldron.Necro
 
                         //Select a Hero
                         List<SelectCardDecision> storedHero = new List<SelectCardDecision>();
-                        var criteria = new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, "hero", false);
+                        var criteria = new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText &&  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame, "hero", false);
                         IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.DealDamageSelf, criteria, storedHero, false, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
@@ -125,7 +125,7 @@ namespace Cauldron.Necro
                             var httc = FindHeroTurnTakerController(GetSelectedTurnTaker(storedResultsTurnTaker).ToHero());
                             if (httc.HasMultipleCharacterCards)
                             {
-                                coroutine = base.GameController.SelectAndGainHP(httc, numCardsDiscarded * 2, false, c => c.IsInPlayAndHasGameText && c.IsHeroCharacterCard && c.IsInLocation(httc.HeroTurnTaker.PlayArea), cardSource: base.GetCardSource());
+                                coroutine = base.GameController.SelectAndGainHP(httc, numCardsDiscarded * 2, false, c => c.IsInPlayAndHasGameText &&  IsHeroCharacterCard(c) && c.IsInLocation(httc.HeroTurnTaker.PlayArea), cardSource: base.GetCardSource());
                             }
                             else
                             {
@@ -154,7 +154,7 @@ namespace Cauldron.Necro
 
                         //Select a hero target
                         List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => !c.IsIncapacitatedOrOutOfGame && c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, "hero target"), storedResults, false, cardSource: base.GetCardSource());
+                        IEnumerator coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => !c.IsIncapacitatedOrOutOfGame && IsHeroTarget(c) && c.IsInPlayAndHasGameText, "hero target"), storedResults, false, cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

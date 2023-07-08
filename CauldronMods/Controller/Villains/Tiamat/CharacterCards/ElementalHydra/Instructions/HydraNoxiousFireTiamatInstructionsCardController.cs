@@ -20,7 +20,7 @@ namespace Cauldron.Tiamat
         }
 
         //Whenever Element of Fire enters play and {InfernoTiamatCharacter} is decapitated, if {DecayTiamatCharacter} is active she deals each hero target X toxic damage, where X = 2 plus the number of Acid Breaths in the villain trash.
-        protected override IEnumerator alternateElementCoroutine => base.DealDamage(base.SecondHeadCardController().Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
+        protected override IEnumerator alternateElementCoroutine => base.DealDamage(base.SecondHeadCardController().Card, (Card c) => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, (Card c) => this.PlusNumberOfACardInTrash(2, "AcidBreath"), DamageType.Toxic);
         private List<HydraTiamatInstructionsCardController> AllInstructionCardControllers
         {
             get
@@ -99,12 +99,12 @@ namespace Cauldron.Tiamat
             if (!base.Card.IsFlipped)
             {//Front End of Turn Damage
                 //...{InfernoTiamatCharacter} deals the hero target with the highest HP 2 fire damage.
-                coroutine = base.DealDamageToHighestHP(base.FirstHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(2), DamageType.Fire);
+                coroutine = base.DealDamageToHighestHP(base.FirstHeadCardController().Card, 1, (Card c) => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, (Card c) => new int?(2), DamageType.Fire);
             }
             else
             {//Back End of Turn Damage
                 //At the end of the villain turn, if {InfernoTiamatCharacter} is active, she deals the hero target with the second highest HP 1 fire damage.
-                coroutine = base.DealDamageToHighestHP(base.FirstHeadCardController().Card, 2, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(1), DamageType.Fire);
+                coroutine = base.DealDamageToHighestHP(base.FirstHeadCardController().Card, 2, (Card c) => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, (Card c) => new int?(1), DamageType.Fire);
             }
             if (base.UseUnityCoroutines)
             {

@@ -42,7 +42,7 @@ namespace Cauldron.TheRam
             //if we're given a hero to go to, go there - if we can
             if (NextToHeroToGoTo != null)
             {
-                if (NextToHeroToGoTo.IsNextToCard && NextToHeroToGoTo.OwnerCard.IsHeroCharacterCard && !IsUpClose(NextToHeroToGoTo.OwnerCard))
+                if (NextToHeroToGoTo.IsNextToCard && IsHeroCharacterCard(NextToHeroToGoTo.OwnerCard) && !IsUpClose(NextToHeroToGoTo.OwnerCard))
                 {
                     storedResults.Add(new MoveCardDestination(NextToHeroToGoTo));
                     NextToHeroToGoTo = null;
@@ -94,7 +94,7 @@ namespace Cauldron.TheRam
 
         public IEnumerator PlayBySpecifiedHero(Card hero, bool isPutIntoPlay, CardSource cardSource)
         {
-            if (hero != null && hero.Owner.IsHero && hero.IsHeroCharacterCard && !hero.Owner.IsIncapacitatedOrOutOfGame && !IsUpClose(hero))
+            if (hero != null && IsHero(hero.Owner) && IsHeroCharacterCard(hero) && !hero.Owner.IsIncapacitatedOrOutOfGame && !IsUpClose(hero))
             {
                 NextToHeroToGoTo = hero.NextToLocation;
             }
@@ -115,7 +115,7 @@ namespace Cauldron.TheRam
         {
             get
             {
-                return FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.ToHero().IsIncapacitatedOrOutOfGame && !IsUpClose(tt)).Count() == 0;
+                return FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && !tt.ToHero().IsIncapacitatedOrOutOfGame && !IsUpClose(tt)).Count() == 0;
 
             }
         }
@@ -124,8 +124,8 @@ namespace Cauldron.TheRam
             get
             {
                 return (Card c) => c.IsInPlayAndHasGameText &&
-                                       c.IsHeroCharacterCard &&
-                                       c.Owner.IsHero &&
+                                        IsHeroCharacterCard(c) &&
+                                       IsHero(c.Owner) &&
                                        !c.Owner.ToHero().IsIncapacitatedOrOutOfGame &&
                                        !IsUpClose(c.Owner);
             }

@@ -19,7 +19,7 @@ namespace Cauldron.ScreaMachine
         private IEnumerator DeathMetalDestroyCard(TurnTaker tt, List<DestroyCardAction> result)
         {
             var httc = FindHeroTurnTakerController(tt.ToHero());
-            var criteria = new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && c.Owner == tt && (c.IsOngoing || IsEquipment(c)), "equipment or ongoing");
+            var criteria = new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && c.Owner == tt && (IsOngoing(c) || IsEquipment(c)), "equipment or ongoing");
             var coroutine = GameController.SelectAndDestroyCard(httc, criteria, true, storedResultsAction: result, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -35,7 +35,7 @@ namespace Cauldron.ScreaMachine
         {
             var result = new List<DestroyCardAction>();
             var fake = new DealDamageAction(GetCardSource(), new DamageSource(GameController, TurnTaker), null, 3, DamageType.Psychic);
-            var coroutine = GameController.SelectTurnTakersAndDoAction(null, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame), SelectionType.DestroyCard,
+            var coroutine = GameController.SelectTurnTakersAndDoAction(null, new LinqTurnTakerCriteria(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame), SelectionType.DestroyCard,
                                 actionWithTurnTaker: tt => DeathMetalDestroyCard(tt, result),
                                 allowAutoDecide: true,
                                 dealDamageInfo: new[] { fake },
@@ -51,7 +51,7 @@ namespace Cauldron.ScreaMachine
 
             var heroesThatDidNotDestroyCards = base.GetHeroesThatDidNotDestroyCards(result);
 
-            IEnumerator coroutine2 = DealDamage(null, (Card c) => c.IsHeroCharacterCard && heroesThatDidNotDestroyCards.Contains(FindHeroTurnTakerController(c.Owner.ToHero())), 3, DamageType.Psychic,
+            IEnumerator coroutine2 = DealDamage(null, (Card c) =>  IsHeroCharacterCard(c) && heroesThatDidNotDestroyCards.Contains(FindHeroTurnTakerController(c.Owner.ToHero())), 3, DamageType.Psychic,
                                         damageSourceInfo: new TargetInfo(HighestLowestHP.HighestHP, 1, 1, new LinqCardCriteria(c => IsVillainTarget(c))));
             if (base.UseUnityCoroutines)
             {

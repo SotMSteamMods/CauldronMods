@@ -22,25 +22,24 @@ namespace Cauldron.Vanish
 
         private bool IsEquipmentOrOngoing(Card c)
         {
-            return c.IsOngoing || IsEquipment(c);
+            return IsOngoing(c) || IsEquipment(c);
         }
 
         public override IEnumerator Play()
         {
             List<HeroTurnTaker> selected = new List<HeroTurnTaker>();
             List<HeroTurnTaker> damaged = new List<HeroTurnTaker>();
-            bool done = false;
             IEnumerator coroutine;
 
             Func<DealDamageAction, IEnumerator> addDamagedToList = delegate (DealDamageAction dda)
             {
-                if(dda.DidDealDamage && dda.Target.IsHeroCharacterCard && dda.Target.Owner.IsHero)
+                if(dda.DidDealDamage && IsHeroCharacterCard(dda.Target) && IsHero(dda.Target.Owner))
                 {
                     damaged.Add(dda.Target.Owner.ToHero());
                 }
                 return DoNothing();
             };
-            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 3, DamageType.Energy, null, false, 0, additionalCriteria: c => c.IsHeroCharacterCard, addStatusEffect: addDamagedToList, cardSource: GetCardSource());
+            coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 3, DamageType.Energy, null, false, 0, additionalCriteria: c =>  IsHeroCharacterCard(c), addStatusEffect: addDamagedToList, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -85,7 +84,7 @@ namespace Cauldron.Vanish
 
         private IEnumerator DamagedTurnTakerResponse(TurnTaker tt)
         {
-            IEnumerator coroutine = GameController.SelectCardFromLocationAndMoveIt(FindHeroTurnTakerController(tt.ToHero()), tt.Trash, new LinqCardCriteria(c => c.IsOngoing || IsEquipment(c), "ongoing or equipment"), new List<MoveCardDestination> { new MoveCardDestination(tt.PlayArea) }, isPutIntoPlay: true, optional: true, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectCardFromLocationAndMoveIt(FindHeroTurnTakerController(tt.ToHero()), tt.Trash, new LinqCardCriteria(c => IsOngoing(c) || IsEquipment(c), "ongoing or equipment"), new List<MoveCardDestination> { new MoveCardDestination(tt.PlayArea) }, isPutIntoPlay: true, optional: true, cardSource: GetCardSource());
             return coroutine;
         }
 

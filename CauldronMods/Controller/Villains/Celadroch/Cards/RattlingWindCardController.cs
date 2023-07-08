@@ -27,7 +27,7 @@ namespace Cauldron.Celadroch
         {
             AddTrigger<DrawCardAction>(dca => dca.DidDrawCard, DrawCardDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
 
-            AddWhenDestroyedTrigger(ga => GameController.DealDamage(DecisionMaker, CharacterCard, c => c.IsHero && c.IsTarget, 1, DamageType.Cold, cardSource: GetCardSource()), TriggerType.DealDamage);
+            AddWhenDestroyedTrigger(ga => GameController.DealDamage(DecisionMaker, CharacterCard, c => IsHeroTarget(c), 1, DamageType.Cold, cardSource: GetCardSource()), TriggerType.DealDamage);
         }
 
         private IEnumerator DrawCardDamageResponse(DrawCardAction dca)

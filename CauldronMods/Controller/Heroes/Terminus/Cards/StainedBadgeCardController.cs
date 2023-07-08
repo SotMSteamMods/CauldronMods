@@ -24,7 +24,7 @@ namespace Cauldron.Terminus
         {
             Func<int> otherActiveHeroes = () => base.GameController.AllTurnTakers.Count((tt) =>
                     tt != base.TurnTaker &&
-                    tt.IsHero &&
+                    IsHero(tt) &&
                     !tt.IsIncapacitatedOrOutOfGame &&
                     base.GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) &&
                     base.BattleZone == tt.BattleZone);
@@ -38,7 +38,7 @@ namespace Cauldron.Terminus
             if ((card == base.CharacterCard || card == this.Card) &&
                 base.GameController.AllTurnTakers.Count((tt) =>
                     tt != base.TurnTaker &&
-                    tt.IsHero &&
+                    IsHero(tt) &&
                     !tt.IsIncapacitatedOrOutOfGame && 
                     base.GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && 
                     base.BattleZone == tt.BattleZone) > 0)
@@ -51,7 +51,7 @@ namespace Cauldron.Terminus
 
         public override void AddTriggers()
         {
-            base.AddTrigger((FlipCardAction fca) => fca.CardToFlip.Card.IsHeroCharacterCard, (FlipCardAction fca) => base.GameController.DestroyAnyCardsThatShouldBeDestroyed(ignoreBattleZone: true, GetCardSource()), TriggerType.Hidden, TriggerTiming.After, ActionDescription.Unspecified, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: false, null, null, ignoreBattleZone: true);
+            base.AddTrigger((FlipCardAction fca) => IsHeroCharacterCard(fca.CardToFlip.Card), (FlipCardAction fca) => base.GameController.DestroyAnyCardsThatShouldBeDestroyed(ignoreBattleZone: true, GetCardSource()), TriggerType.Hidden, TriggerTiming.After, ActionDescription.Unspecified, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: false, null, null, ignoreBattleZone: true);
             base.AddTrigger((SwitchBattleZoneAction sb) => sb.Origin == base.Card.BattleZone, (SwitchBattleZoneAction sb) => base.GameController.DestroyAnyCardsThatShouldBeDestroyed(ignoreBattleZone: true, GetCardSource()), TriggerType.Hidden, TriggerTiming.After, ActionDescription.Unspecified, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: false, null, null, ignoreBattleZone: true);
             base.AddTrigger((CardEntersPlayAction cep) => GameController.IsInCardControllerList(cep.CardEnteringPlay, CardControllerListType.ChangesVisibility), (CardEntersPlayAction cep) => base.GameController.DestroyAnyCardsThatShouldBeDestroyed(ignoreBattleZone: true, GetCardSource()), TriggerType.Hidden, TriggerTiming.After, ActionDescription.Unspecified, isConditional: false, requireActionSuccess: true, null, outOfPlayTrigger: false, null, null, ignoreBattleZone: true);
 

@@ -371,7 +371,7 @@ namespace Cauldron.Drift
 
         public Card GetActiveCharacterCard()
         {
-            return base.FindCardsWhere((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == this.TurnTaker && c.IsRealCard).FirstOrDefault();
+            return base.FindCardsWhere((Card c) => IsHeroCharacterCard(c) && c.Location == base.TurnTaker.PlayArea && c.Owner == this.TurnTaker && c.IsRealCard).FirstOrDefault();
         }
 
         public Card FindRedBlueDriftCharacterCard()
@@ -462,7 +462,7 @@ namespace Cauldron.Drift
             {
                 var partnerCards = TurnTaker.GetCardsWhere((Card c) => c.SharedIdentifier == this.CardWithoutReplacements.SharedIdentifier && c != this.CardWithoutReplacements);
                 HeroTurnTaker powerUser = null;
-                if (power.TurnTakerController != null && power.TurnTakerController.TurnTaker.IsHero)
+                if (power.TurnTakerController != null && IsHero(power.TurnTakerController.TurnTaker))
                 {
                     powerUser = power.TurnTakerController.TurnTaker.ToHero();
                 }

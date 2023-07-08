@@ -52,7 +52,7 @@ namespace Cauldron.Dynamo
             }
 
             //...and {Dynamo} deals each hero target {H} energy damage. 
-            coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget, base.Game.H, DamageType.Energy);
+            coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHeroTarget(c), base.Game.H, DamageType.Energy);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

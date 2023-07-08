@@ -35,7 +35,7 @@ namespace Cauldron.Pyre
             int numHPGain = GetPowerNumeral(1, 2);
 
             //"2 heroes may each discard a card to regain 2 HP. Each hero who discards a {PyreIrradiate} card this way may draw a card."
-            var validHeroes = new LinqTurnTakerCriteria(tt => tt.IsHero && tt.ToHero().HasCardsInHand && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
+            var validHeroes = new LinqTurnTakerCriteria(tt => IsHero(tt) && tt.ToHero().HasCardsInHand && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, validHeroes, SelectionType.DiscardCard, tt => DiscardHealAndDrawResponse(tt, numHPGain), numHeroes, false, 0, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {

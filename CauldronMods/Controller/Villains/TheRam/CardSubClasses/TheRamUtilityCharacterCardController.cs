@@ -58,7 +58,7 @@ namespace Cauldron.TheRam
 
         private string BuildUpCloseSpecialString()
         {
-            var upCloseHeroes = FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && IsUpClose(tt)).ToList();
+            var upCloseHeroes = FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && IsUpClose(tt)).ToList();
             string upCloseSpecial = "Heroes who are Up Close: ";
             if (upCloseHeroes.Any())
             {
@@ -77,7 +77,7 @@ namespace Cauldron.TheRam
 
         private string BuildNotUpCloseSpecialString()
         {
-            var notUpCloseHeroes = FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !IsUpClose(tt)).ToList();
+            var notUpCloseHeroes = FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && !IsUpClose(tt)).ToList();
             string notUpCloseSpecial = "Heroes who are not Up Close: ";
             if (notUpCloseHeroes.Any())
             {

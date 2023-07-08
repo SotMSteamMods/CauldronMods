@@ -21,7 +21,7 @@ namespace Cauldron.TheCybersphere
 
             //Whenever a hero card destroys an environment target, that hero draws a card.
             AddTrigger<DestroyCardAction>((DestroyCardAction dca) => dca.CardToDestroy != null && dca.CardToDestroy.Card.IsEnvironmentTarget && dca.WasCardDestroyed && GameController.IsCardVisibleToCardSource(dca.CardToDestroy.Card, GetCardSource()) &&
-                dca.CardSource != null && dca.CardSource.Card.IsHero && GameController.IsCardVisibleToCardSource(dca.CardSource.Card, GetCardSource()),
+                dca.CardSource != null && IsHero(dca.CardSource.Card) && GameController.IsCardVisibleToCardSource(dca.CardSource.Card, GetCardSource()),
                 DrawCardResponse, TriggerType.DrawCard, TriggerTiming.After);
 
             //At the end of the Environment turn, play the top card of the Environment deck.

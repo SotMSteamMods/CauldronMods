@@ -18,7 +18,7 @@ namespace Cauldron.NightloreCitadel
         public override IEnumerator DeterminePlayLocation(List<MoveCardDestination> storedResults, bool isPutIntoPlay, List<IDecision> decisionSources, Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //Play this card next to the hero with the highest HP.
-            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => base.CanCardBeConsideredHighestHitPoints(c, (Card card) => card.IsHeroCharacterCard && !card.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(card, GetCardSource())) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero with the highest hp"), storedResults, isPutIntoPlay, decisionSources);
+            IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => base.CanCardBeConsideredHighestHitPoints(c, (Card card) => IsHeroCharacterCard(card) && !card.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(card, GetCardSource())) && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero with the highest hp"), storedResults, isPutIntoPlay, decisionSources);
 
             if (base.UseUnityCoroutines)
             {

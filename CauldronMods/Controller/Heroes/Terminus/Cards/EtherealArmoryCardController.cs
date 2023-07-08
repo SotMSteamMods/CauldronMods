@@ -24,7 +24,7 @@ namespace Cauldron.Terminus
 
             // Each player may play an ongoing or equipment card now.
             coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
-                            new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())),
+                            new LinqTurnTakerCriteria(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())),
                             SelectionType.PlayCard,
                             PlayCardResponse,
                             allowAutoDecide: true,
@@ -46,7 +46,7 @@ namespace Cauldron.Terminus
         {
             var heroTTC = FindHeroTurnTakerController(tt.ToHero());
             List<PlayCardAction> playCardActions = new List<PlayCardAction>();
-            IEnumerator coroutine = base.GameController.SelectAndPlayCardFromHand(heroTTC, true, storedResults: playCardActions, cardCriteria: new LinqCardCriteria((card) => card.IsOngoing || base.IsEquipment(card)), cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndPlayCardFromHand(heroTTC, true, storedResults: playCardActions, cardCriteria: new LinqCardCriteria((card) => IsOngoing(card) || base.IsEquipment(card)), cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

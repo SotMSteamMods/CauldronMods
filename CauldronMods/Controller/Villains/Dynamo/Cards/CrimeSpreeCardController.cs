@@ -51,7 +51,7 @@ namespace Cauldron.Dynamo
                 }
 
                 //...and {Dynamo} deals each hero target 1 energy damage.
-                coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Energy);
+                coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHeroTarget(c), 1, DamageType.Energy);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

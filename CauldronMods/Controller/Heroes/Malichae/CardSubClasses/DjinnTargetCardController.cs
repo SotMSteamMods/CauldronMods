@@ -13,7 +13,7 @@ namespace Cauldron.Malichae
 
         protected DjinnTargetCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            _djinnOngoingCriteria = new LinqCardCriteria(c => c.IsInPlay && c.IsOngoing && IsDjinn(c) && c.Location == this.Card.NextToLocation, "djinn ongoings");
+            _djinnOngoingCriteria = new LinqCardCriteria(c => c.IsInPlay && IsOngoing(c) && IsDjinn(c) && c.Location == this.Card.NextToLocation, "djinn ongoings");
 
             SpecialStringMaker.ShowNumberOfCards(_djinnOngoingCriteria);
         }

@@ -17,7 +17,7 @@ namespace Cauldron.Mythos
         public override IEnumerator Play()
         {
             //When this card enters play, put all ongoing cards in the villain trash into play.
-            IEnumerator coroutine = base.PlayCardsFromLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.IsOngoing));
+            IEnumerator coroutine = base.PlayCardsFromLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => IsOngoing(c)));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -34,7 +34,7 @@ namespace Cauldron.Mythos
             //When a hero target is dealt damage by another hero target:
             //--{MythosDanger} Play the top card of the villain deck.
             //--{MythosMadness} Move the bottom card of a deck to the top of that deck.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && action.DamageSource.IsHero && action.DamageSource.IsTarget && action.Target.IsHero && action.DamageSource != null && action.DamageSource.Card != null && action.Target != action.DamageSource.Card, this.DangerMadnessResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.MoveCard }, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && action.DamageSource.IsHero && action.DamageSource.IsTarget && IsHero(action.Target) && action.DamageSource != null && action.DamageSource.Card != null && action.Target != action.DamageSource.Card, this.DangerMadnessResponse, new TriggerType[] { TriggerType.PlayCard, TriggerType.MoveCard }, TriggerTiming.After);
         }
 
         private IEnumerator DangerMadnessResponse(DealDamageAction action)

@@ -36,13 +36,13 @@ namespace Cauldron.TheInfernalChoir
             base.AddTriggers();
 
             //Cancel card draws when deck is empty
-            AddTrigger<DrawCardAction>(ga => ga.HeroTurnTaker.IsHero && !ga.HeroTurnTaker.Deck.HasCards, ga => HeartCancelResponse(ga, ga.HeroTurnTaker.Name, "drawing"), TriggerType.CancelAction, TriggerTiming.Before);
+            AddTrigger<DrawCardAction>(ga => IsHero(ga.HeroTurnTaker) && !ga.HeroTurnTaker.Deck.HasCards, ga => HeartCancelResponse(ga, ga.HeroTurnTaker.Name, "drawing"), TriggerType.CancelAction, TriggerTiming.Before);
 
             //Cancel Shuffle Trash Into Deck when NecessaryToPlayCard to play card is set, this covers all calls to PlayTopCard
-            AddTrigger<ShuffleTrashIntoDeckAction>(ga => ga.TurnTakerController.IsHero && !ga.TurnTakerController.TurnTaker.Deck.HasCards && ga.NecessaryToPlayCard, ga => HeartCancelResponse(ga, ga.TurnTakerController.Name, "playing"), TriggerType.CancelAction, TriggerTiming.Before);
+            AddTrigger<ShuffleTrashIntoDeckAction>(ga => IsHero(ga.TurnTakerController.TurnTaker) && !ga.TurnTakerController.TurnTaker.Deck.HasCards && ga.NecessaryToPlayCard, ga => HeartCancelResponse(ga, ga.TurnTakerController.Name, "playing"), TriggerType.CancelAction, TriggerTiming.Before);
 
             //Discards
-            AddTrigger<ShuffleTrashIntoDeckAction>(ga => ga.TurnTakerController.IsHero && !ga.TurnTakerController.TurnTaker.Deck.HasCards && !ga.NecessaryToPlayCard, ga => StashCardsForPotentialDiscardAction(ga), TriggerType.Hidden, TriggerTiming.Before);
+            AddTrigger<ShuffleTrashIntoDeckAction>(ga => IsHero(ga.TurnTakerController.TurnTaker) && !ga.TurnTakerController.TurnTaker.Deck.HasCards && !ga.NecessaryToPlayCard, ga => StashCardsForPotentialDiscardAction(ga), TriggerType.Hidden, TriggerTiming.Before);
             AddTrigger(ga => ga.Origin.IsHero && ga.Origin.IsDeck && ga.Destination.IsHero && ga.Destination.IsTrash && _shufflingCardsIntoDeck && CheckForMatchingCardSource(ga), (Func<MoveCardAction, IEnumerator>)(ga => HeartDiscardCancelReponse(ga)), TriggerType.CancelAction, TriggerTiming.Before);
             AddTrigger<GameAction>(ga => _shufflingCardsIntoDeck && !(ga is MessageAction) && (ga.CardSource == null || _shufflingActionSource == null || ga.CardSource.CardController != _shufflingActionSource.CardController), ResetShuffleFlags, TriggerType.Hidden, TriggerTiming.Before);
         }

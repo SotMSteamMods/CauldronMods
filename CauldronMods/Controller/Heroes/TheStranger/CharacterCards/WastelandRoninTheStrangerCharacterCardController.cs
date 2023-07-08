@@ -65,7 +65,7 @@ namespace Cauldron.TheStranger
                     {
                         //One hero target deals 1 target 1 infernal damage.
                         List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-                        IEnumerator coroutine2 = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria((Card c) => c.IsInPlay && c.IsTarget && c.IsHero, "hero target"), storedResults, optional: false, cardSource: GetCardSource());
+                        IEnumerator coroutine2 = base.GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria((Card c) => c.IsInPlay && c.IsTarget && IsHero(c), "hero target"), storedResults, optional: false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine2);

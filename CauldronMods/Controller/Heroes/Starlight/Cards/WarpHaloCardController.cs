@@ -9,8 +9,8 @@ namespace Cauldron.Starlight
     {
         public WarpHaloCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsTarget && c.IsHero && IsNextToConstellation(c), useCardsSuffix: false, singular: "hero target next to a constellation", plural: "hero targets next to a constellation"));
-            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsTarget && !c.IsHero && IsNextToConstellation(c), useCardsSuffix: false, singular: "non-hero target next to a constellation", plural: "non-hero targets next to a constellation"));
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsTarget && IsHero(c) && IsNextToConstellation(c), useCardsSuffix: false, singular: "hero target next to a constellation", plural: "hero targets next to a constellation"));
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsTarget && !IsHero(c) && IsNextToConstellation(c), useCardsSuffix: false, singular: "non-hero target next to a constellation", plural: "non-hero targets next to a constellation"));
         }
 
         public override void AddTriggers()

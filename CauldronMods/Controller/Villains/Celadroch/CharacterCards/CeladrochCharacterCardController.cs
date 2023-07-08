@@ -100,7 +100,7 @@ namespace Cauldron.Celadroch
                                             SummonMinionsReponse, TriggerType.PutIntoPlay, TriggerTiming.After));
 
                 //At the end of the villain turn, {Celadroch} deals the {H - 1} hero targets with the highest HP X projectile damage each, where X is the number of tokens in the storm pool minus 2.
-                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, CharacterCard, c => c.IsHero && c.IsTarget,
+                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, CharacterCard, c => IsHeroTarget(c),
                     targetType: TargetType.HighestHP,
                     amount: 0,
                     damageType: DamageType.Projectile,
@@ -349,7 +349,7 @@ namespace Cauldron.Celadroch
             bool villainCardPlayed = Game.Journal.CardEntersPlayEntriesThisTurn().Any(e => e.Card.IsVillain);
             if (!villainCardPlayed)
             {
-                var coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => c.IsHero && (c.IsOngoing || IsEquipment(c)) && c.IsInPlayAndNotUnderCard, "hero equipment or ongoing"), H, cardSource: GetCardSource());
+                var coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria(c => IsHero(c) && (IsOngoing(c) || IsEquipment(c)) && c.IsInPlayAndNotUnderCard, "hero equipment or ongoing"), H, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

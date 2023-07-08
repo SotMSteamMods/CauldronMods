@@ -31,7 +31,7 @@ namespace Cauldron.Gargoyle
             IEnumerator coroutine;
             List<Card> dealDamageJournalEntryTargets;
 
-            dealDamageJournalEntryTargets = base.GameController.Game.Journal.DealDamageEntriesThisTurn().Where((ddje)=>ddje.SourceCard == base.CharacterCard && !ddje.TargetCard.IsHero).Select(ddje => ddje.TargetCard).Distinct().ToList();
+            dealDamageJournalEntryTargets = base.GameController.Game.Journal.DealDamageEntriesThisTurn().Where((ddje)=>ddje.SourceCard == base.CharacterCard && !IsHero(ddje.TargetCard)).Select(ddje => ddje.TargetCard).Distinct().ToList();
 
             coroutine = GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 1, DamageType.Psychic, null, false, null, isIrreducible: true, additionalCriteria: (Card c) => dealDamageJournalEntryTargets.Contains(c), allowAutoDecide: true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)

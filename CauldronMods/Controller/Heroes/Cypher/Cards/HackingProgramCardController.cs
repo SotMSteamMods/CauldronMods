@@ -46,7 +46,7 @@ namespace Cauldron.Cypher
             if (DidDealDamage(storedResults, this.CharacterCard))
             {
                 routine = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController,
-                    new LinqCardCriteria(c => (c.IsEnvironment || c.IsOngoing) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "environment or ongoing"),
+                    new LinqCardCriteria(c => (c.IsEnvironment || IsOngoing(c)) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "environment or ongoing"),
                     toDestroyNumeral, requiredDecisions: toDestroyNumeral, cardSource: GetCardSource());
 
                 if (base.UseUnityCoroutines)

@@ -277,7 +277,7 @@ namespace Cauldron.ScreaMachine
 
         private IEnumerator FlipCardResponse()
         {
-            var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), false, cardSource: GetCardSource());
+            var coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && IsHero(c) && (IsOngoing(c) || IsEquipment(c)), "hero ongoing or equipment"), false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -310,7 +310,7 @@ namespace Cauldron.ScreaMachine
             if (highest.Any())
             {
 
-                coroutine = GameController.DealDamage(DecisionMaker, highest.First(), c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, 2, DamageType.Sonic, cardSource: GetCardSource());
+                coroutine = GameController.DealDamage(DecisionMaker, highest.First(), c =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame, 2, DamageType.Sonic, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -32,7 +32,7 @@ namespace Cauldron.TheMistressOfFate
             }
 
             //"Then {TheMistressOfFate} deals the hero with the lowest HP {H} times 3 psychic damage."
-            coroutine = DealDamageToLowestHP(CharacterCard, 1, (Card c) => c.IsHeroCharacterCard, c => H * 3, DamageType.Psychic);
+            coroutine = DealDamageToLowestHP(CharacterCard, 1, (Card c) =>  IsHeroCharacterCard(c), c => H * 3, DamageType.Psychic);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

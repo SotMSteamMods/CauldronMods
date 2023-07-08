@@ -15,7 +15,7 @@ namespace Cauldron.Quicksilver
         public override IEnumerator Play()
         {
             //{Quicksilver} deals each non-hero target 1 projectile damage.
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !c.IsHero, 1, DamageType.Projectile);
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !IsHero(c), 1, DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -18,7 +18,7 @@ namespace Cauldron.Impact
         public override IEnumerator Play()
         {
             //"You may destroy 1 ongoing card.",
-            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsOngoing, "ongoing"), true, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && IsOngoing(c), "ongoing"), true, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -33,7 +33,7 @@ namespace Cauldron.Drift
             }
             //...select a hero target. 
             List<SelectTargetDecision> targetDecision = new List<SelectTargetDecision>();
-            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText)), targetDecision, selectionType: type, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, base.FindCardsWhere(new LinqCardCriteria((Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText)), targetDecision, selectionType: type, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

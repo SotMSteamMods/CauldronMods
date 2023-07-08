@@ -15,7 +15,7 @@ namespace Cauldron.Titan
         public override void AddTriggers()
         {
             //When a non-hero card enters play, you may destroy this card...
-            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => action.IsSuccessful && !action.CardEnteringPlay.IsHero, DestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After, isActionOptional: true);
+            base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction action) => action.IsSuccessful && !IsHero(action.CardEnteringPlay), DestroySelfResponse, TriggerType.DestroySelf, TriggerTiming.After, isActionOptional: true);
         }
 
         private IEnumerator DestroySelfResponse(CardEntersPlayAction action)

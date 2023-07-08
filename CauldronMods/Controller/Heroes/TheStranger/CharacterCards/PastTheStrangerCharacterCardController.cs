@@ -52,7 +52,7 @@ namespace Cauldron.TheStranger
                 case 1:
                     {
                         //Destroy 1 ongoing card.
-                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.IsInPlay, "ongoing"), false, cardSource: GetCardSource());
+                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c) && c.IsInPlay, "ongoing"), false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine2);

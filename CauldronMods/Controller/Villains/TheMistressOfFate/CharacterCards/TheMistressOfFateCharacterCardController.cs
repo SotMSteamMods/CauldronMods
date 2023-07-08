@@ -78,7 +78,7 @@ namespace Cauldron.TheMistressOfFate
                 if(Game.IsAdvanced)
                 {
                     //"advanced": "At the end of the villain turn, {TheMistressOfFate} deals the hero with the lowest HP {H} psychic damage.",
-                    AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsHeroCharacterCard, TargetType.LowestHP, H, DamageType.Psychic));
+                    AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) =>  IsHeroCharacterCard(c), TargetType.LowestHP, H, DamageType.Psychic));
                 }
             }
             //flip side is all handled in AfterFlipCardImmediateResponse
@@ -243,7 +243,7 @@ namespace Cauldron.TheMistressOfFate
 
                 //"{Bulletpoint} Flip all incapacitated heroes and restore them to their maximum HP. Cards that were in a hero's deck, hand, or trash when they were incapacitated are returned to those respective locations.",
                 var fakeList = new List<UnincapacitateHeroAction>();
-                coroutine = GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlay && c.IsHeroCharacterCard && c.IsIncapacitated, "incapacitated hero character"),
+                coroutine = GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlay &&  IsHeroCharacterCard(c) && c.IsIncapacitated, "incapacitated hero character"),
                                                         SelectionType.UnincapacitateHero,
                                                         (Card c) => GameController.UnincapacitateHero(FindCardController(c), c.Definition.HitPoints ?? 0, null, fakeList, GetCardSource()),
                                                         allowAutoDecide: true,
@@ -357,7 +357,7 @@ namespace Cauldron.TheMistressOfFate
         }
         private bool IsCleaningUpIncappedHeroCards(BulkMoveCardsAction bmc)
         {
-            if(bmc.Destination.IsOutOfGame && bmc.Destination.OwnerTurnTaker.IsHero)
+            if(bmc.Destination.IsOutOfGame && IsHero(bmc.Destination.OwnerTurnTaker))
             {
                 return true;
             }

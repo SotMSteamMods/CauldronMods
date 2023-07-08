@@ -97,7 +97,7 @@ namespace Cauldron.LadyOfTheWood
 							if(httc.HasMultipleCharacterCards)
                             {
 								List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-								coroutine3 = GameController.SelectCardAndStoreResults(httc, SelectionType.GainHP, new LinqCardCriteria(c => c.Owner == httc.TurnTaker && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText), storedResults, false, cardSource: GetCardSource());
+								coroutine3 = GameController.SelectCardAndStoreResults(httc, SelectionType.GainHP, new LinqCardCriteria(c => c.Owner == httc.TurnTaker &&  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame && c.IsInPlayAndHasGameText), storedResults, false, cardSource: GetCardSource());
 								if (base.UseUnityCoroutines)
 								{
 									yield return base.GameController.StartCoroutine(coroutine3);

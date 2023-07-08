@@ -29,7 +29,7 @@ namespace Cauldron.Gargoyle
         {
             Power[] powers = null;
 
-            if (cardController.Card.IsHeroCharacterCard == true && cardController.Card != base.CharacterCard && cardController.Card.IsInPlayAndHasGameText && cardController.Card.IsRealCard && !cardController.Card.IsIncapacitatedOrOutOfGame)
+            if (IsHeroCharacterCard(cardController.Card) == true && cardController.Card != base.CharacterCard && cardController.Card.IsInPlayAndHasGameText && cardController.Card.IsRealCard && !cardController.Card.IsIncapacitatedOrOutOfGame)
             {
                 return new Power[]
                 {

@@ -31,7 +31,7 @@ namespace Cauldron.NightloreCitadel
                 coroutine = DealDamage(Card, (Card c) => IsVillainTarget(c), 2, DamageType.Radiant);
             } else
             {
-                coroutine = DealDamage(Card, (Card c) => c.IsHero && c.IsTarget, 2, DamageType.Cold);
+                coroutine = DealDamage(Card, (Card c) => IsHeroTarget(c), 2, DamageType.Cold);
             }
 
             if (base.UseUnityCoroutines)

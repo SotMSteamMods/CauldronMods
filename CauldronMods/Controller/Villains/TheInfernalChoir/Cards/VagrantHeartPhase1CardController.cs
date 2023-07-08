@@ -55,7 +55,7 @@ namespace Cauldron.TheInfernalChoir
             return base.AskIfActionCanBePerformed(action);
         }
 
-        public HeroTurnTaker VagrantTurnTaker => Card.Location.OwnerTurnTaker.IsHero ? Card.Location.OwnerTurnTaker.ToHero() : null;
+        public HeroTurnTaker VagrantTurnTaker => IsHero(Card.Location.OwnerTurnTaker) ? Card.Location.OwnerTurnTaker.ToHero() : null;
         public Location VagrantDeck => VagrantTurnTaker?.Deck;
 
         /*

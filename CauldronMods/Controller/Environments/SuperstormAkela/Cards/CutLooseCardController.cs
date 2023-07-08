@@ -20,7 +20,7 @@ namespace Cauldron.SuperstormAkela
             AddIncreaseDamageTrigger((DealDamageAction dd) => true, 1);
 
             //When a hero destroys a target, this card deals that hero {H} projectile damage and is destroyed
-            AddTrigger<DestroyCardAction>((DestroyCardAction destroy) => destroy.CardSource != null && destroy.CardSource.Card.IsHeroCharacterCard && destroy.CardToDestroy != null && destroy.CardToDestroy.Card.IsTarget && destroy.WasCardDestroyed,
+            AddTrigger<DestroyCardAction>((DestroyCardAction destroy) => destroy.CardSource != null && IsHeroCharacterCard(destroy.CardSource.Card) && destroy.CardToDestroy != null && destroy.CardToDestroy.Card.IsTarget && destroy.WasCardDestroyed,
                 DealDamageAndDestroyThisCardResponse, new TriggerType[]
                 {
                     TriggerType.DealDamage,

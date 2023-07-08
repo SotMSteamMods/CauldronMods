@@ -19,7 +19,7 @@ namespace Cauldron.Cricket
             //Each player may draw a card. When a player draws a card this way, 1 other player must discard a card.
             int otherPlayers = GetPowerNumeral(0, 1);
 
-            var criteria = new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
+            var criteria = new LinqTurnTakerCriteria(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()));
 
             var selectTurnTakersDecision = new SelectTurnTakersDecision(GameController, DecisionMaker, criteria, SelectionType.DrawCard,
                                             allowAutoDecide: true, cardSource: GetCardSource());
@@ -53,7 +53,7 @@ namespace Cauldron.Cricket
                 for (int i = 0; i < numberOfDiscards; i++)
                 {
                     //...1 other player must discard a card.
-                    IEnumerable<TurnTaker> choices = GameController.FindTurnTakersWhere(tt => !tt.IsIncapacitatedOrOutOfGame && tt.IsHero && tt != hero);
+                    IEnumerable<TurnTaker> choices = GameController.FindTurnTakersWhere(tt => !tt.IsIncapacitatedOrOutOfGame && IsHero(tt) && tt != hero);
                     SelectTurnTakerDecision decision = new SelectTurnTakerDecision(GameController, HeroTurnTakerController, choices, SelectionType.DiscardCard, cardSource: GetCardSource());
                     coroutine = base.GameController.SelectTurnTakerAndDoAction(decision, (TurnTaker tt) => GameController.SelectAndDiscardCard(FindHeroTurnTakerController(tt.ToHero())));
                     if (base.UseUnityCoroutines)

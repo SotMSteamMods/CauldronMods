@@ -20,7 +20,7 @@ namespace Cauldron.Malichae
         private IEnumerator EndOfTurnReponse(PhaseChangeAction pca)
         {
             List<SelectCardDecision> storedResult = new List<SelectCardDecision>();
-            var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.ReduceDamageTaken, new LinqCardCriteria(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, "hero target"), storedResult, false, cardSource: GetCardSource());
+            var coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.ReduceDamageTaken, new LinqCardCriteria(c => IsHeroTarget(c) && c.IsInPlayAndHasGameText, "hero target"), storedResult, false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

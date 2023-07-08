@@ -20,7 +20,7 @@ namespace Cauldron.Tiamat
         }
 
         //Whenever Element of Lightning enters play and {StormTiamatCharacter} is decapitated, if {WindTiamatCharacter} is active she deals the X hero targets with the Highest HP {H - 1} projectile damage each, where X = 1 plus the number of ongoing cards in the villain trash.
-        protected override IEnumerator alternateElementCoroutine => base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(Game.H - 1), DamageType.Projectile, numberOfTargets: () => 1 + NumberOfOngoingsInTrash());
+        protected override IEnumerator alternateElementCoroutine => base.DealDamageToHighestHP(base.SecondHeadCardController().Card, 1, (Card c) => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, (Card c) => new int?(Game.H - 1), DamageType.Projectile, numberOfTargets: () => 1 + NumberOfOngoingsInTrash());
 
         protected override ITrigger[] AddFrontTriggers()
         {
@@ -106,12 +106,12 @@ namespace Cauldron.Tiamat
             if (!base.Card.IsFlipped)
             {//Front End of Turn Damage
                 //...{StormTiamatCharacter} deals each hero target 1 lightning damage.
-                coroutine = base.DealDamage(base.FirstHeadCardController().Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, 1, DamageType.Lightning);
+                coroutine = base.DealDamage(base.FirstHeadCardController().Card, (Card c) => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, 1, DamageType.Lightning);
             }
             else
             {//Back End of Turn Damage
                 //At the end of the villain turn, if {StormTiamatCharacter} is active, she deals the hero target with the highest HP 1 lightning damage.
-                coroutine = base.DealDamageToHighestHP(base.FirstHeadCardController().Card, 1, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, (Card c) => new int?(1), DamageType.Lightning);
+                coroutine = base.DealDamageToHighestHP(base.FirstHeadCardController().Card, 1, (Card c) => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, (Card c) => new int?(1), DamageType.Lightning);
             }
             if (base.UseUnityCoroutines)
             {
@@ -127,14 +127,14 @@ namespace Cauldron.Tiamat
         protected int NumberOfOngoingsInTrash()
         {
             return (from card in base.TurnTaker.Trash.Cards
-                    where card.IsOngoing
+                    where IsOngoing(card)
                     select card).Count();
         }
 
         public override bool AskIfCardIsIndestructible(Card card)
         {
             //"Villain ongoings are indestructible as long as 2 or more heads are not decapitated.",
-            if (Game.IsChallenge && card != null && card.IsVillain && card.IsOngoing)
+            if (Game.IsChallenge && card != null && card.IsVillain && IsOngoing(card))
             {
                 return DoesChallengeIndestructibleApply;
             }

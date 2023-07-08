@@ -33,7 +33,7 @@ namespace Cauldron.DocHavoc
                 new int?(numTargets),
                 false,
                 new int?(numTargets),
-                additionalCriteria: ((Func<Card, bool>)(c => c.IsHeroCharacterCard)),
+                additionalCriteria: ((Func<Card, bool>)(c => IsHeroCharacterCard(c))),
                 addStatusEffect: new Func<DealDamageAction, IEnumerator>(this.OnIntendedHeroDamageResponse),
                 cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
@@ -53,7 +53,7 @@ namespace Cauldron.DocHavoc
             {
                 Card targetHero = dd.Target;
                 HeroTurnTakerController heroController = null;
-                if (targetHero.IsHero)
+                if (IsHero(targetHero))
                 {
                     heroController = base.FindHeroTurnTakerController(targetHero.Owner.ToHero());
                 }
@@ -127,7 +127,7 @@ namespace Cauldron.DocHavoc
             // Up to 3 hero targets regain 1 HP each.
             //==============================================================
 
-            return this.GameController.SelectAndGainHP(this.DecisionMaker, 1, additionalCriteria: ((Func<Card, bool>)(c => c.IsHero)),
+            return this.GameController.SelectAndGainHP(this.DecisionMaker, 1, additionalCriteria: ((Func<Card, bool>)(c => IsHero(c))),
                 numberOfTargets: 3, requiredDecisions: new int?(0), cardSource: this.GetCardSource());
         }
 

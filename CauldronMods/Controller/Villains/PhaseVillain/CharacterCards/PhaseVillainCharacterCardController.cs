@@ -143,7 +143,7 @@ namespace Cauldron.PhaseVillain
                 {
                     //Back - Advanced
                     //When {Phase} flips to this side, destroy {H - 2} hero ongoing cards.
-                    coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && c.IsHero, "hero ongoing"), Game.H - 2, cardSource: base.GetCardSource());
+                    coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c) && IsHero(c), "hero ongoing"), Game.H - 2, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -166,7 +166,7 @@ namespace Cauldron.PhaseVillain
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //{Phase} deals each hero target {H} radiant damage. 
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero, Game.H, DamageType.Radiant);
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHero(c), Game.H, DamageType.Radiant);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

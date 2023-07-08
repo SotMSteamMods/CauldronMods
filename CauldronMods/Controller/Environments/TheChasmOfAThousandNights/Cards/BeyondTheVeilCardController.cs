@@ -35,7 +35,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override void AddTriggers()
         {
             //The first time a hero card is discarded each turn, that hero deals themselves 1 psychic damage.
-            AddTrigger((MoveCardAction mca) => mca.IsDiscard && mca.IsSuccessful && !HasBeenSetToTrueThisTurn(FirstTimeDiscard) && mca.CardToMove != null && mca.CardToMove.IsHero, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            AddTrigger((MoveCardAction mca) => mca.IsDiscard && mca.IsSuccessful && !HasBeenSetToTrueThisTurn(FirstTimeDiscard) && mca.CardToMove != null && IsHero(mca.CardToMove), DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator DealDamageResponse(MoveCardAction mca)

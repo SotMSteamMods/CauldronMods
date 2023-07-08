@@ -20,7 +20,7 @@ namespace Cauldron.StSimeonsCatacombs
         public override void AddTriggers()
         {
             //This card may not be affected by hero cards unless AffectedCard is in play.
-            base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => !this.IsAffectedCardInPlay() && md.CardSource != null && md.CardSource.Card.IsHero, this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
+            base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => !this.IsAffectedCardInPlay() && md.CardSource != null && IsHero(md.CardSource.Card), this.RemoveDecisionsFromMakeDecisionsResponse, TriggerType.RemoveDecision, TriggerTiming.Before);
         }
 
         private IEnumerator RemoveDecisionsFromMakeDecisionsResponse(MakeDecisionsAction md)
@@ -33,7 +33,7 @@ namespace Cauldron.StSimeonsCatacombs
         public override bool? AskIfCardIsVisibleToCardSource(Card card, CardSource cardSource)
         {
             //check if card is from a hero and if AffectedCard is in play
-            if (!this.IsAffectedCardInPlay() && card == base.Card && cardSource.Card.IsHero)
+            if (!this.IsAffectedCardInPlay() && card == base.Card && IsHero(cardSource.Card))
             {
                 return false;
             }
@@ -45,7 +45,7 @@ namespace Cauldron.StSimeonsCatacombs
             //if AffectedCard is not in play, actions from hero cards cannot affect this card
             if (!this.IsAffectedCardInPlay())
             {
-                bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => c.IsHero, (Card c) => c == base.Card);
+                bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => IsHero(c), (Card c) => c == base.Card);
 
                 if (flag != null && flag.Value)
                 {

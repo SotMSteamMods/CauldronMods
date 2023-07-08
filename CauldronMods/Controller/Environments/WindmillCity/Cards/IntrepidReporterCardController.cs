@@ -33,7 +33,7 @@ namespace Cauldron.WindmillCity
         {
             //When this card enters play, 2 players may each draw a card.
 
-            SelectTurnTakersDecision selectTurnTakersDecision = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.DrawCard, numberOfTurnTakers: 2, cardSource: GetCardSource());
+            SelectTurnTakersDecision selectTurnTakersDecision = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.DrawCard, numberOfTurnTakers: 2, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(selectTurnTakersDecision, (TurnTaker tt) => DrawCard(tt.ToHero(), optional: true), cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {

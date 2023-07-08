@@ -80,7 +80,7 @@ namespace Cauldron.SuperstormAkela
             }
 
             //Then, each hero target regains 1HP
-            coroutine = base.GameController.GainHP(DecisionMaker, (Card c) => c.IsHero && c.IsTarget, 1, cardSource: GetCardSource());
+            coroutine = base.GameController.GainHP(DecisionMaker, (Card c) => IsHeroTarget(c), 1, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

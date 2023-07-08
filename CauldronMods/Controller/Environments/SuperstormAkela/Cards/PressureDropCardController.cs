@@ -23,7 +23,7 @@ namespace Cauldron.SuperstormAkela
             //When this card enters play, the hero with the lowest HP must discard X cards, where X is the number of environment cards to the left of this one.
 
             List<Card> storedResults = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetWithLowestHitPoints(1, (Card c) => c.IsHeroCharacterCard, storedResults, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetWithLowestHitPoints(1, (Card c) =>  IsHeroCharacterCard(c), storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

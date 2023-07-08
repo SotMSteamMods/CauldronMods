@@ -28,7 +28,7 @@ namespace Cauldron.CatchwaterHarbor
         private IEnumerator EndOfTurnResponse(PhaseChangeAction arg)
         {
             List<SelectCardsDecision> storedResults = new List<SelectCardsDecision>();
-            IEnumerator coroutine = GameController.SelectCardsAndStoreResults(DecisionMaker, SelectionType.GainHP, (Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 1, storedResults, false, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectCardsAndStoreResults(DecisionMaker, SelectionType.GainHP, (Card c) =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 1, storedResults, false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

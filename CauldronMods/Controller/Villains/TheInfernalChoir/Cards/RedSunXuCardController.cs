@@ -61,7 +61,7 @@ namespace Cauldron.TheInfernalChoir
 
         private IEnumerator EndOfTurnDamage()
         {
-            return GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 3, DamageType.Psychic, H - 1, false, H - 1, additionalCriteria: c => c.IsHero, allowAutoDecide: true, cardSource: GetCardSource());
+            return GameController.SelectTargetsToDealDamageToSelf(DecisionMaker, 3, DamageType.Psychic, H - 1, false, H - 1, additionalCriteria: c => IsHero(c), allowAutoDecide: true, cardSource: GetCardSource());
         }
     }
 }
