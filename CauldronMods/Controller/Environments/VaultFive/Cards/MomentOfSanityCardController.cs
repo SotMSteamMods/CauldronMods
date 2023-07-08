@@ -56,7 +56,7 @@ namespace Cauldron.VaultFive
 
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
             TurnTaker owner = heroCharacterCard.Owner;
-            if (owner == null || IsHero(owner))
+            if (owner == null || !IsHero(owner))
             {
                 yield break;
             }

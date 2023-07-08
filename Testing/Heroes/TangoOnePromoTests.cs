@@ -102,14 +102,14 @@ namespace CauldronTests
             UseIncapacitatedAbility(tango, 1);
 
             Assert.NotNull(this.GameController.StatusEffectControllers
-                .FirstOrDefault(s => s.StatusEffect.ToString().Equals("damage dealt is irreducible.")
+                .FirstOrDefault(s => s.StatusEffect.ToString().ToLower().Equals("damage dealt is irreducible.")
                                      && s.StatusEffect.CardSource.Equals(tango.CharacterCard)));
 
             GoToStartOfTurn(tango);
 
             // Effect expired
             Assert.Null(this.GameController.StatusEffectControllers
-                .FirstOrDefault(s => s.StatusEffect.ToString().Equals("damage dealt is irreducible.")
+                .FirstOrDefault(s => s.StatusEffect.ToString().ToLower().Equals("damage dealt is irreducible.")
                                      && s.StatusEffect.CardSource.Equals(tango.CharacterCard)));
 
             AssertIncapacitated(tango);
