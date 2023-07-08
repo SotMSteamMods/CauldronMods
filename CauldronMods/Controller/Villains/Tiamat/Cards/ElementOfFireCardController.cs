@@ -12,14 +12,6 @@ namespace Cauldron.Tiamat
         public ElementOfFireCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowHeroWithMostCards(false);
-            if (base.CharacterCardController is FutureTiamatCharacterCardController)
-            {
-                base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => base.IsSpell(c), "spell"));
-            }
-            else
-            {
-                base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfFire", "element of fire"));
-            }
         }
 
         public override IEnumerator Play()
