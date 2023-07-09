@@ -25,7 +25,11 @@ namespace Cauldron.CatchwaterHarbor
             var decks = FindLocationsWhere(l => l.IsDeck && l.BattleZone == BattleZone);
             foreach (var deck in decks)
             {
-                if (deck.NumberOfCards > 0 && ! deck.TopCard.IsFaceUp)
+                if (
+                    GameController.IsTurnTakerVisibleToCardSource(deck.OwnerTurnTaker, GetCardSource()) &&
+                    deck.NumberOfCards > 0 &&
+                    ! (deck.TopCard.IsFaceUp && deck.TopCard.IsPositionKnown)
+                )
                 {
                     deck.TopCard.SetFaceUp(true);
                     deck.TopCard.SetIsPositionKnown(true);
