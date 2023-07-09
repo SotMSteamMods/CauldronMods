@@ -57,7 +57,7 @@ namespace Cauldron.DocHavoc
             List<DestroyCardAction> storedDestroyResults = new List<DestroyCardAction>();
 
             IEnumerator destroyCardRoutine = base.GameController.SelectAndDestroyCard(this.HeroTurnTakerController,
-                new LinqCardCriteria(c => c.IsEnvironment || c.IsOngoing), true, storedDestroyResults, cardSource:
+                new LinqCardCriteria(c => c.IsEnvironment || IsOngoing(c)), true, storedDestroyResults, cardSource:
                 this.GetCardSource());
 
             if (base.UseUnityCoroutines)

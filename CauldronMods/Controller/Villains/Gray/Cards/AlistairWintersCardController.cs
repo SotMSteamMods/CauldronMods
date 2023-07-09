@@ -14,9 +14,9 @@ namespace Cauldron.Gray
         public override void AddTriggers()
         {
             //Increase damage dealt to hero targets by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.Target.IsHero, 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => IsHero(action.Target), 1);
             //Hero tagets cannot gain HP.
-            base.AddTrigger<GainHPAction>((GainHPAction action) => action.HpGainer.IsHero, (GainHPAction action) => base.CancelAction(action), TriggerType.CancelAction, TriggerTiming.Before);
+            base.AddTrigger<GainHPAction>((GainHPAction action) => IsHero(action.HpGainer), (GainHPAction action) => base.CancelAction(action), TriggerType.CancelAction, TriggerTiming.Before);
         }
     }
 }

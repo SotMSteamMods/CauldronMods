@@ -16,7 +16,7 @@ namespace Cauldron.Anathema
 		public override IEnumerator Play()
 		{
 			//Anathema deals each Hero target 1 projectile damage.
-			IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => card.IsHero && card.IsTarget, 1, DamageType.Projectile);
+			IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => IsHeroTarget(card), 1, DamageType.Projectile);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

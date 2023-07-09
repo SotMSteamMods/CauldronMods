@@ -24,7 +24,7 @@ namespace Cauldron.Vector
         public override void AddTriggers()
         {
             // At the end of the villain turn, {Vector} deals each hero target 2 toxic damage.
-            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.CharacterCard, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, TargetType.All, DamageToDeal, DamageType.Toxic);
+            base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.CharacterCard, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, TargetType.All, DamageToDeal, DamageType.Toxic);
 
             base.AddTriggers();
         }

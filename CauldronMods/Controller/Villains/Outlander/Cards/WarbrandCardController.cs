@@ -32,7 +32,7 @@ namespace Cauldron.Outlander
         {
             SetCardPropertyToTrueIfRealAction(OncePerTurn);
             //...he then deals the hero target with the highest HP 2 projectile damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 2, DamageType.Projectile);
+            IEnumerator coroutine = base.DealDamageToHighestHP(CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => 2, DamageType.Projectile);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -46,7 +46,7 @@ namespace Cauldron.Outlander
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals the 2 hero targets with the lowest HP 1 projectile damage each.
-            IEnumerator coroutine = DealDamageToLowestHP(CharacterCard, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => 1, DamageType.Projectile, numberOfTargets: 2);
+            IEnumerator coroutine = DealDamageToLowestHP(CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => 1, DamageType.Projectile, numberOfTargets: 2);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

@@ -33,7 +33,7 @@ namespace Cauldron.BlackwoodForest
             AddEndOfTurnTrigger(tt => tt == TurnTaker, EndOfTurnDestroyOngoingResponse, TriggerType.DestroyCard);
 
             // At the start of the environment turn this card deals each hero target {H - 2} melee damage.
-            AddDealDamageAtStartOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
+            AddDealDamageAtStartOfTurnTrigger(TurnTaker, Card, c => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()),
                 TargetType.All, H - 2, DamageType.Melee);
 
             // Whenever an environment card is destroyed, deal the target with the highest HP 5 psychic damage
@@ -51,7 +51,7 @@ namespace Cauldron.BlackwoodForest
         {
             // Destroy 1 ongoing card
             IEnumerator destroyCardRoutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker,
-                new LinqCardCriteria(card => card.IsOngoing, "ongoing"),
+                new LinqCardCriteria(card => IsOngoing(card), "ongoing"),
                 false, cardSource: GetCardSource());
 
             if (base.UseUnityCoroutines)

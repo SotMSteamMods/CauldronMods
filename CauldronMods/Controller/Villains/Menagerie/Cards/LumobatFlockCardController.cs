@@ -50,7 +50,7 @@ namespace Cauldron.Menagerie
             {
                 new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.Card), null, 2, DamageType.Projectile),
                 new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.Card), null, 2, DamageType.Radiant)
-            }, (Card c) => c.IsHero, HighestLowestHP.HighestHP);
+            }, (Card c) => IsHero(c), HighestLowestHP.HighestHP);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

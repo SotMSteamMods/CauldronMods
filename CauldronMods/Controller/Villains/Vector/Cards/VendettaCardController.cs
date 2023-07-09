@@ -28,7 +28,7 @@ namespace Cauldron.Vector
             int damageToDeal = Game.H - 1;
 
             List<DealDamageAction> storedResults = new List<DealDamageAction>();
-            IEnumerator routine = this.DealDamageToHighestHP(base.CharacterCard, 1, c => c.IsHero && c.IsTarget && !c.IsIncapacitatedOrOutOfGame, c => damageToDeal, DamageType.Psychic, storedResults: storedResults, selectTargetEvenIfCannotDealDamage: true);
+            IEnumerator routine = this.DealDamageToHighestHP(base.CharacterCard, 1, c => IsHeroTarget(c) && !c.IsIncapacitatedOrOutOfGame, c => damageToDeal, DamageType.Psychic, storedResults: storedResults, selectTargetEvenIfCannotDealDamage: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(routine);

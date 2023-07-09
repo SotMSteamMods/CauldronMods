@@ -29,9 +29,9 @@ namespace Cauldron.Outlander
             {
                 GameController.ExhaustCoroutine(coroutine);
             }
-            if (storedResults.Any(dd => dd.Target.IsHeroCharacterCard && dd.DidDealDamage))
+            if (storedResults.Any(dd => IsHeroCharacterCard(dd.Target) && dd.DidDealDamage))
             {
-                List<TurnTaker> heroesThatTookDamage = storedResults.Where(dd => dd.Target.IsHeroCharacterCard && dd.DidDealDamage).Select(dd => dd.Target.Owner).Distinct().ToList();
+                List<TurnTaker> heroesThatTookDamage = storedResults.Where(dd => IsHeroCharacterCard(dd.Target) && dd.DidDealDamage).Select(dd => dd.Target.Owner).Distinct().ToList();
                 List<SelectTurnTakerDecision> storedHero = new List<SelectTurnTakerDecision>();
                 coroutine = GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.DiscardCard, false, true, storedHero, heroCriteria: new LinqTurnTakerCriteria(tt => heroesThatTookDamage.Contains(tt)), cardSource: GetCardSource());
                 if (UseUnityCoroutines)

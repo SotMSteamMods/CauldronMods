@@ -34,7 +34,7 @@ namespace Cauldron.WindmillCity
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals the {H - 1} hero targets with the highest HP 2 cold damage each.
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, 2, DamageType.Cold, numberOfTargets: Game.H - 1);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, 2, DamageType.Cold, numberOfTargets: Game.H - 1);
         }
     }
 }

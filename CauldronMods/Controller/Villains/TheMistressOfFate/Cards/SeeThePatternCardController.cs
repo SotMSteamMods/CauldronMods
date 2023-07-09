@@ -26,7 +26,7 @@ namespace Cauldron.TheMistressOfFate
                 new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), null, H, DamageType.Psychic),
                 new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), null, H, DamageType.Melee)
             };
-            IEnumerator coroutine = DealMultipleInstancesOfDamage(damages, (Card c) => c.IsHeroCharacterCard);
+            IEnumerator coroutine = DealMultipleInstancesOfDamage(damages, (Card c) =>  IsHeroCharacterCard(c));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -49,7 +49,7 @@ namespace Cauldron.TheMistressOfFate
         {
             var moveStorage = new List<MoveCardAction>();
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
-                                                        new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame),
+                                                        new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame),
                                                         SelectionType.MoveCardToHandFromTrash,
                                                         (TurnTaker tt) => ReturnCardToHand(tt, moveStorage),
                                                         allowAutoDecide: true,

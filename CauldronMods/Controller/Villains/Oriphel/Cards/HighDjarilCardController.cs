@@ -19,7 +19,7 @@ namespace Cauldron.Oriphel
             base.AddTriggers();
 
             //"At the end of the villain turn, this card deals the hero target with the highest HP {H} lightning damage.",
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsHero, TargetType.HighestHP, H, DamageType.Lightning);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => IsHero(c), TargetType.HighestHP, H, DamageType.Lightning);
         }
     }
 }

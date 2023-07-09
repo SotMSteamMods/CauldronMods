@@ -50,7 +50,7 @@ namespace Cauldron.Mythos
                     damageSource = cardDecisions.FirstOrDefault().SelectedCard;
                 }
 
-                coroutine = base.DealDamageToHighestHP(damageSource, 1, (Card c) => c.IsHero, (Card c) => 2, DamageType.Sonic);
+                coroutine = base.DealDamageToHighestHP(damageSource, 1, (Card c) => IsHero(c), (Card c) => 2, DamageType.Sonic);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

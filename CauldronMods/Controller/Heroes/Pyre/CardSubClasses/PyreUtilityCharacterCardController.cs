@@ -314,7 +314,6 @@ namespace Cauldron.Pyre
                 positionString += $"card of {c.Location.GetFriendlyName()}.";
                 return positionString;
             }
-            return "Not complete yet";
         }
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)

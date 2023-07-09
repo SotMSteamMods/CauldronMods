@@ -26,7 +26,7 @@ namespace Cauldron.DocHavoc
             // Each hero target regains 1 HP.
             //==============================================================
 
-            IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController, (Func<Card, bool>)(c => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText), HpGain,
+            IEnumerator gainHpRoutine = this.GameController.GainHP(this.HeroTurnTakerController, (Func<Card, bool>)(c => IsHeroTarget(c) && c.IsInPlayAndHasGameText), HpGain,
                 cardSource: this.GetCardSource());
 
             if (UseUnityCoroutines)

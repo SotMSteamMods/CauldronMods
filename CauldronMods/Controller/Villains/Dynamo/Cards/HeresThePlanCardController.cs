@@ -48,7 +48,7 @@ namespace Cauldron.Dynamo
             }
 
             //...deals each hero target {H - 1} melee damage.
-            coroutine = base.DealDamage(highestVillain, (Card c) => c.IsHero && c.IsTarget, base.Game.H - 1, DamageType.Melee);
+            coroutine = base.DealDamage(highestVillain, (Card c) => IsHeroTarget(c), base.Game.H - 1, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

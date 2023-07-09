@@ -31,7 +31,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             if (base.IsChemicalTriggerInPlay())
             {
                 //find all hero targets
-                targets = (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText;
+                targets = (Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText;
             }
             else
             {

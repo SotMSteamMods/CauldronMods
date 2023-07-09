@@ -17,9 +17,9 @@ namespace Cauldron.VaultFive
         public override void AddTriggers()
         {
             //At the end of the environment turn, each hero target deals itself 1 psychic damage.
-            AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, (PhaseChangeAction pca) => GameController.DealDamageToSelf(DecisionMaker, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 1, DamageType.Psychic, cardSource: GetCardSource()), TriggerType.DealDamage);
+            AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, (PhaseChangeAction pca) => GameController.DealDamageToSelf(DecisionMaker, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 1, DamageType.Psychic, cardSource: GetCardSource()), TriggerType.DealDamage);
             //When a player plays an Artifact card from their hand, destroy this card."
-            AddTrigger<PlayCardAction>((PlayCardAction pca) => pca.CardToPlay != null && pca.IsSuccessful && IsArtifact(pca.CardToPlay) && pca.CardToPlay.Owner.Identifier != pca.CardToPlay.ParentDeck.Identifier && pca.CardToPlay.Owner.IsHero && pca.Origin == pca.CardToPlay.Owner.ToHero().Hand, DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            AddTrigger<PlayCardAction>((PlayCardAction pca) => pca.CardToPlay != null && pca.IsSuccessful && IsArtifact(pca.CardToPlay) && pca.CardToPlay.Owner.Identifier != pca.CardToPlay.ParentDeck.Identifier && IsHero(pca.CardToPlay.Owner) && pca.Origin == pca.CardToPlay.Owner.ToHero().Hand, DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }
     }
 }

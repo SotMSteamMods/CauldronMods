@@ -39,7 +39,7 @@ namespace Cauldron.TheMistressOfFate
                 new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), null, 5, DamageType.Sonic),
                 new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), null, 5, DamageType.Cold)
             };
-            IEnumerator coroutine = DealMultipleInstancesOfDamage(damages, (Card c) => c.IsHeroCharacterCard);
+            IEnumerator coroutine = DealMultipleInstancesOfDamage(damages, (Card c) =>  IsHeroCharacterCard(c));
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -59,7 +59,7 @@ namespace Cauldron.TheMistressOfFate
 
         private IEnumerator DrawAndPlayResponse(GameAction _)
         {
-            var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllTurnTakers.Where((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame), SelectionType.PlayCard, isOptional: true, cardSource: GetCardSource());
+            var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, GameController.AllTurnTakers.Where((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame), SelectionType.PlayCard, isOptional: true, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(selectHero, DrawACardAndPlayACard);
             if (UseUnityCoroutines)
             {

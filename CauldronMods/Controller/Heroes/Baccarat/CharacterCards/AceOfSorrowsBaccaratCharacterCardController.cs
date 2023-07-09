@@ -102,7 +102,7 @@ namespace Cauldron.Baccarat
                         {
                             new Function(base.FindCardController(c).DecisionMaker, "Deal self 3 toxic damage to play a card now.", SelectionType.PlayCard, () => this.DealDamageAndDrawResponse(c))
                         };
-                        IEnumerator coroutine3 = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, true, base.GetCardSource(null));
+                        IEnumerator coroutine3 = base.GameController.SelectCardsAndPerformFunction(this.DecisionMaker, new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && !this.actedHeroes.Contains(c), "active hero character cards", false, false, null, null, false), functionsBasedOnCard, true, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine3);

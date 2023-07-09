@@ -25,7 +25,7 @@ namespace Cauldron.Dynamo
         {
             //...each player may destroy 1 of their non-character cards.
             List<DestroyCardAction> destroyCardActions = new List<DestroyCardAction>();
-            IEnumerator coroutine = base.EachPlayerDestroysTheirCards(new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero), new LinqCardCriteria((Card c) => !c.IsCharacter), requiredNumberOfCards: 0, storedResults: destroyCardActions);
+            IEnumerator coroutine = base.EachPlayerDestroysTheirCards(new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt)), new LinqCardCriteria((Card c) => !c.IsCharacter), requiredNumberOfCards: 0, storedResults: destroyCardActions);
 
             if (base.UseUnityCoroutines)
             {

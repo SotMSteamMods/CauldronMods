@@ -13,14 +13,6 @@ namespace Cauldron.Tiamat
         public ElementOfLightningCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowHeroWithMostCards(true);
-            if (base.CharacterCardController is FutureTiamatCharacterCardController)
-            {
-                base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => base.IsSpell(c), "spell"));
-            }
-            else
-            {
-                base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfLightning", "element of lightning"));
-            }
         }
 
         public static readonly string PreventDrawPropertyKey = "ElementOfLightningCannotDraw";
@@ -44,7 +36,7 @@ namespace Cauldron.Tiamat
             //If {Tiamat}, The Eye of the Storm is active, she deals each hero target 2+X lightning damage, where X is the number of Element of Lightning cards in the villain trash.
             if (characterCard.IsInPlayAndHasGameText && (!characterCard.IsFlipped || base.FindCardController(characterCard) is FutureTiamatCharacterCardController))
             {
-                coroutine = base.DealDamage(characterCard, (Card c) => c.IsHero, (Card c) => PlusNumberOfThisCardInTrash(2), DamageType.Lightning);
+                coroutine = base.DealDamage(characterCard, (Card c) => IsHero(c), (Card c) => PlusNumberOfThisCardInTrash(2), DamageType.Lightning);
 
                 if (base.UseUnityCoroutines)
                 {

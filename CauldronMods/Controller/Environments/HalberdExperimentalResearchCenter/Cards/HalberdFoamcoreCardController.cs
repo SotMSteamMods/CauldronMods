@@ -17,7 +17,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             {
                 if (!base.GameController.PreviewMode)
                 {
-                    return IsLowestHitPointsUnique((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
+                    return IsLowestHitPointsUnique((Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText);
                 }
                 return true;
             }
@@ -42,7 +42,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
         public override void AddTriggers()
         {
             //criteria for finding hero target with the lowest hp when no chemical triggers are in play
-            Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && base.CanCardBeConsideredLowestHitPoints(dd.Target, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
+            Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && base.CanCardBeConsideredLowestHitPoints(dd.Target, (Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText);
 
             //criteria for finding all villain targets when chemical triggers are in play
             Func<DealDamageAction, bool> villainCriteria = (DealDamageAction dd) => base.IsChemicalTriggerInPlay() && IsVillainTarget(dd.Target);
@@ -58,7 +58,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             if (base.GameController.PretendMode)
             {
                 List<bool> storedResults = new List<bool>();
-                IEnumerator coroutine = base.DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dd.Target, highest: false, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, dd, storedResults);
+                IEnumerator coroutine = base.DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dd.Target, highest: false, (Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText, dd, storedResults);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

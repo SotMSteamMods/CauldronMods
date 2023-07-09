@@ -18,7 +18,7 @@ namespace Cauldron.DungeonsOfTerror
         {
             //At the start of each player's draw phase, discard and check the top card of the environment deck.",
             //If it is a fate card, they skip the rest of their draw phase.",
-            AddTrigger((PhaseChangeAction p) => p.ToPhase.TurnTaker.IsHero && p.ToPhase.IsDrawCard, DiscardAndCheckResponse, TriggerType.MoveCard, TriggerTiming.After);
+            AddTrigger((PhaseChangeAction p) => IsHero(p.ToPhase.TurnTaker) && p.ToPhase.IsDrawCard, DiscardAndCheckResponse, TriggerType.MoveCard, TriggerTiming.After);
 
             //At the start of the environment turn, destroy this card.
             AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);

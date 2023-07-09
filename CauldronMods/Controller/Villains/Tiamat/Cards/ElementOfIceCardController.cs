@@ -13,14 +13,6 @@ namespace Cauldron.Tiamat
         public ElementOfIceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             base.SpecialStringMaker.ShowHeroTargetWithHighestHP();
-            if (base.CharacterCardController is FutureTiamatCharacterCardController)
-            {
-                base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => base.IsSpell(c), "spell"));
-            }
-            else
-            {
-                base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == "ElementOfIce", "element of ice"));
-            }
         }
 
         public override IEnumerator Play()
@@ -31,7 +23,7 @@ namespace Cauldron.Tiamat
             if (characterCard.IsInPlayAndHasGameText && (!characterCard.IsFlipped || base.FindCardController(characterCard) is FutureTiamatCharacterCardController))
             {
                 Func<Card, int?> X = (Card c) => new int?(PlusNumberOfThisCardInTrash(2));
-                coroutine = base.DealDamage(characterCard, (Card c) => c.IsHero, X, DamageType.Cold);
+                coroutine = base.DealDamage(characterCard, (Card c) => IsHero(c), X, DamageType.Cold);
 
                 if (base.UseUnityCoroutines)
                 {
@@ -45,7 +37,7 @@ namespace Cauldron.Tiamat
 
             //The hero with the highest HP...
             List<SelectCardDecision> storedResults = new List<SelectCardDecision>();
-            LinqCardCriteria criteria = new LinqCardCriteria((Card card) => base.CanCardBeConsideredHighestHitPoints(card, (Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsFlipped));
+            LinqCardCriteria criteria = new LinqCardCriteria((Card card) => base.CanCardBeConsideredHighestHitPoints(card, (Card c) =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsFlipped));
             coroutine = base.GameController.SelectCardAndStoreResults(this.DecisionMaker, SelectionType.HeroCharacterCard, criteria, storedResults, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {

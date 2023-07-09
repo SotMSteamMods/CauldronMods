@@ -46,7 +46,7 @@ namespace Cauldron.Impact
         private bool DestroyCardCriteria(DestroyCardAction dca)
         {
             var card = dca.CardToDestroy.Card;
-            return !this.IsBeingDestroyed && dca.PostDestroyDestinationCanBeChanged && dca.WasCardDestroyed && card.Owner == this.TurnTaker && card.IsOngoing && card.Identifier != "SpatialFinesse";
+            return !this.IsBeingDestroyed && dca.PostDestroyDestinationCanBeChanged && dca.WasCardDestroyed && card.Owner == this.TurnTaker && IsOngoing(card) && card.Identifier != "SpatialFinesse";
         }
 
         private IEnumerator MayReturnDestroyedResponse(DestroyCardAction dca)

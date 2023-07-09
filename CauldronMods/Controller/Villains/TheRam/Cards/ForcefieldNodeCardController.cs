@@ -33,7 +33,7 @@ namespace Cauldron.TheRam
         private IEnumerator DamageOnUpCloseEntryResponse(CardEntersPlayAction cep)
         {
             Card upClose = cep.CardEnteringPlay;
-            if (upClose.Location.IsNextToCard && upClose.Location.OwnerCard != null && upClose.Location.OwnerCard.IsTarget && upClose.Location.OwnerCard.IsHero)
+            if (upClose.Location.IsNextToCard && upClose.Location.OwnerCard != null && upClose.Location.OwnerCard.IsTarget && IsHero(upClose.Location.OwnerCard))
             {
                 IEnumerator damage = DealDamage(this.Card, upClose.Location.OwnerCard, H - 2, DamageType.Energy);
                 if (base.UseUnityCoroutines)

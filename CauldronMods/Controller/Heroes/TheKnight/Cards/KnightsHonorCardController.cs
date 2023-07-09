@@ -18,7 +18,7 @@ namespace Cauldron.TheKnight
             base.AddTrigger((DealDamageAction dd) => dd.Amount > 0 && IsThisCardNextToCard(dd.Target), RedirectToKnight, TriggerType.RedirectDamage, TriggerTiming.Before);
 
             Card cardThisCardIsNextTo = base.GetCardThisCardIsNextTo(true);
-            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, cardThisCardIsNextTo != null && !cardThisCardIsNextTo.IsHeroCharacterCard);
+            base.AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(true, cardThisCardIsNextTo != null && !IsHeroCharacterCard(cardThisCardIsNextTo));
             base.AddAsPowerContributor();
         }
 

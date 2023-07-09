@@ -18,7 +18,7 @@ namespace Cauldron.Northspar
         public override void AddTriggers()
         {
             //If this card is destroyed by a hero card and Tak Ahab is in play, place the top card of the villain deck beneath him.
-            Func<DestroyCardAction, bool> criteria = (DestroyCardAction dca) => dca.WasDestroyedBy(c => c.IsHero) && base.IsTakAhabInPlay();
+            Func<DestroyCardAction, bool> criteria = (DestroyCardAction dca) => dca.WasDestroyedBy(c => IsHero(c)) && base.IsTakAhabInPlay();
             base.AddWhenDestroyedTrigger(this.WhenDestroyedResponse, new TriggerType[] { TriggerType.MoveCard }, criteria);
 
             //At the start of the environment turn, destroy this card and Tak Ahab's end of turn effect acts twice this turn.

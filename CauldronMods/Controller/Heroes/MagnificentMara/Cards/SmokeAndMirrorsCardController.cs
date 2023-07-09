@@ -16,7 +16,7 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When a hero target would be dealt damage, you may prevent that damage. If you do, destroy this card.",
-            AddTrigger((DealDamageAction dd) => dd.Target.IsHero && dd.Amount > 0 && !this.IsBeingDestroyed, PreventDamageResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before, isActionOptional: true);
+            AddTrigger((DealDamageAction dd) => IsHero(dd.Target) && dd.Amount > 0 && !this.IsBeingDestroyed, PreventDamageResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before, isActionOptional: true);
         }
 
         private IEnumerator PreventDamageResponse(DealDamageAction dd)

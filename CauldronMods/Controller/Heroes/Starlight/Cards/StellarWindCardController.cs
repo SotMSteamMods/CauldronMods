@@ -38,7 +38,7 @@ namespace Cauldron.Starlight
                 //allowAutodecide will hit every target it can. Sometimes this is fine (all villains, Celestial Aura out)
                 //Sometimes this is not.
                 bool safeToAutodecide = FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.Identifier == "CelestialAura")).Any() ||
-                                            FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && c.IsHero && IsNextToConstellation(c))).Count() == 0;
+                                            FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlayAndHasGameText && IsHero(c) && IsNextToConstellation(c))).Count() == 0;
                 //"{Starlight} may deal 2 cold damage to each target next to a constellation.",
                 damageRoutine = GameController.SelectTargetsAndDealDamage(HeroTurnTakerController, new DamageSource(GameController, actingStarlight), 2, DamageType.Cold, null, false, 0, allowAutoDecide: safeToAutodecide, additionalCriteria: (Card c) => IsNextToConstellation(c), cardSource: GetCardSource());
             }

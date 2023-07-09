@@ -26,7 +26,7 @@ namespace Cauldron.Celadroch
 
         public override void AddTriggers()
         {
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => c.IsHero && c.IsTarget, TargetType.All, 2, DamageType.Fire);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => IsHeroTarget(c), TargetType.All, 2, DamageType.Fire);
 
             AddImmuneToDamageTrigger(dda => dda.Target == Card && ImmuneToDamageCriteria());
         }

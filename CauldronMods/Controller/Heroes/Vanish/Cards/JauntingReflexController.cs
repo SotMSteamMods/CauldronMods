@@ -19,7 +19,7 @@ namespace Cauldron.Vanish
 
         public override void AddTriggers()
         {
-            AddTrigger<DealDamageAction>(dda => !dda.DamageSource.IsHero && dda.Target.IsHero && dda.DidDealDamage && WasNotUsedThisTurn(), HeroDamagedResponse, TriggerType.UsePower, TriggerTiming.After, isActionOptional: true);
+            AddTrigger<DealDamageAction>(dda => !dda.DamageSource.IsHero && IsHero(dda.Target) && dda.DidDealDamage && WasNotUsedThisTurn(), HeroDamagedResponse, TriggerType.UsePower, TriggerTiming.After, isActionOptional: true);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(TrackingKey), TriggerType.Hidden);
         }

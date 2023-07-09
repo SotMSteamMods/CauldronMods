@@ -80,7 +80,7 @@ namespace Cauldron.Vector
         {
             int damageAmount = Game.H;
 
-            IEnumerator damageRoutine = DealDamageToHighestHP(Card, 1, c => c.IsHero && c.IsInPlay, c => damageAmount, DamageType.Projectile);
+            IEnumerator damageRoutine = DealDamageToHighestHP(Card, 1, c => IsHero(c) && c.IsInPlay, c => damageAmount, DamageType.Projectile);
 
             IEnumerator damageRoutine2 = DealDamage(CharacterCard, Card, DamageToDealSelf, DamageType.Toxic, cardSource: GetCardSource());
 

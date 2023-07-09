@@ -38,7 +38,7 @@ namespace Cauldron.Dendron
         public override IEnumerator Play()
         {
             // Deal the hero with the highest HP 5 projectile damage
-            IEnumerator dealDamageToHighestHpRoutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => c.IsHeroCharacterCard, (Card c) => DamageToDealHighestHp, DamageType.Projectile);
+            IEnumerator dealDamageToHighestHpRoutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) =>  IsHeroCharacterCard(c), (Card c) => DamageToDealHighestHp, DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageToHighestHpRoutine);
@@ -48,7 +48,7 @@ namespace Cauldron.Dendron
                 base.GameController.ExhaustCoroutine(dealDamageToHighestHpRoutine);
             }
             // Deal the hero with the lowest HP 2 irreducible infernal damage
-            IEnumerator dealDamageToLowestHpRoutine = DealDamageToLowestHP(CharacterCard, 1, (Card c) => c.IsHeroCharacterCard, (Card c) => DamageToDealLowestHp, DamageType.Infernal, isIrreducible: true);
+            IEnumerator dealDamageToLowestHpRoutine = DealDamageToLowestHP(CharacterCard, 1, (Card c) =>  IsHeroCharacterCard(c), (Card c) => DamageToDealLowestHp, DamageType.Infernal, isIrreducible: true);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageToLowestHpRoutine);
@@ -77,7 +77,7 @@ namespace Cauldron.Dendron
                 HeroTurnTakerController fewestCardsHttc = FindHeroTurnTakerController(fewestTt.ToHero());
 
                 IEnumerator destroyOneOngoingRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc,
-                    new LinqCardCriteria(card => card.IsOngoing && card.IsInPlay && card.Owner == fewestTt), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
+                    new LinqCardCriteria(card => IsOngoing(card) && card.IsInPlay && card.Owner == fewestTt), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
 
                 IEnumerator destroyOneEquipmentRoutine = base.GameController.SelectAndDestroyCards(fewestCardsHttc,
                     new LinqCardCriteria(card => IsEquipment(card) && card.IsInPlay && card.Owner == fewestTt), CardsToDestroyFewestCards, cardSource: this.GetCardSource());
@@ -113,7 +113,7 @@ namespace Cauldron.Dendron
                 HeroTurnTakerController mostCardsHttc = FindHeroTurnTakerController(mostTt.ToHero());
 
                 IEnumerator destroyTwoOngoingRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc,
-                    new LinqCardCriteria(card => card.IsOngoing && card.IsInPlay && card.Owner == mostTt), CardsToDestroyMostCards, cardSource: this.GetCardSource());
+                    new LinqCardCriteria(card => IsOngoing(card) && card.IsInPlay && card.Owner == mostTt), CardsToDestroyMostCards, cardSource: this.GetCardSource());
 
                 IEnumerator destroyTwoEquipmentRoutine = base.GameController.SelectAndDestroyCards(mostCardsHttc,
                     new LinqCardCriteria(card => IsEquipment(card) && card.IsInPlay && card.Owner == mostTt), CardsToDestroyMostCards, cardSource: this.GetCardSource());
@@ -134,7 +134,7 @@ namespace Cauldron.Dendron
         public string ShowHeroWithFewestCardsInPlay()
         {
         
-            IEnumerable<TurnTaker> enumerable = GameController.FindTurnTakersWhere((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame, BattleZone);
+            IEnumerable<TurnTaker> enumerable = GameController.FindTurnTakersWhere((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame, BattleZone);
             List<string> list = new List<string>();
             int num = 999;
             foreach (HeroTurnTaker hero in enumerable)

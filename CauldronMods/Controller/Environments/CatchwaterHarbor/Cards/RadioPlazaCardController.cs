@@ -57,7 +57,7 @@ namespace Cauldron.CatchwaterHarbor
             AddTrigger<GameAction>(ga => ga.CardSource != GetCardSource(), (a) => FlipOverCards(), TriggerType.Hidden, TriggerTiming.After);
 
             //Damage dealt to hero targets is irreducible.
-            AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => dd.Target.IsHero && GameController.IsCardVisibleToCardSource(dd.Target, GetCardSource()));
+            AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => IsHeroTarget(dd.Target) && GameController.IsCardVisibleToCardSource(dd.Target, GetCardSource()));
             //At the start of the environment turn, destroy this card."
             AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
         }

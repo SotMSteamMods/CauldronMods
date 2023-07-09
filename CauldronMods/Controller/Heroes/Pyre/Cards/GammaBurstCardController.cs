@@ -35,7 +35,7 @@ namespace Cauldron.Pyre
             {
                 var numCardsIrradiated = storedCards.Where(scd => scd.SelectedCard != null).Count();
                 var hero = selectHero.SelectedTurnTaker;
-                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), numCardsIrradiated, DamageType.Energy, 1, false, 1, additionalCriteria: (Card c) => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && c.Owner == hero, cardSource: GetCardSource());
+                coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), numCardsIrradiated, DamageType.Energy, 1, false, 1, additionalCriteria: (Card c) =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && c.Owner == hero, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -45,7 +45,7 @@ namespace Cauldron.Pyre
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = DealDamage(CharacterCard, (Card c) => !c.IsHero, numCardsIrradiated, DamageType.Energy);
+                coroutine = DealDamage(CharacterCard, (Card c) => !IsHero(c), numCardsIrradiated, DamageType.Energy);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

@@ -96,7 +96,7 @@ namespace Cauldron.Dendron
         private IEnumerator ChallengeTattooEntersPlayResponse(CardEntersPlayAction cpa)
         {
             Card newTattoo = cpa.CardEnteringPlay;
-            IEnumerator coroutine = DealDamageToHighestHP(newTattoo, 1, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, FindCardController(newTattoo).GetCardSource()), (Card c) => Game.H - 2, DamageType.Infernal);
+            IEnumerator coroutine = DealDamageToHighestHP(newTattoo, 1, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, FindCardController(newTattoo).GetCardSource()), (Card c) => Game.H - 2, DamageType.Infernal);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

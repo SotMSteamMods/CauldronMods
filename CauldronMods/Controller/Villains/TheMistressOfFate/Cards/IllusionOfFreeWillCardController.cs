@@ -21,7 +21,7 @@ namespace Cauldron.TheMistressOfFate
         {
             //"Play this card next to the hero with the lowest HP.
             var storedHero = new List<Card>();
-            IEnumerator coroutine = GameController.FindTargetWithLowestHitPoints(1, (Card c) => c.IsHeroCharacterCard, storedHero, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.FindTargetWithLowestHitPoints(1, (Card c) =>  IsHeroCharacterCard(c), storedHero, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -46,7 +46,7 @@ namespace Cauldron.TheMistressOfFate
 
             //"Redirect damage dealt by this hero’s cards to the hero with the highest HP. 
             AddTrigger((DealDamageAction dd) => dd.IsRedirectable && dd.CardSource != null && dd.CardSource.TurnTakerController.TurnTaker == GetCardThisCardIsNextTo()?.Owner,
-                            (DealDamageAction dd) => RedirectDamage(dd, TargetType.HighestHP, (Card c) => c.IsHeroCharacterCard),
+                            (DealDamageAction dd) => RedirectDamage(dd, TargetType.HighestHP, (Card c) =>  IsHeroCharacterCard(c)),
                             TriggerType.RedirectDamage,
                             TriggerTiming.Before);
 

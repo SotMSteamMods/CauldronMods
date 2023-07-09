@@ -31,7 +31,7 @@ namespace Cauldron.Celadroch
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria(c => c.IsHeroCharacterCard && turnTakers.Contains(c.Owner), "hero character"), storedResults, isPutIntoPlay, decisionSources);
+            coroutine = SelectCardThisCardWillMoveNextTo(new LinqCardCriteria(c =>  IsHeroCharacterCard(c) && turnTakers.Contains(c.Owner), "hero character"), storedResults, isPutIntoPlay, decisionSources);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

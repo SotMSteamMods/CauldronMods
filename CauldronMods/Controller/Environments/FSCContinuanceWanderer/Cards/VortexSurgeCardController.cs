@@ -15,7 +15,7 @@ namespace Cauldron.FSCContinuanceWanderer
         public override void AddTriggers()
         {
             //Whenever a hero card is drawn, 1 player must discard a card.
-            base.AddTrigger<DrawCardAction>((DrawCardAction action) => action.IsSuccessful && action.DidDrawCard && action.DrawnCard.IsHero && GameController.IsCardVisibleToCardSource(action.DrawnCard, GetCardSource()), this.DiscardCardResponse, new TriggerType[] { TriggerType.DiscardCard }, TriggerTiming.After);
+            base.AddTrigger<DrawCardAction>((DrawCardAction action) => action.IsSuccessful && action.DidDrawCard && IsHero(action.DrawnCard) && GameController.IsCardVisibleToCardSource(action.DrawnCard, GetCardSource()), this.DiscardCardResponse, new TriggerType[] { TriggerType.DiscardCard }, TriggerTiming.After);
             //When another environment card enters play, destroy this card.
             base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction p) => p.CardEnteringPlay.IsEnvironment && p.CardEnteringPlay.Identifier != base.Card.Identifier && GameController.IsCardVisibleToCardSource(p.CardEnteringPlay, GetCardSource()), base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }

@@ -14,7 +14,7 @@ namespace Cauldron.Quicksilver
         {
             //If {Quicksilver} currently has less than her max HP, increase damage she deals to non-hero targets by 1.
             //If {Quicksilver} has 10 or fewer HP, increase damage she deals to non-hero targets by an additional 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard && !action.Target.IsHero, _ => DamageIncrease());
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard && !IsHero(action.Target), _ => DamageIncrease());
         }
 
         private int DamageIncrease()

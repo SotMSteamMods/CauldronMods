@@ -30,7 +30,7 @@ namespace Cauldron.NightloreCitadel
         public IEnumerator WhenDestroyedResponse(DestroyCardAction dca)
         {
             //each hero target deals themselves 2 psychic damage
-            IEnumerator coroutine = GameController.DealDamageToSelf(DecisionMaker, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 2, DamageType.Psychic, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.DealDamageToSelf(DecisionMaker, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), 2, DamageType.Psychic, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

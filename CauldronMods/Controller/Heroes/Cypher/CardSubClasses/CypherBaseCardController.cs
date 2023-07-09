@@ -104,7 +104,7 @@ namespace Cauldron.Cypher
 
         protected bool IsAugmentedHeroCharacterCard(Card hero)
         {
-            return hero.IsHeroCharacterCard && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
+            return IsHeroCharacterCard(hero) && hero.IsInPlayAndHasGameText && !hero.IsIncapacitatedOrOutOfGame
                 && hero.NextToLocation.HasCards && hero.GetAllNextToCards(false).Any(IsAugment);
         }
 
@@ -116,7 +116,7 @@ namespace Cauldron.Cypher
         protected List<TurnTaker> GetAugmentedHeroTurnTakers()
         {
             return FindTurnTakersWhere(tt =>
-                tt.IsHero && tt.CharacterCards.Any(card => card.NextToLocation.HasCards && card.NextToLocation.Cards.Any(IsAugment))).ToList();
+                IsHero(tt) && tt.CharacterCards.Any(card => card.NextToLocation.HasCards && card.NextToLocation.Cards.Any(IsAugment))).ToList();
         }
 
         protected List<Card> GetAugmentsForHero(Card hero)
@@ -131,7 +131,7 @@ namespace Cauldron.Cypher
                 yield break;
             }
 
-            var otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard.Location.OwnerCard && c.IsHeroCharacterCard &&
+            var otherHeroLocations = FindCardsWhere(c => c != scd.SelectedCard.Location.OwnerCard &&  IsHeroCharacterCard(c) &&
                                                          c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && GameController.IsCardVisibleToCardSource(c, GetCardSource()), realCardsOnly: true)
                                     .Select(h => new MoveCardDestination(h.NextToLocation, showMessage: true)).ToList();
 

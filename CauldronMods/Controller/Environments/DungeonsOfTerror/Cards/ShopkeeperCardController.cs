@@ -19,7 +19,7 @@ namespace Cauldron.DungeonsOfTerror
         public override void AddTriggers()
         {
             //At the start of their turn, a player may discard a card to play or draw one of their cards from beneath this.
-            AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero && Card.UnderLocation.Cards.Any(c => c.Owner == tt), DiscardToPlayOrDrawResponse, new TriggerType[]
+            AddStartOfTurnTrigger((TurnTaker tt) => IsHero(tt) && Card.UnderLocation.Cards.Any(c => c.Owner == tt), DiscardToPlayOrDrawResponse, new TriggerType[]
             {
                 TriggerType.DiscardCard,
                 TriggerType.PlayCard,
@@ -85,7 +85,7 @@ namespace Cauldron.DungeonsOfTerror
         public override IEnumerator Play()
         {
             //When this card enters play, reveal the top card of each hero deck, and move it beneath this card. Cards beneath this one are not considered in play.
-            IEnumerator coroutine = DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => ttc.IsHero && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Deck.HasCards, (TurnTakerController ttc) => RevealAndMoveCardsUnderResponse(ttc));
+            IEnumerator coroutine = DoActionToEachTurnTakerInTurnOrder((TurnTakerController ttc) => IsHero(ttc.TurnTaker) && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Deck.HasCards, (TurnTakerController ttc) => RevealAndMoveCardsUnderResponse(ttc));
             if (this.UseUnityCoroutines)
             {
                 yield return this.GameController.StartCoroutine(coroutine);

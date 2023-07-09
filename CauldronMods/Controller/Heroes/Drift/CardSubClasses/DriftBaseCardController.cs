@@ -38,7 +38,7 @@ namespace Cauldron.Drift
 
         public Card GetActiveCharacterCard()
         {
-            return base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && c.Location == base.TurnTaker.PlayArea && c.Owner == base.TurnTaker)).FirstOrDefault();
+            return base.FindCardsWhere(new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && c.Location == base.TurnTaker.PlayArea && c.Owner == base.TurnTaker)).FirstOrDefault();
         }
 
         public TokenPool GetShiftPool()

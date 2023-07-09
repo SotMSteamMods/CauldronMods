@@ -83,7 +83,7 @@ namespace Cauldron.Terminus
                 case 1:
                     {
                         // Each hero may use a power printed on one of their non-character cards. Then destroy any card whose power was used this way. 
-                        coroutine = base.GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => c.IsRealCard && c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero"), SelectionType.UsePower, UsePowerResponse, null, optional: false, 0, null, allowAutoDecide: false, null, GetCardSource());
+                        coroutine = base.GameController.SelectCardsAndDoAction(DecisionMaker, new LinqCardCriteria((Card c) => c.IsRealCard &&  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame, "hero"), SelectionType.UsePower, UsePowerResponse, null, optional: false, 0, null, allowAutoDecide: false, null, GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -118,7 +118,7 @@ namespace Cauldron.Terminus
             CardController cardController = FindCardController(card);
             List<UsePowerDecision> usePowerDecisions = new List<UsePowerDecision>();
 
-            coroutine = base.GameController.SelectAndUsePower(cardController.DecisionMaker, optional: true, (power)=>!power.CardSource.Card.IsHeroCharacterCard, 1, eliminateUsedPowers: true, storedResults: usePowerDecisions, showMessage: false, allowAnyHeroPower: false, allowReplacements: true, canBeCancelled: true, null, forceDecision: false, allowOutOfPlayPower: false, GetCardSource());
+            coroutine = base.GameController.SelectAndUsePower(cardController.DecisionMaker, optional: true, (power)=>!IsHeroCharacterCard(power.CardSource.Card), 1, eliminateUsedPowers: true, storedResults: usePowerDecisions, showMessage: false, allowAnyHeroPower: false, allowReplacements: true, canBeCancelled: true, null, forceDecision: false, allowOutOfPlayPower: false, GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

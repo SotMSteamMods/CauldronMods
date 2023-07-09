@@ -43,7 +43,7 @@ namespace Cauldron.VaultFive
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //.. and deals each other hero target 1 infernal damage
-            coroutine = DealDamage(hero, (Card c) => c.IsHero && c.IsTarget && c != hero, 1, DamageType.Infernal);
+            coroutine = DealDamage(hero, (Card c) => IsHeroTarget(c) && c != hero, 1, DamageType.Infernal);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

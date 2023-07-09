@@ -19,7 +19,7 @@ namespace Cauldron.ScreaMachine
         public override IEnumerator Play()
         {
             var coroutine = GameController.SelectCardsAndDoAction(null, new LinqCardCriteria(c => IsVillainTarget(c) && c.IsInPlayAndNotUnderCard, "villain target", false), SelectionType.CardToDealDamage,
-                            actionWithCard: source => base.DealDamageToHighestHP(source, 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => 2, DamageType.Sonic),
+                            actionWithCard: source => base.DealDamageToHighestHP(source, 1, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, c => 2, DamageType.Sonic),
                             allowAutoDecide: true,
                             cardSource: GetCardSource());
             if (UseUnityCoroutines)

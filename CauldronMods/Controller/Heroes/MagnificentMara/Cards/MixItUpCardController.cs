@@ -16,7 +16,7 @@ namespace Cauldron.MagnificentMara
         {
             //"Destroy 1 hero ongoing card, equipment card, or environment card.",
             var storedDestroy = new List<DestroyCardAction> { };
-            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => (c.IsOngoing && c.IsHero) || IsEquipment(c) || c.IsEnvironment), false, storedDestroy, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => (IsOngoing(c) && IsHero(c)) || IsEquipment(c) || c.IsEnvironment), false, storedDestroy, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

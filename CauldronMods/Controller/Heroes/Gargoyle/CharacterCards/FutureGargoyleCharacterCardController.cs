@@ -27,7 +27,7 @@ namespace Cauldron.Gargoyle
             List<DestroyCardAction> storedDestroyCardActions = new List<DestroyCardAction>();
 
             // You may destroy 1 hero ongoing or equipment card. 
-            coroutine = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((card) => card.IsHero && (card.IsOngoing || base.IsEquipment(card)), "hero ongoing or equipment"), HeroOngoingOrEquipmentAmount, false, 0, storedResultsAction: storedDestroyCardActions, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((card) => IsHero(card) && (IsOngoing(card) || base.IsEquipment(card)), "hero ongoing or equipment"), HeroOngoingOrEquipmentAmount, false, 0, storedResultsAction: storedDestroyCardActions, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -41,7 +41,7 @@ namespace Cauldron.Gargoyle
             {
                 // If you do, 1 player plays a card
                 coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
-                                                        new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && CanPlayCardsFromHand(GameController.FindHeroTurnTakerController(tt.ToHero()))),
+                                                        new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && CanPlayCardsFromHand(GameController.FindHeroTurnTakerController(tt.ToHero()))),
                                                         SelectionType.PlayCard,
                                                         (TurnTaker tt) => SelectAndPlayCardFromHand(GameController.FindHeroTurnTakerController(tt.ToHero()), optional: false),
                                                         numberOfTurnTakers: PlayerAmount,

@@ -32,7 +32,7 @@ namespace Cauldron.WindmillCity
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals each hero target 1 toxic damage and each villain target 1 energy damage.
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.All, 1, DamageType.Toxic);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.All, 1, DamageType.Toxic);
             AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsVillainTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.All, 1, DamageType.Energy);
 
         }

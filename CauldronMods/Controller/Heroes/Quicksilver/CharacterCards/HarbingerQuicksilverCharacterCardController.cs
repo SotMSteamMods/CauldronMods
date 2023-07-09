@@ -67,7 +67,7 @@ namespace Cauldron.Quicksilver
                         if (DidDiscardCards(storedDiscard))
                         {
                             coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker,
-                                                new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())),
+                                                new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())),
                                                 SelectionType.DrawCard,
                                                 (TurnTaker tt) => GameController.DrawCard(tt.ToHero(), true, cardSource: GetCardSource()),
                                                 2, false, 2,

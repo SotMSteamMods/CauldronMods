@@ -105,7 +105,7 @@ namespace Cauldron.TheKnight
 
         private bool FlipCriteria(GameAction ga)
         {
-            return((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker && c.IsHeroCharacterCard && c.IsActive && c != base.Card).Count() == 0);
+            return((ga is FlipCardAction || ga is BulkRemoveTargetsAction || ga is MoveCardAction) && !base.Card.IsFlipped && FindCardsWhere((Card c) => c.Owner == base.TurnTaker &&  IsHeroCharacterCard(c) && c.IsActive && c != base.Card).Count() == 0);
         }
 
         public override IEnumerator AfterFlipCardImmediateResponse()

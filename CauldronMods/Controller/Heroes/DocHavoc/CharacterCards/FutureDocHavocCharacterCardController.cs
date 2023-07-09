@@ -82,7 +82,7 @@ namespace Cauldron.DocHavoc
 
         private List<Card> HeroesThatGainedHP()
         {
-            return Journal.GainHPEntriesThisTurn().Where((GainHPJournalEntry j) => j.TargetCard.IsTarget && j.TargetCard.IsHeroCharacterCard && GameController.IsCardVisibleToCardSource(j.TargetCard, GetCardSource())).Select(j => j.TargetCard).Distinct().ToList();
+            return Journal.GainHPEntriesThisTurn().Where((GainHPJournalEntry j) => j.TargetCard.IsTarget && IsHeroCharacterCard(j.TargetCard) && GameController.IsCardVisibleToCardSource(j.TargetCard, GetCardSource())).Select(j => j.TargetCard).Distinct().ToList();
         }
 
         private string HPGainersListString()
@@ -118,7 +118,7 @@ namespace Cauldron.DocHavoc
                 case 1:
                     {
                         //"Destroy 1 ongoing card.",
-                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing"), false, cardSource: GetCardSource());
+                        coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c), "ongoing"), false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

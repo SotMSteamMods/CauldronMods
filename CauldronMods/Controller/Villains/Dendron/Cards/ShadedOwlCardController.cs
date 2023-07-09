@@ -35,7 +35,7 @@ namespace Cauldron.Dendron
         private IEnumerator EndOfTurnDealDamageResponse(PhaseChangeAction pca)
         {
             // At the end of the villain turn, this card deals each hero target 1 sonic damage.
-            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, card => card.IsHero && card.IsInPlay, DamageToDeal, DamageType.Sonic);
+            IEnumerator dealDamageRoutine = this.DealDamage(this.Card, card => IsHero(card) && card.IsInPlay, DamageToDeal, DamageType.Sonic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);

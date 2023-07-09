@@ -35,7 +35,7 @@ namespace Cauldron.Terminus
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>((dda) => dda.Target.IsHero && dda.IsSuccessful && dda.Amount >= 3 && !dda.IsPretend, StoreIsHero, TriggerType.HiddenLast, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((dda) => IsHero(dda.Target) && dda.IsSuccessful && dda.Amount >= 3 && !dda.IsPretend, StoreIsHero, TriggerType.HiddenLast, TriggerTiming.Before);
             base.AddTrigger<DealDamageAction>((dda) => dda.Amount >= 3 && RecentDamageIds.Contains(dda.InstanceIdentifier), DealDamageActionResponse, TriggerType.ModifyTokens, TriggerTiming.After);
             base.AddTriggers();
         }

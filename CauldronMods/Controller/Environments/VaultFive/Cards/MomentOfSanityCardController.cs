@@ -22,7 +22,7 @@ namespace Cauldron.VaultFive
         public override IEnumerator Play()
         {
             //When this card enters play, destroy {H - 2} ongoing cards.
-            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "ongoing"), Game.H - 2, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDestroyCards(DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "ongoing"), Game.H - 2, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -37,7 +37,7 @@ namespace Cauldron.VaultFive
         {
             //Heroes gain the following power:
             //Power: Discard 1 Artifact card. If you do, play a card or destroy 1 environment card. Then destroy this card.
-            if (cardController.Card != null && cardController.Card.IsHeroCharacterCard && cardController.Card.IsInPlayAndHasGameText && cardController.Card.IsRealCard && !cardController.Card.IsIncapacitatedOrOutOfGame)
+            if (cardController.Card != null && IsHeroCharacterCard(cardController.Card) && cardController.Card.IsInPlayAndHasGameText && cardController.Card.IsRealCard && !cardController.Card.IsIncapacitatedOrOutOfGame)
             {
                 return new Power[1]
                 {
@@ -56,7 +56,7 @@ namespace Cauldron.VaultFive
 
             List<DiscardCardAction> storedResults = new List<DiscardCardAction>();
             TurnTaker owner = heroCharacterCard.Owner;
-            if (owner == null || !owner.IsHero)
+            if (owner == null || !IsHero(owner))
             {
                 yield break;
             }

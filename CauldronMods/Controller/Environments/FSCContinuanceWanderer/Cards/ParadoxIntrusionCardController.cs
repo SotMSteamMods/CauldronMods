@@ -25,7 +25,7 @@ namespace Cauldron.FSCContinuanceWanderer
         private IEnumerator DealDamageResponse(PhaseChangeAction pca)
         {
             //At the end of the environment turn, this card deals the hero target with the highest HP {H} energy damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => base.H, DamageType.Energy);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHeroTarget(c), (Card c) => base.H, DamageType.Energy);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

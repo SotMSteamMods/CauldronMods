@@ -12,7 +12,7 @@ namespace Cauldron.Gray
 
         public ContaminationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowIfElseSpecialString(() => GetHeroCardsDestroyedThisRound().Where(e => (e.Card.IsOngoing || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() > 0, () => GetHeroCardsDestroyedThisRound().Where(e => (e.Card.IsOngoing || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() + " hero card(s) have been destroyed by this card this round.", () => "No hero cards have been destroyed by this card this round.");
+            SpecialStringMaker.ShowIfElseSpecialString(() => GetHeroCardsDestroyedThisRound().Where(e => (IsOngoing(e.Card) || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() > 0, () => GetHeroCardsDestroyedThisRound().Where(e => (IsOngoing(e.Card) || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() + " hero card(s) have been destroyed by this card this round.", () => "No hero cards have been destroyed by this card this round.");
         }
 
         private bool SelfDestructionCriteria(DestroyCardAction action)
@@ -21,8 +21,8 @@ namespace Cauldron.Gray
             //prefilter to events that destroyed a hero ongoing before hitting the Journal
             var destroyedCard = action.CardToDestroy?.Card;
 
-            return  destroyedCard != null && destroyedCard.IsHero && (destroyedCard.IsOngoing || IsEquipment(destroyedCard)) &&
-                    this.GetHeroCardsDestroyedThisRound().Where(e => (e.Card.IsOngoing || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() >= Game.H;
+            return  destroyedCard != null && IsHero(destroyedCard) && (IsOngoing(destroyedCard) || IsEquipment(destroyedCard)) &&
+                    this.GetHeroCardsDestroyedThisRound().Where(e => (IsOngoing(e.Card) || IsEquipment(e.Card)) && e.CardSource == this.Card).Count() >= Game.H;
         }
 
         public override void AddTriggers()
@@ -35,7 +35,7 @@ namespace Cauldron.Gray
 
         private IEnumerator DestroyHeroCardResponse(DealDamageAction action)
         {
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.FindHeroTurnTakerController(action.DamageSource.Card.Owner.ToHero()), new LinqCardCriteria((Card c) => (c.IsOngoing || IsEquipment(c)) && c.Owner == action.DamageSource.Card.Owner), false, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.FindHeroTurnTakerController(action.DamageSource.Card.Owner.ToHero()), new LinqCardCriteria((Card c) => (IsOngoing(c) || IsEquipment(c)) && c.Owner == action.DamageSource.Card.Owner), false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -50,7 +50,7 @@ namespace Cauldron.Gray
         private IEnumerable<DestroyCardJournalEntry> GetHeroCardsDestroyedThisRound()
         {
             return (from e in base.Journal.DestroyCardEntriesThisRound()
-                    where e.Card.IsHero && (e.Card.IsOngoing || IsEquipment(e.Card))
+                    where IsHero(e.Card) && (IsOngoing(e.Card) || IsEquipment(e.Card))
                     select e).Where(base.Journal.SinceCardWasMoved<DestroyCardJournalEntry>(base.Card, (MoveCardJournalEntry e) => e.ToLocation == base.TurnTaker.PlayArea)); ;
         }
     }

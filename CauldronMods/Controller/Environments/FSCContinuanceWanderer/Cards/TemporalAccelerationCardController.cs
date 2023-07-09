@@ -27,7 +27,7 @@ namespace Cauldron.FSCContinuanceWanderer
                 base.GameController.ExhaustCoroutine(coroutine);
                 base.GameController.ExhaustCoroutine(e2);
             }
-            IEnumerator coroutine2 = base.PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => ttc.IsHero && GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource()), (Location location) => location.IsHero, responsibleTurnTaker: base.TurnTaker);
+            IEnumerator coroutine2 = base.PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => IsHero(ttc.TurnTaker) && GameController.IsTurnTakerVisibleToCardSource(ttc.TurnTaker, GetCardSource()), (Location location) => location.IsHero, responsibleTurnTaker: base.TurnTaker);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);

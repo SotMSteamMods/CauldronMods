@@ -65,7 +65,7 @@ namespace Cauldron.TheKnight
 
         protected bool IsOwnCharacterCard(Card card)
         {
-            return card.IsHeroCharacterCard && card.ParentDeck == this.Card.ParentDeck;
+            return IsHeroCharacterCard(card) && card.ParentDeck == this.Card.ParentDeck;
         }
 
         public IEnumerator SelectOwnCharacterCard(List<SelectCardDecision> results, SelectionType selectionType)

@@ -27,7 +27,7 @@ namespace Cauldron.Menagerie
         private IEnumerator DealDamageAndInsectResponse(PhaseChangeAction action)
         {
             //...this card deals the hero target with the lowest HP 2 toxic damage. 
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => 2, DamageType.Toxic);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => 2, DamageType.Toxic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

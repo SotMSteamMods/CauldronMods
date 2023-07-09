@@ -44,7 +44,7 @@ namespace Cauldron.Gray
             else
             {
                 //...Otherwise this card deals the hero target with the highest HP 1 melee damage.
-                coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => 1, DamageType.Melee);
+                coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => 1, DamageType.Melee);
             }
             if (base.UseUnityCoroutines)
             {

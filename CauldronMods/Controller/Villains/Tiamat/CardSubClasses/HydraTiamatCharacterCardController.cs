@@ -46,8 +46,7 @@ namespace Cauldron.Tiamat
         //When a {Tiamat} head is destroyed, flip her.
         public override IEnumerator DestroyAttempted(DestroyCardAction destroyCard)
         {
-            FlipCardAction action = new FlipCardAction(base.GameController, this, false, false, destroyCard.ActionSource);
-            IEnumerator coroutine = base.DoAction(action);
+            IEnumerator coroutine = base.GameController.FlipCard(this, actionSource: destroyCard.ActionSource, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

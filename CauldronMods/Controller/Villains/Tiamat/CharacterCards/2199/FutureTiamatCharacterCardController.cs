@@ -16,12 +16,7 @@ namespace Cauldron.Tiamat
             base.SpecialStringMaker.ShowDamageDealt(new LinqCardCriteria((Card c) => c == base.Card, base.Card.Title, useCardsSuffix: false), thisTurn: true).Condition = () => Game.ActiveTurnTaker == base.TurnTaker && !base.Card.IsFlipped;
         }
 
-        public override void AddStartOfGameTriggers()
-        {
-            base.AddStartOfGameTriggers();
-            (TurnTakerController as TiamatTurnTakerController).MoveStartingCards();            
-        }
-
+    
         private IEnumerator Discard2Spells(PhaseChangeAction action)
         {
             IEnumerator coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, base.TurnTaker.Deck, false, false, false, new LinqCardCriteria((Card c) => this.IsSpell(c), "spell"), 2,
@@ -72,7 +67,7 @@ namespace Cauldron.Tiamat
         private IEnumerator EndOfTurnResponse(PhaseChangeAction action)
         {
             //...{Tiamat} deals the hero target with the highest HP {H} energy damage. 
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => Game.H, DamageType.Energy);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => Game.H, DamageType.Energy);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -85,7 +80,7 @@ namespace Cauldron.Tiamat
             //...Then, if {Tiamat} deals no damage this turn, each hero target deals itself 3 projectile damage.
             if (!this.DidDealDamageThisTurn())
             {
-                coroutine = base.GameController.DealDamageToSelf(this.DecisionMaker, (Card c) => c.IsHero, (Card c) => 3, DamageType.Projectile, base.GetCardSource());
+                coroutine = base.GameController.DealDamageToSelf(this.DecisionMaker, (Card c) => IsHero(c), (Card c) => 3, DamageType.Projectile, base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

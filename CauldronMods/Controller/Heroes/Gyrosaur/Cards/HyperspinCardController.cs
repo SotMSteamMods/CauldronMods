@@ -33,7 +33,7 @@ namespace Cauldron.Gyrosaur
         public override void AddTriggers()
         {
             //"Increase damage dealt by {Gyrosaur} to non-hero targets by 1.",
-            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(CharacterCard) && !dd.Target.IsHero, 1);
+            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsSameCard(CharacterCard) && !IsHero(dd.Target), 1);
             //"If you would draw a Crash card, play it instead. Then, destroy all copies of Hyperspin."
             AddTrigger((DrawCardAction dc) => dc.HeroTurnTaker == HeroTurnTaker, PlayCrashAndEndHyperspin, new TriggerType[] { TriggerType.PlayCard, TriggerType.DestroyCard }, TriggerTiming.Before);
         }

@@ -18,7 +18,7 @@ namespace Cauldron.Mythos
         public override void AddTriggers()
         {
             //{MythosDanger} Increase damage dealt by environment cards to hero targets by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsTopCardMatching(MythosDangerDeckIdentifier) && action.DamageSource.IsEnvironmentCard && action.Target.IsHero, 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => base.IsTopCardMatching(MythosDangerDeckIdentifier) && action.DamageSource.IsEnvironmentCard && IsHero(action.Target), 1);
 
             //{MythosMadness} At the end of the villain turn, this card deals each hero target 1 psychic damage.
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.MadnessDealDamageResponse, TriggerType.DealDamage, (PhaseChangeAction action) => base.IsTopCardMatching(MythosMadnessDeckIdentifier));
@@ -27,7 +27,7 @@ namespace Cauldron.Mythos
         private IEnumerator MadnessDealDamageResponse(PhaseChangeAction action)
         {
             //...this card deals each hero target 1 psychic damage.
-            IEnumerator coroutine = base.DealDamage(this.Card, (Card c) => c.IsHero, 1, DamageType.Psychic);
+            IEnumerator coroutine = base.DealDamage(this.Card, (Card c) => IsHero(c), 1, DamageType.Psychic);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

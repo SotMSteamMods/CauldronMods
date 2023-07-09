@@ -15,7 +15,7 @@ namespace Cauldron.Necro
         public override void AddTriggers()
         {
             //At the end of your turn, destroy 1 hero equipment or ongoing card.          
-            base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, _ => base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria(c => IsHeroConsidering1929(c) && (c.IsOngoing || IsEquipment(c)), $"{HeroStringConsidering1929} ongoing or equipment"), 1, cardSource: base.GetCardSource()), TriggerType.DestroyCard);
+            base.AddEndOfTurnTrigger(tt => tt == base.TurnTaker, _ => base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria(c => IsHeroConsidering1929(c) && (IsOngoing(c) || IsEquipment(c)), $"{HeroStringConsidering1929} ongoing or equipment"), 1, cardSource: base.GetCardSource()), TriggerType.DestroyCard);
             //When this card is destroyed, one player may play a card.
             base.AddWhenDestroyedTrigger(OnDestroyResponse, new TriggerType[] { TriggerType.PlayCard });
         }

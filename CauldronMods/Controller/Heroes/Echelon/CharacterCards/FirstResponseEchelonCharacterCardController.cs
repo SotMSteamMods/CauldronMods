@@ -51,7 +51,7 @@ namespace Cauldron.Echelon
                         var storedPlay = new List<PlayCardAction> { };
                         Func<Card, bool> playableEquipmentInHand = (delegate (Card c)
                         {
-                            return c.IsInHand && c.IsHero && IsEquipment(c) &&
+                            return c.IsInHand && IsHero(c) && IsEquipment(c) &&
                                       GameController.IsCardVisibleToCardSource(c, GetCardSource()) &&
                                       GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay;
                         });
@@ -84,7 +84,7 @@ namespace Cauldron.Echelon
                     {
                         //"Look at the top 3 cards of a hero deck and replace them in any order."
                         List<SelectTurnTakerDecision> storedResults = new List<SelectTurnTakerDecision>();
-                        coroutine = GameController.SelectTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, storedResults, optional: false, allowAutoDecide: false, (TurnTaker tt) => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame, 3, cardSource: GetCardSource());
+                        coroutine = GameController.SelectTurnTaker(DecisionMaker, SelectionType.RevealCardsFromDeck, storedResults, optional: false, allowAutoDecide: false, (TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame, 3, cardSource: GetCardSource());
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);

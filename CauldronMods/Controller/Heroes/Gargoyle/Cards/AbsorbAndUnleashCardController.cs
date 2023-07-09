@@ -40,7 +40,7 @@ namespace Cauldron.Gargoyle
             }
 
             // {Gargoyle} deals 1 hero target 2 toxic damage
-            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.CharacterCard), HERO_DAMAGE, DamageType.Toxic, 1, false, 1, additionalCriteria: (card) => card.IsHero && card.IsTarget, storedResultsDamage: storedResults, cardSource: GetCardSource());
+            coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, this.CharacterCard), HERO_DAMAGE, DamageType.Toxic, 1, false, 1, additionalCriteria: (card) => IsHero(card) && card.IsTarget, storedResultsDamage: storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

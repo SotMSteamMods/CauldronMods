@@ -18,7 +18,7 @@ namespace Cauldron.TheMistressOfFate
         public override IEnumerator Play()
         {
             //"When this card enters play, {TheMistressOfFate} deals each hero 10 melee damage.",
-            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => c.IsHeroCharacterCard, 10, DamageType.Melee);
+            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) =>  IsHeroCharacterCard(c), 10, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

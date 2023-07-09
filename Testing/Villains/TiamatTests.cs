@@ -713,7 +713,7 @@ namespace CauldronTests
             StartGame();
 
             Card fire = GetCard("ElementOfFire");
-
+            PrintSpecialStringsForCard(fire);
             //put the other two copies of element of fire in the trash
             List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfFire" && c != fire).Take(2)).ToList();
             PutInTrash(spellCards);
@@ -784,7 +784,8 @@ namespace CauldronTests
             //winter is the one who should be dealing the damage
             AddCannotDealNextDamageTrigger(tiamat, storm);
             AddCannotDealNextDamageTrigger(tiamat, inferno);
-            PlayCard(tiamat, "ElementOfIce");
+            Card ice = PlayCard(tiamat, "ElementOfIce");
+            PrintSpecialStringsForCard(ice);
 
             QuickHPCheck(-2, -2, -2);
         }
@@ -882,7 +883,7 @@ namespace CauldronTests
             StartGame();
 
             Card lightning = GetCard("ElementOfLightning");
-
+            PrintSpecialStringsForCard(lightning);
             //put the other two copies of element of lightning in the trash
             List<Card> spellCards = (tiamat.TurnTaker.Deck.Cards.Where(c => c.Identifier == "ElementOfLightning" && c != lightning).Take(2)).ToList();
             PutInTrash(spellCards);

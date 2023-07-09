@@ -14,7 +14,7 @@ namespace Cauldron.Necro
         public override IEnumerator Play()
         {
             //You may destroy an ongoing card.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlay && c.IsOngoing, "ongoing"), true, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsInPlay && IsOngoing(c), "ongoing"), true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

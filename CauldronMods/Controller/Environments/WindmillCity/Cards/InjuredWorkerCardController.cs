@@ -30,7 +30,7 @@ namespace Cauldron.WindmillCity
             }
             //Then move this card next to the hero with the highest HP.           
             List<Card> storedResults = new List<Card>();
-            coroutine = GameController.FindTargetWithHighestHitPoints(1, (Card c) => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame, storedResults,cardSource: GetCardSource());
+            coroutine = GameController.FindTargetWithHighestHitPoints(1, (Card c) =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame, storedResults,cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

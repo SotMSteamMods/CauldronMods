@@ -49,7 +49,7 @@ namespace Cauldron.FSCContinuanceWanderer
                 new MoveCardDestination(turnTaker.Deck)
             };
             HeroTurnTakerController decisionMaker;
-            if (turnTaker.IsHero)
+            if (IsHero(turnTaker))
             {
                 decisionMaker = turnTakerController.ToHero();
             }

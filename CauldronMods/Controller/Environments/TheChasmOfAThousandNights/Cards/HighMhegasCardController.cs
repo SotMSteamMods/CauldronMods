@@ -18,7 +18,7 @@ namespace Cauldron.TheChasmOfAThousandNights
         public override void AddTriggers()
         {
             //At the end of the environment turn, this card deals the 3 hero targets with the highest HP 2 melee damage each.
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, 2, DamageType.Melee, numberOfTargets: 3);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), TargetType.HighestHP, 2, DamageType.Melee, numberOfTargets: 3);
         }
     }
 }

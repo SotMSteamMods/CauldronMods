@@ -27,7 +27,7 @@ namespace Cauldron.TheCybersphere
 
         private bool TargetCriteria(Card c)
         {
-            return c.IsHero && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource());
+            return IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource());
         }
     }
 }

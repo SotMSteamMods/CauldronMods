@@ -112,7 +112,7 @@ namespace Cauldron.Vector
            if(!IsVectorFlipped())
             {
                 // {Vector} deals each hero 1 toxic damage
-                routine = base.DealDamage(this.CharacterCard, c => c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame,
+                routine = base.DealDamage(this.CharacterCard, c =>  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame,
                     DamageToDeal, DamageType.Toxic);
 
                 if (base.UseUnityCoroutines)

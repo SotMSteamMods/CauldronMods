@@ -19,7 +19,7 @@ namespace Cauldron.Cypher
         public override IEnumerator UsePower(int index = 0)
         {
             // Play a card face down next to a hero. Until leaving play it gains keyword 'Augment' and text 'This hero is augmented', 
-            var destinations = FindCardsWhere(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && c.IsRealCard)
+            var destinations = FindCardsWhere(c =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && !c.IsIncapacitatedOrOutOfGame && c.IsRealCard)
                                     .Select(c => new MoveCardDestination(c.NextToLocation))
                                     .ToArray();
 

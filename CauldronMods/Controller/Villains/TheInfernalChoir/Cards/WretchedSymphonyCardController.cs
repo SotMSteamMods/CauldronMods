@@ -43,7 +43,7 @@ namespace Cauldron.TheInfernalChoir
             if (DidSelectCard(result))
             {
                 var source = GetSelectedCard(result);
-                coroutine = DealDamage(source, c => c.IsHeroCharacterCard && c != source, 2, DamageType.Cold);
+                coroutine = DealDamage(source, c =>  IsHeroCharacterCard(c) && c != source, 2, DamageType.Cold);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

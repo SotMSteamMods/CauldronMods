@@ -44,7 +44,7 @@ namespace Cauldron.Oriphel
                                                                     1,
                                                                     false,
                                                                     1,
-                                                                    additionalCriteria: (Card c) => c.Owner == target && c.IsHeroCharacterCard && !c.IsIncapacitatedOrOutOfGame,
+                                                                    additionalCriteria: (Card c) => c.Owner == target &&  IsHeroCharacterCard(c) && !c.IsIncapacitatedOrOutOfGame,
                                                                     cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {

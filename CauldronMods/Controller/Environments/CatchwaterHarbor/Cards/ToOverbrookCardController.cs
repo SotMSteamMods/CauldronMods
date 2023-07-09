@@ -49,7 +49,7 @@ namespace Cauldron.CatchwaterHarbor
 			{
 				base.GameController.ExhaustCoroutine(coroutine);
 			}
-			coroutine = PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => ttc.IsHero, (Location l) => l.IsHero, TurnTaker);
+			coroutine = PlayTopCardOfEachDeckInTurnOrder((TurnTakerController ttc) => IsHero(ttc.TurnTaker), (Location l) => l.IsHero, TurnTaker);
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);

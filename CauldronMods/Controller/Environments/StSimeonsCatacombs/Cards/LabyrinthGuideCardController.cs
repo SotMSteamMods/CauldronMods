@@ -19,7 +19,7 @@ namespace Cauldron.StSimeonsCatacombs
         public override void AddTriggers()
         {
             //At the start of a hero's turn, that hero may discard 2 cards to destroy a Room in play.
-            base.AddStartOfTurnTrigger((TurnTaker tt) => tt.IsHero, this.Discard2ToDestroyRoom, new TriggerType[]
+            base.AddStartOfTurnTrigger((TurnTaker tt) => IsHero(tt), this.Discard2ToDestroyRoom, new TriggerType[]
             {
                 TriggerType.DiscardCard,
                 TriggerType.DestroyCard
@@ -54,7 +54,7 @@ namespace Cauldron.StSimeonsCatacombs
                     if (storedResults.Count<bool>() > 0 && storedResults.First<bool>())
                     {
                         // this card deals each hero target 1 psychic damage .
-                        IEnumerator coroutine2 = base.DealDamage(base.Card, (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Psychic);
+                        IEnumerator coroutine2 = base.DealDamage(base.Card, (Card c) => IsHeroTarget(c), 1, DamageType.Psychic);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine2);
@@ -97,7 +97,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         private IEnumerator Discard2ToDestroyRoom(PhaseChangeAction phaseChange)
         {
-            if (phaseChange.ToPhase.TurnTaker.IsHero)
+            if (IsHero(phaseChange.ToPhase.TurnTaker))
             {
                 //...that hero...
                 HeroTurnTakerController heroTurnTakerController = base.GameController.FindHeroTurnTakerController(phaseChange.ToPhase.TurnTaker.ToHero());

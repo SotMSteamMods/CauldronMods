@@ -25,7 +25,7 @@ namespace Cauldron.Echelon
         protected override void AddTacticEffectTrigger()
         {
             //The first time a hero destroys a non-hero target each turn, you may draw a card.
-            AddTrigger((DestroyCardAction dc) => dc.WasCardDestroyed && dc.CardToDestroy.Card.IsTarget && !dc.CardToDestroy.Card.IsHero && !HasBeenSetToTrueThisTurn(drawKey) && IsByHero(dc),
+            AddTrigger((DestroyCardAction dc) => dc.WasCardDestroyed && dc.CardToDestroy.Card.IsTarget && !IsHero(dc.CardToDestroy.Card) && !HasBeenSetToTrueThisTurn(drawKey) && IsByHero(dc),
                                 FirstDrawResponse, TriggerType.DrawCard, TriggerTiming.After);
         }
 
@@ -37,7 +37,7 @@ namespace Cauldron.Echelon
             }
             else if (dc != null && dc.CardSource != null)
             {
-                return dc.CardSource.Card.IsHero;
+                return IsHero(dc.CardSource.Card);
             }
             return false;
         }

@@ -48,7 +48,7 @@ namespace Cauldron.Menagerie
                         heroes.Add(hero);
                     }
                 }
-                IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) => c.IsHeroCharacterCard && heroes.Contains(c.Owner) && !c.IsIncapacitatedOrOutOfGame), storedResults, isPutIntoPlay, decisionSources);
+                IEnumerator coroutine = base.SelectCardThisCardWillMoveNextTo(new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && heroes.Contains(c.Owner) && !c.IsIncapacitatedOrOutOfGame), storedResults, isPutIntoPlay, decisionSources);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -143,7 +143,7 @@ namespace Cauldron.Menagerie
 
         private TurnTaker GetEnclosedHero()
         {
-            if (base.Card.Location.OwnerCard != null && base.Card.Location.OwnerCard.IsHero)
+            if (base.Card.Location.OwnerCard != null && IsHero(base.Card.Location.OwnerCard))
             {
                 return base.Card.Location.OwnerCard.Owner;
             }

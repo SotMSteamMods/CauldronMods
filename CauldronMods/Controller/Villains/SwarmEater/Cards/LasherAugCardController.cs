@@ -25,7 +25,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DealDamageAndDestroyResponse(PhaseChangeAction action)
         {
             //this card deals the hero target with the highest HP {H} projectile damage...
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, c => c.IsHero && c.IsTarget, c => Game.H, DamageType.Projectile);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, c => IsHeroTarget(c), c => Game.H, DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -35,7 +35,7 @@ namespace Cauldron.SwarmEater
                 base.GameController.ExhaustCoroutine(coroutine);
             }
             //...and destroys {H - 2} hero ongoing and/or equipment cards.
-            coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria(c => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), Game.H - 2, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria(c => IsHero(c) && (IsOngoing(c) || IsEquipment(c)), "hero ongoing or equipment"), Game.H - 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -49,7 +49,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator AbsorbDestroyResponse(PhaseChangeAction action, Card absorbingCard)
         {
             //...destroy 1 hero ongoing or equipment card.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria(c => c.IsHero && (c.IsOngoing || IsEquipment(c)), "hero ongoing or equipment"), 1, responsibleCard: absorbingCard, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria(c => IsHero(c) && (IsOngoing(c) || IsEquipment(c)), "hero ongoing or equipment"), 1, responsibleCard: absorbingCard, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

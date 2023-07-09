@@ -40,7 +40,7 @@ namespace Cauldron.Gargoyle
             }
 
             // If a hero was damaged this way, {Gargoyle} deals a third target 2 melee damage.
-            if (storedResultsDamage != null && storedResultsDamage.Count((dda)=>dda.Target.IsHeroCharacterCard == true && dda.Amount > 0) > 0)
+            if (storedResultsDamage != null && storedResultsDamage.Count((dda)=> IsHeroCharacterCard(dda.Target) == true && dda.Amount > 0) > 0)
             {
                 var alreadySelected = storedResultsDamage.Select((DealDamageAction dd) => dd.Target);
 
@@ -53,7 +53,7 @@ namespace Cauldron.Gargoyle
                 var functions = new List<Function>();
                 foreach(DealDamageAction dd in storedResultsDamage)
                 {
-                    if(dd.DidDealDamage && dd.Target.IsHeroCharacterCard)
+                    if(dd.DidDealDamage && IsHeroCharacterCard(dd.Target))
                     {
                         int damage = dd.Amount + AddedMeleeDamageAmount;
                         if (!damageAmounts.Contains(damage))

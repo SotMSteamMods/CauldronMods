@@ -32,11 +32,11 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When that card would cause damage to a hero target, redirect it to a villain target that hasn't been damaged this way this turn.",
-            AddTrigger((DealDamageAction dda) => dda.CardSource != null && dda.CardSource.Card == GetCardThisCardIsNextTo() && dda.Target.IsHero, RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            AddTrigger((DealDamageAction dda) => dda.CardSource != null && dda.CardSource.Card == GetCardThisCardIsNextTo() && IsHero(dda.Target), RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
             AddTrigger((DealDamageAction dda) => dda.DidDealDamage && dda.NumberOfTimesRedirected > 0 && dda.DamageModifiers.Any((ModifyDealDamageAction mdd) => mdd.CardSource != null && mdd.CardSource.Card == this.Card), MarkDamagedByRedirect, TriggerType.Hidden, TriggerTiming.After);
 
             //"When it would destroy a hero ongoing, prevent it and destroy a villain ongoing."
-            AddTrigger((DestroyCardAction dc) => dc.CardSource != null && dc.CardSource.Card == GetCardThisCardIsNextTo() && dc.CardToDestroy.Card.IsHero && dc.CardToDestroy.Card.IsOngoing,
+            AddTrigger((DestroyCardAction dc) => dc.CardSource != null && dc.CardSource.Card == GetCardThisCardIsNextTo() && IsHero(dc.CardToDestroy.Card) && IsOngoing(dc.CardToDestroy.Card),
                            DestroyVillainOngoingInsteadResponse,
                            new TriggerType[] { TriggerType.CancelAction, TriggerType.DestroyCard },
                            TriggerTiming.Before);
@@ -106,7 +106,7 @@ namespace Cauldron.MagnificentMara
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => c.IsOngoing && IsVillain(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "villain ongoing"), false, cardSource: GetCardSource());
+            coroutine = GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((Card c) => IsOngoing(c) && IsVillain(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "villain ongoing"), false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

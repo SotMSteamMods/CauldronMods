@@ -15,7 +15,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             {
                 if (!base.GameController.PreviewMode)
                 {
-                    return IsHighestHitPointsUnique((Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
+                    return IsHighestHitPointsUnique((Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText);
                 }
                 return true;
             }
@@ -43,7 +43,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             //Otherwise, increase damage dealt by villain targets by 1
 
             //criteria for finding hero target with the highest hp when no chemical triggers are in play
-            Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && dd.DamageSource != null  && dd.DamageSource.Card != null && base.CanCardBeConsideredHighestHitPoints(dd.DamageSource.Card, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText);
+            Func<DealDamageAction, bool> heroCriteria = (DealDamageAction dd) => !base.IsChemicalTriggerInPlay() && dd.DamageSource != null  && dd.DamageSource.Card != null && base.CanCardBeConsideredHighestHitPoints(dd.DamageSource.Card, (Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText);
 
             //criteria for finding all villain targets when chemical triggers are in play
             Func<DealDamageAction, bool> villainCriteria = (DealDamageAction dd) => base.IsChemicalTriggerInPlay() && dd.DamageSource != null && dd.DamageSource.Card != null && IsVillainTarget(dd.DamageSource.Card);
@@ -60,7 +60,7 @@ namespace Cauldron.HalberdExperimentalResearchCenter
             if (base.GameController.PretendMode)
             {
                 List<bool> storedResults = new List<bool>();
-                IEnumerator coroutine = base.DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dd.DamageSource.Card, highest: true, (Card c) => c.IsHero && c.IsTarget && c.IsInPlayAndHasGameText, dd, storedResults);
+                IEnumerator coroutine = base.DetermineIfGivenCardIsTargetWithLowestOrHighestHitPoints(dd.DamageSource.Card, highest: true, (Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText, dd, storedResults);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

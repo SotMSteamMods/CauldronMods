@@ -32,7 +32,7 @@ namespace Cauldron.Dendron
         {
             //  At the end of the villain turn, this card deals the hero target with the lowest HP {H - 2} toxic damage.
             int damageToDeal = Game.H - 2;
-            IEnumerator dealDamageRoutine = DealDamageToLowestHP(Card, 1, (Card c) => c.IsHero, (Card c) => damageToDeal, DamageType.Toxic);
+            IEnumerator dealDamageRoutine = DealDamageToLowestHP(Card, 1, (Card c) => IsHero(c), (Card c) => damageToDeal, DamageType.Toxic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(dealDamageRoutine);

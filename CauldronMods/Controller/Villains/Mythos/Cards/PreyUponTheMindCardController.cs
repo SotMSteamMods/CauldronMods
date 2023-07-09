@@ -17,7 +17,7 @@ namespace Cauldron.Mythos
         public override IEnumerator Play()
         {
             //Destroy {H - 2} hero ongoing cards.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && c.IsOngoing), Game.H - 2, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && IsOngoing(c)), Game.H - 2, cardSource: base.GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -44,7 +44,7 @@ namespace Cauldron.Mythos
             if (base.IsTopCardMatching(MythosDangerDeckIdentifier))
             {
                 //{MythosDanger} {Mythos} deals each hero target 1 infernal damage.
-                coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero && c.IsTarget, 1, DamageType.Infernal);
+                coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHeroTarget(c), 1, DamageType.Infernal);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

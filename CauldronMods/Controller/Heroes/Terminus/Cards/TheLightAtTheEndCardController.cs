@@ -54,7 +54,7 @@ namespace Cauldron.Terminus
             if (DidRemoveTokens(storedResults, 3))
             {
                 list.Add(new Function(DecisionMaker, "Regain 2 HP", SelectionType.GainHP, () => base.GameController.GainHP(base.CharacterCard, 2, cardSource: base.GetCardSource())));
-                list.Add(new Function(DecisionMaker, "Destroy 1 Ongoing Card", SelectionType.DestroyCard, () => base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((lcc)=>lcc.IsOngoing), false, cardSource: base.GetCardSource())));
+                list.Add(new Function(DecisionMaker, "Destroy 1 Ongoing Card", SelectionType.DestroyCard, () => base.GameController.SelectAndDestroyCard(DecisionMaker, new LinqCardCriteria((lcc) => IsOngoing(lcc)), false, cardSource: base.GetCardSource()))) ;
                 selectFunction = new SelectFunctionDecision(GameController, DecisionMaker, list, false, null, null, null, base.GetCardSource());
 
                 coroutine = base.GameController.SelectAndPerformFunction(selectFunction);

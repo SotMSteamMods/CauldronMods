@@ -120,7 +120,7 @@ namespace Cauldron.TangoOne
                     var storedResults = new List<SelectCardsDecision> { };
                     Func<Card, bool> playableOngoingInHand = (delegate (Card c)
                     {
-                        return c.IsInHand && c.IsHero && c.IsOngoing &&
+                        return c.IsInHand && IsHero(c) && IsOngoing(c) &&
                                   AskIfCardIsVisibleToCardSource(c, GetCardSource()) != false &&
                                   GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay;
                     });

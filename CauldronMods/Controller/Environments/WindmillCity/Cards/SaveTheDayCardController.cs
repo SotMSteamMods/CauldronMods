@@ -32,7 +32,7 @@ namespace Cauldron.WindmillCity
         public override void AddTriggers()
         {
             //Whenever a hero card destroys a villain target, 1 Responder regains 1HP.
-            AddTrigger((DestroyCardAction dca) => dca.WasCardDestroyed && dca.CardToDestroy != null && IsVillainTarget(dca.CardToDestroy.Card) && dca.GetCardDestroyer() != null && dca.GetCardDestroyer().IsHero, VillainTargetDestroyedResponse, TriggerType.GainHP, TriggerTiming.After);
+            AddTrigger((DestroyCardAction dca) => dca.WasCardDestroyed && dca.CardToDestroy != null && IsVillainTarget(dca.CardToDestroy.Card) && dca.GetCardDestroyer() != null && IsHero(dca.GetCardDestroyer()), VillainTargetDestroyedResponse, TriggerType.GainHP, TriggerTiming.After);
         }
 
         private IEnumerator VillainTargetDestroyedResponse(DestroyCardAction dca)

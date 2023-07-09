@@ -23,7 +23,7 @@ namespace Cauldron.Dynamo
             if (base.FindPython().IsInPlayAndHasGameText)
             {
                 //...he deals each hero target 1 toxic damage...
-                coroutine = base.DealDamage(base.FindPython(), (Card c) => c.IsHero && c.IsTarget, (Card c) => 1, DamageType.Toxic);
+                coroutine = base.DealDamage(base.FindPython(), (Card c) => IsHeroTarget(c), (Card c) => 1, DamageType.Toxic);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -76,7 +76,7 @@ namespace Cauldron.Dynamo
             }
 
             //...deals the hero target with the lowest HP {H - 2} melee damage.
-            coroutine = base.DealDamageToLowestHP(lowestVillain, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => base.Game.H - 2, DamageType.Melee);
+            coroutine = base.DealDamageToLowestHP(lowestVillain, 1, (Card c) => IsHeroTarget(c), (Card c) => base.Game.H - 2, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

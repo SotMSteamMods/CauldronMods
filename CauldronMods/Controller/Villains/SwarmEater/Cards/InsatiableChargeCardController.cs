@@ -36,7 +36,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DestroyTargetResponse(DestroyCardAction action)
         {
             //...destroy 1 hero ongoing or equipment card.
-            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && (c.IsOngoing || IsEquipment(c))), false, cardSource: GetCardSource());
+            IEnumerator coroutine = base.GameController.SelectAndDestroyCard(this.DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && (IsOngoing(c) || IsEquipment(c))), false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

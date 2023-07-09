@@ -35,7 +35,7 @@ namespace Cauldron.Menagerie
             }
 
             //...and the hero target with the highest HP 2 melee damage.
-            coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsHero, (Card c) => 2, DamageType.Melee);
+            coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => 2, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

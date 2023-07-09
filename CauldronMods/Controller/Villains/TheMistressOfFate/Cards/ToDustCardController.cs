@@ -23,7 +23,7 @@ namespace Cauldron.TheMistressOfFate
             //"{TheMistressOfFate} deals the hero target with the second highest HP 15 projectile damage.",
             var storedTarget = new List<Card>();
             var previewDamage = new DealDamageAction(GetCardSource(), new DamageSource(GameController, CharacterCard), null, 15, DamageType.Projectile);
-            IEnumerator coroutine = GameController.FindTargetWithHighestHitPoints(2, (Card c) => c.IsHero, storedTarget, dealDamageInfo: new List<DealDamageAction> { previewDamage }, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.FindTargetWithHighestHitPoints(2, (Card c) => IsHero(c), storedTarget, dealDamageInfo: new List<DealDamageAction> { previewDamage }, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

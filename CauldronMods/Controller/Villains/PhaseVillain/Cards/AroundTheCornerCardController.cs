@@ -29,7 +29,7 @@ namespace Cauldron.PhaseVillain
         {
             //The first time an Obstacle is destroyed each turn, {Phase} deals each hero target 2 radiant damage.
             base.SetCardPropertyToTrueIfRealAction(FirstTimeDestroyed);
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => c.IsHero, 2, DamageType.Radiant);
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHero(c), 2, DamageType.Radiant);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

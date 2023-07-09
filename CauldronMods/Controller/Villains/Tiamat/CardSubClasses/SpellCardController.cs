@@ -9,7 +9,8 @@ namespace Cauldron.Tiamat
     {
         protected SpellCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => IsSpell(c), "spell")).Condition = () => base.CharacterCardController is FutureTiamatCharacterCardController;
+            base.SpecialStringMaker.ShowNumberOfCardsAtLocation(base.TurnTaker.Trash, new LinqCardCriteria((Card c) => c.Identifier == Card.Identifier, Card.Title)).Condition = () => !(base.CharacterCardController is FutureTiamatCharacterCardController);
         }
 
         protected int PlusNumberOfThisCardInTrash(int value)

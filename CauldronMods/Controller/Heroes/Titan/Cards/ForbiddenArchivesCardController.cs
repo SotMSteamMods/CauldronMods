@@ -65,7 +65,7 @@ namespace Cauldron.Titan
 
         private IEnumerator SelectTurnTakersToDrawCards()
         {
-            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => !tt.IsIncapacitatedOrOutOfGame && tt.IsHero && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.DrawCard, YesNoResponse, cardSource: GetCardSource()) ;
+            IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(DecisionMaker, new LinqTurnTakerCriteria(tt => !tt.IsIncapacitatedOrOutOfGame && IsHero(tt) && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.DrawCard, YesNoResponse, cardSource: GetCardSource()) ;
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

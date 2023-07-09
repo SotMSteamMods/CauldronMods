@@ -44,7 +44,7 @@ namespace Cauldron.MagnificentMara
             //for Dowsing Crystal's power
 
             //"(Once before your next turn,) when a non-hero card enters play..."
-            AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && !cep.CardEnteringPlay.IsHero && GameController.StatusEffectManager.StatusEffectControllers.Any((StatusEffectController sec) => sec.StatusEffect is OnDealDamageStatusEffect odds && odds.MethodToExecute == CrystalEffectString),
+            AddTrigger((CardEntersPlayAction cep) => cep.CardEnteringPlay != null && !IsHero(cep.CardEnteringPlay) && GameController.StatusEffectManager.StatusEffectControllers.Any((StatusEffectController sec) => sec.StatusEffect is OnDealDamageStatusEffect odds && odds.MethodToExecute == CrystalEffectString),
                             DowsingCrystalDamage,
                             TriggerType.DealDamage,
                             TriggerTiming.After);       
@@ -99,7 +99,7 @@ namespace Cauldron.MagnificentMara
 
                     //"one hero target (may deal damage...)"
                     var storedDamageSource = new List<SelectTargetDecision> { };
-                    var heroTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c != null && c.IsTarget && c.IsHero && c.IsInPlayAndHasGameText), visibleToCard: crystalSource);
+                    var heroTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c != null && c.IsTarget && IsHero(c) && c.IsInPlayAndHasGameText), visibleToCard: crystalSource);
                     coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, heroTargets, storedDamageSource, damageAmount: (Card c) => numDamage, selectionType: SelectionType.HeroToDealDamage, cardSource: crystalSource);
                     if (base.UseUnityCoroutines)
                     {
@@ -138,7 +138,7 @@ namespace Cauldron.MagnificentMara
 
                         //"deal a non-hero target 2 damage"
 
-                        coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageSource), numDamage, selectedDamage, 1, false, 1, additionalCriteria:((Card c) => !c.IsHero), cardSource: crystalSource);
+                        coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageSource), numDamage, selectedDamage, 1, false, 1, additionalCriteria:((Card c) => !IsHero(c)), cardSource: crystalSource);
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);

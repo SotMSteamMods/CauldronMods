@@ -21,7 +21,7 @@ namespace Cauldron.OblaskCrater
 
         public override void AddTriggers()
         {
-            base.AddTrigger((DrawCardAction drawCard) => drawCard.IsSuccessful && drawCard.DidDrawCard && drawCard.DrawnCard.IsHero, DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger((DrawCardAction drawCard) => drawCard.IsSuccessful && drawCard.DidDrawCard && IsHero(drawCard.DrawnCard), DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             base.AddWhenDestroyedTrigger((dca) => EachPlayerPutsTopCardInHand(), TriggerType.MoveCard);
         }
 
@@ -54,7 +54,7 @@ namespace Cauldron.OblaskCrater
 
 		private IEnumerator EachPlayerPutsTopCardInHand()
         {
-			SelectTurnTakersDecision selectTurnTakersDecision = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria(tt => tt.IsHero && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.MoveCard, allowAutoDecide: true, cardSource: GetCardSource());
+			SelectTurnTakersDecision selectTurnTakersDecision = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria(tt => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource())), SelectionType.MoveCard, allowAutoDecide: true, cardSource: GetCardSource());
 			selectTurnTakersDecision.BattleZone = this.BattleZone;
 			IEnumerator coroutine2 = GameController.SelectTurnTakersAndDoAction(selectTurnTakersDecision, (TurnTaker hero) => OptionalMoveCardToHand(hero), cardSource: GetCardSource());
 			if (UseUnityCoroutines)

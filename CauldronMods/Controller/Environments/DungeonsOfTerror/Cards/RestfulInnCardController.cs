@@ -13,13 +13,13 @@ namespace Cauldron.DungeonsOfTerror
         public RestfulInnCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             SpecialStringMaker.ShowSpecialString(() => BuildTopCardOfLocationSpecialString(TurnTaker.Trash));
-            SpecialStringMaker.ShowIfElseSpecialString(() => HasDrawnCardThisTurn(Game.ActiveTurnTaker.ToHero(), greaterThan: 0), () => $"{Game.ActiveTurnTaker.Name} has already drawn a card this turn.", () => $"{Game.ActiveTurnTaker.Name} has not yet drawn a card this turn.").Condition = () => Card.IsInPlayAndHasGameText && Game.ActiveTurnTaker.IsHero;
+            SpecialStringMaker.ShowIfElseSpecialString(() => HasDrawnCardThisTurn(Game.ActiveTurnTaker.ToHero(), greaterThan: 0), () => $"{Game.ActiveTurnTaker.Name} has already drawn a card this turn.", () => $"{Game.ActiveTurnTaker.Name} has not yet drawn a card this turn.").Condition = () => Card.IsInPlayAndHasGameText && IsHero(Game.ActiveTurnTaker);
         }
 
         public override void AddTriggers()
         {
             //The first time a hero draws a card during their turn, they may discard it. If they do, that hero regains 2HP. Increase HP regained this way by 1 if the top card of the environment trash is a fate card.
-            AddTrigger((DrawCardAction dca) =>dca.DidDrawCard && Game.ActiveTurnTaker.IsHero && Game.ActiveTurnTaker.ToHero() == dca.HeroTurnTaker && !HasDrawnCardThisTurn(dca.HeroTurnTaker), FirstHeroDrawResponse, new TriggerType[]
+            AddTrigger((DrawCardAction dca) =>dca.DidDrawCard && IsHero(Game.ActiveTurnTaker) && Game.ActiveTurnTaker.ToHero() == dca.HeroTurnTaker && !HasDrawnCardThisTurn(dca.HeroTurnTaker), FirstHeroDrawResponse, new TriggerType[]
                 {
                     TriggerType.DiscardCard,
                     TriggerType.GainHP

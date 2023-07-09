@@ -46,7 +46,7 @@ namespace Cauldron.ScreaMachine
             {
                 var card = result.First().SelectedCard;
 
-                coroutine = DealDamageToHighestHP(card, 1, c => c.IsHero && c.IsTarget && c.IsInPlayAndNotUnderCard, c => 3, DamageType.Melee,
+                coroutine = DealDamageToHighestHP(card, 1, c => IsHeroTarget(c) && c.IsInPlayAndNotUnderCard, c => 3, DamageType.Melee,
                                 numberOfTargets: () => 1);
                 if (UseUnityCoroutines)
                 {

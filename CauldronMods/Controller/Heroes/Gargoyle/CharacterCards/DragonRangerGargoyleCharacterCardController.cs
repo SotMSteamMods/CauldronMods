@@ -38,9 +38,9 @@ namespace Cauldron.Gargoyle
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            if (storedResultsDamage != null && storedResultsDamage.Any((DealDamageAction dd) => dd.DidDealDamage && dd.Target.IsHeroCharacterCard))
+            if (storedResultsDamage != null && storedResultsDamage.Any((DealDamageAction dd) => dd.DidDealDamage && IsHeroCharacterCard(dd.Target)))
             {
-                totalHeroesDamaged = storedResultsDamage.Where((dd) => dd.DidDealDamage && dd.Target.IsHeroCharacterCard).Select(dd => dd.Target).Distinct().Count();
+                totalHeroesDamaged = storedResultsDamage.Where((dd) => dd.DidDealDamage && IsHeroCharacterCard(dd.Target)).Select(dd => dd.Target).Distinct().Count();
 
                 increaseDamageStatusEffect = new IncreaseDamageStatusEffect(totalHeroesDamaged);
                 increaseDamageStatusEffect.SourceCriteria.IsSpecificCard = base.CharacterCard;

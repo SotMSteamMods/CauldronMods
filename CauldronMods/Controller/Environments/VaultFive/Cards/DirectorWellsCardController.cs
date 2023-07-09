@@ -29,7 +29,7 @@ namespace Cauldron.VaultFive
         {
             //Play this card next to the hero with the lowest HP
             List<Card> foundTarget = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetWithLowestHitPoints(1, (Card c) => c.IsHeroCharacterCard && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetWithLowestHitPoints(1, (Card c) =>  IsHeroCharacterCard(c) && (overridePlayArea == null || c.IsAtLocationRecursive(overridePlayArea)), foundTarget, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

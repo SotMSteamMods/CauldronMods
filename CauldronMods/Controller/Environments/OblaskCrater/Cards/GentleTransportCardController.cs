@@ -47,7 +47,7 @@ namespace Cauldron.OblaskCrater
             if(DidSelectCard(storedSelectHeroResults))
             { 
                 selectedHero = GetSelectedCard(storedSelectHeroResults);
-                bool showMessage = FindCardsWhere(c => c.IsHeroCharacterCard && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() == 1;
+                bool showMessage = FindCardsWhere(c =>  IsHeroCharacterCard(c) && c.IsInPlayAndHasGameText && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count() == 1;
                 // move this card next to a hero
                 coroutine = base.GameController.MoveCard(base.TurnTakerController, base.Card, selectedHero.NextToLocation,
                             showMessage: showMessage,

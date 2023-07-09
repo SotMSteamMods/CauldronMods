@@ -33,7 +33,7 @@ namespace Cauldron.Quicksilver
                 case 1:
                     {
                         //Destroy 1 ongoing card.
-                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing, "ongoing", true, false, null, null, false), false, null, null, base.GetCardSource(null));
+                        IEnumerator coroutine2 = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => IsOngoing(c), "ongoing", true, false, null, null, false), false, null, null, base.GetCardSource(null));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine2);

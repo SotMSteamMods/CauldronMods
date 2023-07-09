@@ -28,7 +28,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...this card deals the 2 hero targets with the lowest HP {H - 2} melee damage each.
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c.IsHero && c.IsTarget, (Card c) => Game.H - 2, DamageType.Melee, numberOfTargets: 2);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => IsHeroTarget(c), (Card c) => Game.H - 2, DamageType.Melee, numberOfTargets: 2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

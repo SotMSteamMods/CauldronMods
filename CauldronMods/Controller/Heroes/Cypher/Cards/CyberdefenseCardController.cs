@@ -41,7 +41,7 @@ namespace Cauldron.Cypher
 
             // Cypher deals each non-hero target X lightning damage, where X equals the number of cards destroyed this way.
             int damageAmount = storedResults.Count((DestroyCardAction dc) => dc.WasCardDestroyed);
-            routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.CharacterCard, c => !c.IsHero,
+            routine = base.GameController.DealDamage(this.HeroTurnTakerController, this.CharacterCard, c => !IsHero(c),
                 damageAmount, DamageType.Lightning, cardSource: base.GetCardSource());
 
             if (base.UseUnityCoroutines)

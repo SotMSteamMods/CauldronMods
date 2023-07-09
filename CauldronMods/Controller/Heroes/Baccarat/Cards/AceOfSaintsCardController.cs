@@ -18,7 +18,7 @@ namespace Cauldron.Baccarat
         protected override ITrigger EffectTrigger()
         {
             //Reduce damage dealt to hero targets by 1.
-            return base.AddReduceDamageTrigger((Card c) => c.IsHero, 1);
+            return base.AddReduceDamageTrigger((Card c) => IsHero(c), 1);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Cauldron.Gyrosaur
         private IEnumerator AddReduceNextDamageEffect(DealDamageAction dd)
         {
             //"Reduce the next damage dealt by non-hero targets damaged this way to 0."
-            if (dd.DidDealDamage && !dd.Target.IsHero)
+            if (dd.DidDealDamage && !IsHero(dd.Target))
             {
                 var reduceEffect = new OnDealDamageStatusEffect(CardWithoutReplacements, nameof(ReduceDamageToZero), $"Reduce the next damage dealt by {dd.Target.Title} to zero", new TriggerType[] { TriggerType.ReduceDamageOneUse }, DecisionMaker.TurnTaker, this.Card);
                 reduceEffect.NumberOfUses = 1;

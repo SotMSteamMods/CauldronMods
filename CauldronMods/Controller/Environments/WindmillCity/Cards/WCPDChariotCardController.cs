@@ -24,7 +24,7 @@ namespace Cauldron.WindmillCity
                     TriggerType.DealDamage,
                     TriggerType.DiscardCard
                 });
-            AddTrigger((DealDamageAction dd) => dd.Target.Owner.IsHero && dd.InstanceIdentifier == _ownDamage, RedirectHeroDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before, isConditional: true, isActionOptional: true);
+            AddTrigger((DealDamageAction dd) => IsHero(dd.Target.Owner) && dd.InstanceIdentifier == _ownDamage, RedirectHeroDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before, isConditional: true, isActionOptional: true);
         }
 
         private IEnumerator EndOfTurnResponse(PhaseChangeAction pca)

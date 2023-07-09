@@ -18,7 +18,7 @@ namespace Cauldron.Gray
 
         public int? FindNumberOfHeroEquipmentInPlay()
         {
-            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsHero && base.IsEquipment(c), false, null, false).Count<Card>());
+            return new int?(base.FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && IsHero(c) && base.IsEquipment(c), false, null, false).Count<Card>());
         }
     }
 }

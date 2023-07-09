@@ -27,7 +27,7 @@ namespace Cauldron.Gray
         private IEnumerator RedirectResponse(DealDamageAction action)
         {
             List<Card> storedResults = new List<Card>();
-            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => c.IsHero, storedResults, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.FindTargetWithHighestHitPoints(1, (Card c) => IsHero(c), storedResults, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

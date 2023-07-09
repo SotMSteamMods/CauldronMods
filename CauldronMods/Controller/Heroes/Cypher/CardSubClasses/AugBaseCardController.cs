@@ -16,7 +16,7 @@ namespace Cauldron.Cypher
             Location overridePlayArea = null, LinqTurnTakerCriteria additionalTurnTakerCriteria = null)
         {
             //When this card enters play, place it next to a hero character.
-            LinqCardCriteria validTargets = new LinqCardCriteria(c => c.IsHeroCharacterCard && c.IsTarget && c.IsInPlayAndHasGameText && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero character card");
+            LinqCardCriteria validTargets = new LinqCardCriteria(c =>  IsHeroCharacterCard(c) && c.IsTarget && c.IsInPlayAndHasGameText && (additionalTurnTakerCriteria == null || additionalTurnTakerCriteria.Criteria(c.Owner)), "hero character card");
 
             IEnumerator routine = base.SelectCardThisCardWillMoveNextTo(validTargets, storedResults, isPutIntoPlay, decisionSources);
             if (base.UseUnityCoroutines)

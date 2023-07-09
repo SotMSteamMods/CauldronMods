@@ -78,7 +78,7 @@ namespace Cauldron.TheStranger
 
                         //choose up to 2 cards
                         List<SelectCardsDecision> storedResults = new List<SelectCardsDecision>();
-                        IEnumerator coroutine3 = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController, SelectionType.PlayCard, (Card c) => c.IsInHand && c.Location.IsHero && c.IsOngoing, 2, storedResults, true, new int?(0));
+                        IEnumerator coroutine3 = base.GameController.SelectCardsAndStoreResults(base.HeroTurnTakerController, SelectionType.PlayCard, (Card c) => c.IsInHand && c.Location.IsHero && IsOngoing(c), 2, storedResults, true, new int?(0));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine3);

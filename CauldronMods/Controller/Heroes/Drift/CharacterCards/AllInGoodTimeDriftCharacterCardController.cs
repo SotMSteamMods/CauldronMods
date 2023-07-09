@@ -19,7 +19,7 @@ namespace Cauldron.Drift
         {
             //Discard cards from the top of your deck until you discard an ongoing. Play or draw it.
             List<RevealCardsAction> revealCards = new List<RevealCardsAction>();
-            IEnumerator coroutine = base.GameController.RevealCards(base.TurnTakerController, base.TurnTaker.Deck, (Card c) => c.IsOngoing, 1, revealCards, RevealedCardDisplay.ShowMatchingCards, cardSource: base.GetCardSource());
+            IEnumerator coroutine = base.GameController.RevealCards(base.TurnTakerController, base.TurnTaker.Deck, (Card c) => IsOngoing(c), 1, revealCards, RevealedCardDisplay.ShowMatchingCards, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -72,7 +72,7 @@ namespace Cauldron.Drift
                 case 0:
                     {
                         //One hero may play a card now.
-                        coroutine = base.SelectHeroToPlayCard(base.HeroTurnTakerController, heroCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsHero && !tt.IsIncapacitated));
+                        coroutine = base.SelectHeroToPlayCard(base.HeroTurnTakerController, heroCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitated));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -86,7 +86,7 @@ namespace Cauldron.Drift
                 case 1:
                     {
                         //Destroy 1 ongoing card.
-                        coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => c.IsOngoing), false, cardSource: GetCardSource());
+                        coroutine = base.GameController.SelectAndDestroyCard(base.HeroTurnTakerController, new LinqCardCriteria((Card c) => IsOngoing(c)), false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

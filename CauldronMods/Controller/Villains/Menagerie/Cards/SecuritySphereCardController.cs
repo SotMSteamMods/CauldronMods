@@ -28,7 +28,7 @@ namespace Cauldron.Menagerie
             }
 
             //...and destroy {H - 2} hero ongoing cards.
-            coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => c.IsHero && c.IsOngoing, "hero ongoing"), Game.H - 2, cardSource: base.GetCardSource());
+            coroutine = base.GameController.SelectAndDestroyCards(this.DecisionMaker, new LinqCardCriteria((Card c) => IsHero(c) && IsOngoing(c), "hero ongoing"), Game.H - 2, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -44,7 +44,7 @@ namespace Cauldron.Menagerie
         {
             base.AddTriggers();
             //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
-            base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && md.CardSource.Card.Owner.IsHero, new Func<MakeDecisionsAction, IEnumerator>(this.RemoveDecisionsFromMakeDecisionsResponse), TriggerType.RemoveDecision, TriggerTiming.Before);
+            base.AddTrigger<MakeDecisionsAction>((MakeDecisionsAction md) => md.CardSource != null && IsHero(md.CardSource.Card.Owner), new Func<MakeDecisionsAction, IEnumerator>(this.RemoveDecisionsFromMakeDecisionsResponse), TriggerType.RemoveDecision, TriggerTiming.Before);
         }
 
         public override bool AskIfActionCanBePerformed(GameAction g)
@@ -52,10 +52,10 @@ namespace Cauldron.Menagerie
             //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
             if (this.GetCapturedHero() != null)
             {
-                bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => c.Owner == this.GetCapturedHero(), (Card c) => c.Owner != this.GetCapturedHero() && c.Owner.IsHero);
-                bool? flag2 = g.DoesFirstCardAffectSecondCard((Card c) => c.Owner != this.GetCapturedHero() && c.Owner.IsHero, (Card c) => c.Owner == this.GetCapturedHero());
-                bool? flag3 = g.DoesFirstTurnTakerAffectSecondTurnTaker((TurnTaker tt) => tt == this.GetCapturedHero(), (TurnTaker tt) => tt != this.GetCapturedHero() && tt.IsHero);
-                bool? flag4 = g.DoesFirstTurnTakerAffectSecondTurnTaker((TurnTaker tt) => tt != this.GetCapturedHero() && tt.IsHero, (TurnTaker tt) => tt == this.GetCapturedHero());
+                bool? flag = g.DoesFirstCardAffectSecondCard((Card c) => c.Owner == this.GetCapturedHero(), (Card c) => c.Owner != this.GetCapturedHero() && IsHero(c.Owner));
+                bool? flag2 = g.DoesFirstCardAffectSecondCard((Card c) => c.Owner != this.GetCapturedHero() && IsHero(c.Owner), (Card c) => c.Owner == this.GetCapturedHero());
+                bool? flag3 = g.DoesFirstTurnTakerAffectSecondTurnTaker((TurnTaker tt) => tt == this.GetCapturedHero(), (TurnTaker tt) => tt != this.GetCapturedHero() && IsHero(tt));
+                bool? flag4 = g.DoesFirstTurnTakerAffectSecondTurnTaker((TurnTaker tt) => tt != this.GetCapturedHero() && IsHero(tt), (TurnTaker tt) => tt == this.GetCapturedHero());
                 if ((flag != null && flag.Value) || (flag2 != null && flag2.Value) || (flag3 != null && flag3.Value) || (flag4 != null && flag4.Value))
                 {
                     return false;
@@ -92,7 +92,7 @@ namespace Cauldron.Menagerie
         public override bool? AskIfTurnTakerIsVisibleToCardSource(TurnTaker tt, CardSource cardSource)
         {
             //The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks
-            if (cardSource == null || !cardSource.Card.IsHero || !tt.IsHero)
+            if (cardSource == null || !IsHero(cardSource.Card) || !IsHero(tt))
             {
                 return true;
             }
