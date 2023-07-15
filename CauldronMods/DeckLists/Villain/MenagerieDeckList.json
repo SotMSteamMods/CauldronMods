@@ -1,529 +1,529 @@
 {
-    "name": "Menagerie",
-    "kind": "Villain",
-    "expansionIdentifier": "CauldronStormfall",
-    "initialCardIdentifiers": [
-        "MenagerieCharacter"
-    ],
-    "cards": [
+  "name": "Menagerie",
+  "kind": "Villain",
+  "expansionIdentifier": "CauldronStormfall",
+  "initialCardIdentifiers": [
+    "MenagerieCharacter"
+  ],
+  "cards": [
+    {
+      "identifier": "MenagerieCharacter",
+      "count": 1,
+      "title": "Menagerie",
+      "keywords": [
+        "villain"
+      ],
+      "body": "Intergalactic Collector",
+      "backgroundColor": "faf6c6",
+      "foilBackgroundColor": "CD96C0",
+      "character": true,
+      "nemesisIdentifiers": [
+        "Cauldron.Starlight"
+      ],
+      "setup": [
+        "At the start of the game, {Menagerie} enters play 'Intergalactic Collector' side up.",
+        "Search the villain deck for the card Prized Catch and put it into play. Shuffle the villain deck."
+      ],
+      "gameplay": [
+        "Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under this card, discarding all cards beneath it. Put any discarded targets into play.",
+        "At the end of the villain turn, reveal cards from the top of the villain deck until an enclosure is revealed, play it, and shuffle the other revealed cards back into the deck. Then if {H} enclosures are beneath this card, {Menagerie} flips.",
+        "Prized Catch is Indestructible. The heroes lose if the captured hero is incapacitated."
+      ],
+      "advanced": "When an enclosure enters play, put the top card of the villain deck beneath it.",
+      "icons": [
+        "EndOfTurnAction",
+        "PlayCardNow",
+        "LoseTheGame"
+      ],
+      "advancedIcons": [
+        "Manipulate"
+      ],
+      "flippedHitpoints": 50,
+      "flippedBody": "Catch 'Em All",
+      "flippedGameplay": [
+        "When Menagerie flips to this side, shuffle the villain trash and all enclosures beneath this card into the villain deck. Remove Prized Catch from the game.",
+        "When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. Heroes with enclosures in their play area may not damage cards in other play areas.",
+        "Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.",
+        "At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure."
+      ],
+      "flippedAdvanced": "At the start of the villain turn, if each active hero has an enclosure in their play area, the heroes lose the game.",
+      "flippedIcons": [
+        "Manipulate",
+        "RemoveFromGame",
+        "Discard",
+        "DealDamageProjectile"
+      ],
+      "difficulty": 2,
+      "challengeTitle": "Stressful Containment",
+      "challengeText": "At the end of the villain turn, the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.",
+      "openingLines": {
+        "default": "Oh, hello, guests! Care to see my latest catch?",
+        "Cauldron.StarlightCharacter": "Why, you are simply exquisite, my dear. I'll have to make your accomodations especially fortified.",
+        "GenesisStarlightCharacter": "I've heard so much about you, darling - too much to simply ignore!",
+        "NightloreCouncilStarlightCharacter": "What is this, the B-team from Nightlore? How insulting. I deserve the best!",
+        "Area51StarlightCharacter": "A rarity among rarities, it seems."
+      }
+    },
+    {
+      "identifier": "AngryLethovore",
+      "count": 1,
+      "title": "Angry Lethovore",
+      "keywords": [
+        "specimen"
+      ],
+      "icons": [
+        "EndOfTurnAction",
+        "PlayCardNow",
+        "DealDamageMelee",
+        "GainHP"
+      ],
+      "body": [
+        "At the end of the villain turn, play the top card of the villain deck.",
+        "Whenever a target enters play, this card deals that target 2 melee damage and regains 6 HP."
+      ],
+      "flavorQuotes": [
         {
-            "identifier": "MenagerieCharacter",
-            "count": 1,
-            "title": "Menagerie",
-            "keywords": [
-                "villain"
-            ],
-            "body": "Intergalactic Collector",
-            "backgroundColor": "faf6c6",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "nemesisIdentifiers": [
-                "Cauldron.Starlight"
-            ],
-            "setup": [
-                "At the start of the game, {Menagerie} enters play 'Intergalactic Collector' side up.",
-				"Search the villain deck for the card Prized Catch and put it into play. Shuffle the villain deck."
-            ],
-            "gameplay": [
-                "Cards beneath villain cards are not considered in play. When an enclosure leaves play, put it under this card, discarding all cards beneath it. Put any discarded targets into play.",
-                "At the end of the villain turn, reveal cards from the top of the villain deck until an enclosure is revealed, play it, and shuffle the other revealed cards back into the deck. Then if {H} enclosures are beneath this card, {Menagerie} flips.",
-                "Prized Catch is Indestructible. The heroes lose if the captured hero is incapacitated."
-            ],
-            "advanced": "When an enclosure enters play, put the top card of the villain deck beneath it.",
-            "icons": [
-                "EndOfTurnAction",
-                "PlayCardNow",
-                "LoseTheGame"
-            ],
-            "advancedIcons": [
-                "Manipulate"
-            ],
-            "flippedHitpoints": 50,
-            "flippedBody": "Catch 'Em All",
-            "flippedGameplay": [
-                "When Menagerie flips to this side, shuffle the villain trash and all enclosures beneath this card into the villain deck. Remove Prized Catch from the game.",
-                "When an enclosure enters play, move it next to the active hero with the fewest enclosures in their play area. Heroes with enclosures in their play area may not damage cards in other play areas.",
-                "Cards beneath enclosures are not considered in play. When an enclosure leaves play, discard all cards beneath it.",
-                "At the end of the villain turn, play the top card of the villain deck. Then, for each enclosure in play, Menagerie deals the hero next to it X projectile damage, where X is the number of cards beneath that enclosure."
-            ],
-            "flippedAdvanced": "At the start of the villain turn, if each active hero has an enclosure in their play area, the heroes lose the game.",
-            "flippedIcons": [
-                "Manipulate",
-                "RemoveFromGame",
-                "Discard",
-                "DealDamageProjectile"
-            ],
-            "difficulty": 2,
-            "challengeTitle": "Stressful Containment",
-			"challengeText": "At the end of the villain turn, the captured hero and each hero next to an Enclosure deals themself X irreducible psychic damage, where X is the number of Enclosures in play.",
-            "openingLines": {
-                "default": "Oh, hello, guests! Care to see my latest catch?",
-                "Cauldron.StarlightCharacter": "Why, you are simply exquisite, my dear. I'll have to make your accomodations especially fortified.",
-                "GenesisStarlightCharacter": "I've heard so much about you, darling - too much to simply ignore!",
-                "NightloreCouncilStarlightCharacter": "What is this, the B-team from Nightlore? How insulting. I deserve the best!",
-                "Area51StarlightCharacter": "A rarity among rarities, it seems."
-            }
-        },
-        {
-            "identifier": "AngryLethovore",
-            "count": 1,
-            "title": "Angry Lethovore",
-            "keywords": [
-                "specimen"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "PlayCardNow",
-                "DealDamageMelee",
-                "GainHP"
-            ],
-            "body": [
-                "At the end of the villain turn, play the top card of the villain deck.",
-                "Whenever a target enters play, this card deals that target 2 melee damage and regains 6 HP."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Menagerie",
-                    "text": "Return that animal to its{BR}sphere. All of this excitement will{BR}overstimulate the other specimens."
-                }
-            ],
-            "flavorReference": "Menagerie, Vault of Night #37",
-            "hitpoints": 6
-        },
-        {
-            "identifier": "AquaticSphere",
-            "count": 1,
-            "title": "Aquatic Sphere",
-            "keywords": [
-                "enclosure"
-            ],
-            "icons": [
-                "Manipulate",
-                "Discard"
-            ],
-            "body": [
-                "When this card enters play, place the top card of the villain deck beneath it face down.",
-                "Whenever a hero uses a power, they must discard a card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Menagerie",
-                    "text": "All those years searching Mon Beskma.{BR}What will you boys do now?"
-                }
-            ],
-            "flavorReference": "Menagerie, Vault of Night #37",
-            "hitpoints": 10
-        },
-        {
-            "identifier": "ArborealSphere",
-            "count": 1,
-            "title": "Arboreal Sphere",
-            "keywords": [
-                "enclosure"
-            ],
-            "icons": [
-                "Manipulate",
-                "PlayCardNow",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "When this card enters play, place the top card of the villain deck beneath it face down. Then, play the top card of the villain deck.",
-                "Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Vanish",
-                    "text": "What kind of spaceship is this?"
-                }
-            ],
-            "flavorReference": "Vanish, Starlight #15",
-            "hitpoints": 15
-        },
-        {
-            "identifier": "ExoticSphere",
-            "count": 1,
-            "title": "Exotic Sphere",
-            "keywords": [
-                "enclosure"
-            ],
-            "icons": [
-                "Manipulate",
-                "StartOfTurnAction",
-                "DealDamageToxic"
-            ],
-            "body": [
-                "When this card enters play, place the top 2 cards of the villain deck beneath it face down.",
-                "At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TakIshmael",
-                    "text": "Not all of our guests breathe oxygen."
-                }
-            ],
-            "flavorReference": "Tak Ishmael, Starlight #14",
-            "hitpoints": 8
-        },
-        {
-            "identifier": "FeedingTime",
-            "count": 1,
-            "title": "Feeding Time",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "Search",
-                "ReduceDamageTaken"
-            ],
-            "body": [
-                "When this card enters play, put all Mercenary cards from the villain trash into play.",
-                "Reduce damage dealt to Mercenaries by X, where X is the number of Specimens in play."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TakIshmael",
-                    "text": "Attention! All personnel{BR}suit up and man your stations!{BR}Here comes the dinner bell."
-                }
-            ],
-            "flavorReference": "Tak Ishmael, Vault of Night #36"
-        },
-        {
-            "identifier": "FeethsmarAlpha",
-            "count": 1,
-            "title": "Feethsmar Alpha",
-            "keywords": [
-                "specimen"
-            ],
-            "icons": [
-                "IncreaseDamageTaken",
-                "EndOfTurnAction",
-                "DealDamageCold"
-            ],
-            "body": [
-                "Increase damage dealt to Enclosures by 1.",
-                "At the end of the villain turn, this card deals each non-Specimen target 2 cold damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Sky-Scraper",
-                    "text": "Every large pack of frosthounds is led by a Frosthound-that-is-large-and-leader-of-the-pack."
-                }
-            ],
-            "flavorReference": "Sky-Scraper, The Anvil #6",
-            "hitpoints": 4
-        },
-        {
-            "identifier": "HalberdHive",
-            "count": 1,
-            "title": "Halberd-13: Hive",
-            "keywords": [
-                "specimen",
-                "test subject"
-            ],
-            "icons": [
-                "IncreaseDamageDealt",
-                "EndOfTurnAction",
-                "DealDamageToxic",
-                "Search"
-            ],
-            "body": [
-                "Increase damage dealt by insects by 1.",
-                "At the end of the villain turn, this card deals the hero target with the lowest HP 2 toxic damage. Then, put all Insects in the villain trash into play."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "HalberdHive",
-                    "text": "Did you come to rescue me, 19?{BR}Turns out us one-of-a-kind freaks are{BR}collector's items!"
-                }
-            ],
-            "flavorReference": "Hive, Vault of Night #40",
-            "hitpoints": 13
-        },
-        {
-            "identifier": "HiredKeeper",
-            "count": 3,
-            "title": "Hired Keeper",
-            "keywords": [
-                "mercenary"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageSonic",
-                "DestroyOngoing",
-                "DestroyEquipment"
-            ],
-            "body": [
-                "At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.",
-                "Whenever a Specimen is destroyed, destroy 1 hero ongoing or equipment card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TakIshmael",
-                    "text": "You've only got two jobs{BR}in this flying zoo. Keep the animals happy,{BR}and don't get eaten."
-                }
-            ],
-            "flavorReference": "Tak Ishmael, Vault of Night #39",
-            "hitpoints": 4
-        },
-        {
-            "identifier": "HyrianSnipe",
-            "count": 1,
-            "title": "Hyrian Snipe",
-            "keywords": [
-                "specimen"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamagePsychic",
-                "DestroyEquipment"
-            ],
-            "body": "At the end of the villain turn, this card deals the 2 targets other than itself with the highest HP {H - 1} psychic damage each. Then, destroy 1 equipment card.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TangoOne",
-                    "text": "I thought you said they didn't{BR}really exist--Hey! Give that back!"
-                }
-            ],
-            "flavorReference": "Tango One, The Anvil #7",
-            "hitpoints": 4
-        },
-        {
-            "identifier": "IndiscriminatePoaching",
-            "count": 2,
-            "title": "Indiscriminate poaching",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Search",
-                "DestroyOngoing",
-                "DestroyEquipment"
-            ],
-            "body": [
-                "Reveal cards from the top of the villain deck until an Enclosure is revealed. Put it into play. Shuffle the other revealed cards back into the villain deck.",
-                "Put the top card of the environment deck beneath the Enclosure with the highest HP and destroy {H - 2} hero ongoing and/or equipment cards."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Menagerie",
-                    "text": "I will take one of those, and{BR}those, and oh! Those look marvelous!"
-                }
-            ],
-            "flavorReference": "Menagerie, Vault of Night #40"
-        },
-        {
-            "identifier": "LumobatFlock",
-            "count": 1,
-            "title": "Lumobat flock",
-            "keywords": [
-                "specimen"
-            ],
-            "icons": [
-                "PlayCardNow",
-                "EndOfTurnAction",
-                "DealDamageProjectile",
-                "DealDamageRadiant"
-            ],
-            "body": [
-                "The first time a Specimen enters play each turn, play the top card of the villain deck.",
-                "At the end of the villain turn this card deals the hero target with the highest HP 2 projectile and 2 radiant damage."
-            ],
-            "flavorText": "Blinding swarms of bioluminescent{BR}faerigaunts attacked anything that{BR}moved. The light often attracted other{BR}carnivores.",
-            "hitpoints": 3
-        },
-        {
-            "identifier": "MutatedAnt",
-            "count": 1,
-            "title": "Mutated Ant",
-            "keywords": [
-                "insect"
-            ],
-            "icons": [
-                "ReduceDamageTaken",
-                "DealDamageToxic"
-            ],
-            "body": [
-                "Reduce damage dealt to this card by 1.",
-                "The first time a non-villain target deals damage each turn, this card deals that target 1 irreducible toxic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Quicksilver",
-                    "text": "That's not some endangered{BR}alien termite. That's an old friend's{BR}handiwork. We're in trouble."
-                }
-            ],
-            "flavorReference": "Quicksilver, Vault of Night #40",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "PrizedCatch",
-            "count": 1,
-            "title": "Prized Catch",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "IncreaseDamageDealt",
-                "ReduceDamageDealt"
-            ],
-            "body": [
-                "Play this card next to the hero with the most one-shots in hand. That hero and all their cards are Captured.",
-                "Increase damage dealt by Captured targets to Enclosures by 1. Reduce damage dealt by Captured targets to non-Enclosure targets by 1."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Menagerie",
-                    "text": "The first human agent of the Nightlore{BR}Council. Welcome to your new home!"
-                }
-            ],
-            "flavorReference": "Menagerie, Starlight #14"
-        },
-        {
-            "identifier": "ReinforcedSphere",
-            "count": 1,
-            "title": "Reinforced sphere",
-            "keywords": [
-                "enclosure"
-            ],
-            "icons": [
-                "Manipulate",
-                "ReduceDamageDealt"
-            ],
-            "body": [
-                "When this card enters play, place the top card of the environment deck beneath it face down.",
-                "Reduce damage dealt by hero targets by 1."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Menagerie",
-                    "text": "Do you like your accommodations?{BR}I've spared no expense."
-                }
-            ],
-            "flavorReference": "Menagerie, Starlight: Nightlore #1",
-            "hitpoints": 8
-        },
-        {
-            "identifier": "SecuritySphere",
-            "count": 1,
-            "title": "Security sphere",
-            "keywords": [
-                "enclosure"
-            ],
-            "icons": [
-                "Manipulate",
-                "DestroyOngoing"
-            ],
-            "body": [
-                "When this card enters play, place the top card of the villain deck beneath it face down and destroy {H - 2} hero ongoing cards.",
-                "The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Menagerie",
-                    "text": "What providence! Keep it in{BR}isolation until we catalogue its abilities."
-                }
-            ],
-            "flavorReference": "Menagerie, The Anvil #6",
-            "hitpoints": 10
-        },
-        {
-            "identifier": "SpecimenCollector",
-            "count": 3,
-            "title": "Specimen collector",
-            "keywords": [
-                "device",
-                "drone"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageProjectile",
-                "Manipulate"
-            ],
-            "body": "At the end of the villain turn, this card deals the non-villain target with the second lowest HP {H} projectile damage. Then, place the top card of the villain deck face down beneath the Enclosure with the fewest cards beneath it.",
-            "flavorQuotes": [
-                {
-                    "identifier": "TakIshmael",
-                    "text": "The boss wants you to retrieve{BR}one very particular specimen.{BR}Uploading coordinates. Happy hunting."
-                }
-            ],
-            "flavorReference": "Tak Ishmael, Disappearance One-shot",
-            "hitpoints": 6
-        },
-        {
-            "identifier": "TakIshmael",
-            "count": 1,
-            "title": "Tak Ishmael",
-            "keywords": [
-                "mercenary"
-            ],
-            "icons": [
-                "ImmuneToDamage",
-                "EndOfTurnAction",
-                "PlayCardNow",
-                "DealDamageProjectile"
-            ],
-            "body": [
-                "This card is immune to damage dealt by non-hero cards.",
-                "At the end of the villain turn, play the top card of the villain deck. Then, this card deals the hero target with the highest HP X projectile damage, where X is the number of Specimens in play."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TakIshmael",
-                    "text": "I just got word from{BR}my brother, ma'am. He found something{BR}you might want."
-                }
-            ],
-            "flavorReference": "Tak Ishmael, Disappearance One-shot",
-            "hitpoints": 12
-        },
-        {
-            "identifier": "TheMonBeskmaHydric",
-            "count": 1,
-            "title": "The Mon Beskma Hydric",
-            "keywords": [
-                "specimen"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageMelee"
-            ],
-            "body": "At the end of the villain turn, this card deals the Enclosure with the highest HP 4 melee damage and the hero target with the highest HP 2 melee damage.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Bunker",
-                    "text": "Swim away!"
-                }
-            ],
-            "flavorReference": "Bunker, Vault of Night #37",
-            "hitpoints": 8
-        },
-        {
-            "identifier": "ViewingApertures",
-            "count": 2,
-            "title": "Viewing Apertures",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "PlayCardNow",
-                "Manipulate",
-                "DealDamagePsychic"
-            ],
-            "body": [
-                "Play the top card of the villain deck.",
-                "Select 1 face down card beneath each Enclosure. Flip those cards face up.",
-                "{Menagerie} deals each hero, environment, and Specimen target 1 psychic damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Terra",
-                    "text": "Don't worry fella! We'll{BR}get you out of there."
-                },
-                {
-                    "identifier": "Asheron",
-                    "text": "I am not sure that is wise."
-                }
-            ],
-            "flavorReference": "Starlight: Nightlore #1"
+          "identifier": "Menagerie",
+          "text": "Return that animal to its{BR}sphere. All of this excitement will{BR}overstimulate the other specimens."
         }
-    ]
+      ],
+      "flavorReference": "Menagerie, Vault of Night #37",
+      "hitpoints": 6
+    },
+    {
+      "identifier": "AquaticSphere",
+      "count": 1,
+      "title": "Aquatic Sphere",
+      "keywords": [
+        "enclosure"
+      ],
+      "icons": [
+        "Manipulate",
+        "Discard"
+      ],
+      "body": [
+        "When this card enters play, place the top card of the villain deck beneath it face down.",
+        "Whenever a hero uses a power, they must discard a card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Menagerie",
+          "text": "All those years searching Mon Beskma.{BR}What will you boys do now?"
+        }
+      ],
+      "flavorReference": "Menagerie, Vault of Night #37",
+      "hitpoints": 10
+    },
+    {
+      "identifier": "ArborealSphere",
+      "count": 1,
+      "title": "Arboreal Sphere",
+      "keywords": [
+        "enclosure"
+      ],
+      "icons": [
+        "Manipulate",
+        "PlayCardNow",
+        "DealDamageMelee"
+      ],
+      "body": [
+        "When this card enters play, place the top card of the villain deck beneath it face down. Then, play the top card of the villain deck.",
+        "Whenever a Specimen enters play, it deals the non-villain target with the lowest HP {H - 2} melee damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Vanish",
+          "text": "What kind of spaceship is this?"
+        }
+      ],
+      "flavorReference": "Vanish, Starlight #15",
+      "hitpoints": 15
+    },
+    {
+      "identifier": "ExoticSphere",
+      "count": 1,
+      "title": "Exotic Sphere",
+      "keywords": [
+        "enclosure"
+      ],
+      "icons": [
+        "Manipulate",
+        "StartOfTurnAction",
+        "DealDamageToxic"
+      ],
+      "body": [
+        "When this card enters play, place the top 2 cards of the villain deck beneath it face down.",
+        "At the start of each hero's turn, this card deals the non-villain target with the highest HP {H - 1} toxic damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TakIshmael",
+          "text": "Not all of our guests breathe oxygen."
+        }
+      ],
+      "flavorReference": "Tak Ishmael, Starlight #14",
+      "hitpoints": 8
+    },
+    {
+      "identifier": "FeedingTime",
+      "count": 1,
+      "title": "Feeding Time",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "Search",
+        "ReduceDamageTaken"
+      ],
+      "body": [
+        "When this card enters play, put all Mercenary cards from the villain trash into play.",
+        "Reduce damage dealt to Mercenaries by X, where X is the number of Specimens in play."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TakIshmael",
+          "text": "Attention! All personnel{BR}suit up and man your stations!{BR}Here comes the dinner bell."
+        }
+      ],
+      "flavorReference": "Tak Ishmael, Vault of Night #36"
+    },
+    {
+      "identifier": "FeethsmarAlpha",
+      "count": 1,
+      "title": "Feethsmar Alpha",
+      "keywords": [
+        "specimen"
+      ],
+      "icons": [
+        "IncreaseDamageTaken",
+        "EndOfTurnAction",
+        "DealDamageCold"
+      ],
+      "body": [
+        "Increase damage dealt to Enclosures by 1.",
+        "At the end of the villain turn, this card deals each non-Specimen target 2 cold damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Sky-Scraper",
+          "text": "Every large pack of frosthounds{BR}is led by a Frosthound-that-is-large-{BR}and-leader-of-the-pack."
+        }
+      ],
+      "flavorReference": "Sky-Scraper, The Anvil #6",
+      "hitpoints": 4
+    },
+    {
+      "identifier": "HalberdHive",
+      "count": 1,
+      "title": "Halberd-13: Hive",
+      "keywords": [
+        "specimen",
+        "test subject"
+      ],
+      "icons": [
+        "IncreaseDamageDealt",
+        "EndOfTurnAction",
+        "DealDamageToxic",
+        "Search"
+      ],
+      "body": [
+        "Increase damage dealt by insects by 1.",
+        "At the end of the villain turn, this card deals the hero target with the lowest HP 2 toxic damage. Then, put all Insects in the villain trash into play."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "HalberdHive",
+          "text": "Did you come to rescue me, 19?{BR}Turns out us one-of-a-kind freaks are{BR}collector's items!"
+        }
+      ],
+      "flavorReference": "Hive, Vault of Night #40",
+      "hitpoints": 13
+    },
+    {
+      "identifier": "HiredKeeper",
+      "count": 3,
+      "title": "Hired Keeper",
+      "keywords": [
+        "mercenary"
+      ],
+      "icons": [
+        "EndOfTurnAction",
+        "DealDamageSonic",
+        "DestroyOngoing",
+        "DestroyEquipment"
+      ],
+      "body": [
+        "At the end of the villain turn, this card deals the 2 non-Captured hero targets with the highest HP 2 sonic damage each.",
+        "Whenever a Specimen is destroyed, destroy 1 hero ongoing or equipment card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TakIshmael",
+          "text": "You've only got two jobs{BR}in this flying zoo. Keep the animals happy,{BR}and don't get eaten."
+        }
+      ],
+      "flavorReference": "Tak Ishmael, Vault of Night #39",
+      "hitpoints": 4
+    },
+    {
+      "identifier": "HyrianSnipe",
+      "count": 1,
+      "title": "Hyrian Snipe",
+      "keywords": [
+        "specimen"
+      ],
+      "icons": [
+        "EndOfTurnAction",
+        "DealDamagePsychic",
+        "DestroyEquipment"
+      ],
+      "body": "At the end of the villain turn, this card deals the 2 targets other than itself with the highest HP {H - 1} psychic damage each. Then, destroy 1 equipment card.",
+      "flavorQuotes": [
+        {
+          "identifier": "TangoOne",
+          "text": "I thought you said they didn't{BR}really exist--Hey! Give that back!"
+        }
+      ],
+      "flavorReference": "Tango One, The Anvil #7",
+      "hitpoints": 4
+    },
+    {
+      "identifier": "IndiscriminatePoaching",
+      "count": 2,
+      "title": "Indiscriminate poaching",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "Search",
+        "DestroyOngoing",
+        "DestroyEquipment"
+      ],
+      "body": [
+        "Reveal cards from the top of the villain deck until an Enclosure is revealed. Put it into play. Shuffle the other revealed cards back into the villain deck.",
+        "Put the top card of the environment deck beneath the Enclosure with the highest HP and destroy {H - 2} hero ongoing and/or equipment cards."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Menagerie",
+          "text": "I will take one of those, and{BR}those, and oh! Those look marvelous!"
+        }
+      ],
+      "flavorReference": "Menagerie, Vault of Night #40"
+    },
+    {
+      "identifier": "LumobatFlock",
+      "count": 1,
+      "title": "Lumobat flock",
+      "keywords": [
+        "specimen"
+      ],
+      "icons": [
+        "PlayCardNow",
+        "EndOfTurnAction",
+        "DealDamageProjectile",
+        "DealDamageRadiant"
+      ],
+      "body": [
+        "The first time a Specimen enters play each turn, play the top card of the villain deck.",
+        "At the end of the villain turn this card deals the hero target with the highest HP 2 projectile and 2 radiant damage."
+      ],
+      "flavorText": "Blinding swarms of bioluminescent{BR}faerigaunts attacked anything that{BR}moved. The light often attracted other{BR}carnivores.",
+      "hitpoints": 3
+    },
+    {
+      "identifier": "MutatedAnt",
+      "count": 1,
+      "title": "Mutated Ant",
+      "keywords": [
+        "insect"
+      ],
+      "icons": [
+        "ReduceDamageTaken",
+        "DealDamageToxic"
+      ],
+      "body": [
+        "Reduce damage dealt to this card by 1.",
+        "The first time a non-villain target deals damage each turn, this card deals that target 1 irreducible toxic damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Quicksilver",
+          "text": "That's not some endangered{BR}alien termite. That's an old friend's{BR}handiwork. We're in trouble."
+        }
+      ],
+      "flavorReference": "Quicksilver, Vault of Night #40",
+      "hitpoints": 5
+    },
+    {
+      "identifier": "PrizedCatch",
+      "count": 1,
+      "title": "Prized Catch",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "IncreaseDamageDealt",
+        "ReduceDamageDealt"
+      ],
+      "body": [
+        "Play this card next to the hero with the most one-shots in hand. That hero and all their cards are Captured.",
+        "Increase damage dealt by Captured targets to Enclosures by 1. Reduce damage dealt by Captured targets to non-Enclosure targets by 1."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Menagerie",
+          "text": "The first human agent of the Nightlore{BR}Council. Welcome to your new home!"
+        }
+      ],
+      "flavorReference": "Menagerie, Starlight #14"
+    },
+    {
+      "identifier": "ReinforcedSphere",
+      "count": 1,
+      "title": "Reinforced sphere",
+      "keywords": [
+        "enclosure"
+      ],
+      "icons": [
+        "Manipulate",
+        "ReduceDamageDealt"
+      ],
+      "body": [
+        "When this card enters play, place the top card of the environment deck beneath it face down.",
+        "Reduce damage dealt by hero targets by 1."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Menagerie",
+          "text": "Do you like your accommodations?{BR}I've spared no expense."
+        }
+      ],
+      "flavorReference": "Menagerie, Starlight: Nightlore #1",
+      "hitpoints": 8
+    },
+    {
+      "identifier": "SecuritySphere",
+      "count": 1,
+      "title": "Security sphere",
+      "keywords": [
+        "enclosure"
+      ],
+      "icons": [
+        "Manipulate",
+        "DestroyOngoing"
+      ],
+      "body": [
+        "When this card enters play, place the top card of the villain deck beneath it face down and destroy {H - 2} hero ongoing cards.",
+        "The Captured hero and their cards cannot affect or be affected by cards or effects from other hero decks."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Menagerie",
+          "text": "What providence! Keep it in{BR}isolation until we catalogue its abilities."
+        }
+      ],
+      "flavorReference": "Menagerie, The Anvil #6",
+      "hitpoints": 10
+    },
+    {
+      "identifier": "SpecimenCollector",
+      "count": 3,
+      "title": "Specimen collector",
+      "keywords": [
+        "device",
+        "drone"
+      ],
+      "icons": [
+        "EndOfTurnAction",
+        "DealDamageProjectile",
+        "Manipulate"
+      ],
+      "body": "At the end of the villain turn, this card deals the non-villain target with the second lowest HP {H} projectile damage. Then, place the top card of the villain deck face down beneath the Enclosure with the fewest cards beneath it.",
+      "flavorQuotes": [
+        {
+          "identifier": "TakIshmael",
+          "text": "The boss wants you to retrieve{BR}one very particular specimen.{BR}Uploading coordinates. Happy hunting."
+        }
+      ],
+      "flavorReference": "Tak Ishmael, Disappearance One-shot",
+      "hitpoints": 6
+    },
+    {
+      "identifier": "TakIshmael",
+      "count": 1,
+      "title": "Tak Ishmael",
+      "keywords": [
+        "mercenary"
+      ],
+      "icons": [
+        "ImmuneToDamage",
+        "EndOfTurnAction",
+        "PlayCardNow",
+        "DealDamageProjectile"
+      ],
+      "body": [
+        "This card is immune to damage dealt by non-hero cards.",
+        "At the end of the villain turn, play the top card of the villain deck. Then, this card deals the hero target with the highest HP X projectile damage, where X is the number of Specimens in play."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TakIshmael",
+          "text": "I just got word from{BR}my brother, ma'am. He found something{BR}you might want."
+        }
+      ],
+      "flavorReference": "Tak Ishmael, Disappearance One-shot",
+      "hitpoints": 12
+    },
+    {
+      "identifier": "TheMonBeskmaHydric",
+      "count": 1,
+      "title": "The Mon Beskma Hydric",
+      "keywords": [
+        "specimen"
+      ],
+      "icons": [
+        "EndOfTurnAction",
+        "DealDamageMelee"
+      ],
+      "body": "At the end of the villain turn, this card deals the Enclosure with the highest HP 4 melee damage and the hero target with the highest HP 2 melee damage.",
+      "flavorQuotes": [
+        {
+          "identifier": "Bunker",
+          "text": "Swim away!"
+        }
+      ],
+      "flavorReference": "Bunker, Vault of Night #37",
+      "hitpoints": 8
+    },
+    {
+      "identifier": "ViewingApertures",
+      "count": 2,
+      "title": "Viewing Apertures",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "PlayCardNow",
+        "Manipulate",
+        "DealDamagePsychic"
+      ],
+      "body": [
+        "Play the top card of the villain deck.",
+        "Select 1 face down card beneath each Enclosure. Flip those cards face up.",
+        "{Menagerie} deals each hero, environment, and Specimen target 1 psychic damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Terra",
+          "text": "Don't worry fella! We'll{BR}get you out of there."
+        },
+        {
+          "identifier": "Asheron",
+          "text": "I am not sure that is wise."
+        }
+      ],
+      "flavorReference": "Starlight: Nightlore #1"
+    }
+  ]
 }
