@@ -807,6 +807,28 @@ namespace CauldronTests
             QuickHandCheck(2);
             AssertInTrash(aux);
         }
+
+        [Test]
+        public void TestCherenkovDriveMultiHitPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "ChronoRanger", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            Card bow = PutInHand("CompoundedBow");
+            DecisionSelectTurnTaker = chrono.TurnTaker;
+            DecisionSelectCard = bow;
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+            DecisionSelectDamageType = DamageType.Energy;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+
+            QuickHPCheck(-2);
+        }
+
         [Test]
         public void TestCherenkovDrivePowerSelfDestructAccountForBug()
         {
