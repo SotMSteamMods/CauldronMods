@@ -707,8 +707,7 @@ namespace CauldronTests
             GoToEndOfTurn(pyre);
             AssertIrradiated(grandReshiel);
 
-            //only the first instance of damage will trigger here, so battalion will be undamaged
-            QuickHPCheck(-2, 0);
+            QuickHPCheck(-2, -2);
         }
 
         [Test]
@@ -752,8 +751,7 @@ namespace CauldronTests
             GoToEndOfTurn(pyre);
             AssertNotIrradiated(highReshiel);
 
-            //only the first instance of damage will trigger here, so battalion will be undamaged
-            QuickHPCheck(-2, 0);
+            QuickHPCheck(-2, -2);
 
             AssertInTrash(highReshiel);
         }
