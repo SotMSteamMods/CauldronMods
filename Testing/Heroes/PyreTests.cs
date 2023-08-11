@@ -830,6 +830,29 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestCherenkovDriveMultiTargetPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Stuntman", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            var goon = PlayCard("BladeBattalion");
+            var device = PlayCard("ElementalRedistributor");
+
+            Card gun = PutInHand("PistoletMitrailleur");
+            DecisionSelectTurnTaker = stunt.TurnTaker;
+            DecisionSelectCard = gun;
+            DecisionYesNo = true;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+
+            QuickHPStorage(baron.CharacterCard, goon, device);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+
+            QuickHPCheck(-1, -1, -1);
+        }
+
+        [Test]
         public void TestCherenkovDrivePowerSelfDestructAccountForBug()
         {
             SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
