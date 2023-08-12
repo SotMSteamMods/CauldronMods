@@ -63,7 +63,7 @@ namespace Cauldron.FSCContinuanceWanderer
             TurnTaker next = fromTurnTaker;
             do
             {
-                next = GameController.FindNextAfterTurnTaker(next, cc => cc == this || cc.AskPriority > AskPriority);
+                next = GameController.FindNextAfterTurnTaker(next, cc => cc != this || cc.AskPriority <= AskPriority);
             } while (next == FrozenTurnTaker);
 
             currentlyChangingTurnOrder = false;
