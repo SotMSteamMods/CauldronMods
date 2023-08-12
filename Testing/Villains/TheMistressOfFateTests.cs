@@ -1528,8 +1528,11 @@ namespace CauldronTests
         public void TestHeroPreservation_DualDrift()
         {
             SetupGameController("Cauldron.TheMistressOfFate", "Legacy", "Cauldron.Drift/DualDriftCharacter", "Ra", "Megalopolis");
-            StartGame();
+            
             Card track = FindCardsWhere((Card c) => c.Identifier == $"DualShiftTrack1", false).FirstOrDefault();
+            DecisionSelectCards = new Card[] { track, futureDrift };
+            StartGame(false);
+            ResetDecisions();
 
             ResetDays();
             FlipCard(fate);
