@@ -12,12 +12,9 @@ namespace Cauldron.FSCContinuanceWanderer
     public class TimeFreezeCardController : CardController
     {
         //This card is very fragile, test changes carefully.
-
-        // We use reflection to call a private method on GameController. This is a cached handle to
-        // that method; this is just a performance optimisation, so it doesn't matter that this variable
-        // won't survive an undo or reload.
-        MethodInfo cachedAskAllCardControllersInList;
-        bool currentlyChangingTurnOrder = false;
+        // Tracks if we're currently in the middle of a call to AskIfTurnTakerOrderShouldBeChanged,
+        // to prevent recursion.
+        private bool currentlyChangingTurnOrder = false;
 
         public TimeFreezeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -51,34 +48,6 @@ namespace Cauldron.FSCContinuanceWanderer
 
         public override int AskPriority => 100;
 
-        private TurnTaker GetExpectedNextTurnTaker(TurnTaker active, TurnTaker next)
-        {
-            if (cachedAskAllCardControllersInList == null)
-            {
-                var method = GameController.GetType().GetMethod(
-                    "AskAllCardControllersInList",
-                    BindingFlags.NonPublic | BindingFlags.Instance
-                );
-
-                cachedAskAllCardControllersInList = method.MakeGenericMethod(typeof(TurnTaker));
-            }
-
-            var result = (TurnTaker)cachedAskAllCardControllersInList.Invoke(
-                GameController,
-                new object[] {
-                    CardControllerListType.ChangesTurnTakerOrder,
-                    (Func<CardController, TurnTaker>)(
-                        cc => cc == this || cc.AskPriority > AskPriority
-                                        ? null
-                                        : cc.AskIfTurnTakerOrderShouldBeChanged(active, next)),
-                    false,
-                    null
-                }
-            );
-
-            return result ?? next;
-        }
-
         public override TurnTaker AskIfTurnTakerOrderShouldBeChanged(TurnTaker fromTurnTaker, TurnTaker toTurnTaker)
         {
             if (FrozenTurnTaker == null)
@@ -91,13 +60,11 @@ namespace Cauldron.FSCContinuanceWanderer
 
             currentlyChangingTurnOrder = true;
 
-            var next = GetExpectedNextTurnTaker(Game.ActiveTurnTaker, Game.FindNextTurnTaker());
-            if (next == FrozenTurnTaker)
+            TurnTaker next = fromTurnTaker;
+            do
             {
-                var index = Game.TurnTakers.IndexOf(next) ?? 0;
-                index = (index + 1) % Game.TurnTakers.Count();
-                next = GetExpectedNextTurnTaker(next, Game.TurnTakers.ElementAt(index));
-            }
+                next = GameController.FindNextAfterTurnTaker(next, cc => cc != this || cc.AskPriority <= AskPriority);
+            } while (next == FrozenTurnTaker);
 
             currentlyChangingTurnOrder = false;
 
