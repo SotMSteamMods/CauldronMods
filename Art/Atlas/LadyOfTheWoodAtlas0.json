@@ -1,212 +1,420 @@
 {"frames": {
 
-"CalmBeforeTheStorm.jpg":
+"CalmBeforeTheStorm.png":
 {
-	"frame": {"x":1611,"y":0,"w":256,"h":188},
+	"frame": {"x":0,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"CrownOfTheFourWinds.jpg":
+"CalmBeforeTheStormMicro.png":
 {
-	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"frame": {"x":1320,"y":402,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"EnchantedClearing.jpg":
+"CrownOfTheFourWinds.png":
 {
-	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"frame": {"x":259,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"Fall.jpg":
+"CrownOfTheFourWindsMicro.png":
 {
-	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"frame": {"x":1431,"y":402,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"FireInTheClouds.jpg":
+"EnchantedClearing.png":
 {
-	"frame": {"x":777,"y":259,"w":256,"h":188},
+	"frame": {"x":518,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"FrostOnThePetals.jpg":
+"EnchantedClearingMicro.png":
 {
-	"frame": {"x":1036,"y":259,"w":256,"h":188},
+	"frame": {"x":1542,"y":402,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"Fall.png":
+{
+	"frame": {"x":777,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"FallMicro.png":
+{
+	"frame": {"x":1653,"y":402,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"FireInTheClouds.png":
+{
+	"frame": {"x":1036,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"FireInTheCloudsMicro.png":
+{
+	"frame": {"x":1320,"y":513,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"FrostOnThePetals.png":
+{
+	"frame": {"x":1295,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"FrostOnThePetalsMicro.png":
+{
+	"frame": {"x":1431,"y":513,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "FutureLadyOfTheWoodCharacter.png":
 {
-	"frame": {"x":0,"y":0,"w":176,"h":256},
+	"frame": {"x":1813,"y":0,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "FutureLadyOfTheWoodCharacterBack.png":
 {
-	"frame": {"x":179,"y":0,"w":176,"h":256},
+	"frame": {"x":1813,"y":259,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"LadyOfTheWoodCharacter.jpg":
+"FutureLadyOfTheWoodCharacterBackMicro.png":
 {
-	"frame": {"x":358,"y":0,"w":176,"h":256},
+	"frame": {"x":1542,"y":513,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"LadyOfTheWoodCharacterBack.jpg":
+"FutureLadyOfTheWoodCharacterMicro.png":
 {
-	"frame": {"x":537,"y":0,"w":176,"h":256},
+	"frame": {"x":1653,"y":513,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"LadyOfTheWoodDeckBack.jpg":
+"LadyOfTheWoodCharacter.png":
 {
-	"frame": {"x":716,"y":0,"w":176,"h":256},
+	"frame": {"x":777,"y":402,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"LadyOfTheWoodsRebirth.jpg":
+"LadyOfTheWoodCharacterBack.png":
 {
-	"frame": {"x":1295,"y":259,"w":256,"h":188},
+	"frame": {"x":0,"y":603,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"MeadowRush.jpg":
+"LadyOfTheWoodCharacterBackMicro.png":
 {
-	"frame": {"x":1554,"y":259,"w":256,"h":188},
+	"frame": {"x":1764,"y":518,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"LadyOfTheWoodCharacterMicro.png":
+{
+	"frame": {"x":1875,"y":518,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"LadyOfTheWoodDeckBack.png":
+{
+	"frame": {"x":181,"y":603,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"LadyOfTheWoodDeckBackMicro.png":
+{
+	"frame": {"x":1320,"y":624,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"LadyOfTheWoodsRebirth.png":
+{
+	"frame": {"x":1554,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"LadyOfTheWoodsRebirthMicro.png":
+{
+	"frame": {"x":1431,"y":624,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"MeadowRush.png":
+{
+	"frame": {"x":0,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"MeadowRushMicro.png":
+{
+	"frame": {"x":1542,"y":624,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "MinistryOfStrategicScienceLadyOfTheWoodCharacter.png":
 {
-	"frame": {"x":895,"y":0,"w":176,"h":256},
+	"frame": {"x":362,"y":603,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "MinistryOfStrategicScienceLadyOfTheWoodCharacterBack.png":
 {
-	"frame": {"x":1074,"y":0,"w":176,"h":256},
+	"frame": {"x":543,"y":603,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"NobilityOfDusk.jpg":
+"MinistryOfStrategicScienceLadyOfTheWoodCharacterBackMicro.png":
 {
-	"frame": {"x":0,"y":450,"w":256,"h":188},
+	"frame": {"x":1653,"y":624,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"RainpetalCloak.jpg":
+"MinistryOfStrategicScienceLadyOfTheWoodCharacterMicro.png":
 {
-	"frame": {"x":259,"y":450,"w":256,"h":188},
+	"frame": {"x":1764,"y":629,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"SeasonsOfChangeLadyOfTheWoodCharacter.jpg":
+"NobilityOfDusk.png":
 {
-	"frame": {"x":1253,"y":0,"w":176,"h":256},
+	"frame": {"x":259,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"SeasonsOfChangeLadyOfTheWoodCharacterBack.jpg":
+"NobilityOfDuskMicro.png":
 {
-	"frame": {"x":1432,"y":0,"w":176,"h":256},
+	"frame": {"x":1875,"y":629,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"SerenityOfDawn.jpg":
+"RainpetalCloak.png":
 {
-	"frame": {"x":518,"y":450,"w":256,"h":188},
+	"frame": {"x":518,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
 },
-"SnowshadeGown.jpg":
+"RainpetalCloakMicro.png":
 {
-	"frame": {"x":777,"y":450,"w":256,"h":188},
+	"frame": {"x":724,"y":661,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"Spring.jpg":
+"SeasonsOfChangeLadyOfTheWoodCharacter.png":
 {
-	"frame": {"x":1036,"y":450,"w":256,"h":188},
+	"frame": {"x":958,"y":402,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"Summer.jpg":
+"SeasonsOfChangeLadyOfTheWoodCharacterBack.png":
 {
-	"frame": {"x":1295,"y":450,"w":256,"h":188},
+	"frame": {"x":1139,"y":402,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
-"SuncastMantle.jpg":
+"SeasonsOfChangeLadyOfTheWoodCharacterBackMicro.png":
 {
-	"frame": {"x":1554,"y":450,"w":256,"h":188},
+	"frame": {"x":835,"y":661,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"ThundergreyShawl.jpg":
+"SeasonsOfChangeLadyOfTheWoodCharacterMicro.png":
 {
-	"frame": {"x":0,"y":641,"w":256,"h":188},
+	"frame": {"x":946,"y":661,"w":108,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
-"Winter.jpg":
+"SerenityOfDawn.png":
 {
-	"frame": {"x":259,"y":641,"w":256,"h":188},
+	"frame": {"x":777,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SerenityOfDawnMicro.png":
+{
+	"frame": {"x":1057,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"SnowshadeGown.png":
+{
+	"frame": {"x":1036,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SnowshadeGownMicro.png":
+{
+	"frame": {"x":1168,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"Spring.png":
+{
+	"frame": {"x":1295,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SpringMicro.png":
+{
+	"frame": {"x":1279,"y":735,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"Summer.png":
+{
+	"frame": {"x":1554,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SummerMicro.png":
+{
+	"frame": {"x":1390,"y":735,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"SuncastMantle.png":
+{
+	"frame": {"x":0,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SuncastMantleMicro.png":
+{
+	"frame": {"x":1501,"y":735,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"ThundergreyShawl.png":
+{
+	"frame": {"x":259,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"ThundergreyShawlMicro.png":
+{
+	"frame": {"x":1612,"y":735,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"Winter.png":
+{
+	"frame": {"x":518,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"WinterMicro.png":
+{
+	"frame": {"x":1723,"y":740,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -215,6 +423,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c312216deafb458122e42ee77628b98f:6da49aa284f35fd71e601594afd5a799:aebb254d77629167f632846d82801790$"
+	"smartupdate": "$TexturePacker:SmartUpdate:9806e8147bb3b92aac1d7a9e2517e9c6:5319c1963f85fa5fdd9b3dff67805b7f:aebb254d77629167f632846d82801790$"
 }
 }

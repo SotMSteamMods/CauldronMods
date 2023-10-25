@@ -2,203 +2,403 @@
 
 "AMerryChase.png":
 {
-	"frame": {"x":0,"y":0,"w":256,"h":188},
+	"frame": {"x":0,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"AMerryChaseMicro.png":
+{
+	"frame": {"x":362,"y":603,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "CaptainGyrosaurCharacter.png":
 {
-	"frame": {"x":259,"y":0,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"CaptainGyrosaurCharacterBack.png":
-{
-	"frame": {"x":438,"y":0,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"GyrosaurCharacter.png":
-{
-	"frame": {"x":617,"y":0,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"GyrosaurCharacterBack.png":
-{
-	"frame": {"x":796,"y":0,"w":176,"h":256},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
-},
-"GyrosaurDeckBack.jpg":
-{
-	"frame": {"x":975,"y":0,"w":178,"h":256},
+	"frame": {"x":1813,"y":0,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
 	"sourceSize": {"w":178,"h":256}
 },
-"GyroStabilizer.png":
+"CaptainGyrosaurCharacterBack.png":
 {
-	"frame": {"x":1156,"y":0,"w":256,"h":188},
+	"frame": {"x":1813,"y":259,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"CaptainGyrosaurCharacterBackMicro.png":
+{
+	"frame": {"x":1423,"y":402,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"CaptainGyrosaurCharacterMicro.png":
+{
+	"frame": {"x":1534,"y":402,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"GyrosaurCharacter.png":
+{
+	"frame": {"x":518,"y":402,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"GyrosaurCharacterBack.png":
+{
+	"frame": {"x":0,"y":603,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"GyrosaurCharacterBackMicro.png":
+{
+	"frame": {"x":1645,"y":402,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"GyrosaurCharacterMicro.png":
+{
+	"frame": {"x":1423,"y":513,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"GyrosaurDeckBack.png":
+{
+	"frame": {"x":181,"y":603,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"GyrosaurDeckBackMicro.png":
+{
+	"frame": {"x":1534,"y":513,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"GyroStabilizer.png":
+{
+	"frame": {"x":259,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"GyroStabilizerMicro.png":
+{
+	"frame": {"x":1645,"y":513,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "HiddenDetour.png":
 {
-	"frame": {"x":1415,"y":0,"w":256,"h":188},
+	"frame": {"x":518,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"HiddenDetourMicro.png":
+{
+	"frame": {"x":1756,"y":518,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "Hyperspin.png":
 {
-	"frame": {"x":1674,"y":0,"w":256,"h":188},
+	"frame": {"x":777,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"HyperspinMicro.png":
+{
+	"frame": {"x":1867,"y":518,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "IndiscriminatePass.png":
 {
-	"frame": {"x":0,"y":259,"w":256,"h":188},
+	"frame": {"x":1036,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"IndiscriminatePassMicro.png":
+{
+	"frame": {"x":1423,"y":624,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "Omnivore.png":
 {
-	"frame": {"x":259,"y":259,"w":256,"h":188},
+	"frame": {"x":1295,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"OmnivoreMicro.png":
+{
+	"frame": {"x":1534,"y":624,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "OnARoll.png":
 {
-	"frame": {"x":518,"y":259,"w":256,"h":188},
+	"frame": {"x":1554,"y":0,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"OnARollMicro.png":
+{
+	"frame": {"x":1645,"y":624,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "ProtectiveEscort.png":
 {
-	"frame": {"x":777,"y":259,"w":256,"h":188},
+	"frame": {"x":0,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"ProtectiveEscortMicro.png":
+{
+	"frame": {"x":1756,"y":629,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "RapturianShell.png":
 {
-	"frame": {"x":1036,"y":259,"w":256,"h":188},
+	"frame": {"x":259,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"RapturianShellMicro.png":
+{
+	"frame": {"x":1867,"y":629,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "ReadTheTerrain.png":
 {
-	"frame": {"x":1295,"y":259,"w":256,"h":188},
+	"frame": {"x":518,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"ReadTheTerrainMicro.png":
+{
+	"frame": {"x":473,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "RecklessAlienRacingTortoise.png":
 {
-	"frame": {"x":1554,"y":259,"w":256,"h":188},
+	"frame": {"x":777,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"RecklessAlienRacingTortoiseMicro.png":
+{
+	"frame": {"x":362,"y":714,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "RenegadeGyrosaurCharacter.png":
 {
-	"frame": {"x":1813,"y":259,"w":176,"h":256},
+	"frame": {"x":699,"y":402,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "RenegadeGyrosaurCharacterBack.png":
 {
-	"frame": {"x":0,"y":518,"w":176,"h":256},
+	"frame": {"x":880,"y":402,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"RenegadeGyrosaurCharacterBackMicro.png":
+{
+	"frame": {"x":584,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"RenegadeGyrosaurCharacterMicro.png":
+{
+	"frame": {"x":695,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "Ricochet.png":
 {
-	"frame": {"x":179,"y":518,"w":256,"h":188},
+	"frame": {"x":1036,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"RicochetMicro.png":
+{
+	"frame": {"x":806,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "SpeedDemonGyrosaurCharacter.png":
 {
-	"frame": {"x":438,"y":518,"w":176,"h":256},
+	"frame": {"x":1061,"y":402,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
 },
 "SpeedDemonGyrosaurCharacterBack.png":
 {
-	"frame": {"x":617,"y":518,"w":176,"h":256},
+	"frame": {"x":1242,"y":402,"w":178,"h":256},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":176,"h":256},
-	"sourceSize": {"w":176,"h":256}
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"SpeedDemonGyrosaurCharacterBackMicro.png":
+{
+	"frame": {"x":917,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"SpeedDemonGyrosaurCharacterMicro.png":
+{
+	"frame": {"x":1028,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "SphereOfDevastation.png":
 {
-	"frame": {"x":796,"y":518,"w":256,"h":188},
+	"frame": {"x":1295,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SphereOfDevastationMicro.png":
+{
+	"frame": {"x":1139,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "TerrifyingMomentum.png":
 {
-	"frame": {"x":1055,"y":518,"w":256,"h":188},
+	"frame": {"x":1554,"y":201,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TerrifyingMomentumMicro.png":
+{
+	"frame": {"x":1250,"y":661,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "Wipeout.png":
 {
-	"frame": {"x":1314,"y":518,"w":256,"h":188},
+	"frame": {"x":0,"y":402,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"WipeoutMicro.png":
+{
+	"frame": {"x":1361,"y":735,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 },
 "WreckingBall.png":
 {
-	"frame": {"x":1573,"y":518,"w":256,"h":188},
+	"frame": {"x":259,"y":402,"w":256,"h":198},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":188},
-	"sourceSize": {"w":256,"h":188}
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"WreckingBallMicro.png":
+{
+	"frame": {"x":1472,"y":735,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -207,6 +407,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0e15c2857e5eebff7570f900ecd38f55:419258f06d2d816d0a0c0996a1ef3f37:22ae0bb6386e2e6014c43684eaefc09c$"
+	"smartupdate": "$TexturePacker:SmartUpdate:22e3a3b876b5828c8051703c765c4156:8ffe3d8bce43a1744340fcd26b03df1f:22ae0bb6386e2e6014c43684eaefc09c$"
 }
 }
