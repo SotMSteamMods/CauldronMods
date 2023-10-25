@@ -1,687 +1,236 @@
+{"frames": {
+
+"CombatCyborg.png":
 {
-  "frames": {
-    "CombatCyborg.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 1,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "FSCContinuanceWandererDeckBack.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 191,
-        "w": 176,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 176,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 176,
-        "h": 256
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "HeartOfTheWanderer.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 1,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "ParadoxIntrusion.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 449,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "PrehistoricBehemoth.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 1,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "SuperimposedRealities.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 639,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TemporalAcceleration.jpg": {
-      "frame": {
-        "x": 179,
-        "y": 191,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TemporalReset.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 829,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "CombatCyborgMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 1,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TemporalReversal.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 381,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "FSCContinuanceWandererDeckBackMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 111,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "HeartOfTheWandererMicro.jpg": {
-      "frame": {
-        "x": 885,
-        "y": 1,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TemporalSlipstream.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 571,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TimeFreeze.jpg": {
-      "frame": {
-        "x": 437,
-        "y": 191,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "ParadoxIntrusionMicro.jpg": {
-      "frame": {
-        "x": 885,
-        "y": 111,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "VortexGlitch.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 761,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "VortexInterference.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 381,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "VortexSurge.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 571,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "PrehistoricBehemothMicro.jpg": {
-      "frame": {
-        "x": 695,
-        "y": 221,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "SuperimposedRealitiesMicro.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 761,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TemporalAccelerationMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 331,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TemporalResetMicro.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 871,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TemporalReversalMicro.jpg": {
-      "frame": {
-        "x": 627,
-        "y": 761,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TemporalSlipstreamMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 441,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TimeFreezeMicro.jpg": {
-      "frame": {
-        "x": 805,
-        "y": 221,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "VortexGlitchMicro.jpg": {
-      "frame": {
-        "x": 627,
-        "y": 871,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "VortexInterferenceMicro.jpg": {
-      "frame": {
-        "x": 737,
-        "y": 761,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "VortexSurgeMicro.jpg": {
-      "frame": {
-        "x": 885,
-        "y": 331,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    }
-  },
-  "meta": {
-    "app": "http://free-tex-packer.com",
-    "version": "0.6.7",
-    "image": "FSCContinuanceWandererAtlas0.png",
-    "format": "RGBA8888",
-    "size": {
-      "w": 1024,
-      "h": 1024
-    },
-    "scale": 1
-  }
+	"frame": {"x":0,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"CombatCyborgMicro.png":
+{
+	"frame": {"x":518,"y":603,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"FSCContinuanceWandererDeckBack.png":
+{
+	"frame": {"x":777,"y":0,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"FSCContinuanceWandererDeckBackMicro.png":
+{
+	"frame": {"x":777,"y":259,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"HeartOfTheWanderer.png":
+{
+	"frame": {"x":0,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"HeartOfTheWandererMicro.png":
+{
+	"frame": {"x":518,"y":714,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"ParadoxIntrusion.png":
+{
+	"frame": {"x":259,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"ParadoxIntrusionMicro.png":
+{
+	"frame": {"x":629,"y":603,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"PrehistoricBehemoth.png":
+{
+	"frame": {"x":0,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"PrehistoricBehemothMicro.png":
+{
+	"frame": {"x":777,"y":370,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"SuperimposedRealities.png":
+{
+	"frame": {"x":259,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SuperimposedRealitiesMicro.png":
+{
+	"frame": {"x":518,"y":825,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"TemporalAcceleration.png":
+{
+	"frame": {"x":518,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TemporalAccelerationMicro.png":
+{
+	"frame": {"x":629,"y":714,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"TemporalReset.png":
+{
+	"frame": {"x":0,"y":603,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TemporalResetMicro.png":
+{
+	"frame": {"x":777,"y":481,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"TemporalReversal.png":
+{
+	"frame": {"x":259,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TemporalReversalMicro.png":
+{
+	"frame": {"x":629,"y":825,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"TemporalSlipstream.png":
+{
+	"frame": {"x":518,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TemporalSlipstreamMicro.png":
+{
+	"frame": {"x":888,"y":259,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"TimeFreeze.png":
+{
+	"frame": {"x":0,"y":804,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TimeFreezeMicro.png":
+{
+	"frame": {"x":888,"y":370,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"VortexGlitch.png":
+{
+	"frame": {"x":259,"y":603,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"VortexGlitchMicro.png":
+{
+	"frame": {"x":888,"y":481,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"VortexInterference.png":
+{
+	"frame": {"x":518,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"VortexInterferenceMicro.png":
+{
+	"frame": {"x":740,"y":603,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"VortexSurge.png":
+{
+	"frame": {"x":259,"y":804,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"VortexSurgeMicro.png":
+{
+	"frame": {"x":740,"y":714,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "FSCContinuanceWandererAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:86933f594676f14b0c2f748461a3a520:78839921f653774b71aa7f0fe9bb6af1:0123c114b05cfcbbc0a1cf263dfeb698$"
+}
 }

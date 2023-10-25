@@ -1,543 +1,188 @@
+{"frames": {
+
+"AmphibiousAssault.png":
 {
-  "frames": {
-    "AmphibiousAssault.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 1,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TheWanderingIsleDeckBack.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 191,
-        "w": 176,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 176,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 176,
-        "h": 256
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "AncientParasite.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 1,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "BarnacleHydra.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 449,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "ExposedLifeforce.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 1,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Islandquake.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 639,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "SongOfTheDeep.jpg": {
-      "frame": {
-        "x": 179,
-        "y": 191,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Submerge.jpg": {
-      "frame": {
-        "x": 1,
-        "y": 829,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "AmphibiousAssaultMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 1,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Teryx.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 381,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "AncientParasiteMicro.jpg": {
-      "frame": {
-        "x": 775,
-        "y": 111,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "BarnacleHydraMicro.jpg": {
-      "frame": {
-        "x": 885,
-        "y": 1,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "ThroughTheHurricane.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 571,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TimedDetonator.jpg": {
-      "frame": {
-        "x": 437,
-        "y": 191,
-        "w": 256,
-        "h": 188
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 188
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 188
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "ExposedLifeforceMicro.jpg": {
-      "frame": {
-        "x": 885,
-        "y": 111,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "IslandquakeMicro.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 761,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "SongOfTheDeepMicro.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 381,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "SubmergeMicro.jpg": {
-      "frame": {
-        "x": 695,
-        "y": 221,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TeryxMicro.jpg": {
-      "frame": {
-        "x": 259,
-        "y": 871,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TheWanderingIsleDeckBackMicro.jpg": {
-      "frame": {
-        "x": 369,
-        "y": 761,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "ThroughTheHurricaneMicro.jpg": {
-      "frame": {
-        "x": 517,
-        "y": 491,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "TimedDetonatorMicro.jpg": {
-      "frame": {
-        "x": 627,
-        "y": 381,
-        "w": 108,
-        "h": 108
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 108,
-        "h": 108
-      },
-      "sourceSize": {
-        "w": 108,
-        "h": 108
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    }
-  },
-  "meta": {
-    "app": "http://free-tex-packer.com",
-    "version": "0.6.7",
-    "image": "TheWanderingIsleAtlas0.png",
-    "format": "RGBA8888",
-    "size": {
-      "w": 1024,
-      "h": 1024
-    },
-    "scale": 1
-  }
+	"frame": {"x":0,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"AmphibiousAssaultMicro.png":
+{
+	"frame": {"x":777,"y":259,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"AncientParasite.png":
+{
+	"frame": {"x":259,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"AncientParasiteMicro.png":
+{
+	"frame": {"x":888,"y":259,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"BarnacleHydra.png":
+{
+	"frame": {"x":518,"y":0,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"BarnacleHydraMicro.png":
+{
+	"frame": {"x":777,"y":370,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"ExposedLifeforce.png":
+{
+	"frame": {"x":0,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"ExposedLifeforceMicro.png":
+{
+	"frame": {"x":888,"y":370,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"Islandquake.png":
+{
+	"frame": {"x":259,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"IslandquakeMicro.png":
+{
+	"frame": {"x":777,"y":481,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"SongOfTheDeep.png":
+{
+	"frame": {"x":518,"y":201,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SongOfTheDeepMicro.png":
+{
+	"frame": {"x":888,"y":481,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"Submerge.png":
+{
+	"frame": {"x":0,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"SubmergeMicro.png":
+{
+	"frame": {"x":777,"y":592,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"Teryx.png":
+{
+	"frame": {"x":259,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TeryxMicro.png":
+{
+	"frame": {"x":888,"y":592,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"TheWanderingIsleDeckBack.png":
+{
+	"frame": {"x":777,"y":0,"w":178,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":178,"h":256},
+	"sourceSize": {"w":178,"h":256}
+},
+"TheWanderingIsleDeckBackMicro.png":
+{
+	"frame": {"x":259,"y":603,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"ThroughTheHurricane.png":
+{
+	"frame": {"x":518,"y":402,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"ThroughTheHurricaneMicro.png":
+{
+	"frame": {"x":370,"y":603,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+},
+"TimedDetonator.png":
+{
+	"frame": {"x":0,"y":603,"w":256,"h":198},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":198},
+	"sourceSize": {"w":256,"h":198}
+},
+"TimedDetonatorMicro.png":
+{
+	"frame": {"x":481,"y":603,"w":108,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":108},
+	"sourceSize": {"w":108,"h":108}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "TheWanderingIsleAtlas0.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:3b882b462158b8db3c305a9c01517f71:cba65a309127cf9b1c00974d47cf0973:8465a41b6e5525b035121d5e43c11fed$"
+}
 }
