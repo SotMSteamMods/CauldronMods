@@ -1006,6 +1006,54 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestLeechFieldDamageInFlight()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gargoyle", "VoidGuardMainstay", "InsulaPrimalis");
+            StartGame();
+
+            DestroyNonCharacterVillainCards();
+
+            PutIntoPlay("PreemptivePayback");
+
+            GoToPlayCardPhase(gargoyle);
+
+            var bladeBattalion = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("LeechField");
+
+            DecisionSelectTarget = bladeBattalion;
+            DecisionsYesNo = new bool[] { false, true, true };
+            QuickHPStorage(bladeBattalion, voidMainstay.CharacterCard);
+            DealDamage(gargoyle.CharacterCard, voidMainstay.CharacterCard, 1, DamageType.Melee);
+            QuickHPCheck(-2, -2);
+        }
+
+        [Test]
+        public void TestLeechFieldAppliesToPreemptive()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Gargoyle/WastelandRoninGargoyleCharacter", "VoidGuardMainstay", "CaptainCosmic", "InsulaPrimalis");
+            StartGame();
+
+            DestroyNonCharacterVillainCards();
+
+            PutIntoPlay("PreemptivePayback");
+
+            GoToPlayCardPhase(gargoyle);
+
+            var bladeBattalion = PutIntoPlay("BladeBattalion");
+
+            DecisionSelectCard = gargoyle.CharacterCard;
+            var siphon = PutIntoPlay("DynamicSiphon");
+
+            PutIntoPlay("LeechField");
+
+            DecisionSelectTargets = new Card[] { siphon, bladeBattalion };
+            DecisionsYesNo = new bool[] { true, true };
+            QuickHPStorage(bladeBattalion, voidMainstay.CharacterCard);
+            DealDamage(gargoyle.CharacterCard, voidMainstay.CharacterCard, 2, DamageType.Melee);
+            QuickHPCheck(-3, -1);
+        }
+
+        [Test]
         public void TestLeechFieldOtherHeroDamaged()
         {
             Card bladeBattalion1;
