@@ -84,7 +84,7 @@ namespace Cauldron.Gargoyle
 
                 if (IsRealAction(dealDamageAction))
                 {
-                    e = IncreaseGargoyleNextDamage(1, dealDamageAction);
+                    e = IncreaseGargoyleNextDamage(1, dealDamageAction.DamageSource.Card == CharacterCard ? dealDamageAction : null);
                     if (UseUnityCoroutines) { yield return GameController.StartCoroutine(e); }
                     else { GameController.ExhaustCoroutine(e); }
                 }
