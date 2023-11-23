@@ -97,21 +97,24 @@ namespace Cauldron.Vanish
                                 base.GameController.ExhaustCoroutine(coroutine);
                             }
 
-                            var card = revealedCards.First();
-                            var locations = new[]
+                            if (revealedCards.Any())
                             {
-                                new MoveCardDestination(card.NativeDeck, true, false),
-                                new MoveCardDestination(card.NativeDeck, false, true)
-                            };
+                                var card = revealedCards.First();
+                                var locations = new[]
+                                {
+                                        new MoveCardDestination(card.NativeDeck, true, false),
+                                        new MoveCardDestination(card.NativeDeck, false, true)
+                                    };
 
-                            coroutine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, card, locations, cardSource: GetCardSource());
-                            if (base.UseUnityCoroutines)
-                            {
-                                yield return base.GameController.StartCoroutine(coroutine);
-                            }
-                            else
-                            {
-                                base.GameController.ExhaustCoroutine(coroutine);
+                                coroutine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, card, locations, cardSource: GetCardSource());
+                                if (base.UseUnityCoroutines)
+                                {
+                                    yield return base.GameController.StartCoroutine(coroutine);
+                                }
+                                else
+                                {
+                                    base.GameController.ExhaustCoroutine(coroutine);
+                                }
                             }
                         }
                         break;
