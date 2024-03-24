@@ -40,7 +40,7 @@ namespace Cauldron.TheWanderingIsle
             }
 
             //deals each hero target {H - 2} fire damage
-            IEnumerator heroDamage = base.DealDamage(base.Card, (Card c) => c.IsTarget && IsHero(c) && c.IsInPlayAndHasGameText, base.H - 2, DamageType.Fire);
+            IEnumerator heroDamage = base.DealDamage(base.Card, (Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText, base.H - 2, DamageType.Fire);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(heroDamage);

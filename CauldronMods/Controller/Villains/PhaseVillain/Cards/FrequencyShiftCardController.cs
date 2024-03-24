@@ -30,7 +30,7 @@ namespace Cauldron.PhaseVillain
 
             //{Phase} deals the hero target with the highest HP {H} irreducible radiant damage and...
             List<DealDamageAction> targetedHero = new List<DealDamageAction>();
-            coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHero(c), (Card c) => Game.H, DamageType.Radiant, true,
+            coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => Game.H, DamageType.Radiant, true,
                             selectTargetEvenIfCannotDealDamage: true,
                             storedResults: targetedHero);
             if (base.UseUnityCoroutines)

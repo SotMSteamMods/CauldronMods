@@ -11,7 +11,7 @@ namespace Cauldron.Starlight
     {
         public CelestialAuraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => c.IsTarget && IsHero(c) && IsNextToConstellation(c), useCardsSuffix: false, singular: "hero target next to a constellation", plural:"hero targets next to a constellation"));
+            SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => IsHeroTarget(c) && IsNextToConstellation(c), useCardsSuffix: false, singular: "hero target next to a constellation", plural:"hero targets next to a constellation"));
         }
 
         public override void AddTriggers()

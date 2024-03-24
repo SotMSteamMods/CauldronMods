@@ -53,7 +53,7 @@ namespace Cauldron.Malichae
             }
             var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, dmgSource), damages, DamageType.Sonic, null, false, null,
                 allowAutoDecide: true,
-                additionalCriteria: c => c.IsInPlay && !IsHero(c),
+                additionalCriteria: c => c.IsInPlay && !IsHeroTarget(c),
                 cardSource: cs);
             if (base.UseUnityCoroutines)
             {

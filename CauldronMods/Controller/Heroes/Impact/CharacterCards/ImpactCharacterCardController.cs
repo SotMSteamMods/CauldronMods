@@ -186,7 +186,7 @@ namespace Cauldron.Impact
                     {
                         //"Select a hero target. That target deals 1 other target 1 projectile damage.",
                         var storedTarget = new List<SelectCardDecision> { };
-                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && c.IsTarget && IsHero(c)), storedTarget, false, cardSource: GetCardSource());
+                        coroutine = GameController.SelectCardAndStoreResults(DecisionMaker, SelectionType.CardToDealDamage, new LinqCardCriteria(c => c.IsInPlayAndHasGameText && IsHeroTarget(c)), storedTarget, false, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

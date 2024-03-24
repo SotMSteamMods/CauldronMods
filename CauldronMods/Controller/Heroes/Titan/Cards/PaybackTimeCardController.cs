@@ -11,7 +11,7 @@ namespace Cauldron.Titan
     {
         public PaybackTimeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => !IsHero(c) && this.HasTargetDealtDamageToTitanSinceHisLastTurn(c), "non-hero targets who have dealt damge to Titan since the end of his last turn"));
+            base.SpecialStringMaker.ShowListOfCards(new LinqCardCriteria((Card c) => !IsHeroTarget(c) && this.HasTargetDealtDamageToTitanSinceHisLastTurn(c), "non-hero targets who have dealt damge to Titan since the end of his last turn"));
         }
 
         public override void AddTriggers()

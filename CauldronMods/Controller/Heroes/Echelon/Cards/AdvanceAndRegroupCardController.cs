@@ -27,7 +27,7 @@ namespace Cauldron.Echelon
         protected override void AddTacticEffectTrigger()
         {
             // Whenever a non-hero target is destroyed, 1 hero target regains 2HP.
-            base.AddTrigger<DestroyCardAction>(dca => dca.WasCardDestroyed && !IsHero(dca.CardToDestroy.Card) 
+            base.AddTrigger<DestroyCardAction>(dca => dca.WasCardDestroyed && !IsHeroTarget(dca.CardToDestroy.Card) 
                             && dca.CardToDestroy.Card.IsTarget && base.GameController.IsCardVisibleToCardSource(dca.CardToDestroy.Card, GetCardSource()),
                 this.DestroyNonHeroTargetResponse,
                 new[]

@@ -119,7 +119,7 @@ namespace Cauldron.Pyre
                 case 1:
                     {
                         //"One hero target deals each target 1 energy damage.",
-                        var heroTargets = GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && IsHero(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
+                        var heroTargets = GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
                         var storedTarget = new List<SelectTargetDecision>();
                         coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, heroTargets, storedTarget, damageAmount: c => 1, damageType: DamageType.Energy, selectionType: SelectionType.CardToDealDamage, cardSource: GetCardSource());
                         if (UseUnityCoroutines)

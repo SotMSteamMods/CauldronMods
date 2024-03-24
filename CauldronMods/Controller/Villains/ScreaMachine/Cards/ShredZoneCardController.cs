@@ -17,7 +17,7 @@ namespace Cauldron.ScreaMachine
 
         protected override IEnumerator ActivateBandAbility()
         {
-            var coroutine = DealDamageToLowestHP(GetBandmate(), 1, c => IsHero(c), c => 1, DamageType.Sonic, isIrreducible: true,
+            var coroutine = DealDamageToLowestHP(GetBandmate(), 1, c => IsHeroTarget(c), c => 1, DamageType.Sonic, isIrreducible: true,
                                 numberOfTargets: 2);
             if (UseUnityCoroutines)
             {

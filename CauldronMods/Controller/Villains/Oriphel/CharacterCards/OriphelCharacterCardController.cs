@@ -50,7 +50,7 @@ namespace Cauldron.Oriphel
                 }
 
                 //"At the end of the villain turn, {Oriphel} deals the 2 hero targets with the highest HP {H - 1} infernal damage each.",
-                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(this.TurnTaker, this.Card, (Card c) => IsHero(c), TargetType.HighestHP, H - 1, DamageType.Infernal, numberOfTargets: 2));
+                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(this.TurnTaker, this.Card, (Card c) => IsHeroTarget(c), TargetType.HighestHP, H - 1, DamageType.Infernal, numberOfTargets: 2));
 
                 //"When there are 2 villain relics in the villain trash, flip {Oriphel}'s villain character cards."
                 AddSideTrigger(AddTrigger<GameAction>(CheckCardsInTrashCriteria, FlipThisCharacterCardResponse, TriggerType.FlipCard, TriggerTiming.After));

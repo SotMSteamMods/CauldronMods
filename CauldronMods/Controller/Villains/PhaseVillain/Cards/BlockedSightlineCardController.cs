@@ -23,7 +23,7 @@ namespace Cauldron.PhaseVillain
         private IEnumerator DealDamageResponse(DestroyCardAction action)
         {
             //...{Phase} deals the 2 hero targets with the highest HP {H} irreducible radiant damage each.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHero(c), (Card c) => new int?(Game.H), DamageType.Radiant, true, numberOfTargets: () => 2);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => new int?(Game.H), DamageType.Radiant, true, numberOfTargets: () => 2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

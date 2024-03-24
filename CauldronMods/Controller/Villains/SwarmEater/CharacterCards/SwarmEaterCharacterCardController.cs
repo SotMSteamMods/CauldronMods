@@ -106,7 +106,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DealDamageResponse(PlayCardAction action)
         {
             //...{SwarmEater} deals the non-hero target other than itself with the lowest HP 3 melee damage.
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c != base.Card && !IsHero(c), (Card c) => 3, DamageType.Melee);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 1, (Card c) => c != base.Card && !IsHeroTarget(c), (Card c) => 3, DamageType.Melee);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

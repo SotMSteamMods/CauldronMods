@@ -28,7 +28,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...this card deals the hero target with the highest HP 2 lightning damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => new int?(2), DamageType.Lightning);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHeroTarget(c), (Card c) => new int?(2), DamageType.Lightning);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

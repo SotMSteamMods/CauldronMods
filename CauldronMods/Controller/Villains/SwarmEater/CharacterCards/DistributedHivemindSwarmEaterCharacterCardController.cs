@@ -61,7 +61,7 @@ namespace Cauldron.SwarmEater
         private IEnumerator RedirectDamageResponse(DealDamageAction action)
         {
             //Whenever a villain target would deal damage to another villain target, redirect that damage to the hero target with the highest HP.
-            IEnumerator coroutine = base.RedirectDamage(action, TargetType.HighestHP, (Card c) => IsHero(c));
+            IEnumerator coroutine = base.RedirectDamage(action, TargetType.HighestHP, (Card c) => IsHeroTarget(c));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

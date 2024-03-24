@@ -56,7 +56,7 @@ namespace Cauldron.Gyrosaur
                 }
 
                 //...{Gyrosaur} deals each non-hero target 1 melee damage...
-                coroutine = DealDamage(CharacterCard, (Card c) => !IsHero(c), 1, DamageType.Melee);
+                coroutine = DealDamage(CharacterCard, (Card c) => !IsHeroTarget(c), 1, DamageType.Melee);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

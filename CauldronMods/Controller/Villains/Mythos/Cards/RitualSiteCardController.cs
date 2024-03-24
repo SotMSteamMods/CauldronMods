@@ -27,7 +27,7 @@ namespace Cauldron.Mythos
         private IEnumerator MadnessDealDamageResponse(PhaseChangeAction action)
         {
             //...this card deals each hero target 1 psychic damage.
-            IEnumerator coroutine = base.DealDamage(this.Card, (Card c) => IsHero(c), 1, DamageType.Psychic);
+            IEnumerator coroutine = base.DealDamage(this.Card, (Card c) => IsHeroTarget(c), 1, DamageType.Psychic);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

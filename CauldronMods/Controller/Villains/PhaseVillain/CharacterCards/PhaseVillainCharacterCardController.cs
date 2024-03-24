@@ -166,7 +166,7 @@ namespace Cauldron.PhaseVillain
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //{Phase} deals each hero target {H} radiant damage. 
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHero(c), Game.H, DamageType.Radiant);
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHeroTarget(c), Game.H, DamageType.Radiant);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

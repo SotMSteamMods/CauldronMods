@@ -72,7 +72,7 @@ namespace Cauldron.Drift
 						{
 							int damageNumeral = base.GetPowerNumeral(2, 1);
 							//{Drift} deals each non-hero target 1 radiant damage. 
-							coroutine = base.DealDamage(base.GetActiveCharacterCard(), (Card c) => !IsHero(c), damageNumeral, DamageType.Radiant);
+							coroutine = base.DealDamage(base.GetActiveCharacterCard(), (Card c) => !IsHeroTarget(c), damageNumeral, DamageType.Radiant);
 							if (base.UseUnityCoroutines)
 							{
 								yield return base.GameController.StartCoroutine(coroutine);

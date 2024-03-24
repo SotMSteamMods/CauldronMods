@@ -16,7 +16,7 @@ namespace Cauldron.Titan
 
         public override IEnumerator Play()
         {
-            IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlay && !IsHero(c) && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", false, singular: "non-hero target", plural:"non-hero targets"));
+            IEnumerable<Card> choices = base.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInPlay && !IsHeroTarget(c) && c.IsTarget && GameController.IsCardVisibleToCardSource(c, GetCardSource()), "", false, singular: "non-hero target", plural:"non-hero targets"));
             List<SelectTargetDecision> storedResults = new List<SelectTargetDecision>();
             //Select a non-hero target. 
             IEnumerator coroutine = base.GameController.SelectTargetAndStoreResults(base.HeroTurnTakerController, choices, storedResults, selectionType: SelectionType.None, cardSource: base.GetCardSource());
@@ -32,7 +32,7 @@ namespace Cauldron.Titan
             {
                 Card selectedTarget = storedResults.FirstOrDefault().SelectedCard;
                 //...Each other non-hero target deals that target 1 melee damage.
-                coroutine = base.DealDamage((Card c) => c != selectedTarget && c.IsInPlay && c.IsTarget && !IsHero(c), (Card c) => c == selectedTarget, (Card c) => new int?(1), DamageType.Melee);
+                coroutine = base.DealDamage((Card c) => c != selectedTarget && c.IsInPlay && c.IsTarget && !IsHeroTarget(c), (Card c) => c == selectedTarget, (Card c) => new int?(1), DamageType.Melee);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

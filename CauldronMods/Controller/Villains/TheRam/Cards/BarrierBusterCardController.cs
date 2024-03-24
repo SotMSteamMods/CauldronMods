@@ -39,7 +39,7 @@ namespace Cauldron.TheRam
             IEnumerator coroutine;
             if(RamIfInPlay != null)
             {
-                coroutine = DealDamage(GetRam, (Card c) => IsHero(c), cardsDestroyed + 3, DamageType.Melee);
+                coroutine = DealDamage(GetRam, (Card c) => !IsVillainTarget(c), cardsDestroyed + 3, DamageType.Melee);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -131,7 +131,7 @@ namespace Cauldron.Dynamo
             }
 
             //...and {Dynamo} deals the hero target with the highest HP {H} energy damage.
-            coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHero(c), (Card c) => base.Game.H, DamageType.Energy);
+            coroutine = base.DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => base.Game.H, DamageType.Energy);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
