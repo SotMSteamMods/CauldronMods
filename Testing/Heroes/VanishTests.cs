@@ -193,6 +193,31 @@ namespace CauldronTests
         }
 
         [Test]
+        public void VanishIncap2_Empty()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Vanish", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyCard("MobileDefensePlatform");
+            SetupIncap(baron);
+            AssertIncapacitated(vanish);
+
+            GoToUseIncapacitatedAbilityPhase(vanish);
+
+            MoveAllCards(haka, haka.HeroTurnTaker.Deck, haka.HeroTurnTaker.Hand);
+
+            AssertNumberOfCardsInDeck(haka, 0);
+
+            DecisionSelectLocation = new LocationChoice(haka.TurnTaker.Deck);
+            DecisionMoveCardDestination = new MoveCardDestination(haka.TurnTaker.Deck, false);
+
+            UseIncapacitatedAbility(vanish, 1);
+
+            AssertNumberOfCardsInRevealed(haka, 0);
+            AssertNumberOfCardsInDeck(haka, 0);
+        }
+
+        [Test]
         public void VanishIncap3()
         {
             SetupGameController("BaronBlade", "Cauldron.Vanish", "Ra", "TheWraith", "Megalopolis");
