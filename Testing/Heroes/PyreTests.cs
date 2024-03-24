@@ -1119,6 +1119,29 @@ namespace CauldronTests
             AssertIrradiated(fort);
             AssertIrradiated(ring);
         }
+
+        [Test]
+        public void TestGammaBurst_HeroicInfinitor()
+        {
+            SetupGameController("Infinitor/HeroicInfinitorCharacter", "Cauldron.Pyre", "Legacy", "Tempest", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            Card traffic = PutIntoPlay("TrafficPileup");
+
+            DecisionAutoDecideIfAble = true;
+            MoveAllCardsFromHandToDeck(legacy);
+            Card fort = PutInHand("Fortitude");
+            Card ring = PutInHand("TheLegacyRing");
+            DecisionSelectTurnTaker = legacy.TurnTaker;
+
+            QuickHPStorage(infinitor.CharacterCard, pyre.CharacterCard, legacy.CharacterCard, tempest.CharacterCard, scholar.CharacterCard, traffic);
+            PlayCard("GammaBurst");
+            QuickHPCheck(0, 0, -2, 0, 0, -2);
+            AssertIrradiated(fort);
+            AssertIrradiated(ring);
+        }
+
         [Test]
         public void TestGammaBurstIrradiatesOptional()
         {
