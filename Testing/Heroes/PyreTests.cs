@@ -707,8 +707,7 @@ namespace CauldronTests
             GoToEndOfTurn(pyre);
             AssertIrradiated(grandReshiel);
 
-            //only the first instance of damage will trigger here, so battalion will be undamaged
-            QuickHPCheck(-2, 0);
+            QuickHPCheck(-2, -2);
         }
 
         [Test]
@@ -752,8 +751,7 @@ namespace CauldronTests
             GoToEndOfTurn(pyre);
             AssertNotIrradiated(highReshiel);
 
-            //only the first instance of damage will trigger here, so battalion will be undamaged
-            QuickHPCheck(-2, 0);
+            QuickHPCheck(-2, -2);
 
             AssertInTrash(highReshiel);
         }
@@ -807,6 +805,51 @@ namespace CauldronTests
             QuickHandCheck(2);
             AssertInTrash(aux);
         }
+
+        [Test]
+        public void TestCherenkovDriveMultiHitPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "ChronoRanger", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            Card bow = PutInHand("CompoundedBow");
+            DecisionSelectTurnTaker = chrono.TurnTaker;
+            DecisionSelectCard = bow;
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+            DecisionSelectDamageType = DamageType.Energy;
+
+            QuickHPStorage(baron);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+
+            QuickHPCheck(-2);
+        }
+
+        [Test]
+        public void TestCherenkovDriveMultiTargetPower()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Stuntman", "TheScholar", "Megalopolis");
+            StartGamePyre();
+            DestroyNonCharacterVillainCards();
+
+            var goon = PlayCard("BladeBattalion");
+            var device = PlayCard("ElementalRedistributor");
+
+            Card gun = PutInHand("PistoletMitrailleur");
+            DecisionSelectTurnTaker = stunt.TurnTaker;
+            DecisionSelectCard = gun;
+            DecisionYesNo = true;
+            DecisionDoNotSelectCard = SelectionType.PlayCard;
+
+            QuickHPStorage(baron.CharacterCard, goon, device);
+            PlayCard("CherenkovDrive");
+            GoToEndOfTurn(pyre);
+
+            QuickHPCheck(-1, -1, -1);
+        }
+
         [Test]
         public void TestCherenkovDrivePowerSelfDestructAccountForBug()
         {
