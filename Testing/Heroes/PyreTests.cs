@@ -799,9 +799,6 @@ namespace CauldronTests
             PlayCard("CherenkovDrive");
             GoToEndOfTurn(pyre);
 
-            Assert.Ignore("Issue with GameController.DrawCards prevents this from working right");
-            //bad interaction with GameController.DrawCards - it is hardcoded to stop drawing after any draw
-            //that ends with the card source out-of-play
             QuickHandCheck(2);
             AssertInTrash(aux);
         }
@@ -850,28 +847,6 @@ namespace CauldronTests
             QuickHPCheck(-1, -1, -1);
         }
 
-        [Test]
-        public void TestCherenkovDrivePowerSelfDestructAccountForBug()
-        {
-            SetupGameController("BaronBlade", "Cauldron.Pyre", "Legacy", "Bunker", "TheScholar", "Megalopolis");
-            StartGamePyre();
-            DestroyNonCharacterVillainCards();
-
-            Card aux = PutInHand("AuxiliaryPowerSource");
-            DecisionSelectTurnTaker = bunker.TurnTaker;
-            DecisionSelectCard = aux;
-            DecisionYesNo = true;
-
-            QuickHandStorage(bunker);
-            QuickHPStorage(baron);
-            PlayCard("CherenkovDrive");
-            GoToEndOfTurn(pyre);
-
-            //bad interaction with GameController.DrawCards - it is hardcoded to stop drawing after any draw
-            //that ends with the card source out-of-play
-            QuickHandCheck(0);
-            AssertInTrash(aux);
-        }
         [Test]
         public void TestCherenkovDriveMultiplePowers()
         {
