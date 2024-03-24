@@ -1,380 +1,380 @@
 {
-    "name": "Gray",
-    "kind": "Villain",
-    "expansionIdentifier": "Cauldron",
-    "initialCardIdentifiers": [
-        "GrayCharacter"
-    ],
-    "cards": [
+  "name": "Gray",
+  "kind": "Villain",
+  "expansionIdentifier": "Cauldron",
+  "initialCardIdentifiers": [
+    "GrayCharacter"
+  ],
+  "cards": [
+    {
+      "identifier": "GrayCharacter",
+      "count": 1,
+      "title": "Gray",
+      "keywords": [
+        "villain"
+      ],
+      "body": "Walking Nuclear Reactor",
+      "backgroundColor": "a8a9ac",
+      "foilBackgroundColor": "CD96C0",
+      "character": true,
+      "hitpoints": 75,
+      "nemesisIdentifiers": [
+        "Cauldron.Vanish"
+      ],
+      "setup": [
+        "At the start of the game, {Gray} enters play 'Walking Nuclear Reactor' side up.",
+        "Search the villain deck for 1 copy of Chain Reaction and put it into play. Shuffle the villain deck."
+      ],
+      "gameplay": [
+        "At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cards and destroy 1 environment card.",
+        "At the end of the villain turn, {Gray} deals the hero target with the highest HP {H - 1} energy damage.",
+        "Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and {Gray} deals each non-villain target {H - 1} energy damage."
+      ],
+      "advanced": "Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.",
+      "icons": [
+        "EndOfTurnAction",
+        "DealDamageEnergy",
+        "Destroy"
+      ],
+      "flippedBody": "Catastrophic Meltdown",
+      "flippedGameplay": [
+        "At the start of the villain turn, if there are 1 or 0 radiation cards in play, {Gray} flips.",
+        "At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. {Gray} deals each hero target {H * 2} energy damage. Play the top card of the villain deck.",
+        "Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.",
+        "Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage."
+      ],
+      "flippedAdvanced": "Reduce damage dealt to villain targets by 1.",
+      "flippedIcons": [
+        "StartOfTurnAction",
+        "Destroy",
+        "DealDamageEnergy"
+      ],
+      "flippedAdvancedIcons": [
+        "ReduceDamageTaken"
+      ],
+      "difficulty": 3,
+      "challengeTitle": "Decaying World",
+      "challengeText": "At the start of the villain turn, {Gray} deals each target 1 irreducible energy damage.",
+      "openingLines": {
+        "default": "I'm already fixing the problem. If you don't like what it takes, that just makes you another problem. ",
+        "Cauldron.VanishCharacter": "You! [b]You[/b] did this to me. Let's see how you like having [b]your[/b] life torn apart!",
+        "FirstResponseVanishCharacter": "Your company was just a warmup. Your new team is next. No matter how far you run, I'll rip down everything you build. ",
+        "PastVanishCharacter": "You can't fool me by changing your outfit. I'm going to destroy you for your part in all this.",
+        "TombOfThievesVanishCharacter": "Reduced to thieving? You're no better than me.",
+        "Cauldron.PyreCharacter": "That glow... How did you meet the same fate as I? Show yourself!",
+        "UnstablePyreCharacter": "I don't understand. Is this a trick?",
+        "WastelandRoninPyreCharacter": "So...in the future, I am relegated to living in a shell and depending on these wretches for help?",
+        "ExpeditionOblaskPyreCharacter": "My company could profit greatly from the technology you have there. Hand it over, or I'll peel it off your corpse."
+      }
+    },
+    {
+      "identifier": "AlistairWinters",
+      "count": 1,
+      "title": "Alistair Winters",
+      "keywords": [
+        "minion"
+      ],
+      "icons": [
+        "IncreaseDamageDealt",
+        "CannotGainHP"
+      ],
+      "body": [
+        "Increase damage dealt to hero targets by 1.",
+        "Hero targets cannot gain HP."
+      ],
+      "flavorQuotes": [
         {
-            "identifier": "GrayCharacter",
-            "count": 1,
-            "title": "Gray",
-            "keywords": [
-                "villain"
-            ],
-            "body": "Walking Nuclear Reactor",
-            "backgroundColor": "a8a9ac",
-            "foilBackgroundColor": "CD96C0",
-            "character": true,
-            "hitpoints": 75,
-            "nemesisIdentifiers": [
-                "Cauldron.Vanish"
-            ],
-            "setup": [
-                "At the start of the game, {Gray} enters play 'Walking Nuclear Reactor' side up.",
-				"Search the villain deck for 1 copy of Chain Reaction and put it into play. Shuffle the villain deck."
-            ],
-            "gameplay": [
-                "At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cards and destroy 1 environment card.",
-                "At the end of the villain turn, {Gray} deals the hero target with the highest HP {H - 1} energy damage.",
-                "Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and {Gray} deals each non-villain target {H - 1} energy damage."
-            ],
-            "advanced": "Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.",
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageEnergy",
-                "Destroy"
-            ],
-            "flippedBody": "Catastrophic Meltdown",
-            "flippedGameplay": [
-                "At the start of the villain turn, if there are 1 or 0 radiation cards in play, {Gray} flips.",
-                "At the start of the villain turn, destroy all but 2 hero ongoing or equipment cards. {Gray} deals each hero target {H * 2} energy damage. Play the top card of the villain deck.",
-                "Whenever a radiation card is destroyed by a hero card, {Gray} deals that hero {H - 1} energy damage.",
-                "Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage."
-            ],
-            "flippedAdvanced": "Reduce damage dealt to villain targets by 1.",
-            "flippedIcons": [
-                "StartOfTurnAction",
-                "Destroy",
-                "DealDamageEnergy"
-            ],
-            "flippedAdvancedIcons": [
-                "ReduceDamageTaken"
-            ],
-            "difficulty": 3,
-            "challengeTitle": "Decaying World",
-			"challengeText": "At the start of the villain turn, {Gray} deals each target 1 irreducible energy damage.",
-            "openingLines": {
-                "default": "I'm already fixing the problem. If you don't like what it takes, that just makes you another problem. ",
-                "Cauldron.VanishCharacter": "You! [b]You[/b] did this to me. Let's see how you like having [b]your[/b] life torn apart!",
-                "FirstResponseVanishCharacter": "Your company was just a warmup. Your new team is next. No matter how far you run, I'll rip down everything you build. ",
-                "PastVanishCharacter": "You can't fool me by changing your outfit. I'm going to destroy you for your part in all this.",
-                "TombOfThievesVanishCharacter": "Reduced to thieving? You're no better than me.",
-                "Cauldron.PyreCharacter": "That glow... How did you meet the same fate as I? Show yourself!",
-                "UnstablePyreCharacter": "I don't understand. Is this a trick?",
-                "WastelandRoninPyreCharacter": "So...in the future, I am relegated to living in a shell and depending on these wretches for help?",
-                "ExpeditionOblaskPyreCharacter": "My company could profit greatly from the technology you have there. Hand it over, or I'll peel it off your corpse."
-            }
-        },
-        {
-            "identifier": "AlistairWinters",
-            "count": 1,
-            "title": "Alistair Winters",
-            "keywords": [
-                "minion"
-            ],
-            "icons": [
-                "IncreaseDamageDealt",
-                "CannotGainHP"
-            ],
-            "body": [
-                "Increase damage dealt to hero targets by 1.",
-                "Hero targets cannot gain HP."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "AlistairWinters",
-                    "text": "You're pretty strong, for some clown who thinks she's The Wraith!"
-                }
-            ],
-            "flavorReference": "Alistair Winters, Wraith: Beyond #2",
-            "hitpoints": 5
-        },
-        {
-            "identifier": "BlightTheLand",
-            "count": 3,
-            "title": "Blight the Land",
-            "keywords": [
-                "radiation"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageToxic",
-                "GainHP"
-            ],
-            "body": "At the end of the villain turn, this card deals each non-villain target 2 toxic damage and each Radiation card regains 2 HP.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Gray",
-                    "text": "The world dies at my feet.{BR}Lady, where would you have me go?"
-                }
-            ],
-            "flavorReference": "Gray, Windmill City #87",
-            "hitpoints": 8
-        },
-        {
-            "identifier": "ChainReaction",
-            "count": 3,
-            "title": "Chain Reaction",
-            "keywords": [
-                "radiation"
-            ],
-            "icons": [
-                "StartAndEndOfTurnAction",
-                "DealDamageEnergy",
-                "PlayCardNow"
-            ],
-            "body": [
-                "At the start of the villain turn, this card deals the X hero targets with the lowest HP 1 energy damage each, where X is the number of Radiation cards in play.",
-                "At the end of the villain turn, put a random Radiation card from the villain trash into play."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "KNYFE",
-                    "text": "Och aye, there’s just the{BR}one. How bad kin it be?"
-                }
-            ],
-            "flavorReference": "K.N.Y.F.E., Meltdown #4",
-            "hitpoints": 3
-        },
-        {
-            "identifier": "Contamination",
-            "count": 1,
-            "title": "Contamination",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "DestroyOngoing",
-                "DestroyEquipment",
-                "DestroySelf"
-            ],
-            "body": [
-                "Whenever a hero deals damage to a villain target, that hero must destroy 1 of their ongoing or equipment cards.",
-                "Destroy this card when {H} hero cards are destroyed this way in one round."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Expatriette",
-                    "text": "What do you mean,{BR}'That's not the bad news'?"
-                }
-            ],
-            "flavorReference": "Expatriette, Vanishing Point #3"
-        },
-        {
-            "identifier": "CriticalMass",
-            "count": 2,
-            "title": "Critical Mass",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "Search",
-                "Manipulate",
-                "DealDamageEnergy"
-            ],
-            "body": [
-                "Search the villain deck and trash for all copies of Chain Reaction and put them into play. Move 1 copy of Unstable Isotope from the villain trash to the villain deck. Shuffle the villain deck.",
-                "{Gray} deals himself 2 energy damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Gray",
-                    "text": "I've lost everything.{BR}Care to see how that feels?"
-                }
-            ],
-            "flavorReference": "Gray, Meltdown #27"
-        },
-        {
-            "identifier": "HeavyRadiation",
-            "count": 1,
-            "title": "Heavy Radiation",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "ReduceDamageTaken",
-                "EndOfTurnAction",
-                "PlayCardNow"
-            ],
-            "body": [
-                "Reduce damage dealt to {Gray} by 1 for each Radiation card in play.",
-                "At the end of the villain turn, if there are no Radiation cards in play, play the top card of the villain deck."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheScholar",
-                    "text": "Attention: he is not a{BR}ghost either. Be alarmed."
-                }
-            ],
-            "flavorReference": "The Scholar, Nightmare World #62"
-        },
-        {
-            "identifier": "IrradiatedTouch",
-            "count": 2,
-            "title": "Irradiated Touch",
-            "keywords": [
-                "radiation"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DealDamageMelee",
-                "DealDamageEnergy"
-            ],
-            "body": [
-                "At the end of the villain turn, {Gray} deals the hero target with the second highest HP {H - 2} melee and {H - 2} energy damage.",
-                "When this card is destroyed, {Gray} deals the hero target with the highest HP 2 energy damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Gray",
-                    "text": "I'll show you nuclear power!"
-                }
-            ],
-            "flavorReference": "Gray, State of Decay #1",
-            "hitpoints": 6
-        },
-        {
-            "identifier": "LivingReactor",
-            "count": 1,
-            "title": "Living Reactor",
-            "keywords": [
-                "ongoing"
-            ],
-            "icons": [
-                "IncreaseDamageDealt",
-                "Discard"
-            ],
-            "body": "Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Gray",
-                    "text": "This is what I am now.{BR}Better make the most of it!"
-                }
-            ],
-            "flavorReference": "Gray, Vanish #46"
-        },
-        {
-            "identifier": "MutatedWildlife",
-            "count": 2,
-            "title": "Mutated Wildlife",
-            "keywords": [
-                "radiation"
-            ],
-            "icons": [
-                "IncreaseDamageDealt",
-                "RedirectDamage",
-                "EndOfTurnAction",
-                "PlayCardNow"
-            ],
-            "body": [
-                "Increase damage dealt by environment cards by 1. Whenever a villain target would be dealt damage by an environment card, redirect that damage to the hero target with the highest HP.",
-                "At the end of the villain turn, play the top card of the environment deck."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "MrFixer",
-                    "text": "And I thought Pike's{BR}rat problem was bad."
-                }
-            ],
-            "flavorReference": "Mr. Fixer, Nuclear Family #1",
-            "hitpoints": 6
-        },
-        {
-            "identifier": "NuclearFire",
-            "count": 2,
-            "title": "Nuclear Fire",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "DealDamageEnergy",
-                "DealDamageFire"
-            ],
-            "body": [
-                "{Gray} deals the 2 hero targets with the highest HP {H - 1} energy damage each.",
-                "{Gray} deals the 2 hero targets with the lowest HP {H - 2} fire damage each."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "TheWraith",
-                    "text": "There's something{BR}hot in there!"
-                },
-                {
-                    "identifier": "Vanish",
-                    "text": "No kidding!"
-                }
-            ],
-            "flavorReference": "Vanish #9"
-        },
-        {
-            "identifier": "RadioactiveCascade",
-            "count": 2,
-            "title": "Radioactive Cascade",
-            "keywords": [
-                "radiation"
-            ],
-            "icons": [
-                "DealDamageEnergy",
-                "DestroySelf"
-            ],
-            "body": [
-                "When this card enters play, {Gray} deals the hero with the highest HP X energy damage, where X is 2 plus the number of Radiation cards in play.",
-                "When another villain card is destroyed, destroy this card."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "Gray",
-                    "text": "Really, messing with me{BR}is bad for your health."
-                }
-            ],
-            "flavorReference": "Gray, Freedom Five #410"
-        },
-        {
-            "identifier": "UnstableIsotope",
-            "count": 3,
-            "title": "Unstable Isotope",
-            "keywords": [
-                "one-shot"
-            ],
-            "icons": [
-                "PlayCardNow"
-            ],
-            "body": "Reveal cards from the top of the villain deck until 2 Radiation cards are revealed. Put those cards into play and discard the rest.",
-            "flavorQuotes": [
-                {
-                    "identifier": "Scientist",
-                    "text": "You're not emitting lethal{BR}doses yet. But we still don't know what{BR}the accident changed."
-                }
-            ],
-            "flavorReference": "Scientist, State of Decay #6"
-        },
-        {
-            "identifier": "UnwittingHenchmen",
-            "count": 2,
-            "title": "Unwitting Henchmen",
-            "keywords": [
-                "minion"
-            ],
-            "icons": [
-                "EndOfTurnAction",
-                "DestroyEquipment",
-                "GainHP",
-                "DealDamageMelee"
-            ],
-            "body": [
-                "At the end of the villain turn, destroy 1 equipment card.",
-                "If a card is destroyed this way, {Gray} regains 3 HP. Otherwise this card deals the hero target with the highest HP 1 melee damage."
-            ],
-            "flavorQuotes": [
-                {
-                    "identifier": "AlistairWinters",
-                    "text": "If we're going to stabilize your{BR}condition, these are the components{BR}they'll need to procure."
-                }
-            ],
-            "flavorReference": "Alistair Winters, Rebirth #19",
-            "hitpoints": 5
+          "identifier": "AlistairWinters",
+          "text": "You're pretty strong, for some{BR}clown who thinks she's The Wraith!"
         }
-    ]
+      ],
+      "flavorReference": "Alistair Winters, Wraith: Beyond #2",
+      "hitpoints": 5
+    },
+    {
+      "identifier": "BlightTheLand",
+      "count": 3,
+      "title": "Blight the Land",
+      "keywords": [
+        "radiation"
+      ],
+      "icons": [
+        "EndOfTurnAction",
+        "DealDamageToxic",
+        "GainHP"
+      ],
+      "body": "At the end of the villain turn, this card deals each non-villain target 2 toxic damage and each Radiation card regains 2 HP.",
+      "flavorQuotes": [
+        {
+          "identifier": "Gray",
+          "text": "The world dies at my feet.{BR}Lady, where would you have me go?"
+        }
+      ],
+      "flavorReference": "Gray, Windmill City #87",
+      "hitpoints": 8
+    },
+    {
+      "identifier": "ChainReaction",
+      "count": 3,
+      "title": "Chain Reaction",
+      "keywords": [
+        "radiation"
+      ],
+      "icons": [
+        "StartAndEndOfTurnAction",
+        "DealDamageEnergy",
+        "PlayCardNow"
+      ],
+      "body": [
+        "At the start of the villain turn, this card deals the X hero targets with the lowest HP 1 energy damage each, where X is the number of Radiation cards in play.",
+        "At the end of the villain turn, put a random Radiation card from the villain trash into play."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "KNYFE",
+          "text": "Och aye, there’s just the{BR}one. How bad kin it be?"
+        }
+      ],
+      "flavorReference": "K.N.Y.F.E., Meltdown #4",
+      "hitpoints": 3
+    },
+    {
+      "identifier": "Contamination",
+      "count": 1,
+      "title": "Contamination",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "DestroyOngoing",
+        "DestroyEquipment",
+        "DestroySelf"
+      ],
+      "body": [
+        "Whenever a hero deals damage to a villain target, that hero must destroy 1 of their ongoing or equipment cards.",
+        "Destroy this card when {H} hero cards are destroyed this way in one round."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Expatriette",
+          "text": "What do you mean,{BR}'That's not the bad news'?"
+        }
+      ],
+      "flavorReference": "Expatriette, Vanishing Point #3"
+    },
+    {
+      "identifier": "CriticalMass",
+      "count": 2,
+      "title": "Critical Mass",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "Search",
+        "Manipulate",
+        "DealDamageEnergy"
+      ],
+      "body": [
+        "Search the villain deck and trash for all copies of Chain Reaction and put them into play. Move 1 copy of Unstable Isotope from the villain trash to the villain deck. Shuffle the villain deck.",
+        "{Gray} deals himself 2 energy damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Gray",
+          "text": "I've lost everything.{BR}Care to see how that feels?"
+        }
+      ],
+      "flavorReference": "Gray, Meltdown #27"
+    },
+    {
+      "identifier": "HeavyRadiation",
+      "count": 1,
+      "title": "Heavy Radiation",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "ReduceDamageTaken",
+        "EndOfTurnAction",
+        "PlayCardNow"
+      ],
+      "body": [
+        "Reduce damage dealt to {Gray} by 1 for each Radiation card in play.",
+        "At the end of the villain turn, if there are no Radiation cards in play, play the top card of the villain deck."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TheScholar",
+          "text": "Attention: he is not a{BR}ghost either. Be alarmed."
+        }
+      ],
+      "flavorReference": "The Scholar, Nightmare World #62"
+    },
+    {
+      "identifier": "IrradiatedTouch",
+      "count": 2,
+      "title": "Irradiated Touch",
+      "keywords": [
+        "radiation"
+      ],
+      "icons": [
+        "EndOfTurnAction",
+        "DealDamageMelee",
+        "DealDamageEnergy"
+      ],
+      "body": [
+        "At the end of the villain turn, {Gray} deals the hero target with the second highest HP {H - 2} melee and {H - 2} energy damage.",
+        "When this card is destroyed, {Gray} deals the hero target with the highest HP 2 energy damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Gray",
+          "text": "I'll show you nuclear power!"
+        }
+      ],
+      "flavorReference": "Gray, State of Decay #1",
+      "hitpoints": 6
+    },
+    {
+      "identifier": "LivingReactor",
+      "count": 1,
+      "title": "Living Reactor",
+      "keywords": [
+        "ongoing"
+      ],
+      "icons": [
+        "IncreaseDamageDealt",
+        "Discard"
+      ],
+      "body": "Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.",
+      "flavorQuotes": [
+        {
+          "identifier": "Gray",
+          "text": "This is what I am now.{BR}Better make the most of it!"
+        }
+      ],
+      "flavorReference": "Gray, Vanish #46"
+    },
+    {
+      "identifier": "MutatedWildlife",
+      "count": 2,
+      "title": "Mutated Wildlife",
+      "keywords": [
+        "radiation"
+      ],
+      "icons": [
+        "IncreaseDamageDealt",
+        "RedirectDamage",
+        "EndOfTurnAction",
+        "PlayCardNow"
+      ],
+      "body": [
+        "Increase damage dealt by environment cards by 1. Whenever a villain target would be dealt damage by an environment card, redirect that damage to the hero target with the highest HP.",
+        "At the end of the villain turn, play the top card of the environment deck."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "MrFixer",
+          "text": "And I thought Pike's{BR}rat problem was bad."
+        }
+      ],
+      "flavorReference": "Mr. Fixer, Nuclear Family #1",
+      "hitpoints": 6
+    },
+    {
+      "identifier": "NuclearFire",
+      "count": 2,
+      "title": "Nuclear Fire",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "DealDamageEnergy",
+        "DealDamageFire"
+      ],
+      "body": [
+        "{Gray} deals the 2 hero targets with the highest HP {H - 1} energy damage each.",
+        "{Gray} deals the 2 hero targets with the lowest HP {H - 2} fire damage each."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "TheWraith",
+          "text": "There's something{BR}hot in there!"
+        },
+        {
+          "identifier": "Vanish",
+          "text": "No kidding!"
+        }
+      ],
+      "flavorReference": "Vanish #9"
+    },
+    {
+      "identifier": "RadioactiveCascade",
+      "count": 2,
+      "title": "Radioactive Cascade",
+      "keywords": [
+        "radiation"
+      ],
+      "icons": [
+        "DealDamageEnergy",
+        "DestroySelf"
+      ],
+      "body": [
+        "When this card enters play, {Gray} deals the hero with the highest HP X energy damage, where X is 2 plus the number of Radiation cards in play.",
+        "When another villain card is destroyed, destroy this card."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "Gray",
+          "text": "Really, messing with me{BR}is bad for your health."
+        }
+      ],
+      "flavorReference": "Gray, Freedom Five #410"
+    },
+    {
+      "identifier": "UnstableIsotope",
+      "count": 3,
+      "title": "Unstable Isotope",
+      "keywords": [
+        "one-shot"
+      ],
+      "icons": [
+        "PlayCardNow"
+      ],
+      "body": "Reveal cards from the top of the villain deck until 2 Radiation cards are revealed. Put those cards into play and discard the rest.",
+      "flavorQuotes": [
+        {
+          "identifier": "Scientist",
+          "text": "You're not emitting lethal{BR}doses yet. But we still don't know what{BR}the accident changed."
+        }
+      ],
+      "flavorReference": "Scientist, State of Decay #6"
+    },
+    {
+      "identifier": "UnwittingHenchmen",
+      "count": 2,
+      "title": "Unwitting Henchmen",
+      "keywords": [
+        "minion"
+      ],
+      "icons": [
+        "EndOfTurnAction",
+        "DestroyEquipment",
+        "GainHP",
+        "DealDamageMelee"
+      ],
+      "body": [
+        "At the end of the villain turn, destroy 1 equipment card.",
+        "If a card is destroyed this way, {Gray} regains 3 HP. Otherwise this card deals the hero target with the highest HP 1 melee damage."
+      ],
+      "flavorQuotes": [
+        {
+          "identifier": "AlistairWinters",
+          "text": "If we're going to stabilize your{BR}condition, these are the components{BR}they'll need to procure."
+        }
+      ],
+      "flavorReference": "Alistair Winters, Rebirth #19",
+      "hitpoints": 5
+    }
+  ]
 }

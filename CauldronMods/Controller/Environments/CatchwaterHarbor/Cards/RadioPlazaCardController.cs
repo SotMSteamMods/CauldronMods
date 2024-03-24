@@ -20,6 +20,24 @@ namespace Cauldron.CatchwaterHarbor
             BuildTopDeckSpecialStrings();
         }
 
+        private IEnumerator FlipOverCards()
+        {
+            var decks = FindLocationsWhere(l => l.IsDeck && l.BattleZone == BattleZone);
+            foreach (var deck in decks)
+            {
+                if (
+                    GameController.IsTurnTakerVisibleToCardSource(deck.OwnerTurnTaker, GetCardSource()) &&
+                    deck.NumberOfCards > 0 &&
+                    ! (deck.TopCard.IsFaceUp && deck.TopCard.IsPositionKnown)
+                )
+                {
+                    deck.TopCard.SetFaceUp(true);
+                    deck.TopCard.SetIsPositionKnown(true);
+                }
+            }
+            yield break;
+        }
+
         private void BuildTopDeckSpecialStrings()
         {
             //this needs to be all turntakers in all zones.
@@ -36,10 +54,17 @@ namespace Cauldron.CatchwaterHarbor
 
         public override void AddTriggers()
         {
+            AddTrigger<GameAction>(ga => ga.CardSource != GetCardSource(), (a) => FlipOverCards(), TriggerType.Hidden, TriggerTiming.After);
+
             //Damage dealt to hero targets is irreducible.
             AddMakeDamageIrreducibleTrigger((DealDamageAction dd) => IsHeroTarget(dd.Target) && GameController.IsCardVisibleToCardSource(dd.Target, GetCardSource()));
             //At the start of the environment turn, destroy this card."
             AddStartOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DestroyThisCardResponse, TriggerType.DestroySelf);
+        }
+
+        public override IEnumerator Play()
+        {
+            return FlipOverCards();
         }
     }
 }

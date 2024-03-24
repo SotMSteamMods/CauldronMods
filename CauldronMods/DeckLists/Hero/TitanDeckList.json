@@ -124,7 +124,7 @@
       "flavorQuotes": [
         {
           "identifier": "DrWells",
-          "text": "Some things don’t react well to being set on fire."
+          "text": "Some things don’t react{BR}well to being set on fire."
         }
       ],
       "flavorReference": "Dr. Wells, Department of Secrets #117"
@@ -193,7 +193,7 @@
         "You may search your deck and trash for a copy of the card Titanform and put it into your hand. If you searched your deck, shuffle it.",
         "You may play a card."
       ],
-      "flavorText": "The obsidian shard embedded in Titan's forearm began to gleam. Then it began to spread."
+      "flavorText": "The obsidian shard embedded in{BR}Titan's forearm began to gleam. Then it{BR}began to spread."
     },
     {
       "identifier": "Ms5DemolitionCharge",
@@ -315,7 +315,7 @@
       "flavorQuotes": [
         {
           "identifier": "TangoOne",
-          "text": "He likes it that way. The whole 'lone hero' thing."
+          "text": "He likes it that way.{BR}The whole 'lone hero' thing."
         }
       ],
       "flavorReference": "Tango One, Paranormal Squad #3"
@@ -364,7 +364,7 @@
       "flavorQuotes": [
         {
           "identifier": "Titan",
-          "text": "Why don't you pick on someone your own density?"
+          "text": "Why don't you pick on{BR}someone your own density?"
         }
       ],
       "flavorReference": "Titan, The Archive #1"
