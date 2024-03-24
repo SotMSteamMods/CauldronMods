@@ -859,6 +859,41 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRadioPlazaRevealsCards()
+        {
+            SetupGameController("BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            
+            Card radio = PlayCard("RadioPlaza");
+
+            // Check that everything is face up
+            AssertFaceUp(baron.TurnTaker.Deck.TopCard);
+            AssertFaceUp(ra.TurnTaker.Deck.TopCard);
+            AssertFaceUp(bunker.TurnTaker.Deck.TopCard);
+            AssertFaceUp(haka.TurnTaker.Deck.TopCard);
+            AssertFaceUp(catchwater.TurnTaker.Deck.TopCard);
+
+            Assert.IsTrue(baron.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(ra.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(bunker.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(haka.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(catchwater.TurnTaker.Deck.TopCard.IsPositionKnown);
+
+            // Empty a deck and check that doesn't break everything
+            do
+            {
+                AssertFaceUp(ra.TurnTaker.Deck.TopCard);
+                Assert.IsTrue(ra.TurnTaker.Deck.TopCard.IsPositionKnown);
+
+                DrawCard(ra);
+            }
+            while (!ra.TurnTaker.Deck.IsEmpty);
+
+            AssertNumberOfCardsInDeck(ra, 0);
+        }
+
+        [Test()]
         public void TestRadioPlaza_Oblivaeon()
         {
             SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.CatchwaterHarbor", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
@@ -870,6 +905,22 @@ namespace CauldronTests
             PrintSpecialStringsForCard(radio);
             AssertNumberOfCardSpecialStrings(radio, 6);
 
+            // Check that everything is face up except ra
+            AssertFaceUp(oblivaeon.TurnTaker.Deck.TopCard);
+            Assert.IsFalse(ra.TurnTaker.Deck.TopCard.IsFaceUp);
+            AssertFaceUp(legacy.TurnTaker.Deck.TopCard);
+            AssertFaceUp(haka.TurnTaker.Deck.TopCard);
+            AssertFaceUp(tachyon.TurnTaker.Deck.TopCard);
+            AssertFaceUp(luminary.TurnTaker.Deck.TopCard);
+            AssertFaceUp(catchwater.TurnTaker.Deck.TopCard);
+
+            Assert.IsTrue(oblivaeon.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsFalse(ra.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(legacy.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(haka.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(tachyon.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(luminary.TurnTaker.Deck.TopCard.IsPositionKnown);
+            Assert.IsTrue(catchwater.TurnTaker.Deck.TopCard.IsPositionKnown);
         }
 
         [Test()]
