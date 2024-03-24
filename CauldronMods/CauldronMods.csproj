@@ -5,7 +5,7 @@
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 	<Deterministic>true</Deterministic>
 	<DebugType>pdbonly</DebugType>
-	<Version>2.0.2</Version>
+	<Version>2.1.0</Version>
 	 <LangVersion>8.0</LangVersion>
 	<Authors>CauldronMods Dev. Team</Authors>
 	<Description>The Cauldron Fan Expansion for the Sentinels of the Multiverse Digital Card Game.</Description>
