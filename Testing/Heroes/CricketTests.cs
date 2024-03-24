@@ -716,10 +716,13 @@ namespace CauldronTests
         [Test()]
         public void TestSoundMasking()
         {
-            SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController(new List<string>() { "AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis" });
             StartGame();
 
+            StackDeck(akash, "LivingRockslide");
+            StackDeck(env, "PoliceBackup");
             Card rail = PlayCard("PlummetingMonorail");
+            
             Card mask = PlayCard("SoundMasking");
 
             //All targets are immune to damage.
