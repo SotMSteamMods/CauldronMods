@@ -28,7 +28,7 @@ namespace Cauldron.TheChasmOfAThousandNights
 
         private IEnumerator RedirectDamageResponse(DealDamageAction dealDamage)
         {
-            IEnumerator coroutine = RedirectDamage(dealDamage, TargetType.HighestHP, (Card c) => IsHero(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
+            IEnumerator coroutine = RedirectDamage(dealDamage, TargetType.HighestHP, (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

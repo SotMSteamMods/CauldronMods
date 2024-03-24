@@ -48,7 +48,7 @@ namespace Cauldron.Cricket
                 if (destroyedCard.IsEnvironment)
                 {
                     //If you destroyed an environment card this way, {Cricket} deals each non-hero target 1 sonic damage.
-                    coroutine = base.DealDamage(base.CharacterCard, (Card c) => !IsHero(c), 1, DamageType.Sonic);
+                    coroutine = base.DealDamage(base.CharacterCard, (Card c) => !IsHeroTarget(c), 1, DamageType.Sonic);
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

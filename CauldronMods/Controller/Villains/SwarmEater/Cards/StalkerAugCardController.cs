@@ -26,7 +26,7 @@ namespace Cauldron.SwarmEater
 
         private IEnumerator DealDamageExceptLowestResponse(PhaseChangeAction action)
         {
-            IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => IsHero(card), Game.H - 2, DamageType.Energy, true, exceptFor: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria((Card c) => IsHero(c), "the hero target with the lowest HP")));
+            IEnumerator coroutine = base.DealDamage(base.Card, (Card card) => IsHero(card), Game.H - 2, DamageType.Energy, true, exceptFor: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria((Card c) => IsHeroTarget(c), "the hero target with the lowest HP")));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

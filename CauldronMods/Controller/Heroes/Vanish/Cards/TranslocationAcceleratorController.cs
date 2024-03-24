@@ -20,7 +20,7 @@ namespace Cauldron.Vanish
         private IEnumerator UsePowerResponse(UsePowerAction action)
         {
             var coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, CharacterCard), 1, DamageType.Energy, 1, false, 0,
-                                additionalCriteria: c => !IsHero(c) && c.IsTarget && c.IsInPlayAndHasGameText,
+                                additionalCriteria: c => !IsHeroTarget(c) && c.IsTarget && c.IsInPlayAndHasGameText,
                                 cardSource: GetCardSource());
             if (this.UseUnityCoroutines)
             {

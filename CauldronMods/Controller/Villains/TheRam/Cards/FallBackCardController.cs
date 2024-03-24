@@ -21,7 +21,7 @@ namespace Cauldron.TheRam
             //"When this card enters play, {TheRam} deals each Up Close hero target {H - 1} melee damage."
             if (RamIfInPlay != null)
             {
-                IEnumerator damage = DealDamage(RamIfInPlay, (Card c) => c.IsInPlayAndHasGameText && c.IsTarget && IsHero(c) && IsUpClose(c), H - 1, DamageType.Melee);
+                IEnumerator damage = DealDamage(RamIfInPlay, (Card c) => c.IsInPlayAndHasGameText && IsHeroTarget(c) && IsUpClose(c), H - 1, DamageType.Melee);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(damage);

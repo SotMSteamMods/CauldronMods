@@ -48,7 +48,7 @@ namespace Cauldron.Menagerie
             }
 
             //{Menagerie} deals each hero, environment, and Specimen target 1 psychic damage.
-            coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHero(c) || c.IsEnvironmentTarget || base.IsSpecimen(c), 1, DamageType.Psychic);
+            coroutine = base.DealDamage(base.CharacterCard, (Card c) => IsHeroTarget(c) || c.IsEnvironmentTarget || base.IsSpecimen(c), 1, DamageType.Psychic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

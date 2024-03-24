@@ -99,7 +99,7 @@ namespace Cauldron.MagnificentMara
 
                     //"one hero target (may deal damage...)"
                     var storedDamageSource = new List<SelectTargetDecision> { };
-                    var heroTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c != null && c.IsTarget && IsHero(c) && c.IsInPlayAndHasGameText), visibleToCard: crystalSource);
+                    var heroTargets = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c != null && IsHeroTarget(c) && c.IsInPlayAndHasGameText), visibleToCard: crystalSource);
                     coroutine = GameController.SelectTargetAndStoreResults(DecisionMaker, heroTargets, storedDamageSource, damageAmount: (Card c) => numDamage, selectionType: SelectionType.HeroToDealDamage, cardSource: crystalSource);
                     if (base.UseUnityCoroutines)
                     {
@@ -138,7 +138,7 @@ namespace Cauldron.MagnificentMara
 
                         //"deal a non-hero target 2 damage"
 
-                        coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageSource), numDamage, selectedDamage, 1, false, 1, additionalCriteria:((Card c) => !IsHero(c)), cardSource: crystalSource);
+                        coroutine = GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(GameController, damageSource), numDamage, selectedDamage, 1, false, 1, additionalCriteria:((Card c) => !IsHeroTarget(c)), cardSource: crystalSource);
                         if (UseUnityCoroutines)
                         {
                             yield return GameController.StartCoroutine(coroutine);

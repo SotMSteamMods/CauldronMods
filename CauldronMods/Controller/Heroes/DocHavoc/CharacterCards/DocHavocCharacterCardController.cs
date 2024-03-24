@@ -127,7 +127,7 @@ namespace Cauldron.DocHavoc
             // Up to 3 hero targets regain 1 HP each.
             //==============================================================
 
-            return this.GameController.SelectAndGainHP(this.DecisionMaker, 1, additionalCriteria: ((Func<Card, bool>)(c => IsHero(c))),
+            return this.GameController.SelectAndGainHP(this.DecisionMaker, 1, additionalCriteria: ((Func<Card, bool>)(c => IsHeroTarget(c))),
                 numberOfTargets: 3, requiredDecisions: new int?(0), cardSource: this.GetCardSource());
         }
 

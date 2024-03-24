@@ -40,7 +40,7 @@ namespace Cauldron.Mythos
         public override void AddTriggers()
         {
             //At the end of the villain turn, this card deals the hero target with the second highest HP {H - 1} lightning damage.
-            base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsHero(c), TargetType.HighestHP, Game.H - 1, DamageType.Lightning, highestLowestRanking: 2);
+            base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsHeroTarget(c), TargetType.HighestHP, Game.H - 1, DamageType.Lightning, highestLowestRanking: 2);
         }
 
     }

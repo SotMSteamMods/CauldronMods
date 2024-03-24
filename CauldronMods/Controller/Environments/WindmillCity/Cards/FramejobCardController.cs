@@ -43,7 +43,7 @@ namespace Cauldron.WindmillCity
         private IEnumerator RedirectResponderResponse(DealDamageAction dd)
         {
             List<Card> storedResults = new List<Card>();
-            IEnumerator coroutine = GameController.FindTargetWithHighestHitPoints(1, (Card c) => IsHero(c), storedResults, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.FindTargetWithHighestHitPoints(1, (Card c) => IsHeroTarget(c), storedResults, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

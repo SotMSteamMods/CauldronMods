@@ -46,7 +46,7 @@ namespace Cauldron.Pyre
         public override IEnumerator UsePower(int index = 0)
         {
             //"Select a hero target. Until the start of your next turn, that target is immune to damage. Destroy this card."
-            var decision = new SelectCardDecision(GameController, DecisionMaker, SelectionType.PreventDamage, GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && c.IsTarget && IsHero(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource())), cardSource: GetCardSource());
+            var decision = new SelectCardDecision(GameController, DecisionMaker, SelectionType.PreventDamage, GameController.GetAllCards().Where((Card c) => c.IsInPlayAndHasGameText && IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource())), cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectCardAndDoAction(decision, AddDamageImmunityEffect);
             if (UseUnityCoroutines)
             {

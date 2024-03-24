@@ -46,7 +46,7 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsCard && IsUpClose(dd.DamageSource.Card), 1));
 
                 //"At the end of the villain turn, {TheRam} deals the hero target with the highest HP {H - 1} melee damage."
-                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsInPlayAndHasGameText && IsHero(c), TargetType.HighestHP, H - 1, DamageType.Melee));
+                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsInPlayAndHasGameText && IsHeroTarget(c), TargetType.HighestHP, H - 1, DamageType.Melee));
 
                 if (IsGameAdvanced)
                 {
@@ -69,7 +69,7 @@ namespace Cauldron.TheRam
                 AddSideTrigger(AddTrigger(upCloseLeaves, (MoveCardAction mc) => GameController.FlipCard(this, cardSource:GetCardSource()), TriggerType.FlipCard, TriggerTiming.After));
 
                 //"At the end of the villain turn, {TheRam} deals the hero target with the highest HP {H - 1} melee damage."
-                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsInPlayAndHasGameText && IsHero(c), TargetType.HighestHP, H - 1, DamageType.Melee));
+                AddSideTrigger(AddDealDamageAtEndOfTurnTrigger(TurnTaker, this.Card, (Card c) => c.IsInPlayAndHasGameText && IsHeroTarget(c), TargetType.HighestHP, H - 1, DamageType.Melee));
 
                 //"Increase damage dealt to {TheRam} by hero targets by 1.",
                 AddSideTrigger(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.Target == this.Card && dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsTarget && IsHero(dd.DamageSource.Card), 1));

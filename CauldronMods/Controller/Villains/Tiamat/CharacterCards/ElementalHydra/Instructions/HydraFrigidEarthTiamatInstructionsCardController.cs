@@ -63,7 +63,7 @@ namespace Cauldron.Tiamat
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...if {WinterTiamatCharacter} is active, she deals the hero target with the lowest HP 1 cold damage.
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.FirstHeadCardController().Card, 1, (Card c) => IsHero(c), (Card c) => new int?(1), DamageType.Cold);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.FirstHeadCardController().Card, 1, (Card c) => IsHeroTarget(c), (Card c) => new int?(1), DamageType.Cold);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

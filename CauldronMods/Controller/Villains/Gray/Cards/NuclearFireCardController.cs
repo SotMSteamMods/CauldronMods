@@ -16,9 +16,9 @@ namespace Cauldron.Gray
         public override IEnumerator Play()
         {
             //{Gray} deals the 2 hero targets with the highest HP {H - 1} energy damage each.
-            IEnumerator coroutine = DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHero(c), (Card c) => new int?(Game.H - 1), DamageType.Energy, numberOfTargets: () => 2);
+            IEnumerator coroutine = DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => new int?(Game.H - 1), DamageType.Energy, numberOfTargets: () => 2);
             //{Gray} deals the 2 hero targets with the lowest HP {H - 2} fire damage each.
-            IEnumerator coroutine2 = DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => IsHero(c), (Card c) => new int?(Game.H - 2), DamageType.Fire, numberOfTargets: 2);
+            IEnumerator coroutine2 = DealDamageToLowestHP(base.CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => new int?(Game.H - 2), DamageType.Fire, numberOfTargets: 2);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

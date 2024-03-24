@@ -41,7 +41,7 @@ namespace Cauldron.Baccarat
 
                     //...and 1 radiant damage.
                     new DealDamageAction(base.GetCardSource(), new DamageSource(base.GameController, base.CharacterCard), null, 1, DamageType.Radiant)
-                }, (Card c) => !IsHero(c));
+                }, (Card c) => !IsHeroTarget(c));
             }
             else
             {

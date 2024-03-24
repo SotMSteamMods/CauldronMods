@@ -86,7 +86,7 @@ namespace Cauldron.TheInfernalChoir
 
             var coroutine = GameController.SelectTargetsToDealDamageToSelf(httc, damage, DamageType.Cold, null, false, null,
                                 allowAutoDecide: true,
-                                additionalCriteria: c => IsHero(c) || IsGhost(c),
+                                additionalCriteria: c => IsHeroTarget(c) || IsGhost(c),
                                 //stopDealingDamage: () => !source.IsInPlay || source.IsIncapacitatedOrOutOfGame || httc.IsIncapacitatedOrOutOfGame,
                                 cardSource: cs);
             if (base.UseUnityCoroutines)

@@ -22,7 +22,7 @@ namespace Cauldron.Gray
                 //At the end of the villain turn, if there are 3 or more radiation cards in play, flip {Gray}'s villain character cards and destroy 1 environment card.
                 base.AddSideTrigger(base.AddEndOfTurnTrigger((TurnTaker turnTaker) => turnTaker == base.TurnTaker, FlipCardResponse, TriggerType.FlipCard, additionalCriteria: (PhaseChangeAction action) => this.FindNumberOfRadiationCardsInPlay() >= 3));
                 //At the end of the villain turn, {Gray} deals the hero target with the highest HP {H - 1} energy damage.
-                base.AddSideTrigger(base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => IsHero(c), TargetType.HighestHP, Game.H - 1, DamageType.Energy));
+                base.AddSideTrigger(base.AddDealDamageAtEndOfTurnTrigger(base.TurnTaker, base.Card, (Card c) => IsHeroTarget(c), TargetType.HighestHP, Game.H - 1, DamageType.Energy));
                 //Whenever a radiation card is destroyed, destroy 1 hero ongoing or equipment card and gray deals each non-villain target {H - 1} energy damage.
                 //Advanced - Whenever a radiation card is destroyed, destroy a second hero ongoing or equipment card.
                 base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction action) => action.WasCardDestroyed && action.CardToDestroy.Card.DoKeywordsContain("radiation"), this.DestroyRadiationFrontResponse, new TriggerType[] { TriggerType.DestroyCard, TriggerType.DealDamage }, TriggerTiming.After));
@@ -180,7 +180,7 @@ namespace Cauldron.Gray
             }
 
             //...{Gray} deals each hero target {H x 2} energy damage.
-            coroutine = base.GameController.DealDamage(this.DecisionMaker, base.Card, (Card c) => IsHero(c), Game.H * 2, DamageType.Energy, cardSource: base.GetCardSource());
+            coroutine = base.GameController.DealDamage(this.DecisionMaker, base.Card, (Card c) => IsHeroTarget(c), Game.H * 2, DamageType.Energy, cardSource: base.GetCardSource());
             //...Play the top card of the villain deck.
             IEnumerator coroutine2 = base.GameController.PlayTopCardOfLocation(base.TurnTakerController, base.TurnTaker.Deck);
             if (base.UseUnityCoroutines)

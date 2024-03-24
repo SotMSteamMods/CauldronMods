@@ -18,7 +18,7 @@ namespace Cauldron.TheInfernalChoir
 
         public override IEnumerator Play()
         {
-            var coroutine = base.DealDamageToHighestHP(CharacterCard, 1, c => IsHero(c), c => 6, DamageType.Infernal, numberOfTargets: () => 1);
+            var coroutine = base.DealDamageToHighestHP(CharacterCard, 1, c => IsHeroTarget(c), c => 6, DamageType.Infernal, numberOfTargets: () => 1);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -30,7 +30,7 @@ namespace Cauldron.TheInfernalChoir
 
             if (IsVagrantHeartSoulRevealedInPlay())
             {
-                coroutine = base.DealDamageToHighestHP(CharacterCard, 1, c => IsHero(c), c => 6, DamageType.Cold, numberOfTargets: () => 1);
+                coroutine = base.DealDamageToHighestHP(CharacterCard, 1, c => IsHeroTarget(c), c => 6, DamageType.Cold, numberOfTargets: () => 1);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

@@ -21,7 +21,7 @@ namespace Cauldron.Outlander
         public override IEnumerator Play()
         {
             //When this card enters play, {Outlander} deals the hero target with the highest HP 1 melee damage.
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => IsHero(c), (Card c) => 1, DamageType.Melee);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => IsHeroTarget(c), (Card c) => 1, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

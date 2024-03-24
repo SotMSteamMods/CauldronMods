@@ -45,7 +45,7 @@ namespace Cauldron.Pyre
                     GameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = DealDamage(CharacterCard, (Card c) => !IsHero(c), numCardsIrradiated, DamageType.Energy);
+                coroutine = DealDamage(CharacterCard, (Card c) => !IsHeroTarget(c), numCardsIrradiated, DamageType.Energy);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

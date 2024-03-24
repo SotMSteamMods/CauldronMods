@@ -33,7 +33,7 @@ namespace Cauldron.Oriphel
                 new DealDamageAction(GetCardSource(), new DamageSource(GameController, oriphelIfInPlay), null, 1, DamageType.Projectile)
 
             };
-            IEnumerator coroutine = DealMultipleInstancesOfDamage(damageDetails, (Card c) => c.IsTarget && IsHero(c) && oriphelIfInPlay != null);
+            IEnumerator coroutine = DealMultipleInstancesOfDamage(damageDetails, (Card c) => IsHeroTarget(c) && oriphelIfInPlay != null);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

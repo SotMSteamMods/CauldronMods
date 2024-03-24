@@ -68,7 +68,7 @@ namespace Cauldron.Tiamat
         //Deal H-2 Lightning damage to highest hero target
         private IEnumerator DealDamageResponse(PhaseChangeAction phaseChange)
         {
-            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => c.IsTarget && IsHero(c), (Card c) => new int?(base.H - 2), DamageType.Lightning);
+            IEnumerator coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHeroTarget(c), (Card c) => new int?(base.H - 2), DamageType.Lightning);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

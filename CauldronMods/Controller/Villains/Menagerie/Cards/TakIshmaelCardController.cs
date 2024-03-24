@@ -39,7 +39,7 @@ namespace Cauldron.Menagerie
             }
 
             //Then, this card deals the hero target with the highest HP X projectile damage, where X is the number of Specimens in play.
-            coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => base.FindCardsWhere(new LinqCardCriteria((Card spec) => base.IsSpecimen(spec) && spec.IsInPlayAndHasGameText)).Count(), DamageType.Projectile);
+            coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHeroTarget(c), (Card c) => base.FindCardsWhere(new LinqCardCriteria((Card spec) => base.IsSpecimen(spec) && spec.IsInPlayAndHasGameText)).Count(), DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

@@ -29,7 +29,7 @@ namespace Cauldron.Pyre
                 GameController.ExhaustCoroutine(coroutine);
             }
             //"{Pyre} deals each non-hero target 0 energy damage."
-            coroutine = DealDamage(CharacterCard, (Card c) => !IsHero(c), 0, DamageType.Energy);
+            coroutine = DealDamage(CharacterCard, (Card c) => !IsHeroTarget(c), 0, DamageType.Energy);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

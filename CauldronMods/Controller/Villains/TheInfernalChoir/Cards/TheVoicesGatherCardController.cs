@@ -41,7 +41,7 @@ namespace Cauldron.TheInfernalChoir
 
             if (target != null)
             {
-                coroutine = base.DealDamageToHighestHP(target, 1, c => IsHero(c), c => H - 1, DamageType.Psychic, numberOfTargets: () => 1);
+                coroutine = base.DealDamageToHighestHP(target, 1, c => IsHeroTarget(c), c => H - 1, DamageType.Psychic, numberOfTargets: () => 1);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -23,7 +23,7 @@ namespace Cauldron.Tiamat
             if (characterCard.IsInPlayAndHasGameText && (!characterCard.IsFlipped || base.FindCardController(characterCard) is FutureTiamatCharacterCardController))
             {
                 Func<Card, int?> X = (Card c) => new int?(PlusNumberOfThisCardInTrash(2));
-                coroutine = base.DealDamage(characterCard, (Card c) => IsHero(c), X, DamageType.Cold);
+                coroutine = base.DealDamage(characterCard, (Card c) => IsHeroTarget(c), X, DamageType.Cold);
 
                 if (base.UseUnityCoroutines)
                 {

@@ -25,7 +25,7 @@ namespace Cauldron.TheInfernalChoir
             AddTrigger<DealDamageAction>(dda => dda.Target == Card && dda.DidDealDamage && dda.Amount > 0 && !HasBeenSetToTrueThisTurn(FirstTimeDealtDamage), dda => SetFirstTimeDealtDamageFlag(), TriggerType.ImmuneToDamage, TriggerTiming.After);
             AddImmuneToDamageTrigger(dda => dda.Target == Card && HasBeenSetToTrueThisTurn(FirstTimeDealtDamage));
 
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => IsHero(c), TargetType.HighestHP, 0, DamageType.Cold,
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, c => IsHeroTarget(c), TargetType.HighestHP, 0, DamageType.Cold,
                     numberOfTargets: H,
                     dynamicAmount: c => Card.HitPoints.Value);
         }

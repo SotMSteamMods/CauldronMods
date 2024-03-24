@@ -31,7 +31,7 @@ namespace Cauldron.Mythos
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...this card deals the hero target with the highest HP 2 melee damage.
-            IEnumerator coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => IsHero(c) && c.IsInPlayAndHasGameText, (Card c) => 2, DamageType.Melee);
+            IEnumerator coroutine = base.DealDamageToHighestHP(this.Card, 1, (Card c) => IsHeroTarget(c) && c.IsInPlayAndHasGameText, (Card c) => 2, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

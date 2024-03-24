@@ -31,7 +31,7 @@ namespace Cauldron.Echelon
         protected override void AddTacticEffectTrigger()
         {
             //Increase damage dealt to the non-hero target with the lowest HP by 1.
-            AddTrigger((DealDamageAction dd) => !IsHero(dd.Target) && CanCardBeConsideredLowestHitPoints(dd.Target, (Card c) => !IsHero(c)), MaybeIncreaseDamageResponse, TriggerType.IncreaseDamage, TriggerTiming.Before);
+            AddTrigger((DealDamageAction dd) => !IsHeroTarget(dd.Target) && CanCardBeConsideredLowestHitPoints(dd.Target, (Card c) => !IsHero(c)), MaybeIncreaseDamageResponse, TriggerType.IncreaseDamage, TriggerTiming.Before);
         }
 
         private IEnumerator MaybeIncreaseDamageResponse(DealDamageAction dd)

@@ -46,7 +46,7 @@ namespace Cauldron.DungeonsOfTerror
             {
                 //If it is a fate card, this card deals the hero target with the highest HP {H} melee damage.
                 message = GameController.SendMessageAction($"The top card of the environment trash is a fate card!", Priority.High, GetCardSource(), associatedCards: cardToCheck.ToEnumerable(), showCardSource: true);
-                effect = DealDamageToHighestHP(Card, 1, (Card c) => IsHero(c), (Card c) => Game.H, DamageType.Melee);
+                effect = DealDamageToHighestHP(Card, 1, (Card c) => IsHeroTarget(c), (Card c) => Game.H, DamageType.Melee);
             }
             else if (storedResults.Any() && storedResults.First() == 0)
             {
