@@ -16,7 +16,7 @@ namespace Cauldron.TheStranger
         #endregion Constructors
 
         #region Properties
-        public override LinqCardCriteria NextToCardCriteria => new LinqCardCriteria((Card c) => !IsHeroTarget(c)  && c.IsInPlayAndHasGameText, "non-hero targets", useCardsSuffix: false);
+        public override LinqCardCriteria NextToCardCriteria => new LinqCardCriteria((Card c) => c.IsTarget && !IsHeroTarget(c)  && c.IsInPlayAndHasGameText, "non-hero targets", useCardsSuffix: false);
         #endregion
 
         #region Methods
