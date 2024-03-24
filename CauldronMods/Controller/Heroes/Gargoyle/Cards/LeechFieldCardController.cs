@@ -13,6 +13,14 @@ namespace Cauldron.Gargoyle
         // "Once per turn, when {Gargoyle} deals or is dealt damage, or when a non-hero target is dealt damage, 
         // you may reduce that damage by 1 and increase the next damage dealt by {Gargoyle} by 1."
         private const string FirstTimeWouldBeDealtDamage = "OncePerTurn";
+        
+        private struct PreventInfo
+        {
+            public bool preventDamage;
+            public Guid ddaGuid;
+        };
+
+        private PreventInfo? selectedReaction;
 
         public LeechFieldCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -30,71 +38,62 @@ namespace Cauldron.Gargoyle
 
         public override void AddTriggers()
         {
-            //ReduceDamageTrigger reduceDamageTrigger;
-
-            base.AddTrigger<DealDamageAction>(DealDamageCritera, DealDamageResponse, new TriggerType[] { TriggerType.ModifyDamageAmount }, TriggerTiming.Before, isActionOptional: true);
-
-            //reduceDamageTrigger = new ReduceDamageTrigger(base.GameController, DealDamageCritera, (card) => true, DealDamageResponse, true, false, base.GetCardSource());
-            //base.AddTrigger(reduceDamageTrigger);
-
+            AddTrigger<DealDamageAction>(DealDamageCritera, DealDamageResponse, new TriggerType[] { TriggerType.ModifyDamageAmount }, TriggerTiming.Before);
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeWouldBeDealtDamage), TriggerType.Hidden);
         }
 
         private bool DealDamageCritera(DealDamageAction dealDamageAction)
         {
             // "Once per turn, when {Gargoyle} deals or is dealt damage, or when a non-hero target is dealt damage, 
-            return !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && dealDamageAction.Amount > 0 && !dealDamageAction.IsPretend && ((dealDamageAction.DamageSource != null && dealDamageAction.DamageSource.Card != null && dealDamageAction.DamageSource.Card == base.CharacterCard) || dealDamageAction.Target == base.CharacterCard || !IsHero(dealDamageAction.Target));
+            return !HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) &&
+                dealDamageAction.Amount > 0 && 
+                (
+                    dealDamageAction.DamageSource?.Card == CharacterCard ||
+                    dealDamageAction.Target == CharacterCard ||
+                    ! IsHeroTarget(dealDamageAction.Target)
+                );
         }
 
-        private bool DealDamageTargetCriteria(Card card)
-        {
-            return card == base.CharacterCard || !IsHero(card);
-        }
         private IEnumerator DealDamageResponse(DealDamageAction dealDamageAction)
         {
-            IEnumerator coroutine;
-            ITrigger trigger = null;
-            YesNoDecision decision;
-           
-            decision = new YesNoDecision(base.GameController, DecisionMaker, SelectionType.ReduceDamageTaken, gameAction: dealDamageAction, cardSource: GetCardSource());
-            coroutine = base.GameController.MakeDecisionAction(decision);
-            if (base.UseUnityCoroutines)
+            if (!selectedReaction.HasValue || selectedReaction.Value.ddaGuid != dealDamageAction.InstanceIdentifier)
             {
-                yield return base.GameController.StartCoroutine(coroutine);
+                var storedResults = new List<YesNoCardDecision>();
+                var e = GameController.MakeYesNoCardDecision(
+                    DecisionMaker,
+                    SelectionType.ReduceDamageTaken,
+                    card: Card,
+                    action: dealDamageAction,
+                    storedResults: storedResults,
+                    cardSource: GetCardSource()
+                );
+
+                if (UseUnityCoroutines) { yield return GameController.StartCoroutine(e); }
+                else { GameController.ExhaustCoroutine(e); }
+
+                selectedReaction = new PreventInfo { preventDamage = DidPlayerAnswerYes(storedResults), ddaGuid = dealDamageAction.InstanceIdentifier };
             }
-            else
+
+            if (selectedReaction.HasValue && selectedReaction.Value.preventDamage)
             {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+                SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage, gameAction: dealDamageAction);
 
-            if (base.DidPlayerAnswerYes(decision))
-            { 
-                base.SetCardPropertyToTrueIfRealAction(FirstTimeWouldBeDealtDamage);
-                // you may reduce that damage by 1 
-                coroutine = base.GameController.ReduceDamage(dealDamageAction, 1, trigger, GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                var e = GameController.ReduceDamage(dealDamageAction, 1, null, GetCardSource());
+                if (UseUnityCoroutines) { yield return GameController.StartCoroutine(e); }
+                else { GameController.ExhaustCoroutine(e); }
 
-                // and increase the next damage dealt by {Gargoyle} by 1.
-                coroutine = base.IncreaseGargoyleNextDamage(1);
-                if (base.UseUnityCoroutines)
+                if (IsRealAction(dealDamageAction))
                 {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
+                    e = IncreaseGargoyleNextDamage(1, dealDamageAction.DamageSource.Card == CharacterCard ? dealDamageAction : null);
+                    if (UseUnityCoroutines) { yield return GameController.StartCoroutine(e); }
+                    else { GameController.ExhaustCoroutine(e); }
                 }
             }
 
-
-            yield break;
+            if (IsRealAction(dealDamageAction))
+            {
+                selectedReaction = null;
+            }
         }
     }
 }
