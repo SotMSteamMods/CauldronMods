@@ -39,7 +39,20 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            Card matchingCard = revealCards.FirstOrDefault().RevealedCards.LastOrDefault();
+            if (revealCards is null || !revealCards.First().RevealedCards.Any(c => IsOngoing(c)))
+            {
+                coroutine = GameController.SendMessageAction($"No ongoing cards were found in {TurnTaker.Deck.GetFriendlyName()}", Priority.Medium, GetCardSource(), showCardSource: true);
+                if (base.UseUnityCoroutines)
+                {
+                    yield return base.GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    base.GameController.ExhaustCoroutine(coroutine);
+                }
+                yield break;
+            }
+            Card matchingCard = revealCards.First().RevealedCards.Last();
             coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[]
             {
                 new Function(base.HeroTurnTakerController, "Play revealed card", SelectionType.PlayCard, () => base.GameController.PlayCard(base.TurnTakerController, matchingCard, cardSource: base.GetCardSource())),

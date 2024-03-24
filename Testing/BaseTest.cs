@@ -5608,6 +5608,26 @@ namespace Handelabra.Sentinels.UnitTest
             return decider;
         }
 
+        protected GameControllerDecisionEvent AssertNextDecisionSelectionTypeIsNot(SelectionType type)
+        {
+            this.DecisionNextSelectionType = type;
+
+            GameControllerDecisionEvent decider = decision =>
+            {
+                if (this.DecisionNextSelectionType.HasValue)
+                {
+                    Assert.AreNotEqual(this.DecisionNextSelectionType, decision.SelectionType,
+                        "The next decision type was expected to not be " + type + " but was " + decision.SelectionType);
+                    this.DecisionNextSelectionType = null;
+                }
+
+                return this.MakeDecisions(decision);
+            };
+
+            ReplaceOnMakeDecisions(decider);
+            return decider;
+        }
+
         protected GameControllerDecisionEvent AssertNextDecisionMaker(HeroTurnTakerController decisionMaker, bool removeExpectationAfterFirstDecision = true)
         {
             bool expected = true;

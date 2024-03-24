@@ -199,6 +199,26 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestDriftCharacter_1789_InnatePower_NoOngoings()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            StartGame();
+
+            // move all ongoings to the trash
+            MoveCards(drift, c => c.Location == drift.TurnTaker.Deck && c.IsOngoing, drift.TurnTaker.Trash);
+
+            //Discard cards from the top of your deck until you discard an ongoing. Play or draw it.
+
+            int cardsInTrash = drift.TurnTaker.Trash.NumberOfCards;
+            int cardsInDeck = drift.TurnTaker.Deck.NumberOfCards;
+
+            AssertNextDecisionSelectionTypeIsNot(SelectionType.SelectFunction);
+            UsePower(drift);
+            AssertNumberOfCardsInDeck(drift, 0);
+            AssertNumberOfCardsInTrash(drift, cardsInTrash + cardsInDeck);
+        }
+
+        [Test()]
         public void TestDriftCharacter_1789_InnatePower_Draw()
         {
             SetupGameController("BaronBlade", "Cauldron.Drift/AllInGoodTimeDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
