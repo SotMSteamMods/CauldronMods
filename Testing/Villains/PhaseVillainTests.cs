@@ -566,6 +566,42 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestInsubstantialMatador_OnlySecondClauseIrreducible()
+        {
+            SetupGameController("Cauldron.PhaseVillain", "Haka", "Parse", "TheScholar", "Megalopolis");
+            StartGame();
+
+            DestroyWall();
+            PutOnDeck("AroundTheCorner");
+            var mat = PutOnDeck("InsubstantialMatador");
+
+            //When this card enters play, {PhaseVillain} deals the hero target with the second lowest HP {H - 1} radiant damage.
+            GoToPlayCardPhase(phase);
+
+            // add a generic -1 to all heroes
+            AddReduceDamageTrigger(scholar, true, false, 1);
+
+            QuickHPStorage(scholar);
+            PlayTopCard(phase);
+            QuickHPCheck(-1);
+
+            //At the end of each hero's turn, if that hero dealt {PhaseVillain} no damage, that hero deals themselves 1 irreducible melee damage.
+            GoToStartOfTurn(haka);
+            GoToPlayCardPhase(haka);
+            PlayCard("TaMoko");
+            QuickHPStorage(haka);
+            GoToEndOfTurn(haka);
+            QuickHPCheck(-1);
+
+            //Did deal damage to Phase
+            GoToStartOfTurn(parse);
+            QuickHPStorage(parse);
+            DealDamage(parse, phase, 2, DamageType.Melee);
+            GoToEndOfTurn(parse);
+            QuickHPCheckZero();
+        }
+
+        [Test()]
         public void TestInsubstantialMatador_Sentinels()
         {
             SetupGameController("Cauldron.PhaseVillain", "TheSentinels", "Parse", "TheScholar", "Megalopolis");

@@ -19,7 +19,7 @@ namespace Cauldron.PhaseVillain
         public override IEnumerator Play()
         {
             //When this card enters play, {Phase} deals the hero target with the second lowest HP {H - 1} radiant damage.
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.CharacterCard, 2, (Card c) => IsHero(c), (Card c) => Game.H - 1, DamageType.Radiant, true);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.CharacterCard, 2, (Card c) => IsHero(c), (Card c) => Game.H - 1, DamageType.Radiant);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
