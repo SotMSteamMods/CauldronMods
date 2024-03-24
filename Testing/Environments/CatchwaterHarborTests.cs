@@ -929,14 +929,19 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Ra", "Bunker", "Haka", "Cauldron.CatchwaterHarbor" });
             StartGame();
             DestroyNonCharacterVillainCards();
+
+            StackAfterShuffle(catchwater.TurnTaker.Deck, new string[] { "RadioPlaza", "LeftBehind", "OminousLoop" });
+
+
             PlayCard("SSEscape");
             PlayCard("ToOverbrook");
+
 
             int num = GetNumberOfCardsInPlay((Card c) => IsTransport(c));
             //Reduce damage dealt to Gangsters by 1.
             Card smooth = PlayCard("SmoothCriminal");
             Card harkin = PlayCard("HarkinParishJr");
-            StackAfterShuffle(catchwater.TurnTaker.Deck, new string[] { "RadioPlaza", "OminousLoop" });
+            StackAfterShuffle(catchwater.TurnTaker.Deck, new string[] { "LeftBehind", "OminousLoop" });
             QuickHPStorage(baron.CharacterCard, ra.CharacterCard, bunker.CharacterCard, haka.CharacterCard, smooth, harkin);
             DealDamage(baron, c => c.IsTarget, 2, DamageType.Fire);
             QuickHPCheck(-2, -2, -2, -2, -1, -1);

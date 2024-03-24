@@ -878,16 +878,18 @@ namespace CauldronTests
         [Test]
         public void TestProtectiveEscort()
         {
-            SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
+            SetupGameController(new List<string>() { "BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis" });
             StartGame();
             DestroyNonCharacterVillainCards();
+
+            Card escort = MoveCard(gyrosaur, "ProtectiveEscort", gyrosaur.TurnTaker.Trash);
 
             DecisionSelectCard = legacy.CharacterCard;
             DecisionSelectDamageType = DamageType.Projectile;
             QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
 
-            PlayCard("ProtectiveEscort");
+            PlayCard(escort);
             QuickHandCheck(2, 0, 0);
 
             //check immunity
