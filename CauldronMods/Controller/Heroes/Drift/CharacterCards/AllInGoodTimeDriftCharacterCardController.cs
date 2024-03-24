@@ -39,7 +39,11 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            Card matchingCard = revealCards.FirstOrDefault().RevealedCards.LastOrDefault();
+            if (revealCards is null || !revealCards.First().RevealedCards.Any(c => c.IsOngoing))
+            {
+                yield break;
+            }
+            Card matchingCard = revealCards.First().RevealedCards.Last();
             coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[]
             {
                 new Function(base.HeroTurnTakerController, "Play revealed card", SelectionType.PlayCard, () => base.GameController.PlayCard(base.TurnTakerController, matchingCard, cardSource: base.GetCardSource())),
