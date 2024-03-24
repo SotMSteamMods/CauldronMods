@@ -11,6 +11,7 @@ using Handelabra.Sentinels.UnitTest;
 using Cauldron.Dendron;
 
 using NUnit.Framework;
+using Handelabra;
 
 namespace CauldronTests
 {
@@ -181,6 +182,32 @@ namespace CauldronTests
             var c2 = PlayCard("TintedStag");
             DealDamage(legacy, c2, 10, DamageType.Cold);
             AssertAtLocation(c2, dendron.CharacterCard.UnderLocation);
+       
+        }
+
+        [Test]
+        public void TestWindcolorFlippedDendronTattoosUnderAreNotInPlay()
+        {
+            // Arrange
+            SetupGameController(DeckNamespace, "Legacy", "Ra", "Haka", "Cauldron.TangoOne", "Megalopolis");
+            StartGame();
+
+
+            Card viper = dendron.CharacterCard.UnderLocation.Cards.First(c => c.Identifier == "PaintedViper");
+            Card owl = PlayCard("ShadedOwl");
+            Card ursa = PlayCard("UrsaMajor");
+            GoToPlayCardPhase(dendron);
+
+            MoveCards(tango, c => c.DoKeywordsContain("critical"), tango.HeroTurnTaker.Hand, numberOfCards: 2);
+            IEnumerable<Card> criticalCardsInHand = tango.HeroTurnTaker.Hand.Cards.Where(c => c.DoKeywordsContain("critical")).Take(2);
+            Card rifle = PlayCard("SniperRifle");
+
+            List<Card> decisionCards = new List<Card>();
+            decisionCards.AddRange(criticalCardsInHand);
+            decisionCards.Add(owl);
+            SkipDecisionsBeforeAssertion(1);
+            AssertNextDecisionChoices(notIncluded: new List<Card>(){ viper });
+            UsePower(rifle, 0);
         }
 
         [Test]
