@@ -780,10 +780,15 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Haka", "Cauldron.TheStranger", "Ra", "Megalopolis");
             StartGame();
             Card mdp = GetCardInPlay("MobileDefensePlatform");
+            Card livingForceField = PlayCard("LivingForceField");
             GoToPlayCardPhase(stranger);
 
             //Play this next to a non-hero target. Reduce damage dealt by that target by 1. 
             DecisionSelectCard = mdp;
+            AssertNextDecisionChoices(
+                new List<Card>() { baron.CharacterCard, mdp },
+                new List<Card>() { livingForceField, haka.CharacterCard, stranger.CharacterCard, ra.CharacterCard });
+
             PutIntoPlay("MarkOfBinding");
             Card rune = GetCardInPlay("MarkOfBinding");
             AssertNextToCard(rune, mdp);
