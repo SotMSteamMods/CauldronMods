@@ -55,6 +55,7 @@ namespace Cauldron.Dendron
                  * At the end of the villain turn, if there are no cards beneath this one, flip {Dendron}'s villain character cards.
                  * Otherwise, put 2 random cards from beneath this one into play
                  */
+                base.Card.UnderLocation.OverrideIsInPlay = false;
                 base.SideTriggers.Add(AddEndOfTurnTrigger(tt => tt == TurnTaker, FlipOrPlayFromBeneath, new[] { TriggerType.FlipCard, TriggerType.PutIntoPlay }));
             }
             // Flipped side (Colors of the Wind)
@@ -67,6 +68,7 @@ namespace Cauldron.Dendron
                  * Then, flip {Dendron}'s villain character cards.
                  * At the end of the villain turn, play the top card of the villain deck.
                  */
+                base.Card.UnderLocation.OverrideIsInPlay = false;
                 base.SideTriggers.Add(base.AddStartOfTurnTrigger(tt => tt == TurnTaker, DestroyOngoingToDealDamage, new[] { TriggerType.DestroyCard, TriggerType.DealDamage }));
                 base.SideTriggers.Add(base.AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy != null && IsTattoo(dca.CardToDestroy.Card), MoveBeneathThisCard, TriggerType.MoveCard, TriggerTiming.Before));
                 base.SideTriggers.Add(base.AddStartOfTurnTrigger(tt => tt == TurnTaker && CharacterCard.UnderLocation.NumberOfCards >= 6, FlipBack, new[] { TriggerType.FlipCard, TriggerType.DealDamage }));

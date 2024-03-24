@@ -97,6 +97,8 @@ namespace Handelabra.Sentinels.UnitTest
         protected int DecisionSelectFromBoxIndex { get; set; }
         protected bool DecisionSelectWordSkip { get; set; }
 
+        private int _decisionsToSkipBeforeAssertion;
+        private bool _skipAssertionsForThisDecision => _decisionsToSkipBeforeAssertion > 0;
         private IEnumerable<Card> _includedCardsInNextDecision;
         private IEnumerable<Card> _notIncludedCardsInNextDecision;
         private bool _expectedMessageWasShown;
@@ -352,6 +354,7 @@ namespace Handelabra.Sentinels.UnitTest
             DecisionAmbiguousCardAtIndex = null;
             DecisionAmbiguousCardAtIndices = null;
             DecisionAmbiguousCardAtIndicesIndex = 0;
+            _decisionsToSkipBeforeAssertion = 0;
             _includedCardsInNextDecision = null;
             _notIncludedCardsInNextDecision = null;
             _includedPowersInNextDecision = null;
@@ -646,7 +649,7 @@ namespace Handelabra.Sentinels.UnitTest
                     }
                 }
 
-                if (_assertDecisionOptional != null && decision.SelectionType == _assertDecisionOptional)
+                if (!_skipAssertionsForThisDecision && _assertDecisionOptional != null && decision.SelectionType == _assertDecisionOptional)
                 {
                     Assert.IsTrue(decision.IsOptional, "Decision was not optional: " + decision);
                 }
@@ -655,14 +658,16 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     SelectCardDecision selectCardDecision = (SelectCardDecision)decision;
 
-                    Assert.IsNotNull(selectCardDecision.Choices, "Choices must not be null");
-
+                    if (!_skipAssertionsForThisDecision)
+                    {
+                        Assert.IsNotNull(selectCardDecision.Choices, "Choices must not be null");
+                    }
                     if (selectCardDecision.ExtraInfo != null)
                     {
                         Console.WriteLine(selectCardDecision.ExtraInfo());
                     }
 
-                    if (_numberOfChoicesInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _numberOfChoicesInNextDecision != null)
                     {
                         var check = true;
                         if (_numberOfChoicesInNextDecisionSelectionType != null && _numberOfChoicesInNextDecisionSelectionType != decision.SelectionType)
@@ -680,24 +685,24 @@ namespace Handelabra.Sentinels.UnitTest
                     var originalChoices = new List<Card>();
                     originalChoices.AddRange(selectCardDecision.Choices);
 
-                    if (_includedCardsInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _includedCardsInNextDecision != null)
                     {
                         _includedCardsInNextDecision.ForEach(e => Assert.IsTrue(selectCardDecision.Choices.Contains(e), "SelectCardDecision did not include: " + e.Title + "."));
                         _includedCardsInNextDecision = null;
                     }
 
-                    if (_notIncludedCardsInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _notIncludedCardsInNextDecision != null)
                     {
                         _notIncludedCardsInNextDecision.ForEach(e => Assert.IsFalse(selectCardDecision.Choices.Contains(e), "SelectCardDecision should not include: " + e.Title + ". (Choices: " + selectCardDecision.Choices.Select(c => c.Title).ToCommaList() + ")"));
                         _notIncludedCardsInNextDecision = null;
                     }
 
-                    if (selectCardDecision.Choices.Count() == 1 && !selectCardDecision.IsOptional)
+                    if (!_skipAssertionsForThisDecision && selectCardDecision.Choices.Count() == 1 && !selectCardDecision.IsOptional)
                     {
                         Assert.Fail("This test presented a decision with only 1 choice, and it was not optional.");
                     }
 
-                    if (this.ExpectedDecisionChoiceCount != null)
+                    if (!_skipAssertionsForThisDecision && this.ExpectedDecisionChoiceCount != null)
                     {
                         Assert.AreEqual(this.ExpectedDecisionChoiceCount.Value, selectCardDecision.Choices.Count(), "Expected the decision to have " + this.ExpectedDecisionChoiceCount + " choices, but it had " + selectCardDecision.Choices.Count() + ".");
                     }
@@ -768,7 +773,7 @@ namespace Handelabra.Sentinels.UnitTest
                             {
                                 selectCardDecision.FinishedSelecting = true;
                             }
-                            else if (this.DecisionSelectCards != null)
+                            else if (!_skipAssertionsForThisDecision && this.DecisionSelectCards != null)
                             {
                                 // Select each of the given cards in order
                                 Card toSelect = this.DecisionSelectCards.ElementAt(this.DecisionSelectCardsIndex);
@@ -1008,7 +1013,7 @@ namespace Handelabra.Sentinels.UnitTest
                             Log.Warning("Decision SelectionType is Custom but a CardSource was not provided!");
                         }
                     }
-                    if (this.DecisionsYesNo != null)
+                    if (!_skipAssertionsForThisDecision && this.DecisionsYesNo != null)
                     {
                         Assert.Greater(this.DecisionsYesNo.Count(), this.DecisionsYesNoIndex, "Not enough DecisionsYesNo were provided.");
                         yesNo.Answer = this.DecisionsYesNo.ElementAt(this.DecisionsYesNoIndex);
@@ -1044,7 +1049,7 @@ namespace Handelabra.Sentinels.UnitTest
                             Log.Warning("Decision SelectionType is Custom but a CardSource was not provided!");
                         }
                     }
-                    if (this.DecisionsYesNo != null)
+                    if (!_skipAssertionsForThisDecision && this.DecisionsYesNo != null)
                     {
                         Assert.Greater(this.DecisionsYesNo.Count(), this.DecisionsYesNoIndex, "Not enough DecisionsYesNo were provided.");
                         yesNo.Answer = this.DecisionsYesNo.ElementAt(this.DecisionsYesNoIndex);
@@ -1060,7 +1065,7 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     SelectDamageTypeDecision damage = decision as SelectDamageTypeDecision;
 
-                    if (_numberOfChoicesInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _numberOfChoicesInNextDecision != null)
                     {
                         Assert.AreEqual(_numberOfChoicesInNextDecision, damage.Choices.Count(), "SelectDamageTypeDecision has the wrong number of choices.");
                         _numberOfChoicesInNextDecision = null;
@@ -1097,18 +1102,18 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     MoveCardDecision moveCard = decision as MoveCardDecision;
 
-                    if (_numberOfChoicesInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _numberOfChoicesInNextDecision != null)
                     {
                         Assert.AreEqual(_numberOfChoicesInNextDecision, moveCard.PossibleDestinations.Count(), "MoveCardDecision has the wrong number of choices.");
                         _numberOfChoicesInNextDecision = null;
                     }
 
                     Console.WriteLine("Make a MoveCardDecision with destinations: [" + moveCard.PossibleDestinations.ToCommaList() + "]");
-                    if (moveCard.PossibleDestinations.Count() == 1 && !moveCard.IsOptional)
+                    if (!_skipAssertionsForThisDecision && moveCard.PossibleDestinations.Count() == 1 && !moveCard.IsOptional)
                     {
                         Assert.Fail("This test presented a decision with only 1 choice, and it was not optional.");
                     }
-                    if (this.ExpectedDecisionChoiceCount != null)
+                    if (!_skipAssertionsForThisDecision && this.ExpectedDecisionChoiceCount != null)
                     {
                         Assert.AreEqual(this.ExpectedDecisionChoiceCount.Value, moveCard.PossibleDestinations.Count());
                     }
@@ -1127,7 +1132,7 @@ namespace Handelabra.Sentinels.UnitTest
                         chosenDestination = this.DecisionMoveCardDestination;
                     }
 
-                    if (chosenDestination.Location != null)
+                    if (!_skipAssertionsForThisDecision && chosenDestination.Location != null)
                     {
                         if (moveCard.PossibleDestinations.Any(d => d.Location == chosenDestination.Location && d.ToBottom == chosenDestination.ToBottom))
                         {
@@ -1150,7 +1155,7 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     SelectLocationDecision selectLocation = decision as SelectLocationDecision;
 
-                    if (_numberOfChoicesInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _numberOfChoicesInNextDecision != null)
                     {
                         Assert.AreEqual(_numberOfChoicesInNextDecision, selectLocation.Choices.Count(), "SelectLocationDecision has the wrong number of choices.");
                         _numberOfChoicesInNextDecision = null;
@@ -1162,11 +1167,11 @@ namespace Handelabra.Sentinels.UnitTest
                         choices += ", Skip";
                     }
                     Console.WriteLine("Make a SelectLocationDecision with locations: [" + choices + "]");
-                    if (selectLocation.Choices.Count() == 1 && !selectLocation.IsOptional)
+                    if (!_skipAssertionsForThisDecision && selectLocation.Choices.Count() == 1 && !selectLocation.IsOptional)
                     {
                         Assert.Fail("This test presented a decision with only 1 choice, and it was not optional.");
                     }
-                    if (this.ExpectedDecisionChoiceCount != null)
+                    if (!_skipAssertionsForThisDecision && this.ExpectedDecisionChoiceCount != null)
                     {
                         Assert.AreEqual(this.ExpectedDecisionChoiceCount.Value, selectLocation.Choices.Count());
                     }
@@ -1194,7 +1199,7 @@ namespace Handelabra.Sentinels.UnitTest
                         {
                             selectLocation.FinishedSelecting = true;
                         }
-                        else if (!selectLocation.Choices.Any(c => c.Location == location.Location))
+                        else if (!_skipAssertionsForThisDecision && !selectLocation.Choices.Any(c => c.Location == location.Location))
                         {
                             Assert.Fail("The selected location was not a choice: {0}", location);
                         }
@@ -1205,7 +1210,7 @@ namespace Handelabra.Sentinels.UnitTest
                     }
                     else if (this.DecisionSelectLocation.Location != null)
                     {
-                        if (!selectLocation.Choices.Any(c => c.Location == this.DecisionSelectLocation.Location))
+                        if (!_skipAssertionsForThisDecision && !selectLocation.Choices.Any(c => c.Location == this.DecisionSelectLocation.Location))
                         {
                             Assert.Fail("The selected location was not a choice: {0}", this.DecisionSelectLocation);
                         }
@@ -1237,7 +1242,7 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     UsePowerDecision power = decision as UsePowerDecision;
 
-                    if (_numberOfChoicesInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _numberOfChoicesInNextDecision != null)
                     {
                         Assert.AreEqual(_numberOfChoicesInNextDecision, power.Choices.Count(), "UsePowerDecision has the wrong number of choices.");
                         _numberOfChoicesInNextDecision = null;
@@ -1289,7 +1294,7 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     UseIncapacitatedAbilityDecision ability = decision as UseIncapacitatedAbilityDecision;
 
-                    if (_numberOfChoicesInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _numberOfChoicesInNextDecision != null)
                     {
                         Assert.AreEqual(_numberOfChoicesInNextDecision, ability.Choices.Count(), "UseIncapacitatedAbilityDecision has the wrong number of choices.");
                         _numberOfChoicesInNextDecision = null;
@@ -1302,7 +1307,7 @@ namespace Handelabra.Sentinels.UnitTest
                 else if (decision is SelectCardsDecision)
                 {
                     SelectCardsDecision selectCards = decision as SelectCardsDecision;
-                    if (selectCards.IsOptional && selectCards.AllowAutoDecide)
+                    if (!_skipAssertionsForThisDecision && selectCards.IsOptional && selectCards.AllowAutoDecide)
                     {
                         Assert.Fail("A SelectCardsDecision may not be both optional and allow for auto-decisions.");
                     }
@@ -1326,7 +1331,7 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     SelectTurnTakerDecision selectTurnTaker = decision as SelectTurnTakerDecision;
 
-                    if (_numberOfChoicesInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _numberOfChoicesInNextDecision != null)
                     {
                         Assert.AreEqual(_numberOfChoicesInNextDecision, selectTurnTaker.Choices.Count(), "SelectTurnTakerDecision has the wrong number of choices.");
                         _numberOfChoicesInNextDecision = null;
@@ -1380,7 +1385,7 @@ namespace Handelabra.Sentinels.UnitTest
                     string ttname = selectTurnTaker.SelectedTurnTaker != null ? selectTurnTaker.SelectedTurnTaker.Name : "None";
                     Console.WriteLine("Selected: " + ttname);
 
-                    if (selectTurnTaker.SelectedTurnTaker != null && !selectTurnTaker.Choices.Contains(selectTurnTaker.SelectedTurnTaker))
+                    if (!_skipAssertionsForThisDecision && selectTurnTaker.SelectedTurnTaker != null && !selectTurnTaker.Choices.Contains(selectTurnTaker.SelectedTurnTaker))
                     {
                         Assert.Fail("The test selected " + selectTurnTaker.SelectedTurnTaker.Name + ", which is not one of the options: " + selectTurnTaker.Choices.Select(tt => tt.Name).ToCommaList());
                     }
@@ -1389,7 +1394,7 @@ namespace Handelabra.Sentinels.UnitTest
                 {
                     SelectFunctionDecision selectAction = decision as SelectFunctionDecision;
 
-                    if (_numberOfChoicesInNextDecision != null)
+                    if (!_skipAssertionsForThisDecision && _numberOfChoicesInNextDecision != null)
                     {
                         var check = true;
                         if (_numberOfChoicesInNextDecisionSelectionType != null && _numberOfChoicesInNextDecisionSelectionType != decision.SelectionType)
@@ -1538,7 +1543,7 @@ namespace Handelabra.Sentinels.UnitTest
                     if (this.DecisionSelectWords != null)
                     {
                         var word = this.DecisionSelectWords[this.DecisionSelectWordsIndex];
-                        if (!selectWord.Choices.Contains(word))
+                        if (!_skipAssertionsForThisDecision && !selectWord.Choices.Contains(word))
                         {
                             Assert.Fail("The SelectWordDecision does not contain the word: " + word);
                         }
@@ -1548,7 +1553,7 @@ namespace Handelabra.Sentinels.UnitTest
                     }
                     else if (this.DecisionSelectWord != null)
                     {
-                        if (!selectWord.Choices.Contains(this.DecisionSelectWord))
+                        if (!_skipAssertionsForThisDecision && !selectWord.Choices.Contains(this.DecisionSelectWord))
                         {
                             Assert.Fail("The SelectWordDecision does not contain the word: " + this.DecisionSelectWord);
                         }
@@ -1557,7 +1562,7 @@ namespace Handelabra.Sentinels.UnitTest
                     }
                     else if (this.DecisionSelectWordSkip)
                     {
-                        if (!selectWord.IsOptional)
+                        if (!_skipAssertionsForThisDecision && !selectWord.IsOptional)
                         {
                             Assert.Fail("The SelectWordDecision is not optional so cannot be skipped.");
                         }
@@ -1578,7 +1583,7 @@ namespace Handelabra.Sentinels.UnitTest
                     SelectFromBoxDecision selectFromBox = decision as SelectFromBoxDecision;
                     Console.WriteLine("Make a SelectFromBoxDecision: ");
 
-                    if (this.DecisionSelectFromBoxIdentifiers != null
+                    if (!_skipAssertionsForThisDecision && this.DecisionSelectFromBoxIdentifiers != null
                         && this.DecisionSelectFromBoxIdentifiers.Count() > 0
                         && this.DecisionSelectFromBoxIndex < this.DecisionSelectFromBoxIdentifiers.Count())
                     {
@@ -1608,7 +1613,7 @@ namespace Handelabra.Sentinels.UnitTest
                     SelectTurnPhaseDecision selectPhase = decision as SelectTurnPhaseDecision;
                     Console.WriteLine("Make a SelectTurnPhaseDecision: [" + selectPhase.Choices.Select(tp => tp.Phase).ToCommaList() + "]");
 
-                    if (this.DecisionSelectTurnPhase != null)
+                    if (!_skipAssertionsForThisDecision && this.DecisionSelectTurnPhase != null)
                     {
                         if (!selectPhase.Choices.Contains(this.DecisionSelectTurnPhase))
                         {
@@ -1617,7 +1622,7 @@ namespace Handelabra.Sentinels.UnitTest
 
                         selectPhase.SelectedPhase = this.DecisionSelectTurnPhase;
                     }
-                    if (this.DecisionSelectTurnPhases != null)
+                    if (!_skipAssertionsForThisDecision && this.DecisionSelectTurnPhases != null)
                     {
                         var phase = this.DecisionSelectTurnPhases[this.DecisionSelectTurnPhasesIndex];
                         if (!selectPhase.Choices.Contains(phase))
@@ -1637,6 +1642,7 @@ namespace Handelabra.Sentinels.UnitTest
             }
 
             this.NumberOfDecisionsAnswered += 1;
+            _decisionsToSkipBeforeAssertion = Math.Max(_decisionsToSkipBeforeAssertion - 1, 0);
 
             yield return null;
         }
@@ -3686,6 +3692,11 @@ namespace Handelabra.Sentinels.UnitTest
         protected void ForceGameOver(EndingResult result, string output)
         {
             RunCoroutine(this.GameController.GameOver(result, output));
+        }
+
+        protected void SkipDecisionsBeforeAssertion(int numberOfDecisionToSkip)
+        {
+            _decisionsToSkipBeforeAssertion = numberOfDecisionToSkip;
         }
 
         protected void AssertNextDecisionChoices(IEnumerable<Card> included = null, IEnumerable<Card> notIncluded = null)
