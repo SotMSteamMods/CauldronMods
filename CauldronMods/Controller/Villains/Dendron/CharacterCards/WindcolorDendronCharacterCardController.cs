@@ -68,7 +68,7 @@ namespace Cauldron.Dendron
                  * Then, flip {Dendron}'s villain character cards.
                  * At the end of the villain turn, play the top card of the villain deck.
                  */
-                base.Card.UnderLocation.OverrideIsInPlay = null;
+                base.Card.UnderLocation.OverrideIsInPlay = false;
                 base.SideTriggers.Add(base.AddStartOfTurnTrigger(tt => tt == TurnTaker, DestroyOngoingToDealDamage, new[] { TriggerType.DestroyCard, TriggerType.DealDamage }));
                 base.SideTriggers.Add(base.AddTrigger<DestroyCardAction>(dca => dca.CardToDestroy != null && IsTattoo(dca.CardToDestroy.Card), MoveBeneathThisCard, TriggerType.MoveCard, TriggerTiming.Before));
                 base.SideTriggers.Add(base.AddStartOfTurnTrigger(tt => tt == TurnTaker && CharacterCard.UnderLocation.NumberOfCards >= 6, FlipBack, new[] { TriggerType.FlipCard, TriggerType.DealDamage }));
