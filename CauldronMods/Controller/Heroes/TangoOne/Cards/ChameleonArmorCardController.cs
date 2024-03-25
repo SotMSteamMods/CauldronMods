@@ -26,12 +26,15 @@ namespace Cauldron.TangoOne
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.CharacterCard) && dda.Amount > 0,
+            base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.CharacterCard) && dda.Amount > 0 && !dda.IsPretend,
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
                     TriggerType.ImmuneToDamage
                 }, TriggerTiming.Before, orderMatters: true, isConditional: false, requireActionSuccess: true, isActionOptional: true);
+
+            // Add a prevention in Pretend to get a better damage preview (but it still doesn't seem to work as intended?)
+            AddPreventDamageTrigger((DealDamageAction dda) => dda.Target.Equals(this.CharacterCard) && dda.Amount > 0 && dda.IsPretend, isPreventEffect: true);
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)

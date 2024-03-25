@@ -366,6 +366,34 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestChameleonArmorDiscardShinobiAssassin()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "TheTempleOfZhuLong");
+            StartGame();
+
+            PutOnDeck(tango, GetCard(FarsightCardController.Identifier));
+
+            Card assasin = PlayCard("ShinobiAssassin");
+            DecisionSelectLocation = new LocationChoice(tango.TurnTaker.Deck);
+            DestroyCard(assasin);
+
+            DecisionYesNo = true;
+            QuickHPStorage(tango);
+
+            // Act
+            GoToStartOfTurn(tango);
+            PutInHand(ChameleonArmorCardController.Identifier);
+            PlayCard(ChameleonArmorCardController.Identifier);
+
+            DealDamage(baron, tango, 5, DamageType.Cold);
+
+            // Assert
+            QuickHPCheck(-5);
+            
+        }
+
+        [Test]
         public void TestChameleonArmorDontDiscard()
         {
             // Arrange
@@ -395,7 +423,8 @@ namespace CauldronTests
 
             RemoveMobileDefensePlatform();
             PlayCard("LivingForceField");
-            var topDeck = PutOnDeck(tango, GetCard(DamnGoodGroundCardController.Identifier));
+            var topDeck = PutOnDeck(tango, GetCard(WetWorkCardController.Identifier));
+            var secondTopDeck = tango.TurnTaker.Deck.GetTopCards(2).Last();
 
             QuickHPStorage(baron);
 
@@ -410,7 +439,40 @@ namespace CauldronTests
             // Assert
             QuickHPCheck(0);
 
-            AssertOnTopOfDeck(tango, topDeck);
+            AssertOnTopOfDeck(tango, secondTopDeck);
+            
+        }
+
+        [Test]
+        public void TestCriticalHitDamageShinobiAssassin()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "TheTempleOfZhuLong");
+            StartGame();
+
+            RemoveMobileDefensePlatform();
+            PlayCard("LivingForceField");
+            var topDeck = PutOnDeck(tango, GetCard(DamnGoodGroundCardController.Identifier));
+            var secondTopDeck = tango.TurnTaker.Deck.GetTopCards(2).Last();
+
+            Card assasin = PlayCard("ShinobiAssassin");
+            DecisionSelectLocation = new LocationChoice(tango.TurnTaker.Deck);
+            DestroyCard(assasin);
+
+            QuickHPStorage(baron);
+
+            DecisionYesNo = true;
+            DecisionSelectTarget = baron.CharacterCard;
+
+            // Act
+            GoToPlayCardPhase(tango);
+            PlayCard(CriticalHitCardController.Identifier);
+            DealDamage(tango.CharacterCard.ResponsibleTarget, baron.CharacterCard, 0, DamageType.Infernal);
+
+            // Assert
+            QuickHPCheck(-2); //+3 critical, -1 living force field
+
+            AssertOnTopOfDeck(tango, secondTopDeck);
         }
 
         [Test]
