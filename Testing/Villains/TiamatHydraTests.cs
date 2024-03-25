@@ -1873,5 +1873,75 @@ namespace CauldronTests
 
             AssertGameOver();
         }
+
+        [Test()]
+        public void TestFlipAndThenRewind ()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+            
+            // Get rid of all tiamat's cards so she can't interrupt us
+            MoveAllCards(tiamat, tiamat.TurnTaker.Deck, tiamat.TurnTaker.OutOfGame);
+
+            StartGame();
+
+            GoToPlayCardPhase(legacy);
+
+            SetupIncap(legacy, inferno);
+            Assert.IsTrue(inferno.IsFlipped);
+
+            GoToStartOfTurn(tiamat);
+
+            // Inferno got flipped face up
+            Assert.IsFalse(inferno.IsFlipped);
+
+            // Decay entered play
+            AssertIsInPlayAndNotUnderCard(decay);
+
+            GoToNextTurn();
+
+            SaveAndLoad(GameController);
+
+            // These should still be true
+            Assert.IsFalse(inferno.IsFlipped);
+            AssertIsInPlayAndNotUnderCard(decay);
+
+            GoToNextTurn();
+
+            // These should still be true
+            Assert.IsFalse(inferno.IsFlipped);
+            AssertIsInPlayAndNotUnderCard(decay);
+        }
+
+        [Test()]
+        public void TestRewindDoesntFlipUnderCards()
+        {
+            SetupGameController("Cauldron.Tiamat/HydraWinterTiamatCharacter", "Legacy", "Bunker", "Haka", "Megalopolis");
+
+            // Get rid of all tiamat's cards so she can't interrupt us
+            MoveAllCards(tiamat, tiamat.TurnTaker.Deck, tiamat.TurnTaker.OutOfGame);
+
+            StartGame();
+
+            AssertUnderCard(inferno, decay);
+            AssertUnderCard(winter, earth);
+            AssertUnderCard(storm, wind);
+            AssertFlipped(decay, wind, earth);
+
+            GoToPlayCardPhase(legacy);
+
+            SaveAndLoad(GameController);
+
+            AssertUnderCard(inferno, decay);
+            AssertUnderCard(winter, earth);
+            AssertUnderCard(storm, wind);
+            AssertFlipped(decay, wind, earth);
+
+            GoToNextTurn();
+
+            AssertUnderCard(inferno, decay);
+            AssertUnderCard(winter, earth);
+            AssertUnderCard(storm, wind);
+            AssertFlipped(decay, wind, earth);
+        }
     }
 }
