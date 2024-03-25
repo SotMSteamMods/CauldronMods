@@ -29,10 +29,12 @@ namespace Cauldron.TangoOne
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard) && dda.Amount > 0,
+            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard) && !dda.IsPretend,
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[] { TriggerType.IncreaseDamage },
                 TriggerTiming.Before, null, isConditional: false, requireActionSuccess: true, isActionOptional: true);
+            // Add an IncreaseDamageTrigger in Pretend to get a better damage preview (but it still doesn't seem to work as intended?)
+            AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard) && dda.IsPretend, dda => 3);
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
