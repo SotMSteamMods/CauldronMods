@@ -75,11 +75,8 @@ namespace Cauldron.Tiamat
             yield break;
         }
 
-        public bool AreStartingCardsSetUp { get; private set; } = false;
-
-        public IEnumerator MoveStartingCards(GameAction action)
+        public override IEnumerator StartGame()
         {
-            AreStartingCardsSetUp = true;
             //Winter is in all, just has promoIdentifier differentiating
             Card winter = base.TurnTaker.GetCardByIdentifier("WinterTiamatCharacter");
             
