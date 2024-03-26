@@ -30,14 +30,25 @@ namespace Cauldron.TangoOne
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
-                    TriggerType.ImmuneToDamage
-                }, TriggerTiming.Before, orderMatters: true, isConditional: false, requireActionSuccess: true, isActionOptional: true);
+            TriggerType.RevealCard,
+            TriggerType.CancelAction
+                }, TriggerTiming.Before
+            );
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
-            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+            if (GameController.PreviewMode)
+            {
+                var e = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.AmbiguousDecision, Card, cardSource: GetCardSource());
+                if (UseUnityCoroutines) { yield return GameController.StartCoroutine(e); }
+                else { GameController.ExhaustCoroutine(e); }
+                yield break;
+            }
 
+            if (dda.IsPretend) yield break;
+
+            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
             // Ask if player wants to discard off the top of their deck
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(DecisionMaker,
                 SelectionType.RevealTopCardOfDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());
