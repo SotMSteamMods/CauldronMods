@@ -80,6 +80,7 @@ namespace Cauldron.Anathema
             }
 
             base.AddDefeatedIfDestroyedTriggers();
+            AddTrigger<PhaseChangeAction>(pca => true, pca =>  GameController.DestroyAnyCardsThatShouldBeDestroyed(cardSource: GetCardSource()), TriggerType.Hidden, TriggerTiming.After);
         }
 
         private IEnumerator AdvancedEndOfTurnFrontResponse(PhaseChangeAction arg)
@@ -211,14 +212,20 @@ namespace Cauldron.Anathema
 
         public override bool AskIfCardIsIndestructible(Card card)
         {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+            return base.CharacterCard.IsFlipped && Game.ActiveTurnTaker.IsVillain && IsPotentialIndestructibleBodyPart(card);
+        }
+
+        private bool IsPotentialIndestructibleBodyPart(Card card)
+        {
             bool bodyPartCheck = IsArmOrHead(card);
             if (base.Game.IsChallenge)
             {
                 //Challenge Flipped: Body cards are indestructible during the villain turn.
                 bodyPartCheck = bodyPartCheck || IsBody(card);
             }
-            //Flipped: Arm and head cards are indestructible during the villain turn.
-            return base.CharacterCard.IsFlipped && Game.ActiveTurnTaker.IsVillain && bodyPartCheck;
+
+            return bodyPartCheck;
         }
     }
 }
