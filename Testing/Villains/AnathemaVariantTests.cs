@@ -399,6 +399,25 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestAcceleratedEvolutionHeadIndestructibilityTest_FlippedVillainTurn_NegativeHP()
+        {
+            //Flipped: Arm and head cards are indestructible during the villain turn.
+
+            SetupGameController("Cauldron.Anathema/AcceleratedEvolutionAnathemaCharacter", "Legacy", "Ra", "Haka", "Megalopolis");
+            StartGame();
+            FlipCard(anathema.CharacterCard);
+            AssertFlipped(anathema);
+
+            GoToEndOfTurn();
+            Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
+            DealDamage(ra.CharacterCard, headToDestroy, headToDestroy.HitPoints.Value + 2, DamageType.Fire, isIrreducible: true);
+            DestroyCard(headToDestroy, ra.CharacterCard);
+            AssertInPlayArea(anathema, headToDestroy);
+            GoToNextTurn();
+            AssertInTrash(anathema, headToDestroy);
+        }
+
+        [Test()]
         public void TestAcceleratedEvolutionHeadIndestructibilityTest_FlippedHeroTurn()
         {
             //Flipped: Arm and head cards are indestructible during the villain turn.
