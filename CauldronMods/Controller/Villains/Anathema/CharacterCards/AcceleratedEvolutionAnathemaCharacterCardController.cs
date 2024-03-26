@@ -80,21 +80,7 @@ namespace Cauldron.Anathema
             }
 
             base.AddDefeatedIfDestroyedTriggers();
-            AddTrigger<PhaseChangeAction>(pca => pca.FromPhase != null && pca.FromPhase.TurnTaker == TurnTaker && pca.ToPhase.TurnTaker != TurnTaker, pca => AttemptDestructionAsNeeded(), TriggerType.Hidden, TriggerTiming.After);
-        }
-
-        private IEnumerator AttemptDestructionAsNeeded()
-        {
-            IEnumerable<Card> cardsToDestroy = GameController.FindCardsWhere(c => IsPotentialIndestructibleBodyPart(c) && c.HitPoints != null && c.HitPoints.Value <= 0);
-            IEnumerator coroutine = GameController.DestroyCards(DecisionMaker, new LinqCardCriteria(c => cardsToDestroy.Contains(c), "body parts 0 or less to try to destroy"), autoDecide: true, showOutput: false, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
+            AddTrigger<PhaseChangeAction>(pca => true, pca =>  GameController.DestroyAnyCardsThatShouldBeDestroyed(cardSource: GetCardSource()), TriggerType.Hidden, TriggerTiming.After);
         }
 
         private IEnumerator AdvancedEndOfTurnFrontResponse(PhaseChangeAction arg)
