@@ -26,21 +26,29 @@ namespace Cauldron.TangoOne
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.CharacterCard) && dda.Amount > 0 && !dda.IsPretend,
+            base.AddTrigger<DealDamageAction>(dda => dda.Target.Equals(this.CharacterCard) && dda.Amount > 0,
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[]
                 {
-                    TriggerType.ImmuneToDamage
-                }, TriggerTiming.Before, orderMatters: true, isConditional: false, requireActionSuccess: true, isActionOptional: true);
-
-            // Add a prevention in Pretend to get a better damage preview (but it still doesn't seem to work as intended?)
-            AddPreventDamageTrigger((DealDamageAction dda) => dda.Target.Equals(this.CharacterCard) && dda.Amount > 0 && dda.IsPretend, isPreventEffect: true);
+            TriggerType.RevealCard,
+            TriggerType.CancelAction
+                }, TriggerTiming.Before
+            );
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
-            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
+            if (GameController.PreviewMode)
+            {
+                var e = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.AmbiguousDecision, Card, cardSource: GetCardSource());
+                if (UseUnityCoroutines) { yield return GameController.StartCoroutine(e); }
+                else { GameController.ExhaustCoroutine(e); }
+                yield break;
+            }
 
+            if (dda.IsPretend) yield break;
+
+            List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
             // Ask if player wants to discard off the top of their deck
             IEnumerator routine = base.GameController.MakeYesNoCardDecision(DecisionMaker,
                 SelectionType.RevealTopCardOfDeck, this.Card, dda, storedYesNoResults, null, GetCardSource());

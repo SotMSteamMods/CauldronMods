@@ -394,6 +394,25 @@ namespace CauldronTests
         }
 
         [Test]
+        public void TestChameleonArmorAmbiguousOutcome()
+        {
+            // Arrange
+            SetupGameController("BaronBlade", DeckNamespace, "Ra", "Legacy", "TheTempleOfZhuLong");
+            StartGame();
+
+            PutOnDeck(tango, GetCard(FarsightCardController.Identifier));
+
+            Card assasin = PlayCard("ShinobiAssassin");
+            DecisionSelectLocation = new LocationChoice(tango.TurnTaker.Deck);
+            DestroyCard(assasin);
+
+            // Act
+            PlayCard(ChameleonArmorCardController.Identifier);
+            var preview = GetDamagePreviewResults(baron, tango, 5, DamageType.Cold);
+            AssertDamagePreviewResultNotKnowable(preview, 0);
+        }
+
+        [Test]
         public void TestChameleonArmorDontDiscard()
         {
             // Arrange
