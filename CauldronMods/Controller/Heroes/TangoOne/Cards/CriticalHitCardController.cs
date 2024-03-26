@@ -29,16 +29,24 @@ namespace Cauldron.TangoOne
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard) && !dda.IsPretend,
+            base.AddTrigger<DealDamageAction>(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard),
                 this.RevealTopCardFromDeckResponse,
                 new TriggerType[] { TriggerType.IncreaseDamage },
                 TriggerTiming.Before, null, isConditional: false, requireActionSuccess: true, isActionOptional: true);
-            // Add an IncreaseDamageTrigger in Pretend to get a better damage preview (but it still doesn't seem to work as intended?)
-            AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.IsSameCard(base.CharacterCard) && dda.IsPretend, dda => 3);
         }
 
         private IEnumerator RevealTopCardFromDeckResponse(DealDamageAction dda)
         {
+            if (GameController.PreviewMode)
+            {
+                var e = GameController.MakeYesNoCardDecision(DecisionMaker, SelectionType.AmbiguousDecision, Card, cardSource: GetCardSource());
+                if (UseUnityCoroutines) { yield return GameController.StartCoroutine(e); }
+                else { GameController.ExhaustCoroutine(e); }
+                yield break;
+            }
+
+            if (dda.IsPretend) yield break;
+
             List<YesNoCardDecision> storedYesNoResults = new List<YesNoCardDecision>();
 
             // Ask if player wants to discard off the top of their deck
