@@ -78,6 +78,11 @@ namespace Cauldron.Mythos
             return new MoveCardDestination(base.TurnTaker.Trash);
         }
 
+        public override MoveCardDestination GetDeckDestination()
+        {
+            return new MoveCardDestination(this.TurnTaker.Deck);
+        }
+
         public string DeckIconList()
         {
             //For special string describing the order of icons in the deck top(1) to bottom

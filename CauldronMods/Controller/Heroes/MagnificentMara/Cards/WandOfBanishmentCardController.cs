@@ -25,7 +25,7 @@ namespace Cauldron.MagnificentMara
         private IEnumerator MaybeMoveInsteadResponse(DestroyCardAction dc)
         {
             Card card = dc.CardToDestroy.Card;
-            Location destination = card.NativeDeck is null || card.NativeDeck.OwnerTurnTaker != card.Owner ? card.Owner.Deck : card.NativeDeck;
+            Location destination = GetNativeDeck(card);
             var functions = new List<Function>
             {
                 new Function(DecisionMaker, $"Put {card.Title} on top of its deck", SelectionType.MoveCardOnDeck, () => CancelDestructionAndMoveCard(dc, destination)),

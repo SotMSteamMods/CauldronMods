@@ -84,7 +84,7 @@ namespace Cauldron.Cricket
                     {
                         //Shuffle 1 card from a trash back into its deck.
                         SelectCardDecision decision = new SelectCardDecision(base.GameController, base.HeroTurnTakerController, SelectionType.ShuffleCardFromTrashIntoDeck, base.GameController.FindCardsWhere(new LinqCardCriteria((Card c) => c.IsInTrash)), cardSource: base.GetCardSource());
-                        coroutine = base.GameController.SelectCardAndDoAction(decision, (SelectCardDecision selectedCard) => base.GameController.MoveCard(base.TurnTakerController, selectedCard.SelectedCard, selectedCard.SelectedCard.NativeDeck, shuffledTrashIntoDeck: true, cardSource: base.GetCardSource()));
+                        coroutine = base.GameController.SelectCardAndDoAction(decision, (SelectCardDecision selectedCard) => base.GameController.MoveCard(base.TurnTakerController, selectedCard.SelectedCard, GetNativeDeck(selectedCard.SelectedCard), shuffledTrashIntoDeck: true, cardSource: base.GetCardSource()));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

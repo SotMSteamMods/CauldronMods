@@ -142,7 +142,7 @@ namespace Cauldron.TheStranger
 
                 MoveCardDestination[] possibleDestinations = new MoveCardDestination[]
                 {
-                new MoveCardDestination(card.NativeDeck, false, false, false),
+                new MoveCardDestination(deck, false, false, false),
                 new MoveCardDestination(cardController.GetTrashDestination().Location, false, false, false)
                 };
                 IEnumerator coroutine4 = this.GameController.SelectLocationAndMoveCard(this.HeroTurnTakerController, card, possibleDestinations, false, true, null, null, storedResults, false, false, responsibleTurnTaker, isDiscard, this.GetCardSource(null));

@@ -51,7 +51,7 @@ namespace Cauldron.Titan
             }
             Card selectedTarget = GetSelectedCard(selectTargets);
             //..and each other target from that deck 1 projectile damage.
-            coroutine = base.GameController.DealDamage(base.HeroTurnTakerController, base.CharacterCard, (Card c) => c != selectedTarget && c.NativeDeck == selectedTarget.NativeDeck, 1, DamageType.Projectile, cardSource: base.GetCardSource());
+            coroutine = base.GameController.DealDamage(base.HeroTurnTakerController, base.CharacterCard, (Card c) => c != selectedTarget && GetNativeDeck(c) == GetNativeDeck(selectedTarget), 1, DamageType.Projectile, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

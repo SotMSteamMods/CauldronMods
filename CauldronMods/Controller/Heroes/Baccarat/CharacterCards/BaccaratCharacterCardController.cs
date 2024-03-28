@@ -46,7 +46,7 @@ namespace Cauldron.Baccarat
 
                         List<MoveCardDestination> list = new List<MoveCardDestination>
                         {
-                            new MoveCardDestination(GetSelectedCard(selectCardDecisions).NativeDeck, true)
+                            new MoveCardDestination(GetNativeDeck(GetSelectedCard(selectCardDecisions)), true)
                         };
                         //Move first card
                         coroutine = base.GameController.MoveCard(this.TurnTakerController, selectCardDecisions.FirstOrDefault().SelectedCard, list.FirstOrDefault().Location, true, false, false, null, false, null, null, null, false, false, null, false, false, false, true, base.GetCardSource(null));
@@ -61,7 +61,7 @@ namespace Cauldron.Baccarat
 
                         //Pick second card
                         List<SelectCardDecision> selectCardDecisions2 = new List<SelectCardDecision>();
-                        coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, new LinqCardCriteria((Card c) => c.IsInTrash && c.NativeDeck == list.FirstOrDefault().Location && this.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource(null))), selectCardDecisions2, false);
+                        coroutine = base.GameController.SelectCardAndStoreResults(this.HeroTurnTakerController, SelectionType.MoveCardOnBottomOfDeck, new LinqCardCriteria((Card c) => c.IsInTrash && GetNativeDeck(c) == list.FirstOrDefault().Location && this.GameController.IsLocationVisibleToSource(c.Location, base.GetCardSource(null))), selectCardDecisions2, false);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

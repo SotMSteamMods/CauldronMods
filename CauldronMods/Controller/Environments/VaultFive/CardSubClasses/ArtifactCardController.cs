@@ -153,7 +153,7 @@ namespace Cauldron.VaultFive
             int offset;
 
             //go under the proper number of cards depending on the number of cards in the deck
-            switch(Card.NativeDeck.NumberOfCards)
+            switch(GetNativeDeck(this.Card).NumberOfCards)
             {
                 case 0:
                     offset = 0;
@@ -165,7 +165,7 @@ namespace Cauldron.VaultFive
                     offset = 2;
                     break;
             }
-            IEnumerator coroutine3 = GameController.MoveCard(TurnTakerController, Card, Card.NativeDeck, offset: offset, showMessage: true, cardSource: GetCardSource());
+            IEnumerator coroutine3 = GameController.MoveCard(TurnTakerController, Card, GetNativeDeck(this.Card), offset: offset, showMessage: true, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine3);

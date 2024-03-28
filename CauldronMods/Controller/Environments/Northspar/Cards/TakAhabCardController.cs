@@ -95,8 +95,8 @@ namespace Cauldron.Northspar
                         if (this.DidMoveCard(storedResultsMove))
                         {
                             //if the card was moved, this card deals the target from that deck with the highest HP X irreducible sonic damage, where X = the number of Waypoints in play plus 2.
-                            Location nativeDeck = storedResultsMove.First().CardToMove.NativeDeck;
-                            Func<Card, bool> criteria = (Card c) => c.NativeDeck == nativeDeck && c.IsInPlayAndHasGameText && c.IsTarget;
+                            Location nativeDeck = GetNativeDeck(storedResultsMove.First().CardToMove);
+                            Func<Card, bool> criteria = (Card c) => GetNativeDeck(c) == nativeDeck && c.IsInPlayAndHasGameText && c.IsTarget;
                             Func<Card, int?> amount = (Card c) => new int?(base.GetNumberOfWaypointsInPlay() + 2);
                             coroutine = base.DealDamageToHighestHP(base.Card, 1, criteria, amount, DamageType.Sonic, true);
                             if (this.UseUnityCoroutines)

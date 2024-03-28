@@ -85,7 +85,7 @@ namespace Cauldron.BlackwoodForest
             }
 
             // Shuffle The Hound back into the environment deck
-            coroutine = this.GameController.ShuffleCardIntoLocation(DecisionMaker, Card, Card.NativeDeck, false, cardSource: GetCardSource());
+            coroutine = this.GameController.ShuffleCardIntoLocation(DecisionMaker, Card, GetNativeDeck(Card), false, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
