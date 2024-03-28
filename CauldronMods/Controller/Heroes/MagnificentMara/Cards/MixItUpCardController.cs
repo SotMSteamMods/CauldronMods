@@ -29,7 +29,7 @@ namespace Cauldron.MagnificentMara
             //"If you do, reveal the top 2 cards of the associated deck, put one into play and discard the other."
             if(DidDestroyCard(storedDestroy))
             {
-                var associatedDeck = storedDestroy.FirstOrDefault().CardToDestroy.Card.NativeDeck;
+                var associatedDeck = GetNativeDeck(storedDestroy.FirstOrDefault().CardToDestroy.Card);
                 var destinations = new List<MoveCardDestination> {
                         new MoveCardDestination(associatedDeck.OwnerTurnTaker.PlayArea),
                         new MoveCardDestination(associatedDeck.OwnerTurnTaker.Trash)

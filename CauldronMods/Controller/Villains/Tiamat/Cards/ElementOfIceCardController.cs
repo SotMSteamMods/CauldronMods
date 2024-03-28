@@ -55,7 +55,7 @@ namespace Cauldron.Tiamat
 
             //...may not use powers until the start of the next villain turn.
             CannotUsePowersStatusEffect cannotUsePowersStatusEffect = new CannotUsePowersStatusEffect();
-            cannotUsePowersStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = highestHpHero.NativeDeck.OwnerTurnTaker;
+            cannotUsePowersStatusEffect.TurnTakerCriteria.IsSpecificTurnTaker = highestHpHero.Owner;
             cannotUsePowersStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
             coroutine = base.AddStatusEffect(cannotUsePowersStatusEffect);
             if (base.UseUnityCoroutines)

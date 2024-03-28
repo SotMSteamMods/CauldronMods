@@ -26,6 +26,10 @@ namespace Cauldron.Mythos
 
         public override void AddSideTriggers()
         {
+            //If any of Mythos' cards would end up in a subdeck trash, put it in her regular trash instead
+            AddSideTrigger(AddTrigger<MoveCardAction>((MoveCardAction mc) => mc.Destination.IsSubTrash && mc.Destination.OwnerTurnTaker == this.TurnTaker, PutInMainTrash, TriggerType.MoveCard, TriggerTiming.After));
+            AddSideTrigger(AddTrigger<MoveCardAction>((MoveCardAction mc) => mc.Destination.IsSubDeck && mc.Destination.OwnerTurnTaker == this.TurnTaker, PutInMainDeck, TriggerType.MoveCard, TriggerTiming.After));
+
             if (!this.Card.IsFlipped)
             {
                 //Activate any {MythosDanger}, {MythosMadness}, {MythosClue} effects that match the icon on top of the villain deck.
@@ -318,7 +322,7 @@ namespace Cauldron.Mythos
             {
                 return false;
             }
-
+            
             //Advanced - Back: Activate all {MythosDanger} effects.
             if (base.Game.IsAdvanced && base.CharacterCard.IsFlipped && type == MythosDangerDeckIdentifier)
             {
@@ -333,6 +337,33 @@ namespace Cauldron.Mythos
                             "Selecting whether to play the top card of the villain deck",
                             "Vote for whether to play the top card of the villain deck without adding a token to Dangerous Investigation.",
                             "Play {{Clue}} cards from villain deck without adding tokens");
+        }
+
+        private IEnumerator PutInMainTrash(MoveCardAction mc)
+        {
+            IEnumerator coroutine = base.GameController.MoveCard(this.TurnTakerController, mc.CardToMove, this.TurnTaker.Trash, cardSource: mc.CardSource);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+
+        private IEnumerator PutInMainDeck(MoveCardAction mc)
+        {
+            bool ToBottom = mc.ToBottom;
+            IEnumerator coroutine = base.GameController.MoveCard(this.TurnTakerController, mc.CardToMove, this.TurnTaker.Deck, toBottom: ToBottom, cardSource: mc.CardSource);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Cauldron.NightloreCitadel
             {
                 //shuffle it back into its associated deck.
                 Card selectedCard = GetSelectedCard(storedDecision);
-                coroutine = GameController.MoveCard(TurnTakerController, selectedCard, selectedCard.NativeDeck, showMessage: true, cardSource: GetCardSource());
+                coroutine = GameController.MoveCard(TurnTakerController, selectedCard, GetNativeDeck(selectedCard), showMessage: true, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -64,7 +64,7 @@ namespace Cauldron.NightloreCitadel
                 //If a card leaves play this way, play the top card of the associated deck. 
                 if (!selectedCard.IsInPlayAndHasGameText)
                 {
-                    coroutine = ShuffleDeck(DecisionMaker, selectedCard.NativeDeck);
+                    coroutine = ShuffleDeck(DecisionMaker, GetNativeDeck(selectedCard));
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);
@@ -74,7 +74,7 @@ namespace Cauldron.NightloreCitadel
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
 
-                    coroutine = GameController.PlayTopCardOfLocation(TurnTakerController, selectedCard.NativeDeck, cardSource: GetCardSource());
+                    coroutine = GameController.PlayTopCardOfLocation(TurnTakerController, GetNativeDeck(selectedCard), responsibleTurnTaker: this.TurnTaker, cardSource: GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
                         yield return base.GameController.StartCoroutine(coroutine);

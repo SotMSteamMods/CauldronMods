@@ -306,7 +306,7 @@ namespace Cauldron.Drift
                         }
 
                         Card selectedCard = GetSelectedCard(cardDecision);
-                        coroutine = base.GameController.MoveCard(base.TurnTakerController, selectedCard, selectedCard.NativeDeck, cardSource: base.GetCardSource());
+                        coroutine = base.GameController.MoveCard(base.TurnTakerController, selectedCard, GetNativeDeck(selectedCard), cardSource: base.GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

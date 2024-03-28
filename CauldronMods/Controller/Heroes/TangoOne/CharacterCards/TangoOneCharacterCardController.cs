@@ -190,7 +190,7 @@ namespace Cauldron.TangoOne
             TurnTaker ownerTurnTaker = deck.OwnerTurnTaker;
 
             MoveCardDestination[] possibleDestinations = {
-                new MoveCardDestination(card.NativeDeck),
+                new MoveCardDestination(deck),
                 new MoveCardDestination(cardController.GetTrashDestination().Location)
             };
 

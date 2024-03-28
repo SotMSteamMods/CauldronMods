@@ -64,7 +64,7 @@ namespace Cauldron.Impact
             if (scd.SelectedCard != null)
             {
                 var card = scd.SelectedCard;
-                IEnumerator coroutine = GameController.MoveCard(DecisionMaker, card, card.NativeDeck, toBottom: true, cardSource: GetCardSource());
+                IEnumerator coroutine = GameController.MoveCard(DecisionMaker, card, GetNativeDeck(card), toBottom: true, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

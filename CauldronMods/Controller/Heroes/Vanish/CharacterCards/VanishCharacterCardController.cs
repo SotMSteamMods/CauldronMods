@@ -102,8 +102,8 @@ namespace Cauldron.Vanish
                                 var card = revealedCards.First();
                                 var locations = new[]
                                 {
-                                        new MoveCardDestination(card.NativeDeck, true, false),
-                                        new MoveCardDestination(card.NativeDeck, false, true)
+                                        new MoveCardDestination(GetNativeDeck(card), true, false),
+                                        new MoveCardDestination(GetNativeDeck(card), false, true)
                                     };
 
                                 coroutine = GameController.SelectLocationAndMoveCard(this.DecisionMaker, card, locations, cardSource: GetCardSource());

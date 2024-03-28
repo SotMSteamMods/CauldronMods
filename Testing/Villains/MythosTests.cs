@@ -1697,5 +1697,17 @@ namespace CauldronTests
             AssertInTrash(bestCard);
             AssertInHand(iFound, lemmeSee);
         }
+
+        [Test()]
+        public void TestAbductAndAbandonWithMythosSubdecks()
+        {
+            SetupGameController("Cauldron.Mythos", "Cauldron.Vanish", "Bunker", "Haka", "Megalopolis");
+            StartGame();
+
+            Card align = PlayCard("OtherworldlyAlignment");
+            DecisionSelectCard = align;
+            PlayCard("AbductAndAbandon");
+            AssertAtLocation(align, mythos.TurnTaker.Deck);
+        }
     }
 }

@@ -81,7 +81,7 @@ namespace Cauldron.BlackwoodForest
                 Card revealedCard = revealedCards.First();
 
                 // Top deck the card 
-                coroutine = GameController.MoveCard(this.TurnTakerController, revealedCard, revealedCard.NativeDeck, cardSource: GetCardSource());
+                coroutine = GameController.MoveCard(this.TurnTakerController, revealedCard, FindDeckFromTrash(trash), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

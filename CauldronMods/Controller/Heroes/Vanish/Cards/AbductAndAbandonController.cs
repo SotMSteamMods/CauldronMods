@@ -36,10 +36,8 @@ namespace Cauldron.Vanish
             if (scd.SelectedCard != null)
             {
                 var card = scd.SelectedCard;
-
-                Location destination = card.NativeDeck is null || card.NativeDeck.OwnerTurnTaker != card.Owner ? card.Owner.Deck : card.NativeDeck;
               
-                var coroutine = GameController.MoveCard(DecisionMaker, card, destination,
+                var coroutine = GameController.MoveCard(DecisionMaker, card, GetNativeDeck(card),
                                     showMessage: true,
                                     decisionSources: new IDecision[] { scd },
                                     evenIfIndestructible: false,
