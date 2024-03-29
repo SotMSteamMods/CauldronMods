@@ -509,6 +509,7 @@ namespace CauldronTests
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            MoveAllCardsFromHandToDeck(cricket);
             QuickHandStorage(cricket);
             QuickHPStorage(akash.CharacterCard);
             PlayCard("ReturnPulse");
