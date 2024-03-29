@@ -408,9 +408,8 @@ namespace CauldronTests
             FlipCard(anathema.CharacterCard);
             AssertFlipped(anathema);
 
-            GoToEndOfTurn();
             Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
-            DealDamage(ra.CharacterCard, headToDestroy, headToDestroy.HitPoints.Value + 2, DamageType.Fire, isIrreducible: true);
+            DealDamage(ra.CharacterCard, headToDestroy, 50, DamageType.Fire, isIrreducible: true);
             DestroyCard(headToDestroy, ra.CharacterCard);
             AssertInPlayArea(anathema, headToDestroy);
             GoToNextTurn();
