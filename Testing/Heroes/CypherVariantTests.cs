@@ -349,7 +349,8 @@ namespace CauldronTests
             StartGame();
 
             SetHitPoints(new[] { cypher.CharacterCard, ra.CharacterCard, tachyon.CharacterCard }, 18);
-            var fauxAug = SetupSwarmingAugment(ra);
+            Card hand = PutInHand("InitiatedUpgrade");
+            var fauxAug = SetupSwarmingAugment(ra,hand);
             Card dermalAug = GetCard(DermalAugCardController.Identifier);
             Card retinalAug = GetCard(RetinalAugCardController.Identifier);
 
