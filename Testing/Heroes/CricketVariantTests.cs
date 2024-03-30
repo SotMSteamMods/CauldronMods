@@ -631,6 +631,8 @@ namespace CauldronTests
             DecisionSelectFromBoxTurnTakerIdentifier = "AbsoluteZero";
             RunActiveTurnPhase();
 
+            ResetDecisions();
+
             GoToBeforeStartOfTurn(az);
             DecisionSelectFunction = 3;
             RunActiveTurnPhase();
