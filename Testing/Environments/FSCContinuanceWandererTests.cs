@@ -302,6 +302,7 @@ namespace CauldronTests
             //This card is immune to damage dealt by targets with less than 10HP.
             SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Tachyon", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            DestroyCard("LaParadojaMagnifica");
             GoToPlayCardPhase(env);
             PlayCard("PrehistoricBehemoth");
             //At the end of the environment turn, this card deals the {H - 2} targets 2 melee damage each.
