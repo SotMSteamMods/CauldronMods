@@ -1093,6 +1093,7 @@ namespace CauldronTests
             DiscardAllCards(guise, parse);
             StartGame();
 
+            PutOnDeck("LumobatFlock");
             PutOnDeck("AquaticSphere");
             StackDeckAfterShuffle(menagerie, new string[] { "HyrianSnipe" });
             Card tak = PlayCard("TakIshmael");
