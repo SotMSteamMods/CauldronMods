@@ -1771,6 +1771,7 @@ namespace CauldronTests
             var p1 = GetCard("PillarOfNight");
             var p2 = GetCard("PillarOfSky");
             var p3 = GetCard("PillarOfStorms");
+            MoveCards(impact, FindCardsWhere((Card c) => c.Identifier == "CrushingRift"), impact.TurnTaker.Trash);
 
             //H = 3, 4 damage per trigger, 6 total triggers possible
             DecisionSelectTurnTaker = impact.HeroTurnTaker;
