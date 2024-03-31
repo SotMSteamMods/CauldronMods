@@ -233,6 +233,7 @@ namespace CauldronTests
         public void TestDynamo_Advanced()
         {
             SetupGameController(new string[] { "Cauldron.Dynamo", "Cauldron.Quicksilver", "Haka", "Unity", "TheScholar", "Megalopolis" }, true);
+            PutOnDeck("CrimeSpree");
             StartGame();
 
             AssertNumberOfCardsInTrash(dynamo, 1);
@@ -257,7 +258,7 @@ namespace CauldronTests
             GoToEndOfTurn(dynamo);
             // Iron Retort will play Coalescing Spear to make sure hero damage isn't increased
             // Damage should be 2 since Hardened Criminals will be out and reduce it from its normal 3 to 2.
-            //Back-Advanced: Increase damage dealt by villain targets by 1.
+            //Back-Advanced: Increase dam age dealt by villain targets by 1.
             //Helmeted Charge: If Copperhead is in play, he deals each hero target 2 melee damage.
 
             //This damage is not increased because Villain has flipped back already
