@@ -1236,6 +1236,10 @@ namespace CauldronTests
 
             GoToEndOfTurn(scionTwo);
             Card guide = PlayCard("LabyrinthGuide");
+
+            DestroyCards(FindCardsWhere((Card c) => c.IsAeonMan && c.IsInPlayAndHasGameText));
+            GoToEndOfTurn(scionOne);
+
             QuickHPStorage(ra, legacy, haka, tachyon, luminary);
             GoToStartOfTurn(envTwo);
             QuickHPCheckZero();
