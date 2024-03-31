@@ -417,7 +417,7 @@ namespace CauldronTests
             Card saint = GetCard("AceOfSaints");
             PutInHand(saint);
             //discard the rest of bacarrat's deck to make sure there are pairs in the trash
-            DiscardTopCards(baccarat, 35);
+            MoveAllCards(baccarat, baccarat.TurnTaker.Deck, baccarat.TurnTaker.Trash);
 
 
             GoToPlayCardPhase(baccarat);
