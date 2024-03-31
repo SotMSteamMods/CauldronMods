@@ -1330,11 +1330,17 @@ namespace CauldronTests
         public void TestPillarsOfCreation_Timing_BreakingTheRules()
         {
             SetupGameController("WagerMaster", "Cauldron.Starlight", "Haka", "Ra", "RealmOfDiscord");
+
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds");
+
+            //Wagelings can cause a game over immediately, so banish them
+            MoveCards(wager, FindCardsWhere((Card c) => c.Identifier == "Wagelings"), wager.TurnTaker.Trash);
+
             StartGame();
             DecisionAutoDecideIfAble = true;
             DestroyNonCharacterVillainCards();
-            //losingtothe odds causes a game over mid test, banish it.
-            PutInTrash("LosingToTheOdds", "LosingToTheOdds", "LosingToTheOdds");
+            
 
             var card = PutInHand("AncientConstellationA");
             PutInHand("AncientConstellationB");
