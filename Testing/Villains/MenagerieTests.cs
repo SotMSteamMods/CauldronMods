@@ -231,6 +231,7 @@ namespace CauldronTests
         {
             SetupGameController(new string[] { "Cauldron.Menagerie", "TheSentinels", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
             DiscardAllCards(sentinels, bunker);
+            PutInHand("DontDismissAnything");
 
             StartGame();
 
