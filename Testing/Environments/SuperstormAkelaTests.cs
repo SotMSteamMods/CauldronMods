@@ -387,11 +387,11 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
             StartGame();
             GoToPlayCardPhase(superstorm);
-            Card pressure = PlayCard("PressureDrop");
-            Card maya = PlayCard("GeminiMaya");
+            Card pressure = PutOnDeck("PressureDrop");
+            Card maya = PutOnDeck("GeminiMaya");
             Card sky = PlayCard("FracturedSky");
 
-            AssertInPlayArea(superstorm, sky);
+            AssertInPlayArea(superstorm, new Card[] { sky, maya, pressure });
 
             //should only be destroyed on environment target destruction
             DestroyCard(pressure, baron.CharacterCard);
