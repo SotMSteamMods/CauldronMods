@@ -594,6 +594,7 @@ namespace CauldronTests
         public void TestFallDealLightningTriggerOrder()
         {
             SetupGameController("Ambuscade", "Cauldron.LadyOfTheWood", "Ra", "Haka", "Megalopolis");
+            MoveCards(ambuscade, FindCardsWhere((Card c) => c.Identifier == "SonicMine"), ambuscade.TurnTaker.Trash);
             StartGame();
             GoToPlayCardPhase(ambuscade);
             Card sonicMine = PlayCard("SonicMine");
@@ -613,6 +614,7 @@ namespace CauldronTests
         public void TestFallDealLightningDamageTypeChange()
         {
             SetupGameController("Ambuscade", "Ra", "Cauldron.LadyOfTheWood", "Haka", "Megalopolis");
+            MoveCards(ambuscade, FindCardsWhere((Card c) => c.Identifier == "SonicMine"), ambuscade.TurnTaker.Trash);
             StartGame();
             GoToPlayCardPhase(ambuscade);
             Card sonicMine = PlayCard("SonicMine");
