@@ -9,6 +9,7 @@ namespace Cauldron.MagnificentMara
 {
     public class AbracadabraCardController : CardController
     {
+        private const string SavedCard = "AbracadabraSavedCard";
         public AbracadabraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -48,6 +49,7 @@ namespace Cauldron.MagnificentMara
 
             if (DidPlayerAnswerYes(decisionResult))
             {
+                Journal.RecordCardProperties(Card, SavedCard, dc.CardToDestroy.Card);
                 dc.SetPostDestroyDestination(dc.CardToDestroy.Card.Owner.ToHero().Hand);
                 dc.AddAfterDestroyedAction(() => DestroyThisCardIfMovedResponse(dc), this);
             }
@@ -57,9 +59,15 @@ namespace Cauldron.MagnificentMara
 
         private IEnumerator DestroyThisCardIfMovedResponse(DestroyCardAction dc)
         {
+            Card savingCard = Journal.CardPropertiesEntriesThisTurn((prop) => prop.Key == SavedCard && prop.OtherCard == dc.CardToDestroy.Card).FirstOrDefault().Card;
+            CardController savingController = FindCardController(savingCard);
             if (dc.CardToDestroy.Card.Location.IsHand)
             {
-                var coroutine = DestroyThisCardResponse(dc);
+                GameController gameController = savingController.GameController;
+                HeroTurnTakerController decisionMaker = savingController.DecisionMaker;
+                Card card = savingController.Card;
+                CardSource cardSource = savingController.GetCardSource();
+                var coroutine = GameController.DestroyCard(decisionMaker, card, optional: false, null, null, null, null, null, null, null, null, cardSource);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -69,6 +77,10 @@ namespace Cauldron.MagnificentMara
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+
+            // If the card destroyed itself, this flag has no more purpose
+            // If the destruction was prevented somehow, it should also be reset
+            Journal.RemoveCardProperties(savingCard, SavedCard);
             yield break;
         }
 
