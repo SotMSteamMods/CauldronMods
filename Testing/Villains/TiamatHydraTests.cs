@@ -1718,6 +1718,13 @@ namespace CauldronTests
         public void TestNoWinConditionWhenInfernoMouthInstructionsFrontOut()
         {
             SetupGameController(new string[] { "Cauldron.Tiamat/HydraWinterTiamatCharacter", "WagerMaster", "Parse", "Bunker", "Haka", "Megalopolis" });
+
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds");
+
+            //Wagelings can cause a game over immediately, so banish them
+            MoveCards(wager, FindCardsWhere((Card c) => c.Identifier == "Wagelings"), wager.TurnTaker.Trash);
+
             StartGame();
             IEnumerable<Card> wagerCardsToDestroy = FindCardsWhere((Card c) => c.Owner == wager.TurnTaker && c.IsInPlay);
             DestroyCards(wagerCardsToDestroy);
