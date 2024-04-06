@@ -2,7 +2,6 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 
 namespace Cauldron.MagnificentMara
@@ -22,7 +21,8 @@ namespace Cauldron.MagnificentMara
                                                                                 IsHero(dc.CardToDestroy.Card) &&
                                                                                 !dc.CardToDestroy.Card.IsCharacter &&
                                                                                 dc.CardToDestroy.Card.Owner != TurnTaker &&
-                                                                                dc.WasCardDestroyed;
+                                                                                dc.WasCardDestroyed &&
+                                                                                dc.PostDestroyDestinationCanBeChanged;
                                                                                 
             AddTrigger(validCardDestroyed, MayReturnDestroyedResponse, new TriggerType[] { TriggerType.MoveCard, TriggerType.DestroySelf }, TriggerTiming.After);
             
@@ -49,17 +49,20 @@ namespace Cauldron.MagnificentMara
             if (DidPlayerAnswerYes(decisionResult))
             {
                 dc.SetPostDestroyDestination(dc.CardToDestroy.Card.Owner.ToHero().Hand);
-                dc.AddAfterDestroyedAction(() => DestroyThisCardIfMovedResponse(dc), this);
+
+                var card = Card;
+                dc.AddAfterDestroyedAction(() => DestroyThisCardIfMovedResponse(dc, card), this);
             }
 
             yield break;
         }
 
-        private IEnumerator DestroyThisCardIfMovedResponse(DestroyCardAction dc)
+        private IEnumerator DestroyThisCardIfMovedResponse(DestroyCardAction dc, Card savingCard)
         {
+            CardController savingController = FindCardController(savingCard);
             if (dc.CardToDestroy.Card.Location.IsHand)
             {
-                var coroutine = DestroyThisCardResponse(dc);
+                var coroutine = GameController.DestroyCard(savingController.DecisionMaker, savingCard, optional: false, null, cardSource: savingController.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -69,7 +72,6 @@ namespace Cauldron.MagnificentMara
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-            yield break;
         }
 
         private IEnumerator OnePlayerMayPlayCardResponse(DestroyCardAction dc)
@@ -83,7 +85,6 @@ namespace Cauldron.MagnificentMara
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }

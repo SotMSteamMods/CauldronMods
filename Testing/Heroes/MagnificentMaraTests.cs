@@ -644,6 +644,70 @@ namespace CauldronTests
             AssertIsInPlay(battalion);
         }
         [Test]
+        public void TestAbracadabraDestroysBeforeUhYeahImThatGuy()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Guise", "Megalopolis");
+
+            StartGame();
+
+            Card abra = PlayCard("Abracadabra");
+            Card surge = PlayCard("SurgeOfStrength");
+            Card ip = PlayCard("InspiringPresence");
+            Card ring = PlayCard("TheLegacyRing");
+            Card uhyeah = PlayCard("UhYeahImThatGuy");
+            Card crystal = PutInHand("DowsingCrystal");
+
+            DecisionYesNo = true;
+            DecisionSelectTurnTaker = mara.TurnTaker;
+            DecisionSelectCards = new List<Card> { abra, crystal };
+
+            DestroyCard(surge);
+            AssertInTrash(abra);
+            AssertIsInPlay(ip);
+            AssertIsInPlay(ring);
+            AssertIsInPlay(uhyeah);
+
+            DestroyCard(ring);
+            AssertIsInPlay(ip);
+            AssertIsInPlay(uhyeah);
+            AssertIsInPlay(crystal);
+        }
+        [Test]
+        public void TestUhYeahImThatGuyDestroysBeforeAbracadabra()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Guise", "Megalopolis");
+
+            StartGame();
+
+            Card abra = PlayCard("Abracadabra");
+            Card surge = PlayCard("SurgeOfStrength");
+            Card ip = PlayCard("InspiringPresence");
+            Card ring = PlayCard("TheLegacyRing");
+            Card uhyeah = PlayCard("UhYeahImThatGuy");
+            Card crystal = PutInHand("DowsingCrystal");
+            Card kalpak = PutInHand("KalpakOfMysteries");
+
+            DecisionsYesNo = new List<bool> { false, true, false, true };
+            DecisionSelectTurnTaker = mara.TurnTaker;
+            DecisionSelectCards = new List<Card> { abra, abra, crystal, kalpak };
+
+            // - Surge of Strength gets destroyed
+            // - Mara declines to save it using Abracadabra! 
+            // - Guise chooses to save it using Uh, Yeah, I'm That Guy copying Abracadabra
+            // - Mara declines to save Uh, Yeah, I'm That Guy
+            DestroyCard(surge);
+            AssertIsInPlay(abra);
+            AssertIsInPlay(ip);
+            AssertIsInPlay(ring);
+            AssertInTrash(uhyeah);
+
+            DestroyCard(ring);
+            AssertIsInPlay(ip);
+            AssertIsInPlay(crystal);
+            AssertIsInPlay(kalpak);
+            AssertInTrash(abra);
+        }
+        [Test]
         public void TestHandIsFasterThanTheEyeGetsStartOfTurnTrigger()
         {
             SetupGameController("CitizenDawn", "Cauldron.MagnificentMara", "Legacy", "TheScholar", "Megalopolis");
