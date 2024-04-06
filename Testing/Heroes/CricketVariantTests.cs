@@ -354,12 +354,17 @@ namespace CauldronTests
         public void TestWastelandRoninCricketInnatePower_BreakingTheRules()
         {
             SetupGameController("WagerMaster", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Bunker", "TheScholar", "Megalopolis");
+
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds");
+
+            //Wagelings can cause a game over immediately, so banish them
+            MoveCards(wager, FindCardsWhere((Card c) => c.Identifier == "Wagelings"), wager.TurnTaker.Trash);
+
             StartGame();
                         
             DestroyNonCharacterVillainCards();
-            //losingtothe odds causes a game over mid test, banish it.
-            PutInTrash("LosingToTheOdds", "LosingToTheOdds", "LosingToTheOdds");
-
+            
             PlayCard("BreakingTheRules");
 
             //Increase damage dealt by {Cricket} during your next turn by 1. {Cricket} may deal 1 target 1 sonic damage.
@@ -569,6 +574,7 @@ namespace CauldronTests
 
             StartGame();
             SetupIncap(oblivaeon);
+            MoveCard(oblivaeon, "ScatterSlaughter", oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
 
             GoToAfterEndOfTurn(oblivaeon);
             DecisionSelectFromBoxIdentifiers = new string[] { "Bunker" };
@@ -630,6 +636,8 @@ namespace CauldronTests
             DecisionSelectFromBoxIdentifiers = new string[] { "AbsoluteZero" };
             DecisionSelectFromBoxTurnTakerIdentifier = "AbsoluteZero";
             RunActiveTurnPhase();
+
+            ResetDecisions();
 
             GoToBeforeStartOfTurn(az);
             DecisionSelectFunction = 3;
