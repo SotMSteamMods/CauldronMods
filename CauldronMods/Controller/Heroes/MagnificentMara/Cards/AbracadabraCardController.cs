@@ -2,14 +2,12 @@ using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 
 namespace Cauldron.MagnificentMara
 {
     public class AbracadabraCardController : CardController
     {
-        private const string SavedCard = "AbracadabraSavedCard";
         public AbracadabraCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
         }
@@ -23,7 +21,8 @@ namespace Cauldron.MagnificentMara
                                                                                 IsHero(dc.CardToDestroy.Card) &&
                                                                                 !dc.CardToDestroy.Card.IsCharacter &&
                                                                                 dc.CardToDestroy.Card.Owner != TurnTaker &&
-                                                                                dc.WasCardDestroyed;
+                                                                                dc.WasCardDestroyed &&
+                                                                                dc.PostDestroyDestinationCanBeChanged;
                                                                                 
             AddTrigger(validCardDestroyed, MayReturnDestroyedResponse, new TriggerType[] { TriggerType.MoveCard, TriggerType.DestroySelf }, TriggerTiming.After);
             
@@ -49,25 +48,21 @@ namespace Cauldron.MagnificentMara
 
             if (DidPlayerAnswerYes(decisionResult))
             {
-                Journal.RecordCardProperties(Card, SavedCard, dc.CardToDestroy.Card);
                 dc.SetPostDestroyDestination(dc.CardToDestroy.Card.Owner.ToHero().Hand);
-                dc.AddAfterDestroyedAction(() => DestroyThisCardIfMovedResponse(dc), this);
+
+                var card = Card;
+                dc.AddAfterDestroyedAction(() => DestroyThisCardIfMovedResponse(dc, card), this);
             }
 
             yield break;
         }
 
-        private IEnumerator DestroyThisCardIfMovedResponse(DestroyCardAction dc)
+        private IEnumerator DestroyThisCardIfMovedResponse(DestroyCardAction dc, Card savingCard)
         {
-            Card savingCard = Journal.CardPropertiesEntriesThisTurn((prop) => prop.Key == SavedCard && prop.OtherCard == dc.CardToDestroy.Card).FirstOrDefault().Card;
             CardController savingController = FindCardController(savingCard);
             if (dc.CardToDestroy.Card.Location.IsHand)
             {
-                GameController gameController = savingController.GameController;
-                HeroTurnTakerController decisionMaker = savingController.DecisionMaker;
-                Card card = savingController.Card;
-                CardSource cardSource = savingController.GetCardSource();
-                var coroutine = GameController.DestroyCard(decisionMaker, card, optional: false, null, null, null, null, null, null, null, null, cardSource);
+                var coroutine = GameController.DestroyCard(savingController.DecisionMaker, savingCard, optional: false, null, cardSource: savingController.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -77,11 +72,6 @@ namespace Cauldron.MagnificentMara
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
-
-            // If the card destroyed itself, this flag has no more purpose
-            // If the destruction was prevented somehow, it should also be reset
-            Journal.RemoveCardProperties(savingCard, SavedCard);
-            yield break;
         }
 
         private IEnumerator OnePlayerMayPlayCardResponse(DestroyCardAction dc)
@@ -95,7 +85,6 @@ namespace Cauldron.MagnificentMara
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
         }
     }
 }

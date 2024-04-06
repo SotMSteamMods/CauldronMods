@@ -644,7 +644,7 @@ namespace CauldronTests
             AssertIsInPlay(battalion);
         }
         [Test]
-        public void TestAbraDestroysBeforeUhYeahImThatGuy()
+        public void TestAbracadabraDestroysBeforeUhYeahImThatGuy()
         {
             SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Legacy", "Guise", "Megalopolis");
 
