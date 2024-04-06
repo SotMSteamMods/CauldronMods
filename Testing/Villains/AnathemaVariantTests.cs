@@ -409,6 +409,7 @@ namespace CauldronTests
             StartGame();
             FlipCard(anathema.CharacterCard);
             AssertFlipped(anathema);
+            PutOnDeck("AnathemaRampage");
 
             Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
             DealDamage(ra.CharacterCard, headToDestroy, 50, DamageType.Fire, isIrreducible: true);
