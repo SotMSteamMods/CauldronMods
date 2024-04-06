@@ -302,6 +302,7 @@ namespace CauldronTests
             //This card is immune to damage dealt by targets with less than 10HP.
             SetupGameController("LaCapitan", "Guise", "Parse", "Haka", "Tachyon", "Cauldron.FSCContinuanceWanderer");
             StartGame();
+            DestroyCard("LaParadojaMagnifica");
             GoToPlayCardPhase(env);
             PlayCard("PrehistoricBehemoth");
             //At the end of the environment turn, this card deals the {H - 2} targets 2 melee damage each.
@@ -703,6 +704,13 @@ namespace CauldronTests
         public void TestTimeFreezeWithTurnOrderReversed()
         {
             SetupGameController("WagerMaster", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds");
+
+            //Wagelings can cause a game over immediately, so banish them
+            MoveCards(wager, FindCardsWhere((Card c) => c.Identifier == "Wagelings"), wager.TurnTaker.Trash);
+
             StartGame();
 
             var conditions = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsCondition);
@@ -746,6 +754,13 @@ namespace CauldronTests
         public void TestTimeFreezeWithTurnAndPhaseOrderReversed()
         {
             SetupGameController("WagerMaster", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds");
+
+            //Wagelings can cause a game over immediately, so banish them
+            MoveCards(wager, FindCardsWhere((Card c) => c.Identifier == "Wagelings"), wager.TurnTaker.Trash);
+
             StartGame();
 
             var conditions = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsCondition);
@@ -780,6 +795,13 @@ namespace CauldronTests
         public void TestTimeFreezeWithPhaseOrderReversed()
         {
             SetupGameController("WagerMaster", "Legacy", "Ra", "Haka", "Cauldron.FSCContinuanceWanderer");
+
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds");
+
+            //Wagelings can cause a game over immediately, so banish them
+            MoveCards(wager, FindCardsWhere((Card c) => c.Identifier == "Wagelings"), wager.TurnTaker.Trash);
+
             StartGame();
 
             var conditions = FindCardsWhere((Card c) => c.IsInPlayAndHasGameText && c.IsCondition);
