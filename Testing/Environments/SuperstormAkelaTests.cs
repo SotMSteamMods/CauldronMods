@@ -163,8 +163,11 @@ namespace CauldronTests
             PutInTrash("Scatterburst");
             PutInTrash("GeogravLocus");
             Card currents = PlayCard("RideTheCurrents");
-            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
-            PlayCards(cardsToPlay);
+            IEnumerable<string> cardsToPlayIDs = new string[] { "GeminiIndra", "GeminiMaya", "ForgottenDjinn", "SkulkingIntermediary" };
+            IEnumerable<Card> cardsToPlay = PlayCards(cardsToPlayIDs);
+
+            GoToEndOfTurn(superstorm);
+
             DecisionSelectFunction = 1;
             //selecting currents and moving it to the right of the 4th card played
             DecisionAutoDecideIfAble = true;
@@ -194,8 +197,8 @@ namespace CauldronTests
             PutInTrash("GeogravLocus");
             Card currents = PlayCard("RideTheCurrents");
             Card maya = GetCard("GeminiMaya");
-            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c != maya).Take(4);
-            PlayCards(cardsToPlay);
+            IEnumerable<string> cardsToPlayIDs = new string[] { "GeminiIndra", "ToppledSkyscraper", "ForgottenDjinn", "SkulkingIntermediary" };
+            IEnumerable<Card> cardsToPlay = PlayCards(cardsToPlayIDs);
             PlayCard(maya);
 
             DealDamage(ra, maya, 3, DamageType.Fire);
@@ -387,11 +390,11 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela");
             StartGame();
             GoToPlayCardPhase(superstorm);
-            Card pressure = PlayCard("PressureDrop");
-            Card maya = PlayCard("GeminiMaya");
+            Card pressure = PutOnDeck("PressureDrop");
+            Card maya = PutOnDeck("GeminiMaya");
             Card sky = PlayCard("FracturedSky");
 
-            AssertInPlayArea(superstorm, sky);
+            AssertInPlayArea(superstorm, new Card[] { sky, maya, pressure });
 
             //should only be destroyed on environment target destruction
             DestroyCard(pressure, baron.CharacterCard);
@@ -938,23 +941,23 @@ namespace CauldronTests
             SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "Haka", "Cauldron.SuperstormAkela" });
             StartGame();
 
-            GoToPlayCardPhase(superstorm);
-            PutInTrash("Scatterburst");
-            PutOnDeck("TheStaffOfRa");
+            //At the start of the environment turn, if there are 3 cards to the right of this one, destroy this card.
             Card pressure = PlayCard("PressureDrop");
-            PlayCard("RideTheCurrents");
-            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
-            PlayCards(cardsToPlay);
-            GoToEndOfTurn(superstorm);
-            Card cardToMoveNextTo = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(GetNumberOfCardsInPlay(superstorm) - 3);
-            DecisionSelectCards = new Card[] { pressure, cardToMoveNextTo };
-            DecisionAutoDecideIfAble = true;
-            GoToStartOfTurn(baron);
+            PlayCard("GeminiMaya");
+            PlayCard("GeminiIndra");
+
+            //Make sure Pressure Drop does not destroy itself with 2 cards to the right
+            GoToEndOfTurn(haka);
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            GoToStartOfTurn(superstorm);
+            AssertIsInPlay(pressure);
+
+            //Check that Pressure Drop destroys itself with 3 cards to the right
+            PlayCard("FlyingBus");
+            GoToEndOfTurn(haka);
             PrintPlayAreaPositions(superstorm.TurnTaker);
             GoToStartOfTurn(superstorm);
             AssertInTrash(pressure);
-
-
         }
 
         [Test()]
