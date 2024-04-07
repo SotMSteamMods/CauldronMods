@@ -387,6 +387,12 @@ namespace CauldronTests
             SetupGameController("BaronBlade", "Cauldron.Gyrosaur", "Legacy", "Ra", "Megalopolis");
             StartGame();
 
+            //Move all Gyro Stabilizers to the deck to make sure Gyrosaur doesn't play it from hand and mess up the card count
+            MoveCards(gyrosaur, FindCardsWhere((Card c) => c.Identifier == "GyroStabilizer"), gyrosaur.TurnTaker.Deck);
+
+            //Make sure Gyrosaur has enough cards in hand to discard 3
+            MoveCards(gyrosaur, FindCardsWhere((Card c) => c.Identifier == "Omnivore"), gyrosaur.HeroTurnTaker.Hand);
+
             var discards = new List<Card>();
             for(int i = 0; i < 3; i++)
             {
@@ -400,6 +406,7 @@ namespace CauldronTests
                 }
             }
             DecisionSelectCards = discards.ToArray();
+
             QuickHandStorage(gyrosaur, legacy, ra);
             PlayCard("GyroStabilizer");
             QuickHandCheckZero();
@@ -642,13 +649,13 @@ namespace CauldronTests
             Card spin2 = PlayCard("Hyperspin");
             DecisionSelectCards = null;
 
+            Card ball = PutOnDeck("WreckingBall");
             Card stabilizer = PutOnDeck("GyroStabilizer");
             DrawCard(gyrosaur);
             AssertInHand(stabilizer);
             AssertIsInPlay(spin1, spin2);
 
             QuickHandStorage(gyrosaur, legacy, ra);
-            Card ball = PutOnDeck("WreckingBall");
             DrawCard(gyrosaur);
             AssertIsInPlay(ball);
             AssertInTrash(spin1, spin2);
