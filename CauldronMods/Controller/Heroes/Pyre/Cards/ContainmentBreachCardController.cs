@@ -27,8 +27,8 @@ namespace Cauldron.Pyre
 
         public ContainmentBreachCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ShowIrradiatedCount();
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(() =>TurnTaker.Trash, new LinqCardCriteria((Card c) => IsCascade(c), "cascade"));
+            this.ShowIrradiatedCount(SpecialStringMaker);
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(() =>TurnTaker.Trash, new LinqCardCriteria((Card c) => GameController.IsCascade(c), "cascade"));
 
         }
         public override bool ShouldBeDestroyedNow()
@@ -38,7 +38,7 @@ namespace Cauldron.Pyre
         public override void AddTriggers()
         {
             //"Whenever a player plays a {PyreIrradiate} card, increase energy damage dealt by {Pyre} by 1 until the end of your turn. Then shuffle a Cascade card from your trash into your deck.",
-            AddTrigger((PlayCardAction pc) => IsIrradiated(pc.CardToPlay) && !pc.IsPutIntoPlay, NoteIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before);
+            AddTrigger((PlayCardAction pc) => pc.CardToPlay.IsIrradiated() && !pc.IsPutIntoPlay, NoteIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before);
             AddTrigger((PlayCardAction pc) => RecentIrradiatedCardPlays.Contains(pc.InstanceIdentifier), IrradiatedPlayResponse, new TriggerType[]
                 {
                     TriggerType.IncreaseDamage,
@@ -76,9 +76,9 @@ namespace Cauldron.Pyre
                     GameController.ExhaustCoroutine(coroutine);
                 }
                 //Then shuffle a Cascade card from your trash into your deck.
-                if (TurnTaker.Trash.Cards.Any((Card c) => IsCascade(c)))
+                if (TurnTaker.Trash.Cards.Any((Card c) => GameController.IsCascade(c)))
                 {
-                    var cardToMove = TurnTaker.Trash.Cards.Where((Card c) => IsCascade(c)).FirstOrDefault();
+                    var cardToMove = TurnTaker.Trash.Cards.Where((Card c) => GameController.IsCascade(c)).FirstOrDefault();
                     coroutine = GameController.SendMessageAction($"{Card.Title} shuffles {cardToMove.Title} into {TurnTaker.Deck.GetFriendlyName()}.", Priority.Medium, GetCardSource(), new Card[] { cardToMove });
                     if (UseUnityCoroutines)
                     {

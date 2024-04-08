@@ -354,16 +354,16 @@ namespace CauldronTests
             StartGamePyre();
 
             DiscardAllCards(pyre);
-            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 40);
+            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 1);
             DecisionSelectTurnTaker = legacy.TurnTaker;
             Card ring = PutOnDeck("TheLegacyRing");
             UsePower(pyre);
-            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 39);
+            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 0);
 
             AssertIrradiated(ring);
             DealDamage(baron, legacy, 50, DTM);
             AssertNotIrradiated(ring);
-            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 40);
+            AssertNumberOfCardsAtLocation(pyre.TurnTaker.OffToTheSide, 1);
         }
         [Test]
         public void TestAtmosphereScrubbersPlayGrantsPower()

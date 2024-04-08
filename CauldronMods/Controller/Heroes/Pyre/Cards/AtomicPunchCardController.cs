@@ -12,7 +12,7 @@ namespace Cauldron.Pyre
     {
         public AtomicPunchCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ShowIrradiatedCount(true);
+            this.ShowIrradiatedCount(SpecialStringMaker, reverse: true);
         }
 
         public override IEnumerator Play()

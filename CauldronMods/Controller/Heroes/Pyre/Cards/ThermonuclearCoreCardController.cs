@@ -14,7 +14,7 @@ namespace Cauldron.Pyre
         {
             AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
             AddInhibitorException((GameAction ga) => (ga is MakeDecisionAction || ga is MoveCardAction || ga is AddStatusEffectAction) && Card.Location.IsHand);
-            ShowIrradiatedCount();
+            this.ShowIrradiatedCount(SpecialStringMaker);
         }
         public override void AddStartOfGameTriggers()
         {
@@ -44,7 +44,7 @@ namespace Cauldron.Pyre
         private IEnumerator EntersHandResponse()
         {
             //"When this card enters your hand, select 1 non-{PyreIrradiate} card in your hand. {PyreIrradiate} that card until it leaves your hand.",
-            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} {Irradiated} a card in {Card.Location.GetFriendlyName()}", Priority.Medium, GetCardSource(), showCardSource: true);
+            IEnumerator coroutine = GameController.SendMessageAction($"{Card.Title} {PyreExtensionMethods.Irradiated} a card in {Card.Location.GetFriendlyName()}", Priority.Medium, GetCardSource(), showCardSource: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -71,7 +71,7 @@ namespace Cauldron.Pyre
         }
         private IEnumerator SelectHeroToDrawIrradiatedCard(PhaseChangeAction pc)
         {
-            var validHeroes = GameController.AllHeroControllers.Where(httc => GameController.IsTurnTakerVisibleToCardSource(httc.HeroTurnTaker, GetCardSource()) && !httc.HeroTurnTaker.Hand.Cards.Any((Card c) => IsIrradiated(c)) && GameController.CanDrawCards(httc, GetCardSource())).Select(httc => httc.TurnTaker).ToList();
+            var validHeroes = GameController.AllHeroControllers.Where(httc => GameController.IsTurnTakerVisibleToCardSource(httc.HeroTurnTaker, GetCardSource()) && !httc.HeroTurnTaker.Hand.Cards.Any((Card c) => c.IsIrradiated()) && GameController.CanDrawCards(httc, GetCardSource())).Select(httc => httc.TurnTaker).ToList();
             IEnumerator coroutine;
             if (!validHeroes.Any())
             {
@@ -123,7 +123,7 @@ namespace Cauldron.Pyre
 
             if (DidDrawCards(drawStorage))
             {
-                coroutine = IrradiateCard(drawStorage.FirstOrDefault().DrawnCard);
+                coroutine = this.IrradiateCard(drawStorage.FirstOrDefault().DrawnCard);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

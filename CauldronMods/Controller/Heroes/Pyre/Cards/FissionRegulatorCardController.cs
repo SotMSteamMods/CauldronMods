@@ -12,7 +12,7 @@ namespace Cauldron.Pyre
     {
         public FissionRegulatorCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(() => TurnTaker.Deck, new LinqCardCriteria((Card c) => IsCascade(c), "cascade"));
+            SpecialStringMaker.ShowNumberOfCardsAtLocation(() => TurnTaker.Deck, new LinqCardCriteria((Card c) => GameController.IsCascade(c), "cascade"));
         }
 
         public readonly string RogueFissionCascadeIdentifier = "RogueFissionCascade";
@@ -68,7 +68,7 @@ namespace Cauldron.Pyre
             }
 
             //Then put a Cascade card from your trash on top of your deck...
-            var cascadeInTrash = FindCardsWhere((Card c) => c.Location == TurnTaker.Trash && IsCascade(c)).FirstOrDefault();
+            var cascadeInTrash = FindCardsWhere((Card c) => c.Location == TurnTaker.Trash && GameController.IsCascade(c)).FirstOrDefault();
             if(cascadeInTrash != null)
             {
                 coroutine = GameController.SendMessageAction($"{Card.Title} moves {cascadeInTrash.Title} to the top of {TurnTaker.Deck.GetFriendlyName()}.", Priority.Medium, GetCardSource(), new Card[] { cascadeInTrash });

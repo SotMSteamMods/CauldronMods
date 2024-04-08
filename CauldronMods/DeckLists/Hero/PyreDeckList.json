@@ -455,7 +455,7 @@
         },
         {
             "identifier": "IrradiatedMarker",
-            "count": 40,
+            "count": 1,
             "title": "Irradiated",
             "keywords": ["mark"],
             "isReal": false,

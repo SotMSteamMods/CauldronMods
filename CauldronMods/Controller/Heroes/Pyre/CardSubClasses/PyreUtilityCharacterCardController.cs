@@ -10,11 +10,7 @@ namespace Cauldron.Pyre
 {
     public abstract class PyreUtilityCharacterCardController : HeroCharacterCardController
     {
-        private const string IrradiationEffectFunction = "FakeIrradiationStatusEffectFunction";
-        public const string IrradiatedMarkerIdentifier = "IrradiatedMarker";
-        public const string CascadeKeyword = "cascade";
         private const string LocationKnown = "CascadeLocationKnownKey";
-        public const string Irradiated = "{Rad}";
 
         public IEnumerator SetupPromos(GameAction ga)
         {
@@ -41,19 +37,19 @@ namespace Cauldron.Pyre
             SpecialStringMaker.ShowSpecialString(() => BuildCascadeLocationString()).Condition = () => TurnTakerController is PyreTurnTakerController;
             SpecialStringMaker.ShowSpecialString(() => BuildListIrradiatedHeroes()).ShowWhileIncapacitated = true;
 
-            SpecialStringMaker.ShowSpecialString(() => "You may need to right click {Rad} cards and select 'Play Card' in order to play them.", showInEffectsList: () => true, relatedCards: () => FindCardsWhere(c => IsIrradiated(c))).Condition = () => FindCardsWhere(c => IsIrradiated(c)).Any();
+            SpecialStringMaker.ShowSpecialString(() => "You may need to right click {Rad} cards and select 'Play Card' in order to play them.", showInEffectsList: () => true, relatedCards: () => FindCardsWhere(c => c.IsIrradiated())).Condition = () => FindCardsWhere(c => c.IsIrradiated()).Any();
 
         }
 
         private string BuildListIrradiatedHeroes()
         {
-            IEnumerable<TurnTaker> irradiatedHeroes = GameController.GetAllCards().Where((Card c) => IsIrradiated(c) && c.Location.IsHand).Select(c => c.Owner).Distinct();
+            IEnumerable<TurnTaker> irradiatedHeroes = GameController.GetAllCards().Where((Card c) => c.IsIrradiated() && c.Location.IsHand).Select(c => c.Owner).Distinct();
             if(!irradiatedHeroes.Any())
             {
-               return $"No heroes have {Irradiated} cards in their hand.";
+               return $"No heroes have {PyreExtensionMethods.Irradiated} cards in their hand.";
             }
 
-            return $"Heroes with {Irradiated} cards in hand: {irradiatedHeroes.Select(tt => tt.NameRespectingVariant).ToRecursiveString()}";
+            return $"Heroes with {PyreExtensionMethods.Irradiated} cards in hand: {irradiatedHeroes.Select(tt => tt.NameRespectingVariant).ToRecursiveString()}";
         }
 
         public override void AddStartOfGameTriggers()
@@ -69,108 +65,18 @@ namespace Cauldron.Pyre
         public override void AddSideTriggers()
         {
             base.AddSideTriggers();
-            AddTrigger((MoveCardAction mc) => IsByIrradiationMarker(mc.CardToMove) && (mc.Origin.IsHand || mc.Origin.IsRevealed) && !(mc.Destination.IsHand || mc.Destination.IsRevealed), mc => ClearIrradiation(mc.CardToMove), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
-            AddTrigger((PlayCardAction pc) => IsByIrradiationMarker(pc.CardToPlay), pc => ClearIrradiation(pc.CardToPlay), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
-            AddTrigger((BulkMoveCardsAction bmc) => !(bmc.Destination.IsHand || bmc.Destination.IsRevealed) && bmc.CardsToMove.Any(c => IsByIrradiationMarker(c)), CleanUpBulkIrradiated, TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
+            AddTrigger((MoveCardAction mc) => mc.CardToMove.IsByIrradiationMarker() && (mc.Origin.IsHand || mc.Origin.IsRevealed) && !(mc.Destination.IsHand || mc.Destination.IsRevealed), mc => this.ClearIrradiation(mc.CardToMove), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
+            AddTrigger((PlayCardAction pc) => pc.CardToPlay.IsByIrradiationMarker(), pc => this.ClearIrradiation(pc.CardToPlay), TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
+            AddTrigger((BulkMoveCardsAction bmc) => !(bmc.Destination.IsHand || bmc.Destination.IsRevealed) && bmc.CardsToMove.Any(c => c.IsByIrradiationMarker()), CleanUpBulkIrradiated, TriggerType.Hidden, TriggerTiming.After, ignoreBattleZone: true);
         }
 
-        protected bool IsIrradiated(Card c)
-        {
-            if(c != null && c.IsInHand)
-            {
-                return IsByIrradiationMarker(c);
-            }
-            return false;
-        }
-
-        protected bool IsByIrradiationMarker(Card c)
-        {
-            if (c != null)
-            {
-                return c.NextToLocation.Cards.Any((Card nextTo) => nextTo.Identifier == IrradiatedMarkerIdentifier);
-            }
-            return false;
-        }
-
-        protected bool IsCascade(Card c)
-        {
-            return GameController.DoesCardContainKeyword(c, CascadeKeyword);
-        }
-
-        protected IEnumerator IrradiateCard(Card cardToIrradiate)
-        {
-            var marker = TurnTakerControllerWithoutReplacements.TurnTaker.GetAllCards(realCardsOnly: false).Where((Card c) => !c.IsRealCard && c.Location.IsOffToTheSide).FirstOrDefault();
-            if(marker != null && cardToIrradiate.Location.IsHand  && !IsIrradiated(cardToIrradiate))
-            {
-                IEnumerator coroutine = GameController.MoveCard(DecisionMaker, marker, cardToIrradiate.NextToLocation, doesNotEnterPlay: true, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-
-                var irradiateEffect = new OnPhaseChangeStatusEffect(CardWithoutReplacements, IrradiationEffectFunction, $"{cardToIrradiate.Title} is {Irradiated} until it leaves {cardToIrradiate.Location.GetFriendlyName()}.", new TriggerType[] { TriggerType.Hidden }, cardToIrradiate);
-                irradiateEffect.CardMovedExpiryCriteria.Card = cardToIrradiate;
-
-                coroutine = AddStatusEffect(irradiateEffect, true);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-                
-                //if(PyreTTC != null)
-                //{
-                //    PyreTTC.AddIrradiatedSpecialString(cardToIrradiate);
-                //}
-                
-            }
-            yield break;
-        }
-        protected IEnumerator ClearIrradiation(Card card)
-        {
-            //Log.Debug($"ClearIrradiation called on {card.Title}");
-            var marks = card?.NextToLocation.Cards.Where((Card c) => !c.IsRealCard && c.Identifier == IrradiatedMarkerIdentifier);
-            if(marks != null && marks.Any())
-            {
-                IEnumerator coroutine = BulkMoveCard(DecisionMaker, marks, TurnTaker.OffToTheSide, false, false, DecisionMaker, false);
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            var irradiationEffects = GameController.StatusEffectControllers.Where((StatusEffectController sec) => sec.StatusEffect is OnPhaseChangeStatusEffect opc && (opc.MethodToExecute == IrradiationEffectFunction && opc.CardMovedExpiryCriteria.Card == card)).Select(sec => sec.StatusEffect).ToList();
-            foreach(StatusEffect effect in irradiationEffects)
-            {
-                IEnumerator coroutine = GameController.ExpireStatusEffect(effect, GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
-        }
         protected IEnumerator CleanUpBulkIrradiated(BulkMoveCardsAction bmc)
         {
             foreach(Card c in bmc.CardsToMove)
             {
-                if(IsByIrradiationMarker(c))
+                if(c.IsByIrradiationMarker())
                 {
-                    IEnumerator coroutine = ClearIrradiation(c);
+                    IEnumerator coroutine = this.ClearIrradiation(c);
                     if (UseUnityCoroutines)
                     {
                         yield return GameController.StartCoroutine(coroutine);
@@ -196,7 +102,7 @@ namespace Cauldron.Pyre
                 handCriteria = (Card c) => c != null && c.Location == playerWithHand.ToHero().Hand;
             }
 
-            var fullCriteria = new LinqCardCriteria((Card c) => handCriteria(c) && !IsIrradiated(c) && additionalCriteria(c), $"non-{Irradiated}");
+            var fullCriteria = new LinqCardCriteria((Card c) => handCriteria(c) && !c.IsIrradiated() && additionalCriteria(c), $"non-{PyreExtensionMethods.Irradiated}");
             if (storedResults == null)
             {
                 storedResults = new List<SelectCardDecision>();
@@ -208,7 +114,7 @@ namespace Cauldron.Pyre
 
             var oldMode = CurrentMode;
             CurrentMode = CustomMode.CardToIrradiate;
-            IEnumerator coroutine = GameController.SelectCardsAndDoAction(decisionMaker, fullCriteria, SelectionType.Custom, IrradiateCard, maxCards, false, minCards, storedResults, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectCardsAndDoAction(decisionMaker, fullCriteria, SelectionType.Custom, c => this.IrradiateCard(c), maxCards, false, minCards, storedResults, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

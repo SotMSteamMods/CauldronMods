@@ -14,7 +14,7 @@ namespace Cauldron.Pyre
 
         public FracturedControlRodCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ShowIrradiatedCardsInHands();
+            this.ShowIrradiatedCardsInHands(SpecialStringMaker);
         }
 
         public override void AddStartOfGameTriggers()
@@ -44,7 +44,7 @@ namespace Cauldron.Pyre
         {
             //"Whenever a player discards a {PyreIrradiate} card, they may destroy this card to play the discarded card."
 
-            AddTrigger((MoveCardAction mc) => mc.IsDiscard && IsIrradiated(mc.CardToMove) && mc.CanChangeDestination && IsFirstOrOnlyCopyOfThisCardInPlay() && GameController.CanPlayCard(FindCardController(mc.CardToMove)) == CanPlayCardResult.CanPlay && GameController.IsTurnTakerVisibleToCardSource(mc.Origin.OwnerTurnTaker, GetCardSource()), PlayDiscardedCardFromMove, TriggerType.PlayCard, TriggerTiming.Before);
+            AddTrigger((MoveCardAction mc) => mc.IsDiscard && mc.CardToMove.IsIrradiated() && mc.CanChangeDestination && IsFirstOrOnlyCopyOfThisCardInPlay() && GameController.CanPlayCard(FindCardController(mc.CardToMove)) == CanPlayCardResult.CanPlay && GameController.IsTurnTakerVisibleToCardSource(mc.Origin.OwnerTurnTaker, GetCardSource()), PlayDiscardedCardFromMove, TriggerType.PlayCard, TriggerTiming.Before);
         }
 
         private IEnumerator PlayDiscardedCardFromMove(MoveCardAction mc)
@@ -66,7 +66,7 @@ namespace Cauldron.Pyre
 
             if(DidPlayerAnswerYes(storedYesNo))
             {
-                coroutine = ClearIrradiation(cardToPlay);
+                coroutine = this.ClearIrradiation(cardToPlay);
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);
@@ -119,7 +119,7 @@ namespace Cauldron.Pyre
 
         private IEnumerator MarkIrradiatedPlay(PlayCardAction pc)
         {
-            WasPlayedIrradiated = IsIrradiated(Card);
+            WasPlayedIrradiated = Card.IsIrradiated();
             yield return null;
             yield break;
         }

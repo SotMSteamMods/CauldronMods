@@ -24,13 +24,13 @@ namespace Cauldron.Pyre
         }
         public ChromodynamicsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ShowIrradiatedCount();
+            this.ShowIrradiatedCount(SpecialStringMaker);
         }
 
         public override void AddTriggers()
         {
             //"Whenever a player plays a {PyreIrradiate} card, {Pyre} deals 1 target 1 energy damage."
-            AddTrigger((PlayCardAction pc) => IsIrradiated(pc.CardToPlay) && !pc.IsPutIntoPlay, NoteIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before);
+            AddTrigger((PlayCardAction pc) => pc.CardToPlay.IsIrradiated() && !pc.IsPutIntoPlay, NoteIrradiatedPlay, TriggerType.Hidden, TriggerTiming.Before);
             AddTrigger((PlayCardAction pc) => RecentIrradiatedCardPlays.Contains(pc.InstanceIdentifier), IrradiatedPlayResponse, TriggerType.DealDamage, TriggerTiming.After, requireActionSuccess: false);
         }
         private IEnumerator NoteIrradiatedPlay(PlayCardAction pc)
