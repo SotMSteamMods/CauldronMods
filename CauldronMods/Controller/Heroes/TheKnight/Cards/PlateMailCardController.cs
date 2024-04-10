@@ -13,11 +13,28 @@ namespace Cauldron.TheKnight
         {
         }
 
+        public override void AddStartOfGameTriggers()
+        {
+            AddTrigger(
+                (RemoveTargetAction r) => r.CardToRemoveTarget == Card,
+                (RemoveTargetAction a) => AdjustTargetnessResponseNotPrivate(a, Card, 5),
+                TriggerType.CancelAction,
+                TriggerTiming.Before,
+                outOfPlayTrigger: true
+            );
+
+            AddTrigger(
+                (BulkRemoveTargetsAction r) => r.CardsToRemoveTargets.Any((Card c) => c == Card),
+                (BulkRemoveTargetsAction a) => AdjustTargetnessResponseNotPrivate(a, Card, 5),
+                TriggerType.CancelAction,
+                TriggerTiming.Before,
+                outOfPlayTrigger: true
+            );
+        }
+
         public override void AddTriggers()
         {
             base.AddRedirectDamageTrigger(dd => IsEquipmentEffectingCard(dd.Target), c => base.Card, true);
-
-            base.AddMaintainTargetTriggers((Card c) => c.Owner == base.Card.Owner && c.Identifier == Card.Identifier, 5, new List<string> { "equipment" });
 
             base.AddTriggers();
         }
