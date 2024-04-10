@@ -994,6 +994,57 @@ namespace CauldronTests
         }
 
         [Test]
+        public void Armor_InPlay_SwitchBattleZones([Values("PlateHelm", "PlateMail")] string armor)
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TheKnight", "Legacy", "Haka", "Tachyon", "Luminary", "RealmOfDiscord", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            var target = PutInHand(knight, armor);
+            int targetHP = armor == "PlateHelm" ? 3 : 5;
+            GoToPlayCardPhase(knight);
+
+            PrintSeparator("Test");
+
+            PlayCard(target);
+            AssertIsTarget(target, targetHP);
+            PlayCard("ImbuedVitality");
+            AssertIsTarget(target, 6);
+
+            SetHitPoints(target, 2);
+            AssertHitPoints(target, 2);
+            SwitchBattleZone(knight);
+            AssertIsTarget(target, targetHP);
+            AssertHitPoints(target, 2);
+            SwitchBattleZone(knight);
+            AssertIsTarget(target, 6);
+            AssertHitPoints(target, 2);
+        }
+
+        [Test]
+        public void Armor_InTrash_SwitchBattleZones([Values("PlateHelm", "PlateMail")] string armor)
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.TheKnight", "Legacy", "Haka", "Tachyon", "Luminary", "RealmOfDiscord", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            
+            var target = PutInHand(knight, armor);
+            int targetHP = armor == "PlateHelm" ? 3 : 5;
+            GoToPlayCardPhase(knight);
+
+            PrintSeparator("Test");
+
+            PlayCard(target);
+            AssertIsTarget(target, targetHP);
+            PlayCard("ImbuedVitality");
+            DestroyCard(target);
+            AssertIsTarget(target, 6);
+            SwitchBattleZone(knight);
+            AssertIsTarget(target, targetHP);
+            SwitchBattleZone(knight);
+            AssertIsTarget(target, 6);
+        }
+
+        [Test]
         [Description("TheKnight - PlateHelm")]
         public void PlateHelm()
         {
