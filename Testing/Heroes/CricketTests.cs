@@ -331,6 +331,8 @@ namespace CauldronTests
             UsePower(kick);
             QuickHPCheck(-2);
 
+            PutOnDeck("AlliesOfTheEarth");
+
             Card rail = PlayCard("PlummetingMonorail");
             //{Cricket} is immune to damage dealt by environment targets until the start of your next turn.
             QuickHPStorage(cricket);
@@ -509,6 +511,7 @@ namespace CauldronTests
             SetupGameController("AkashBhuta", "Cauldron.Cricket", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
 
+            MoveAllCardsFromHandToDeck(cricket);
             QuickHandStorage(cricket);
             QuickHPStorage(akash.CharacterCard);
             PlayCard("ReturnPulse");

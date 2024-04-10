@@ -1531,6 +1531,7 @@ namespace CauldronTests
             
             Card track = FindCardsWhere((Card c) => c.Identifier == $"DualShiftTrack1", false).FirstOrDefault();
             DecisionSelectCards = new Card[] { track, futureDrift };
+            PutOnDeck("FadingRealities");
             StartGame(false);
             ResetDecisions();
 

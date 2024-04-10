@@ -530,6 +530,7 @@ namespace CauldronTests.Oblivaeon
 
             Card impendingDoom = MoveCard(oblivaeon, "ImpendingDoom", oblivaeon.TurnTaker.Deck);
             Card timeFlies = PlayCard("TimeFlies");
+            MoveCard(oblivaeon, "ScatterSlaughter", oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
             GoToStartOfTurn(oblivaeon);
             AssertInPlayArea(scionTwo, impendingDoom);
         }

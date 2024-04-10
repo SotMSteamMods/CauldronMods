@@ -756,6 +756,7 @@ namespace CauldronTests
         {
             SetupGameController("KaargraWarfang", "Ra", "Legacy", "Luminary", "Cauldron.Starlight", "Cauldron.NightloreCitadel");
             StartGame();
+            PutOnDeck("SoulslayerPerith");
             GoToPlayCardPhase(nightlore);
             DestroyNonCharacterVillainCards();
             MoveAllCards(warfang, warfang.TurnTaker.FindSubPlayArea("TitleDeck"), warfang.TurnTaker.FindSubDeck("TitleDeck"));

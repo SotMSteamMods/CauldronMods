@@ -299,6 +299,8 @@ namespace CauldronTests
         public void TestForestOfNeedlesDamageNotChangeAfterBeingDealt()
         {
             SetupGameController("KaargraWarfang", "Cauldron.Quicksilver", "Legacy", "Ra", "Megalopolis");
+            MoveCard(warfang, "TitleChaosLord", warfang.TurnTaker.FindSubDeck("TitleDeck"));
+            MoveCard(warfang, "TitleTheLivingWeapon", warfang.TurnTaker.FindSubDeck("TitleDeck"));
             StartGame();
             DestroyNonCharacterVillainCards();
 

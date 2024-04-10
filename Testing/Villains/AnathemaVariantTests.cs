@@ -253,6 +253,7 @@ namespace CauldronTests
             //At the end of the villain turn, reveal the top card of the villain deck. If an arm or head card is revealed, put it under {Anathema}'s character card, otherwise discard it. 
             //Then if there are {H} or more cards under {Anathema}, flip his villain character card.  
             AssertNotFlipped(anathema.CharacterCard);
+            StackDeckAfterShuffle(anathema,new string[] { "AnathemaRampage" });
             GoToEndOfTurn(anathema);
             AssertFlipped(anathema.CharacterCard);
             AssertNumberOfCardsInRevealed(anathema, 0);
@@ -408,9 +409,8 @@ namespace CauldronTests
             FlipCard(anathema.CharacterCard);
             AssertFlipped(anathema);
 
-            GoToEndOfTurn();
             Card headToDestroy = GetListOfHeadsInPlay(anathema).First();
-            DealDamage(ra.CharacterCard, headToDestroy, headToDestroy.HitPoints.Value + 2, DamageType.Fire, isIrreducible: true);
+            DealDamage(ra.CharacterCard, headToDestroy, 50, DamageType.Fire, isIrreducible: true);
             DestroyCard(headToDestroy, ra.CharacterCard);
             AssertInPlayArea(anathema, headToDestroy);
             GoToNextTurn();

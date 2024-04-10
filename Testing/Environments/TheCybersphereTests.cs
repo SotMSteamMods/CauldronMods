@@ -180,7 +180,7 @@ namespace CauldronTests
             SetupGameController("Omnitron", "Ra", "Legacy", "Haka", "Cauldron.TheCybersphere");
             StartGame();
 
-            PlayCard("InterpolationBeam");
+            PutOnDeck("InterpolationBeam");
 
             GoToPlayCardPhase(cybersphere);
             Card gho5t = PlayCard("Gho5t");

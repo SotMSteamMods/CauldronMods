@@ -231,6 +231,7 @@ namespace CauldronTests
         {
             SetupGameController(new string[] { "Cauldron.Menagerie", "TheSentinels", "Bunker", "TheScholar", "Megalopolis" }, challenge: true);
             DiscardAllCards(sentinels, bunker);
+            PutInHand("DontDismissAnything");
 
             StartGame();
 
@@ -1093,6 +1094,7 @@ namespace CauldronTests
             DiscardAllCards(guise, parse);
             StartGame();
 
+            PutOnDeck("LumobatFlock");
             PutOnDeck("AquaticSphere");
             StackDeckAfterShuffle(menagerie, new string[] { "HyrianSnipe" });
             Card tak = PlayCard("TakIshmael");

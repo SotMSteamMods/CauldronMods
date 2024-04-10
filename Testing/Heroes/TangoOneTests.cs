@@ -1441,7 +1441,7 @@ namespace CauldronTests
             Dictionary<Location, Card> topCardsOfSubDecks = new Dictionary<Location, Card>();
 
             SwitchBattleZone(haka);
-
+            PutOnDeck("FocusOfPower");
             DiscardTopCards(oblivaeon, 1);
             PlayCard(oblivaeon, GetCard("AeonWarrior"), isPutIntoPlay: true, overridePlayLocation: scionOne.TurnTaker.PlayArea);
             foreach(Location subdeck in oblivaeon.TurnTaker.SubDecks.Where(d => d.IsRealDeck))

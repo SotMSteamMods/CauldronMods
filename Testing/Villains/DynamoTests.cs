@@ -233,6 +233,7 @@ namespace CauldronTests
         public void TestDynamo_Advanced()
         {
             SetupGameController(new string[] { "Cauldron.Dynamo", "Cauldron.Quicksilver", "Haka", "Unity", "TheScholar", "Megalopolis" }, true);
+            PutOnDeck("CrimeSpree");
             StartGame();
 
             AssertNumberOfCardsInTrash(dynamo, 1);

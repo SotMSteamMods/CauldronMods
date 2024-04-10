@@ -153,6 +153,7 @@ namespace CauldronTests
             StartGame();
 
             DiscardAllCards(pyre);
+            MoveCards(pyre, FindCardsWhere((Card c) => c.Identifier == "RogueFissionCascade"), pyre.TurnTaker.Deck, true);
             Card rod = PutInHand("FracturedControlRod");
             Card collider = PutInHand("ParticleCollider");
             Card punch = PutInHand("AtomicPunch");
