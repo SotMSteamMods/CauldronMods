@@ -225,13 +225,14 @@ namespace Cauldron.SuperstormAkela
             IEnumerator coroutine2;
 
             // grab the card source for some other card visible to this card so the action can finish after initial flip
-            Card otherCard = FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Title != Card.Title && GameController.IsCardVisibleToCardSource(c, GetCardSource())).TakeRandomFirstOrDefault(Game.RNG);
+            Card otherCard = FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Title != card.Title && GameController.IsCardVisibleToCardSource(c, GetCardSource())).TakeRandomFirstOrDefault(Game.RNG);
             
             // if no other cards found, then we don't need to worry about refreshing the UI
             if(otherCard is null)
             {
                 yield break;
             }
+            Log.Debug($"{this.Card.Title} is using {otherCard.Title} to refresh the UI for {card.Title}");}
             CardSource otherCardSource = FindCardController(otherCard).GetCardSource();
 
             int? currentHP = card.IsTarget ? card.HitPoints : null;
