@@ -58,7 +58,6 @@ namespace Cauldron.Gargoyle
                 var effect = new IncreaseDamageStatusEffect(amount);
                 effect.SourceCriteria.IsSpecificCard = CharacterCard;
                 increaseDamageStatusEffect = effect;
-                increaseDamageStatusEffect.NumberOfUses = 1;
             }
             else
             {
@@ -67,6 +66,7 @@ namespace Cauldron.Gargoyle
                 increaseDamageStatusEffect = effect;
             }
 
+            increaseDamageStatusEffect.NumberOfUses = 1;
             increaseDamageStatusEffect.UntilTargetLeavesPlay(CharacterCard);
 
             return AddStatusEffect(increaseDamageStatusEffect);

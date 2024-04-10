@@ -1147,6 +1147,56 @@ namespace CauldronTests
             DealDamage(gargoyle.CharacterCard, bladeBattalion1, 2, DamageType.Melee);
             QuickHPCheck(0, 0, 0, 0, 0, -3, 0, 0);
         }
+        [Test]
+        public void TestLeechFieldExpiresWhenUsed()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("LeechField");
+
+            SelectYesNoForNextDecision(true, true);
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            DealDamage(unity.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, -2, 0, 0);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, -1, 0, 0);
+        }
+        [Test]
+        public void TestLeechFieldGargoyleDealsDamageExpiresWhenUsed()
+        {
+            Card bladeBattalion1;
+            Card bladeBattalion2;
+            Card bladeBattalion3;
+
+            StartTestGame();
+
+            GoToPlayCardPhase(gargoyle);
+
+            bladeBattalion1 = PutIntoPlay("BladeBattalion");
+            bladeBattalion2 = PutIntoPlay("BladeBattalion");
+            bladeBattalion3 = PutIntoPlay("BladeBattalion");
+            PutIntoPlay("LeechField");
+
+            SelectYesNoForNextDecision(true, true);
+            QuickHPStorage(baron.CharacterCard, gargoyle.CharacterCard, unity.CharacterCard, bunker.CharacterCard, scholar.CharacterCard, bladeBattalion1, bladeBattalion2, bladeBattalion3);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, 0, 0, 0);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, -2, 0, 0);
+            DealDamage(gargoyle.CharacterCard, bladeBattalion1, 1, DamageType.Melee);
+            QuickHPCheck(0, 0, 0, 0, 0, -1, 0, 0);
+        }
         #endregion Leech Field
 
         #region Mark for Execution
