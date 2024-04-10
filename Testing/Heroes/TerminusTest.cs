@@ -1095,6 +1095,30 @@ namespace CauldronTests
             AssertMaxNumberOfDecisions(1);
             UsePower(terminus);
         }
+        [Test]
+        public void TestGuiltyVerdictAmbiguousDecision()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Terminus", "Legacy", "Bunker", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card guilty = PlayCard("GuiltyVerdict");
+            Card express = PlayCard("FullMoonExpress");
+            TokenPool tokenPool;
+            tokenPool = terminus.CharacterCard.FindTokenPool("TerminusWrathPool");
+            AddTokensToPool(tokenPool, 3);
+            DecisionSelectCard = guilty;
+            DecisionSelectFunction = 1;
+            DecisionYesNo = true;
+
+            //When Guilty Verdict and another card should trigger off of the same damage, it should give a decision for which one will activate first
+            //If it doesn't work correctly, it will always activate Full Moon Express before Guilty Verdict
+            QuickHPStorage(baron);
+            QuickTokenPoolStorage(tokenPool);
+            DealDamage(baron, terminus, 4, DamageType.Melee);
+            QuickHPCheck(-3);
+            QuickTokenPoolCheck(-3);
+        }
         #endregion Test Guilty Verdict
 
         #region Test Immortal Coils
