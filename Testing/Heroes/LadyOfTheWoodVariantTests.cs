@@ -761,7 +761,20 @@ namespace CauldronTests
 
         }
 
-
+        [Test()]
+        public void TestFutureLadyOfTheWoodOblivAeonRewindSoftlockBug()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.LadyOfTheWood/FutureLadyOfTheWoodCharacter", "Bunker",  "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+            DestroyCard(ladyWood);
+            DecisionSelectFromBoxTurnTakerIdentifier = "Legacy";
+            DecisionSelectFromBoxIdentifiers = new string[] { "LegacyCharacter" };
+            GoToAfterEndOfTurn(oblivaeon);
+            RunActiveTurnPhase();
+            GoToPlayCardPhase(legacy);
+            var T = new TestDelegate(() =>SaveAndLoad(GameController));
+            Assert.DoesNotThrow(T,"Failed to reload the game",null);
+        }
 
     }
 }

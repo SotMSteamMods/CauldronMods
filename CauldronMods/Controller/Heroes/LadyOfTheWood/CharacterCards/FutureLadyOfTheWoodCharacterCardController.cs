@@ -262,7 +262,7 @@ namespace Cauldron.LadyOfTheWood
                 CardController inhibitedCard = FindCardController(item);
                 base.GameController.AddInhibitorException(inhibitedCard, (GameAction ga) => true);
                 List<string> list = new List<string>();
-                list.Add(base.TurnTaker.Identifier);
+                list.Add(base.TurnTaker.QualifiedIdentifier);
                 list.Add(item.Identifier);
                 base.GameController.AddCardPropertyJournalEntry(item, "OverrideTurnTaker", list);
             }
