@@ -12,8 +12,8 @@ namespace Cauldron.Drift
     {
         protected DualShiftTrackUtilityCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            base.SpecialStringMaker.ShowSpecialString(() => this.GetInactiveCharacterCard().AlternateTitleOrTitle + " is the inactive {Drift}, she is at position " + this.InactiveCharacterPosition()).Condition = () => TurnTakerController is DriftTurnTakerController driftTTC && driftTTC.HasBeenSetup;
-            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasTrackAbilityBeenActivated(), () => "Drift has changed the active character this turn", () => "Drift has not changed the active character this turn", showInEffectsList: () => true).Condition = () => !(FindCardController(GetActiveCharacterCard()) is DualDriftCharacterCardController); ;
+            base.SpecialStringMaker.ShowSpecialString(() => $"{this.GetInactiveCharacterCard().AlternateTitleOrTitle} is the inactive {{Drift}}; she is at position {this.InactiveCharacterPosition()}.").Condition = () => GetActiveCharacterCard() != null;
+            base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasTrackAbilityBeenActivated(), () => "Drift has changed the active character this turn.", () => "Drift has not changed the active character this turn.", showInEffectsList: () => true).Condition = () => GetActiveCharacterCard() != null;
         }
 
         protected enum CustomMode
