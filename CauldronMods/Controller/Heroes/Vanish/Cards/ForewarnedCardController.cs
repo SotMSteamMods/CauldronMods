@@ -62,17 +62,15 @@ namespace Cauldron.Vanish
         private IEnumerator DestroyCardReponse()
         {
             var cardSource = GetCardSource();
-            foreach (var httc in GameController.HeroTurnTakerControllers.Where(httc => httc.BattleZone == BattleZone && GameController.CanDrawCards(httc, cardSource) && httc.HeroTurnTaker.NumberOfCardsInHand < 3))
+            SelectTurnTakersDecision decision = new SelectTurnTakersDecision(base.GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => tt.IsPlayer && base.GameController.IsTurnTakerVisibleToCardSource(tt, cardSource) && CanDrawCards(FindHeroTurnTakerController(tt.ToHero()))), SelectionType.DrawCard, allowAutoDecide: true, cardSource: cardSource);
+            IEnumerator coroutine = base.GameController.SelectTurnTakersAndDoActionEx(decision, (TurnTaker tt) => DrawCardsUntilHandSizeReached(FindHeroTurnTakerController(tt.ToHero()), 3), cardSource: cardSource);
+            if (base.UseUnityCoroutines)
             {
-                var coroutine = DrawCardsUntilHandSizeReached(httc, 3);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
             }
         }
     }
