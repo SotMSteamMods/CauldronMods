@@ -491,7 +491,7 @@ namespace CauldronTests
             Card sinner = GetCard("AceOfSinners");
             PutInHand(sinner);
             //discard the rest of bacarrat's deck to make sure there are pairs in the trash
-            DiscardTopCards(baccarat, 35);
+            MoveAllCards(baccarat, baccarat.TurnTaker.Deck, baccarat.TurnTaker.Trash);
 
 
             GoToPlayCardPhase(baccarat);
@@ -620,6 +620,8 @@ namespace CauldronTests
         {
             SetupGameController("BaronBlade", "Cauldron.Baccarat", "Legacy", "Bunker", "TheScholar", "Megalopolis");
             StartGame();
+
+            //If all or all but one copy of Cheap Trick is in hand, GetCard() will return the same copy regardless of index and cause the test to fail
             Card trick1 = GetCard("CheapTrick", 1);
             Card trick2 = GetCard("CheapTrick", 2);
             Card saint = GetCard("AceOfSaints");

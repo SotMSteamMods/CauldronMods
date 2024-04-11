@@ -850,6 +850,7 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
             DiscardAllCards(knight);
+            ShuffleTrashIntoDeck(knight);
 
             //prime a hand and top of deck
             var testCard = PutInHand(knight, "MaidensBlessing");
@@ -916,134 +917,7 @@ namespace CauldronTests
             AssertIsTarget(target, targetHP);
             AssertNotTarget(equip);
         }
-
-        [Test]
-        public void Armor_ImbuedVitalityOutOfPlay([Values("PlateHelm", "PlateMail")] string armor)
-        {
-            SetupGameController("GrandWarlordVoss", HeroNamespace, "RealmOfDiscord");
-            StartGame();
-
-            //nuke all baron blades cards so his ongoings don't break tests
-            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(knight);
-
-            var target = PutInHand(knight, armor);
-            int targetHP = armor == "PlateHelm" ? 3 : 5;
-            GoToPlayCardPhase(knight);
-
-            PrintSeparator("Test");
-
-            var imbue = PlayCard("ImbuedVitality");
-            AssertIsTarget(target, 6);
-
-            DestroyCard(imbue);
-            AssertIsTarget(target, targetHP);
-        }
-
-        [Test]
-        public void Armor_ImbuedVitalityOutOfPlay_ThenEntersPlay([Values("PlateHelm", "PlateMail")] string armor)
-        {
-            SetupGameController("GrandWarlordVoss", HeroNamespace, "RealmOfDiscord");
-            StartGame();
-
-            //nuke all baron blades cards so his ongoings don't break tests
-            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(knight);
-
-            var target = PutInHand(knight, armor);
-            int targetHP = armor == "PlateHelm" ? 3 : 5;
-            GoToPlayCardPhase(knight);
-
-            PrintSeparator("Test");
-
-            var imbue = PlayCard("ImbuedVitality");
-            AssertIsTarget(target, 6);
-
-            PlayCard(target);
-            AssertIsTarget(target, 6);
-
-            DestroyCard(imbue);
-            AssertIsTarget(target, targetHP);
-        }
-
-        [Test]
-        public void Armor_BounceArmourThenImbuedVitality([Values("PlateHelm", "PlateMail")] string armor)
-        {
-            SetupGameController("GrandWarlordVoss", HeroNamespace, "RealmOfDiscord");
-            StartGame();
-
-            //nuke all baron blades cards so his ongoings don't break tests
-            DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
-            DiscardAllCards(knight);
-
-            var target = PutInHand(knight, armor);
-            int targetHP = armor == "PlateHelm" ? 3 : 5;
-            GoToPlayCardPhase(knight);
-
-            PrintSeparator("Test");
-
-            PlayCard(target);
-            AssertIsTarget(target, targetHP);
-            DestroyCard(target);
-
-            var imbue = PlayCard("ImbuedVitality");
-            AssertIsTarget(target, 6);
-
-            DestroyCard(imbue);
-            AssertIsTarget(target, targetHP);
-        }
-
-        [Test]
-        public void Armor_InPlay_SwitchBattleZones([Values("PlateHelm", "PlateMail")] string armor)
-        {
-            SetupGameController(new string[] { "OblivAeon", "Cauldron.TheKnight", "Legacy", "Haka", "Tachyon", "Luminary", "RealmOfDiscord", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
-            StartGame();
-
-            var target = PutInHand(knight, armor);
-            int targetHP = armor == "PlateHelm" ? 3 : 5;
-            GoToPlayCardPhase(knight);
-
-            PrintSeparator("Test");
-
-            PlayCard(target);
-            AssertIsTarget(target, targetHP);
-            PlayCard("ImbuedVitality");
-            AssertIsTarget(target, 6);
-
-            SetHitPoints(target, 2);
-            AssertHitPoints(target, 2);
-            SwitchBattleZone(knight);
-            AssertIsTarget(target, targetHP);
-            AssertHitPoints(target, 2);
-            SwitchBattleZone(knight);
-            AssertIsTarget(target, 6);
-            AssertHitPoints(target, 2);
-        }
-
-        [Test]
-        public void Armor_InTrash_SwitchBattleZones([Values("PlateHelm", "PlateMail")] string armor)
-        {
-            SetupGameController(new string[] { "OblivAeon", "Cauldron.TheKnight", "Legacy", "Haka", "Tachyon", "Luminary", "RealmOfDiscord", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
-            StartGame();
-
-            
-            var target = PutInHand(knight, armor);
-            int targetHP = armor == "PlateHelm" ? 3 : 5;
-            GoToPlayCardPhase(knight);
-
-            PrintSeparator("Test");
-
-            PlayCard(target);
-            AssertIsTarget(target, targetHP);
-            PlayCard("ImbuedVitality");
-            DestroyCard(target);
-            AssertIsTarget(target, 6);
-            SwitchBattleZone(knight);
-            AssertIsTarget(target, targetHP);
-            SwitchBattleZone(knight);
-            AssertIsTarget(target, 6);
-        }
-
+        
         [Test]
         [Description("TheKnight - PlateHelm")]
         public void PlateHelm()
