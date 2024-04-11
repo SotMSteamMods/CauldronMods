@@ -18,7 +18,7 @@ namespace Cauldron.Pyre
 
             int numCards = GetPowerNumeral(0, 1);
             //"{PyreIrradiate} 1 non-{PyreIrradiate} card in a player's hand until it leaves their hand."
-            var viableHeroes = GameController.AllHeroes.Where(htt => GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource()) && htt.Hand.Cards.Any(c => !IsIrradiated(c))).Select(htt => htt as TurnTaker);
+            var viableHeroes = GameController.AllHeroes.Where(htt => GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource()) && htt.Hand.Cards.Any(c => !c.IsIrradiated())).Select(htt => htt as TurnTaker);
             var decision = new SelectTurnTakerDecision(GameController, DecisionMaker, viableHeroes, SelectionType.Custom, cardSource: GetCardSource());
             CurrentMode = CustomMode.PlayerToIrradiate;
             IEnumerator coroutine = GameController.SelectTurnTakerAndDoAction(decision, tt => SelectAndIrradiateCardsInHand(DecisionMaker, tt, numCards, numCards));
@@ -59,9 +59,9 @@ namespace Cauldron.Pyre
             }
 
             //Shuffle a cascade card from your trash into your deck.
-            if (TurnTaker.Trash.Cards.Any((Card c) => IsCascade(c)))
+            if (TurnTaker.Trash.Cards.Any((Card c) => GameController.IsCascade(c)))
             {
-                var cardToMove = TurnTaker.Trash.Cards.Where((Card c) => IsCascade(c)).FirstOrDefault();
+                var cardToMove = TurnTaker.Trash.Cards.Where((Card c) => GameController.IsCascade(c)).FirstOrDefault();
                 coroutine = GameController.SendMessageAction($"{Card.Title} shuffles {cardToMove.Title} into {TurnTaker.Deck.GetFriendlyName()}.", Priority.Medium, GetCardSource(), new Card[] { cardToMove });
                 if (UseUnityCoroutines)
                 {
@@ -104,7 +104,7 @@ namespace Cauldron.Pyre
                 case 0:
                     {
                         //"One player may discard a {PyreIrradiate} card. If they do, 1 target regains 4 HP.",
-                        var heroesWithIrradiated = GameController.AllHeroes.Where(htt => htt.Hand.Cards.Any(card => IsIrradiated(card)) && GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource())).Select(htt => htt as TurnTaker);
+                        var heroesWithIrradiated = GameController.AllHeroes.Where(htt => htt.Hand.Cards.Any(card => card.IsIrradiated()) && GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource())).Select(htt => htt as TurnTaker);
                         var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, heroesWithIrradiated, SelectionType.DiscardCard, true, cardSource: GetCardSource());
                         coroutine = GameController.SelectTurnTakerAndDoAction(selectHero, DiscardForGainHP);
                         if (UseUnityCoroutines)
@@ -154,7 +154,7 @@ namespace Cauldron.Pyre
         {
             var heroTTC = FindHeroTurnTakerController(tt.ToHero());
             var storedDiscard = new List<DiscardCardAction>();
-            IEnumerator coroutine = GameController.SelectAndDiscardCard(heroTTC, true, card => IsIrradiated(card), storedDiscard, responsibleTurnTaker: TurnTaker, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDiscardCard(heroTTC, true, card => card.IsIrradiated(), storedDiscard, responsibleTurnTaker: TurnTaker, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

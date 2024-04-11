@@ -12,7 +12,7 @@ namespace Cauldron.Pyre
     {
         public ParticleColliderCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ShowIrradiatedCardsInHands();
+            this.ShowIrradiatedCardsInHands(SpecialStringMaker);
             SpecialStringMaker.ShowIfElseSpecialString(() => FindCardsWhere(c => c.IsInPlayAndHasGameText && c.Identifier == ThermonuclearCoreIdentifier).Any(), () => "Thermonuclear Core is in play.", () => "Thermonuclear Core is not in play.");
         }
 
@@ -24,7 +24,7 @@ namespace Cauldron.Pyre
             int numDamage = GetPowerNumeral(2, 1);
             int numBoost = GetPowerNumeral(3, 3);
             //"1 player may play a {PyreIrradiate} card now. 
-            var selectHeroes = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.ToHero().Hand.Cards.Any((Card c) => IsIrradiated(c) && GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay), $"hero with {Irradiated} cards in hand"), SelectionType.PlayCard, numPlayers, false, numPlayers, cardSource: GetCardSource());
+            var selectHeroes = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.ToHero().Hand.Cards.Any((Card c) => c.IsIrradiated() && GameController.CanPlayCard(FindCardController(c)) == CanPlayCardResult.CanPlay), $"hero with {PyreExtensionMethods.Irradiated} cards in hand"), SelectionType.PlayCard, numPlayers, false, numPlayers, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(selectHeroes, PlayIrradiatedCard, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -179,7 +179,7 @@ namespace Cauldron.Pyre
         private IEnumerator PlayIrradiatedCard(TurnTaker tt)
         {
             var heroTTC = FindHeroTurnTakerController(tt.ToHero());
-            IEnumerator coroutine = GameController.SelectAndPlayCardFromHand(heroTTC, true, cardCriteria: new LinqCardCriteria((Card c) => IsIrradiated(c), Irradiated), cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndPlayCardFromHand(heroTTC, true, cardCriteria: new LinqCardCriteria((Card c) => c.IsIrradiated(), PyreExtensionMethods.Irradiated), cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

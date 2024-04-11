@@ -37,7 +37,7 @@ namespace Cauldron.Pyre
                 case 0:
                     {
                         //"One player may discard a {PyreIrradiate} card. If they do, each player may play a card now.",
-                        var heroesWithIrradiated = GameController.AllHeroes.Where(htt => htt.Hand.Cards.Any(card => IsIrradiated(card)) && GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource())).Select(htt => htt as TurnTaker);
+                        var heroesWithIrradiated = GameController.AllHeroes.Where(htt => htt.Hand.Cards.Any(card => card.IsIrradiated()) && GameController.IsTurnTakerVisibleToCardSource(htt, GetCardSource())).Select(htt => htt as TurnTaker);
                         var selectHero = new SelectTurnTakerDecision(GameController, DecisionMaker, heroesWithIrradiated, SelectionType.DiscardCard, true, cardSource: GetCardSource());
                         coroutine = GameController.SelectTurnTakerAndDoAction(selectHero, DiscardForEverybodyPlays);
                         if (UseUnityCoroutines)
@@ -87,7 +87,7 @@ namespace Cauldron.Pyre
             //May discard a {PyreIrradiate} card
             var heroTTC = FindHeroTurnTakerController(tt.ToHero());
             var storedDiscard = new List<DiscardCardAction>();
-            IEnumerator coroutine = GameController.SelectAndDiscardCard(heroTTC, true, card => IsIrradiated(card), storedDiscard, responsibleTurnTaker: TurnTaker, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndDiscardCard(heroTTC, true, card => card.IsIrradiated(), storedDiscard, responsibleTurnTaker: TurnTaker, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

@@ -16,7 +16,7 @@ namespace Cauldron.Pyre
         {
             AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
             AddInhibitorException((GameAction ga) => ga is PlayCardAction && Card.Location.IsHand);
-            ShowIrradiatedCount();
+            this.ShowIrradiatedCount(SpecialStringMaker);
         }
         private const string LocationKnown = "CascadeLocationKnownKey";
         public override void AddStartOfGameTriggers()
@@ -124,8 +124,8 @@ namespace Cauldron.Pyre
         public override IEnumerator Play()
         {
             //"{Pyre} deals each hero with {PyreIrradiate} cards in their hand X energy damage, where X is the number of {PyreIrradiate} cards in all hands.",
-            Func<int> NumIrradiatedCardsInHand = () => GameController.GetAllCards().Where((Card c) => IsIrradiated(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count();
-            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) =>  IsHeroCharacterCard(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && c.Owner.ToHero().Hand.Cards.Any((Card inHand) => IsIrradiated(inHand)), c => NumIrradiatedCardsInHand(), DamageType.Energy);
+            Func<int> NumIrradiatedCardsInHand = () => GameController.GetAllCards().Where((Card c) => c.IsIrradiated() && GameController.IsCardVisibleToCardSource(c, GetCardSource())).Count();
+            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) =>  IsHeroCharacterCard(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()) && c.Owner.ToHero().Hand.Cards.Any((Card inHand) => inHand.IsIrradiated()), c => NumIrradiatedCardsInHand(), DamageType.Energy);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

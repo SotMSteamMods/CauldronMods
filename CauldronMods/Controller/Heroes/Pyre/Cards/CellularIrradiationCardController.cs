@@ -12,7 +12,7 @@ namespace Cauldron.Pyre
     {
         public CellularIrradiationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ShowIrradiatedCount();
+            this.ShowIrradiatedCount(SpecialStringMaker);
         }
 
         public override IEnumerator Play()
@@ -46,12 +46,12 @@ namespace Cauldron.Pyre
             //dynamic, in case eg. Pyre plays it on himself and uses his power to up his count
             Func<int> irradiatedCardsInHand = delegate
             {
-                return heroTTC.HeroTurnTaker.Hand.Cards.Where((Card c) => IsIrradiated(c)).Count();
+                return heroTTC.HeroTurnTaker.Hand.Cards.Where((Card c) => c.IsIrradiated()).Count();
             };
             
             if(irradiatedCardsInHand() == 0)
             {
-                coroutine = GameController.SendMessageAction($"{heroTTC.Name} has no {Irradiated} cards in hand, so nothing happens.", Priority.Medium, GetCardSource());
+                coroutine = GameController.SendMessageAction($"{heroTTC.Name} has no {PyreExtensionMethods.Irradiated} cards in hand, so nothing happens.", Priority.Medium, GetCardSource());
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

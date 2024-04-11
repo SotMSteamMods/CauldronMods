@@ -12,7 +12,7 @@ namespace Cauldron.Pyre
     {
         public AtmosphereScrubbersCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ShowIrradiatedCardsInHands();
+            this.ShowIrradiatedCardsInHands(SpecialStringMaker);
         }
 
         public override IEnumerator Play()
@@ -74,7 +74,7 @@ namespace Cauldron.Pyre
             }
 
             var card = GetSelectedCard(storedCard);
-            bool wasIrradiated = IsIrradiated(card);
+            bool wasIrradiated = card.IsIrradiated();
 
             var storedDiscard = new List<DiscardCardAction>();
             coroutine = GameController.DiscardCard(heroTTC, card, new IDecision[] { storedCard.FirstOrDefault() }, TurnTaker, storedDiscard, GetCardSource());

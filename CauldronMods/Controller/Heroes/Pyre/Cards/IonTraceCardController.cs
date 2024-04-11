@@ -12,13 +12,13 @@ namespace Cauldron.Pyre
     {
         public IonTraceCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            ShowIrradiatedCount();
+            this.ShowIrradiatedCount(SpecialStringMaker);
         }
 
         public override IEnumerator Play()
         {
             //"Two players may each select a non-{PyreIrradiate} card in their hand and move a card that shares a keyword with it from their trash to their hand. {PyreIrradiate} any cards selected or moved this way until they leave their hands.",
-            var selectHeroes = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.ToHero().Hand.Cards.Any((card) => !IsIrradiated(card))), SelectionType.ReturnToHand, 2, false, 2, cardSource: GetCardSource());
+            var selectHeroes = new SelectTurnTakersDecision(GameController, DecisionMaker, new LinqTurnTakerCriteria((TurnTaker tt) => IsHero(tt) && !tt.IsIncapacitatedOrOutOfGame && GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.ToHero().Hand.Cards.Any((card) => !card.IsIrradiated())), SelectionType.ReturnToHand, 2, false, 2, cardSource: GetCardSource());
             IEnumerator coroutine = GameController.SelectTurnTakersAndDoAction(selectHeroes, RescueAndIrradiateCards, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
@@ -78,7 +78,7 @@ namespace Cauldron.Pyre
             //{PyreIrradiate} any cards selected or moved this way until they leave their hands.",
             if(DidSelectCard(storedTrashCard))
             {
-                coroutine = IrradiateCard(GetSelectedCard(storedTrashCard));
+                coroutine = this.IrradiateCard(GetSelectedCard(storedTrashCard));
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

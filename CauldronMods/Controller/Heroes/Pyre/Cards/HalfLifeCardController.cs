@@ -31,7 +31,7 @@ namespace Cauldron.Pyre
             //{PyreIrradiate} that card until it leaves your hand. 
             if(DidSelectCard(storedResults))
             {
-                coroutine = IrradiateCard(GetSelectedCard(storedResults));
+                coroutine = this.IrradiateCard(GetSelectedCard(storedResults));
                 if (UseUnityCoroutines)
                 {
                     yield return GameController.StartCoroutine(coroutine);

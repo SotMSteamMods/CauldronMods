@@ -89,7 +89,7 @@ namespace Cauldron.Pyre
         }
         private IEnumerator MarkIrradiatedPlay(PlayCardAction pc)
         {
-            WasPlayedIrradiated = IsIrradiated(Card);
+            WasPlayedIrradiated = Card.IsIrradiated();
             yield return null;
             yield break;
         }
