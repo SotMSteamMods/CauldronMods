@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Handelabra;
 
 namespace Cauldron.TheKnight
 {
@@ -120,6 +121,31 @@ namespace Cauldron.TheKnight
             }
 
             return this.CharacterCard;
+        }
+
+        // Lightly modified copy of CardController.AdjustTargetnessResponse, which is unfortunately private.
+        protected IEnumerator AdjustTargetnessResponseNotPrivate(GameAction a, Card card, int maxHP)
+        {
+            if (a is RemoveTargetAction rta)
+            {
+                IEnumerator coroutine = CancelAction(rta);
+                if (UseUnityCoroutines)
+                {
+                    yield return GameController.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    GameController.ExhaustCoroutine(coroutine);
+                }
+                rta.CardToRemoveTarget.SetMaximumHP(maxHP, alsoSetHP: false);
+            }
+            else if (a is BulkRemoveTargetsAction brta)
+            {
+                brta.RemoveCardsFromBulkProcess(c => c == card).ForEach(delegate (Card c)
+                {
+                    c.SetMaximumHP(maxHP, alsoSetHP: false);
+                });
+            }
         }
     }
 }
