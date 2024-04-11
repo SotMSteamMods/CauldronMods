@@ -232,7 +232,7 @@ namespace Cauldron.SuperstormAkela
             {
                 yield break;
             }
-            Log.Debug($"{this.Card.Title} is using {otherCard.Title} to refresh the UI for {card.Title}");}
+            Log.Debug($"{this.Card.Title} is using {otherCard.Title} to refresh the UI for {card.Title}");
             CardSource otherCardSource = FindCardController(otherCard).GetCardSource();
 
             int? currentHP = card.IsTarget ? card.HitPoints : null;
