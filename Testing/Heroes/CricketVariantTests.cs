@@ -646,7 +646,58 @@ namespace CauldronTests
 
         }
 
+        [Test()]
+        public void TestWastelandRoninCricketIncap2_Oblivaeon_Rewind()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Cauldron.Cricket/WastelandRoninCricketCharacter", "Legacy", "Haka", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
 
+            StartGame();
+            Card crick = cricket.CharacterCard;
+            SetupIncap(oblivaeon);
+            MoveCard(oblivaeon, "ScatterSlaughter", oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
+            MoveCards(oblivaeon, FindCardsWhere((Card c) => c.Identifier == "AeonThrall"), oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"));
+
+            //Replace Cricket with Bunker
+            GoToAfterEndOfTurn(oblivaeon);
+            DecisionSelectFromBoxIdentifiers = new string[] { "BunkerCharacter" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Bunker";
+            RunActiveTurnPhase();
+
+            //Use incap ability and select Motivational Charge
+            ResetDecisions();
+            Card charge = PlayCard("MotivationalCharge");
+            DecisionSelectCard = charge;
+            GoToBeforeStartOfTurn(bunker);
+            DecisionSelectFunction = 2;
+            DecisionIncapacitatedAbilityIndex = 1;
+            RunActiveTurnPhase();
+
+            //Check that Motivational Charge gets used twice
+            DecisionSelectTarget = oblivaeon.CharacterCard;
+            QuickHPStorage(oblivaeon);
+            UsePower(charge);
+            QuickHPCheck(-4);
+
+            GoToEndOfTurn(oblivaeon);
+
+            //Reload the game
+            SaveAndLoad(GameController);
+
+            //This time, select Mere
+            ResetDecisions();
+            Card mere = PlayCard("Mere");
+            DecisionSelectCard = mere;
+            GoToBeforeStartOfTurn(bunker);
+            DecisionSelectFunction = 2;
+            DecisionIncapacitatedAbilityIndex = 1;
+            RunActiveTurnPhase();
+
+            //Check that Mere gets used twice
+            DecisionSelectTarget = oblivaeon.CharacterCard;
+            QuickHPStorage(oblivaeon);
+            UsePower(mere);
+            QuickHPCheck(-4);
+        }
 
         [Test()]
         public void TestWastelandRoninCricketIncap2CosmicWeapon()
