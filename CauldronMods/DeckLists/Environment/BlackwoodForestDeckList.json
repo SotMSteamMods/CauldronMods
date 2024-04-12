@@ -50,7 +50,7 @@
         "This card is indestructible.",
         "At the start of the environment turn, if there is at least 1 other environment card in play, reveal the top card of the environment deck. If the Hound is revealed, put it into play, otherwise discard that card."
       ],
-      "flavorText": "The innkeeper scowled at her. ìThe{BR}deeper into the woods you get, the{BR}more company you'll have.î"
+      "flavorText": "The innkeeper scowled at her. ‚ÄúThe{BR}deeper into the woods you get, the{BR}more company you'll have.‚Äù"
     },
     {
       "identifier": "MirrorWraith",
@@ -88,7 +88,7 @@
             "text": "This is a place of the past. Nothing stays buried, Not for long, anyways."
         }
       ],
-      "flavorText": "ìThis is a place of the past. Nothing{BR}stays buried,ì said Chrono-Ranger,{BR}watching the soil begin to move. ìNot{BR}for long, anyways.ì"
+      "flavorText": "‚ÄúThis is a place of the past. Nothing{BR}stays buried,‚Äú said Chrono-Ranger,{BR}watching the soil begin to move. ‚ÄúNot{BR}for long, anyways.‚Äú"
     },
     {
       "identifier": "OvergrownCathedral",
@@ -141,7 +141,7 @@
         "At the end of the environment turn, this card deals the hero with the lowest HP {H - 2} toxic damage.",
         "When this card is destroyed, it deals each target 1 psychic damage."
        ],
-      "flavorText": "Vanish caught something out of the{BR}corner of her eye. ìDid that tree{BR}just move?î",
+      "flavorText": "Vanish caught something out of the{BR}corner of her eye. ‚ÄúDid that tree{BR}just move?‚Äù",
       "hitpoints": 4
     },
     {
