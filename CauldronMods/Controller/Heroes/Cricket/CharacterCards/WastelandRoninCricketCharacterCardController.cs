@@ -157,7 +157,7 @@ namespace Cauldron.Cricket
 
         public override void AddSideTriggers()
         {
-            if (base.CharacterCard.IsFlipped)
+            if (base.Card.IsFlipped)
             {
                 //This looks for when a power is used that has been setup to be duplicated as per Incap 2
                 base.AddSideTrigger(base.AddTrigger<UsePowerAction>(action => action.Power.CardController.GetCardPropertyJournalEntryBoolean(Incap2PropKey) == true, UsePowerAgainResponse, TriggerType.UsePower, TriggerTiming.After));
