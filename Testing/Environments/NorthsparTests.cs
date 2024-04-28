@@ -1112,6 +1112,13 @@ namespace CauldronTests
         public void TestFrozenSolid_SkipPlay()
         {
             SetupGameController(new string[] { "WagerMaster", "AbsoluteZero", "Legacy", "Ra", "Tachyon", "Haka", "Cauldron.Northspar" });
+
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds");
+
+            //Wagelings can cause a game over immediately, so banish them
+            MoveCards(wager, FindCardsWhere((Card c) => c.Identifier == "Wagelings"), wager.TurnTaker.Trash);
+
             StartGame();
             SetHitPoints(az, 10);
             SetHitPoints(legacy, 10);
@@ -1135,6 +1142,13 @@ namespace CauldronTests
         public void TestFrozenSolid_NoPowerCanPlay()
         {
             SetupGameController(new[] { "WagerMaster", "AbsoluteZero", "Legacy", "Ra", "TheSentinels", "Cauldron.Northspar" });
+
+            //losingtothe odds causes a game over mid test, banish it.
+            PutInTrash("LosingToTheOdds");
+
+            //Wagelings can cause a game over immediately, so banish them
+            MoveCards(wager, FindCardsWhere((Card c) => c.Identifier == "Wagelings"), wager.TurnTaker.Trash);
+
             StartGame();
 
             SetHitPoints(az, 10);
