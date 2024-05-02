@@ -322,23 +322,27 @@ namespace Cauldron.Celadroch
         private IEnumerator ReviveForsakenCrusaderMessage(Card card)
         {
             int rng = Game.RNG.Next(1, 21);
-            string msg = $"Your service has not ended...";
-            bool showCardSource = true;
-            if (5 <= rng && rng < 10)
+
+            string msg = "Your service has not ended...";
+            bool showCardSource = rng <= 10;
+
+            if (rng > 5 && rng <= 10)
             {
-                msg = $"Arise"; showCardSource = true;
+                msg = "Arise";
             }
-            if (rng < 15)
+            else if (rng <= 15)
             {
-                msg = $"\"When can I slumber...\""; showCardSource = false;
+                msg = "\"When can I slumber...\"";
             }
-            if (rng < 20)
+            else if (rng <= 20)
             {
-                msg = $"\"I serve.\""; showCardSource = false;
+                msg = "\"I serve.\"";
             }
-            if (rng == 21)
-            {
-                msg = $"Whose the best strong boi, that's right, it's you."; showCardSource = true;
+            else if (rng == 21)
+            {   // NOTE: This will never actually show; 21 on RNG.Next is upper bound exclusive.
+                // That said, I don't have the heart to remove it.
+                msg = "Whose the best strong boi, that's right, it's you.";
+                showCardSource = true;
             }
 
             return GameController.SendMessageAction(msg, Priority.Medium, GetCardSource(), new[] { card }, showCardSource);
