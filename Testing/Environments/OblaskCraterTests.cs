@@ -416,6 +416,131 @@ namespace CauldronTests
             AssertNotInPlay(metalScavenger.UnderLocation.Cards);
         }
 
+        [Test()]
+        public void TestMetalScavengerOblivaeonBZ1()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.OblaskCrater", "InsulaPrimalis", "MobileDefensePlatform", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Location scionDeck = oblivaeon.TurnTaker.FindSubDeck("ScionDeck");
+            Location scionTrash = oblivaeon.TurnTaker.FindSubTrash("ScionDeck");
+            Location aeonTrash = oblivaeon.TurnTaker.FindSubTrash("AeonMenDeck");
+            MoveCard(oblivaeon, "ScatterSlaughter", scionDeck);
+
+            /* 
+             * At the end of the environment turn, move the top card of each other trash pile beneath this card.
+             * Then, this card deals each other target 1 toxic damage and itself 1 fire damage.
+             * Cards beneath this one are not considered in play.
+             */
+
+            GoToPlayCardPhase(FindEnvironment(bzOne));
+            SwitchBattleZone(legacy);
+
+            //Metal Scavenger should see trashes for OblivAeon, Haka, Tachyon, and Luminary
+            Card scavenger = PutIntoPlay("MetalScavenger");
+            Card fortitude = PutInTrash("Fortitude");
+            Card tamoko = PutInTrash("TaMoko");
+            Card goggles = PutInTrash("HUDGoggles");
+            Card plan = PutInTrash("AllAccordingToPlan");
+            Card tracks = PutInTrash("FreshTracks");
+            Card assault = MoveCard(oblivaeon, "AeonAssault", scionTrash);
+            Card locus = MoveCard(oblivaeon, "AeonLocus", aeonTrash);
+            Card absorb = PutInTrash("AbsorbEnergy");
+            Card obsidian = PutInTrash("ObsidianField");
+
+            GoToEndOfTurn(FindEnvironment(bzOne));
+            AssertNumberOfCardsUnderCard(scavenger, 4);
+            AssertAtLocation(new Card[] { absorb, tamoko, goggles, plan },scavenger.UnderLocation);
+            AssertInTrash(new Card[] { fortitude, tracks, obsidian });
+            AssertAtLocation(assault, scionTrash);
+            AssertAtLocation(locus, aeonTrash);
+        }
+
+        [Test()]
+        public void TestMetalScavengerOblivaeonBZ2()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Legacy", "Haka", "Tachyon", "Luminary", "InsulaPrimalis", "Cauldron.OblaskCrater", "MobileDefensePlatform", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Location scionDeck = oblivaeon.TurnTaker.FindSubDeck("ScionDeck");
+            Location scionTrash = oblivaeon.TurnTaker.FindSubTrash("ScionDeck");
+            Location aeonTrash = oblivaeon.TurnTaker.FindSubTrash("AeonMenDeck");
+            MoveCard(oblivaeon, "ScatterSlaughter", scionDeck);
+            PutOnDeck("FocusOfPower");
+
+            /* 
+             * At the end of the environment turn, move the top card of each other trash pile beneath this card.
+             * Then, this card deals each other target 1 toxic damage and itself 1 fire damage.
+             * Cards beneath this one are not considered in play.
+             */
+
+            GoToPlayCardPhase(FindEnvironment(bzTwo));
+            SwitchBattleZone(legacy);
+
+            //Metal Scavenger should see trashes for Legacy, the Scion deck, and the Aeon Men deck
+            Card scavenger = PutIntoPlay("MetalScavenger");
+            Card fortitude = PutInTrash("Fortitude");
+            Card tamoko = PutInTrash("TaMoko");
+            Card goggles = PutInTrash("HUDGoggles");
+            Card plan = PutInTrash("AllAccordingToPlan");
+            Card tracks = PutInTrash("FreshTracks");
+            Card assault = MoveCard(oblivaeon, "AeonAssault", scionTrash);
+            Card locus = MoveCard(oblivaeon, "AeonLocus", aeonTrash);
+            Card absorb = PutInTrash("AbsorbEnergy");
+            Card obsidian = PutInTrash("ObsidianField");
+
+            GoToEndOfTurn(FindEnvironment(bzTwo));
+            AssertNumberOfCardsUnderCard(scavenger, 3);
+            AssertAtLocation(new Card[] { fortitude, assault, locus }, scavenger.UnderLocation);
+            AssertInTrash(new Card[] { tamoko, goggles, plan, tracks, absorb, obsidian });
+        }
+
+        [Test()]
+        public void TestMetalScavengerOblivaeonNoTrashes()
+        {
+            SetupGameController(new string[] { "OblivAeon", "Legacy", "Haka", "Tachyon", "Luminary",  "Cauldron.OblaskCrater", "InsulaPrimalis", "MobileDefensePlatform", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
+            StartGame();
+
+            Location scionDeck = oblivaeon.TurnTaker.FindSubDeck("ScionDeck");
+            Location scionTrash = oblivaeon.TurnTaker.FindSubTrash("ScionDeck");
+            Location aeonTrash = oblivaeon.TurnTaker.FindSubTrash("AeonMenDeck");
+            MoveCard(oblivaeon, "ScatterSlaughter", scionDeck);
+            PutOnDeck("FocusOfPower");
+
+            /* 
+             * At the end of the environment turn, move the top card of each other trash pile beneath this card.
+             * Then, this card deals each other target 1 toxic damage and itself 1 fire damage.
+             * Cards beneath this one are not considered in play.
+             */
+
+            GoToPlayCardPhase(FindEnvironment(bzOne));
+            SwitchBattleZone(legacy);
+            SwitchBattleZone(haka);
+            SwitchBattleZone(tachyon);
+            SwitchBattleZone(luminary);
+            SwitchBattleZone(oblivaeon);
+
+            //Metal Scavenger should see no trashes
+            Card scavenger = PutIntoPlay("MetalScavenger");
+            Card fortitude = PutInTrash("Fortitude");
+            Card tamoko = PutInTrash("TaMoko");
+            Card goggles = PutInTrash("HUDGoggles");
+            Card plan = PutInTrash("AllAccordingToPlan");
+            Card tracks = PutInTrash("FreshTracks");
+            Card assault = MoveCard(oblivaeon, "AeonAssault", scionTrash);
+            Card locus = MoveCard(oblivaeon, "AeonLocus", aeonTrash);
+            Card absorb = PutInTrash("AbsorbEnergy");
+            Card obsidian = PutInTrash("ObsidianField");
+
+            QuickHPStorage(scavenger);
+            GoToEndOfTurn(FindEnvironment(bzOne));
+            AssertNumberOfCardsUnderCard(scavenger, 0);
+            AssertInTrash(new Card[] {fortitude, tamoko, goggles, plan, tracks, absorb, obsidian });
+            AssertAtLocation(assault, scionTrash);
+            AssertAtLocation(locus, aeonTrash);
+            QuickHPCheck(-1);
+        }
+
         #endregion Test Metal Scavenger
 
         #region Test Moon Watcher

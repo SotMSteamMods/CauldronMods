@@ -37,12 +37,12 @@ namespace Cauldron.OblaskCrater
 
             string message = $"{Card.Title} moves the top card of each other trash pile beneath this card!";
 
-            cardsToMove = base.GameController.TurnTakerControllers.Where(ttc => ttc != base.TurnTakerController && !ttc.IsIncapacitatedOrOutOfGame && ttc.TurnTaker.Trash.HasCards).Select((ttc) => ttc.TurnTaker.Trash.TopCard).ToList();
+            cardsToMove = base.GameController.FindLocationsWhere((Location L) => L.IsTrash && L != this.TurnTaker.Trash && L.HasCards && !L.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && base.GameController.IsLocationVisibleToSource(L, GetCardSource())).Select((Location L) => L.TopCard).ToList();
             moveRoutine = base.GameController.BulkMoveCards(base.TurnTakerController, cardsToMove, base.Card.UnderLocation, cardSource: base.GetCardSource());
             if (!cardsToMove.Any())
             {
                 moveRoutine = DoNothing();
-                message = $"THere are no cards in any trashes for {Card.Title} to move!";
+                message = $"There are no cards in any trashes for {Card.Title} to move!";
             }
             messageRoutine = base.GameController.SendMessageAction(message, Priority.Medium, GetCardSource(), showCardSource: true);
 
