@@ -111,7 +111,7 @@ namespace Cauldron.DocHavoc
                     //==============================================================
 
                     coroutine = base.GameController.SelectAndDestroyCards(base.HeroTurnTakerController,
-                        new LinqCardCriteria(c => c.IsEnvironment, "environment"),
+                        new LinqCardCriteria(c => c.IsEnvironmentTarget, "environment target"),
                         Incapacitate3CardsToDestroy,
                         requiredDecisions: 0, cardSource: GetCardSource());
 
