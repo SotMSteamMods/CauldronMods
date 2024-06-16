@@ -283,13 +283,13 @@ namespace CauldronTests
 
             StartGame();
 
-            PutIntoPlay("EnragedTRex");
-            Card enragedTRex = GetCardInPlay("EnragedTRex");
+            Card enragedTRex = PutIntoPlay("EnragedTRex");
+            Card velociraptorPack = PutIntoPlay("VelociraptorPack");
+            Card obsidianField = PutIntoPlay("ObsidianField");
 
-            PutIntoPlay("ObsidianField");
-            Card obsidianField = GetCardInPlay("ObsidianField");
-
-            DecisionSelectCards = new[] { enragedTRex, obsidianField };
+            DecisionSelectCards = new[] { enragedTRex, velociraptorPack };
+            AssertNumberOfChoicesInNextDecision(2, selectionType: SelectionType.DestroyCard);
+            AssertNextDecisionChoices(new List<Card>() { enragedTRex, velociraptorPack }, new List<Card>() { obsidianField });
 
             SetHitPoints(doc.CharacterCard, 1);
             DealDamage(baron, doc, 2, DamageType.Melee);
@@ -301,7 +301,8 @@ namespace CauldronTests
             // Assert
             AssertIncapacitated(doc);
             AssertInTrash(enragedTRex);
-            AssertInTrash(obsidianField);
+            AssertInTrash(velociraptorPack);
+            AssertInPlayArea(env, obsidianField);
         }
 
         [Test]
@@ -337,6 +338,9 @@ namespace CauldronTests
 
             StartGame();
 
+            // put non-target in play
+            Card obsidianField = PlayCard("ObsidianField");
+
             SetHitPoints(doc.CharacterCard, 1);
             DealDamage(baron, doc, 2, DamageType.Melee);
 
@@ -346,8 +350,10 @@ namespace CauldronTests
 
             // Assert
             AssertIncapacitated(doc);
+            AssertInPlayArea(env, obsidianField);
             AssertNumberOfCardsInTrash(env, 0);
         }
+
         [Test]
         public void TestFutureDocHavocLoads()
         {
