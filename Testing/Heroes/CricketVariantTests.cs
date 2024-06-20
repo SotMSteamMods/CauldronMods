@@ -177,15 +177,15 @@ namespace CauldronTests
             //Reveal the top card of a hero deck. You may discard a card to put it into play, otherwise put it into that player's hand.
             QuickHandStorage(cricket);
             UsePower(cricket);
-            QuickHandCheck(-1);
-            AssertIsInPlay(hearing);
+            QuickHandCheck(0);
+            AssertAtLocation(hearing,mindScion.UnderLocation);
 
             DecisionSelectLocation = new LocationChoice(legacy.TurnTaker.Deck);
             DecisionDoNotSelectCard = SelectionType.DiscardCard;
             QuickHandStorage(cricket);
             UsePower(cricket);
             QuickHandCheck(0);
-            AssertInHand(legacy, evolution);
+            AssertAtLocation(evolution,mindScion.UnderLocation);
 
             ResetDecisions();
             DecisionSelectLocation = new LocationChoice(cricket.TurnTaker.Deck);
