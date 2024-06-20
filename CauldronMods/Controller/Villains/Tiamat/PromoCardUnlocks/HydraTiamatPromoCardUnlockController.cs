@@ -54,7 +54,7 @@ namespace Cauldron.Tiamat
             FlipCardJournalEntry flipCardJournalEntry = FindMostRecentFlip(targetIdentifier);
             if (dealDamageJournalEntry != null && flipCardJournalEntry != null)
             {
-                return dealDamageJournalEntry.CardThatCausedDamageToOccur == flipCardJournalEntry.CardSource;
+                return dealDamageJournalEntry.SourceCard == flipCardJournalEntry.DamageSource;
             }
             
             return false;
