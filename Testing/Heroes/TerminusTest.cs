@@ -508,32 +508,92 @@ namespace CauldronTests
 
             SetupGameController(new string[] { "OblivAeon", "Cauldron.Terminus", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.WindmillCity", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
             StartGame();
+            MoveCards(oblivaeon, FindCardsWhere((Card c) => c.Identifier == "AeonThrall"), oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"));
+
+            LocationChoice terminusTrash = new LocationChoice(terminus.TurnTaker.Trash);
+            LocationChoice legacyTrash = new LocationChoice(legacy.TurnTaker.Trash);
+            LocationChoice hakaTrash = new LocationChoice(haka.TurnTaker.Trash);
+            LocationChoice tachyonTrash = new LocationChoice(tachyon.TurnTaker.Trash);
+            LocationChoice luminaryTrash = new LocationChoice(luminary.TurnTaker.Trash);
+            LocationChoice oblivaeonTrash = new LocationChoice(oblivaeon.TurnTaker.Trash);
+            LocationChoice scionTrash = new LocationChoice(oblivaeon.TurnTaker.FindSubTrash("ScionDeck"));
+            LocationChoice aeonTrash = new LocationChoice(oblivaeon.TurnTaker.FindSubTrash("AeonMenDeck"));
+            LocationChoice enviroTrash1 = new LocationChoice(FindEnvironment(GameController.GetBattleZone("BattleZoneOne")).TurnTaker.Trash);
+            LocationChoice enviroTrash2 = new LocationChoice(FindEnvironment(GameController.GetBattleZone("BattleZoneTwo")).TurnTaker.Trash);
 
             Card flash = GetCard("FlashBeforeYourEyes");
             PlayCard(flash);
 
+            //Terminus is in BZ1: choices should include all heroes, OblivAeon, and environment 1
+            PrintSeparator("Terminus in BZ1, select Terminus' trash");
             PrintSpecialStringsForCard(flash);
-
-
+            GoToStartOfTurn(terminus);
+            DecisionSelectLocation = terminusTrash;
+            Card wrath = PutInTrash("CovenantOfWrath");
+            AssertNextDecisionChoices(new LocationChoice[] { terminusTrash, legacyTrash, hakaTrash, tachyonTrash, luminaryTrash, oblivaeonTrash, enviroTrash1 }, new LocationChoice[] { aeonTrash, scionTrash, enviroTrash2 });
             GoToEndOfTurn(terminus);
+            AssertOnTopOfDeck(wrath);
 
-            PrintSpecialStringsForCard(flash);
+            Card scatter = MoveCard(oblivaeon, "ScatterSlaughter", oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
+            MoveCards(oblivaeon, FindCardsWhere((Card c) => c.Identifier == "AeonThrall"), oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"));
 
             // You cannot select that trash pile again
-            base.GameController.SkipToTurnTakerTurn(terminus);
-
+            PrintSeparator("Terminus in BZ1, select environment trash");
             PrintSpecialStringsForCard(flash);
-
-            base.GameController.SkipToTurnTakerTurn(terminus);
+            ResetDecisions();
+            Card carnage = PutInTrash("CitywideCarnage");
+            GoToStartOfTurn(terminus);
+            DecisionSelectLocation = enviroTrash1;
+            AssertNextDecisionChoices(new LocationChoice[] {legacyTrash, hakaTrash, tachyonTrash, luminaryTrash, oblivaeonTrash, enviroTrash1 }, new LocationChoice[] { terminusTrash, aeonTrash, scionTrash, enviroTrash2 });
             GoToEndOfTurn(terminus);
+            AssertOnTopOfDeck(carnage);
 
+            MoveCard(oblivaeon, scatter, oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
+            MoveCards(oblivaeon, FindCardsWhere((Card c) => c.Identifier == "AeonThrall"), oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"));
+
+            // Terminus is in BZ2: choices should include scion, aeon men, and environment 2
+            PrintSeparator("Terminus in BZ2, select scion trash");
+            SwitchBattleZone(terminus);
             PrintSpecialStringsForCard(flash);
-
-            base.GameController.SkipToTurnTakerTurn(terminus);
+            ResetDecisions();
+            Card erase = MoveCard(oblivaeon, "EraseFromTime", scionTrash.Location);
+            GoToStartOfTurn(terminus);
+            DecisionSelectLocation = scionTrash;
+            AssertNextDecisionChoices(new LocationChoice[] { scionTrash, aeonTrash, enviroTrash2 }, new LocationChoice[] { terminusTrash, legacyTrash, hakaTrash, tachyonTrash, luminaryTrash, oblivaeonTrash, enviroTrash1 });
+            DecisionSelectCard = erase;
             GoToEndOfTurn(terminus);
+            AssertOnTopOfLocation(erase, oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
+
+            MoveCard(oblivaeon, scatter, oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
+            MoveCards(oblivaeon, FindCardsWhere((Card c) => c.Identifier == "AeonThrall"), oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"));
+
+            // Terminus is in BZ2: choices should include aeon men and environment 2
+            PrintSeparator("Terminus in BZ2, select aeon men trash");
+            PrintSpecialStringsForCard(flash);
+            ResetDecisions();
+            Card vassal = MoveCard(oblivaeon, "AeonVassal", aeonTrash.Location);
+            GoToStartOfTurn(terminus);
+            DecisionSelectLocation = aeonTrash;
+            AssertNextDecisionChoices(new LocationChoice[] { aeonTrash, enviroTrash2 }, new LocationChoice[] { scionTrash, terminusTrash, legacyTrash, hakaTrash, tachyonTrash, luminaryTrash, oblivaeonTrash, enviroTrash1 });
+            GoToEndOfTurn(terminus);
+            AssertOnTopOfLocation(vassal, oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"));
+
+            MoveCard(oblivaeon, scatter, oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
+            MoveCards(oblivaeon, FindCardsWhere((Card c) => c.Identifier == "AeonThrall"), oblivaeon.TurnTaker.FindSubDeck("AeonMenDeck"));
+
+            //If OblivAeon moves to BZ2, choices should include oblivaeon, aeon men, and environment 2 (since the scion trash and Terminus' trash were already chosen)
+            PrintSeparator("Terminus in BZ2, OblivAeon moved to BZ2, select OblivAeon's trash");
+            SwitchBattleZone(oblivaeon);
+            PrintSpecialStringsForCard(flash);
+            ResetDecisions();
+            Card focus = PutInTrash("FocusOfPower");
+            GoToStartOfTurn(terminus);
+            DecisionSelectLocation = oblivaeonTrash;
+            AssertNextDecisionChoices(new LocationChoice[] { oblivaeonTrash, enviroTrash2 }, new LocationChoice[] {aeonTrash, terminusTrash, legacyTrash, hakaTrash, tachyonTrash, luminaryTrash, scionTrash, enviroTrash1 });
+            GoToEndOfTurn(terminus);
+            AssertOnTopOfDeck(focus);
 
             PrintSpecialStringsForCard(flash);
-
         }
 
         [Test]

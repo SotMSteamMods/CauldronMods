@@ -109,22 +109,7 @@ namespace Cauldron.Terminus
         }
         private List<LocationChoice> AllVisibleTrashes()
         {
-            var trashes = new List<LocationChoice>();
-            foreach(TurnTaker tt in Game.TurnTakers)
-            {
-                if(GameController.IsTurnTakerVisibleToCardSource(tt, GetCardSource()) && tt.BattleZone == BattleZone)
-                {
-                    if(tt.Trash != null && tt.Trash.IsRealTrash)
-                    {
-                        trashes.Add(new LocationChoice(tt.Trash));
-                    }
-                    if(tt.SubTrashes.Any())
-                    {
-                        trashes.AddRange(tt.SubTrashes.Where(l => l.IsRealTrash).Select((Location l) => new LocationChoice(l)));
-                    }
-                }
-            }
-            return trashes;
+            return FindLocationsWhere((Location L) => base.GameController.IsLocationVisibleToSource(L, GetCardSource()) && L.IsTrash && L.IsRealTrash).Select((Location L) => new LocationChoice(L)).ToList();
         }
         private bool CanSelectTrash(LocationChoice lc)
         {
