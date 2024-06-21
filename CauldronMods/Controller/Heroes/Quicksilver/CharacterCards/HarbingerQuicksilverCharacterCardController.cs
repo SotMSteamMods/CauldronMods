@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Cauldron.Quicksilver
 {
-    public class HarbingerQuicksilverCharacterCardController : HeroCharacterCardController
+    public class HarbingerQuicksilverCharacterCardController : QuicksilverCharacterSubCardController
     {
         public HarbingerQuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {

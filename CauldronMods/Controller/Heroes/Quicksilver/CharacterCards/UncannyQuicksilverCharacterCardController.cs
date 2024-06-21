@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cauldron.Quicksilver
 {
-    public class UncannyQuicksilverCharacterCardController : HeroCharacterCardController
+    public class UncannyQuicksilverCharacterCardController : QuicksilverCharacterSubCardController
     {
         public UncannyQuicksilverCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
