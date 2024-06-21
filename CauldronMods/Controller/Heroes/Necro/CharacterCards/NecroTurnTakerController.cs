@@ -10,7 +10,7 @@ namespace Cauldron.Necro
 
         }
 
-        public string[] availablePromos = new string[] { "LastOfTheForgottenOrderNecro" };
+        public string[] availablePromos = new string[] { "LastOfTheForgottenOrderNecro", "WardenOfChaosNecro" };
 
         public bool ArePromosSetup { get; set; } = false;
 
