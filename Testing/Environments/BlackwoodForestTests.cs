@@ -1348,6 +1348,13 @@ namespace CauldronTests
 
             Card warTorn = MoveCard(oblivaeon, "AWarTornLandscape", oblivaeon.TurnTaker.FindSubDeck("MissionDeck"));
 
+            //Stack Scion deck in case Voidsoul is the BZ2 scion and plays a card at the end of the turn
+            MoveCard(oblivaeon, "ScatterSlaughter", oblivaeon.TurnTaker.FindSubDeck("ScionDeck"));
+
+            //Stack environment deck just in case
+            PutOnDeck("OvergrownCathedral");
+            PutOnDeck("VengefulSpirits");
+
             GoToBeforeStartOfTurn(ra);
             RunActiveTurnPhase();
 

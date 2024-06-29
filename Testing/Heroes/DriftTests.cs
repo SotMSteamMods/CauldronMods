@@ -1041,7 +1041,7 @@ namespace CauldronTests
             SetHitPoints(drift, 17);
             GoToStartOfTurn(drift);
 
-            Card discard = drift.TurnTaker.ToHero().Hand.TopCard;
+            Card discard = PutInHand(PastFocus);
             Card resourceful = PutInHand(ResourcefulDaydreamer);
             Card sync = PutInHand(OutOfSync);
             DecisionSelectCards = new Card[] { discard, sync };
