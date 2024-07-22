@@ -1264,5 +1264,22 @@ namespace CauldronTests
             GoToPlayCardPhase(drift);
             DealDamage(drift, haka, 1, DamageType.Melee);
         }
+
+        [Test()]
+        public void TestDriftAsRepresentativeOfEarth()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Legacy", "Haka", "Tachyon", "TheCelestialTribunal" });
+            StartGame();
+
+            DecisionSelectFromBoxIdentifiers = new string[] { "Cauldron.DriftCharacter" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Drift";
+
+            Card representative = PlayCard("RepresentativeOfEarth");
+
+            PrintJournal();
+
+            SaveAndLoad();
+
+        }
     }
 }

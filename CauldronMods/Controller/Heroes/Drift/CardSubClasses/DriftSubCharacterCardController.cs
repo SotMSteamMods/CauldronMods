@@ -793,11 +793,14 @@ namespace Cauldron.Drift
             Card modelCard;
             CardController cardController;
             Dictionary<Card, CardController> cardToControllerDict = new Dictionary<Card, CardController>();
-            string overrideNamespace = TurnTaker.QualifiedIdentifier;
-            List<string> list = new List<string>();
-            list.Add(overrideNamespace);
+            string overrideNamespace; 
+            List<string> list;
             foreach (CardDefinition trackDefinition in shiftTrackDefinitions)
             {
+                overrideNamespace = $"{trackDefinition.Namespace}.{DriftDeckDefinition.Identifier}";
+                list = new List<string>();
+                list.Add(overrideNamespace);
+                list.Add(trackDefinition.QualifiedIdentifier);
                 modelCard = new Card(trackDefinition, TurnTaker, 0);
                 TurnTaker.OffToTheSide.AddCard(modelCard);
                 shiftTracks.Add(modelCard);
