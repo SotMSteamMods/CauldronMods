@@ -1687,5 +1687,22 @@ namespace CauldronTests
             QuickHPCheck(0, 0, 0, 0, 0, -2);
         }
         #endregion Test Wrecking Ball
+
+        #region Test Representative of Earth
+        [Test()]
+        public void TestGyrosaurAsRepresentativeOfEarth()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Legacy", "Haka", "Tachyon", "TheCelestialTribunal" });
+            StartGame();
+
+            DecisionSelectFromBoxIdentifiers = new string[] { "Cauldron.GyrosaurCharacter" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Gyrosaur";
+
+            Card representative = PlayCard("RepresentativeOfEarth");
+
+            PrintJournal();
+
+        }
+        #endregion
     }
 }
