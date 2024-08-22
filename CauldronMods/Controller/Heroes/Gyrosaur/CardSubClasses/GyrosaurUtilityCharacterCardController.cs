@@ -112,11 +112,14 @@ namespace Cauldron.Gyrosaur
 
         protected void ShowCrashInHandCount(bool otherInHand = false)
         {
-            var standard = SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => IsCrash(c), "crash"));
-            if (otherInHand)
+            if (this.TurnTaker.IsPlayer)
             {
-                standard.Condition = () => !Card.Location.IsHand;
-                SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => c != this.Card && IsCrash(Card))).Condition = () => Card.Location.IsHand;
+                var standard = SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => IsCrash(c), "crash"));
+                if (otherInHand)
+                {
+                    standard.Condition = () => !Card.Location.IsHand;
+                    SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => c != this.Card && IsCrash(Card))).Condition = () => Card.Location.IsHand;
+                }
             }
         }
 
