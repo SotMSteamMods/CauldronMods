@@ -11,7 +11,10 @@ namespace Cauldron.Starlight
         public StarlightOfAsheronCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
             IsCoreCharacterCard = false;
-            SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
+            if (base.TurnTaker.IsPlayer)
+            {
+                SpecialStringMaker.ShowNumberOfCardsAtLocation(HeroTurnTaker.Hand, new LinqCardCriteria((Card c) => IsConstellation(c), "constellation"));
+            }
         }
 
         public override IEnumerator UsePower(int index = 0)

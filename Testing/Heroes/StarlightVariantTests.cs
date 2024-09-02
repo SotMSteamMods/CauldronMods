@@ -946,7 +946,20 @@ namespace CauldronTests
             AssertInPlayArea(ra, c2);
             AssertInTrash(c3);
         }
+        
+        [Test()]
+        public void TestAsheronAsRepresentativeOfEarth()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Legacy", "Haka", "Tachyon", "TheCelestialTribunal" });
+            StartGame();
 
+            DecisionSelectFromBoxIdentifiers = new string[] { "Cauldron.StarlightOfAsheronCharacter" };
+            DecisionSelectFromBoxTurnTakerIdentifier = "Cauldron.Starlight";
+
+            Card representative = PlayCard("RepresentativeOfEarth");
+
+            PrintJournal();
+        }
 
     }
 }
