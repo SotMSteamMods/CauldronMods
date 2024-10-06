@@ -135,6 +135,7 @@ namespace Cauldron.DocHavoc
                         //"The next time a hero target regains HP, increase the amount by 2."
                         var effect = new IncreaseGainHPStatusEffect(2);
                         effect.TargetCriteria.IsHero = true;
+                        effect.TargetCriteria.IsTarget = true;
                         effect.CardSource = this.Card;
                         effect.NumberOfUses = 1;
 
