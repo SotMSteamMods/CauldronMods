@@ -32,7 +32,7 @@ namespace Cauldron.Quicksilver
         public override void AddTriggers()
         {
             //You may redirect any damage dealt by other hero targets to {Quicksilver}.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.IsHero && action.DamageSource.Card != base.CharacterCard && action.Target != base.CharacterCard &&  action.IsRedirectable, this.MaybeRedirectResponse, TriggerType.RedirectDamage, TriggerTiming.Before, isActionOptional: true);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.IsHeroTarget && action.DamageSource.Card != base.CharacterCard && action.Target != base.CharacterCard &&  action.IsRedirectable, this.MaybeRedirectResponse, TriggerType.RedirectDamage, TriggerTiming.Before, isActionOptional: true);
             //Whenever {Quicksilver} takes damage this way, she deals 1 non-hero target X damage of the same type, where X is the damage that was dealt to {Quicksilver} plus 1.
             base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && action.Target == this.CharacterCard && action.DamageModifiers.Any((ModifyDealDamageAction mdda) => mdda.CardSource != null && mdda.CardSource.Card == this.Card),
                                                 (DealDamageAction action) => this.DealDamageResponse(action), 
@@ -78,7 +78,7 @@ namespace Cauldron.Quicksilver
         {
             if (action.Target == base.CharacterCard && action.DidDealDamage)
             {
-                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), action.Amount + 1, action.DamageType, 1, false, 1, cardSource: base.GetCardSource());
+                IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), action.Amount + 1, action.DamageType, 1, false, 1,additionalCriteria: (Card c) => !IsHeroTarget(c), cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
