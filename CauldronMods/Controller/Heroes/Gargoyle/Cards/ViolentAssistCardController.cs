@@ -26,7 +26,7 @@ namespace Cauldron.Gargoyle
 
         public override void AddTriggers()
         {
-            //base.AddTrigger<DealDamageAction>((dda) => !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && dda.DamageSource != null && dda.DamageSource.Card != null && dda.DamageSource.IsHero && dda.DamageSource.Card != base.CharacterCard && dda.DamageSource.IsTarget && dda.Target == base.CharacterCard, IncreaseNextDamageResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before, isActionOptional: true);
+            //base.AddTrigger<DealDamageAction>((dda) => !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && dda.DamageSource != null && dda.DamageSource.Card != null && dda.DamageSource.IsHeroTarget && dda.DamageSource.Card != base.CharacterCard && dda.Target == base.CharacterCard, IncreaseNextDamageResponse, TriggerType.WouldBeDealtDamage, TriggerTiming.Before, isActionOptional: true);
 
             AddOptionalPreventDamageTrigger(dda => !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && dda.DamageSource != null && dda.DamageSource.Card != null && dda.DamageSource.IsHero && dda.DamageSource.Card != base.CharacterCard && dda.DamageSource.IsTarget && dda.Target == base.CharacterCard, dda => IncreaseGargoyleNextDamage(dda.Amount), new List<TriggerType> { TriggerType.CreateStatusEffect }, isPreventEffect: true);
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeWouldBeDealtDamage), TriggerType.Hidden);
