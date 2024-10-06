@@ -55,12 +55,14 @@ namespace Cauldron.Anathema
 			}
 			//Until the start of the next Villain Turn, increase damage dealt by Villain targets by 1 and reduce damage dealt to Villain targets by 1.
 			ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
-			reduceDamageStatusEffect.TargetCriteria.IsVillain = true; ;
+			reduceDamageStatusEffect.TargetCriteria.IsVillain = true;
+   			reduceDamageStatusEffect.TargetCriteria.IsTarget = true;
 			reduceDamageStatusEffect.UntilStartOfNextTurn(this.TurnTaker);
 			IEnumerator reduceCoroutine = this.AddStatusEffect(reduceDamageStatusEffect);
 
 			IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
-			increaseDamageStatusEffect.SourceCriteria.IsVillain = true; ;
+			increaseDamageStatusEffect.SourceCriteria.IsVillain = true;
+   			increaseDamageStatusEffect.SourceCriteria.IsTarget = true;
 			increaseDamageStatusEffect.UntilStartOfNextTurn(this.TurnTaker);
 			IEnumerator increaseCoroutine = this.AddStatusEffect(increaseDamageStatusEffect);
 			if (this.UseUnityCoroutines)
