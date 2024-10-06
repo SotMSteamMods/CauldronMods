@@ -19,7 +19,7 @@ namespace Cauldron.Baccarat
         protected override ITrigger EffectTrigger()
         {
             //Increase damage dealt by hero targets by 1.
-            return base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource != null && dealDamage.DamageSource.IsHero, 1);
+            return base.AddIncreaseDamageTrigger((DealDamageAction dealDamage) => dealDamage.DamageSource != null && dealDamage.DamageSource.IsHeroTarget, 1);
         }
     }
 }
