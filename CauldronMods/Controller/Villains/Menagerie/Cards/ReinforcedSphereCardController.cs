@@ -31,7 +31,7 @@ namespace Cauldron.Menagerie
         {
             base.AddTriggers();
             //Reduce damage dealt by hero targets by 1.
-            base.AddReduceDamageTrigger((DealDamageAction action) => action.DamageSource.IsHero && action.DamageSource.IsTarget, (DealDamageAction action) => 1);
+            base.AddReduceDamageTrigger((DealDamageAction action) => action.DamageSource.IsHeroTarget, (DealDamageAction action) => 1);
         }
     }
 }
