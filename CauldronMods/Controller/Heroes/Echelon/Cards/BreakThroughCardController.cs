@@ -35,7 +35,7 @@ namespace Cauldron.Echelon
         {
             // Once during their turn, when 1 of a player's targets would deal damage,
             // they may increase that damage by 2
-            AddTrigger((DealDamageAction dd) => dd.DamageSource.IsHero && dd.DamageSource.IsTarget && dd.DamageSource.Owner.IsActiveTurnTaker && !HasBeenSetToTrueThisTurn(damageKey),
+            AddTrigger((DealDamageAction dd) => dd.DamageSource.IsTarget && dd.DamageSource.Card.Owner.IsPlayer && dd.DamageSource.Owner.IsActiveTurnTaker && !HasBeenSetToTrueThisTurn(damageKey),
                                     MayBoostDamageResponse,
                                     TriggerType.IncreaseDamage,
                                     TriggerTiming.Before,
