@@ -32,6 +32,7 @@ namespace Cauldron.Gyrosaur
             var immunityEffect = new ImmuneToDamageStatusEffect();
             immunityEffect.SourceCriteria.IsSpecificCard = dd.DamageSource.Card;
             immunityEffect.TargetCriteria.IsHero = true;
+            immunityEffect.TargetCriteria.IsTarget = true;
             immunityEffect.TargetCriteria.IsNotSpecificCard = CharacterCard;
             immunityEffect.TargetCriteria.OutputString = $"All hero targets except for {CharacterCard.Title}";
             immunityEffect.UntilCardLeavesPlay(Card);
