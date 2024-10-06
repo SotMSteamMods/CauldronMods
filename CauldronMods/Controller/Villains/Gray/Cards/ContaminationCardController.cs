@@ -28,7 +28,7 @@ namespace Cauldron.Gray
         public override void AddTriggers()
         {
             //Whenever a hero deals damage to a villain target, that hero must destroy 1 of their ongoing or equipment cards.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.IsHero && IsVillain(action.Target) && action.IsSuccessful, new Func<DealDamageAction, IEnumerator>(this.DestroyHeroCardResponse), TriggerType.DestroyCard, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.IsHero && IsVillainTarget(action.Target) && action.IsSuccessful, new Func<DealDamageAction, IEnumerator>(this.DestroyHeroCardResponse), TriggerType.DestroyCard, TriggerTiming.After);
             //Destroy this card when {H} hero cards are destroyed this way in one round.
             base.AddTrigger<DestroyCardAction>(SelfDestructionCriteria, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }
