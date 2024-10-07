@@ -21,7 +21,7 @@ namespace Cauldron.TheStranger
         {
             base.AddTriggers();
             //When a villain target enters play, you may play a Rune.
-            base.AddTargetEntersPlayTrigger((Card c) => base.IsVillain(c), (Card c) => base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, null, IsRuneCriteria(), false, false, true, null), TriggerType.PlayCard, TriggerTiming.After, false, false);
+            base.AddTargetEntersPlayTrigger((Card c) => base.IsVillainTarget(c), (Card c) => base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, null, IsRuneCriteria(), false, false, true, null), TriggerType.PlayCard, TriggerTiming.After, false, false);
         }
         #endregion Methods
     }
