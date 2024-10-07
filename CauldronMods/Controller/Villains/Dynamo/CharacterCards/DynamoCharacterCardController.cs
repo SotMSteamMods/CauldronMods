@@ -46,7 +46,7 @@ namespace Cauldron.Dynamo
             {
                 //Back-Advanced:
                 //Increase damage dealt by villain targets by 1.
-                base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null &&  base.IsVillain(action.DamageSource.Card) && action.DamageSource.Card.IsTarget, 1));
+                base.AddSideTrigger(base.AddIncreaseDamageTrigger((DealDamageAction action) => action.DamageSource != null && action.DamageSource.Card != null &&  base.IsVillainTarget(action.DamageSource.Card), 1));
             }
 
             if(Game.IsChallenge)
