@@ -16,7 +16,7 @@ namespace Cauldron.Gray
         public override void AddTriggers()
         {
             //Whenever {Gray} deals damage to a hero target, either increase that damage by 1 or that player must discard a card.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => IsHero(action.Target) && action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard && !action.IsPretend && action.IsSuccessful, IncreaseOrDiscardResponse, new TriggerType[] { TriggerType.IncreaseDamage, TriggerType.DiscardCard }, TriggerTiming.Before);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => IsHeroTarget(action.Target) && action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.Card == base.CharacterCard && !action.IsPretend && action.IsSuccessful, IncreaseOrDiscardResponse, new TriggerType[] { TriggerType.IncreaseDamage, TriggerType.DiscardCard }, TriggerTiming.Before);
         }
 
         private IEnumerator IncreaseOrDiscardResponse(DealDamageAction action)
