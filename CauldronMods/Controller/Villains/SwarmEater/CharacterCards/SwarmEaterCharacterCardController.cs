@@ -50,7 +50,7 @@ namespace Cauldron.SwarmEater
                 if (base.Game.IsAdvanced)
                 {
                     //Whenever {SwarmEater} destroys a villain target, play the top card of the villain deck.
-                    base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => dca.ResponsibleCard == base.Card && dca.WasCardDestroyed && IsVillain(dca.CardToDestroy.Card), base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
+                    base.AddSideTrigger(base.AddTrigger<DestroyCardAction>((DestroyCardAction dca) => dca.ResponsibleCard == base.Card && dca.WasCardDestroyed && IsVillainTarget(dca.CardToDestroy.Card), base.PlayTheTopCardOfTheVillainDeckResponse, TriggerType.PlayCard, TriggerTiming.After));
                 }
             }
 
