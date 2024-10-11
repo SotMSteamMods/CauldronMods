@@ -46,7 +46,7 @@ namespace Cauldron.DungeonsOfTerror
                 {
                     message = GameController.SendMessageAction($"The top card of the environment trash is not a fate card!", Priority.High, GetCardSource(), associatedCards: cardToCheck.ToEnumerable(), showCardSource: true);
                 }
-                effect = GameController.SelectAndGainHP(DecisionMaker, 4, additionalCriteria: (Card c) => IsHero(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), cardSource: GetCardSource());
+                effect = GameController.SelectAndGainHP(DecisionMaker, 4, additionalCriteria: (Card c) => IsHeroTarget(c) && GameController.IsCardVisibleToCardSource(c, GetCardSource()), cardSource: GetCardSource());
             } else
             {
                 message = GameController.SendMessageAction("There are no cards in the environment trash!", Priority.High, GetCardSource(), showCardSource: true);
