@@ -25,7 +25,7 @@ namespace Cauldron.Anathema
         private IEnumerator DealDamageResponse(Card c)
         {
             //that target deals the hero target with the second lowest HP 2 psychic damage
-            IEnumerator coroutine =  base.DealDamageToLowestHP(c, 2, (Card h) => IsHero(h), (Card n) => new int?(2), DamageType.Psychic);
+            IEnumerator coroutine =  base.DealDamageToLowestHP(c, 2, (Card h) => IsHeroTarget(h), (Card n) => new int?(2), DamageType.Psychic);
 
             if (base.UseUnityCoroutines)
             {
