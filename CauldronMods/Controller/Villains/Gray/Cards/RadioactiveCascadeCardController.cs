@@ -16,7 +16,7 @@ namespace Cauldron.Gray
         public override IEnumerator Play()
         {
             //When this card enters play, {Gray} deals the hero with the highest HP X energy damage, where X is 2 plus the number of Radiation cards in play.
-            IEnumerator coroutine = DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHero(c), (Card c) => this.FindNumberOfRadiationCardsInPlay() + 2, DamageType.Energy);
+            IEnumerator coroutine = DealDamageToHighestHP(base.CharacterCard, 1, (Card c) => IsHeroCharacterCard(c), (Card c) => this.FindNumberOfRadiationCardsInPlay() + 2, DamageType.Energy);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

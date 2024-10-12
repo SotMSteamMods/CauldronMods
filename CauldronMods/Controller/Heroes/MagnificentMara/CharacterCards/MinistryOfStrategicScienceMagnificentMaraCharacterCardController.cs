@@ -77,6 +77,7 @@ namespace Cauldron.MagnificentMara
                         var reduceEffect = new ReduceDamageStatusEffect(2);
                         reduceEffect.NumberOfUses = 1;
                         reduceEffect.TargetCriteria.IsHero = true;
+                        reduceEffect.TargetCriteria.IsTarget = true;
                         coroutine = AddStatusEffect(reduceEffect);
                         if (base.UseUnityCoroutines)
                         {

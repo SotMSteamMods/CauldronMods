@@ -21,7 +21,7 @@ namespace Cauldron.Dendron
 
         public override void AddTriggers()
         {
-            base.AddTrigger<DealDamageAction>(dda => IsTattoo(dda.Target) && !dda.DamageSource.IsVillainTarget && dda.Amount > 0,
+            base.AddTrigger<DealDamageAction>(dda => IsTattoo(dda.Target) && !dda.DamageSource.IsVillainTarget && dda.DamageSource.IsTarget && dda.Amount > 0,
                 this.DealDamageResponse,
                 new[]
                 {

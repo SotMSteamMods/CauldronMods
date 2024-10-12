@@ -48,7 +48,7 @@ namespace Cauldron.Mythos
             {
                 yield break;
             }
-            coroutine = base.DealDamage(this.Card, (Card c) => !base.IsVillain(c), 3, DamageType.Lightning);
+            coroutine = base.DealDamage(this.Card, (Card c) => !base.IsVillainTarget(c), 3, DamageType.Lightning);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

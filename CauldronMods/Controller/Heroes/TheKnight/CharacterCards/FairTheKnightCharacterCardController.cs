@@ -65,6 +65,7 @@ namespace Cauldron.TheKnight
                         ReduceDamageStatusEffect reduceDamage = new ReduceDamageStatusEffect(2);
                         reduceDamage.SourceCriteria.IsEnvironment = true;
                         reduceDamage.TargetCriteria.IsHero = true;
+                        reduceDamage.TargetCriteria.IsTarget = true;
                         reduceDamage.UntilStartOfNextTurn(this.TurnTaker);
 
                         coroutine = GameController.AddStatusEffect(reduceDamage, true, GetCardSource());

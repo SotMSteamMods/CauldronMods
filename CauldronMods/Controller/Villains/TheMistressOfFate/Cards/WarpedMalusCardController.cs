@@ -19,7 +19,7 @@ namespace Cauldron.TheMistressOfFate
             //"Reduce damage dealt to this card by {H - 2}.",
             AddReduceDamageTrigger((Card c) => c == this.Card, H - 2);
             //"At the end of the villain turn, this card deals each non-villain target {H + 1} energy damage and regains 4 HP."
-            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => !IsVillain(c), TargetType.All, H + 1, DamageType.Energy);
+            AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => !IsVillainTarget(c), TargetType.All, H + 1, DamageType.Energy);
             AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, RegainHPResponse, TriggerType.GainHP);
         }
 

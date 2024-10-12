@@ -24,7 +24,7 @@ namespace Cauldron.Celadroch
             AddImmuneToDamageTrigger(dda => dda.Target == Card &&
                 (dda.DamageType == DamageType.Fire || dda.DamageType == DamageType.Lightning || dda.DamageType == DamageType.Cold || dda.DamageType == DamageType.Toxic));
 
-            AddIncreaseDamageTrigger(dda => IsHero(dda.Target), 1);
+            AddIncreaseDamageTrigger(dda => IsHeroTarget(dda.Target), 1);
 
             AddEndOfTurnTrigger(tt => tt == TurnTaker, pca => DestroyCardResponse(), TriggerType.DestroyCard);
         }

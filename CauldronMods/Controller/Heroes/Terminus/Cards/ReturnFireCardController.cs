@@ -23,7 +23,7 @@ namespace Cauldron.Terminus
         {
             IEnumerator coroutine;
             SelectCardDecision selectCardDecision;
-            IEnumerable<Card> cardChoices = base.GameController.FindTargetsInPlay((card) => !IsHero(card));
+            IEnumerable<Card> cardChoices = base.GameController.FindTargetsInPlay((card) => !IsHeroTarget(card));
 
             // Select a non-hero target.
             selectCardDecision = new SelectCardDecision(base.GameController, DecisionMaker, SelectionType.DealDamage, cardChoices, cardSource: base.GetCardSource());

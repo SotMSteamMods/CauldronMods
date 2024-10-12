@@ -32,7 +32,7 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"When that card would cause damage to a hero target, redirect it to a villain target that hasn't been damaged this way this turn.",
-            AddTrigger((DealDamageAction dda) => dda.CardSource != null && dda.CardSource.Card == GetCardThisCardIsNextTo() && IsHero(dda.Target), RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
+            AddTrigger((DealDamageAction dda) => dda.CardSource != null && dda.CardSource.Card == GetCardThisCardIsNextTo() && IsHeroTarget(dda.Target), RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before);
             AddTrigger((DealDamageAction dda) => dda.DidDealDamage && dda.NumberOfTimesRedirected > 0 && dda.DamageModifiers.Any((ModifyDealDamageAction mdd) => mdd.CardSource != null && mdd.CardSource.Card == this.Card), MarkDamagedByRedirect, TriggerType.Hidden, TriggerTiming.After);
 
             //"When it would destroy a hero ongoing, prevent it and destroy a villain ongoing."
@@ -88,7 +88,7 @@ namespace Cauldron.MagnificentMara
 
         private IEnumerator MarkDamagedByRedirect(DealDamageAction dd)
         {
-            if (IsVillain(dd.Target))
+            if (IsVillainTarget(dd.Target))
             {
                 SetCardPropertyToTrueIfRealAction(GeneratePerTargetKey(mesmerKey, dd.Target));
             }

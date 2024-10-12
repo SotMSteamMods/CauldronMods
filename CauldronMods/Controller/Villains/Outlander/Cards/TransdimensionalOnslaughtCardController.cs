@@ -18,7 +18,7 @@ namespace Cauldron.Outlander
         public override IEnumerator Play()
         {
             //{Outlander} deals each non-villain target X irreducible psychic damage, where X is the number of Trace cards in play.
-            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => FindCardsWhere((Card card) => IsTrace(card) && card.IsInPlayAndNotUnderCard).Count(), DamageType.Psychic, isIrreducible: true);
+            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !IsVillainTarget(c), (Card c) => FindCardsWhere((Card card) => IsTrace(card) && card.IsInPlayAndNotUnderCard).Count(), DamageType.Psychic, isIrreducible: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

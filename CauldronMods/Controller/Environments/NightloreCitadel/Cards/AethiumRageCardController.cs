@@ -65,7 +65,7 @@ namespace Cauldron.NightloreCitadel
                 }
 
                 //...deals the 2 non-villain targets with the highest HP 3 radiant damage each.
-                coroutine = DealDamageToHighestHP(highestVillain, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 3, DamageType.Radiant, numberOfTargets: () => 2);
+                coroutine = DealDamageToHighestHP(highestVillain, 1, (Card c) => !IsVillainTarget(c), (Card c) => 3, DamageType.Radiant, numberOfTargets: () => 2);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

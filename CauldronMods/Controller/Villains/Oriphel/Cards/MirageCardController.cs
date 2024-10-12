@@ -48,7 +48,7 @@ namespace Cauldron.Oriphel
 
         private IEnumerator HitHighestHP(Card goon)
         {
-            IEnumerator coroutine = DealDamageToHighestHP(goon, 1, (Card target) => IsHero(target), (target) => 1, DamageType.Fire);
+            IEnumerator coroutine = DealDamageToHighestHP(goon, 1, (Card target) => IsHeroTarget(target), (target) => 1, DamageType.Fire);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

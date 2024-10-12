@@ -53,7 +53,7 @@ namespace Cauldron.Mythos
                 /**Added to MythosUtilityCardController**/
 
                 //{MythosDanger} Reduce damage dealt to villain targets by 1.
-                base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => base.IsVillain(c) && this.IsTopCardMatching(MythosDangerDeckIdentifier), 1));
+                base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => base.IsVillainTarget(c) && this.IsTopCardMatching(MythosDangerDeckIdentifier), 1));
 
                 //At the end of the villain turn, the players may play the top card of the villain deck. Then:
                 //--{MythosClue} Play the top card of the villain deck.

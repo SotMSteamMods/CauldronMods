@@ -27,6 +27,7 @@ namespace Cauldron.Dynamo
             {
                 ReduceDamageStatusEffect statusEffect = new ReduceDamageStatusEffect(1);
                 statusEffect.TargetCriteria.IsVillain = true;
+                statusEffect.TargetCriteria.IsTarget = true;
                 statusEffect.UntilStartOfNextTurn(base.TurnTaker);
 
                 coroutine = base.AddStatusEffect(statusEffect);

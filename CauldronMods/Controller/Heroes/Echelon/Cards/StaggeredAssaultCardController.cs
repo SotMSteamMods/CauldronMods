@@ -25,7 +25,7 @@ namespace Cauldron.Echelon
         protected override void AddTacticEffectTrigger()
         {
             //"Once per turn when a hero target deals an instance of 2 or more damage, {Echelon} may deal 1 target 1 melee damage."
-            AddTrigger((DealDamageAction dd) => dd.DamageSource.IsTarget && dd.DamageSource.IsHero && dd.Amount >= 2 && dd.DidDealDamage && !HasBeenSetToTrueThisTurn(damageKey), DealFollowupDamageResponse, TriggerType.DealDamage, TriggerTiming.After, isActionOptional: true);
+            AddTrigger((DealDamageAction dd) => dd.DamageSource.IsHeroTarget && dd.Amount >= 2 && dd.DidDealDamage && !HasBeenSetToTrueThisTurn(damageKey), DealFollowupDamageResponse, TriggerType.DealDamage, TriggerTiming.After, isActionOptional: true);
         }
 
         private IEnumerator DealFollowupDamageResponse(DealDamageAction dd)

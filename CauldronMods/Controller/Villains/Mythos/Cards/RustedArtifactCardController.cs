@@ -18,7 +18,7 @@ namespace Cauldron.Mythos
         public override void AddTriggers()
         {
             //Increase damage dealt to hero targets by 1.
-            base.AddIncreaseDamageTrigger((DealDamageAction action) => IsHero(action.Target), 1);
+            base.AddIncreaseDamageTrigger((DealDamageAction action) => IsHeroTarget(action.Target), 1);
             //{MythosMadness}{MythosDanger} This card is indestructible and immune to damage.
             base.AddImmuneToDamageTrigger((DealDamageAction action) => (base.IsTopCardMatching(MythosMadnessDeckIdentifier) || base.IsTopCardMatching(MythosDangerDeckIdentifier)) && action.Target == this.Card);
         }

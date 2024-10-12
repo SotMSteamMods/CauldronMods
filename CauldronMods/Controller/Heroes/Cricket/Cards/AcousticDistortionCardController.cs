@@ -20,7 +20,7 @@ namespace Cauldron.Cricket
         public override void AddTriggers()
         {
             //Once per turn when a hero target would be dealt damage, you may redirect that damage to another hero target.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && IsHero(action.Target), this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before,
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeWouldBeDealtDamage) && IsHeroTarget(action.Target), this.RedirectDamageResponse, TriggerType.RedirectDamage, TriggerTiming.Before,
                 orderMatters: true,
                 isActionOptional: true);
 
