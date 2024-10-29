@@ -24,7 +24,7 @@ namespace Cauldron.PhaseVillain
         {
             //...{Phase} deals each hero target except the hero target with the lowest HP 2 radiant damage.
             IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card card) => IsHeroTarget(card), 2, DamageType.Radiant,
-                exceptFor: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria((Card c) => IsHero(c), "the hero target with the lowest HP")));
+                exceptFor: new TargetInfo(HighestLowestHP.LowestHP, 1, 1, new LinqCardCriteria((Card c) => IsHeroTarget(c), "the hero target with the lowest HP")));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

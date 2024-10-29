@@ -44,7 +44,7 @@ namespace Cauldron.Dynamo
             {
                 DealDamageAction damageAction = dealDamageActions.FirstOrDefault();
                 //If a hero target takes damage this way...
-                if (IsHero(damageAction.Target) && damageAction.Amount > 0)
+                if (IsHeroTarget(damageAction.Target) && damageAction.Amount > 0)
                 {
                     //...destroy 1 environment card.
                     coroutine = base.GameController.SelectAndDestroyCard(base.DecisionMaker, new LinqCardCriteria((Card c) => c.IsEnvironment), false, cardSource: GetCardSource());

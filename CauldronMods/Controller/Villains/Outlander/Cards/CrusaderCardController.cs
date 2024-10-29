@@ -27,7 +27,7 @@ namespace Cauldron.Outlander
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals the 2 non-villain targets with the highest HP 2 irreducible melee damage each.
-            var coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 2, DamageType.Melee, isIrreducible: true, numberOfTargets: () => 2);
+            var coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillainTarget(c), (Card c) => 2, DamageType.Melee, isIrreducible: true, numberOfTargets: () => 2);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

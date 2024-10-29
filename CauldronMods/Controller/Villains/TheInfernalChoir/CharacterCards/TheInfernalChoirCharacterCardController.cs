@@ -275,7 +275,7 @@ namespace Cauldron.TheInfernalChoir
         {
           
             List<Card> storedResults = new List<Card>();
-            IEnumerator coroutine2 = base.GameController.FindTargetWithHighestHitPoints(1, (Card card) => IsHero(card) && base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), storedResults, dealDamage, cardSource: GetCardSource());
+            IEnumerator coroutine2 = base.GameController.FindTargetWithHighestHitPoints(1, (Card card) => IsHeroTarget(card) && base.GameController.IsCardVisibleToCardSource(card, GetCardSource()), storedResults, dealDamage, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine2);

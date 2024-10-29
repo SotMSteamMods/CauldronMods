@@ -33,7 +33,7 @@ namespace Cauldron.Gargoyle
             IEnumerator coroutine;
 
             // {Gargoyle} deals each non-hero target 1 toxic damage.
-            coroutine = base.DealDamage(base.CharacterCard, (Card card) => !IsHero(card), ToxicDamageAmount, DamageType.Toxic);
+            coroutine = base.DealDamage(base.CharacterCard, (Card card) => !IsHeroTarget(card), ToxicDamageAmount, DamageType.Toxic);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

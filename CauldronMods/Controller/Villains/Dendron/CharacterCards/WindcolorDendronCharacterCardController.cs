@@ -77,7 +77,7 @@ namespace Cauldron.Dendron
                 if (this.IsGameAdvanced)
                 {
                     // Increase damage dealt by {Dendron} to hero targets by {H - 2}.
-                    base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null &&  dda.DamageSource.IsCard && dda.DamageSource.Card == CharacterCard && IsHero(dda.Target), H - 2));
+                    base.SideTriggers.Add(base.AddIncreaseDamageTrigger(dda => dda.DamageSource != null && dda.DamageSource.Card != null &&  dda.DamageSource.IsCard && dda.DamageSource.Card == CharacterCard && IsHeroTarget(dda.Target), H - 2));
                 }
             }
 

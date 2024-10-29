@@ -16,7 +16,7 @@ namespace Cauldron.Starlight
         public override void AddTriggers()
         {
             //"If a hero target next to a constellation would deal damage to a non-hero target next to a constellation, increase that damage by 1."
-            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null &&  dd.DamageSource.IsHero && IsNextToConstellation(dd.DamageSource.Card) && !dd.Target.IsHero && IsNextToConstellation(dd.Target), 1);
+            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null &&  dd.DamageSource.IsHeroTarget && IsNextToConstellation(dd.DamageSource.Card) && !IsHeroTarget(dd.Target) && IsNextToConstellation(dd.Target), 1);
         }
 
     }

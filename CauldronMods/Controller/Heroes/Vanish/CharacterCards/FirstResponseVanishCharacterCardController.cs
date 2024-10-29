@@ -117,8 +117,7 @@ namespace Cauldron.Vanish
                         effect.NumberOfUses = 1;
                         effect.RedirectableTargets.IsVillain = false;
                         effect.RedirectableTargets.IsTarget = true;
-                        effect.TargetCriteria.IsHero = true;
-                        effect.TargetCriteria.IsTarget = true;
+                        effect.TargetCriteria.IsHeroCharacterCard = true;
                         effect.CardSource = Card;
 
                         var coroutine = base.AddStatusEffect(effect, true);

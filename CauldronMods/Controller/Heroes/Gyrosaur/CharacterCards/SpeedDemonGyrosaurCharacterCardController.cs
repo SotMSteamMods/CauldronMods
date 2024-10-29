@@ -133,6 +133,7 @@ namespace Cauldron.Gyrosaur
                         //"Reduce the next damage dealt to a hero target by 2."
                         var reduceEffect = new ReduceDamageStatusEffect(2);
                         reduceEffect.TargetCriteria.IsHero = true;
+                        reduceEffect.TargetCriteria.IsTarget = true;
                         reduceEffect.NumberOfUses = 1;
                         reduceEffect.CardSource = Card;
 

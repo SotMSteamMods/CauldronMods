@@ -22,7 +22,7 @@ namespace Cauldron.Oriphel
 
             //"The first time any hero target deals damage to any villain target each turn, this card deals that hero target 3 cold damage.",
 
-            AddTrigger((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.IsHero && dd.DamageSource.IsTarget && IsVillain(dd.Target) && RetaliationAvailable(),
+            AddTrigger((DealDamageAction dd) => dd.DidDealDamage && dd.DamageSource != null && dd.DamageSource.IsHeroTarget && IsVillainTarget(dd.Target) && RetaliationAvailable(),
                             DealRetaliationDamage,
                             TriggerType.DealDamage,
                             TriggerTiming.After,

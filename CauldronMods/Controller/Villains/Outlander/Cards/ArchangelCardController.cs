@@ -44,7 +44,7 @@ namespace Cauldron.Outlander
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals each non-villain target irreducible 1 projectile damage.
-            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !IsVillain(c) && c.IsTarget, 1, DamageType.Projectile, isIrreducible: true);
+            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !IsVillainTarget(c), 1, DamageType.Projectile, isIrreducible: true);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

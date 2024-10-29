@@ -54,7 +54,7 @@ namespace Cauldron.Necro
             {
                 return IsVillainTarget(card);
             }
-            return IsHero(card) && card.IsTarget;
+            return IsHeroTarget(card);
         }
 
         protected bool IsVillianConsidering1929(Card card)
@@ -70,7 +70,7 @@ namespace Cauldron.Necro
         {
             if (GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) != null && GameController.GetCardPropertyJournalEntryBoolean(CharacterCard, PastNecroPowerKey) == true)
             {
-                return IsHero(card) && card.IsTarget;
+                return IsHeroTarget(card);
             }
             return IsVillainTarget(card);
         }

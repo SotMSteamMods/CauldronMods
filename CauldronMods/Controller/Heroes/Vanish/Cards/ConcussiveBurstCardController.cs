@@ -18,7 +18,8 @@ namespace Cauldron.Vanish
 
         public override void AddTriggers()
         {
-            AddTrigger<DealDamageAction>(dda => dda.DamageSource.IsSameCard(this.CharacterCard) && !IsHero(dda.Target) && !base.HasBeenSetToTrueThisTurn(TrackingKey), DealDamageResponse, TriggerType.AddStatusEffectToDamage, TriggerTiming.Before);
+            //The first time Vanish damages a non-hero target each turn, reduce damage dealt by that target by 1 until the start of your next turn
+            AddTrigger<DealDamageAction>(dda => dda.DamageSource.IsSameCard(this.CharacterCard) && !IsHeroTarget(dda.Target) && !base.HasBeenSetToTrueThisTurn(TrackingKey), DealDamageResponse, TriggerType.AddStatusEffectToDamage, TriggerTiming.Before);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(TrackingKey), TriggerType.Hidden);
         }

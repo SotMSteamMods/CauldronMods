@@ -17,7 +17,7 @@ namespace Cauldron.Starlight
         public override void AddTriggers()
         {
             //"Whenever {Starlight} would deal damage to a hero target next to a constellation, instead that target regains that much HP.",
-            AddPreventDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsOneOfTheseCards(ListStarlights()) && IsHero(dd.Target) && IsNextToConstellation(dd.Target),
+            AddPreventDamageTrigger((DealDamageAction dd) => dd.DamageSource.IsOneOfTheseCards(ListStarlights()) && IsHeroTarget(dd.Target) && IsNextToConstellation(dd.Target),
                         (DealDamageAction dd) => GameController.GainHP(dd.Target, dd.Amount, null, null, GetCardSource()),
                         new TriggerType[1] { TriggerType.GainHP },
                         isPreventEffect: true);

@@ -25,7 +25,7 @@ namespace Cauldron.TheWanderingIsle
             //At the end of the environment turn, the villain target with the highest HP deals Teryx { H + 2} energy damage
             base.AddEndOfTurnTrigger((TurnTaker tt) => tt == base.TurnTaker, this.DealVillainDamageResponse, TriggerType.DealDamage);
             //Whenever a hero target would deal damage to Teryx, Teryx Instead regains that much HP.
-            base.AddPreventDamageTrigger((DealDamageAction dda) => dda.DamageSource.IsTarget && dda.DamageSource.IsHero && dda.Target == base.Card, (DealDamageAction dda) => base.GameController.GainHP(base.Card, dda.Amount, cardSource: dda.DamageSource.GetCardSource()), new TriggerType[]
+            base.AddPreventDamageTrigger((DealDamageAction dda) => dda.DamageSource.IsHeroTarget && dda.Target == base.Card, (DealDamageAction dda) => base.GameController.GainHP(base.Card, dda.Amount, cardSource: dda.DamageSource.GetCardSource()), new TriggerType[]
             {
                 TriggerType.GainHP
             }, true);

@@ -53,7 +53,7 @@ namespace Cauldron.Dynamo
         private IEnumerator DealDamageResponse(DestroyCardAction action)
         {
             //...{Dynamo} deals each non-villain target X energy damage, where X is 2 times the number of villain cards destroyed this turn.
-            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => new int?(base.Journal.DestroyCardEntriesThisTurn().Where((DestroyCardJournalEntry entry) => base.IsVillain(entry.Card)).Count() * 2) ?? default, DamageType.Energy);
+            IEnumerator coroutine = base.DealDamage(base.CharacterCard, (Card c) => !base.IsVillainTarget(c), (Card c) => new int?(base.Journal.DestroyCardEntriesThisTurn().Where((DestroyCardJournalEntry entry) => base.IsVillain(entry.Card)).Count() * 2) ?? default, DamageType.Energy);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

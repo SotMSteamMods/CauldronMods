@@ -27,7 +27,7 @@ namespace Cauldron.Menagerie
         private IEnumerator DealDamageAndEncloseResponse(PhaseChangeAction action)
         {
             //...this card deals the non-villain target with the second lowest HP {H} projectile damage. 
-            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 2, (Card c) => !base.IsVillain(c) && c.IsTarget, (Card c) => Game.H, DamageType.Projectile);
+            IEnumerator coroutine = base.DealDamageToLowestHP(base.Card, 2, (Card c) => !base.IsVillainTarget(c), (Card c) => Game.H, DamageType.Projectile);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

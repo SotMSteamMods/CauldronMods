@@ -16,7 +16,7 @@ namespace Cauldron.Quicksilver
             //Increase all damage dealt by 1.
             base.AddIncreaseDamageTrigger((DealDamageAction action) => true, 1);
             //The first time a hero target would be dealt damage by a non-hero target during the villain turn, you may redirect that damage to {Quicksilver}.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && base.IsVillain(base.GameController.ActiveTurnPhase.TurnTaker) && !action.DamageSource.IsHero && IsHero(action.Target), (DealDamageAction action) => this.RedirectDamageResponse(action), TriggerType.RedirectDamage, TriggerTiming.Before, isActionOptional: true);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && base.IsVillain(base.GameController.ActiveTurnPhase.TurnTaker) && !action.DamageSource.IsHeroTarget && action.DamageSource.IsTarget && IsHeroTarget(action.Target), (DealDamageAction action) => this.RedirectDamageResponse(action), TriggerType.RedirectDamage, TriggerTiming.Before, isActionOptional: true);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(FirstTimeDamageDealt), TriggerType.Hidden);
         }

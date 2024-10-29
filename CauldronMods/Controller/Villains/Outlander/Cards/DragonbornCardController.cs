@@ -44,7 +44,7 @@ namespace Cauldron.Outlander
         private IEnumerator DealDamageResponse(PhaseChangeAction action)
         {
             //...{Outlander} deals each non-villain target 1 fire damage.
-            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !IsVillain(c) && c.IsTarget, 1, DamageType.Fire);
+            IEnumerator coroutine = DealDamage(CharacterCard, (Card c) => !IsVillainTarget(c), 1, DamageType.Fire);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

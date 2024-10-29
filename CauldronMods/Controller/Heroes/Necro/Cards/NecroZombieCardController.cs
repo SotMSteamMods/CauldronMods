@@ -9,7 +9,7 @@ namespace Cauldron.Necro
     {
         public NecroZombieCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, 2)
         {
-            SpecialStringMaker.ShowSpecialString(() => BuildUndeadSpecialString(highestOrLowest: true, cardCriteria: new LinqCardCriteria(c => !this.IsUndead(c) && IsHeroConsidering1929(c), $"non-undead {HeroStringConsidering1929} target", useCardsSuffix: false)));
+            SpecialStringMaker.ShowSpecialString(() => BuildUndeadSpecialString(highestOrLowest: true, cardCriteria: new LinqCardCriteria(c => !this.IsUndead(c) && IsHeroTargetConsidering1929(c), $"non-undead {HeroStringConsidering1929} target", useCardsSuffix: false)));
         }
 
         public override void AddTriggers()
