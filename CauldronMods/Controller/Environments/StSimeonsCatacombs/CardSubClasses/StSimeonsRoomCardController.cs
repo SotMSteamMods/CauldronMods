@@ -58,7 +58,7 @@ namespace Cauldron.StSimeonsCatacombs
         {
             //As of Sentinels 4.1.1, CardController.FindCardsWhere automatically checks card visibility, which caused an infinite loop since AskIfCardIsVisibleToCardSource references FindAllRoomsButThisOne.
             //Fixed by using GameController.FindCardsWhere instead, and making sure the parameter visibleToCard is null
-            return base.GameController.FindCardsWhere((Card c) => IsDefinitionRoom(c) && c != base.Card, false, null, BattleZone);
+            return GameController.FindCardsWhere((Card c) => IsDefinitionRoom(c) && c != Card, false, null, BattleZone);
         }
     }
 }
