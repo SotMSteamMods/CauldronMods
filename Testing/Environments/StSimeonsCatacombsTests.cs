@@ -2601,5 +2601,17 @@ namespace CauldronTests
             PrintSpecialStringsForCard(possessor);
 
         }
+
+        [Test()]
+        public void TestStSimeonsCrash()
+        {
+            //Version 4.1.1 created an infinite loop in St Simeon's cards due to chanegs in FindCardsWhere.
+            //This test exposes the issue, but it doesn't fail if the issue occurs since the issue is an infinite loop.
+            SetupGameController("Ambuscade", "Legacy", "Cauldron.Cypher", "Cauldron.DocHavoc", "Cauldron.TheStranger", "Cauldron.StSimeonsCatacombs");
+            StartGame();
+
+            GoToEndOfTurn(FindEnvironment());
+            GoToEndOfTurn(ambuscade);
+        }
     }
 }
