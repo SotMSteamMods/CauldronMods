@@ -75,7 +75,7 @@ namespace Cauldron.Menagerie
 
         private TurnTaker GetCapturedHero()
         {
-            Card prize = FindCardsWhere(new LinqCardCriteria((Card c) => base.FindCardController(c) is PrizedCatchCardController)).FirstOrDefault();
+            Card prize = GameController.FindCardsWhere(new LinqCardCriteria((Card c) => base.FindCardController(c) is PrizedCatchCardController), battleZone: BattleZone).FirstOrDefault();
             if (prize.IsInPlayAndHasGameText && prize.Location.IsNextToCard)
             {
                 return prize.Location.OwnerCard.Owner;

@@ -56,7 +56,9 @@ namespace Cauldron.StSimeonsCatacombs
         }
         protected bool IsAffectedCardInPlay()
         {
-            bool identiferInPlay = base.FindCardsWhere(c => c.IsInPlayAndHasGameText && AffectedIdentifiers.Contains(c.Identifier)).Any();
+            //As of Sentinels 4.1.1, CardController.FindCardsWhere automatically checks card visibility, which caused an infinite loop since AskIfCardIsVisibleToCardSource references IsAffectedCardInPlay.
+            //Fixed by using GameController.FindCardsWhere instead, and making sure the parameter visibleToCard is null
+            bool identiferInPlay = GameController.FindCardsWhere(c => c.IsInPlayAndHasGameText && AffectedIdentifiers.Contains(c.Identifier), false, null, BattleZone).Any();
             return FlipIdentiferInPlayCondition ? !identiferInPlay : identiferInPlay;
         }
 
@@ -65,7 +67,7 @@ namespace Cauldron.StSimeonsCatacombs
 
         protected Card GetAffectedCardInPlay()
         {
-            IEnumerable<Card> cardsInPlay = base.FindCardsWhere(c => (FlipIdentiferInPlayCondition ? !c.IsInPlayAndHasGameText : c.IsInPlayAndHasGameText) && AffectedIdentifiers.Contains(c.Identifier));
+            IEnumerable<Card> cardsInPlay = GameController.FindCardsWhere(c => (FlipIdentiferInPlayCondition ? !c.IsInPlayAndHasGameText : c.IsInPlayAndHasGameText) && AffectedIdentifiers.Contains(c.Identifier));
             return cardsInPlay.FirstOrDefault();
         }
 
@@ -73,7 +75,7 @@ namespace Cauldron.StSimeonsCatacombs
         {
             get
             {
-                return FindCardsWhere(c => AffectedIdentifiers.Contains(c.Identifier));
+                return GameController.FindCardsWhere(c => AffectedIdentifiers.Contains(c.Identifier));
             }
         }
 
