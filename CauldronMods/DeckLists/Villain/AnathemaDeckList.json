@@ -59,7 +59,11 @@
                 "Cauldron.TangoOneCharacter": "Sniper girl! I remember you. What say we knock over a town, for old time's sake?",
                 "GhostOpsTangoOneCharacter": "Come out, come out, wherever you are!",
                 "PastTangoOneCharacter": "That gun is so last century. Today it's all about bioweapons, and you're looking at the best one there is!",
-                "CreedOfTheSniperTangoOneCharacter": "Let's play a game: It's one where I eat a bunch of second-rate heroes."
+                "CreedOfTheSniperTangoOneCharacter": "Let's play a game: It's one where I eat a bunch of second-rate heroes.",
+                "CaseFiles.GunClubTangoOneCharacter": "Blend into the crowd all you like. I [i]will[/i] find you.",
+                "CaseFiles.CharlieCharacter": "A shape-shifter! Can your transformations keep up with the height of evolution?!",
+                "RooksGambitCharlieCharacter": "I can feel the parasite twisting inside you! Maybe there's hope for you after all.",
+                "MoondancerCharlieCharacter": "Sorry to crash the party. I have a few games I think you would enjoy!"
             }
         },
         {
@@ -490,7 +494,11 @@
                 "Cauldron.TangoOneCharacter": "I should thank you for destroying our masters; now I'm free to eat whoever I want!",
                 "GhostOpsTangoOneCharacter": "Still trying to hide? My senses have only gotten sharper!",
                 "PastTangoOneCharacter": "I keep evolving, but you're stuck in the past!",
-                "CreedOfTheSniperTangoOneCharacter": "Time to die!"
+                "CreedOfTheSniperTangoOneCharacter": "Time to die!",
+                "CaseFiles.GunClubTangoOneCharacter": "I keep evolving, yet you rely on old tricks!",
+                "CaseFiles.CharlieCharacter": "The shape-shifter returns! Let's see if you've picked up any new tricks!",
+                "RooksGambitCharlieCharacter": "Rook, still wasting your time on that gumshoe. Witness what you could become!",
+                "MoondancerCharlieCharacter": "Let's play. Deal me in a new hand - or four!"
             }
         }
     ]

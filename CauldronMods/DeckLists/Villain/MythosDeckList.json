@@ -73,7 +73,11 @@
                 "MinistryOfStrategicScienceLadyOfTheWoodCharacter": "So the Ministry has expanded their recruitment. I am sorry, Lady, but you stand opposed to my goals!",
                 "MinistryOfStrategicScienceMagnificentMaraCharacter": "Ah, the Ministry's magician. You have something I need. That little crystal, if you please.",
                 "MinistryOfStrategicScienceMalichaeCharacter": "Ah, the summoner. Your djinn will not stop what is coming.",
-                "MinistryOfStrategicScienceTerminusCharacter": "Well, well. It seems you serve many masters, ghost. But so do I, and they will soon be free!"
+                "MinistryOfStrategicScienceTerminusCharacter": "Well, well. It seems you serve many masters, ghost. But so do I, and they will soon be free!",
+                "CaseFiles.TuckerCharacter": "Another dog from another Division? No matter. I have more pressing matters to attend.",
+                "DivisionCheerTuckerCharacter": "Alas, nothing can halt the plans set in motion - not even Christmas.",
+                "MoondancerTuckerCharacter": "Keep playing your little games. The universe does not play dice, nor do my masters.",
+                "GunClubTuckerCharacter": "You may be a loose cannon, but you will not get results this time."
             }
         }
     ],
