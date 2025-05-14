@@ -8,6 +8,23 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.CatchwaterHarbor
 {
+    // This action exists so effects that trigger when the top card of a deck is face up are "aware" that
+    // Radio Plaza has flipped the triggering card face up. It should have no effect in game.
+
+    // Both extant examples (Ambuscade and Johnny Rocket) listen to ShuffleCardsAction,
+    // so we can create a fake one that doesn't actually shuffle the deck but allows triggers to respond.
+    public class FakeShuffleCardsAction : ShuffleCardsAction
+    {
+        public FakeShuffleCardsAction(CardSource cardSource, Location location)
+            : base(cardSource, location)
+        {
+            ShowOutput = false;
+        }
+        protected override IEnumerator DoActionOnSuccess()
+        {
+            yield break;
+        }
+    }
     public class RadioPlazaCardController : CatchwaterHarborUtilityCardController
     {
         public RadioPlazaCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
@@ -33,6 +50,16 @@ namespace Cauldron.CatchwaterHarbor
                 {
                     deck.TopCard.SetFaceUp(true);
                     deck.TopCard.SetIsPositionKnown(true);
+                    var fsa = new FakeShuffleCardsAction(GetCardSource(), deck);
+                    var coroutine = GameController.DoAction(fsa);
+                    if (base.UseUnityCoroutines)
+                    {
+                        yield return GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
             yield break;
