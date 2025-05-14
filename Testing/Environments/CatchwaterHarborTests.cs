@@ -894,6 +894,77 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestRadioPlazaTriggersAmbuscadeTraps()
+        {
+            SetupGameController("Ambuscade", "Legacy", "Parse", "Tempest", "Cauldron.CatchwaterHarbor");
+            StartGame();
+            GoToPlayCardPhase(ambuscade);
+
+            var cs = StackDeck(ambuscade, new[] { "RiggedToDetonate", "RiggedToDetonate", "PersonalCloakingDevice" }).ToArray();
+            QuickHPStorage(legacy);
+
+            // Playing the Radio Plaza should trigger the traps
+            Card radio = PlayCard("RadioPlaza");
+
+            AssertOnTopOfDeck(cs[0]);
+            AssertFaceUp(ambuscade.TurnTaker.Deck.TopCard);
+            Assert.IsTrue(ambuscade.TurnTaker.Deck.TopCard.IsPositionKnown);
+
+            // Both traps damage Legacy
+            QuickHPCheck(-6);
+        }
+
+        [Test()]
+        public void TestRadioPlazaPlayedBeforeJohnnyVariantPower()
+        {
+            SetupGameController("BaronBlade", "JohnnyRocket/MaximumSpeedJohnnyRocketCharacter", "Ra", "Haka", "Cauldron.CatchwaterHarbor");
+            TurnTakerController johnny = FindHero("JohnnyRocket");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            MoveAllCards(johnny, johnny.TurnTaker.Deck, johnny.TurnTaker.Trash);
+            // these cards have 3 copies each, and cause Johnny to deal exactly 1 damage
+            foreach (Card cardToMove in FindCardsWhere((Card c) => c.Identifier == "SonicShattering" || c.Identifier == "FlurryOfBlows"))
+            {
+                MoveCard(johnny, cardToMove, johnny.TurnTaker.Deck);
+            }
+            QuickHPStorage(mdp);
+
+            DecisionSelectCards = new Card[] { null, mdp };
+            Card radio = PlayCard("RadioPlaza");
+            UsePower(johnny.CharacterCard);
+
+            // power draws 1 card and the other 5 are put into play
+            AssertNumberOfCardsInDeck(johnny, 0);
+            QuickHPCheck(-5);
+        }
+
+        [Test()]
+        public void TestRadioPlazaPlayedAfterJohnnyVariantPower()
+        {
+            SetupGameController("BaronBlade", "JohnnyRocket/MaximumSpeedJohnnyRocketCharacter", "Ra", "Haka", "Cauldron.CatchwaterHarbor");
+            TurnTakerController johnny = FindHero("JohnnyRocket");
+            StartGame();
+
+            Card mdp = GetCardInPlay("MobileDefensePlatform");
+
+            MoveAllCards(johnny, johnny.TurnTaker.Deck, johnny.TurnTaker.Trash);
+            foreach (Card cardToMove in FindCardsWhere((Card c) => c.Identifier == "SonicShattering" || c.Identifier == "FlurryOfBlows"))
+            {
+                MoveCard(johnny, cardToMove, johnny.TurnTaker.Deck);
+            }
+            QuickHPStorage(mdp);
+
+            DecisionSelectCards = new Card[] { null, mdp };
+            UsePower(johnny.CharacterCard);
+            Card radio = PlayCard("RadioPlaza");
+
+            AssertNumberOfCardsInDeck(johnny, 0);
+            QuickHPCheck(-5);
+        }
+
+        [Test()]
         public void TestRadioPlaza_Oblivaeon()
         {
             SetupGameController(new string[] { "OblivAeon", "Ra", "Legacy", "Haka", "Tachyon", "Luminary", "Cauldron.CatchwaterHarbor", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
