@@ -328,7 +328,7 @@ namespace CauldronTests
         protected void AssertCardSpecialStringsDoesNotContain(Card card, string specialString)
         {
             var specials = this.GameController.GetSpecialStringsForCard(card).ToList();
-            Assert.AreEqual(specials.Where(ss => ss.GeneratedString() == specialString).Count(), 0, "{0} does contains the special string '{1}'", card.Identifier, specialString);
+            Assert.AreEqual(specials.Where(ss => ss.GeneratedString() == specialString).Count(), 0, "{0} does contain the special string '{1}'", card.Identifier, specialString);
         }
 
         protected void GoToShiftPosition(int position)
