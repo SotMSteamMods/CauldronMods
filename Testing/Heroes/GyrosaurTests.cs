@@ -89,8 +89,13 @@ namespace CauldronTests
             StartGame();
             DestroyNonCharacterVillainCards();
 
+            MoveAllCardsFromHandToDeck(gyrosaur);
             PutInHand("SphereOfDevastation"); // Crash
             PutInHand("Ricochet"); // Crash
+
+            PrintSpecialStringsForCard(gyrosaur.CharacterCard);
+            string expectedString = "Gyrosaur's hand has 2 crash cards.";
+            AssertCardSpecialStringsContain(gyrosaur.CharacterCard, expectedString);
 
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
             QuickHPStorage(baron, gyrosaur, legacy, ra);
@@ -114,6 +119,11 @@ namespace CauldronTests
 
             MoveAllCardsFromHandToDeck(gyrosaur);
             Card stabilizer = PutOnDeck("GyroStabilizer");
+
+            PrintSpecialStringsForCard(gyrosaur.CharacterCard);
+            string expectedString = "Gyrosaur's hand has no crash cards.";
+            AssertCardSpecialStringsContain(gyrosaur.CharacterCard, expectedString);
+
             DecisionSelectTargets = new Card[] { baron.CharacterCard, gyrosaur.CharacterCard, legacy.CharacterCard, ra.CharacterCard };
             QuickHandStorage(gyrosaur, legacy, ra);
             QuickHPStorage(baron, gyrosaur, legacy, ra);
@@ -1701,6 +1711,16 @@ namespace CauldronTests
             Card representative = PlayCard("RepresentativeOfEarth");
 
             PrintJournal();
+
+            Card gyrosaurCharacter = FindCardInPlay("GyrosaurCharacter");
+            PrintSeparator("SPECIAL STRINGS START");
+            PrintSpecialStringsForCard(gyrosaurCharacter);
+            PrintSeparator("SPECIAL STRINGS END");
+            AssertNumberOfCardSpecialStrings(gyrosaurCharacter, 1);
+            string potentialString1 = "Gyrosaur's hand has no crash cards.";
+            string potentialString2 = "The Celestial Tribunal's hand has no crash cards.";
+            AssertCardSpecialStringsDoesNotContain(gyrosaurCharacter, potentialString1);
+            AssertCardSpecialStringsDoesNotContain(gyrosaurCharacter, potentialString2);
 
         }
         #endregion
