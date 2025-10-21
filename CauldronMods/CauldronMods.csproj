@@ -6,7 +6,7 @@
 	<Deterministic>true</Deterministic>
 	<DebugType>pdbonly</DebugType>
 	<Version>2.3.0</Version>
-	 <LangVersion>8.0</LangVersion>
+	 <LangVersion>12.0</LangVersion>
 	<Authors>CauldronMods Dev. Team</Authors>
 	<Description>The Cauldron Fan Expansion for the Sentinels of the Multiverse Digital Card Game.</Description>
 	<Copyright>All rights reserved, 2020-2023</Copyright>
