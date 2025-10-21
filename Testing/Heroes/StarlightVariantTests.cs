@@ -959,6 +959,15 @@ namespace CauldronTests
             Card representative = PlayCard("RepresentativeOfEarth");
 
             PrintJournal();
+            PrintSeparator("SPECIAL STRINGS START");
+            PrintSpecialStringsForCard(asheron);
+            PrintSeparator("SPECIAL STRINGS END");
+            AssertNumberOfCardSpecialStrings(asheron, 1);
+            string potentialString1 = "Starlight's hand has no constellation cards.";
+            string potentialString2 = "The Celestial Tribunal's hand has no constellation cards.";
+            AssertCardSpecialStringsDoesNotContain(asheron, potentialString1);
+            AssertCardSpecialStringsDoesNotContain(asheron, potentialString2);
+
         }
 
     }
