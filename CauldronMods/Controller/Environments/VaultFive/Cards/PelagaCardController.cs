@@ -21,7 +21,7 @@ namespace Cauldron.VaultFive
             AddEndOfTurnTrigger((TurnTaker tt) => tt == TurnTaker, DealDamageResponse, TriggerType.DealDamage);
 
             //Whenever this card is dealt damage by a hero target, that hero must discard 1 non-Artifact card.
-            AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == Card && dd.DidDealDamage && dd.DamageSource.IsHerotarget, DiscardCardResponse, TriggerType.DiscardCard, TriggerTiming.After);
+            AddTrigger<DealDamageAction>((DealDamageAction dd) => dd.Target == Card && dd.DidDealDamage && dd.DamageSource.IsHeroTarget, DiscardCardResponse, TriggerType.DiscardCard, TriggerTiming.After);
         }
 
         private IEnumerator DiscardCardResponse(DealDamageAction dd)
