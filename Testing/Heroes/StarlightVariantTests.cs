@@ -424,6 +424,10 @@ namespace CauldronTests
             Card constB = GetCard("AncientConstellationB");
             PutInHand(new Card[2] { constA, constB });
 
+            PrintSpecialStringsForCard(asheron);
+            string expectedString = "Starlight's hand has 2 constellation cards.";
+            AssertCardSpecialStringsContain(asheron, expectedString);
+
             PutIntoPlay("HostageSituation");
 
             QuickHandStorage(starlight);
@@ -948,7 +952,7 @@ namespace CauldronTests
         }
         
         [Test()]
-        public void TestAsheronAsRepresentativeOfEarth()
+        public void TestNightloreCouncilAsheronAsRepresentativeOfEarth()
         {
             SetupGameController(new string[] { "BaronBlade", "Legacy", "Haka", "Tachyon", "TheCelestialTribunal" });
             StartGame();
