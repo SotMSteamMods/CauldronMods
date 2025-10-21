@@ -41,7 +41,7 @@ namespace Cauldron.Gray
                 //Advanced - Reduce damage dealt to villain targets by 1.
                 if (Game.IsAdvanced)
                 {
-                    base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => IsVillain(c), 1));
+                    base.AddSideTrigger(base.AddReduceDamageTrigger((Card c) => IsVillainTarget(c), 1));
                 }
             }
 
@@ -230,7 +230,7 @@ namespace Cauldron.Gray
             //Whenever a copy of Radioactive Cascade is destroyed, {Gray} deals the hero with the highest HP {H - 1} energy damage.
             if (action.CardToDestroy.Card.Identifier == "RadioactiveCascade")
             {
-                coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHero(c), (Card c) => new int?(Game.H - 1), DamageType.Energy);
+                coroutine = base.DealDamageToHighestHP(base.Card, 1, (Card c) => IsHeroCharacterCard(c), (Card c) => new int?(Game.H - 1), DamageType.Energy);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

@@ -19,7 +19,7 @@ namespace Cauldron.Outlander
         public override IEnumerator Play()
         {
             //When this card enters play, {Outlander} deals the non-villain target with the highest HP X+3 melee damage, where X is the number of Trace cards in play.
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c), (Card c) => FindCardsWhere(new LinqCardCriteria((Card card) => IsTrace(card) && card.IsInPlayAndHasGameText)).Count() + 3, DamageType.Melee);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillainTarget(c), (Card c) => FindCardsWhere(new LinqCardCriteria((Card card) => IsTrace(card) && card.IsInPlayAndHasGameText)).Count() + 3, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

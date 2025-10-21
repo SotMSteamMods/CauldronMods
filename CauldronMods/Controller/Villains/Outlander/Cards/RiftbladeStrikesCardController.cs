@@ -18,7 +18,7 @@ namespace Cauldron.Outlander
         public override IEnumerator Play()
         {
             //{Outlander} deals the non-villain target with the second highest HP 2 fire damage.
-            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 2, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 2, DamageType.Fire);
+            IEnumerator coroutine = DealDamageToHighestHP(CharacterCard, 2, (Card c) => !IsVillainTarget(c), (Card c) => 2, DamageType.Fire);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
@@ -29,7 +29,7 @@ namespace Cauldron.Outlander
             }
 
             //{Outlander} deals the non-villain target with the highest HP 4 melee damage.
-            coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillain(c) && c.IsTarget, (Card c) => 4, DamageType.Melee);
+            coroutine = DealDamageToHighestHP(CharacterCard, 1, (Card c) => !IsVillainTarget(c), (Card c) => 4, DamageType.Melee);
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);

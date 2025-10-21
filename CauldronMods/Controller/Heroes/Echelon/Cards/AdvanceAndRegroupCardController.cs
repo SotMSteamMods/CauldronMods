@@ -38,7 +38,7 @@ namespace Cauldron.Echelon
 
         private IEnumerator DestroyNonHeroTargetResponse(DestroyCardAction dca)
         {
-            IEnumerator coroutine = GameController.SelectAndGainHP(DecisionMaker, HpToGain, false, (Card c) => IsHero(c), 1, 1, cardSource: GetCardSource());
+            IEnumerator coroutine = GameController.SelectAndGainHP(DecisionMaker, HpToGain, false, (Card c) => IsHeroTarget(c), 1, 1, cardSource: GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

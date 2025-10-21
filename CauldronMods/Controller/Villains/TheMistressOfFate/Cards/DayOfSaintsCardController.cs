@@ -20,6 +20,7 @@ namespace Cauldron.TheMistressOfFate
             var boostEffect = new IncreaseDamageStatusEffect(2);
             boostEffect.UntilStartOfNextTurn(TurnTaker);
             boostEffect.SourceCriteria.IsVillain = true;
+            boostEffect.SourceCriteria.IsTarget = true;
 
             IEnumerator coroutine = AddStatusEffect(boostEffect);
             if (UseUnityCoroutines)

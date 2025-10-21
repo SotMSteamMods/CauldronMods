@@ -21,7 +21,7 @@ namespace Cauldron.Celadroch
 
         private bool ImmuneToDamageCriteria()
         {
-            return !Journal.DealDamageEntriesThisTurn().Any(j => j.TargetCard != Card && IsVillain(j.TargetCard) && j.Amount > 0);
+            return !Journal.DealDamageEntriesThisTurn().Any(j => j.TargetCard != Card && IsVillainTarget(j.TargetCard) && j.Amount > 0);
         }
 
         public override void AddTriggers()

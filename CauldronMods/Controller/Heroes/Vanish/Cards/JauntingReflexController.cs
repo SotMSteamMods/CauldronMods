@@ -19,7 +19,10 @@ namespace Cauldron.Vanish
 
         public override void AddTriggers()
         {
-            AddTrigger<DealDamageAction>(dda => !dda.DamageSource.IsHero && IsHero(dda.Target) && dda.DidDealDamage && WasNotUsedThisTurn(), HeroDamagedResponse, TriggerType.UsePower, TriggerTiming.After, isActionOptional: true);
+            //Once per turn when a hero target is dealt damage by a non-hero card, you may discard a card.
+            //If you do, you may use a power.
+            
+            AddTrigger<DealDamageAction>(dda => !dda.DamageSource.IsHero && dda.DamageSource.IsCard && IsHeroTarget(dda.Target) && dda.DidDealDamage && WasNotUsedThisTurn(), HeroDamagedResponse, TriggerType.UsePower, TriggerTiming.After, isActionOptional: true);
 
             AddAfterLeavesPlayAction((GameAction ga) => ResetFlagAfterLeavesPlay(TrackingKey), TriggerType.Hidden);
         }
@@ -60,6 +63,8 @@ namespace Cauldron.Vanish
 
         public override IEnumerator UsePower(int index = 0)
         {
+            //Destroy this card. If you do, draw 2 cards.
+            
             int draws = GetPowerNumeral(0, 2);
 
             //Calling Destroy Card, then Draw Card(2) didn't work.  Only a single card would be drawn for I'm sure great reasons.

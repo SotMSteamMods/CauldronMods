@@ -72,6 +72,7 @@ namespace Cauldron.TheStranger
                         //Villain targets may not regain HP until the start of your turn.
                         CannotGainHPStatusEffect cannotGainHPStatusEffect = new CannotGainHPStatusEffect();
                         cannotGainHPStatusEffect.TargetCriteria.IsVillain = true;
+                        cannotGainHPStatusEffect.TargetCriteria.IsTarget = true;
                         cannotGainHPStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
                         IEnumerator coroutine5 = AddStatusEffect(cannotGainHPStatusEffect);
                         if (base.UseUnityCoroutines)

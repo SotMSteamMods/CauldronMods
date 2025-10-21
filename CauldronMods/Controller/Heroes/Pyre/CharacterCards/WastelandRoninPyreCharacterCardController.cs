@@ -20,6 +20,7 @@ namespace Cauldron.Pyre
             var redirectEffect = new RedirectDamageStatusEffect();
             redirectEffect.UntilTargetLeavesPlay(this.Card);
             redirectEffect.TargetCriteria.IsHero = true;
+            redirectEffect.TargetCriteria.IsTarget = true;
             redirectEffect.SourceCriteria.IsSpecificCard = this.Card;
             redirectEffect.NumberOfUses = 1;
             redirectEffect.RedirectableTargets.IsTarget = true;

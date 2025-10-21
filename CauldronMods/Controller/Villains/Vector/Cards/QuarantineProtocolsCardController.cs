@@ -53,7 +53,7 @@ namespace Cauldron.Vector
         {
             int damageToDeal = base.Game.H;
 
-            IEnumerator routine = this.DealDamage(this.Card, card => IsHero(card) && card.IsTarget && card.IsInPlayAndNotUnderCard, 
+            IEnumerator routine = this.DealDamage(this.Card, card => IsHeroTarget(card) && card.IsInPlayAndNotUnderCard, 
                 damageToDeal, DamageType.Lightning);
 
             if (base.UseUnityCoroutines)

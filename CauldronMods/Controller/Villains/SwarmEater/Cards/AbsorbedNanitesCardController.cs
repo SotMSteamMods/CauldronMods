@@ -24,7 +24,7 @@ namespace Cauldron.SwarmEater
         public override void AddTriggers()
         {
             //Whenever {SwarmEater} destroys a villain target, put it beneath this card. 
-            base.AddTrigger((DestroyCardAction action) => action.WasCardDestroyed && IsVillain(action.CardToDestroy.Card) && action.ResponsibleCard == base.CharacterCard, this.DestroyVillainResponse, TriggerType.MoveCard, TriggerTiming.After);
+            base.AddTrigger((DestroyCardAction action) => action.WasCardDestroyed && IsVillainTarget(action.CardToDestroy.Card) && action.ResponsibleCard == base.CharacterCard, this.DestroyVillainResponse, TriggerType.MoveCard, TriggerTiming.After);
             
             //Activate the Absorb text of all cards beneath this one. Ignore all other game text on those cards.
             base.AddTrigger((MoveCardAction action) => action.Destination == base.Card.UnderLocation, this.AbsorbResponse, TriggerType.AddTrigger, TriggerTiming.After);

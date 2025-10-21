@@ -41,7 +41,7 @@ namespace Cauldron.DocHavoc
 
 
             // Check non hero targets to see if they took the intended damage
-            foreach (DealDamageAction dd in storedDamageResults.Where(dda => !IsHero(dda.Target) && dda.DidDealDamage))
+            foreach (DealDamageAction dd in storedDamageResults.Where(dda => !IsHeroTarget(dda.Target) && dda.DidDealDamage))
             {
                 // Apply CannotGainHPStatusEffect until start of this hero's next turn
                 CannotGainHPStatusEffect cannotGainHpStatusEffect = new CannotGainHPStatusEffect

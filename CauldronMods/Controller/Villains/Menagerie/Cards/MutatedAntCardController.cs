@@ -21,8 +21,8 @@ namespace Cauldron.Menagerie
             base.AddReduceDamageTrigger((Card c) => c == base.Card, 1);
 
             //The first time a non-villain target deals damage each turn, this card deals that target 1 irreducible toxic damage.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && action.DamageSource != null && action.DamageSource.Card != null && !base.IsVillain(action.DamageSource.Card) && action.DamageSource.IsTarget && action.DidDealDamage && action.Amount > 0, this.StoreCardDealingDamage, TriggerType.FirstTrigger, TriggerTiming.After);
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && action.DamageSource != null && action.DamageSource.Card != null && !base.IsVillain(action.DamageSource.Card) && action.DamageSource.IsTarget && action.DidDealDamage && action.Amount > 0, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && action.DamageSource != null && action.DamageSource.Card != null && !base.IsVillainTarget(action.DamageSource.Card) && action.DamageSource.IsTarget && action.DidDealDamage && action.Amount > 0, this.StoreCardDealingDamage, TriggerType.FirstTrigger, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => !base.HasBeenSetToTrueThisTurn(FirstTimeDamageDealt) && action.DamageSource != null && action.DamageSource.Card != null && !base.IsVillainTarget(action.DamageSource.Card) && action.DamageSource.IsTarget && action.DidDealDamage && action.Amount > 0, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
         }
 
         private IEnumerator StoreCardDealingDamage(DealDamageAction dd)

@@ -18,7 +18,7 @@ namespace Cauldron.Anathema
         public override void AddTriggers()
         {
             //Whenever Anathema deals damage to a Hero target, he regains 1 HP.
-            Func<DealDamageAction, bool> damageCriteria = (DealDamageAction dd) => dd.DidDealDamage && IsHero(dd.Target) && dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard);
+            Func<DealDamageAction, bool> damageCriteria = (DealDamageAction dd) => dd.DidDealDamage && IsHeroTarget(dd.Target) && dd.DamageSource != null && dd.DamageSource.IsSameCard(base.CharacterCard);
             base.AddTrigger<DealDamageAction>(damageCriteria, this.DealDamageResponse, TriggerType.GainHP, TriggerTiming.After);
 
             //Whenever an arm, body, or head is destroyed by a Hero target, Anathema deals himself 2 psychic damage.

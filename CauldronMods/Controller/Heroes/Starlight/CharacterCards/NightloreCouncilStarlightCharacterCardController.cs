@@ -100,7 +100,7 @@ namespace Cauldron.Starlight
         public bool AsheronBoostDamageCriteria(DealDamageAction dda)
         {
             //"If Starlight of Asheron has a constellation next to her, increase damage she does to non-hero targets by 1."
-            return dda.DamageSource.IsSameCard(asheron) && IsNextToConstellation(asheron) && !IsHero(dda.Target);
+            return dda.DamageSource.IsSameCard(asheron) && IsNextToConstellation(asheron) && !IsHeroTarget(dda.Target);
         }
         public bool CryosCardDrawCriteria(CardEntersPlayAction cep)
         {

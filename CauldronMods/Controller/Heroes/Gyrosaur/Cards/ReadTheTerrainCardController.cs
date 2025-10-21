@@ -74,6 +74,7 @@ namespace Cauldron.Gyrosaur
                     var boostEffect = new IncreaseDamageStatusEffect(numDamageIncrease);
                     boostEffect.SourceCriteria.IsSpecificCard = usingHeroCharacter;
                     boostEffect.TargetCriteria.IsHero = false;
+                    boostEffect.TargetCriteria.IsTarget = true;
                     boostEffect.UntilTargetLeavesPlay(usingHeroCharacter);
                     boostEffect.UntilThisTurnIsOver(Game);
                     boostEffect.CardSource = trackerEffect.CardSource;
@@ -113,6 +114,7 @@ namespace Cauldron.Gyrosaur
             var boostEffect = new IncreaseDamageStatusEffect(numDamageIncrease);
             boostEffect.SourceCriteria.IsSpecificCard = usingHeroCharacter;
             boostEffect.TargetCriteria.IsHero = false;
+            boostEffect.TargetCriteria.IsTarget = true;
             boostEffect.UntilTargetLeavesPlay(usingHeroCharacter);
             boostEffect.UntilThisTurnIsOver(Game);
             boostEffect.CardSource = spawnerEffect.CardSource;

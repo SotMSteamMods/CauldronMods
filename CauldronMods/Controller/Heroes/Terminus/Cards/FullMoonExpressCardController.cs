@@ -24,14 +24,14 @@ namespace Cauldron.Terminus
         {
 			base.AddStartOfTurnTrigger((tt) => tt == base.TurnTaker, PhaseChangeActionResponse, TriggerType.RemoveFromGame);
 			base.AddRedirectDamageTrigger(RedirectDamageActionCritera, () => base.CharacterCard, true);
-			base.AddTrigger<DealDamageAction>((dda) => dda.DidDealDamage && dda.DamageSource != null && dda.DamageSource.IsTarget && !dda.DamageSource.IsHero && dda.Target == base.CharacterCard, DealDamageActionResponse, TriggerType.DealDamage, TriggerTiming.After, ActionDescription.DamageTaken);
+			base.AddTrigger<DealDamageAction>((dda) => dda.DidDealDamage && dda.DamageSource != null && dda.DamageSource.IsTarget && !dda.DamageSource.IsHeroTarget && dda.Target == base.CharacterCard, DealDamageActionResponse, TriggerType.DealDamage, TriggerTiming.After, ActionDescription.DamageTaken);
 		}
 
 		private bool RedirectDamageActionCritera(DealDamageAction dealDamageAction)
         {
 			Card stainedBadge = base.TurnTaker.FindCard("StainedBadge");
 
-			return !stainedBadge.IsInPlayAndHasGameText && !dealDamageAction.DamageSource.IsHero && dealDamageAction.DamageSource.IsTarget && dealDamageAction.Target != base.CharacterCard;
+			return !stainedBadge.IsInPlayAndHasGameText && !dealDamageAction.DamageSource.IsHeroTarget && dealDamageAction.DamageSource.IsTarget && dealDamageAction.Target != base.CharacterCard;
 		}
 
 		private IEnumerator PhaseChangeActionResponse(PhaseChangeAction phaseChangeAction)

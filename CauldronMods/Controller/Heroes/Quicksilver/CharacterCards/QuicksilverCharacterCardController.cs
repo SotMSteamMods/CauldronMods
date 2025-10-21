@@ -49,6 +49,7 @@ namespace Cauldron.Quicksilver
                         //Until the start of your next turn increase melee damage dealt by hero targets by 1.
                         IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(1);
                         increaseDamageStatusEffect.SourceCriteria.IsHero = new bool?(true);
+                        increaseDamageStatusEffect.SourceCriteria.IsTarget = new bool?(true);
                         //increaseDamageStatusEffect.DamageTypeCriteria.invertTypes = true;
                         increaseDamageStatusEffect.DamageTypeCriteria.AddType(DamageType.Melee);
                         increaseDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);

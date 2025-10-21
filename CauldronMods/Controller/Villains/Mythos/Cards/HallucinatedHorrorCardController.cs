@@ -37,7 +37,7 @@ namespace Cauldron.Mythos
             //At the end of the villain turn, this card deals each hero target 2 sonic damage.
             base.AddDealDamageAtEndOfTurnTrigger(TurnTaker, Card, (Card c) => IsHeroTarget(c), TargetType.All, 2, DamageType.Sonic);
             //Destroy this card when a hero is dealt damage by another hero target.
-            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && IsHero(action.Target) && action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.IsHero && action.Target != action.DamageSource.Card, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
+            base.AddTrigger<DealDamageAction>((DealDamageAction action) => action.DidDealDamage && IsHeroCharacterCard(action.Target) && action.DamageSource != null && action.DamageSource.Card != null && action.DamageSource.IsHeroTarget && action.Target != action.DamageSource.Card, base.DestroyThisCardResponse, TriggerType.DestroySelf, TriggerTiming.After);
         }
     }
 }
