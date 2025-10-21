@@ -1002,6 +1002,88 @@ namespace CauldronTests
 
         }
 
+        // https://github.com/SotMSteamMods/CauldronMods/issues/1709
+        [Test()]
+        public void TestRideTheCurrents_BountiesAndMoving()
+        {
+            SetupGameController(new string[] { "BaronBlade", "Ra", "Legacy", "ChronoRanger", "Cauldron.SuperstormAkela" });
+            StartGame();
+            DestroyCard(GetCardInPlay("MobileDefensePlatform"), baron.CharacterCard);
+
+            // Put a card in play in everyone's play area except for Ra's
+            PlayCard("BladeBattalion");
+            PlayCard("TheLegacyRing");
+            PlayCard("JimsHat");
+
+            GoToStartOfTurn(superstorm);
+
+            //stack deck to reduce variability
+            Card staffOfRa = PutOnDeck(ra, FindCard(c => c.Identifier == "TheStaffOfRa"));
+            // put cards to play in hand
+            Card byAnyMeans = PutInHand(chrono, "ByAnyMeans");
+
+            GoToPlayCardPhase(superstorm);
+            PutInTrash("Scatterburst");
+            PutInTrash("GeogravLocus");
+            Card currents = PlayCard("RideTheCurrents");
+            Card maya = FindCard((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c.Identifier == "GeminiMaya");
+            Card skulking = FindCard((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c.Identifier == "SkulkingIntermediary");
+            Card forgottenDjinn = FindCard((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c.Identifier == "ForgottenDjinn");
+            Card cutLoose = FindCard((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c.Identifier == "CutLoose");
+            List<Card> cardsToPlay = [maya, skulking, forgottenDjinn, cutLoose];
+            PlayCards(cardsToPlay);
+            DecisionSelectFunction = 1;
+            //selecting maya and moving it to the right of the 4th card played
+            DecisionSelectCards = [
+                                   maya, // By Any Means: Play
+                                   ra.CharacterCard, // Gemini Maya: End of Turn (legacy chosen by default decision)
+                                   maya, cutLoose, // Ride the Currents: Start of Turn
+                                  ];
+            int nextToPosition = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(cardsToPlay.ElementAt(3));
+
+            // place bounty on the target that is going to move
+            PlayCard(byAnyMeans);
+
+            SetHitPoints(baron, 10);
+            SetHitPoints(ra, 20);
+            SetHitPoints(legacy, 19);
+            SetHitPoints(chrono, 13);
+
+            PrintSeparator("PLAY AREA STATUS");
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+
+            // Expected End of Turn behavior:
+            //   1) Ride the Current asks to select card to move
+            //   2) Gemini Maya deals Ra and Legacy 3 damage each (17 health, 16 health)
+            //   4) Skulking Intermediary heals Baron, Maya, Intermediary, Djinn by 3
+            //   5) Forgotten Djinn deals Legacy 6 damage (10 health)
+            PrintSeparator("END OF TURN");
+            GoToEndOfTurn(superstorm);
+
+            // Make sure By Any Means is on Gemini Maya before Start of Turn Shenanigans
+            AssertNextToCard(byAnyMeans, maya);
+
+            // Expected Start of Turn behavior:
+            //   1) Ride the Currents asks to select card to move
+            //   2) Selects Gemini Maya
+            //   3) Ride the Currents asks to select card to move next to
+            //   4) Selects Cut Loose
+            //   5) Ride the Currents asks to move right or left of card
+            //   5) Selects move right
+            //   6) Gemini Maya moves to the right of Cut Loose
+            PrintSeparator("START OF TURN");
+            GoToStartOfTurn(baron);
+
+            // All cards shift one over since we are removing the one at the far left
+            PrintPlayAreaPositions(superstorm.TurnTaker);
+            int expected = (nextToPosition - 1) + 1;
+            int actual = GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ToList().IndexOf(currents);
+            Assert.IsTrue(GetOrderedCardsInLocation(superstorm.TurnTaker.PlayArea).ElementAt(expected) == maya, maya.Title + " is not in the correct position. Expected: " + expected + ", Actual: " + actual);
+
+            // Make sure By Any Means is on Gemini Maya after Start of Turn Shenanigans
+            AssertNextToCard(byAnyMeans, maya);
+        }
+
 
 
     }
