@@ -19,6 +19,8 @@ namespace Cauldron.Terminus
         private int ColdDamageAmount => GetPowerNumeral(1, 3);
         private int AddTokenAmount => GetPowerNumeral(2, 1);
         private int RemoveTokenAmount => GetPowerNumeral(3, 3);
+        private int NumTokensToRemoveAmount => GetPowerNumeral(4, 3);
+        private int ReduceDamageAmount => GetPowerNumeral(5, 1);
 
         public ImmortalCoilsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -63,9 +65,9 @@ namespace Cauldron.Terminus
             IEnumerator coroutine;
             ReduceDamageStatusEffect reduceDamageStatusEffect;
 
-            if (DidRemoveTokens(storedResults, 3) && dealDamageAction != null)
+            if (DidRemoveTokens(storedResults, NumTokensToRemoveAmount) && dealDamageAction != null)
             {
-                reduceDamageStatusEffect = new ReduceDamageStatusEffect(1);
+                reduceDamageStatusEffect = new ReduceDamageStatusEffect(ReduceDamageAmount);
                 reduceDamageStatusEffect.SourceCriteria.IsSpecificCard = dealDamageAction.Target;
                 reduceDamageStatusEffect.UntilStartOfNextTurn(base.TurnTaker);
                 coroutine = base.AddStatusEffect(reduceDamageStatusEffect);
