@@ -16,6 +16,9 @@ namespace Cauldron.SuperstormAkela
 
         }
 
+        private IEnumerable<Card> displacedNextToCards;
+        private IEnumerable<Card> displacedUnderCards;
+
         protected IEnumerator MoveCardToFarLeft(Card card, bool noMessage = false)
         {
             List<Card> list = GetOrderedCardsInLocation(TurnTaker.PlayArea).ToList();
@@ -221,6 +224,8 @@ namespace Cauldron.SuperstormAkela
 
         private IEnumerator RefreshUI(Card card)
         {
+            CacheCards(card);
+
             IEnumerator coroutine;
             IEnumerator coroutine2;
 
@@ -271,6 +276,8 @@ namespace Cauldron.SuperstormAkela
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
             }
+
+            ReturnCachedCards(card);
 
             yield break;
         }
@@ -425,6 +432,35 @@ namespace Cauldron.SuperstormAkela
             cardsToRightString += "to the right of this one.";
 
             return cardsToRightString;
+        }
+
+        private void CacheCards(Card card)
+        {
+            // Save off all next to and under cards
+            displacedNextToCards = card.NextToLocation.Cards.ToList();
+            displacedUnderCards = card.UnderLocation.Cards.ToList();
+
+            foreach (Card nextToCard in displacedNextToCards)
+            {
+                TurnTaker.MoveCard(nextToCard, TurnTaker.OffToTheSide);
+            }
+            foreach (Card underCard in displacedUnderCards)
+            {
+                TurnTaker.MoveCard(underCard, TurnTaker.OffToTheSide);
+    }
+}
+
+        private void ReturnCachedCards(Card card)
+        {
+            // Return NextTo and Under cards
+            foreach (Card nextToCard in displacedNextToCards)
+            {
+                TurnTaker.MoveCard(nextToCard, card.NextToLocation, assignPlayIndex: false);
+            }
+            foreach (Card underCard in displacedUnderCards)
+            {
+                TurnTaker.MoveCard(underCard, card.UnderLocation, assignPlayIndex: false);
+            }
         }
     }
 }
