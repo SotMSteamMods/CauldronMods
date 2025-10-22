@@ -33,12 +33,30 @@ namespace Cauldron.MagnificentMara
         public override void AddTriggers()
         {
             //"Increase damage dealt by that power by 1.",
-            AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.PowerSource != null && dd.CardSource.PowerSource.CardController == FindCardController(GetCardThisCardIsNextTo()), 1);
-            AddTrigger((AddStatusEffectAction se) => se.StatusEffect.DoesDealDamage && se.CardSource != null && se.CardSource.PowerSource != null && se.CardSource.PowerSource.CardController == FindCardController(GetCardThisCardIsNextTo()), AddDamageBoostToEffect, TriggerType.Hidden, TriggerTiming.Before);
+            AddIncreaseDamageTrigger(DeterminePowerIncreaseDealDamageAction, 1);
+            AddTrigger<AddStatusEffectAction>(DeterminePowerIncreaseAddStatusEffectAction, AddDamageBoostToEffect, TriggerType.Hidden, TriggerTiming.Before);
 
             //"If that card would be destroyed, destroy this card instead."
             AddTrigger((DestroyCardAction dc) => !this.IsBeingDestroyed && dc.CardToDestroy.Card == GetCardThisCardIsNextTo() && !GameController.IsCardIndestructible(dc.CardToDestroy.Card), DestroyThisCardInsteadResponse, TriggerType.CancelAction, TriggerTiming.Before);
             AddIfTheCardThatThisCardIsNextToLeavesPlayMoveItToTheirPlayAreaTrigger(alsoRemoveTriggersFromThisCard: true);
+        }
+
+        private bool DeterminePowerIncreaseDealDamageAction(DealDamageAction dda)
+        {
+            CardController nextToCardController = FindCardController(GetCardThisCardIsNextTo());
+            return  (dda.CardSource != null && dda.CardSource.PowerSource != null) && 
+                    (dda.CardSource.PowerSource.CardController == nextToCardController ||
+                            (dda.CardSource.PowerSource.CardSource != null && 
+                             dda.CardSource.PowerSource.CardSource.CardController == nextToCardController));
+        }
+
+        private bool DeterminePowerIncreaseAddStatusEffectAction(AddStatusEffectAction se)
+        {
+            CardController nextToCardController = FindCardController(GetCardThisCardIsNextTo());
+            return  (se.StatusEffect.DoesDealDamage && se.CardSource != null && se.CardSource.PowerSource != null) && 
+                    (se.CardSource.PowerSource.CardController == nextToCardController ||
+                        (se.CardSource.PowerSource.CardSource != null &&
+                         se.CardSource.PowerSource.CardSource.CardController == nextToCardController));
         }
 
         public IEnumerator DestroyThisCardInsteadResponse(DestroyCardAction dc)
