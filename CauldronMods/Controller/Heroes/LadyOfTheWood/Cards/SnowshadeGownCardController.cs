@@ -38,7 +38,7 @@ namespace Cauldron.LadyOfTheWood
 		{
 			//you may select a target that has not been dealt damage this turn- LadyOfTheWood deals that target 1 cold damage.
 
-			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Cold, new int?(1), true, new int?(1), additionalCriteria: (Card c) => !base.HasBeenDealtDamageThisTurn(c), cardSource: GetNonPowerCardSource());
+			IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(this.DecisionMaker, new DamageSource(base.GameController, base.CharacterCard), 1, DamageType.Cold, new int?(1), true, new int?(1), additionalCriteria: (Card c) => !HasInstanceBeenDealtDamageThisTurn(c), cardSource: GetNonPowerCardSource());
 			if (base.UseUnityCoroutines)
 			{
 				yield return base.GameController.StartCoroutine(coroutine);
@@ -67,5 +67,18 @@ namespace Cauldron.LadyOfTheWood
 			}
 			return cardSource;
 		}
-	}
+
+
+		// The built in HasBeenDealtDamageThisTurn only factors in whether the card is the same
+		// not whether it has the same play index
+		// As such, we need a custom function for this
+        private bool HasInstanceBeenDealtDamageThisTurn(Card card)
+        {
+            return Journal.DealDamageEntriesThisTurn().Any(
+				(DealDamageJournalEntry e) =>  e.TargetCard == card && 
+											   e.TargetPlayIndex == card.PlayIndex && 
+											   e.Amount > 0);
+        }
+
+    }
 }

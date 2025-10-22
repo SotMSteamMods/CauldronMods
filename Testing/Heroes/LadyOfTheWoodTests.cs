@@ -1467,7 +1467,6 @@ namespace CauldronTests
 
             GoToUsePowerPhase(ladyWood);
 
-
             //Have baron blade and LotW have been dealt damage they aren't available for the reaction
             DealDamage(ra, baron, 5, DamageType.Fire);
             DealDamage(ra, ladyWood, 3, DamageType.Fire);
@@ -1477,6 +1476,44 @@ namespace CauldronTests
             //Use LotW power to trigger reaction
             UsePower(gown);
             QuickHPCheck(-1);
+        }
+
+        [Test()]
+        public void TestSnowshadeGownDealDamage_TargetCounting()
+        {
+            SetupGameController("BaronBlade", "Cauldron.LadyOfTheWood", "CaptainCosmic", "Haka", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            //give room to gain HP
+            SetHitPoints(ladyWood, 10);
+
+            GoToPlayCardPhase(ladyWood);
+
+
+            Card gown = PlayCard("SnowshadeGown");
+            Card influence = PlayCard("SustainedInfluence");
+            
+            DecisionSelectCards = [cosmic.CharacterCard, haka.CharacterCard, baron.CharacterCard];
+
+            Card siphon = PlayCard("DynamicSiphon");
+
+            Card potentDisruption = StackDeck("PotentDisruption");
+
+            DecisionMoveCardDestinations = [new MoveCardDestination(cosmic.TurnTaker.PlayArea)];
+            DecisionsYesNo = [ true ];
+            DealDamage(ladyWood, siphon, 1, DamageType.Fire);
+
+            GoToUsePowerPhase(ladyWood);
+            DecisionSelectCards = [ siphon ];
+            DecisionSelectCardsIndex = 0;
+            DecisionsYesNo = [ true ];
+            DecisionsYesNoIndex = 0;
+
+            AssertNextDecisionChoices(  
+                included: [cosmic.CharacterCard, ladyWood.CharacterCard, haka.CharacterCard, siphon],
+                notIncluded: [baron.CharacterCard]);
+            UsePower(gown);
         }
 
         [Test()]
