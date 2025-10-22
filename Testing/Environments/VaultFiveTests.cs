@@ -575,8 +575,39 @@ namespace CauldronTests
             PlayCard("ShatteredDisplayCase");
             GoToEndOfTurn(vault5);
             AssertOnTopOfDeck(ra, artifact1);
-            AssertOnTopOfDeck(bunker, artifact2, 0);
-            AssertOnTopOfDeck(bunker, artifact3, 1);
+            AssertOnTopOfDeck(bunker, artifact2, 1);
+            AssertOnTopOfDeck(bunker, artifact3, 0);
+
+        }
+
+        // https://github.com/SotMSteamMods/CauldronMods/issues/1708
+        [Test()]
+        public void TestShatteredDisplayCase_EndOfTurn_OnlyMovesArtifacts()
+        {
+            SetupGameController("BaronBlade", "Ra", "Luminary", "Haka", "Bunker", "Cauldron.VaultFive");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            GoToStartOfTurn(vault5);
+            DecisionSelectTurnTakers = [ra.TurnTaker, bunker.TurnTaker, bunker.TurnTaker];
+            Card artifact1 = PlayCard("SigQuilsSign");
+            Card artifact2 = PlayCard("ByrgsNail");
+            Card artifact3 = PlayCard("TheEyeOfFomirhet");
+            MoveCard(ra, artifact1, ra.TurnTaker.Trash);
+            MoveCard(bunker, artifact2, bunker.TurnTaker.Trash);
+            MoveCard(bunker, artifact3, bunker.TurnTaker.Trash);
+
+            // move some extra card into the trash
+            Card staff = MoveCard(ra, "TheStaffOfRa", ra.TurnTaker.Trash);
+
+            GoToPlayCardPhase(vault5);
+            //At the end of the environment turn, place all Artifact cards in all trash piles on top of their respective decks.
+            PlayCard("ShatteredDisplayCase");
+            GoToEndOfTurn(vault5);
+            AssertOnTopOfDeck(ra, artifact1);
+            AssertInTrash(staff);
+            AssertOnTopOfDeck(bunker, artifact2, 1);
+            AssertOnTopOfDeck(bunker, artifact3, 0);
 
         }
 
