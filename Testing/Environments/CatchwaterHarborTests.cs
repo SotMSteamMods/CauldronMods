@@ -737,6 +737,7 @@ namespace CauldronTests
             StartGame();
             DestroyNonCharacterVillainCards();
             SetHitPoints(bunker, 10);
+            SetHitPoints(ra, 11);
             //Play this card next to the hero with the second lowest HP.
             Card left = PlayCard("LeftBehind");
             AssertNextToCard(left, ra.CharacterCard);
@@ -752,6 +753,7 @@ namespace CauldronTests
             StartGame();
             DestroyNonCharacterVillainCards();
             SetHitPoints(bunker, 10);
+            SetHitPoints(ra, 11);
             //Play this card next to the hero with the second lowest HP.
             Card left = PlayCard("LeftBehind");
             AssertNextToCard(left, ra.CharacterCard);

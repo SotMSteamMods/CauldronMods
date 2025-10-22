@@ -940,7 +940,7 @@ namespace CauldronTests
 
             StartGame();
 
-            Card heuristicAlg = GetCard(HeuristicAlgorithmCardController.Identifier);
+            Card heuristicAlg = PutInTrash(HeuristicAlgorithmCardController.Identifier);
 
             DecisionSelectFunction = 1;
 

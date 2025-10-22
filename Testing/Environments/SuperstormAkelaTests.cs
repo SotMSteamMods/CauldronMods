@@ -163,8 +163,11 @@ namespace CauldronTests
             PutInTrash("Scatterburst");
             PutInTrash("GeogravLocus");
             Card currents = PlayCard("RideTheCurrents");
-            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c)).Take(4);
-            PlayCards(cardsToPlay);
+            IEnumerable<string> cardsToPlayIDs = new string[] { "GeminiIndra", "GeminiMaya", "ForgottenDjinn", "SkulkingIntermediary" };
+            IEnumerable<Card> cardsToPlay = PlayCards(cardsToPlayIDs);
+
+            GoToEndOfTurn(superstorm);
+
             DecisionSelectFunction = 1;
             //selecting currents and moving it to the right of the 4th card played
             DecisionAutoDecideIfAble = true;
@@ -194,8 +197,8 @@ namespace CauldronTests
             PutInTrash("GeogravLocus");
             Card currents = PlayCard("RideTheCurrents");
             Card maya = GetCard("GeminiMaya");
-            IEnumerable<Card> cardsToPlay = FindCardsWhere((Card c) => superstorm.TurnTaker.Deck.HasCard(c) && c != maya).Take(4);
-            PlayCards(cardsToPlay);
+            IEnumerable<string> cardsToPlayIDs = new string[] { "GeminiIndra", "ToppledSkyscraper", "ForgottenDjinn", "SkulkingIntermediary" };
+            IEnumerable<Card> cardsToPlay = PlayCards(cardsToPlayIDs);
             PlayCard(maya);
 
             DealDamage(ra, maya, 3, DamageType.Fire);
