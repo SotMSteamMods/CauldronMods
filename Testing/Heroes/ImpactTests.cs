@@ -81,6 +81,7 @@ namespace CauldronTests
             UsePower(impact);
             QuickHPCheck(-1);
         }
+
         [Test]
         public void TestImpactPowerDestroyOngoing()
         {
@@ -145,6 +146,25 @@ namespace CauldronTests
 
             AssertNextMessageContains("from dealing damage");
             UsePower(impact);
+        }
+        [Test]
+        public void TestImpactPowerDestroyOngoing_Guise()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Impact", "Guise", "Haka", "MrFixer/DarkWatchMrFixerCharacter", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            // Add a reaction to ensure that the trigger is not needlessly increasing all damage
+            Card backlashField = PlayCard("BacklashField");
+
+
+            DecisionYesNo = true;
+            DecisionSelectPowers = [impact.CharacterCard, impact.CharacterCard];
+            QuickHPStorage(baron, guise);
+            Card moko = PlayCard("TaMoko");
+            Card iCanDoThatToo = PlayCard("ICanDoThatToo");
+            QuickHPCheck(-3, -3);
+            AssertInTrash(moko);
         }
         [Test]
         public void TestImpactIncap1()
