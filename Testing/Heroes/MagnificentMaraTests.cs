@@ -1060,6 +1060,75 @@ namespace CauldronTests
             DealDamage(MDP, voidMainstay, 1, DTM);
             QuickHPCheck(-2, -1);
         }
+
+        [Test]
+        public void TestMysticalEnhancementDamageBoost_GrantedPower()
+        {
+            SetupGameController("PlagueRat", "Cauldron.MagnificentMara", "Bunker", "TheScholar", "FortAdamant");
+
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            DecisionSelectCards = [mara.CharacterCard, bunker.CharacterCard];
+            DecisionAutoDecideIfAble = true;
+            IEnumerable<Card> infection = FindCardsWhere(c => c.Identifier == "Infection");
+            
+            AddCannotPlayCardsStatusEffect(bunker, false, true);
+            AddCannotDealDamageTrigger(bunker, plague.CharacterCard);
+            infection.ForEach(c => PlayCard(c, isPutIntoPlay: true));
+
+            GoToStartOfTurn(plague);
+            PrintSeparator("BEGIN TEST");
+            DecisionSelectCards = [ bunker.CharacterCard, scholar.CharacterCard ];
+            DecisionSelectCardsIndex = 0;
+            PlayCard("MysticalEnhancement");
+            SetHitPoints(bunker, 10);
+            SetHitPoints(scholar, 10);
+            QuickHPStorage(bunker.CharacterCard, scholar.CharacterCard);
+            UsePower(bunker, 1);
+            QuickHPCheck(3, -4);
+        }
+
+        [Test]
+        public void TestMysticalEnhancementDamageBoost_GrantedPower_MarkForExecution_OnHero()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Bunker", "Cauldron.Gargoyle", "TheScholar", "FortAdamant");
+
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card battalion = PlayCard("BladeBattalion");
+
+            PlayCard("MarkForExecution");
+           
+            DecisionSelectCards = [bunker.CharacterCard, baron.CharacterCard, battalion];
+            DecisionSelectCardsIndex = 0;
+            PlayCard("MysticalEnhancement");
+            QuickHPStorage(baron.CharacterCard, battalion);
+            UsePower(bunker, 1);
+            QuickHPCheck(-3, -2);
+        }
+
+        [Test]
+        public void TestMysticalEnhancementDamageBoost_GrantedPower_MarkForExecution_OnMark()
+        {
+            SetupGameController("BaronBlade", "Cauldron.MagnificentMara", "Bunker", "Cauldron.Gargoyle", "TheScholar", "FortAdamant");
+
+            StartGame();
+            DestroyNonCharacterVillainCards();
+
+            Card battalion = PlayCard("BladeBattalion");
+
+            Card mark = PlayCard("MarkForExecution");
+
+            DecisionSelectCards = [mark, baron.CharacterCard, battalion];
+            DecisionSelectCardsIndex = 0;
+            PlayCard("MysticalEnhancement");
+            QuickHPStorage(baron.CharacterCard, battalion);
+            UsePower(bunker, 1);
+            QuickHPCheck(-3, -2);
+        }
+
         [Test]
         public void TestMysticalEnhancementDestroyInsteadResponse()
         {
