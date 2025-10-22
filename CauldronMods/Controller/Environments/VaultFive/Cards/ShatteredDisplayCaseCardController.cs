@@ -88,44 +88,8 @@ namespace Cauldron.VaultFive
 
         protected IEnumerator RevealArtifactsInTrash_MoveInAnyOrder(HeroTurnTakerController decisionMaker, TurnTakerController revealingTurnTaker, TurnTaker turnTaker,  List<MoveCardDestination> moveDestination = null,  Location cleanUpDestination = null)
         {
-            int numberOfCardsToReveal = FindCardsWhere(c => turnTaker.Trash.HasCard(c) && IsArtifact(c)).Count();
-            List<Card> storedResults = new List<Card>();
-            IEnumerator coroutine = GameController.RevealCards(revealingTurnTaker, turnTaker.Trash, numberOfCardsToReveal, storedResults, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-            if (moveDestination == null)
-            {
-                moveDestination = new List<MoveCardDestination>();
-            }
-            if (moveDestination.Count() == 0)
-            {
-                moveDestination.Add(new MoveCardDestination(turnTaker.Deck));
-            }
-            if (turnTaker.Revealed.Cards.Count() > 0)
-            {
-                coroutine = GameController.SelectCardsFromLocationAndMoveThem(decisionMaker, turnTaker.Revealed, numberOfCardsToReveal, numberOfCardsToReveal, new LinqCardCriteria((Card c) => storedResults.Contains(c)), moveDestination, cardSource: GetCardSource());
-                if (UseUnityCoroutines)
-                {
-                    yield return GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            if (cleanUpDestination == null)
-            {
-                cleanUpDestination = turnTaker.Deck;
-            }
-            List<Location> list = new List<Location>();
-            list.Add(turnTaker.Revealed);
-            coroutine = CleanupCardsAtLocations(list, cleanUpDestination, cardsInList: storedResults);
+            IEnumerable<Card> cardsToMove = FindCardsWhere(c => turnTaker.Trash.HasCard(c) && IsArtifact(c));
+            IEnumerator coroutine = GameController.MoveCards(decisionMaker, cardsToMove, turnTaker.Deck, showIndividualMessages: true, cardSource: GetCardSource());
             if (UseUnityCoroutines)
             {
                 yield return GameController.StartCoroutine(coroutine);
