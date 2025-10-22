@@ -69,6 +69,15 @@ namespace CauldronTests
             }
         }
 
+        private IEnumerable<Card> StackCardsUnderSetList(IEnumerable<string> identifiers)
+        {
+            IEnumerable<Card> cards = identifiers.Select(identifier => FindCard(c => c.Identifier == identifier));
+            MoveCards(scream, cards, scream.TurnTaker.OffToTheSide);
+            // The first element of the array should be on top
+            MoveCards(scream, cards.Reverse(), setlist.UnderLocation);
+            return cards;
+        }
+
 
         #endregion
 
@@ -374,37 +383,99 @@ namespace CauldronTests
         }
 
         [Test()]
-        public void TestSetListRevealCard()
+        public void TestSetListRevealPlayFirstCard_Basic()
         {
             SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
             StartGame();
+
+            SetupBandCard("CantStopTheMusic");
+            var cards = StackCardsUnderSetList(new[] { "Biosurge", "MentalLink" });
             GoToPlayCardPhase(scream);
 
             PrintSeparator("StartTest");
 
             List<Card> revealed = new List<Card>();
-            //I use legacy as the revealer to confirm it's ANY reveal
-            var cards = setlist.UnderLocation.GetTopCards(2).ToList();
-            var c1 = cards[0];
-            var c2 = cards[1];
+            var c1 = cards.ElementAt(0);
+            var c2 = cards.ElementAt(1);
             Console.WriteLine("Card to Reveal: " + c1.Title);
 
-            RunCoroutine(GameController.RevealCards(legacy, setlist.UnderLocation, 1, revealed, cardSource: legacy.CharacterCardController.GetCardSource()));
-
+            RunCoroutine(GameController.RevealCards(scream, setlist.UnderLocation, 1, revealed, cardSource: scream.CharacterCardController.GetCardSource()));
             AssertNumberOfCardsInRevealed(scream, 0);
 
-            if (c1.Location == setlist.UnderLocation)
-            {
-                Console.WriteLine($"{c1.Title} is under the setList");
-                AssertOnBottomOfLocation(c1, setlist.UnderLocation);
-                AssertInPlayArea(scream, c2);
-            }
-            else
-            {
-                Console.WriteLine($"{c1.Title} not under the setList");
-                AssertInPlayArea(scream, c1);
-                AssertOnTopOfLocation(c2, setlist.UnderLocation);
-            }
+            AssertInPlayArea(scream, c1);
+            AssertOnTopOfLocation(c2, setlist.UnderLocation);
+        }
+
+        [Test()]
+        public void TestSetListRevealPlaySecondCard_Basic()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var cards = StackCardsUnderSetList(new[] { "Biosurge", "MentalLink" });
+            GoToPlayCardPhase(scream);
+
+            PrintSeparator("StartTest");
+
+            List<Card> revealed = new List<Card>();
+            var c1 = cards.ElementAt(0);
+            var c2 = cards.ElementAt(1);
+            Console.WriteLine("Card to Reveal: " + c1.Title);
+
+            RunCoroutine(GameController.RevealCards(scream, setlist.UnderLocation, 1, revealed, cardSource: scream.CharacterCardController.GetCardSource()));
+            AssertNumberOfCardsInRevealed(scream, 0);
+
+            AssertInPlayArea(scream, c2);
+            AssertOnBottomOfLocation(c1, setlist.UnderLocation);
+        }
+
+        [Test()]
+        public void TestSetListRevealPlayFirstCard_Prevented()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            SetupBandCard("CantStopTheMusic");
+            var cards = StackCardsUnderSetList(new[] { "Biosurge", "MentalLink" });
+            PlayCard("TakeDown");
+            GoToPlayCardPhase(scream);
+
+            PrintSeparator("StartTest");
+
+            List<Card> revealed = new List<Card>();
+            var c1 = cards.ElementAt(0);
+            var c2 = cards.ElementAt(1);
+            Console.WriteLine("Card to Reveal: " + c1.Title);
+
+            RunCoroutine(GameController.RevealCards(scream, setlist.UnderLocation, 1, revealed, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, cardSource: scream.CharacterCardController.GetCardSource()));
+            AssertNumberOfCardsInRevealed(scream, 0);
+
+            AssertOnTopOfLocation(c1, setlist.UnderLocation);
+            AssertOnTopOfLocation(c2, setlist.UnderLocation, 1);
+        }
+
+        [Test()]
+        public void TestSetListRevealPlaySecondCard_Prevented()
+        {
+            SetupGameController(new[] { "Cauldron.ScreaMachine", "Legacy", "Ra", "Haka", "Megalopolis" }, advanced: false);
+            StartGame();
+
+            var cards = StackCardsUnderSetList(new[] { "Biosurge", "MentalLink" });
+            PlayCard("TakeDown");
+            GoToPlayCardPhase(scream);
+
+            PrintSeparator("StartTest");
+
+            List<Card> revealed = new List<Card>();
+            var c1 = cards.ElementAt(0);
+            var c2 = cards.ElementAt(1);
+            Console.WriteLine("Card to Reveal: " + c1.Title);
+
+            RunCoroutine(GameController.RevealCards(scream, setlist.UnderLocation, 1, revealed, cardSource: scream.CharacterCardController.GetCardSource()));
+            AssertNumberOfCardsInRevealed(scream, 0);
+
+            AssertOnTopOfLocation(c2, setlist.UnderLocation);
+            AssertOnBottomOfLocation(c1, setlist.UnderLocation);
         }
 
         [Test()]
