@@ -75,7 +75,7 @@ namespace Cauldron.BlackwoodForest
             if (otherCards.Any())
             {
                 // Put non matching revealed cards back in the trash
-                IEnumerator returnCardsRoutine = GameController.MoveCards(DecisionMaker, otherCards, villainTrash, cardSource: GetCardSource());
+                IEnumerator returnCardsRoutine = GameController.BulkMoveCards(DecisionMaker, otherCards, villainTrash, cardSource: GetCardSource());
 
                 if (this.UseUnityCoroutines)
                 {
