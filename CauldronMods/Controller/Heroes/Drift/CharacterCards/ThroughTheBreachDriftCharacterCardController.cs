@@ -247,8 +247,8 @@ namespace Cauldron.Drift
                 case 1:
                     {
                         //Two heroes may use a power now. If those powers deal damage, reduce that damage by 1.
-                        List<SelectCardDecision> selectedHero = new List<SelectCardDecision>();
-                        coroutine = base.GameController.SelectHeroCharacterCard(base.HeroTurnTakerController, SelectionType.UsePower, selectedHero, cardSource: base.GetCardSource());
+                        List<SelectTurnTakerDecision> selectTurnTakerDecision = new List<SelectTurnTakerDecision>();
+                        coroutine = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.UsePower, optional: false, allowAutoDecide: false, storedResults: selectTurnTakerDecision, cardSource: GetCardSource());
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -258,13 +258,21 @@ namespace Cauldron.Drift
                             base.GameController.ExhaustCoroutine(coroutine);
                         }
 
-                        if(!DidSelectCard(selectedHero))
+                        if (!DidSelectTurnTaker(selectTurnTakerDecision))
                         {
                             yield break;
                         }
 
+                        TurnTaker selectedTurnTaker = GetSelectedTurnTaker(selectTurnTakerDecision);
+
                         //First Hero
-                        coroutine = base.SelectHeroToUsePowerAndModifyIfDealsDamage(base.HeroTurnTakerController, (Func<DealDamageAction, bool> c) => base.AddReduceDamageTrigger((Card card) => true, 1), -1, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt == GetSelectedCard(selectedHero).Owner));
+                        coroutine = base.SelectHeroToUsePowerAndModifyIfDealsDamage(
+                            DecisionMaker, 
+                            (Func<DealDamageAction, bool> c) => base.AddReduceDamageTrigger((DealDamageAction dda) => dda.CardSource.PowerSource != null && 
+                                                                                                                      dda.CardSource.PowerSource.HeroCharacterCardUsingPower.TurnTaker == selectedTurnTaker,
+                                                                                            dda => 1), 
+                            -1, 
+                            additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt == selectedTurnTaker));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -275,7 +283,30 @@ namespace Cauldron.Drift
                         }
 
                         //Second Hero
-                        coroutine = base.SelectHeroToUsePowerAndModifyIfDealsDamage(base.HeroTurnTakerController, (Func<DealDamageAction, bool> c) => base.AddReduceDamageTrigger((Card card) => true, 1), -1, additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt != GetSelectedCard(selectedHero).Owner));
+                        selectTurnTakerDecision = new List<SelectTurnTakerDecision>();
+                        coroutine = base.GameController.SelectHeroTurnTaker(DecisionMaker, SelectionType.UsePower, optional: false, allowAutoDecide: false, storedResults: selectTurnTakerDecision, heroCriteria: new LinqTurnTakerCriteria(tt => tt != selectedTurnTaker),  cardSource: GetCardSource());
+                        if (base.UseUnityCoroutines)
+                        {
+                            yield return base.GameController.StartCoroutine(coroutine);
+                        }
+                        else
+                        {
+                            base.GameController.ExhaustCoroutine(coroutine);
+                        }
+
+                        if (!DidSelectTurnTaker(selectTurnTakerDecision))
+                        {
+                            yield break;
+                        }
+
+                        selectedTurnTaker = GetSelectedTurnTaker(selectTurnTakerDecision);
+                        coroutine = base.SelectHeroToUsePowerAndModifyIfDealsDamage(
+                            DecisionMaker,
+                            (Func<DealDamageAction, bool> c) => base.AddReduceDamageTrigger((DealDamageAction dda) => dda.CardSource.PowerSource != null &&
+                                                                                                                      dda.CardSource.PowerSource.HeroCharacterCardUsingPower.TurnTaker == selectedTurnTaker,
+                                                                                            dda => 1),
+                            -1,
+                            additionalCriteria: new LinqTurnTakerCriteria((TurnTaker tt) => tt == selectedTurnTaker));
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
