@@ -1,4 +1,5 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
+﻿using Handelabra;
+using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using System;
 using System.Collections;
@@ -142,7 +143,7 @@ namespace Cauldron.Cricket
 
                 List<DiscardCardAction> discardResults = new List<DiscardCardAction>();
                 //You may discard a card...
-                coroutine = base.GameController.SelectAndDiscardCard(base.HeroTurnTakerController, true, storedResults: discardResults, selectionType: SelectionType.DiscardCard, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndDiscardCard(base.HeroTurnTakerController, optional: true, storedResults: discardResults, associatedCards: revealedCard.ToEnumerable(), cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
