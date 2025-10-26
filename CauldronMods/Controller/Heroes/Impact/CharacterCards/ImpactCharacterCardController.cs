@@ -126,7 +126,7 @@ namespace Cauldron.Impact
                     {
                         base.GameController.ExhaustCoroutine(coroutine);
                     }
-                    boostTrigger = new IncreaseDamageTrigger(GameController, (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsCard && dd.DamageSource.Card == this.Card && dd.CardSource != null && dd.CardSource.Card == this.Card, dd => GameController.IncreaseDamage(dd, numBoost, false, GetCardSource()), null, TriggerPriority.Medium, false, GetCardSource());
+                    boostTrigger = new IncreaseDamageTrigger(GameController, (DealDamageAction dd) => dd.DamageSource != null && dd.DamageSource.Card != null && dd.DamageSource.IsCard && dd.DamageSource.Card == this.Card, dd => GameController.IncreaseDamage(dd, numBoost, false, GetCardSource()), null, TriggerPriority.Medium, false, GetCardSource());
                     AddToTemporaryTriggerList(AddTrigger(boostTrigger));
                     didDestroyCards = true;
                 }
