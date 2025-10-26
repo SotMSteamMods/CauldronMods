@@ -1018,6 +1018,45 @@ namespace CauldronTests
 
         }
 
+
+        [Test]
+        public void TestVengefulSpirits_StartOfTurn_Ennead()
+        {
+            // Arrange
+            SetupGameController("TheEnnead", "Ra", "Legacy", "Bunker", DeckNamespace);
+
+            StartGame();
+
+            // In order to guarantee which gods are in play, we play all of them
+            Card shrine = FindCard(c => c.Identifier == "TheShrineOfTheEnnead");
+            Card tasteOfImmortality = PlayCard("TasteOfImmortality");
+            while(shrine.UnderLocation.HasCards)
+            {
+                PlayCard(tasteOfImmortality);
+            }
+
+            Assert.That(shrine.UnderLocation.HasCards, Is.False);
+            PrintSeparator("START TARGETS IN PLAY");
+            PrintTargetsInPlay();
+            PrintSeparator("END TARGETS IN PLAY");
+
+            Card greenCard1 = MoveCard(ennead, "AncientMagicks", ennead.TurnTaker.Trash);
+            Card greenCard2 = MoveCard(ennead, "ElementalStorm", ennead.TurnTaker.Trash);
+
+            Card vengefulSpirit = GetCard(VengefulSpiritsCardController.Identifier);
+            PlayCard(vengefulSpirit);
+
+            QuickShuffleStorage(ennead.TurnTaker.Trash);
+            QuickHPStorage(ra, legacy, bunker);
+
+            // Act
+            GoToStartOfTurn(BlackwoodForest);
+
+            // Assert
+            QuickShuffleCheck(1); // Ennead's trash shuffled due to Vengeful
+            QuickHPCheck(0, 0, 0); // No effects should have triggered
+        }
+
         [Test]
         public void TestDesolation()
         {
