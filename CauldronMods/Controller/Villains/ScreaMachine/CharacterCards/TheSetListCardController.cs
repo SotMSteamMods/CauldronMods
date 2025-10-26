@@ -39,7 +39,7 @@ namespace Cauldron.ScreaMachine
                 var keywords = new HashSet<string>(GameController.GetAllKeywords(card), StringComparer.OrdinalIgnoreCase);
                 var sharesAKeyword = FindCardsWhere(new LinqCardCriteria(c => c.IsInPlayAndNotUnderCard && GameController.GetAllKeywords(c).Any(k => keywords.Contains(k))), GetCardSource()).Any();
                 var firstCC = FindCardController(card) as ScreaMachineBandCardController;
-               
+
                 Card cardToPlay = card;
                 IEnumerator coroutine;
                 if (!sharesAKeyword)
@@ -82,7 +82,8 @@ namespace Cauldron.ScreaMachine
                     }
                 }
 
-                coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, reassignPlayIndex: true, evenIfAlreadyInPlay: true, cardSource: GetCardSource());
+                List<bool> cardPlayResults = new List<bool>(); ;
+                coroutine = GameController.PlayCard(TurnTakerController, cardToPlay, reassignPlayIndex: true, evenIfAlreadyInPlay: true, cardSource: GetCardSource(), wasCardPlayed: cardPlayResults);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -90,6 +91,20 @@ namespace Cauldron.ScreaMachine
                 else
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
+                }
+
+                if (!cardPlayResults.Where(b => b).Any())
+                {
+                    // move it back to the top of the stack face down
+                    coroutine = GameController.MoveCard(TurnTakerController, cardToPlay, Card.UnderLocation, toBottom: false, playCardIfMovingToPlayArea: false, flipFaceDown: true, cardSource: GetCardSource());
+                    if (UseUnityCoroutines)
+                    {
+                        yield return base.GameController.StartCoroutine(coroutine);
+                    }
+                    else
+                    {
+                        GameController.ExhaustCoroutine(coroutine);
+                    }
                 }
             }
         }
