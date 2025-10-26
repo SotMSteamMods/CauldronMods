@@ -541,17 +541,51 @@ namespace CauldronTests
         [Test()]
         public void TestDriftCharacter_Breach_Incap1()
         {
-            SetupGameController("Apostate", "Cauldron.Drift/ThroughTheBreachDriftCharacter", "Haka", "Bunker", "TheScholar", "Megalopolis");
+            SetupGameController("BaronBlade", "Cauldron.Drift/ThroughTheBreachDriftCharacter", "Haka", "Bunker", "Ra", "Megalopolis");
             StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
 
             DestroyCard(drift);
-            //One player may draw a card now.
-
-            QuickHPStorage(apostate);
-            QuickHandStorage(bunker);
+            //Two heroes may use a power now.
+            //If those powers deal damage, reduce that damage by 1.
+            DecisionSelectTurnTakers = [haka.TurnTaker, ra.TurnTaker];
+            DecisionSelectCards = [baron.CharacterCard,  battalion];
+            QuickHPStorage(baron.CharacterCard, battalion);
             UseIncapacitatedAbility(drift, 1);
-            QuickHandCheck(1);
-            QuickHPCheck(-1);
+            // haka hits baron for 2 - 1 => 1
+            // ra hits battalion for 2 - 1 => 1
+            QuickHPCheck(-1, -1);
+        }
+
+        [Test()]
+        public void TestDriftCharacter_Breach_Incap1_LingeringBoosts()
+        {
+            SetupGameController("BaronBlade", "Cauldron.Drift/ThroughTheBreachDriftCharacter", "Haka", "Cauldron.Necro", "Ra", "Megalopolis");
+            StartGame();
+            DestroyNonCharacterVillainCards();
+            Card battalion = PlayCard("BladeBattalion");
+
+            DestroyCard(drift);
+            Card ghoul = PlayCard("Ghoul");
+            SetHitPoints(ghoul, 1);
+            Card corpseExplosion = PlayCard("CorpseExplosion");
+            Card taiaha = PlayCard("Taiaha");
+
+            //Two heroes may use a power now.
+            //If those powers deal damage, reduce that damage by 1.
+            DecisionSelectTurnTakers = [ra.TurnTaker, haka.TurnTaker];
+            DecisionSelectCards = [baron.CharacterCard, ghoul, battalion];
+            DecisionAutoDecideIfAble = true;
+            DecisionSelectPower = taiaha;
+            QuickHPStorage(baron.CharacterCard, battalion, necro.CharacterCard, haka.CharacterCard, ra.CharacterCard);
+            UseIncapacitatedAbility(drift, 1);
+            // ra hits baron for 2 - 1 => 1
+            // haka hits ghoul for 3 - 1 => 2
+            // ghoul is destroyed
+            // corpse explosion hits baron and battalion for 2
+            // haka hits battalion for 3 - 1 = > 2
+            QuickHPCheck(-3, -4, 0, 0, 0);
         }
 
         [Test()]
