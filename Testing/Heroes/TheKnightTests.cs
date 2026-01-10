@@ -850,6 +850,7 @@ namespace CauldronTests
             //nuke all baron blades cards so his ongoings don't break tests
             DestroyCards((Card c) => c.IsVillain && c.IsInPlayAndHasGameText && !c.IsCharacter);
             DiscardAllCards(knight);
+            ShuffleTrashIntoDeck(knight);
 
             //prime a hand and top of deck
             var testCard = PutInHand(knight, "MaidensBlessing");
@@ -916,7 +917,7 @@ namespace CauldronTests
             AssertIsTarget(target, targetHP);
             AssertNotTarget(equip);
         }
-
+        
         [Test]
         public void Armor_ImbuedVitalityOutOfPlay([Values("PlateHelm", "PlateMail")] string armor)
         {
@@ -1026,7 +1027,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "OblivAeon", "Cauldron.TheKnight", "Legacy", "Haka", "Tachyon", "Luminary", "RealmOfDiscord", "MobileDefensePlatform", "InsulaPrimalis", "Cauldron.VaultFive", "Cauldron.Northspar" }, shieldIdentifier: "PrimaryObjective");
             StartGame();
 
-            
+
             var target = PutInHand(knight, armor);
             int targetHP = armor == "PlateHelm" ? 3 : 5;
             GoToPlayCardPhase(knight);
@@ -1043,7 +1044,7 @@ namespace CauldronTests
             SwitchBattleZone(knight);
             AssertIsTarget(target, 6);
         }
-
+        
         [Test]
         [Description("TheKnight - PlateHelm")]
         public void PlateHelm()

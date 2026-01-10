@@ -659,13 +659,13 @@ namespace CauldronTests
             Card spin2 = PlayCard("Hyperspin");
             DecisionSelectCards = null;
 
+            Card ball = PutOnDeck("WreckingBall");
             Card stabilizer = PutOnDeck("GyroStabilizer");
             DrawCard(gyrosaur);
             AssertInHand(stabilizer);
             AssertIsInPlay(spin1, spin2);
 
             QuickHandStorage(gyrosaur, legacy, ra);
-            Card ball = PutOnDeck("WreckingBall");
             DrawCard(gyrosaur);
             AssertIsInPlay(ball);
             AssertInTrash(spin1, spin2);

@@ -442,8 +442,8 @@ namespace CauldronTests
 
             RemoveMobileDefensePlatform();
             PlayCard("LivingForceField");
+            Card secondTopDeck = PutOnDeck("Infiltrate");
             var topDeck = PutOnDeck(tango, GetCard(WetWorkCardController.Identifier));
-            var secondTopDeck = tango.TurnTaker.Deck.GetTopCards(2).Last();
 
             QuickHPStorage(baron);
 
@@ -471,8 +471,8 @@ namespace CauldronTests
 
             RemoveMobileDefensePlatform();
             PlayCard("LivingForceField");
+            Card secondTopDeck = PutOnDeck("Infiltrate");
             var topDeck = PutOnDeck(tango, GetCard(DamnGoodGroundCardController.Identifier));
-            var secondTopDeck = tango.TurnTaker.Deck.GetTopCards(2).Last();
 
             Card assasin = PlayCard("ShinobiAssassin");
             DecisionSelectLocation = new LocationChoice(tango.TurnTaker.Deck);
