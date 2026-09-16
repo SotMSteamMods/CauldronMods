@@ -57,11 +57,9 @@ jobs:
         with:
           name: cauldron-mods-build-artifacts
           path: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
-      - name: Show Build folder
-        run: Get-ChildItem -Recurse -Filter *.dll -File
       - name: Build the CauldronMods Test Project
         run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
       - name: Run CauldronMods Tests
-        run: dotnet test --no-build --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 15000 -- NUnit.ConsoleOut=0 -- NUnit.TestOutputXml=Testing
+        run: dotnet test --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 15000 -- NUnit.ConsoleOut=0 -- NUnit.TestOutputXml=Testing
       - name: Show Testing directory
         run: dir Testing
