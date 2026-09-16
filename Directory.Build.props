@@ -16,8 +16,10 @@
     <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup>
-    <EngineDepsPath Condition="'$(ENGINE_DEPS_PATH)' == ''">C:/Program Files (x86)/Steam/steamapps/common/Sentinels of the Multiverse/Sentinels_Data/Managed</EngineDepsPath>
-    <DeployPath Condition="'$(DEPLOY_PATH)' == ''">C:/Program Files (x86)/Steam/steamapps/common/Sentinels of the Multiverse/mods/CauldronMods</DeployPath>
+	<EngineDepsPath>$(ENGINE_DEPS_PATH)</EngineDepsPath>
+    <EngineDepsPath Condition="'$(EngineDepsPath)' == ''">C:/Program Files (x86)/Steam/steamapps/common/Sentinels of the Multiverse/Sentinels_Data/Managed</EngineDepsPath>
+	<DeployPath>$(DEPLOY_PATH)</DeployPath>
+	<DeployPath Condition="'$(DeployPath)' == ''">C:/Program Files (x86)/Steam/steamapps/common/Sentinels of the Multiverse/mods/CauldronMods</DeployPath>
   </PropertyGroup>
   <ItemGroup Condition="'$(RequiresEngineDeps)' == 'true'">
     <Reference Include="EngineCommon">
