@@ -3,9 +3,10 @@ on:
   push:
     branches: [ "ci" ]
 env:
-  ENGINE_DEPS_PATH: ${{ github.workspace }}/ci_deps/libs
+  DEPENDENCIES_REPO: sentinels-dependencies
   DEPLOY_PATH: ${{ github.workspace }}/deployed
-
+  ENGINE_DEPS_PATH: ${{ github.workspace }}/ci_deps/libs
+  ORGANIZATION_NAME: ${{ github.repository_owner }}
 jobs:
   build:
      runs-on: windows-2025-vs2026
@@ -16,3 +17,8 @@ jobs:
         uses: ./.github/actions/setup-depedencies-action
         with:
           checkout_path: 'ci_deps'
+          dependency_app_id: ${{ secrets.DEP_FETCHER_APP_ID }}
+          dependency_private_key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
+          dependency_repo_name: ${{ env.DEPENDENCIES_REPO }}
+          dependency_repo_organization_name: ${{ env.ORGANIZATION_NAME }}
+

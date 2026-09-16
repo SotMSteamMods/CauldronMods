@@ -2,12 +2,21 @@ name: 'Set Up Dependencies'
 description: 'Sets up dependencies for Sentinels Steam Mods'
 inputs:
   checkout_path:
-    description: 'Where to check out dependency'
-    required: true
+    description: 'Where to check out dependencies'
+    required: false
     default: 'deps'
-env:
-  DEPENDENCIES_REPO: sentinels-dependencies
-  ORGANIZATION_NAME: ${{ github.repository_owner }}
+  dependency_app_id:
+    description: 'The App ID of the Github App for fetching dependencies'
+    required: true
+  dependency_private_key:
+    description: 'The Private Key of the Github App for fetching dependencies'
+    required: true
+  dependency_repo_name:
+    description: 'The name of the dependency reposiitory'
+    required: true
+  dependency_repo_organization_name:
+    description: 'The name of the organization where the dependency repository lives'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -15,13 +24,13 @@ runs:
       uses: actions/create-github-app-token@v1
       id: app-token
       with:
-        app-id: ${{ secrets.DEP_FETCHER_APP_ID }}
-        private-key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
-        owner: ${{ env.ORGANIZATION_NAME }}
-        repositories: ${{ env.DEPENDENCIES_REPO }}
+        app-id: ${{ inputs.dependency_app_id }}
+        private-key: ${{ inputs.dependency_private_key }}
+        owner: ${{ inputs.dependency_repo_organization_name }}
+        repositories: ${{ inputs.dependency_repo_name }}
     - name: Checkout Depedencies
       uses: actions/checkout@v7
       with:
-        repository: '${{ env.ORGANIZATION_NAME }}/${{ env.DEPENDENCIES_REPO }}'
+        repository: '${{ inputs.dependency_repo_organization_name }}/${{ inputs.dependency_repo_name }}'
         token: ${{ steps.app-token.outputs.token }}
         path: ${{ inputs.checkout_path }}
