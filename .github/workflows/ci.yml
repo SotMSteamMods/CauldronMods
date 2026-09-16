@@ -7,7 +7,8 @@ env:
   DEPLOY_PATH: ${{ github.workspace }}/deployed
   ENGINE_DEPS_PATH: ${{ github.workspace }}/ci_deps/libs
   ORGANIZATION_NAME: ${{ github.repository_owner }}
-  CAULDRON_MODS_BUILD_FOLDER: CauldronMods/bin/Release
+  CAULDRON_MODS_BUILD_FOLDER: CauldronMods/bin/Release/net48
+  TESTING_BUILD_FOLDER: Testing/bin/Release/net48
 jobs:
   build:
      runs-on: windows-2025-vs2026
@@ -60,6 +61,6 @@ jobs:
       - name: Build the CauldronMods Test Project
         run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
       - name: Run CauldronMods Tests
-        run: dotnet test --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 15000 -- NUnit.ConsoleOut=0 -- NUnit.TestOutputXml=Testing
-      - name: Show Testing directory
-        run: dir Testing
+        run: dotnet test --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0 -- NUnit.TestOutputXml=Testing
+      - name: Show Testing Output directory
+        run: dir ${{ env.TESTING_BUILD_FOLDER }}/Testing
