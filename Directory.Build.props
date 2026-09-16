@@ -1,0 +1,30 @@
+<Project>
+  <PropertyGroup>
+	<TargetFramework>net48</TargetFramework>
+	<LangVersion>12.0</LangVersion>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <Deterministic>true</Deterministic>
+    <DebugType>pdbonly</DebugType>
+    <Authors>CauldronMods Dev. Team</Authors>
+    <Company>CauldronMods Dev. Team</Company>
+    <Product>CauldronMods</Product>
+    <Copyright>All rights reserved, 2020-2026</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2437294168</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SotMSteamMods/CauldronMods</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EngineDepsPath Condition="'$(ENGINE_DEPS_PATH)' == ''">C:/Program Files (x86)/Steam/steamapps/common/Sentinels of the Multiverse/Sentinels_Data/Managed</EngineDepsPath>
+    <DeployPath Condition="'$(DEPLOY_PATH)' == ''">C:/Program Files (x86)/Steam/steamapps/common/Sentinels of the Multiverse/mods/CauldronMods</DeployPath>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(RequiresEngineDeps)' == 'true'">
+    <Reference Include="EngineCommon">
+      <HintPath>$(EngineDepsPath)/EngineCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="SentinelsEngine">
+      <HintPath>$(EngineDepsPath)/SentinelsEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,20 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-	<Deterministic>true</Deterministic>
-	<DebugType>pdbonly</DebugType>
-	<Version>2.4.0</Version>
-	 <LangVersion>12.0</LangVersion>
-	<Authors>CauldronMods Dev. Team</Authors>
-	<Description>The Cauldron Fan Expansion for the Sentinels of the Multiverse Digital Card Game.</Description>
-	<Copyright>All rights reserved, 2020-2023</Copyright>
-	<PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<PackageProjectUrl>https://github.com/SotMSteamMods/CauldronMods</PackageProjectUrl>
-	<RepositoryUrl></RepositoryUrl>
-	<NeutralLanguage>en</NeutralLanguage>
-	<AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
+   <PropertyGroup>
+    <Description>The Cauldron Fan Expansion for the Sentinels of the Multiverse Digital Card Game.</Description>
+    <Version>2.4.0</Version>
+    <RequiresEngineDeps>true</RequiresEngineDeps>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,38 +11,16 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="DeckLists\**\*.json">
       <LogicalName>Cauldron.DeckLists.%(EmbeddedResource.FileName).json</LogicalName>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="manifest.json">
-	  <Link>manifest.json</Link>
+	    <Link>manifest.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="EngineCommon">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\EngineCommon.dll</HintPath>
-    </Reference>
-    <Reference Include="SentinelsEngine">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\SentinelsEngine.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="DeckLists\Environment\OblaskCraterDeckList.json">
-      <LogicalName>Cauldron.DeckLists.%(EmbeddedResource.FileName).json</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\mods\CauldronMods\$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)manifest.json&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\mods\CauldronMods\manifest.json&quot;" />
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(DeployPath)/$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)manifest.json&quot; &quot;$(DeployPath)/manifest.json&quot;" />
   </Target>
-
 </Project>
