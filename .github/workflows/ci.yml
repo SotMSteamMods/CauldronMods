@@ -11,7 +11,7 @@ jobs:
      runs-on: windows-2025-vs2026
      steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set Up Dependencies'
         uses: ./.github/actions/setup-depedencies-action
         with:

@@ -20,7 +20,7 @@ runs:
         owner: ${{ env.ORGANIZATION_NAME }}
         repositories: ${{ env.DEPENDENCIES_REPO }}
     - name: Checkout Depedencies
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         repository: '${{ env.ORGANIZATION_NAME }}/${{ env.DEPENDENCIES_REPO }}'
         token: ${{ steps.app-token.outputs.token }}
