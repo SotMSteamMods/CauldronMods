@@ -20,7 +20,7 @@
     </Content>
   </ItemGroup>
 
-  <!-- <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(DeployPath)/$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)manifest.json&quot; &quot;$(DeployPath)/manifest.json&quot;" />
-  </Target> -->
+  </Target>
 </Project>
