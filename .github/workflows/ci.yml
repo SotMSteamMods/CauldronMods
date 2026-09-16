@@ -57,7 +57,7 @@ jobs:
         with:
           name: cauldron-mods-build-artifacts
       - name: Show Build folder
-        run: dir ${{ steps.download-build-artifacts.outputs.download-path }}
+        run: dir /ad /s /b ${{ steps.download-build-artifacts.outputs.download-path }}
       - name: Build the CauldronMods Test Project
         run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
       - name: Run CauldronMods Tests
