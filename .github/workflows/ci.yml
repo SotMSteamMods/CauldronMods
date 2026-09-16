@@ -25,5 +25,14 @@ jobs:
         run: mkdir -p ${{ env.DEPLOY_PATH }}
       - name: Build the CauldronMods project
         run:  dotnet build CauldronMods/CauldronMods.csproj --configuration Release
-      - name: Show contents of deployment folder
-        run: dir ${{ env.DEPLOY_PATH }}
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: cauldron-mods-build-artifacts
+          path: /bin/Release
+      - name: Upload Deployment Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: cauldron-mods-deployment-artifacts
+          path: ${{ env.DEPLOY_PATH }}
+          if-no-files-found: error
