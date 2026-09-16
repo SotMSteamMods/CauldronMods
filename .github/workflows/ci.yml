@@ -62,6 +62,6 @@ jobs:
       - name: Build the CauldronMods Test Project
         run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
       - name: Run CauldronMods Tests
-        run: dotnet test --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 15000 -- NUnit.ConsoleOut=0 -- NUnit.TestOutputXml=Testing
+        run: dotnet test --no-build --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 15000 -- NUnit.ConsoleOut=0 -- NUnit.TestOutputXml=Testing
       - name: Show Testing directory
         run: dir Testing
