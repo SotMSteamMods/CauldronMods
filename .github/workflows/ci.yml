@@ -61,16 +61,16 @@ jobs:
         run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
       - name: Run CauldronMods Code Tests
         continue-on-error: true
-        run: dotnet test --filter FullyQualifiedName\!~CauldronTests.Art\|FullyQualifiedName\!~CauldronTests.Oblivaeon\|FullyQualifiedName\!~CauldronTests.PromoUnlock\|FullyQualifiedName\!~CauldronTests.Random --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+        run: dotnet test --filter "FullyQualifiedName\!~CauldronTests.Art\|FullyQualifiedName\!~CauldronTests.Oblivaeon\|FullyQualifiedName\!~CauldronTests.PromoUnlock\|FullyQualifiedName\!~CauldronTests.Random" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
       - name: Run CauldronMods Art Tests
         continue-on-error: true
-        run: dotnet test --filter FullyQualifiedName~CauldronTests.Art --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+        run: dotnet test --filter "FullyQualifiedName~CauldronTests.Art" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
       - name: Run CauldronMods Oblivaeon Tests
         continue-on-error: true
-        run: dotnet test --filter FullyQualifiedName~CauldronTests.Oblivaeon --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+        run: dotnet test --filter "FullyQualifiedName~CauldronTests.Oblivaeon" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
       - name: Run CauldronMods Promo Unlock Tests
         continue-on-error: true
-        run: dotnet test --filter FullyQualifiedName~CauldronTests.PromoUnlock --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+        run: dotnet test --filter "FullyQualifiedName~CauldronTests.PromoUnlock" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
       - name: Run CauldronMods Random Tests
         continue-on-error: true
-        run: dotnet test --filter FullyQualifiedName~CauldronTests.Random --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+        run: dotnet test --filter "FullyQualifiedName~CauldronTests.Random" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
