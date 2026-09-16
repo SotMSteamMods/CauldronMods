@@ -3,26 +3,16 @@ on:
   push:
     branches: [ "ci" ]
 env:
-  DEPENDENCIES_REPO: sentinels-dependencies
-  ORGANIZATION_NAME: ${{ github.repository_owner }}
+  ENGINE_DEPS_PATH: ${{ github.workspace }}/ci_deps/libs
+  DEPLOY_PATH: ${{ github.workspace }}/deployed
+
 jobs:
   build:
      runs-on: windows-2025-vs2026
      steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
-      - name: Generate GitHub App Token
-        uses: actions/create-github-app-token@v1
-        id: app-token
+      - name: Set Up Dependencies'
+        uses: ./.github/actions/setup-depedencies-action
         with:
-          app-id: ${{ secrets.DEP_FETCHER_APP_ID }}
-          private-key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
-          owner: ${{ env.ORGANIZATION_NAME }}
-          repositories: ${{ env.DEPENDENCIES_REPO }}
-      - name: Checkout Depedencies
-        uses: actions/checkout@v4
-        with:
-          repository: '${{ env.ORGANIZATION_NAME }}/${{ env.DEPENDENCIES_REPO }}'
-          token: ${{ steps.app-token.outputs.token }}
-          path: deps
-  
+          checkout_path: 'ci_deps'
