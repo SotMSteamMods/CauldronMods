@@ -21,4 +21,10 @@ jobs:
           dependency_private_key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
           dependency_repo_name: ${{ env.DEPENDENCIES_REPO }}
           dependency_repo_organization_name: ${{ env.ORGANIZATION_NAME }}
+      - name: Set Up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 'net48'
+      - name: Build the CauldronMods project
+        run: dotnet build CauldronMods/CauldronMods.csproj --configuration Release
 
