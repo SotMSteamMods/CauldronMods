@@ -7,6 +7,7 @@ env:
   DEPLOY_PATH: ${{ github.workspace }}/deployed
   ENGINE_DEPS_PATH: ${{ github.workspace }}/ci_deps/libs
   ORGANIZATION_NAME: ${{ github.repository_owner }}
+  CAULDRON_MODS_BUILD_FOLDER: CauldronMods/bin/Release
 jobs:
   build:
      runs-on: windows-2025-vs2026
@@ -29,10 +30,31 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: cauldron-mods-build-artifacts
-          path: /bin/Release
+          path: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
       - name: Upload Deployment Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: cauldron-mods-deployment-artifacts
           path: ${{ env.DEPLOY_PATH }}
           if-no-files-found: error
+  test:
+     runs-on: windows-2025-vs2026
+     needs: build
+     steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v7
+      - name: Set Up Dependencies'
+        uses: ./.github/actions/setup-depedencies-action
+        with:
+          checkout_path: 'ci_deps'
+          dependency_app_id: ${{ secrets.DEP_FETCHER_APP_ID }}
+          dependency_private_key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
+          dependency_repo_name: ${{ env.DEPENDENCIES_REPO }}
+          dependency_repo_organization_name: ${{ env.ORGANIZATION_NAME }}
+      - name: Download CauldronMod Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: cauldron-mods-build-artifacts
+          target: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
+      - name: Build the CauldronMods Test Project
+        run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
