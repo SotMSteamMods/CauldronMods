@@ -57,7 +57,7 @@ jobs:
         with:
           name: cauldron-mods-build-artifacts
       - name: Show Build folder
-        run: Get-ChildItem -Recurse -Directory ${{ steps.download-build-artifacts.outputs.download-path }}
+        run: Get-ChildItem -Recurse -Filter *.dll -File
       - name: Build the CauldronMods Test Project
         run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
       - name: Run CauldronMods Tests
