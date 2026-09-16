@@ -23,4 +23,13 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(DeployPath)/$(TargetName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)manifest.json&quot; &quot;$(DeployPath)/manifest.json&quot;" />
   </Target>
+
+  <Target Name="DebugGlobalVars" BeforeTargets="PrepareForBuild">
+    <Message Importance="high" Text="=== DEBUGGING MSBUILD ENGINE SETUP ===" />
+    <Message Importance="high" Text="Project Name:      $(MSBuildProjectName)" />
+    <Message Importance="high" Text="RequiresEngineDeps:  $(RequiresEngineDeps)" />
+    <Message Importance="high" Text="EngineDepsPath:      $(EngineDepsPath)" />
+    <Message Importance="high" Text="DeployPath:      $(DeployPath)" />
+    <Message Importance="high" Text="======================================" />
+  </Target>
 </Project>
