@@ -1,0 +1,23 @@
+name: Build and Test
+on:
+  push:
+    branches: [ "ci" ]
+jobs:
+  build:
+    runs-on: windows-latest
+   steps:
+  - name: Checkout Source Code
+    uses: actions/checkout@v4
+  - name: Generate GitHub App Token
+    uses: actions/create-github-app-token@v1
+    id: app-token
+    with:
+      app-id: ${{ secrets.DEP_FETCHER_APP_ID }}
+      private-key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
+  - name: Checkout Depedencies
+    uses: actions/checkout@v4
+    with:
+      repository: 'SotMSteamMods/sentinels-dependencies'
+      token: ${{ steps.app-token.outputs.token }}
+      path: game-libs
+  
