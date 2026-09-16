@@ -2,6 +2,9 @@ name: Build and Test
 on:
   push:
     branches: [ "ci" ]
+env:
+  DEPENDENCIES_REPO: sentinels-dependencies
+  ORGANIZATION_NAME: ${{ github.repository_owner }}
 jobs:
   build:
      runs-on: windows-2025-vs2026
@@ -14,10 +17,12 @@ jobs:
         with:
           app-id: ${{ secrets.DEP_FETCHER_APP_ID }}
           private-key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
+          owner: ${{ env.ORGANIZATION_NAME }}
+          repositories: ${{ env.DEPENDENCIES_REPO }}
       - name: Checkout Depedencies
         uses: actions/checkout@v4
         with:
-          repository: 'SotMSteamMods/sentinels-dependencies'
+          repository: '${{ env.ORGANIZATION_NAME }}/${{ env.DEPENDENCIES_REPO }}'
           token: ${{ steps.app-token.outputs.token }}
-          path: game-libs
+          path: deps
   
