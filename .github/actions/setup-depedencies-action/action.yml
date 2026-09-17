@@ -28,7 +28,7 @@ runs:
         private-key: ${{ inputs.dependency_private_key }}
         owner: ${{ inputs.dependency_repo_organization_name }}
         repositories: ${{ inputs.dependency_repo_name }}
-    - name: Checkout Depedencies
+    - name: Checkout Dependencies
       uses: actions/checkout@v7
       with:
         repository: '${{ inputs.dependency_repo_organization_name }}/${{ inputs.dependency_repo_name }}'
