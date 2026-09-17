@@ -1,15 +1,12 @@
-﻿using NUnit.Framework;
+﻿using Boomlagoon.JSON;
+using CauldronTests.Utilities;
+using NUnit.Framework;
 using System;
-using Handelabra.Sentinels.Engine.Model;
-using Handelabra.Sentinels.Engine.Controller;
-using System.Linq;
 using System.Collections;
-using Handelabra.Sentinels.UnitTest;
-using System.Reflection;
-using Handelabra;
 using System.Collections.Generic;
-using Boomlagoon.JSON;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace CauldronTests.Art
 {
@@ -17,6 +14,7 @@ namespace CauldronTests.Art
     {
         //get the list of decks, and promo's for each, cards for each
         private readonly string _kind;
+        protected IEnumerable<string> ParsingErrors { get; private set; }
         protected ArtSourceBase(string kind)
         {
             _kind = kind;
@@ -25,6 +23,15 @@ namespace CauldronTests.Art
         public IEnumerator GetEnumerator()
         {
             Assembly assembly = typeof(Cauldron.Necro.NecroCharacterCardController).Assembly;
+
+            // When Boomlagoon.JSON parses the JSONObject,
+            // it will write any errors out to stdout.
+            // This has the potential to significantly spam stdout
+            // Instead, we redirect all of those writes into a PrefixStringWriter.
+            // After parsing, we save all of those into this.ParsingErrors
+            // and reset the output back to stdout
+            PrefixStringWriter standardOutputString = new PrefixStringWriter(Console.OutputEncoding);
+            Console.SetOut(standardOutputString);
 
             List<object[]> results = new List<object[]>();
 
@@ -42,6 +49,7 @@ namespace CauldronTests.Art
                 }
 
                 string name = Path.GetFileNameWithoutExtension(res.Replace("Cauldron.DeckLists.", "").Replace("DeckList", ""));
+                standardOutputString.Prefix = $"[{name}] ";
                 var kind = jsonObject.GetString("kind");
                 if (_kind != null && kind != _kind)
                     continue;
@@ -62,6 +70,7 @@ namespace CauldronTests.Art
                 foreach (JSONValue card in cards)
                 {
                     var cardIdentifier = card.Obj.GetString("identifier");
+                    standardOutputString.Prefix = $"[{name}.{cardIdentifier}] ";
                     var sharedIdentifier = card.Obj.GetString("sharedIdentifier");
                     bool isCharacter = card.Obj.GetBoolean("character");
 
@@ -84,6 +93,7 @@ namespace CauldronTests.Art
                     }
                 }
 
+
                 List<JSONValue> promos = new List<JSONValue>();
                 if (jsonObject.ContainsKey("promoCards"))
                 {
@@ -97,6 +107,7 @@ namespace CauldronTests.Art
                 foreach (JSONValue card in promos)
                 {
                     var cardIdentifier = card.Obj.GetString("identifier");
+                    standardOutputString.Prefix = $"[{name}.{cardIdentifier}] ";
                     var promoIdentifier = card.Obj.GetString("promoIdentifier");
                     bool isCharacter = card.Obj.GetBoolean("character");
 
@@ -120,6 +131,8 @@ namespace CauldronTests.Art
                 }
                 foreach (JSONValue subdeck in subdecks)
                 {
+                    var subdeckIdentifier = subdeck.Obj.GetString("identifier");
+                    standardOutputString.Prefix = $"[{name}.{subdeckIdentifier}] ";
                     var subdeckCards = subdeck.Obj.GetArray("cards");
                     List<string> subdeckCardIdentifiers = new List<string>();
                     foreach (JSONValue card in subdeckCards)
@@ -127,12 +140,19 @@ namespace CauldronTests.Art
                         var cardIdentifier = card.Obj.GetString("identifier");
                         subdeckCardIdentifiers.Add(cardIdentifier);
                     }
-                    subdeckCardListDict.Add(subdeck.Obj.GetString("identifier"), subdeckCardIdentifiers);
+                    subdeckCardListDict.Add(subdeckIdentifier, subdeckCardIdentifiers);
                 }
 
                 results.Add(ModifyForSpecificDecks(name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers, subdeckCardListDict));
-
             }
+
+            // Save the StringWriter with all parsing errors
+            // into this.ParsingErrors
+            ParsingErrors = standardOutputString.ToString().Split([standardOutputString.NewLine], StringSplitOptions.None);
+
+            // Reset Console to use stdout again
+            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+            Console.SetOut(standardOutput);
 
             return results.GetEnumerator();
         }
@@ -144,7 +164,7 @@ namespace CauldronTests.Art
                 cardIdentifiers.Add("MesmerPendant");
             }
 
-            return new object[] { name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers, subdeckCardListDict };
+            return [name, kind, cardIdentifiers, characterIdentifiers, heroLeadCharacterIdentifiers, startEndIdentifiers, subdeckCardListDict];
         }
 
     }
