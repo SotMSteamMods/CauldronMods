@@ -95,8 +95,8 @@ jobs:
           path: ${{ env.DEPLOY_PATH }}
       - name: Move other deployed assets into the deployment path
         run: |
-          cp ./DeckBrowser ${{ env.DEPLOY_PATH }}/DeckBrowser
-          cp ./Fonts ${{ env.DEPLOY_PATH }}/Fonts
+          cp -R ./DeckBrowser ${{ env.DEPLOY_PATH }}/DeckBrowser
+          cp -R ./Fonts ${{ env.DEPLOY_PATH }}/Fonts
           cp ./preview.jpg ${{ env.DEPLOY_PATH }}/preview.jpg
       - name: Extract Version from manifest.json
         run: |
