@@ -40,6 +40,8 @@ jobs:
   test:
      runs-on: windows-2025-vs2026
      needs: build
+     env:
+      PYTHONIOENCODING: 'utf-8'
      steps:
       - name: Checkout Source Code
         uses: actions/checkout@v7
