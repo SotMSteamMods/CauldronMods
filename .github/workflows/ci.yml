@@ -93,21 +93,11 @@ jobs:
         with:
           name: cauldron-mods-deployment-artifacts
           path: ${{ env.DEPLOY_PATH }}
-      - name: Move DeckBrowser files into deploy path
-        uses: nearform-actions/github-action-copy-files@v1
-        with:
-          source: ./DeckBrowser/**
-          destination: ${{ env.DEPLOY_PATH }}/DeckBrowser
-      - name: Move Fonts files into deploy path
-        uses: nearform-actions/github-action-copy-files@v1
-        with:
-          source: ./Fonts/**
-          destination: ${{ env.DEPLOY_PATH }}/Fonts
-      - name: Move Preview image into deploy path
-        uses: nearform-actions/github-action-copy-files@v1
-        with:
-          source: ./preview.jpg
-          destination: ${{ env.DEPLOY_PATH }}/preview.jpg
+      - name: Move other deployed assets into the deployment path
+        run: |
+          cp ./DeckBrowser ${{ env.DEPLOY_PATH }}/DeckBrowser
+          cp ./Fonts ${{ env.DEPLOY_PATH }}/Fonts
+          cp ./preview.jpg ${{ env.DEPLOY_PATH }}/preview.jpg
       - name: Extract Version from manifest.json
         run: |
           VERSION=$(jq -r '.version' $DEPLOY_PATH/manifest.json)
