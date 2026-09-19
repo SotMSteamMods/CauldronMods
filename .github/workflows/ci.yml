@@ -108,4 +108,10 @@ jobs:
           type: 'zip'
           filename: 'Cauldron_${{ env.DEPLOY_VERSION }}.zip'
           directory: ${{ env.DEPLOY_PATH }}
+      - name: Upload Release Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: cauldron-mods-release-artifact
+          path: ${{ env.DEPLOY_PATH }}/Cauldron_${{ env.DEPLOY_VERSION }}.zip
+          if-no-files-found: error
         
