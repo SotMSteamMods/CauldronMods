@@ -100,8 +100,8 @@ jobs:
           cp ./preview.jpg ${{ env.DEPLOY_PATH }}/preview.jpg
       - name: Extract Version from manifest.json
         run: |
-          VERSION=$(jq -r '.version' $DEPLOY_PATH/manifest.json)
-          echo "DEPLOY_VERSION=$VERSION" >> $GITHUB_ENV
+          $manifest = Get-Content CauldronMods/manifest.json -Raw | ConvertFrom-Json
+          Add-Content -Path $env:GITHUB_ENV -Value "DEPLOY_VERSION=$($manifest.version)"
       - name: Archive Deployment
         uses: thedoctor0/zip-release@0.7.5
         with:
