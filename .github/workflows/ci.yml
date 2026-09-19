@@ -75,13 +75,40 @@ jobs:
           continue-on-error: true
           run: dotnet test --filter FullyQualifiedName~CauldronTests.Random --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Random.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
       - name: Upload Test Reports
+        id: parse-tests
         uses: dorny/test-reporter@v3
         if: ${{ !cancelled() }}
         with:
           name: CauldronMod Tests 
           path: Testing/test-results/*.xml
           reporter: dotnet-nunit
+          # @TODO: Once tests are stable, we can remove this so the expectation is success on tests?
           fail-on-error: false
+      - name: Generate Passed Badge
+        uses: tagdots/setup-badge-action@663d7a5382b8300caa4492de16e85aa7e4667ef0
+        if: ${{ !cancelled() }} && steps.parse-tests.outputs.passed > 0
+        with:
+          badge-name: tests-passed
+          label: passed
+          message: ${{ steps.parse-tests.outputs.passed }}
+          message-color: brightgreen
+          badge-style: flat
+      - name: Generate Failed Badge
+        uses: tagdots/setup-badge-action@663d7a5382b8300caa4492de16e85aa7e4667ef0
+        if: ${{ !cancelled() }} && steps.parse-tests.outputs.failed > 0
+        with:
+          badge-name: tests-failed
+          label: failed
+          message: ${{ steps.parse-tests.outputs.failed }}
+          message-color: red
+      - name: Generate Skipped Badge
+        uses: tagdots/setup-badge-action@663d7a5382b8300caa4492de16e85aa7e4667ef0
+        if: ${{ !cancelled() }} && steps.parse-tests.outputs.skipped > 0
+        with:
+          badge-name: tests-skipped
+          label: skipped
+          message: ${{ steps.parse-tests.outputs.skipped }}
+          message-color: blue
   deployment:
      runs-on: windows-2025-vs2026
      needs: build
