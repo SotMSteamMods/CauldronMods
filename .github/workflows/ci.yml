@@ -111,7 +111,7 @@ jobs:
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: cauldron-mods-release-artifact
           path: ${{ env.DEPLOY_PATH }}/Cauldron_${{ env.DEPLOY_VERSION }}.zip
+          archive: false
           if-no-files-found: error
         
