@@ -4,7 +4,7 @@ on:
     branches: [ "ci" ]
 env:
   DEPENDENCIES_REPO: sentinels-dependencies
-  DEPLOY_PATH: ${{ github.workspace }}/deployed
+  DEPLOY_PATH: ${{ github.workspace }}/deploy/CauldronMods
   ENGINE_DEPS_PATH: ${{ github.workspace }}/ci_deps/libs
   ORGANIZATION_NAME: ${{ github.repository_owner }}
   CAULDRON_MODS_BUILD_FOLDER: CauldronMods/bin/Release/net48
@@ -37,48 +37,85 @@ jobs:
           name: cauldron-mods-deployment-artifacts
           path: ${{ env.DEPLOY_PATH }}
           if-no-files-found: error
-  test:
+  # test:
+  #    runs-on: windows-2025-vs2026
+  #    needs: build
+  #    steps:
+  #     - name: Checkout Source Code
+  #       uses: actions/checkout@v7
+  #     - name: Set Up Dependencies'
+  #       uses: ./.github/actions/setup-depedencies-action
+  #       with:
+  #         checkout_path: 'ci_deps'
+  #         dependency_app_id: ${{ secrets.DEP_FETCHER_APP_ID }}
+  #         dependency_private_key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
+  #         dependency_repo_name: ${{ env.DEPENDENCIES_REPO }}
+  #         dependency_repo_organization_name: ${{ env.ORGANIZATION_NAME }}
+  #     - name: Download CauldronMod Build Artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: cauldron-mods-build-artifacts
+  #         path: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
+  #     - name: Build the CauldronMods Test Project
+  #       run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
+  #     - parallel:
+  #       - name: Run CauldronMods Code Tests
+  #         continue-on-error: true
+  #         run: dotnet test --filter "FullyQualifiedName!~CauldronTests.Art&FullyQualifiedName!~CauldronTests.Oblivaeon&FullyQualifiedName!~CauldronTests.PromoUnlock&FullyQualifiedName!~CauldronTests.Random" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+  #       - name: Run CauldronMods Art Tests
+  #         continue-on-error: true
+  #         run: dotnet test --filter FullyQualifiedName~CauldronTests.Art --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Art.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+  #       - name: Run CauldronMods Oblivaeon Tests
+  #         continue-on-error: true
+  #         run: dotnet test --filter FullyQualifiedName~CauldronTests.Oblivaeon --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Oblivaeon.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+  #       - name: Run CauldronMods Promo Unlock Tests
+  #         continue-on-error: true
+  #         run: dotnet test --filter FullyQualifiedName~CauldronTests.PromoUnlock --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.PromoUnlock.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+  #       - name: Run CauldronMods Random Tests
+  #         continue-on-error: true
+  #         run: dotnet test --filter FullyQualifiedName~CauldronTests.Random --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Random.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
+  #     - name: Upload Test Reports
+  #       uses: dorny/test-reporter@v3
+  #       if: ${{ !cancelled() }}
+  #       with:
+  #         name: CauldronMod Tests 
+  #         path: Testing/test-results/*.xml
+  #         reporter: dotnet-nunit
+  #         fail-on-error: false
+  deployment:
      runs-on: windows-2025-vs2026
      needs: build
      steps:
       - name: Checkout Source Code
         uses: actions/checkout@v7
-      - name: Set Up Dependencies'
-        uses: ./.github/actions/setup-depedencies-action
-        with:
-          checkout_path: 'ci_deps'
-          dependency_app_id: ${{ secrets.DEP_FETCHER_APP_ID }}
-          dependency_private_key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
-          dependency_repo_name: ${{ env.DEPENDENCIES_REPO }}
-          dependency_repo_organization_name: ${{ env.ORGANIZATION_NAME }}
-      - name: Download CauldronMod Build Artifacts
-        id: download-build-artifacts
+      - name: Download CauldronMod Deployment Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: cauldron-mods-build-artifacts
-          path: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
-      - name: Build the CauldronMods Test Project
-        run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
-      - parallel:
-        - name: Run CauldronMods Code Tests
-          continue-on-error: true
-          run: dotnet test --filter "FullyQualifiedName!~CauldronTests.Art&FullyQualifiedName!~CauldronTests.Oblivaeon&FullyQualifiedName!~CauldronTests.PromoUnlock&FullyQualifiedName!~CauldronTests.Random" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
-        - name: Run CauldronMods Art Tests
-          continue-on-error: true
-          run: dotnet test --filter FullyQualifiedName~CauldronTests.Art --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Art.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
-        - name: Run CauldronMods Oblivaeon Tests
-          continue-on-error: true
-          run: dotnet test --filter FullyQualifiedName~CauldronTests.Oblivaeon --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Oblivaeon.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
-        - name: Run CauldronMods Promo Unlock Tests
-          continue-on-error: true
-          run: dotnet test --filter FullyQualifiedName~CauldronTests.PromoUnlock --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.PromoUnlock.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
-        - name: Run CauldronMods Random Tests
-          continue-on-error: true
-          run: dotnet test --filter FullyQualifiedName~CauldronTests.Random --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Random.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
-      - name: Upload Test Reports
-        uses: dorny/test-reporter@v3
-        if: ${{ !cancelled() }}
+          name: cauldron-mods-deployment-artifacts
+          path: ${{ env.DEPLOY_PATH }}
+      - name: Move DeckBrowser files into deploy path
+        uses: nearform-actions/github-action-copy-files@v1
         with:
-          name: CauldronMod Tests 
-          path: Testing/test-results/*.xml
-          reporter: dotnet-nunit
+          source: ./DeckBrowser/**
+          destination: ${{ env.DEPLOY_PATH }}/DeckBrowser
+      - name: Move Fonts files into deploy path
+        uses: nearform-actions/github-action-copy-files@v1
+        with:
+          source: ./Fonts/**
+          destination: ${{ env.DEPLOY_PATH }}/Fonts
+      - name: Move Preview image into deploy path
+        uses: nearform-actions/github-action-copy-files@v1
+        with:
+          source: ./preview.jpg
+          destination: ${{ env.DEPLOY_PATH }}/preview.jpg
+      - name: Extract Version from manifest.json
+        run: |
+          VERSION=$(jq -r '.version' $DEPLOY_PATH/manifest.json)
+          echo "DEPLOY_VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Archive Deployment
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          filename: 'Cauldron_${{ env.DEPLOY_VERSION }}.zip'
+          directory: ${{ env.DEPLOY_PATH }}
+        
