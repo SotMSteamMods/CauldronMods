@@ -97,8 +97,8 @@ jobs:
           message: ${{ steps.parse-tests.outputs.passed }}
           message-color: brightgreen
           badge-style: flat
-          gitconfig-name: github-actions[bot]
-          gitconfig-email: 41898282+github-actions[bot]@users.noreply.github.com
+          gitconfig-name: github-actions-bot
+          gitconfig-email: 41898282+github-actions-bot@users.noreply.github.com
       - name: Generate Failed Badge
         uses: tagdots/setup-badge-action@663d7a5382b8300caa4492de16e85aa7e4667ef0
         if: ${{ !cancelled()  && steps.parse-tests.outputs.failed > 0 }}
@@ -107,8 +107,8 @@ jobs:
           label: failed
           message: ${{ steps.parse-tests.outputs.failed }}
           message-color: red
-          gitconfig-name: github-actions[bot]
-          gitconfig-email: 41898282+github-actions[bot]@users.noreply.github.com
+          gitconfig-name: github-actions-bot
+          gitconfig-email: 41898282+github-actions-bot@users.noreply.github.com
       - name: Generate Skipped Badge
         uses: tagdots/setup-badge-action@663d7a5382b8300caa4492de16e85aa7e4667ef0
         if: ${{ !cancelled() && steps.parse-tests.outputs.skipped > 0 }}
@@ -117,8 +117,8 @@ jobs:
           label: skipped
           message: ${{ steps.parse-tests.outputs.skipped }}
           message-color: blue
-          gitconfig-name: github-actions[bot]
-          gitconfig-email: 41898282+github-actions[bot]@users.noreply.github.com
+          gitconfig-name: github-actions-bot
+          gitconfig-email: 41898282+github-actions-bot@users.noreply.github.com
   deployment:
      runs-on: windows-2025-vs2026
      needs: build
