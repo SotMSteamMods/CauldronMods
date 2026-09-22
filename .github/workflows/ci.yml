@@ -95,7 +95,7 @@ jobs:
           badge-name: tests-passed
           label: passed
           message: ${{ steps.parse-tests.outputs.passed }}
-          message-color: brightgreen
+          message-color: 1eb300
           badge-style: flat
           gitconfig-name: github-actions-bot
           gitconfig-email: 41898282+github-actions-bot@users.noreply.github.com
@@ -106,7 +106,7 @@ jobs:
           badge-name: tests-failed
           label: failed
           message: ${{ steps.parse-tests.outputs.failed }}
-          message-color: red
+          message-color: ff002b
           gitconfig-name: github-actions-bot
           gitconfig-email: 41898282+github-actions-bot@users.noreply.github.com
       - name: Generate Skipped Badge
@@ -116,7 +116,7 @@ jobs:
           badge-name: tests-skipped
           label: skipped
           message: ${{ steps.parse-tests.outputs.skipped }}
-          message-color: blue
+          message-color: 004de6
           gitconfig-name: github-actions-bot
           gitconfig-email: 41898282+github-actions-bot@users.noreply.github.com
   deployment:
