@@ -64,20 +64,11 @@ jobs:
         run: Get-ChildItem -Path ${{ env.TESTING_BUILD_FOLDER }} -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName
       - name: DEBUG - List Tests to Run
         run: |
-          dotnet test --configuration Release --no-build --list-tests \
-          > ${{ runner.temp }}/dotnet-stdout.txt \
-          2> ${{ runner.temp }}/dotnet-stderr.txt
-          
-          EXIT_CODE=$?
-          
-          echo "EXIT CODE: $EXIT_CODE"
-          echo "===== STDOUT ====="
-          wc -c ${{ runner.temp }}/dotnet-stdout.txt
-          cat ${{ runner.temp }}/dotnet-stdout.txt
-          
-          echo "===== STDERR ====="
-          wc -c ${{ runner.temp }}/dotnet-stderr.txt
-          cat ${{ runner.temp }}/dotnet-stderr.txt
+          Start-Transcript -Path "${{ runner.temp }}\dotnet-test-transcript.txt"
+          dotnet test --configuration Release --no-build --list-tests
+          Stop-Transcript
+          echo "===== TRANSCRIPT ====="
+          cat ${{ runner.temp }}/dotnet-test-transcript.txt
       - parallel:
         - name: Run CauldronMods Code Tests
           continue-on-error: true
