@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v7
       - name: Set Up Dependencies'
-        uses: ./.github/actions/setup-depedencies-action
+        uses: ./.github/actions/setup-dependencies-action
         with:
           checkout_path: 'ci_deps'
           dependency_app_id: ${{ secrets.DEP_FETCHER_APP_ID }}
@@ -60,15 +60,6 @@ jobs:
         with:
           name: testing-build-artifacts
           path: ${{ env.TESTING_BUILD_FOLDER }}
-      - name: DEBUG - Show Testing Build Artifacts
-        run: Get-ChildItem -Path ${{ env.TESTING_BUILD_FOLDER }} -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName
-      - name: DEBUG - List Tests to Run
-        run: |
-          Start-Transcript -Path "${{ runner.temp }}\dotnet-test-transcript.txt"
-          dotnet test --configuration Release --no-build --list-tests --logger:"console;verbosity=normal;Synchronous=true"
-          Stop-Transcript
-          echo "===== TRANSCRIPT ====="
-          cat ${{ runner.temp }}/dotnet-test-transcript.txt
       - parallel:
         - name: Run CauldronMods Code Tests
           continue-on-error: true
