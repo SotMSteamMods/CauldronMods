@@ -65,7 +65,10 @@ jobs:
       - name: DEBUG - List Tests to Run
         run: |
           Start-Transcript -Path "${{ runner.temp }}\dotnet-test-transcript.txt"
+          dotnet --version
+          dotnet --info
           dotnet test --configuration Release --no-build --list-tests
+          echo "Exit code: $LastExitCode"
           Stop-Transcript
           echo "===== TRANSCRIPT ====="
           cat ${{ runner.temp }}/dotnet-test-transcript.txt
