@@ -8,6 +8,7 @@ env:
   ENGINE_DEPS_PATH: ${{ github.workspace }}/ci_deps/libs
   ORGANIZATION_NAME: ${{ github.repository_owner }}
   CAULDRON_MODS_BUILD_FOLDER: CauldronMods/bin/Release/net48
+  TESTING_BUILD_FOLDER: Testing/bin/Release/net48
 jobs:
   build:
      runs-on: windows-2025-vs2026
@@ -26,11 +27,18 @@ jobs:
         run: mkdir -p ${{ env.DEPLOY_PATH }}
       - name: Build the CauldronMods project
         run:  dotnet build CauldronMods/CauldronMods.csproj --configuration Release
-      - name: Upload Build Artifacts
+      - name: Build the CauldronMods Test Project
+        run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
+      - name: Upload CauldronMods Build Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: cauldron-mods-build-artifacts
           path: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
+      - name: Upload Testing Build Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: testing-build-artifacts
+          path: ${{ env.TESTING_BUILD_FOLDER }}
       - name: Upload Deployment Artifacts
         uses: actions/upload-artifact@v7
         with:
@@ -47,21 +55,16 @@ jobs:
         uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - name: Set Up Dependencies'
-        uses: ./.github/actions/setup-depedencies-action
-        with:
-          checkout_path: 'ci_deps'
-          dependency_app_id: ${{ secrets.DEP_FETCHER_APP_ID }}
-          dependency_private_key: ${{ secrets.DEP_FETCHER_APP_PRIVATE_KEY }}
-          dependency_repo_name: ${{ env.DEPENDENCIES_REPO }}
-          dependency_repo_organization_name: ${{ env.ORGANIZATION_NAME }}
       - name: Download CauldronMod Build Artifacts
         uses: actions/download-artifact@v4
         with:
           name: cauldron-mods-build-artifacts
           path: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
-      - name: Build the CauldronMods Test Project
-        run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
+      - name: Download Testing Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: testing-build-artifacts
+          path: ${{ env.TESTING_BUILD_FOLDER }}
       - parallel:
         - name: Run CauldronMods Code Tests
           continue-on-error: true
