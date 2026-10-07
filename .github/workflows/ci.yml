@@ -62,36 +62,38 @@ jobs:
           path: ${{ env.TESTING_BUILD_FOLDER }}
       - name: DEBUG - Show Testing Build Artifacts
         run: Get-ChildItem -Path ${{ env.TESTING_BUILD_FOLDER }} -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName
+      - name: DEBUG - List Tests to Run
+        run: dotnet test --list-tests --no-build --configuration Release
       - parallel:
         - name: Run CauldronMods Code Tests
           continue-on-error: true
           run: |
             Set-PSDebug -Trace 1
-            dotnet test --filter "FullyQualifiedName!~CauldronTests.Art&FullyQualifiedName!~CauldronTests.Oblivaeon&FullyQualifiedName!~CauldronTests.PromoUnlock&FullyQualifiedName!~CauldronTests.Random" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.TestResults.xml" --blame-hang-timeout 20000
+            dotnet test --filter "FullyQualifiedName!~CauldronTests.Art&FullyQualifiedName!~CauldronTests.Oblivaeon&FullyQualifiedName!~CauldronTests.PromoUnlock&FullyQualifiedName!~CauldronTests.Random" --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
             Set-PSDebug -Trace 0
         - name: Run CauldronMods Art Tests
           continue-on-error: true
           run: |
             Set-PSDebug -Trace 1
-            dotnet test --filter FullyQualifiedName~CauldronTests.Art --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Art.TestResults.xml" --blame-hang-timeout 20000
+            dotnet test --filter FullyQualifiedName~CauldronTests.Art --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Art.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
             Set-PSDebug -Trace 0
         - name: Run CauldronMods Oblivaeon Tests
           continue-on-error: true
           run: |
             Set-PSDebug -Trace 1
-            dotnet test --filter FullyQualifiedName~CauldronTests.Oblivaeon --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Oblivaeon.TestResults.xml" --blame-hang-timeout 20000
+            dotnet test --filter FullyQualifiedName~CauldronTests.Oblivaeon --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Oblivaeon.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
             Set-PSDebug -Trace 0
         - name: Run CauldronMods Promo Unlock Tests
           continue-on-error: true
           run: |
             Set-PSDebug -Trace 1
-            dotnet test --filter FullyQualifiedName~CauldronTests.PromoUnlock --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.PromoUnlock.TestResults.xml" --blame-hang-timeout 20000
+            dotnet test --filter FullyQualifiedName~CauldronTests.PromoUnlock --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.PromoUnlock.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
             Set-PSDebug -Trace 0
         - name: Run CauldronMods Random Tests
           continue-on-error: true
           run: |
             Set-PSDebug -Trace 1
-            dotnet test --filter FullyQualifiedName~CauldronTests.Random --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Random.TestResults.xml" --blame-hang-timeout 20000
+            dotnet test --filter FullyQualifiedName~CauldronTests.Random --no-build --configuration Release --logger:"console;verbosity=normal;Synchronous=true" --logger "nunit;LogFilePath=test-results/CauldronTests.Random.TestResults.xml" --blame-hang-timeout 20000 -- NUnit.ConsoleOut=0
             Set-PSDebug -Trace 0
       - name: Upload Test Reports
         id: parse-tests
