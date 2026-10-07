@@ -27,7 +27,7 @@ jobs:
         run: mkdir -p ${{ env.DEPLOY_PATH }}
       - name: Build the CauldronMods project
         run:  dotnet build CauldronMods/CauldronMods.csproj --configuration Release
-      - name: Build the CauldronMods Test Project
+      - name: Build the Testing Project
         run: dotnet build Testing/Testing.csproj --configuration Release --no-dependencies
       - name: Upload CauldronMods Build Artifacts
         uses: actions/upload-artifact@v7
@@ -55,16 +55,13 @@ jobs:
         uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - name: Download CauldronMod Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: cauldron-mods-build-artifacts
-          path: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
       - name: Download Testing Build Artifacts
         uses: actions/download-artifact@v4
         with:
           name: testing-build-artifacts
           path: ${{ env.TESTING_BUILD_FOLDER }}
+      - name: DEBUG - Show Testing Build Artifacts
+        run: Get-ChildItem -Path ${{ env.TESTING_BUILD_FOLDER }} -Recurse -Force -ErrorAction SilentlyContinue | Select-Object FullName
       - parallel:
         - name: Run CauldronMods Code Tests
           continue-on-error: true
