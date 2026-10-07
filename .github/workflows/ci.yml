@@ -65,12 +65,10 @@ jobs:
       - name: DEBUG - List Tests to Run
         run: |
           Start-Transcript -Path "${{ runner.temp }}\dotnet-test-transcript.txt"
-          dotnet test --configuration Release --no-build --list-tests --diag "${{ runner.temp }}\dotnet-test-diagnostic.txt"
+          dotnet test --configuration Release --no-build --list-tests --logger:"console;verbosity=normal;Synchronous=true"
           Stop-Transcript
           echo "===== TRANSCRIPT ====="
           cat ${{ runner.temp }}/dotnet-test-transcript.txt
-          echo "===== DIAGNOSTIC ====="
-          cat ${{ runner.temp }}/dotnet-test-diagnostic.txt
       - parallel:
         - name: Run CauldronMods Code Tests
           continue-on-error: true
