@@ -95,7 +95,7 @@ jobs:
       - parallel:
         - name: Generate Passed Badge
           uses: tagdots/setup-badge-action@663d7a5382b8300caa4492de16e85aa7e4667ef0
-          if: ${{ !cancelled() && steps.parse-tests.outputs.passed > 0 }}
+          if: ${{ github.event_name == 'push' && !cancelled() && steps.parse-tests.outputs.passed > 0 }}
           with:
             badge-name: tests-passed
             label: passed
@@ -106,7 +106,7 @@ jobs:
             gitconfig-email: 41898282+github-actions-bot@users.noreply.github.com
         - name: Generate Failed Badge
           uses: tagdots/setup-badge-action@663d7a5382b8300caa4492de16e85aa7e4667ef0
-          if: ${{ !cancelled()  && steps.parse-tests.outputs.failed > 0 }}
+          if: ${{ github.event_name == 'push' && !cancelled()  && steps.parse-tests.outputs.failed > 0 }}
           with:
             badge-name: tests-failed
             label: failed
@@ -116,7 +116,7 @@ jobs:
             gitconfig-email: 41898282+github-actions-bot@users.noreply.github.com
         - name: Generate Skipped Badge
           uses: tagdots/setup-badge-action@663d7a5382b8300caa4492de16e85aa7e4667ef0
-          if: ${{ !cancelled() && steps.parse-tests.outputs.skipped > 0 }}
+          if: ${{ github.event_name == 'push' && !cancelled() && steps.parse-tests.outputs.skipped > 0 }}
           with:
             badge-name: tests-skipped
             label: skipped
