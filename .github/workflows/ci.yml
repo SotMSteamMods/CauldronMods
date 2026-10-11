@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [ "main" ]
   push:
-    branches: [ "main" ]
+    branches: [ "main", "ci-test" ]
   release:
     types: [ released ]
 env:
@@ -34,7 +34,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: cauldron-mods-build-artifacts
-          path: ${{ env.CAULDRON_MODS_BUILD_FOLDER }}
+          path: |
+            ${{ env.CAULDRON_MODS_BUILD_FOLDER }}/CauldronMods.dll
+          if-no-files-found: error
       - name: Upload Deployment Artifacts
         uses: actions/upload-artifact@v7
         with:
@@ -156,4 +158,10 @@ jobs:
           path: ${{ env.DEPLOY_PATH }}/Cauldron_${{ env.DEPLOY_VERSION }}.zip
           archive: false
           if-no-files-found: error
+      - name: Upload as Release Asset
+        if: github.event_name == 'release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run:
+          gh release upload <release_tag> <a_file>
         
