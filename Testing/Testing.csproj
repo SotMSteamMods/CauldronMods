@@ -1,23 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-	<LangVersion>12.0</LangVersion>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-	<Deterministic>true</Deterministic>
-	<DebugType>pdbonly</DebugType>
-	<Authors>CauldronMods Dev. Team</Authors>
-	<Company>CauldronMods Dev. Team</Company>
-	<Product>CauldronMods</Product>
-	<Description>Automated tests for the Cauldron Fan Expansion for the Sentinels of the Multiverse Digital Card Game.</Description>
-	<Copyright>All rights reserved, 2020-2021</Copyright>
-	<PackageProjectUrl>https://github.com/SotMSteamMods/CauldronMods</PackageProjectUrl>
+    <Description>Automated tests for the Cauldron Fan Expansion for the Sentinels of the Multiverse Digital Card Game.</Description>
+    <RequiresEngineDeps>true</RequiresEngineDeps>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="8.0.6"/>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.3.0" />
+    <PackageReference Include="NunitXml.TestLogger" Version="8.0.0" />
     <PackageReference Include="Troschuetz.Random" Version="5.0.1" />
   </ItemGroup>
 
@@ -25,17 +17,17 @@
     <ProjectReference Include="..\CauldronMods\CauldronMods.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="EngineCommon">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\EngineCommon.dll</HintPath>
-    </Reference>
-    <Reference Include="SentinelsEngine">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Sentinels of the Multiverse\Sentinels_Data\Managed\SentinelsEngine.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  <PropertyGroup>
+    <ProjectPathPath>$(ProjectDir)path.cs</ProjectPathPath>
+  </PropertyGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="echo namespace CauldronTests { static public class ProjectPath { public static readonly string Path = @&quot;$(ProjectDir)&quot;;} } &gt; $(ProjectDir)path.cs" />
+    <Exec Command="echo namespace CauldronTests { static public class ProjectPath { public static readonly string Path = @&quot;$(ProjectDir)&quot;;} } &gt; $(ProjectPathPath)" />
   </Target>
 
+  <Target Name="AddProjectPathClass" AfterTargets="PreBuildEvent" BeforeTargets="BeforeCompile;CoreCompile">
+    <ItemGroup>
+      <Compile Include="$(ProjectPathPath)" />
+    </ItemGroup>
+  </Target>
 </Project>
