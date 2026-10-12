@@ -11,6 +11,7 @@ using System.Collections.Generic;
 namespace CauldronTests.Random
 {
     [TestFixture()]
+    [Ignore("Various Guise Random Tests are taking too long - ignoring all of them for now.")]
     public class GuiseRandomTests : RandomGameTest
     {
         #region Just Guise

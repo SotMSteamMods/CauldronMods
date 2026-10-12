@@ -1,4 +1,9 @@
 # CauldronMods
+![ci-status](https://img.shields.io/github/actions/workflow/status/SotMSteamMods/CauldronMods/ci.yml)
+![tests-passed](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SotMSteamMods/CauldronMods/refs/heads/badges/badges/tests-passed.json)
+![tests-failed](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SotMSteamMods/CauldronMods/refs/heads/badges/badges/tests-failed.json)
+![tests-skipped](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SotMSteamMods/CauldronMods/refs/heads/badges/badges/tests-skipped.json)
+
 
 **What is the Cauldron?**
 
