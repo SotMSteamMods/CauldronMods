@@ -205,7 +205,7 @@ namespace CauldronTests
             StartGame();
 
             // move all ongoings to the trash
-            MoveCards(drift, c => c.Location == drift.TurnTaker.Deck && c.IsOngoing, drift.TurnTaker.Trash);
+            MoveCards(drift, c => c.Location == drift.TurnTaker.Deck && IsOngoing(c), drift.TurnTaker.Trash);
 
             //Discard cards from the top of your deck until you discard an ongoing. Play or draw it.
 

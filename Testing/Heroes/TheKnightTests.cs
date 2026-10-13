@@ -142,7 +142,7 @@ namespace CauldronTests
             AssertIncapacitated(knight);
 
             //set up wraith
-            var card = wraith.GetCardsAtLocation(wraith.HeroTurnTaker.Deck).First(c => c.IsOngoing || IsEquipment(c));
+            var card = wraith.GetCardsAtLocation(wraith.HeroTurnTaker.Deck).First(c => IsOngoing(c) || IsEquipment(c));
             PutInHand(wraith, card);
             QuickHandStorage(wraith);
 
@@ -480,8 +480,8 @@ namespace CauldronTests
             PutInHand(knight, "BattlefieldScavenger");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
-            PutInTrash(wraith.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || IsOngoing(c)).Take(2));
+            PutInTrash(wraith.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || IsOngoing(c)).Take(2));
             GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
@@ -508,8 +508,8 @@ namespace CauldronTests
             PutInHand(knight, "BattlefieldScavenger");
 
             PrintSeparator("Put some random cards in the trash");
-            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
-            PutInTrash(wraith.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || c.IsOngoing).Take(2));
+            PutInTrash(knight.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || IsOngoing(c)).Take(2));
+            PutInTrash(wraith.HeroTurnTaker.Deck.Cards.Where(c => IsEquipment(c) || IsOngoing(c)).Take(2));
             GoToPlayCardPhase(knight);
 
             PrintSeparator("Test");
@@ -518,8 +518,8 @@ namespace CauldronTests
             DecisionAutoDecideIfAble = true;
             DecisionSelectFunctions = new int?[] { 1, 0, 1 };
             var cards = new[] {
-                knight.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || c.IsOngoing).First(),
-                wraith.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || c.IsOngoing).First(),
+                knight.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || IsOngoing(c)).First(),
+                wraith.HeroTurnTaker.Trash.Cards.Where(c => IsEquipment(c) || IsOngoing(c)).First(),
             };
             DecisionSelectCards = cards;
             PlayCardFromHand(knight, "BattlefieldScavenger");

@@ -402,6 +402,73 @@ namespace CauldronTests
             return this.GameController;
         }
 
+        /// <summary>
+        /// Determines whether the provided <paramref name="card"/> is considered to be a Hero Target.
+        /// 
+        /// If <paramref name="cardSource"/> is not provided, the card source will be
+        /// derived from the provided <paramref name="card"/>.
+        /// </summary>
+        /// <param name="card">The Card that may or may not be considered a Hero Target.</param>
+        /// <param name="cardSource">The CardSource of the CardController that is calling this method.</param>
+        /// <returns>Whether the provided <paramref name="card"/> is considered to be a Hero Target</returns>
+        /// <remarks>
+        /// The <see cref="CardController.IsHeroTarget(Card)"/> function is protected so cannot be used
+        /// by the external testing class. This copies its implementation into a function that can be used.
+        /// </remarks>
+        protected bool IsHeroTarget(Card card, CardSource cardSource = null)
+        {
+            if (card is null) return false;
+
+            if (cardSource is null)
+            {
+                cardSource = FindCardController(card).GetCardSource();
+            }
+
+            return GameController.AskCardControllersIfIsHeroTarget(card, cardSource);
+        }
+
+        /// <summary>
+        /// Determines whether the provided <paramref name="card"/> is considered to have the ongoing keyword.
+        /// </summary>
+        /// <param name="card">The Card that may or may not have the ongoing keyword.</param>
+        /// <param name="evenIfUnderCard">If true, evaluate the Card's keywords even if it is under another Card.</param>
+        /// <returns>Whether the provided <paramref name="card"/> is considered to have the ongoing keyword </returns>
+        /// <remarks>
+        /// The <see cref="CardController.IsOngoing(Card, bool)"/> function is protected so cannot be used
+        /// by the external testing class. This copies its implementation into a function that can be used.
+        /// </remarks>
+        protected bool IsOngoing(Card card, bool evenIfUnderCard = false)
+        {
+            if (card is null) return false;
+
+            return GameController.DoesCardContainKeyword(card, "ongoing", evenIfUnderCard);
+        }
+
+        /// <summary>
+        /// Determines whether the provided <paramref name="card"/> is considered to be a Villain Target.
+        /// 
+        /// If <paramref name="cardSource"/> is not provided, the card source will be
+        /// derived from the provided <paramref name="card"/>.
+        /// </summary>
+        /// <param name="card">The Card that may or may not be considered a Villain Target.</param>
+        /// <param name="cardSource">The CardSource of the CardController that is calling this method.</param>
+        /// <returns>Whether the provided <paramref name="card"/> is considered to be a Villain Target</returns>
+        /// <remarks>
+        /// The <see cref="CardController.IsVillainTarget(Card)"/> function is protected so cannot be used
+        /// by the external testing class. This copies its implementation into a function that can be used.
+        /// </remarks>
+        protected bool IsVillainTarget(Card card, CardSource cardSource = null)
+        {
+            if (card is null) return false;
+
+            if (cardSource is null)
+            {
+                cardSource = FindCardController(card).GetCardSource();
+            }
+
+            return GameController.AskCardControllersIfIsVillainTarget(card, cardSource);
+        }
+
         //OblivAeon
 
         protected void AssertCardsInBattleZone(BattleZone bz, params Card[] cards)

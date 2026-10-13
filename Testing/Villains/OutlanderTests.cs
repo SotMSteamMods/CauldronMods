@@ -159,7 +159,7 @@ namespace CauldronTests
             SetupGameController(new string[] { "Cauldron.Outlander", "VoidGuardDrMedico", "Luminary", "TheScholar", "Megalopolis" }, challenge: true);
             StartGame();
 
-            IEnumerable<Card> ongoings = FindCardsWhere(c => outlander.TurnTaker.Deck.HasCard(c) && c.IsOngoing).Take(4);
+            IEnumerable<Card> ongoings = FindCardsWhere(c => outlander.TurnTaker.Deck.HasCard(c) && IsOngoing(c)).Take(4);
             PlayCards(ongoings);
 
             SetHitPoints(luminary.CharacterCard, 10);
