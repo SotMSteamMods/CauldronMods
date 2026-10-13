@@ -958,18 +958,27 @@ namespace CauldronTests
         [Test()]
         public void TestTestSubjectHalberd()
         {
-            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            SetupGameController("Apostate",  "Cauldron.TheStranger", "Cauldron.Quicksilver", "Ra", "RookCity");
             StartGame();
 
             DealDamage(apostate, quicksilver, 15, DamageType.Melee);
+
+            GoToPlayCardPhase(stranger);
+
+            DecisionNextToCard = quicksilver.CharacterCard;
+            PlayCard("MarkOfQuickening");
+
             GoToPlayCardPhase(quicksilver);
+            AssertPhaseActionCount(2);
 
             QuickHPStorage(quicksilver);
             PlayCard("TestSubjectHalberd");
+
             //{Quicksilver} regains 6HP.
             QuickHPCheck(6);
+
             //Immediately end your turn.
-            AssertPhaseActionCount(-1);
+            AssertCannotPerformPhaseAction();
             EnterNextTurnPhase();
             AssertCurrentTurnPhase(quicksilver, Phase.End);
         }
