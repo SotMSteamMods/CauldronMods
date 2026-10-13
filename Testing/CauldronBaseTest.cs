@@ -68,6 +68,18 @@ namespace CauldronTests
         public static string[] CauldronVillains = { "Cauldron.Anathema", "Cauldron.Celadroch", "Cauldron.Dendron", "Cauldron.Dynamo", "Cauldron.Gray", "Cauldron.Menagerie", "Cauldron.Mythos", "Cauldron.Oriphel", "Cauldron.Outlander", "Cauldron.PhaseVillain", "Cauldron.ScreaMachine", "Cauldron.SwarmEater", "Cauldron.TheInfernalChoir", "Cauldron.TheMistressOfFate", "Cauldron.Tiamat", "Cauldron.Vector" };
         public static string[] CauldronEnvironments = { "Cauldron.BlackwoodForest", "Cauldron.CatchwaterHarbor", "Cauldron.DungeonsOfTerror", "Cauldron.FSCContinuanceWanderer", "Cauldron.HalberdExperimentalResearchCenter", "Cauldron.NightloreCitadel", "Cauldron.Northspar", "Cauldron.OblaskCrater", "Cauldron.StSimeonsCatacombs", "Cauldron.SuperstormAkela", "Cauldron.TheChasmOfAThousandNights", "Cauldron.TheCybersphere", "Cauldron.TheWanderingIsle", "Cauldron.VaultFive", "Cauldron.WindmillCity" };
 
+
+         /**
+          * In ImmediatelyEndTurnAction, the following line exists:
+          * 
+          *      GameController.ActiveTurnPhase.PhaseActionCountUsed = 100000;
+          *  
+          *  This constant captures this magic number so any tests can assert
+          *  off it  appropriately, and if the value ever changes, we only need
+          *  to update it in one place.
+          */
+        protected const int ImmediatelyEndTurnPhaseCountOffset = 100000;
+
         protected void AddImmuneToDamageTrigger(TurnTakerController ttc, bool heroesImmune, bool villainsImmune, CardSource cardSource = null )
         {
             if(cardSource is null)

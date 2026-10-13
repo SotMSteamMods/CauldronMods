@@ -969,7 +969,22 @@ namespace CauldronTests
             //{Quicksilver} regains 6HP.
             QuickHPCheck(6);
             //Immediately end your turn.
-            AssertPhaseActionCount(-1);
+
+            /**
+             * In ImmediatelyEndTurnAction, the following line exists:
+             * 
+             *      GameController.ActiveTurnPhase.PhaseActionCountUsed = 100000;
+             *      
+             * This is captured through a constant in CauldronBaseTest
+             *      protected const int ImmediatelyEndTurnPhaseCountOffset = 100000;
+             * 
+             * It is then incremented an additional time to log the phase action used
+             * when playing "TestSubjectHalberd".
+             *      
+             * As such, we need to assert that the PhaseActionCount is -100001
+             * rather than -1
+             */
+            AssertPhaseActionCount(-1 - ImmediatelyEndTurnPhaseCountOffset);
             EnterNextTurnPhase();
             AssertCurrentTurnPhase(quicksilver, Phase.End);
         }
