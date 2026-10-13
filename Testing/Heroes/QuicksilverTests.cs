@@ -958,33 +958,27 @@ namespace CauldronTests
         [Test()]
         public void TestTestSubjectHalberd()
         {
-            SetupGameController("Apostate", "Cauldron.Quicksilver", "Legacy", "Ra", "RookCity");
+            SetupGameController("Apostate",  "Cauldron.TheStranger", "Cauldron.Quicksilver", "Ra", "RookCity");
             StartGame();
 
             DealDamage(apostate, quicksilver, 15, DamageType.Melee);
+
+            GoToPlayCardPhase(stranger);
+
+            DecisionNextToCard = quicksilver.CharacterCard;
+            PlayCard("MarkOfQuickening");
+
             GoToPlayCardPhase(quicksilver);
+            AssertPhaseActionCount(2);
 
             QuickHPStorage(quicksilver);
             PlayCard("TestSubjectHalberd");
+
             //{Quicksilver} regains 6HP.
             QuickHPCheck(6);
-            //Immediately end your turn.
 
-            /**
-             * In ImmediatelyEndTurnAction, the following line exists:
-             * 
-             *      GameController.ActiveTurnPhase.PhaseActionCountUsed = 100000;
-             *      
-             * This is captured through a constant in CauldronBaseTest
-             *      protected const int ImmediatelyEndTurnPhaseCountOffset = 100000;
-             * 
-             * It is then incremented an additional time to log the phase action used
-             * when playing "TestSubjectHalberd".
-             *      
-             * As such, we need to assert that the PhaseActionCount is -100001
-             * rather than -1
-             */
-            AssertPhaseActionCount(-1 - ImmediatelyEndTurnPhaseCountOffset);
+            //Immediately end your turn.
+            AssertCannotPerformPhaseAction();
             EnterNextTurnPhase();
             AssertCurrentTurnPhase(quicksilver, Phase.End);
         }
