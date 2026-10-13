@@ -468,7 +468,7 @@ namespace CauldronTests
             AssertIncapacitated(necro);
             GoToUseIncapacitatedAbilityPhase(necro);
 
-            IEnumerable<Card> toTrash = FindCardsWhere((Card c) => legacy.TurnTaker.Deck.HasCard(c) && (c.IsOngoing || IsEquipment(c))).Take(5);
+            IEnumerable<Card> toTrash = FindCardsWhere((Card c) => legacy.TurnTaker.Deck.HasCard(c) && (IsOngoing(c) || IsEquipment(c))).Take(5);
             PutInTrash(toTrash);
             //One hero may put a random card from their trash into play.
             DecisionSelectTurnTaker = legacy.TurnTaker;
@@ -755,7 +755,7 @@ namespace CauldronTests
             AssertIncapacitated(necro);
 
             DiscardAllCards(haka);
-            IEnumerable<Card> toHand = FindCardsWhere((Card c) => haka.TurnTaker.Deck.HasCard(c) && (c.IsOngoing || IsEquipment(c)) && !c.IsLimited).Take(4);
+            IEnumerable<Card> toHand = FindCardsWhere((Card c) => haka.TurnTaker.Deck.HasCard(c) && (IsOngoing(c) || IsEquipment(c)) && !c.IsLimited).Take(4);
             PutInHand(toHand);
 
             //One player may play 2 random cards from their hand now.

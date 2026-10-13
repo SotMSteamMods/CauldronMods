@@ -499,7 +499,7 @@ namespace CauldronTests
             {
                 QuickHPStorage(ra);
 
-                if(source.IsVillainTarget)
+                if(IsVillainTarget(source))
                 {
                     expectedDamage = -3;
                 }

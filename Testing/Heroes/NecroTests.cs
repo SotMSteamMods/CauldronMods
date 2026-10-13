@@ -1009,7 +1009,7 @@ namespace CauldronTests
             GoToEndOfTurn(necro);
 
             //there should be no more ongoings in play
-            AssertNumberOfCardsInPlay((Card c) => c.IsOngoing && c.IsHero, 0);
+            AssertNumberOfCardsInPlay((Card c) => IsOngoing(c) && c.IsHero, 0);
             AssertInTrash("FleshOfTheSunGod");
         }
 
