@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -22,11 +22,11 @@ namespace Cauldron.Drift
 
             //Shift {DriftLL}, {DriftL}, {DriftR}, {DriftRR}. 
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Shift {ShiftLL}", SelectionType.RemoveTokens, () => base.ShiftLL()),
-                    new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.RemoveTokens, () => base.ShiftL()),
-                    new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.AddTokens, () => base.ShiftR()),
-                    new Function(base.HeroTurnTakerController, "Shift {ShiftRR}", SelectionType.AddTokens, () => base.ShiftRR())
-            }, associatedCards: GetShiftTrack().ToEnumerable());
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftLL}", SelectionType.RemoveTokens, () => this.ShiftLL()),
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.RemoveTokens, () => this.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.AddTokens, () => this.ShiftR()),
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftRR}", SelectionType.AddTokens, () => this.ShiftRR())
+            }, associatedCards: this.GetShiftTrack().ToEnumerable());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

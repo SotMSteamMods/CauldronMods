@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
@@ -47,7 +47,7 @@ namespace Cauldron.Drift
 
         public bool HasTrackAbilityBeenActivated()
         {
-            IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack && entry.TurnIndex == base.Game.TurnIndex);
+            IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == this.ShiftTrackIdentifier() && entry.TurnIndex == base.Game.TurnIndex);
             return trackEntries.Any();
         }
 
@@ -128,7 +128,7 @@ namespace Cauldron.Drift
 
             //Once per turn you may do the following in order:
             base.SetCardPropertyToTrueIfRealAction(OncePerTurn);
-            IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == ShiftTrack);
+            IEnumerable<CardPropertiesJournalEntry> trackEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Key == OncePerTurn && entry.Card.SharedIdentifier == this.ShiftTrackIdentifier());
 
             int inactivePosition = this.InactiveCharacterPosition();
             base.SetCardProperty(DriftPosition + inactivePosition, false);
@@ -139,14 +139,14 @@ namespace Cauldron.Drift
             //2. Place the shift token on your inactive character's shift track space.
             if (this.CurrentShiftPosition() < inactivePosition)
             {
-                AddTokensToPoolAction addTokensAction = new AddTokensToPoolAction(GetCardSource(), GetShiftPool(), inactivePosition - CurrentShiftPosition());
+                AddTokensToPoolAction addTokensAction = new AddTokensToPoolAction(GameController, this.GetShiftPool(), inactivePosition - this.CurrentShiftPosition());
                 addTokensAction.AllowTriggersToRespond = false;
                 addTokensAction.CanBeCancelled = false;
                 coroutine = DoAction(addTokensAction);
             }
             else if (this.CurrentShiftPosition() > inactivePosition)
             {
-                RemoveTokensFromPoolAction removeTokensAction = new RemoveTokensFromPoolAction(GetCardSource(), GetShiftPool(), CurrentShiftPosition() - inactivePosition);
+                RemoveTokensFromPoolAction removeTokensAction = new RemoveTokensFromPoolAction(GameController, this.GetShiftPool(), this.CurrentShiftPosition() - inactivePosition);
                 removeTokensAction.AllowTriggersToRespond = false;
                 removeTokensAction.CanBeCancelled = false;
                 coroutine = DoAction(removeTokensAction);
@@ -163,7 +163,8 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 //Switch visual
-                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(Dual + ShiftTrack + this.CurrentShiftPosition(), false), cardSource: GetCardSource());
+                string fullShiftTrackIdentifier = this.DualShiftTrackPrefix() + this.ShiftTrackIdentifier() + this.CurrentShiftPosition();
+                coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(fullShiftTrackIdentifier, false), cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -216,7 +217,7 @@ namespace Cauldron.Drift
                 DriftPosition + 4
             };
             //Get all entries of any of the positions being toggled
-            IEnumerable<CardPropertiesJournalEntry> positionEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Card.SharedIdentifier == ShiftTrack && inactivePositions.Contains(entry.Key));
+            IEnumerable<CardPropertiesJournalEntry> positionEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Card.SharedIdentifier == this.ShiftTrackIdentifier() && inactivePositions.Contains(entry.Key));
 
             //If a position is set to true then there is an odd number of entries (true), if the position is set to false then there is an even number of entries (true + false)
             if (positionEntries.Where((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 1).Count() % 2 == 1)

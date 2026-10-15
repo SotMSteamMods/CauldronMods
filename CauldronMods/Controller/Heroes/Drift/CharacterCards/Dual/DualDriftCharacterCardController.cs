@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
+
+using static Cauldron.Drift.IDriftShifting;
 
 namespace Cauldron.Drift
 {
@@ -33,7 +34,7 @@ namespace Cauldron.Drift
             if (CharacterCardController is DualDriftCharacterCardController)
             {
                 List<SelectCardDecision> selectDriftDecision = new List<SelectCardDecision>();
-                customMode = CustomMode.StartOfGameChooseDrift;
+                CurrentCustomTextMode = DriftCustomTextMode.StartOfGameChooseDrift;
                 coroutine = GameController.SelectCardAndStoreResults(HeroTurnTakerController, SelectionType.Custom, new LinqCardCriteria((Card c) => FindCardController(c) is DualDriftSubCharacterCardController), selectDriftDecision, false, cardSource: GetCardSource());
                 if (UseUnityCoroutines)
                 {
@@ -75,7 +76,7 @@ namespace Cauldron.Drift
                     GameController.ExhaustCoroutine(coroutine);
                 }
                 //Then place 1 of your 2 character cards (1929 or 2199) next to that same space
-                GameController.AddCardPropertyJournalEntry(GetShiftTrack(), "DriftPosition" + GetShiftPool().CurrentValue, true);
+                GameController.AddCardPropertyJournalEntry(this.GetShiftTrack(), "DriftPosition" + this.GetShiftPool().CurrentValue, true);
 
                 yield break;
             }
@@ -83,7 +84,7 @@ namespace Cauldron.Drift
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
-            if (customMode == CustomMode.StartOfGameChooseDrift)
+            if (CurrentCustomTextMode == DriftCustomTextMode.StartOfGameChooseDrift)
             {
                 return new CustomDecisionText("Which Drift do you want to start in play", "Which Drift should they start in play?", "Vote for which Drift should start in play?", "Drift to start in play");
             }

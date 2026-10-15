@@ -1,8 +1,9 @@
-﻿using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
@@ -132,7 +133,7 @@ namespace Cauldron.Drift
             }
 
             //Shift {DriftLL}.
-            coroutine = base.ShiftLL();
+            coroutine = this.ShiftLL();
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

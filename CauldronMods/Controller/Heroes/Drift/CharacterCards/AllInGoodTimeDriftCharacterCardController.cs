@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,9 +10,7 @@ namespace Cauldron.Drift
     public class AllInGoodTimeDriftCharacterCardController : DriftSubCharacterCardController
     {
         public AllInGoodTimeDriftCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-        {
-
-        }
+        { }
 
         public override IEnumerator UsePower(int index = 0)
         {
