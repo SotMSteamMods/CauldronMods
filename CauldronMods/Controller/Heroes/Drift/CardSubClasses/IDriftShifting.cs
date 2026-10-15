@@ -18,7 +18,7 @@ namespace Cauldron.Drift
         /// <summary>
         /// The CustomText mode to use for a given CustomTextDecision.
         /// 
-        /// Since there are three different CustomTextDecisions throughout
+        /// Since there are four different CustomTextDecisions throughout
         /// Drift's code, this enum is used to differentiate between them.
         /// Set <see cref="CurrentCustomTextMode"/> to the appropriate value
         /// immediately before calling a Decision with <see cref="SelectionType.Custom"/>
@@ -30,7 +30,8 @@ namespace Cauldron.Drift
         {
             AskToShift,
             DualDriftShift,
-            StartOfGameChooseDrift
+            StartOfGameChooseDrift,
+            StartOfGameChooseShiftTrackPosition
         }
 
         public DriftCustomTextMode CurrentCustomTextMode { get; set; }
@@ -44,7 +45,8 @@ namespace Cauldron.Drift
     /// Provides extension methods for the <see cref="IDriftShifting"/> interface.
     /// 
     /// These extensions provide a shared set of methods that can be used by both
-    /// <see cref="DriftBaseCardController"/> and <see cref="DriftSubCharacterCardController"/>.
+    /// <see cref="DriftBaseCardController"/> and <see cref="DriftSubCharacterCardController"/>
+    /// and <see cref="DriftTurnTakerController"/>.
     /// </summary>
     public static class DriftShiftingExtensions
     {
