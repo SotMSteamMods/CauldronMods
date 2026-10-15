@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
+
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class KnightsHeritageCardController : DriftUtilityCardController
+    public class KnightsHeritageCardController : DriftBaseCardController
     {
         public KnightsHeritageCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -55,9 +53,9 @@ namespace Cauldron.Drift
 
             //...you may shift {DriftL} or {DriftR}.
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
-                    new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.AddTokens, () => base.ShiftL()),
-                    new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.RemoveTokens, () => base.ShiftR())
-            }, optional: true, associatedCards: GetShiftTrack().ToEnumerable());
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.AddTokens, () => this.ShiftL()),
+                    new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.RemoveTokens, () => this.ShiftR())
+            }, optional: true, associatedCards: this.GetShiftTrack().ToEnumerable());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);

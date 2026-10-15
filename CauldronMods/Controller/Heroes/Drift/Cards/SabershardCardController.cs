@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class SabershardCardController : DriftUtilityCardController
+    public class SabershardCardController : DriftBaseCardController
     {
         public SabershardCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -24,7 +21,7 @@ namespace Cauldron.Drift
                 case 0:
                 {
                     //{DriftPast} 
-                    if (base.IsTimeMatching(Past))
+                    if (this.IsTimeMatchingPast())
                     {
                         //Draw a card. 
                         coroutine = base.DrawCard();
@@ -38,7 +35,7 @@ namespace Cauldron.Drift
                         }
 
                         //Shift {R}.
-                        coroutine = base.ShiftR();
+                        coroutine = this.ShiftR();
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -49,7 +46,7 @@ namespace Cauldron.Drift
                         }
                     } else
                     {
-                        coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {Past} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
+                        coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {this.Past()} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -64,7 +61,7 @@ namespace Cauldron.Drift
                 case 1:
                 {
                     //{DriftFuture} 
-                    if (base.IsTimeMatching(Future))
+                    if (this.IsTimeMatchingFuture())
                     {
                         int targetNumeral = base.GetPowerNumeral(0, 1);
                         int damageNumeral = base.GetPowerNumeral(1, 2);
@@ -81,7 +78,7 @@ namespace Cauldron.Drift
                         }
 
                         //Shift {L}.
-                        coroutine = base.ShiftL();
+                        coroutine = this.ShiftL();
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);
@@ -92,7 +89,7 @@ namespace Cauldron.Drift
                         }
                     } else
                     {
-                        coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {Future} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
+                        coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {this.Future()} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
                         if (base.UseUnityCoroutines)
                         {
                             yield return base.GameController.StartCoroutine(coroutine);

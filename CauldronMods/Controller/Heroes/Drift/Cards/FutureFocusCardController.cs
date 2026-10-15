@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using static Cauldron.Drift.IDriftShifting;
+
 namespace Cauldron.Drift
 {
     public class FutureFocusCardController : DriftFocusUtilityCardController
     {
-        public FutureFocusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        public FutureFocusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "{{ShiftRRR}}")
         {
 
         }
@@ -26,8 +27,8 @@ namespace Cauldron.Drift
         {
             List<YesNoCardDecision> decision = new List<YesNoCardDecision>();
             //...you may shift {DriftRRR}. 
-            customMode = CustomMode.AskToShift;
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, this.Card, action, decision, new Card[] { base.GetShiftTrack() }, base.GetCardSource());
+            CurrentCustomTextMode = DriftCustomTextMode.AskToShift;
+            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, this.Card, action, decision, new Card[] { this.GetShiftTrack() }, base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -39,8 +40,8 @@ namespace Cauldron.Drift
 
             if (decision.FirstOrDefault().Answer ?? false)
             {
-                var shiftCounter = new List<bool>();
-                coroutine = base.ShiftRRR(shiftCounter);
+                var numberOfShifts = new List<bool>();
+                coroutine = this.ShiftRRR(numberOfShifts);
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -50,7 +51,7 @@ namespace Cauldron.Drift
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
                 //If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
-                if (shiftCounter.Count() >= 3)
+                if (numberOfShifts.Count() >= 3)
                 {
                     coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
@@ -64,16 +65,6 @@ namespace Cauldron.Drift
                 }
             }
             yield break;
-        }
-
-        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
-        {
-            if (customMode == CustomMode.AskToShift)
-            {
-                return new CustomDecisionText("Do you want to shift {{ShiftRRR}}?", "Should they shift {{ShiftRRR}}?", "Vote for if they should shift {{ShiftRRR}}", "shifting {{ShiftRRR}}");
-            }
-
-            return base.GetCustomDecisionText(decision);
         }
     }
 }

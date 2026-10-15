@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +7,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class ImposedSynchronizationCardController : DriftUtilityCardController
+    public class ImposedSynchronizationCardController : DriftBaseCardController
     {
         public ImposedSynchronizationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -29,7 +28,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftPast}
-            if (base.IsTimeMatching(Past))
+            if (this.IsTimeMatchingPast())
             {
                 List<SelectCardDecision> targetDecisions = new List<SelectCardDecision>();
                 //Select a target. Reduce damage dealt to that target by 1 until the start of your next turn.
@@ -58,7 +57,7 @@ namespace Cauldron.Drift
                 }
 
                 //Shift {DriftL}.
-                coroutine = base.ShiftL();
+                coroutine = this.ShiftL();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -69,7 +68,7 @@ namespace Cauldron.Drift
                 }
             }
             //{DriftFuture} 
-            if (base.IsTimeMatching(Future))
+            if (this.IsTimeMatchingFuture())
             {
                 List<SelectCardDecision> targetDecisions = new List<SelectCardDecision>();
                 //Select a target. Increase damage dealt by that target by 1 until the start of your next turn. 
@@ -98,7 +97,7 @@ namespace Cauldron.Drift
                 }
 
                 //Shift {DriftR}.
-                coroutine = base.ShiftR();
+                coroutine = this.ShiftR();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

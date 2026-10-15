@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +7,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class DanceOfTheDragonsCardController : DriftUtilityCardController
+    public class DanceOfTheDragonsCardController : DriftBaseCardController
     {
         public DanceOfTheDragonsCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -20,7 +19,7 @@ namespace Cauldron.Drift
             RemoveTemporaryTriggers();
             AddToTemporaryTriggerList(AddIncreaseDamageTrigger((DealDamageAction dd) => dd.CardSource != null && dd.CardSource.Card == this.Card && this.IncreaseDamageIfTargetEnteredPlaySinceLastTurn(dd.Target) == 1, 1));
             //{DriftFuture}
-            if (base.IsTimeMatching(Future))
+            if (this.IsTimeMatchingFuture())
             {
                 //{Drift} deals up to 3 targets 2 radiant damage each.
                 //Increase damage dealt this way by 1 to targets that entered play since the end of your last turn.
@@ -35,7 +34,7 @@ namespace Cauldron.Drift
                 }
 
                 //Shift {DriftL}.
-                coroutine = base.ShiftL();
+                coroutine = this.ShiftL();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -47,7 +46,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftPast}
-            if (base.IsTimeMatching(Past))
+            if (this.IsTimeMatchingPast())
             {
                 //Draw a card. 
                 IEnumerator coroutine = base.DrawCard();
@@ -72,7 +71,7 @@ namespace Cauldron.Drift
                 }
 
                 //Shift {DriftRR}
-                coroutine = base.ShiftRR();
+                coroutine = this.ShiftRR();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

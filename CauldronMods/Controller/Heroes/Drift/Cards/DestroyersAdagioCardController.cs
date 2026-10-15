@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
@@ -8,7 +6,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class DestroyersAdagioCardController : DriftUtilityCardController
+    public class DestroyersAdagioCardController : DriftBaseCardController
     {
         public DestroyersAdagioCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -18,7 +16,7 @@ namespace Cauldron.Drift
         public override IEnumerator Play()
         {
             //{DriftPast}
-            if (base.IsTimeMatching(Past))
+            if (this.IsTimeMatchingPast())
             {
                 //You may play an ongoing card from your trash, or one player may play a card now.
                 IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
@@ -36,7 +34,7 @@ namespace Cauldron.Drift
                 }
 
                 //Shift {DriftR}
-                coroutine = base.ShiftR();
+                coroutine = this.ShiftR();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -49,7 +47,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftFuture}
-            if (base.IsTimeMatching(Future))
+            if (this.IsTimeMatchingFuture())
             {
                 //{Drift} deals 1 target 2 radiant damage.
                 IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 2, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
@@ -63,7 +61,7 @@ namespace Cauldron.Drift
                 }
 
                 //Shift {DriftLL}
-                coroutine = base.ShiftLL();
+                coroutine = this.ShiftLL();
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);

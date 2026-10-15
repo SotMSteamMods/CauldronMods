@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class ResourcefulDaydreamerCardController : DriftUtilityCardController
+    public class ResourcefulDaydreamerCardController : DriftBaseCardController
     {
         public ResourcefulDaydreamerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -40,7 +37,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftPast} You may play a card.
-            if (base.IsTimeMatching(Past))
+            if (this.IsTimeMatchingPast())
             {
                 coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
@@ -54,7 +51,7 @@ namespace Cauldron.Drift
             }
 
             //{DriftFuture} You may use a power.
-            if (base.IsTimeMatching(Future))
+            if (this.IsTimeMatchingFuture())
             {
                 coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)

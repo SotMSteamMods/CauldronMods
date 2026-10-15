@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +7,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class TransitionShockCardController : DriftUtilityCardController
+    public class TransitionShockCardController : DriftBaseCardController
     {
         public TransitionShockCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -18,9 +17,9 @@ namespace Cauldron.Drift
         public override void AddTriggers()
         {
             //Whenever you shift from {DriftPast} to {DriftFuture}... 
-            base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 3, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == this.ShiftPoolIdentifier() && action.TokenPool.CurrentValue == 3, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             //...or from {DriftFuture} to {DriftPast}...
-            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 2, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == this.ShiftPoolIdentifier() && action.TokenPool.CurrentValue == 2, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
             //...{Drift} may deal 1 other target and herself 1 psychic damage.
         }
 

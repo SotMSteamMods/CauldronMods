@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift
 {
-    public class BorrowedTimeCardController : DriftUtilityCardController
+    public class BorrowedTimeCardController : DriftBaseCardController
     {
         public BorrowedTimeCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
@@ -22,7 +22,7 @@ namespace Cauldron.Drift
             IEnumerator coroutine = base.SelectAndPerformFunction(base.HeroTurnTakerController, new Function[] {
                     new Function(base.HeroTurnTakerController, "Shift {ShiftL}", SelectionType.RemoveTokens, () => this.ShiftResponse(0)),
                     new Function(base.HeroTurnTakerController, "Shift {ShiftR}", SelectionType.AddTokens, () => this.ShiftResponse(1))
-            }, associatedCards: GetShiftTrack().ToEnumerable());
+            }, associatedCards: this.GetShiftTrack().ToEnumerable());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -47,19 +47,19 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            var shiftCounter = new List<bool>();
+            var numberOfShifts = new List<bool>();
             int selectedNumber = numberDecision.FirstOrDefault().SelectedNumber ?? default;
             for (int i = 0; i < selectedNumber; i++)
             {
                 //{DriftL}
                 if (response == 0)
                 {
-                    coroutine = base.ShiftL(shiftCounter);
+                    coroutine = this.ShiftL(numberOfShifts);
                 }
                 //{DriftR}
                 else
                 {
-                    coroutine = base.ShiftR(shiftCounter);
+                    coroutine = this.ShiftR(numberOfShifts);
                 }
                 if (base.UseUnityCoroutines)
                 {
@@ -75,13 +75,13 @@ namespace Cauldron.Drift
             if (response == 0)
             {
                 //If you shifted at least {DriftL} this way, X targets regain 2 HP each.
-                coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, 2, numberOfTargets: shiftCounter.Count(), cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, 2, numberOfTargets: numberOfShifts.Count(), cardSource: base.GetCardSource());
             }
             //{DriftR}
             else
             {
                 //If you shifted {DriftR} this way, {Drift} deals X targets 3 radiant damage each.
-                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, shiftCounter.Count(), false, selectedNumber, cardSource: base.GetCardSource());
+                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, numberOfShifts.Count(), false, selectedNumber, cardSource: base.GetCardSource());
             }
             if (base.UseUnityCoroutines)
             {
