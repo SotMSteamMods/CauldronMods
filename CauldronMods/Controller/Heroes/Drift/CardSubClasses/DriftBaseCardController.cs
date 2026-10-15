@@ -1,72 +1,34 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
+using static Cauldron.Drift.IDriftShifting;
+
 namespace Cauldron.Drift
 {
-    public abstract class DriftBaseCardController : CardController
+    public abstract class DriftBaseCardController : CardController, IDriftShifting
     {
         protected DriftBaseCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {Past} effects are active.", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {Future} effects are active.");
-            positionString.Condition = () => GetShiftTrack() != null;
+            var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatchingPast(), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {this.Past()} effects are active.", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {this.Future()} effects are active.");
+            positionString.Condition = () => this.GetShiftTrack() != null;
         }
 
-        protected const string Base = "Base";
-        protected const string Dual = "Dual";
-        protected const string ThroughTheBreach = "ThroughTheBreach";
-
-        protected const string Past = "{Past}";
-        protected const string Future = "{Future}";
-
-        protected const string HasShifted = "HasShifted";
-        protected const string ShiftTrack = "ShiftTrack";
-        protected const string ShiftPoolIdentifier = "ShiftPool";
-
-        public int CurrentShiftPosition()
-        {
-            if (this.GetShiftPool() == null)
-            {
-                return 0;
-            }
-            return this.GetShiftPool().CurrentValue;
-        }
+        public DriftCustomTextMode CurrentCustomTextMode { get; set; }
+        public GameController ShiftingGameController => GameController;
+        public CardSource ShiftingCardSource => GetCardSource();
+        public HeroTurnTakerController ShiftingDecisionMaker => DecisionMaker;
+        public CharacterCardController ShiftingCharacterCardController => CharacterCardController;
 
         public Card GetActiveCharacterCard()
         {
             return base.FindCardsWhere(new LinqCardCriteria((Card c) =>  IsHeroCharacterCard(c) && c.Location == base.TurnTaker.PlayArea && c.Owner == base.TurnTaker)).FirstOrDefault();
         }
 
-        public TokenPool GetShiftPool()
-        {
-            return this.GetShiftTrack()?.FindTokenPool("ShiftPool");
-        }
-
-        public Card GetShiftTrack()
-        {
-            return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText, false).FirstOrDefault();
-        }
-
         public bool IsFocus(Card c)
         {
             return c.DoKeywordsContain("focus");
-        }
-
-        public bool IsTimeMatching(string time)
-        {
-            if (this.CurrentShiftPosition() == 1 || this.CurrentShiftPosition() == 2)
-            {
-                return time == Past;
-            }
-            if (this.CurrentShiftPosition() == 3 || this.CurrentShiftPosition() == 4)
-            {
-                return time == Future;
-            }
-            return false;
         }
 
         public bool IsTargetSelf(DealDamageAction dd)
@@ -80,6 +42,16 @@ namespace Cauldron.Drift
                 return true;
             }
             return false;
+        }
+
+        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+        {
+            if (CurrentCustomTextMode == DriftCustomTextMode.DualDriftShift)
+            {
+                return this.GetDualDriftCustomDecisionText(decision);
+            }
+
+            return base.GetCustomDecisionText(decision);
         }
     }
 }

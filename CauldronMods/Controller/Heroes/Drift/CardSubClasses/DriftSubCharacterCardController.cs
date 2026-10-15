@@ -1,48 +1,39 @@
-﻿using Handelabra;
-using Handelabra.Sentinels.Engine.Controller;
-using Handelabra.Sentinels.Engine.Model;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+
+using Handelabra;
+using Handelabra.Sentinels.Engine.Controller;
+using Handelabra.Sentinels.Engine.Model;
+
+using static Cauldron.Drift.IDriftShifting;
 
 namespace Cauldron.Drift
 {
-    public abstract class DriftSubCharacterCardController : HeroCharacterCardController
+    public abstract class DriftSubCharacterCardController : HeroCharacterCardController, IDriftShifting
     {
         protected DriftSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
         {
-            var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatching(Past), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {Past} effects are active.", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {Future} effects are active.");
-            positionString.Condition = () => GetShiftTrack() != null;
+            var positionString = base.SpecialStringMaker.ShowIfElseSpecialString(() => this.IsTimeMatchingPast(), () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {this.Past()} effects are active.", () => $"{TurnTaker.NameRespectingVariant} is at position {this.CurrentShiftPosition()}. {this.Future()} effects are active.");
+            positionString.Condition = () => this.GetShiftTrack() != null;
 
             if(shouldRunSetUp)
             {
                 AddThisCardControllerToList(CardControllerListType.EnteringGameCheck);
             }
         }
+
+        public DriftCustomTextMode CurrentCustomTextMode { get; set; }
+        public GameController ShiftingGameController => GameController;
+        public CardSource ShiftingCardSource => GetCardSource();
+        public HeroTurnTakerController ShiftingDecisionMaker => DecisionMaker;
+        public CharacterCardController ShiftingCharacterCardController => CharacterCardController;
+
         protected virtual bool shouldRunSetUp => true;
-        protected const string Past = "{Past}";
-        protected const string Future = "{Future}";
-
-        protected const string Base = "Base";
-        protected const string Dual = "Dual";
-        protected const string ThroughTheBreach = "ThroughTheBreach";
-
-        protected const string HasShifted = "HasShifted";
-        protected const string ShiftTrack = "ShiftTrack";
-        protected const string ShiftPoolIdentifier = "ShiftPool";
 
         protected bool _inTheMiddleOfPower = false;
 
         private bool _instantiatingShiftTracks = false;
-
-        protected enum CustomMode
-        {
-            StartOfGameChooseDrift,
-            DualDriftShift
-        }
-        protected CustomMode customMode { get; set; }
 
         private int totalShifts = 0;
         public int TotalShifts { get => totalShifts; set => totalShifts = value; }
@@ -92,281 +83,7 @@ namespace Cauldron.Drift
             ////...or from {DriftFuture} to {DriftPast}...
             //base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 2, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
 
-            AddTrigger((GameAction ga) => !(TurnTakerController is DriftTurnTakerController) && GetShiftTrack() is null && !_instantiatingShiftTracks, ga => InstatiateShiftTrack(), TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
-        }
-
-        public int CurrentShiftPosition()
-        {
-            return this.GetShiftPool().CurrentValue;
-        }
-
-        public TokenPool GetShiftPool()
-        {
-            if (TurnTakerController is DriftTurnTakerController)
-            {
-                return this.GetShiftTrack().FindTokenPool(ShiftPoolIdentifier);
-            }
-            
-            if (GameController.AllTurnTakers.Select(tt => FindTurnTakerController(tt)).Any(ttc => ttc is DriftTurnTakerController))
-            {
-                DriftTurnTakerController dttc = (DriftTurnTakerController) GameController.AllTurnTakers.Select(tt => FindTurnTakerController(tt)).First(ttc => ttc is DriftTurnTakerController);
-                DriftSubCharacterCardController drift_cc = FindCardController(dttc.GetActiveCharacterCard()) as DriftSubCharacterCardController;
-                return drift_cc.GetShiftPool();
-            }
-
-            if (!(GetShiftTrack() is null))
-            {
-                return this.GetShiftTrack().FindTokenPool(ShiftPoolIdentifier);
-            }
-
-            return null;
-        }
-
-        public Card GetShiftTrack()
-        {
-            return base.FindCardsWhere((Card c) => c.SharedIdentifier == ShiftTrack && c.IsInPlayAndHasGameText, false).FirstOrDefault();
-        }
-
-        public bool IsTimeMatching(string time)
-        {
-            if (this.CurrentShiftPosition() == 1 || this.CurrentShiftPosition() == 2)
-            {
-                return time == Past;
-            }
-            if (this.CurrentShiftPosition() == 3 || this.CurrentShiftPosition() == 4)
-            {
-                return time == Future;
-            }
-            return false;
-        }
-
-        public Card GetPositionalShiftTrack(int position)
-        {
-            string promoIdentifier = Base;
-            if (base.CharacterCardController is DualDriftSubCharacterCardController)
-            {
-                promoIdentifier = Dual;
-            }
-            else if (base.CharacterCardController is ThroughTheBreachSubCharacterCardController)
-            {
-                promoIdentifier = ThroughTheBreach;
-            }
-            return base.FindCard(promoIdentifier + ShiftTrack + position, false);
-        }
-
-        public IEnumerator ShiftLAction()
-        {
-            if(this.GetShiftPool() is null)
-            {
-                IEnumerator coroutine = GameController.SendMessageAction("There is no shift track in play! No shifting will occur.", Priority.Medium, GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                yield break;
-            }
-            //Ensures not shifting off track
-            if (this.CurrentShiftPosition() > 1)
-            {
-                base.SetCardPropertyToTrueIfRealAction(HasShifted);
-                IEnumerator coroutine = base.GameController.RemoveTokensFromPool(this.GetShiftPool(), 1, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                //Switch to the new card
-                coroutine = this.SwitchTrack();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                this.totalShifts++;
-            }
-            else
-            {
-                IEnumerator coroutine = base.GameController.SendMessageAction("Drift has reached the end of the Shift Track", Priority.Medium, base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
-        }
-
-        public IEnumerator ShiftLLAction()
-        {
-            IEnumerator coroutine = this.ShiftLAction();
-            IEnumerator coroutine2 = this.ShiftLAction();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
-            }
-            yield break;
-        }
-
-        public IEnumerator ShiftLLLAction()
-        {
-            IEnumerator coroutine = this.ShiftLAction();
-            IEnumerator coroutine2 = this.ShiftLAction();
-            IEnumerator coroutine3 = this.ShiftLAction();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
-                yield return base.GameController.StartCoroutine(coroutine3);
-
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
-                base.GameController.ExhaustCoroutine(coroutine3);
-            }
-            yield break;
-        }
-
-        public IEnumerator ShiftRAction()
-        {
-            if (this.GetShiftPool() is null)
-            {
-                IEnumerator coroutine = GameController.SendMessageAction("There is no shift track in play! No shifting will occur.", Priority.Medium, GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                yield break;
-            }
-            //Ensures not shifting off track
-            if (this.CurrentShiftPosition() < 4)
-            {
-                base.SetCardPropertyToTrueIfRealAction(HasShifted);
-                IEnumerator coroutine = base.GameController.AddTokensToPool(this.GetShiftPool(), 1, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                //Switch to the new card
-                coroutine = this.SwitchTrack();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                this.totalShifts++;
-            }
-            else
-            {
-                IEnumerator coroutine = base.GameController.SendMessageAction("Drift has reached the end of the Shift Track", Priority.Medium, base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
-        }
-
-        public IEnumerator ShiftRRAction()
-        {
-            IEnumerator coroutine = this.ShiftRAction();
-            IEnumerator coroutine2 = this.ShiftRAction();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
-            }
-            yield break;
-        }
-
-        public IEnumerator ShiftRRRAction()
-        {
-            IEnumerator coroutine = this.ShiftRAction();
-            IEnumerator coroutine2 = this.ShiftRAction();
-            IEnumerator coroutine3 = this.ShiftRAction();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-                yield return base.GameController.StartCoroutine(coroutine2);
-                yield return base.GameController.StartCoroutine(coroutine3);
-
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-                base.GameController.ExhaustCoroutine(coroutine2);
-                base.GameController.ExhaustCoroutine(coroutine3);
-
-            }
-            yield break;
-        }
-
-        private IEnumerator SwitchTrack()
-        {
-            string promoIdentifier = Base;
-            if (base.CharacterCardController is DualDriftSubCharacterCardController)
-            {
-                promoIdentifier = Dual;
-            }
-            else if (base.CharacterCardController is ThroughTheBreachDriftCharacterCardController)
-            {
-                promoIdentifier = ThroughTheBreach;
-            }
-            IEnumerator coroutine = base.GameController.SwitchCards(this.GetShiftTrack(), base.FindCard(promoIdentifier + ShiftTrack + this.CurrentShiftPosition(), false), cardSource: GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
+            AddTrigger((GameAction ga) => !(TurnTakerController is DriftTurnTakerController) && this.GetShiftTrack() is null && !_instantiatingShiftTracks, ga => InstatiateShiftTrack(), TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
         }
 
         public Card GetActiveCharacterCard()
@@ -425,13 +142,13 @@ namespace Cauldron.Drift
             _inTheMiddleOfPower = false;
 
             // If needed
-            if (IsTimeMatching(Past) && GetActiveCharacterCard() == CharacterCardWithoutReplacements && CharacterCardWithoutReplacements.Identifier.Contains("Red"))
+            if (this.IsTimeMatchingPast() && GetActiveCharacterCard() == CharacterCardWithoutReplacements && CharacterCardWithoutReplacements.Identifier.Contains("Red"))
             {
                 needsChange = true;
             }
             else
             {
-                if (IsTimeMatching(Future) && GetActiveCharacterCard() == CharacterCardWithoutReplacements && CharacterCardWithoutReplacements.Identifier.Contains("Past"))
+                if (this.IsTimeMatchingFuture() && GetActiveCharacterCard() == CharacterCardWithoutReplacements && CharacterCardWithoutReplacements.Identifier.Contains("Past"))
                 {
                     needsChange = true;
                 }
@@ -509,286 +226,14 @@ namespace Cauldron.Drift
             }
         }
 
-        public IEnumerator ShiftL()
-        {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
-            {
-                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLAction, "{ShiftL}");
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-            }
-            else
-            {
-                IEnumerator coroutine = ShiftLAction();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
-        }
-
-        public IEnumerator ShiftLL()
-        {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
-            {
-                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLLAction, "{ShiftLL}");
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-            }
-            else
-            {
-                IEnumerator coroutine = ShiftLLAction();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
-        }
-
-        public IEnumerator ShiftLLL()
-        {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
-            {
-                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftLLLAction, "{ShiftLLL}");
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-            }
-            else
-            {
-                IEnumerator coroutine = ShiftLLLAction();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
-        }
-
-        public IEnumerator ShiftR()
-        {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
-            {
-                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRAction, "{ShiftR}");
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            else
-            {
-                IEnumerator coroutine = ShiftRAction();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
-        }
-
-        public IEnumerator ShiftRR()
-        {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
-            {
-                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRRAction, "{ShiftRR}");
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            else
-            {
-                IEnumerator coroutine = ShiftRRAction();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
-        }
-
-        public IEnumerator ShiftRRR()
-        {
-            if (FindCardController(GetShiftTrack()) is DualShiftTrackUtilityCardController dualShiftTrack && !dualShiftTrack.HasTrackAbilityBeenActivated() && TurnTakerController is DriftTurnTakerController)
-            {
-                IEnumerator coroutine = DualDriftShifting(dualShiftTrack, ShiftRRRAction, "{ShiftRRR}");
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            else
-            {
-                IEnumerator coroutine = ShiftRRRAction();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            yield break;
-        }
-
-        private IEnumerator DualDriftShifting(DualShiftTrackUtilityCardController dualShiftTrack, Func<IEnumerator> shiftAction, string shiftString)
-        {
-            string option1 = "Shift " + shiftString;
-            string option2 = "Swap the active Drift, then Shift " + shiftString;
-            string option3 = "Shift " + shiftString + ", then swap the active Drift";
-            string[] options = new string[] { option1, option2, option3 };
-
-            List<SelectWordDecision> storedResults = new List<SelectWordDecision>();
-            SelectWordDecision decision = new SelectWordDecision(GameController, DecisionMaker, SelectionType.Custom, options, cardSource: GetCardSource(), associatedCards: GetShiftTrack().ToEnumerable());
-            decision.ExtraInfo = () => $"{dualShiftTrack.GetInactiveCharacterCard().Title} is at position {dualShiftTrack.InactiveCharacterPosition()}";
-            storedResults.Add(decision);
-            customMode = CustomMode.DualDriftShift;
-            IEnumerator coroutine = GameController.MakeDecisionAction(decision);
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            if (!DidSelectWord(storedResults))
-            {
-                coroutine = shiftAction();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-                yield break;
-            }
-            string selectedWord = GetSelectedWord(storedResults);
-            if (selectedWord == option2)
-            {
-                coroutine = dualShiftTrack.SwapActiveDrift();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            coroutine = shiftAction();
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-
-            if (selectedWord == option3)
-            {
-                coroutine = dualShiftTrack.SwapActiveDrift();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-        }
-
         private DeckDefinition DriftDeckDefinition => DeckDefinitionCache.GetDeckDefinition("Cauldron.Drift");
        
-        private string ShiftTrackPrefix
-        {
-            get
-            {
-                if(this is DualDriftSubCharacterCardController)
-                {
-                    return "Dual";
-                }
-
-                if (this is ThroughTheBreachDriftCharacterCardController)
-                {
-                    return "ThroughTheBreach";
-                }
-
-                return "Base";
-            }
-        }
+        
         protected IEnumerator InstatiateShiftTrack()
         {
             _instantiatingShiftTracks = true;
             Log.Debug("Instantiating Shift Track");
-            IEnumerable<CardDefinition> shiftTrackDefinitions = DriftDeckDefinition.CardDefinitions.Where(cd => cd.Identifier.Contains(ShiftTrackPrefix + "ShiftTrack"));
+            IEnumerable<CardDefinition> shiftTrackDefinitions = DriftDeckDefinition.CardDefinitions.Where(cd => cd.Identifier.Contains(this.ShiftTrackIdentifierWithPrefix()));
             List<Card> shiftTracks = new List<Card>();
             Card modelCard;
             CardController cardController;
@@ -856,7 +301,7 @@ namespace Cauldron.Drift
                 tokensToAdd = 4;
             }
 
-            coroutine = base.GameController.AddTokensToPool(selectedTrack.FindTokenPool("ShiftPool"), tokensToAdd, new CardSource(this));
+            coroutine = base.GameController.AddTokensToPool(selectedTrack.FindTokenPool(this.ShiftPoolIdentifier()), tokensToAdd, new CardSource(this));
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -873,9 +318,9 @@ namespace Cauldron.Drift
 
         public override CustomDecisionText GetCustomDecisionText(IDecision decision)
         {
-            if (customMode == CustomMode.DualDriftShift)
+            if (CurrentCustomTextMode == DriftCustomTextMode.DualDriftShift)
             {
-                return new CustomDecisionText($"What do you want to do?", $"What should they do?", $"Vote for what they should do.", $"what to do");
+                return this.GetDualDriftCustomDecisionText(decision);
             }
 
             return base.GetCustomDecisionText(decision);
