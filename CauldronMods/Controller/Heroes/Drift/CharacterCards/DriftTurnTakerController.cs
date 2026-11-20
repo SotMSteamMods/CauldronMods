@@ -17,19 +17,6 @@ public class DriftTurnTakerController(TurnTaker turnTaker, GameController gameCo
     public HeroTurnTakerController ShiftingDecisionMaker => this;
     public CharacterCardController ShiftingCharacterCardController => CharacterCardController;
 
-    //public override IEnumerator StartGame()
-    //{
-    //    IEnumerator coroutine = SetupDrift();
-    //    if (base.UseUnityCoroutines)
-    //    {
-    //        yield return base.GameController.StartCoroutine(coroutine);
-    //    }
-    //    else
-    //    {
-    //        base.GameController.ExhaustCoroutine(coroutine);
-    //    }
-    //}
-
     public string[] availablePromos = [];
     public Dictionary<string, string[]> nonDriftPromos = new()
     {

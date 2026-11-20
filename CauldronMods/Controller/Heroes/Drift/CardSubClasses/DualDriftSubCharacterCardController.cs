@@ -3,10 +3,7 @@ using Handelabra.Sentinels.Engine.Model;
 
 namespace Cauldron.Drift;
 
-public class DualDriftSubCharacterCardController : DriftSubCharacterCardController
+public class DualDriftSubCharacterCardController(Card card, TurnTakerController turnTakerController) : DriftSubCharacterCardController(card, turnTakerController)
 {
-    public DualDriftSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController) 
-    { }
-
     protected override bool shouldRunSetUp => false;
 }

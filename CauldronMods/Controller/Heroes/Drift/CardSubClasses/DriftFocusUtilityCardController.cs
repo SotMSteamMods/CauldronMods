@@ -13,7 +13,9 @@ public abstract class DriftFocusUtilityCardController : DriftBaseCardController
 
     protected DriftFocusUtilityCardController(Card card, TurnTakerController turnTakerController, string customTextDirection) : base(card, turnTakerController)
     {
-        base.SpecialStringMaker.ShowIfElseSpecialString(() => this.HasShiftedThisTurn(), () => $"{TurnTaker.Name} has shifted this turn", () => $"{TurnTaker.Name} has not shifted this turn");
+        base.SpecialStringMaker.ShowIfElseSpecialString(
+            () => this.HasShiftedThisTurn(), () => $"{TurnTaker.Name} has shifted this turn", 
+            () => $"{TurnTaker.Name} has not shifted this turn");
         CustomTextDirection = customTextDirection;
     }
 

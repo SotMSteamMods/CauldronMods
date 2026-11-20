@@ -32,13 +32,7 @@ public abstract class DriftSubCharacterCardController : HeroCharacterCardControl
     public CharacterCardController ShiftingCharacterCardController => CharacterCardController;
 
     protected virtual bool shouldRunSetUp => true;
-
-    protected bool _inTheMiddleOfPower = false;
-
     private bool _instantiatingShiftTracks = false;
-
-    private int totalShifts = 0;
-    public int TotalShifts { get => totalShifts; set => totalShifts = value; }
 
     public override void AddStartOfGameTriggers()
     {
@@ -79,157 +73,11 @@ public abstract class DriftSubCharacterCardController : HeroCharacterCardControl
 
     public override void AddTriggers()
     {
-        ////Whenever you shift from {DriftPast} to {DriftFuture}... 
-        //base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 3, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
-        ////...or from {DriftFuture} to {DriftPast}...
-        //base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == ShiftPoolIdentifier && action.TokenPool.CurrentValue == 2, ShiftRedBlue, TriggerType.Hidden, TriggerTiming.After);
-
         AddTrigger((GameAction ga) => TurnTakerController is not DriftTurnTakerController && this.CurrentShiftTrack is null && !_instantiatingShiftTracks, ga => InstatiateShiftTrack(), TriggerType.Hidden, TriggerTiming.Before, priority: TriggerPriority.High);
-    }
-
-    public Card GetActiveCharacterCard()
-    {
-        return base.FindCardsWhere((Card c) => IsHeroCharacterCard(c) && c.Location == base.TurnTaker.PlayArea && c.Owner == this.TurnTaker && c.IsRealCard).FirstOrDefault();
-    }
-
-    public Card FindRedBlueDriftCharacterCard()
-    {
-       
-        var characters = base.TurnTaker.GetAllCards().Where(c => c.IsCharacter && c.SharedIdentifier == CharacterCardWithoutReplacements.SharedIdentifier).ToList();
-        string desiredIdentifier;
-        if(CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier.Contains("Red"))
-        {
-            desiredIdentifier = CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier.Replace("Red", "Blue");
-        } else
-        {
-            desiredIdentifier = CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier.Replace("Blue", "Red");
-        }
-
-        var driftCharacter = characters.First(c => c.Identifier == desiredIdentifier);
-        return driftCharacter;
-    }
-
-    private IEnumerator ShiftRedBlue(ModifyTokensAction tpa)
-    {
-        if (GetActiveCharacterCard() == CharacterCardWithoutReplacements && (CharacterCardWithoutReplacements.Identifier.Contains("Blue") || CharacterCardWithoutReplacements.Identifier.Contains("Red")) && !_inTheMiddleOfPower)
-        {
-            var driftCharacter = FindRedBlueDriftCharacterCard();
-            driftCharacter.SetHitPoints(CharacterCardWithoutReplacements.HitPoints.Value);
-
-            Log.Debug($"Switching to {driftCharacter.Identifier}");
-            Log.Debug($"What should happen is \"SwitchCutoutCard: from {CharacterCardWithoutReplacements.PromoIdentifierOrIdentifier} to {driftCharacter.PromoIdentifierOrIdentifier}\"");
-
-            var coroutine = GameController.SwitchCards(CharacterCardWithoutReplacements, driftCharacter, cardSource: GetCardSource());
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-        }
-    }
-
-    protected IEnumerator RetroactiveShiftIfNeeded()
-    {
-        IEnumerator coroutine;
-        bool needsChange = false;
-
-        if(!_inTheMiddleOfPower)
-        {
-            yield break;
-        }
-        _inTheMiddleOfPower = false;
-
-        // If needed
-        if (this.IsTimeMatchingPast && GetActiveCharacterCard() == CharacterCardWithoutReplacements && CharacterCardWithoutReplacements.Identifier.Contains("Red"))
-        {
-            needsChange = true;
-        }
-        else
-        {
-            if (this.IsTimeMatchingFuture && GetActiveCharacterCard() == CharacterCardWithoutReplacements && CharacterCardWithoutReplacements.Identifier.Contains("Past"))
-            {
-                needsChange = true;
-            }
-        }
-
-        if (needsChange)
-        {
-            coroutine = ShiftRedBlue(null);
-            if (UseUnityCoroutines)
-            {
-                yield return GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                GameController.ExhaustCoroutine(coroutine);
-            }
-        }
-        else
-        {
-            yield break;
-        }
-    }
-    
-    public override void PrepareToUsePower(Power power)
-    {
-        base.PrepareToUsePower(power);
-        if (power.IsInnatePower)
-        {
-            var partnerCards = TurnTaker.GetCardsWhere((Card c) => c.SharedIdentifier == this.CardWithoutReplacements.SharedIdentifier && c != this.CardWithoutReplacements);
-            HeroTurnTaker powerUser = null;
-            if (power.TurnTakerController != null && IsHero(power.TurnTakerController.TurnTaker))
-            {
-                powerUser = power.TurnTakerController.TurnTaker.ToHero();
-            }
-            foreach (Card partnerCard in partnerCards)
-            {
-                //this adds an extra power-use record to the journal, of using the OTHER card's power
-                //WITHOUT actually ever 'using' a power, so it shouldn't cause extra triggers
-                //may cause problems with card that want to count how many powers a player has used in a turn, though
-                GameController.Game.Journal.RecordUsePower(partnerCard, power.Index, power.NumberOfUses, power.CardSource.Card, powerUser, false, power.CardController.CardWithoutReplacements.PlayIndex, power.CardSource.Card.PlayIndex, null, this.CardWithoutReplacements);
-            }
-        }
-    }
-
-    protected override IEnumerator RemoveCardsFromGame(IEnumerable<Card> cards)
-    {
-        if (!Card.IsInPlayAndHasGameText)
-        {
-            yield break;
-        }
-        IEnumerable<Card> enumerable = FindCardsWhere((Card c) => c != Card && c.SharedIdentifier != null && c.SharedIdentifier == Card.SharedIdentifier);
-        foreach (Card item in enumerable)
-        {
-            if (!item.IsIncapacitated)
-            {
-                IEnumerator coroutine = base.GameController.FlipCard(FindCardController(item), cardSource: GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-        }
-        IEnumerator coroutine2 = base.RemoveCardsFromGame(cards);
-        if (base.UseUnityCoroutines)
-        {
-            yield return base.GameController.StartCoroutine(coroutine2);
-        }
-        else
-        {
-            base.GameController.ExhaustCoroutine(coroutine2);
-        }
     }
 
     private DeckDefinition DriftDeckDefinition => DeckDefinitionCache.GetDeckDefinition("Cauldron.Drift");
    
-    
     protected IEnumerator InstatiateShiftTrack()
     {
         _instantiatingShiftTracks = true;

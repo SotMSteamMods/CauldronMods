@@ -46,13 +46,9 @@ public abstract class DriftBaseCardController : CardController, IDriftShifting
         return false;
     }
 
-    public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+    public override CustomDecisionText GetCustomDecisionText(IDecision decision) => CurrentCustomTextMode switch
     {
-        if (CurrentCustomTextMode == DriftCustomTextMode.DualDriftShift)
-        {
-            return this.GetDualDriftCustomDecisionText(decision);
-        }
-
-        return base.GetCustomDecisionText(decision);
-    }
+        DriftCustomTextMode.DualDriftShift => this.GetDualDriftCustomDecisionText(decision),
+        _ => base.GetCustomDecisionText(decision)
+    };
 }
