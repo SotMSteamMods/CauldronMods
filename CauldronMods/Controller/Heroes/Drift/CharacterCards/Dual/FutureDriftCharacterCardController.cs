@@ -12,7 +12,7 @@ public class FutureDriftCharacterCardController(Card card, TurnTakerController t
     public override IEnumerator UsePower(int index = 0)
     {
         //Play an ongoing card. 
-        List<PlayCardAction> playAction = new List<PlayCardAction>();
+        List<PlayCardAction> playAction = [];
         IEnumerator coroutine = base.SelectAndPlayCardFromHand(base.HeroTurnTakerController, false, playAction, new LinqCardCriteria((Card c) => IsOngoing(c)));
         if (base.UseUnityCoroutines)
         {
@@ -27,7 +27,7 @@ public class FutureDriftCharacterCardController(Card card, TurnTakerController t
         {
             //At the end of your next turn, return it from play to your hand. 
             Card playedCard = playAction.FirstOrDefault().CardToPlay;
-            OnPhaseChangeStatusEffect statusEffect = new OnPhaseChangeStatusEffect(this.Card, nameof(this.EndOfTurnResponse), "At the end of your next turn, return " + playedCard.Title + " from play to your hand.", new TriggerType[] { TriggerType.MoveCard, TriggerType.AddTokensToPool }, this.Card);
+            OnPhaseChangeStatusEffect statusEffect = new(this.Card, nameof(this.EndOfTurnResponse), "At the end of your next turn, return " + playedCard.Title + " from play to your hand.", [TriggerType.MoveCard, TriggerType.AddTokensToPool], this.Card);
             statusEffect.NumberOfUses = 1;
             statusEffect.BeforeOrAfter = BeforeOrAfter.Before;
             statusEffect.TurnPhaseCriteria.Phase = Phase.End;
@@ -97,7 +97,7 @@ public class FutureDriftCharacterCardController(Card card, TurnTakerController t
             case 1:
                 {
                     //Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it and that hero uses that power.
-                    List<SelectLocationDecision> selectedDeck = new List<SelectLocationDecision>();
+                    List<SelectLocationDecision> selectedDeck = [];
                     coroutine = base.GameController.SelectADeck(base.HeroTurnTakerController, SelectionType.RevealTopCardOfDeck, (Location loc) => loc.IsHero && loc.IsDeck && !loc.OwnerTurnTaker.IsIncapacitatedOrOutOfGame && !loc.OwnerTurnTaker.IsIncapacitated, storedResults: selectedDeck, cardSource: base.GetCardSource());
                     if (base.UseUnityCoroutines)
                     {
@@ -111,7 +111,7 @@ public class FutureDriftCharacterCardController(Card card, TurnTakerController t
                     if (selectedDeck.Any())
                     {
                         //Reveal the top card of a hero deck and replace it. If that card has a power on it. Play it...
-                        List<Card> playResult = new List<Card>();
+                        List<Card> playResult = [];
                         coroutine = base.RevealCards_MoveMatching_ReturnNonMatchingCards(base.TurnTakerController, selectedDeck.FirstOrDefault().SelectedLocation.Location, true, false, false, new LinqCardCriteria((Card c) => c.HasPowers), null, 1, shuffleSourceAfterwards: false, revealedCardDisplay: RevealedCardDisplay.ShowRevealedCards, storedPlayResults: playResult);
                         if (base.UseUnityCoroutines)
                         {

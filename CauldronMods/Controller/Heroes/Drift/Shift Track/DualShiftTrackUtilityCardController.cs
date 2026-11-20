@@ -43,7 +43,7 @@ public abstract class DualShiftTrackUtilityCardController : ShiftTrackUtilityCar
         //shift trigger happens in the actual shifting logic
         base.AddTrigger<DealDamageAction>((DealDamageAction action) => Game.HasGameStarted && !HasTrackAbilityBeenActivated && action.Target == GetActiveCharacterCard(), this.TrackResponse, TriggerType.Hidden, TriggerTiming.Before);
 
-        string[] noResponseIdentifiers = new string[] { "ShiftTrack", "FutureDrift", "PastDrift" };
+        string[] noResponseIdentifiers = ["ShiftTrack", "FutureDrift", "PastDrift"];
         base.AddTrigger<CardEntersPlayAction>((CardEntersPlayAction cpa) => cpa.CardEnteringPlay != null && !this.HasTrackAbilityBeenActivated && cpa.CardEnteringPlay.Owner == TurnTakerControllerWithoutReplacements.TurnTaker && noResponseIdentifiers.All(id => !cpa.CardEnteringPlay.Identifier.Contains(id)), this.TrackResponse, TriggerType.Hidden, TriggerTiming.Before);
 
 
@@ -124,7 +124,7 @@ public abstract class DualShiftTrackUtilityCardController : ShiftTrackUtilityCar
 
     public IEnumerator SwapActiveDrift()
     {
-        IEnumerator coroutine = null;
+        IEnumerator coroutine;
 
         //put in a escape hatch if a swap has happened this turn after selecting to swap
         if (this.HasTrackAbilityBeenActivated)
