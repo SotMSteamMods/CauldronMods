@@ -574,6 +574,24 @@ namespace CauldronTests
         }
 
         [Test()]
+        public void TestHuntingGroundsVsNontarget()
+        {
+            SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Unity", "TheCelestialTribunal");
+
+            StartGame();
+
+            var executioner = StackDeck("CelestialExecutioner");
+            
+            PlayCard("HuntingGrounds");
+            var presence = PlayCard("InspiringPresence");
+
+            // Whenever {SwarmEater} destroys a target, play the top card of the environment deck.
+            DestroyCard(presence, swarm.CharacterCard);
+
+            AssertOnTopOfDeck(executioner);
+        }
+
+        [Test()]
         public void TestInsatiableCharge0Destroy()
         {
             SetupGameController("Cauldron.SwarmEater", "Legacy", "Haka", "Ra", "TheCelestialTribunal");
