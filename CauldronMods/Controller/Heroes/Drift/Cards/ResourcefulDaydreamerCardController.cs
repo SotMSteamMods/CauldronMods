@@ -1,24 +1,40 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron.Drift
+namespace Cauldron.Drift;
+
+public class ResourcefulDaydreamerCardController(Card card, TurnTakerController turnTakerController) : DriftBaseCardController(card, turnTakerController)
 {
-    public class ResourcefulDaydreamerCardController : DriftUtilityCardController
+    public override IEnumerator Play()
     {
-        public ResourcefulDaydreamerCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        //Draw 2 cards. 
+        IEnumerator coroutine = base.DrawCards(base.HeroTurnTakerController, 2);
+        if (base.UseUnityCoroutines)
         {
-
+            yield return base.GameController.StartCoroutine(coroutine);
+        }
+        else
+        {
+            base.GameController.ExhaustCoroutine(coroutine);
         }
 
-        public override IEnumerator Play()
+        //Discard a card.
+        coroutine = base.GameController.SelectAndDiscardCard(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+        if (base.UseUnityCoroutines)
         {
-            //Draw 2 cards. 
-            IEnumerator coroutine = base.DrawCards(base.HeroTurnTakerController, 2);
+            yield return base.GameController.StartCoroutine(coroutine);
+        }
+        else
+        {
+            base.GameController.ExhaustCoroutine(coroutine);
+        }
+
+        //{DriftPast} You may play a card.
+        if (this.IsTimeMatchingPast)
+        {
+            coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -27,9 +43,12 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
+        }
 
-            //Discard a card.
-            coroutine = base.GameController.SelectAndDiscardCard(base.HeroTurnTakerController, cardSource: base.GetCardSource());
+        //{DriftFuture} You may use a power.
+        if (this.IsTimeMatchingFuture)
+        {
+            coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -38,35 +57,7 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            //{DriftPast} You may play a card.
-            if (base.IsTimeMatching(Past))
-            {
-                coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-
-            //{DriftFuture} You may use a power.
-            if (base.IsTimeMatching(Future))
-            {
-                coroutine = base.GameController.SelectAndUsePower(base.HeroTurnTakerController, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
         }
+        yield break;
     }
 }

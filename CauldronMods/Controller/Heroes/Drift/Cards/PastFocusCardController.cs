@@ -1,32 +1,41 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron.Drift
+using static Cauldron.Drift.IDriftShifting;
+
+namespace Cauldron.Drift;
+
+public class PastFocusCardController(Card card, TurnTakerController turnTakerController) : DriftFocusUtilityCardController(card, turnTakerController, "{{ShiftLLL}}")
 {
-    public class PastFocusCardController : DriftFocusUtilityCardController
+
+    //When this card enters play, return all other focus cards to your hand.
+    /**Added to FocusUtilityCardController**/
+
+    //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftLLL}. If you shifted {DriftLLL} this way, you may play a card.
+    /**Trigger added to FocusUtilityCardController**/
+
+    public override IEnumerator ShiftResponse(DealDamageAction action)
     {
-        public PastFocusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        List<YesNoCardDecision> decision = [];
+        //...you may shift {DriftLLL}. 
+        CurrentCustomTextMode = DriftCustomTextMode.AskToShift;
+        IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, this.Card, action, decision, [this.CurrentShiftTrack], base.GetCardSource());
+        if (base.UseUnityCoroutines)
         {
-
+            yield return base.GameController.StartCoroutine(coroutine);
         }
-
-        //When this card enters play, return all other focus cards to your hand.
-        /**Added to FocusUtilityCardController**/
-
-        //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftLLL}. If you shifted {DriftLLL} this way, you may play a card.
-        /**Trigger added to FocusUtilityCardController**/
-
-        public override IEnumerator ShiftResponse(DealDamageAction action)
+        else
         {
-            List<YesNoCardDecision> decision = new List<YesNoCardDecision>();
-            //...you may shift {DriftLLL}. 
-            customMode = CustomMode.AskToShift;
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, this.Card, action, decision, new Card[] { base.GetShiftTrack() }, base.GetCardSource());
+            base.GameController.ExhaustCoroutine(coroutine);
+        }
+        if (decision.FirstOrDefault().Answer ?? false)
+        {
+            var numberOfShifts = new List<bool>();
+            coroutine = this.ShiftLLL(numberOfShifts);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -35,10 +44,10 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-            if (decision.FirstOrDefault().Answer ?? false)
+            //If you shifted {DriftLLL} this way, you may play a card.
+            if (numberOfShifts.Count() >= 3)
             {
-                var shiftCounter = new List<bool>();
-                coroutine = base.ShiftLLL(shiftCounter);
+                coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -47,32 +56,8 @@ namespace Cauldron.Drift
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                //If you shifted {DriftLLL} this way, you may play a card.
-                if (shiftCounter.Count() >= 3)
-                {
-                    coroutine = base.GameController.SelectAndPlayCardFromHand(base.HeroTurnTakerController, true, cardSource: GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                }
             }
-            yield break;
         }
-
-        public override CustomDecisionText GetCustomDecisionText(IDecision decision)
-        {
-            if (customMode == CustomMode.AskToShift)
-            {
-                string ShiftLLL = "{{ShiftLLL}}";
-                return new CustomDecisionText($"Do you want to shift {ShiftLLL}?", $"Should they shift {ShiftLLL}?", $"Vote for if they should shift {ShiftLLL}", $"shifting {ShiftLLL}");
-            }
-
-            return base.GetCustomDecisionText(decision);
-        }
+        yield break;
     }
 }

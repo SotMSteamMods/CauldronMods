@@ -1,32 +1,23 @@
-﻿using Handelabra;
+﻿using System.Collections;
+
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
-using System;
-using System.Collections;
-using System.Linq;
 
-namespace Cauldron.Drift
+namespace Cauldron.Drift;
+public class ThroughTheBreachSubCharacterCardController(Card card, TurnTakerController turnTakerController) : DriftSubCharacterCardController(card, turnTakerController)
 {
-    public class ThroughTheBreachSubCharacterCardController : DriftSubCharacterCardController
+    public override IEnumerator AfterFlipCardImmediateResponse()
     {
-        public ThroughTheBreachSubCharacterCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+        IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, this.CurrentShiftTrack, base.TurnTaker.OutOfGame, cardSource: base.GetCardSource());
+        if (base.UseUnityCoroutines)
         {
-
+            yield return base.GameController.StartCoroutine(coroutine);
         }
-
-        public override IEnumerator AfterFlipCardImmediateResponse()
+        else
         {
-            IEnumerator coroutine = base.GameController.MoveCard(base.TurnTakerController, base.GetShiftTrack(), base.TurnTaker.OutOfGame, cardSource: base.GetCardSource());
-            if (base.UseUnityCoroutines)
-            {
-                yield return base.GameController.StartCoroutine(coroutine);
-            }
-            else
-            {
-                base.GameController.ExhaustCoroutine(coroutine);
-            }
-            yield return base.AfterFlipCardImmediateResponse();
-            yield break;
+            base.GameController.ExhaustCoroutine(coroutine);
         }
+        yield return base.AfterFlipCardImmediateResponse();
+        yield break;
     }
 }

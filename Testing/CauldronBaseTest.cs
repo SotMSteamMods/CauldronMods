@@ -1,4 +1,5 @@
-﻿using Handelabra;
+﻿using Cauldron.Drift;
+using Handelabra;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 using Handelabra.Sentinels.UnitTest;
@@ -74,7 +75,7 @@ namespace CauldronTests
             {
                 cardSource = new CardSource(ttc.CharacterCardController);
             }
-            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new ImmuneToDamageStatusEffect();
+            ImmuneToDamageStatusEffect immuneToDamageStatusEffect = new();
             immuneToDamageStatusEffect.TargetCriteria.IsHero = new bool?(heroesImmune);
             immuneToDamageStatusEffect.TargetCriteria.IsVillain = new bool?(villainsImmune);
             immuneToDamageStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
@@ -83,7 +84,7 @@ namespace CauldronTests
 
         protected void AddCannotDealDamageTrigger(TurnTakerController ttc, Card specificCard, bool untilEnd = false)
         {
-            CannotDealDamageStatusEffect cannotDealDamageEffect = new CannotDealDamageStatusEffect();
+            CannotDealDamageStatusEffect cannotDealDamageEffect = new();
             cannotDealDamageEffect.SourceCriteria.IsSpecificCard = specificCard;
             if(!untilEnd)
             {
@@ -98,7 +99,7 @@ namespace CauldronTests
 
         protected void AddCannotDealNextDamageTrigger(TurnTakerController ttc, Card card)
         {
-            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new CannotDealDamageStatusEffect();
+            CannotDealDamageStatusEffect cannotDealDamageStatusEffect = new();
             cannotDealDamageStatusEffect.NumberOfUses = 1;
             cannotDealDamageStatusEffect.SourceCriteria.IsSpecificCard = card;
             this.RunCoroutine(this.GameController.AddStatusEffect(cannotDealDamageStatusEffect, true, new CardSource(ttc.CharacterCardController)));
@@ -106,7 +107,7 @@ namespace CauldronTests
 
         protected void AddCannotPlayCardsStatusEffect(TurnTakerController source, bool heroesCannotPlay, bool villainsCannotPlay, bool envCardsCannotPlay = false, bool untilEnd = false)
         {
-            CannotPlayCardsStatusEffect effect = new CannotPlayCardsStatusEffect();
+            CannotPlayCardsStatusEffect effect = new();
             if (heroesCannotPlay)
                 effect.CardCriteria.IsHero = true;
             if (villainsCannotPlay)
@@ -127,7 +128,7 @@ namespace CauldronTests
 
         protected void AddImmuneToNextDamageEffect(TurnTakerController ttc, bool villains, bool heroes)
         {
-            ImmuneToDamageStatusEffect effect = new ImmuneToDamageStatusEffect();
+            ImmuneToDamageStatusEffect effect = new();
             effect.TargetCriteria.IsVillain = villains;
             effect.TargetCriteria.IsHero = heroes;
             effect.NumberOfUses = 1;
@@ -136,7 +137,7 @@ namespace CauldronTests
 
         protected void AddReduceDamageTrigger(TurnTakerController ttc, bool heroesReduce, bool villainsReduce, int amount)
         {
-            ReduceDamageStatusEffect effect = new ReduceDamageStatusEffect(amount);
+            ReduceDamageStatusEffect effect = new(amount);
             effect.TargetCriteria.IsHero = new bool?(heroesReduce);
             effect.TargetCriteria.IsVillain = new bool?(villainsReduce);
             effect.UntilStartOfNextTurn(ttc.TurnTaker);
@@ -145,7 +146,7 @@ namespace CauldronTests
 
         protected void AddReduceNextDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
         {
-            ReduceDamageStatusEffect reduceDamageStatusEffect = new ReduceDamageStatusEffect(amount);
+            ReduceDamageStatusEffect reduceDamageStatusEffect = new(amount);
             reduceDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
             reduceDamageStatusEffect.NumberOfUses = 1;
             this.RunCoroutine(this.GameController.AddStatusEffect(reduceDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
@@ -153,7 +154,7 @@ namespace CauldronTests
 
         protected void AddIncreaseNextDamageOfDamageTypeTrigger(HeroTurnTakerController httc, DamageType damageType, int amount)
         {
-            IncreaseDamageStatusEffect increaseDamageStatusEffect = new IncreaseDamageStatusEffect(amount);
+            IncreaseDamageStatusEffect increaseDamageStatusEffect = new(amount);
             increaseDamageStatusEffect.DamageTypeCriteria.AddType(damageType);
             increaseDamageStatusEffect.NumberOfUses = 1;
             this.RunCoroutine(this.GameController.AddStatusEffect(increaseDamageStatusEffect, true, new CardSource(httc.CharacterCardController)));
@@ -161,26 +162,26 @@ namespace CauldronTests
 
         protected void AddIncreaseNextHealingTrigger(HeroTurnTakerController httc,  int amount)
         {
-            IncreaseGainHPStatusEffect increaseGainHPStatusEffect = new IncreaseGainHPStatusEffect(amount);
+            IncreaseGainHPStatusEffect increaseGainHPStatusEffect = new(amount);
             increaseGainHPStatusEffect.NumberOfUses = 1;
             this.RunCoroutine(this.GameController.AddStatusEffect(increaseGainHPStatusEffect, true, new CardSource(httc.CharacterCardController)));
         }
 
         protected void AddDamageCannotBeIncreasedTrigger(Func<DealDamageAction, bool> criteria, CardSource cardSource)
         {
-            Trigger<DealDamageAction> unincreasableDamageTrigger = new Trigger<DealDamageAction>( GameController, criteria, (DealDamageAction dd) => base.GameController.MakeDamageUnincreasable(dd, cardSource), TriggerType.MakeDamageUnincreasable.ToEnumerable(), TriggerTiming.Before, cardSource);
+            Trigger<DealDamageAction> unincreasableDamageTrigger = new(GameController, criteria, (DealDamageAction dd) => base.GameController.MakeDamageUnincreasable(dd, cardSource), TriggerType.MakeDamageUnincreasable.ToEnumerable(), TriggerTiming.Before, cardSource);
             this.GameController.AddTrigger(unincreasableDamageTrigger); 
         }
 
         protected void AddDamageCannotBeRedirectedTrigger(Func<DealDamageAction, bool> criteria, CardSource cardSource)
         {
-            Trigger<DealDamageAction> unredirectableTrigger = new Trigger<DealDamageAction>(GameController, criteria, (DealDamageAction dd) => base.GameController.MakeDamageNotRedirectable(dd, cardSource), TriggerType.MakeDamageNotRedirectable.ToEnumerable(), TriggerTiming.Before, cardSource);
+            Trigger<DealDamageAction> unredirectableTrigger = new(GameController, criteria, (DealDamageAction dd) => base.GameController.MakeDamageNotRedirectable(dd, cardSource), TriggerType.MakeDamageNotRedirectable.ToEnumerable(), TriggerTiming.Before, cardSource);
             this.GameController.AddTrigger(unredirectableTrigger);
         }
 
         protected void PreventEndOfTurnEffects(TurnTakerController ttc, Card cardToPrevent)
         {
-            PreventPhaseEffectStatusEffect preventPhaseEffectStatusEffect = new PreventPhaseEffectStatusEffect();
+            PreventPhaseEffectStatusEffect preventPhaseEffectStatusEffect = new();
             preventPhaseEffectStatusEffect.UntilStartOfNextTurn(ttc.TurnTaker);
             preventPhaseEffectStatusEffect.CardCriteria.IsSpecificCard = cardToPrevent;
             RunCoroutine(base.GameController.AddStatusEffect(preventPhaseEffectStatusEffect, showMessage: true, ttc.CharacterCardController.GetCardSource()));
@@ -188,7 +189,7 @@ namespace CauldronTests
 
         protected void PreventStartOfTurnEffects(TurnTakerController ttc, Card cardToPrevent)
         {
-            PreventPhaseEffectStatusEffect preventPhaseEffectStatusEffect = new PreventPhaseEffectStatusEffect(Phase.Start);
+            PreventPhaseEffectStatusEffect preventPhaseEffectStatusEffect = new(Phase.Start);
             preventPhaseEffectStatusEffect.UntilEndOfNextTurn(ttc.TurnTaker);
             preventPhaseEffectStatusEffect.CardCriteria.IsSpecificCard = cardToPrevent;
             RunCoroutine(base.GameController.AddStatusEffect(preventPhaseEffectStatusEffect, showMessage: true, ttc.CharacterCardController.GetCardSource()));
@@ -236,7 +237,7 @@ namespace CauldronTests
 
         protected void AssertDamageTypeChanged(HeroTurnTakerController httc, Card source, Card target, int amount, DamageType initialDamageType, DamageType expectedDamageType)
         {
-            List<DealDamageAction> storedResults = new List<DealDamageAction>();
+            List<DealDamageAction> storedResults = [];
             this.RunCoroutine(this.GameController.DealDamage(httc, source, (Card c) => c == target, amount, initialDamageType, false, false, storedResults, null, null, false, null, null, false, false, new CardSource(GetCardController(source))));
 
             if (storedResults != null)
@@ -296,17 +297,17 @@ namespace CauldronTests
 
         protected int CurrentShiftPosition()
         {
-            return this.GetShiftPool().CurrentValue;
+            return (drift.CharacterCardController as DriftSubCharacterCardController).CurrentShiftPosition;
         }
 
         protected TokenPool GetShiftPool()
         {
-            return this.GetShiftTrack().FindTokenPool("ShiftPool");
+            return (drift.CharacterCardController as DriftSubCharacterCardController).CurrentShiftPool;
         }
 
         protected Card GetShiftTrack()
         {
-            return base.FindCardsWhere((Card c) => c.SharedIdentifier == "ShiftTrack" && c.IsInPlayAndHasGameText, false).FirstOrDefault();
+            return (drift.CharacterCardController as DriftSubCharacterCardController).CurrentShiftTrack;
         }
 
         protected void AssertTrackPosition(int expectedPosition)
@@ -333,22 +334,20 @@ namespace CauldronTests
 
         protected void GoToShiftPosition(int position)
         {
-            if (position > CurrentShiftPosition())
+            int delta = position - CurrentShiftPosition();
+            var coroutine = delta switch
             {
-                DecisionSelectFunction = 2;
-                for (int i = CurrentShiftPosition(); i < position; i++)
-                {
-                    AddTokensToPool(GetShiftPool(), 1);
-                }
-            }
-            else
-            {
-                DecisionSelectFunction = 1;
-                for (int i = CurrentShiftPosition(); i > position; i--)
-                {
-                    RemoveTokensFromPool(GetShiftPool(), 1);
-                }
-            }
+                -3 => (drift.CharacterCardController as DriftSubCharacterCardController).ShiftLLL(),
+                -2 => (drift.CharacterCardController as DriftSubCharacterCardController).ShiftLL(),
+                -1 => (drift.CharacterCardController as DriftSubCharacterCardController).ShiftL(),
+                 0 => GameController.DoNothing(),
+                 1 => (drift.CharacterCardController as DriftSubCharacterCardController).ShiftR(),
+                 2 => (drift.CharacterCardController as DriftSubCharacterCardController).ShiftRR(),
+                 3 => (drift.CharacterCardController as DriftSubCharacterCardController).ShiftRRR(),
+                 _ => GameController.DoNothing()
+
+            };
+            this.RunCoroutine(coroutine);
         }
 
         public Card GetPositionalBreachShiftTrack(int position)

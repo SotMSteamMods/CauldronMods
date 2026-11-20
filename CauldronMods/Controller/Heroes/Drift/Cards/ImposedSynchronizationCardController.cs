@@ -1,24 +1,33 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron.Drift
-{
-    public class ImposedSynchronizationCardController : DriftUtilityCardController
-    {
-        public ImposedSynchronizationCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-        {
+namespace Cauldron.Drift;
 
+public class ImposedSynchronizationCardController(Card card, TurnTakerController turnTakerController) : DriftBaseCardController(card, turnTakerController)
+{
+    public override IEnumerator Play()
+    {
+        //Draw a card.
+        IEnumerator coroutine = base.DrawCard();
+        if (base.UseUnityCoroutines)
+        {
+            yield return base.GameController.StartCoroutine(coroutine);
+        }
+        else
+        {
+            base.GameController.ExhaustCoroutine(coroutine);
         }
 
-        public override IEnumerator Play()
+        //{DriftPast}
+        if (this.IsTimeMatchingPast)
         {
-            //Draw a card.
-            IEnumerator coroutine = base.DrawCard();
+            List<SelectCardDecision> targetDecisions = [];
+            //Select a target. Reduce damage dealt to that target by 1 until the start of your next turn.
+            coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ReduceDamageTaken, new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText), targetDecisions, false, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -28,87 +37,71 @@ namespace Cauldron.Drift
                 base.GameController.ExhaustCoroutine(coroutine);
             }
 
-            //{DriftPast}
-            if (base.IsTimeMatching(Past))
+            ReduceDamageStatusEffect statusEffect = new(amount: 1);
+            statusEffect.TargetCriteria.IsSpecificCard = targetDecisions.FirstOrDefault().SelectedCard;
+            statusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            statusEffect.UntilTargetLeavesPlay(targetDecisions.FirstOrDefault().SelectedCard);
+            coroutine = base.AddStatusEffect(statusEffect);
+            if (base.UseUnityCoroutines)
             {
-                List<SelectCardDecision> targetDecisions = new List<SelectCardDecision>();
-                //Select a target. Reduce damage dealt to that target by 1 until the start of your next turn.
-                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.ReduceDamageTaken, new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText), targetDecisions, false, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                ReduceDamageStatusEffect statusEffect = new ReduceDamageStatusEffect(1);
-                statusEffect.TargetCriteria.IsSpecificCard = targetDecisions.FirstOrDefault().SelectedCard;
-                statusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                statusEffect.UntilTargetLeavesPlay(targetDecisions.FirstOrDefault().SelectedCard);
-                coroutine = base.AddStatusEffect(statusEffect);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                //Shift {DriftL}.
-                coroutine = base.ShiftL();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                yield return base.GameController.StartCoroutine(coroutine);
             }
-            //{DriftFuture} 
-            if (base.IsTimeMatching(Future))
+            else
             {
-                List<SelectCardDecision> targetDecisions = new List<SelectCardDecision>();
-                //Select a target. Increase damage dealt by that target by 1 until the start of your next turn. 
-                coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText), targetDecisions, false, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                IncreaseDamageStatusEffect statusEffect = new IncreaseDamageStatusEffect(1);
-                statusEffect.SourceCriteria.IsSpecificCard = targetDecisions.FirstOrDefault().SelectedCard;
-                statusEffect.UntilStartOfNextTurn(base.TurnTaker);
-                statusEffect.UntilTargetLeavesPlay(targetDecisions.FirstOrDefault().SelectedCard);
-                coroutine = base.AddStatusEffect(statusEffect);
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-
-                //Shift {DriftR}.
-                coroutine = base.ShiftR();
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
+                base.GameController.ExhaustCoroutine(coroutine);
             }
-            yield break;
+
+            //Shift {DriftL}.
+            coroutine = this.ShiftL();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
         }
+        //{DriftFuture} 
+        if (this.IsTimeMatchingFuture)
+        {
+            List<SelectCardDecision> targetDecisions = [];
+            //Select a target. Increase damage dealt by that target by 1 until the start of your next turn. 
+            coroutine = base.GameController.SelectCardAndStoreResults(base.HeroTurnTakerController, SelectionType.IncreaseDamage, new LinqCardCriteria((Card c) => c.IsTarget && c.IsInPlayAndHasGameText), targetDecisions, false, cardSource: base.GetCardSource());
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            IncreaseDamageStatusEffect statusEffect = new(amount: 1);
+            statusEffect.SourceCriteria.IsSpecificCard = targetDecisions.FirstOrDefault().SelectedCard;
+            statusEffect.UntilStartOfNextTurn(base.TurnTaker);
+            statusEffect.UntilTargetLeavesPlay(targetDecisions.FirstOrDefault().SelectedCard);
+            coroutine = base.AddStatusEffect(statusEffect);
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+
+            //Shift {DriftR}.
+            coroutine = this.ShiftR();
+            if (base.UseUnityCoroutines)
+            {
+                yield return base.GameController.StartCoroutine(coroutine);
+            }
+            else
+            {
+                base.GameController.ExhaustCoroutine(coroutine);
+            }
+        }
+        yield break;
     }
 }
