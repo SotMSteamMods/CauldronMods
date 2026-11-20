@@ -174,18 +174,6 @@ public abstract class DualShiftTrackUtilityCardController : ShiftTrackUtilityCar
         {
             base.GameController.ExhaustCoroutine(coroutine);
         }
-        ////Switch visual
-        //coroutine = base.GameController.SwitchCards(this.CurrentShiftTrack, base.FindCard(this.ShiftTrackIdentifierWithPrefixAndCurrentPosition, false), cardSource: GetCardSource());
-        //if (base.UseUnityCoroutines)
-        //{
-        //    yield return base.GameController.StartCoroutine(coroutine);
-        //}
-        //else
-        //{
-        //    base.GameController.ExhaustCoroutine(coroutine);
-        //}
-
- 
         
         Card switchFromDrift = GetActiveCharacterCard();
         Card switchToDrift = GetInactiveCharacterCard(inactivePosition);
@@ -206,7 +194,7 @@ public abstract class DualShiftTrackUtilityCardController : ShiftTrackUtilityCar
     public Card GetInactiveCharacterCard(int inactivePosition = 0)
     {
         inactivePosition = inactivePosition == 0 ? InactiveCharacterPosition() : inactivePosition;
-        string activeBaseIdentifier = GetActiveCharacterCard().Identifier.Replace("Red", "").Replace("Blue", "");
+        string activeBaseIdentifier = GetActiveCharacterCard().Identifier;
         string desiredIdentifier;
         if(activeBaseIdentifier.Contains("Past"))
         {
@@ -231,40 +219,29 @@ public abstract class DualShiftTrackUtilityCardController : ShiftTrackUtilityCar
         IEnumerable<CardPropertiesJournalEntry> positionEntries = base.Journal.CardPropertiesEntries((CardPropertiesJournalEntry entry) => entry.Card.SharedIdentifier == this.ShiftTrackIdentifier && inactivePositions.Contains(entry.Key));
 
         //If a position is set to true then there is an odd number of entries (true), if the position is set to false then there is an even number of entries (true + false)
-        if (positionEntries.Where((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 1).Count() % 2 == 1)
+        if (positionEntries.Count((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 1) % 2 == 1)
         {
             inactivePosition = 1;
         }
-        if (positionEntries.Where((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 2).Count() % 2 == 1)
+        if (positionEntries.Count((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 2) % 2 == 1)
         {
             inactivePosition = 2;
         }
-        if (positionEntries.Where((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 3).Count() % 2 == 1)
+        if (positionEntries.Count((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 3) % 2 == 1)
         {
             inactivePosition = 3;
         }
-        if (positionEntries.Where((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 4).Count() % 2 == 1)
+        if (positionEntries.Count((CardPropertiesJournalEntry entry) => entry.Key == DriftPosition + 4) % 2 == 1)
         {
             inactivePosition = 4;
         }
         return inactivePosition;
     }
 
-    public override CustomDecisionText GetCustomDecisionText(IDecision decision)
+    public override CustomDecisionText GetCustomDecisionText(IDecision decision) => customMode switch
     {
-
-        if (customMode == CustomMode.AskToSwap)
-        {
-            return new CustomDecisionText("Do you want to switch character cards?", "Should they switch character cards?", "Vote for if they should switch character cards?", "switching character cards");
-        }
-
-        if(customMode == CustomMode.AskToSwapFromPlay)
-        {
-            return new CustomDecisionText($"Do you want to switch character cards before playing [b]{customTextCardBeingPlayed.Title}[/b]?", $"Should they switch character cards before playing {customTextCardBeingPlayed.Title}?", $"Vote for if they should switch character cardsbefore playing {customTextCardBeingPlayed.Title}?", $"switching character cards before playing {customTextCardBeingPlayed.Title}");
-        }
-
-        return base.GetCustomDecisionText(decision);
-    }
-
-    
+        CustomMode.AskToSwap => new CustomDecisionText("Do you want to switch character cards?", "Should they switch character cards?", "Vote for if they should switch character cards?", "switching character cards"),
+        CustomMode.AskToSwapFromPlay => new CustomDecisionText($"Do you want to switch character cards before playing [b]{customTextCardBeingPlayed.Title}[/b]?", $"Should they switch character cards before playing {customTextCardBeingPlayed.Title}?", $"Vote for if they should switch character cardsbefore playing {customTextCardBeingPlayed.Title}?", $"switching character cards before playing {customTextCardBeingPlayed.Title}"),
+        _ => base.GetCustomDecisionText(decision)
+    };
 }
