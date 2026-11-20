@@ -177,22 +177,29 @@ public static class DriftShiftingExtensions
         /// will be made if the new position is invalid.
         /// </summary>
         /// <param name="newPositionModifier">The offset to change the Shift Track position by</param>
+        /// <param name="silentShift">Whether this switch should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        public IEnumerator SwitchTrack(int newPositionModifier = 0)
+        public IEnumerator SwitchTrack(int newPositionModifier = 0, bool silentShift = false)
         {
             if (newPositionModifier == 0) yield break;
             int newShiftPosition = shifting.CurrentShiftPosition + newPositionModifier;
             if (!shifting.IsValidShiftPosition(newShiftPosition)) yield break;
 
             string newTrackIdentifier = shifting.ShiftTrackIdentifierWithPrefix + newShiftPosition;
-            IEnumerator coroutine = shifting.ShiftingGameController.SwitchCards(
-                    cardA: shifting.CurrentShiftTrack,
-                    cardB: shifting.ShiftingGameController.FindCardsWhere(
-                        (Card c) =>
-                            c.Identifier == newTrackIdentifier,
-                            realCardsOnly: false
-                        ).FirstOrDefault(),
-                    cardSource: shifting.ShiftingCardSource);
+            SwitchCardsAction switchCardsAction = new(
+                cardA: shifting.CurrentShiftTrack,
+                cardB: shifting.ShiftingGameController.FindCardsWhere(
+                    (Card c) =>
+                        c.Identifier == newTrackIdentifier,
+                        realCardsOnly: false
+                    ).FirstOrDefault(),
+                cardSource: shifting.ShiftingCardSource);
+            if (silentShift)
+            {
+                switchCardsAction.AllowTriggersToRespond = false;
+                switchCardsAction.CanBeCancelled = false;
+            }
+            IEnumerator coroutine = shifting.ShiftingGameController.DoAction(switchCardsAction);
             if (shifting.ShiftingGameController.UseUnityCoroutines)
             {
                 yield return shifting.ShiftingGameController.StartCoroutine(coroutine);
@@ -207,14 +214,15 @@ public static class DriftShiftingExtensions
         /// Shifts Drift left once.
         /// </summary>
         /// <param name="numberOfShifts">The List that stores the number of shifts performed. Use <c>numberOfShifts.Count()</c> to retreive the number of shifts performed.</param>
+        /// <param name="silentShift">Whether this shift should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        public IEnumerator ShiftL(List<bool> numberOfShifts = null)
+        public IEnumerator ShiftL(List<bool> numberOfShifts = null, bool silentShift = false)
         {
             int direction = -1;
             int amount = 1;
             numberOfShifts ??= [];
 
-            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftL}", numberOfShifts);
+            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftL}", numberOfShifts, silentShift);
             if (shifting.ShiftingGameController.UseUnityCoroutines)
             {
                 yield return shifting.ShiftingGameController.StartCoroutine(coroutine);
@@ -229,14 +237,15 @@ public static class DriftShiftingExtensions
         /// Shifts Drift left twice.
         /// </summary>
         /// <param name="numberOfShifts">The List that stores the number of shifts performed. Use <c>numberOfShifts.Count()</c> to retreive the number of shifts performed.</param>
+        /// <param name="silentShift">Whether this shift should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        public IEnumerator ShiftLL(List<bool> numberOfShifts = null)
+        public IEnumerator ShiftLL(List<bool> numberOfShifts = null, bool silentShift = false)
         {
             int direction = -1;
             int amount = 2;
             numberOfShifts ??= [];
 
-            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftLL}", numberOfShifts);
+            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftLL}", numberOfShifts, silentShift);
             if (shifting.ShiftingGameController.UseUnityCoroutines)
             {
                 yield return shifting.ShiftingGameController.StartCoroutine(coroutine);
@@ -251,14 +260,15 @@ public static class DriftShiftingExtensions
         /// Shifts Drift left thrice.
         /// </summary>
         /// <param name="numberOfShifts">The List that stores the number of shifts performed. Use <c>numberOfShifts.Count()</c> to retreive the number of shifts performed.</param>
+        /// <param name="silentShift">Whether this shift should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        public IEnumerator ShiftLLL(List<bool> numberOfShifts = null)
+        public IEnumerator ShiftLLL(List<bool> numberOfShifts = null, bool silentShift = false)
         {
             int direction = -1;
             int amount = 3;
             numberOfShifts ??= [];
 
-            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftLLL}", numberOfShifts);
+            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftLLL}", numberOfShifts, silentShift);
             if (shifting.ShiftingGameController.UseUnityCoroutines)
             {
                 yield return shifting.ShiftingGameController.StartCoroutine(coroutine);
@@ -274,14 +284,15 @@ public static class DriftShiftingExtensions
         /// </summary>
         /// <param name="shifting">The instance of IDriftShifting being extended</param>
         /// <param name="numberOfShifts">The List that stores the number of shifts performed. Use <c>numberOfShifts.Count()</c> to retreive the number of shifts performed.</param>
+        /// <param name="silentShift">Whether this shift should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        public IEnumerator ShiftR(List<bool> numberOfShifts = null)
+        public IEnumerator ShiftR(List<bool> numberOfShifts = null, bool silentShift = false)
         {
             int direction = 1;
             int amount = 1;
             numberOfShifts ??= [];
 
-            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftR}", numberOfShifts);
+            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftR}", numberOfShifts, silentShift);
             if (shifting.ShiftingGameController.UseUnityCoroutines)
             {
                 yield return shifting.ShiftingGameController.StartCoroutine(coroutine);
@@ -296,14 +307,15 @@ public static class DriftShiftingExtensions
         /// Shifts Drift right twice.
         /// </summary>
         /// <param name="numberOfShifts">The List that stores the number of shifts performed. Use <c>numberOfShifts.Count()</c> to retreive the number of shifts performed.</param>
+        /// <param name="silentShift">Whether this shift should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        public IEnumerator ShiftRR(List<bool> numberOfShifts = null)
+        public IEnumerator ShiftRR(List<bool> numberOfShifts = null, bool silentShift = false)
         {
             int direction = 1;
             int amount = 2;
             numberOfShifts ??= [];
 
-            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftRR}", numberOfShifts);
+            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftRR}", numberOfShifts, silentShift);
             if (shifting.ShiftingGameController.UseUnityCoroutines)
             {
                 yield return shifting.ShiftingGameController.StartCoroutine(coroutine);
@@ -318,14 +330,15 @@ public static class DriftShiftingExtensions
         /// Shifts Drift right thrice.
         /// </summary>
         /// <param name="numberOfShifts">The List that stores the number of shifts performed. Use <c>numberOfShifts.Count()</c> to retreive the number of shifts performed.</param>
+        /// <param name="silentShift">Whether this shift should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        public IEnumerator ShiftRRR(List<bool> numberOfShifts = null)
+        public IEnumerator ShiftRRR(List<bool> numberOfShifts = null, bool silentShift = false)
         {
             int direction = 1;
             int amount = 3;
             numberOfShifts ??= [];
 
-            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftRRR}", numberOfShifts);
+            IEnumerator coroutine = shifting.PerformShiftAction(direction, amount, "{ShiftRRR}", numberOfShifts, silentShift);
             if (shifting.ShiftingGameController.UseUnityCoroutines)
             {
                 yield return shifting.ShiftingGameController.StartCoroutine(coroutine);
@@ -347,11 +360,13 @@ public static class DriftShiftingExtensions
         /// <param name="amount">How far to shift in the specified direction</param>
         /// <param name="shiftText">The shift icon to display in DualDrift's prompts</param>
         /// <param name="numberOfShifts">The List that stores the number of shifts performed. Use <c>numberOfShifts.Count()</c> to retreive the number of shifts performed.</param>
+        /// <param name="silentShift">Whether this shift should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        private IEnumerator PerformShiftAction(int direction, int amount, string shiftText, List<bool> numberOfShifts)
+        private IEnumerator PerformShiftAction(int direction, int amount, string shiftText, List<bool> numberOfShifts, bool silentShift = false)
         {
-            IEnumerator shiftingCoroutine = shifting.ShiftAction(direction, amount, numberOfShifts);
-            if (shifting.ShiftingGameController.FindCardController(shifting.CurrentShiftTrack) is DualShiftTrackUtilityCardController dualShiftTrack &&
+            IEnumerator shiftingCoroutine = shifting.ShiftAction(direction, amount, numberOfShifts, silentShift);
+            if (!silentShift && 
+                shifting.ShiftingGameController.FindCardController(shifting.CurrentShiftTrack) is DualShiftTrackUtilityCardController dualShiftTrack &&
                 !dualShiftTrack.HasTrackAbilityBeenActivated)
             {
                 shiftingCoroutine = shifting.DualDriftShifting(dualShiftTrack, direction, amount, shiftText, numberOfShifts);
@@ -381,19 +396,12 @@ public static class DriftShiftingExtensions
         /// <param name="direction">Whether to shift right or left. Any positive value will shift right. Any negative value will shift left.</param>
         /// <param name="amount">How far to shift in the specified direction</param>
         /// <param name="numberOfShifts">The List that stores the number of shifts performed. Use <c>numberOfShifts.Count()</c> to retreive the number of shifts performed.</param>
+        /// <param name="silentShift">Whether this shift should be seen or responded to by players or actions</param>
         /// <returns>The coroutine to be executed.</returns>
-        public IEnumerator ShiftAction(int direction, int amount, List<bool> numberOfShifts)
+        public IEnumerator ShiftAction(int direction, int amount, List<bool> numberOfShifts, bool silentShift = false)
         {
-
-            Func<TokenPool, int, CardSource, IEnumerator> tokenPoolManipulationFunc = direction switch
-            {
-                < 0 => (TokenPool pool, int amount, CardSource source) =>
-                        shifting.ShiftingGameController.RemoveTokensFromPool(pool, amount, cardSource: source),
-                > 0 => shifting.ShiftingGameController.AddTokensToPool,
-                0   => (TokenPool pool, int amount, CardSource source) =>
-                         shifting.ShiftingGameController.DoNothing()
-            };
-
+            if (direction == 0) yield break;
+           
             IEnumerator coroutine;
             for (int i = 0; i < amount; i++)
             {
@@ -415,7 +423,8 @@ public static class DriftShiftingExtensions
                 numberOfShifts.Add(true);
 
                 // Use logic from CardController.SetCardPropertyToTrueIfRealAction
-                if (!shifting.ShiftingGameController.PretendMode &&
+                if (!silentShift &&
+                    !shifting.ShiftingGameController.PretendMode &&
                     !shifting.ShiftingGameController.PreviewMode)
                 {
                     shifting.ShiftingGameController.AddCardPropertyJournalEntry(
@@ -424,7 +433,7 @@ public static class DriftShiftingExtensions
                         boolValue: true);
                 }
 
-                coroutine = shifting.SwitchTrack(direction);
+                coroutine = shifting.SwitchTrack(direction, silentShift);
                 if (shifting.ShiftingGameController.UseUnityCoroutines)
                 {
                     yield return shifting.ShiftingGameController.StartCoroutine(coroutine);
@@ -434,7 +443,21 @@ public static class DriftShiftingExtensions
                     shifting.ShiftingGameController.ExhaustCoroutine(coroutine);
                 }
 
-                coroutine = tokenPoolManipulationFunc(shifting.CurrentShiftPool, 1, shifting.ShiftingCardSource);
+                GameAction tokenPoolUpdateAction = direction switch
+                {
+                    < 0 => new RemoveTokensFromPoolAction(shifting.ShiftingCardSource, shifting.CurrentShiftPool, numberOfTokens: 1),
+                    > 0 => new AddTokensToPoolAction(shifting.ShiftingCardSource, shifting.CurrentShiftPool, numberOfTokens: 1),
+                    0 => null
+                };
+
+                if (tokenPoolUpdateAction is null) yield break; // should never be reached, but an escape hatch
+                if (silentShift)
+                {
+                    tokenPoolUpdateAction.AllowTriggersToRespond = false;
+                    tokenPoolUpdateAction.CanBeCancelled = false;
+                }
+
+                coroutine = shifting.ShiftingGameController.DoAction(tokenPoolUpdateAction);
                 if (shifting.ShiftingGameController.UseUnityCoroutines)
                 {
                     yield return shifting.ShiftingGameController.StartCoroutine(coroutine);

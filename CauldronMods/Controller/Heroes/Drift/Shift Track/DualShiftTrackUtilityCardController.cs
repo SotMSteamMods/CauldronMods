@@ -156,16 +156,15 @@ public abstract class DualShiftTrackUtilityCardController : ShiftTrackUtilityCar
         int delta = inactivePosition - this.CurrentShiftPosition;
         coroutine = delta switch
         {
-            -3 => this.ShiftLLL(),
-            -2 => this.ShiftLL(),
-            -1 => this.ShiftL(),
+            -3 => this.ShiftLLL(silentShift: true),
+            -2 => this.ShiftLL(silentShift: true),
+            -1 => this.ShiftL(silentShift: true),
             0 => GameController.DoNothing(),
-            1 => this.ShiftR(),
-            2 => this.ShiftRR(),
-            3 => this.ShiftRRR(),
+            1 => this.ShiftR(silentShift: true),
+            2 => this.ShiftRR(silentShift: true),
+            3 => this.ShiftRRR(silentShift: true),
             _ => GameController.DoNothing()
         };
-
         
         if (base.UseUnityCoroutines)
         {
