@@ -284,23 +284,14 @@ public abstract class DriftSubCharacterCardController : HeroCharacterCardControl
         }
 
         CardController selectTrackController = cardToControllerDict[selectedTrack];
-        int tokensToAdd = 0;
-        if (selectTrackController is BaseShiftTrack1CardController || selectTrackController is DualShiftTrack1CardController || selectTrackController is ThroughTheBreachShiftTrack1CardController)
+        int tokensToAdd = selectTrackController switch
         {
-            tokensToAdd = 1;
-        }
-        else if (selectTrackController is BaseShiftTrack2CardController || selectTrackController is DualShiftTrack2CardController || selectTrackController is ThroughTheBreachShiftTrack2CardController)
-        {
-            tokensToAdd = 2;
-        }
-        else if (selectTrackController is BaseShiftTrack3CardController || selectTrackController is DualShiftTrack3CardController || selectTrackController is ThroughTheBreachShiftTrack3CardController)
-        {
-            tokensToAdd = 3;
-        }
-        else if (selectTrackController is BaseShiftTrack4CardController || selectTrackController is DualShiftTrack4CardController || selectTrackController is ThroughTheBreachShiftTrack4CardController)
-        {
-            tokensToAdd = 4;
-        }
+            BaseShiftTrack1CardController or DualShiftTrack1CardController or ThroughTheBreachShiftTrack1CardController => 1,
+            BaseShiftTrack2CardController or DualShiftTrack2CardController or ThroughTheBreachShiftTrack2CardController => 2,
+            BaseShiftTrack3CardController or DualShiftTrack3CardController or ThroughTheBreachShiftTrack3CardController => 3,
+            BaseShiftTrack4CardController or DualShiftTrack4CardController or ThroughTheBreachShiftTrack4CardController => 4,
+            _ => 0
+        };
 
         coroutine = base.GameController.AddTokensToPool(selectedTrack.FindTokenPool(this.ShiftPoolIdentifier), tokensToAdd, new CardSource(this));
         if (base.UseUnityCoroutines)
@@ -327,4 +318,40 @@ public abstract class DriftSubCharacterCardController : HeroCharacterCardControl
             "starting Shift Track position"),
         _ => base.GetCustomDecisionText(decision)
     };
+
+    public override bool ShouldChangeCutout(CutoutInfo currentInfo, GameAction action, ActionTiming timing, out CutoutInfo changedInfo, out CutoutAnimation animation)
+    {
+        bool result = base.ShouldChangeCutout(currentInfo, action, timing, out changedInfo, out animation);
+        if (action is not ModifyTokensAction modifyTokensAction) return result;
+        if (modifyTokensAction.TokenPool.Identifier != this.ShiftPoolIdentifier) return result;
+
+        if (timing == ActionTiming.WillPerform)
+        {
+            animation = CutoutAnimation.Fade;
+            result = true;
+            changedInfo.Identifier = currentInfo.Identifier;
+            changedInfo.ExtraCutouts = [];
+
+            return result;
+        }
+
+        if (timing == ActionTiming.DidPerform)
+        {
+            string updatedSuffix = this.IsTimeMatchingPast switch
+            {
+                true => "Blue",
+                false => "Red"
+            };
+
+            if (currentInfo.HeroTurnSuffix == updatedSuffix) return result;
+
+            result = true;
+            changedInfo.Identifier = currentInfo.Identifier;
+            changedInfo.HeroTurnSuffix = updatedSuffix;
+            changedInfo.VillainTurnSuffix = updatedSuffix;
+            animation = CutoutAnimation.Fade;
+        }
+
+        return result;
+    }
 }
