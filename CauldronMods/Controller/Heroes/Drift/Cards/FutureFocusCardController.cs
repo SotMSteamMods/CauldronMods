@@ -7,28 +7,37 @@ using Handelabra.Sentinels.Engine.Model;
 
 using static Cauldron.Drift.IDriftShifting;
 
-namespace Cauldron.Drift
-{
-    public class FutureFocusCardController : DriftFocusUtilityCardController
-    {
-        public FutureFocusCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController, "{{ShiftRRR}}")
-        {
+namespace Cauldron.Drift;
 
+public class FutureFocusCardController(Card card, TurnTakerController turnTakerController) : DriftFocusUtilityCardController(card, turnTakerController, "{{ShiftRRR}}")
+{
+
+    //When this card enters play, return all other focus cards to your hand.
+    /**Added to FocusUtilityCardController**/
+
+
+    //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
+    /**Trigger added to FocusUtilityCardController**/
+
+    public override IEnumerator ShiftResponse(DealDamageAction action)
+    {
+        List<YesNoCardDecision> decision = [];
+        //...you may shift {DriftRRR}. 
+        CurrentCustomTextMode = DriftCustomTextMode.AskToShift;
+        IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, this.Card, action, decision, new Card[] { this.CurrentShiftTrack }, base.GetCardSource());
+        if (base.UseUnityCoroutines)
+        {
+            yield return base.GameController.StartCoroutine(coroutine);
+        }
+        else
+        {
+            base.GameController.ExhaustCoroutine(coroutine);
         }
 
-        //When this card enters play, return all other focus cards to your hand.
-        /**Added to FocusUtilityCardController**/
-
-
-        //When {Drift} is dealt damage, if you have not shifted this turn, you may shift {DriftRRR}. If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
-        /**Trigger added to FocusUtilityCardController**/
-
-        public override IEnumerator ShiftResponse(DealDamageAction action)
+        if (decision.FirstOrDefault().Answer ?? false)
         {
-            List<YesNoCardDecision> decision = new List<YesNoCardDecision>();
-            //...you may shift {DriftRRR}. 
-            CurrentCustomTextMode = DriftCustomTextMode.AskToShift;
-            IEnumerator coroutine = base.GameController.MakeYesNoCardDecision(base.HeroTurnTakerController, SelectionType.Custom, this.Card, action, decision, new Card[] { this.GetShiftTrack() }, base.GetCardSource());
+            var numberOfShifts = new List<bool>();
+            coroutine = this.ShiftRRR(numberOfShifts);
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -37,11 +46,10 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            if (decision.FirstOrDefault().Answer ?? false)
+            //If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
+            if (numberOfShifts.Count() >= 3)
             {
-                var numberOfShifts = new List<bool>();
-                coroutine = this.ShiftRRR(numberOfShifts);
+                coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
                 if (base.UseUnityCoroutines)
                 {
                     yield return base.GameController.StartCoroutine(coroutine);
@@ -50,21 +58,8 @@ namespace Cauldron.Drift
                 {
                     base.GameController.ExhaustCoroutine(coroutine);
                 }
-                //If you shifted {DriftRRR} this way, {Drift} deals 1 target 3 radiant damage.
-                if (numberOfShifts.Count() >= 3)
-                {
-                    coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 3, DamageType.Radiant, 1, false, 1, cardSource: base.GetCardSource());
-                    if (base.UseUnityCoroutines)
-                    {
-                        yield return base.GameController.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        base.GameController.ExhaustCoroutine(coroutine);
-                    }
-                }
             }
-            yield break;
         }
+        yield break;
     }
 }

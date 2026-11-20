@@ -5,29 +5,37 @@ using System.Linq;
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron.Drift
+namespace Cauldron.Drift;
+
+public class TransitionShockCardController(Card card, TurnTakerController turnTakerController) : DriftBaseCardController(card, turnTakerController)
 {
-    public class TransitionShockCardController : DriftBaseCardController
+    public override void AddTriggers()
     {
-        public TransitionShockCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
-        {
+        //Whenever you shift from {DriftPast} to {DriftFuture}... 
+        base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == this.ShiftPoolIdentifier && action.TokenPool.CurrentValue == 3, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+        //...or from {DriftFuture} to {DriftPast}...
+        base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == this.ShiftPoolIdentifier && action.TokenPool.CurrentValue == 2, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
+        //...{Drift} may deal 1 other target and herself 1 psychic damage.
+    }
 
+    private IEnumerator DealDamageResponse(ModifyTokensAction action)
+    {
+        //...{Drift} may deal 1 other target...
+        List<SelectCardDecision> targetDecision = [];
+        IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 1, DamageType.Psychic, 1, true, 1, additionalCriteria: (Card c) => c != base.GetActiveCharacterCard(), storedResultsDecisions: targetDecision, cardSource: base.GetCardSource());
+        if (base.UseUnityCoroutines)
+        {
+            yield return base.GameController.StartCoroutine(coroutine);
+        }
+        else
+        {
+            base.GameController.ExhaustCoroutine(coroutine);
         }
 
-        public override void AddTriggers()
+        //...and herself 1 psychic damage.
+        if (targetDecision.Any())
         {
-            //Whenever you shift from {DriftPast} to {DriftFuture}... 
-            base.AddTrigger<AddTokensToPoolAction>((AddTokensToPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == this.ShiftPoolIdentifier() && action.TokenPool.CurrentValue == 3, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-            //...or from {DriftFuture} to {DriftPast}...
-            base.AddTrigger<RemoveTokensFromPoolAction>((RemoveTokensFromPoolAction action) => action.IsSuccessful && action.TokenPool.Identifier == this.ShiftPoolIdentifier() && action.TokenPool.CurrentValue == 2, this.DealDamageResponse, TriggerType.DealDamage, TriggerTiming.After);
-            //...{Drift} may deal 1 other target and herself 1 psychic damage.
-        }
-
-        private IEnumerator DealDamageResponse(ModifyTokensAction action)
-        {
-            //...{Drift} may deal 1 other target...
-            List<SelectCardDecision> targetDecision = new List<SelectCardDecision>();
-            IEnumerator coroutine = base.GameController.SelectTargetsAndDealDamage(base.HeroTurnTakerController, new DamageSource(base.GameController, base.GetActiveCharacterCard()), 1, DamageType.Psychic, 1, true, 1, additionalCriteria: (Card c) => c != base.GetActiveCharacterCard(), storedResultsDecisions: targetDecision, cardSource: base.GetCardSource());
+            coroutine = base.DealDamage(base.GetActiveCharacterCard(), base.GetActiveCharacterCard(), 1, DamageType.Psychic, cardSource: base.GetCardSource());
             if (base.UseUnityCoroutines)
             {
                 yield return base.GameController.StartCoroutine(coroutine);
@@ -36,21 +44,7 @@ namespace Cauldron.Drift
             {
                 base.GameController.ExhaustCoroutine(coroutine);
             }
-
-            //...and herself 1 psychic damage.
-            if (targetDecision.Any())
-            {
-                coroutine = base.DealDamage(base.GetActiveCharacterCard(), base.GetActiveCharacterCard(), 1, DamageType.Psychic, cardSource: base.GetCardSource());
-                if (base.UseUnityCoroutines)
-                {
-                    yield return base.GameController.StartCoroutine(coroutine);
-                }
-                else
-                {
-                    base.GameController.ExhaustCoroutine(coroutine);
-                }
-            }
-            yield break;
         }
+        yield break;
     }
 }

@@ -3,110 +3,104 @@
 using Handelabra.Sentinels.Engine.Controller;
 using Handelabra.Sentinels.Engine.Model;
 
-namespace Cauldron.Drift
+namespace Cauldron.Drift;
+
+public class ThrowingShardCardController(Card card, TurnTakerController turnTakerController) : DriftBaseCardController(card, turnTakerController)
 {
-	public class ThrowingShardCardController : DriftBaseCardController
+        public override IEnumerator UsePower(int index = 0)
 	{
-		public ThrowingShardCardController(Card card, TurnTakerController turnTakerController) : base(card, turnTakerController)
+		IEnumerator coroutine;
+
+		switch (index)
 		{
-
-		}
-
-		public override IEnumerator UsePower(int index = 0)
-		{
-			IEnumerator coroutine;
-
-			switch (index)
-			{
-				case 0:
+			case 0:
+				{
+					//{DriftPast} 
+					if (this.IsTimeMatchingPast)
 					{
-						//{DriftPast} 
-						if (this.IsTimeMatchingPast())
+						int targetNumeral = base.GetPowerNumeral(0, 1);
+						int gainHPNumeral = base.GetPowerNumeral(1, 2);
+						//1 target regains 2 HP.
+						coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, gainHPNumeral, numberOfTargets: targetNumeral, cardSource: base.GetCardSource());
+						if (base.UseUnityCoroutines)
 						{
-							int targetNumeral = base.GetPowerNumeral(0, 1);
-							int gainHPNumeral = base.GetPowerNumeral(1, 2);
-							//1 target regains 2 HP.
-							coroutine = base.GameController.SelectAndGainHP(base.HeroTurnTakerController, gainHPNumeral, numberOfTargets: targetNumeral, cardSource: base.GetCardSource());
-							if (base.UseUnityCoroutines)
-							{
-								yield return base.GameController.StartCoroutine(coroutine);
-							}
-							else
-							{
-								base.GameController.ExhaustCoroutine(coroutine);
-							}
-
-							//Shift {DriftRR}.
-							coroutine = this.ShiftRR();
-							if (base.UseUnityCoroutines)
-							{
-								yield return base.GameController.StartCoroutine(coroutine);
-							}
-							else
-							{
-								base.GameController.ExhaustCoroutine(coroutine);
-							}
+							yield return base.GameController.StartCoroutine(coroutine);
 						}
 						else
 						{
-							coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {this.Past()} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
-							if (base.UseUnityCoroutines)
-							{
-								yield return base.GameController.StartCoroutine(coroutine);
-							}
-							else
-							{
-								base.GameController.ExhaustCoroutine(coroutine);
-							}
+							base.GameController.ExhaustCoroutine(coroutine);
 						}
 
-						break;
-					}
-				case 1:
-					{
-						//{DriftFuture} 
-						if (this.IsTimeMatchingFuture())
+						//Shift {DriftRR}.
+						coroutine = this.ShiftRR();
+						if (base.UseUnityCoroutines)
 						{
-							int damageNumeral = base.GetPowerNumeral(2, 1);
-							//{Drift} deals each non-hero target 1 radiant damage. 
-							coroutine = base.DealDamage(base.GetActiveCharacterCard(), (Card c) => !IsHeroTarget(c), damageNumeral, DamageType.Radiant);
-							if (base.UseUnityCoroutines)
-							{
-								yield return base.GameController.StartCoroutine(coroutine);
-							}
-							else
-							{
-								base.GameController.ExhaustCoroutine(coroutine);
-							}
-
-							//Shift {DriftLL}.
-							coroutine = this.ShiftLL();
-							if (base.UseUnityCoroutines)
-							{
-								yield return base.GameController.StartCoroutine(coroutine);
-							}
-							else
-							{
-								base.GameController.ExhaustCoroutine(coroutine);
-							}
+							yield return base.GameController.StartCoroutine(coroutine);
 						}
 						else
 						{
-							coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {this.Future()} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
-							if (base.UseUnityCoroutines)
-							{
-								yield return base.GameController.StartCoroutine(coroutine);
-							}
-							else
-							{
-								base.GameController.ExhaustCoroutine(coroutine);
-							}
+							base.GameController.ExhaustCoroutine(coroutine);
 						}
-						break;
 					}
-			}
+					else
+					{
+						coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {this.Past} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
+						if (base.UseUnityCoroutines)
+						{
+							yield return base.GameController.StartCoroutine(coroutine);
+						}
+						else
+						{
+							base.GameController.ExhaustCoroutine(coroutine);
+						}
+					}
 
-			yield break;
+					break;
+				}
+			case 1:
+				{
+					//{DriftFuture} 
+					if (this.IsTimeMatchingFuture)
+					{
+						int damageNumeral = base.GetPowerNumeral(2, 1);
+						//{Drift} deals each non-hero target 1 radiant damage. 
+						coroutine = base.DealDamage(base.GetActiveCharacterCard(), (Card c) => !IsHeroTarget(c), damageNumeral, DamageType.Radiant);
+						if (base.UseUnityCoroutines)
+						{
+							yield return base.GameController.StartCoroutine(coroutine);
+						}
+						else
+						{
+							base.GameController.ExhaustCoroutine(coroutine);
+						}
+
+						//Shift {DriftLL}.
+						coroutine = this.ShiftLL();
+						if (base.UseUnityCoroutines)
+						{
+							yield return base.GameController.StartCoroutine(coroutine);
+						}
+						else
+						{
+							base.GameController.ExhaustCoroutine(coroutine);
+						}
+					}
+					else
+					{
+						coroutine = GameController.SendMessageAction($"{CharacterCard.Title} is not on a {this.Future} space, so nothing happens!", Priority.High, GetCardSource(), showCardSource: true);
+						if (base.UseUnityCoroutines)
+						{
+							yield return base.GameController.StartCoroutine(coroutine);
+						}
+						else
+						{
+							base.GameController.ExhaustCoroutine(coroutine);
+						}
+					}
+					break;
+				}
 		}
+
+		yield break;
 	}
 }
